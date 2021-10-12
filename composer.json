@@ -89,8 +89,8 @@
         "test:integration": "phpunit --testsuite integration",
         "test:unit": "phpunit --testsuite unit",
         "test:coverage": [
-            "phpunit --coverage-clover var/cache/coverage.xml",
-            "phpfci inspect var/cache/coverage.xml php://stdout --exit-code-on-failure"
+            "phpunit --coverage-clover coverage.xml",
+            "phpfci inspect coverage.xml php://stdout --exit-code-on-failure"
         ],
         "auto-scripts": {"cache:clear --no-warmup": "symfony-cmd"},
         "post-install-cmd": ["@auto-scripts"],
