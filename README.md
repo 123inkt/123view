@@ -1,6 +1,7 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.4-8892BF)](https://php.net/)
 [![Symfony Version](https://img.shields.io/badge/symfony-5.3-4BC51D)](https://symfony.com/releases)
-[![PHPStan](https://user-images.githubusercontent.com/104888/50957476-9c4acb80-14be-11e9-88ce-6447364dc1bb.png)](https://www.phpstan.com/)
+[![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-4BC51D)](https://php.net/)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
 

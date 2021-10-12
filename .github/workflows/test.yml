@@ -25,4 +25,4 @@ jobs:
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress --no-suggest --prefer-stable
       - name: Run test suite
-        run: composer test
+        run: composer test:coverage
