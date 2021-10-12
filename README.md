@@ -24,7 +24,6 @@ A symfony application to allow receiving commit notification for all commits in 
 ## Requirements
 
 - recent version of `git`
-- `git` command should be globally available
 - php version > 7.4
 
 ## Quick start
@@ -35,7 +34,7 @@ cd git-commit-notification
 composer install --optimize-autoloader --classmap-authoritative --no-dev --no-progress
 composer dump-env prod
 ```
-Check .env for mailer settings, update (if necessary)
+Check `.env` for mailer settings, update (if necessary)
 ```dotenv
 MAILER_DSN=native://default
 MAILER_SENDER='Sherlock Holmes <sherlock@example.com>'
