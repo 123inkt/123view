@@ -5,6 +5,9 @@ namespace DR\GitCommitNotification\Service\Git\Diff;
 
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class GitDiffCommandBuilder implements GitCommandBuilderInterface
 {
     private string $git;
