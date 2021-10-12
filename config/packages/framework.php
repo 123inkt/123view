@@ -57,11 +57,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'validation'           => ['enabled' => false]
         ]
     );
-
-    if ($containerConfigurator->env() === 'test') {
-        $containerConfigurator->extension(
-            'framework',
-            ['test' => true, 'session' => ['storage_factory_id' => 'session.storage.factory.mock_file']]
-        );
-    }
 };
