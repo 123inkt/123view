@@ -8,6 +8,8 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
+use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Twig\Highlight\HighlighterFactory;
@@ -48,6 +50,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(HighlighterFactory::class);
+    $services->set(GitDiffCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(GitLogCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
 
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)

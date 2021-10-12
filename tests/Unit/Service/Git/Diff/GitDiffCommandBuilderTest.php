@@ -22,7 +22,7 @@ class GitDiffCommandBuilderTest extends AbstractTest
     protected function setUp(): void
     {
         parent::setUp();
-        $this->builder = new GitDiffCommandBuilder();
+        $this->builder = new GitDiffCommandBuilder('git');
     }
 
     /**
@@ -30,10 +30,11 @@ class GitDiffCommandBuilderTest extends AbstractTest
      */
     public function testBuildDefaults(): void
     {
-        static::assertSame(self::DEFAULTS, $this->builder->build());
+        static::assertSame(self::DEFAULTS, $this->builder->start()->build());
     }
 
     /**
+     * @covers ::start
      * @covers ::ignoreSpaceChange
      * @covers ::ignoreBlankLines
      * @covers ::ignoreAllSpace
@@ -44,6 +45,7 @@ class GitDiffCommandBuilderTest extends AbstractTest
     public function testBuildSpace(): void
     {
         $actual = $this->builder
+            ->start()
             ->ignoreSpaceChange()
             ->ignoreBlankLines()
             ->ignoreAllSpace()
@@ -67,12 +69,14 @@ class GitDiffCommandBuilderTest extends AbstractTest
     }
 
     /**
+     * @covers ::start
      * @covers ::hashes
      * @covers ::diffAlgorithm
      */
     public function testBuildOptions(): void
     {
         $actual = $this->builder
+            ->start()
             ->hashes('start', 'end')
             ->diffAlgorithm("foobar")
             ->build();
@@ -95,6 +99,6 @@ class GitDiffCommandBuilderTest extends AbstractTest
      */
     public function testToString(): void
     {
-        static::assertSame('git diff', (string)$this->builder);
+        static::assertSame('git diff', (string)$this->builder->start());
     }
 }

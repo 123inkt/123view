@@ -38,6 +38,7 @@ class GitLogCommandFactoryTest extends AbstractTest
         $rule->ignoreSpaceAtEol    = false;
         $rule->excludeMergeCommits = false;
 
+        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('patch')->willReturnSelf();
@@ -67,6 +68,7 @@ class GitLogCommandFactoryTest extends AbstractTest
         $rule->ignoreSpaceChange = true;
         $rule->ignoreBlankLines  = true;
 
+        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('patch')->willReturnSelf();
