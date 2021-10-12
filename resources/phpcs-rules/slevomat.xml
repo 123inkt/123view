@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="PHP_CodeSniffer"
+         xsi:noNamespaceSchemaLocation="../../vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <description>Slevomat rules</description>
+
+    <rule ref="./slevomat/slevomat.arrays.xml"/>
+    <rule ref="./slevomat/slevomat.classes.xml"/>
+    <rule ref="./slevomat/slevomat.commenting.xml"/>
+    <rule ref="./slevomat/slevomat.controlstructures.xml"/>
+    <rule ref="./slevomat/slevomat.exceptions.xml"/>
+    <rule ref="./slevomat/slevomat.functions.xml"/>
+    <rule ref="./slevomat/slevomat.namespaces.xml"/>
+    <rule ref="./slevomat/slevomat.numbers.xml"/>
+    <rule ref="./slevomat/slevomat.operators.xml"/>
+    <rule ref="./slevomat/slevomat.php.xml"/>
+    <rule ref="./slevomat/slevomat.typehints.xml"/>
+    <rule ref="./slevomat/slevomat.variables.xml"/>
+</ruleset>

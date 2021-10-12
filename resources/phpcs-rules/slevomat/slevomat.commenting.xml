@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="PHP_CodeSniffer"
+         xsi:noNamespaceSchemaLocation="../../../vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <description>Slevomat Commenting rules</description>
+
+    <rule ref="SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration"/>
+    <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
+        <properties>
+            <property name="forbiddenAnnotations" type="array">
+                <element value="@author"/>
+                <element value="@created"/>
+                <element value="@version"/>
+                <element value="@package"/>
+                <element value="@subpackage"/>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenComments">
+        <properties>
+            <property name="forbiddenCommentPatterns" type="array">
+                <!-- old phpstorm's creation comment -->
+                <element value="#^Created by PhpStorm.\s*$#"/>
+                <!-- old phpstorm's creation comment -->
+                <element value="#^User:\s+\w+.*$#"/>
+                <!-- old phpstorm's creation comment -->
+                <element value="#^Date:\s+\w+.*$#"/>
+                <!-- old phpstorm's creation comment -->
+                <element value="#^Time:\s+\w+.*$#"/>
+                <!-- phpstorm's unnecessary constructor comment -->
+                <element value="#^[A-Z][a-zA-Z0-9]+\s+constructor\.\s*$#"/>
+                <!-- phpstorm's unnecessary class name comment -->
+                <element value="#^Class\s+[A-Z][a-zA-Z0-9]+\s*$#"/>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
+    <rule ref="SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment"/>
+</ruleset>

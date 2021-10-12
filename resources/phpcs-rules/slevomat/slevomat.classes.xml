@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="PHP_CodeSniffer"
+         xsi:noNamespaceSchemaLocation="../../../vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <description>Slevomat Class rules</description>
+
+    <rule ref="SlevomatCodingStandard.Classes.TraitUseSpacing">
+        <properties>
+            <property name="linesCountBeforeFirstUse" value="1"/>
+            <property name="linesCountBeforeFirstUseWhenFirstInClass" value="0"/>
+            <property name="linesCountBetweenUses" value="0"/>
+            <property name="linesCountAfterLastUse" value="1"/>
+            <property name="linesCountAfterLastUseWhenLastInClass" value="0"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature">
+        <properties>
+            <property name="maxLineLength" value="150"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing">
+        <properties>
+            <property name="linesCountBetweenMembers" value="1"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.ClassStructure">
+        <properties>
+            <property name="groups" type="array">
+                <!-- traits -->
+                <element value="uses"/>
+                <!-- constants -->
+                <element value="public constants"/>
+                <element value="protected constants"/>
+                <element value="private constants"/>
+                <!-- class properties -->
+                <element value="public properties"/>
+                <element value="public static properties"/>
+                <element value="protected properties"/>
+                <element value="protected static properties"/>
+                <element value="private properties"/>
+                <element value="private static properties"/>
+                <!-- abstract methods -->
+                <element value="public abstract methods, public static abstract methods"/>
+                <element value="protected abstract methods, protected static abstract methods"/>
+                <!-- constructor -->
+                <element value="constructor"/>
+                <element value="static constructors"/>
+                <element value="destructor"/>
+                <!-- methods -->
+                <element value="public methods"/>
+                <element value="public static methods"/>
+                <element value="protected methods"/>
+                <element value="protected static methods"/>
+                <element value="private methods"/>
+                <element value="private static methods"/>
+                <element value="magic methods"/>
+            </property>
+        </properties>
+        <exclude-pattern>*/tests/</exclude-pattern>
+        <exclude-pattern>*/Tests/</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces">
+        <properties>
+            <property name="linesCountAfterOpeningBrace" value="0"/>
+            <property name="linesCountBeforeClosingBrace" value="0"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousErrorNaming"/>
+
+    <rule ref="SlevomatCodingStandard.Classes.MethodSpacing"/>
+    <rule ref="SlevomatCodingStandard.Classes.RequireMultiLineMethodSignature">
+        <properties>
+            <property name="minLineLength" value="151"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.UselessLateStaticBinding"/>
+    <rule ref="SlevomatCodingStandard.Classes.ConstantSpacing">
+        <properties>
+            <property name="minLinesCountBeforeWithComment" value="0"/>
+            <property name="maxLinesCountBeforeWithComment" value="1"/>
+            <property name="minLinesCountBeforeWithoutComment" value="0"/>
+            <property name="maxLinesCountBeforeWithoutComment" value="1"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Classes.PropertySpacing">
+        <properties>
+            <property name="minLinesCountBeforeWithComment" value="0"/>
+            <property name="maxLinesCountBeforeWithComment" value="1"/>
+            <property name="minLinesCountBeforeWithoutComment" value="0"/>
+            <property name="maxLinesCountBeforeWithoutComment" value="1"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
+</ruleset>

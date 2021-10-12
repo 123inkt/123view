@@ -1,0 +1,51 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\GitCommitNotification\Command;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+use Throwable;
+
+class TestMailCommand extends Command
+{
+    private MailerInterface $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        parent::__construct();
+        $this->mailer = $mailer;
+    }
+
+    protected function configure(): void
+    {
+        $this->setName("test:mail")
+            ->setDescription("Send a test mail to the given mail address")
+            ->addArgument('address', InputArgument::REQUIRED, 'The test e-mail address');
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Throwable
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $address = $input->getArgument('address');
+
+        $email = (new Email())
+            ->addTo(new Address($address))
+            ->subject('[GitCommitMail] test mail')
+            ->text('Git log test mail');
+
+        $this->mailer->send($email);
+
+        $output->writeln("Successfully send mail to: " . $address);
+
+        return Command::SUCCESS;
+    }
+}

@@ -1,0 +1,14 @@
+
+diff --git a/example.yml b/example.yml
+index fb42e28..db43761 100644
+--- a/example.yml
++++ b/example.yml
+@@ -29,8 +29,8 @@ changes:
+ unchanged
+-this is removed.
++this was added!
+ unchanged
+@@ -50,3 +70,3 @@ block2:
++added
++added
++added

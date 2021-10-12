@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Coding Standard">
+    <description>Coding standard</description>
+    <rule ref="./resources/phpcs-rules/phpcs.xml"/>
+    <rule ref="./resources/phpcs-rules/slevomat.xml"/>
+</ruleset>

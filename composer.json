@@ -1,31 +1,113 @@
 {
-    "name": "digitalrevolution/skeleton",
-    "description": "Digital Revolution skeleton package",
-    "type": "library",
+    "name": "digitalrevolution/git-commmit-notification",
+    "description": "A bundled git commit notification mailer",
+    "keywords": ["git", "commit", "summary", "bundle", "filter", "mail", "notification"],
+    "type": "project",
     "license": "MIT",
     "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true,
+        "process-timeout": 0,
+        "platform": {
+            "php": "7.4.10"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "DR\\GitCommitNotification\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DR\\GitCommitNotification\\Tests\\E2E\\": "tests/E2E",
+            "DR\\GitCommitNotification\\Tests\\Integration\\": "tests/Integration",
+            "DR\\GitCommitNotification\\Tests\\Unit\\": "tests/Unit",
+            "DR\\GitCommitNotification\\Tests\\": "tests/"
+        }
+    },
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4.10",
+        "ext-ctype": "*",
+        "ext-dom": "*",
+        "ext-iconv": "*",
+        "czproject/git-php": "^4.0",
+        "doctrine/annotations": "^1.13",
+        "symfony/config": "^5.3",
+        "symfony/console": "^5.3",
+        "symfony/dotenv": "^5.3",
+        "symfony/filesystem": "^5.3",
+        "symfony/flex": "^1.3.1",
+        "symfony/framework-bundle": "^5.3",
+        "symfony/http-client": "^5.3",
+        "symfony/mailer": "^5.3",
+        "symfony/monolog-bundle": "^3.7",
+        "symfony/process": "^5.3",
+        "symfony/property-access": "^5.3",
+        "symfony/runtime": "^5.3",
+        "symfony/serializer": "^5.3",
+        "symfony/twig-bundle": "^5.3",
+        "symfony/yaml": "^5.3",
+        "tijsverkoyen/css-to-inline-styles": "^2.2",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.6",
-        "phpmd/phpmd": "@stable",
-        "phpunit/phpunit": "^9.5",
+        "digitalrevolution/accessorpair-constraint": "^2.1",
+        "digitalrevolution/phpunit-file-coverage-inspection": "^1.1",
+        "micheh/phpcs-gitlab": "^1.1",
+        "mikey179/vfsstream": "^1.6",
+        "php-parallel-lint/php-parallel-lint": "^1.3",
+        "phpmd/phpmd": "^2.10",
+        "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "0.12.*",
         "phpstan/phpstan-phpunit": "0.12.*",
         "phpstan/phpstan-strict-rules": "0.12.*",
-        "phpstan/extension-installer": "^1.1"
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "slevomat/coding-standard": "^7.0",
+        "squizlabs/php_codesniffer": "^3.6",
+        "symfony/phpunit-bridge": "^5.3",
+        "symfony/polyfill-php80": "^1.23",
+        "yep/reflection": "^2.1"
+    },
+    "replace": {
+        "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*"
     },
     "scripts": {
         "check": ["@check:phpstan", "@check:phpmd", "@check:phpcs"],
         "check:phpstan": "phpstan analyse",
-        "check:phpmd": "phpmd src,tests text phpmd.xml.dist --suffixes=php",
+        "check:phpmd": "phpmd src,tests text phpmd.xml --suffixes=php",
         "check:phpcs": "phpcs src tests",
         "fix": "@fix:phpcbf",
         "fix:phpcbf": "phpcbf src tests",
         "test": "phpunit",
+        "test:e2e": "phpunit --testsuite e2e",
         "test:integration": "phpunit --testsuite integration",
-        "test:unit": "phpunit --testsuite unit"
+        "test:unit": "phpunit --testsuite unit",
+        "test:coverage": [
+            "phpunit --coverage-clover var/cache/coverage.xml",
+            "phpfci inspect var/cache/coverage.xml php://stdout --exit-code-on-failure"
+        ],
+        "auto-scripts": {"cache:clear --no-warmup": "symfony-cmd"},
+        "post-install-cmd": ["@auto-scripts"],
+        "post-update-cmd": ["@auto-scripts"],
+        "cache:destroy": [
+            "@php bin/console cache:clear --env=prod --no-debug",
+            "@php bin/console cache:clear --env=dev  --no-debug",
+            "@php bin/console cache:clear --env=test --no-debug"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "require": "5.3.*"
+        }
     }
 }

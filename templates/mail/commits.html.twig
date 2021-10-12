@@ -1,0 +1,84 @@
+{%- apply inline_css(source('@styles/' ~ viewModel.theme ~ '.css')) -%}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+    <body>
+    {%- for commit in viewModel.commits -%}
+        <div class="revisions">
+            New revision{% if commit.commitHashes|length > 1 %}s{% endif %} by {{ commit.author.name }} in branch
+
+            {# branch name -#}
+            <span class="remoteReference"> {{ commit.remoteRef }}</span> in repository
+
+            {#- repository name -#}
+            <span class="repositoryName"> {{ commit.repositoryName }}</span>.
+
+            {#- commit hashes, show max 5 -#}
+            <code class="commitHash">
+                {% set max_hashes = 5 %}
+                {%- for commitHash in commit.commitHashes -%}
+                    {%- if loop.index < max_hashes -%}
+                        {%- if not loop.first %}, {% endif -%}
+                        {{- commitHash[:8] -}}
+                    {%- endif %}
+                    {%- if loop.index == max_hashes -%}, ...{%- endif -%}
+                {%- endfor -%}
+            </code>
+
+            {#- first line commit message -#}
+            <span class="subjectLine"> {{ commit.subjectLine|external_links(viewModel.externalLinks) }}</span>
+
+            {%- if commit.integrationLinks|length > 0 -%}
+                {%- for link in commit.integrationLinks -%}
+                    &nbsp;<a class="integration-link" href="{{ link.url }}"><img src="{{ link.image }}" width="16" height="16" title="{{ link.text }}"/></a>
+                {%- endfor -%}
+            {%- endif -%}
+        </div>
+        <br>
+
+        {%- for file in commit.files -%}
+            <div class="revisionFile">
+                <div>
+                    <span class="fileChangeState">
+                        {%- if file.added -%}
+                            +
+                        {%- elseif file.deleted -%}
+                            -
+                        {%- elseif file.modified -%}
+                            *
+                        {%- endif -%}
+                    </span>
+                    <span class="fileName">{{ file.filename }}</span>
+                    <span class="directoryName">{{ file.dirname }}</span>
+                </div>
+
+                {%- if file.rename -%}
+                    <div class="fileRename">renamed from {{ file.filePathBefore }}</div>
+                {%- endif -%}
+
+                {%- if file.blocks -%}
+                    <div class="fileDiff">
+                        {%- if file.modified -%}
+                            {%- include 'mail/commit.block.spacer.html.twig' -%}
+                        {%- endif -%}
+
+                        {%- for block in file.blocks -%}
+                            {%- include 'mail/commit.block.html.twig' -%}
+
+                            {%- if file.modified -%}
+                                {%- include 'mail/commit.block.spacer.html.twig' -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    </div>
+                {% else %}
+                    <br><br>
+                {%- endif -%}
+            </div>
+        {%- endfor -%}
+
+    {%- endfor -%}
+    </body>
+    </html>
+{%- endapply -%}

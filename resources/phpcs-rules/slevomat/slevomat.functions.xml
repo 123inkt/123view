@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="PHP_CodeSniffer"
+         xsi:noNamespaceSchemaLocation="../../../vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <description>Slevomat Functions rules</description>
+
+    <rule ref="SlevomatCodingStandard.Functions.ArrowFunctionDeclaration">
+        <properties>
+            <property name="spacesCountAfterKeyword" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- not part of our standard -->
+    <!--    <rule ref="SlevomatCodingStandard.Functions.DisallowArrowFunction"/> -->
+
+    <rule ref="SlevomatCodingStandard.Functions.DisallowEmptyFunction"/>
+    <rule ref="SlevomatCodingStandard.Functions.RequireArrowFunction"/>
+
+    <rule ref="SlevomatCodingStandard.Functions.RequireMultiLineCall">
+        <properties>
+            <property name="minLineLength" value="151"/>
+        </properties>
+    </rule>
+
+    <!-- disabled, VERY inefficient sniff. increases execution time by 50% by itself -->
+<!--    <rule ref="SlevomatCodingStandard.Functions.RequireSingleLineCall">-->
+<!--        <properties>-->
+<!--            <property name="maxLineLength" value="150"/>-->
+<!--        </properties>-->
+<!--    </rule>-->
+
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
+    <rule ref="SlevomatCodingStandard.Functions.StrictCall"/>
+
+    <!-- not our standard -->
+    <!-- <rule ref="SlevomatCodingStandard.Functions.TrailingCommaInCall"/> -->
+
+    <rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
+
+    <!-- many false-positives, even with inheritDoc annotation -->
+    <!-- <rule ref="SlevomatCodingStandard.Functions.UnusedParameter"/> -->
+
+    <rule ref="SlevomatCodingStandard.Functions.UselessParameterDefaultValue"/>
+</ruleset>

@@ -1,0 +1,84 @@
+include:
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/workflow-prevent-detached-pipeline.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/build/composer.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/test/phpunit.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/sonarqube-check.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/codequality/phplint.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/codequality/phpstan.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/codequality/phpcs.yml'
+    -   project: '123/dev-tools/ci-helpers'
+        file: '/ci-templates/codequality/phpmd.yml'
+
+image: ${CI_REGISTRY}/123/dev-tools/ci-helpers/curl:7.76.1
+
+stages:
+    - build
+    - codequality
+    - test
+    - security
+    - report
+    - deploy
+
+variables:
+    GIT_DEPTH: 1
+    PHP_VERSION: '7.4'
+
+sonarqube-run:
+    extends: .sonarqube-check
+    needs: [ ]
+    allow_failure: true
+
+composer:
+    extends: .composer
+
+phpunit:
+    extends: .phpunit
+    variables:
+        TEST_SUITE: "unit,integration,e2e"
+        COVERAGE_ARGS: "--coverage-text=${REPORTS_DIR}/coverage.txt --coverage-clover ${REPORTS_DIR}/coverage.xml --coverage-cobertura ${REPORTS_DIR}/cobertura.xml --coverage-html ${REPORTS_DIR}/coverage"
+    after_script:
+        - 'echo -e "section_start:`date +%s`:phpunit_coverage[collapsed=true]\r\e[0KPHPUnit coverage"'
+        - '[ -f ${REPORTS_DIR}/coverage.txt ] && cat ${REPORTS_DIR}/coverage.txt'
+        - 'echo -e "section_end:`date +%s`:phpunit_coverage\r\e[0K"'
+    coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+    artifacts:
+        expose_as: "PHPUnit Test Reports"
+        when: always
+        reports:
+            junit: ${REPORTS_DIR}/junit_${TEST_SUITE}.xml
+            cobertura: ${REPORTS_DIR}/cobertura.xml
+        paths:
+            - ${REPORTS_DIR}
+        expire_in: 1 hour
+
+phpcs:
+    extends: .phpcs
+
+phpmd:src:
+    extends: .phpmd
+
+phpmd:tests:
+    extends: .phpmd
+    variables:
+        PHPMD_SCAN_DIR: tests
+        PHPMD_SUITE: tests
+
+lint:
+    image: ${CI_REGISTRY}/123/dev-tools/ci-helpers/php-base:${PHP_VERSION}
+    stage: codequality
+    tags:
+        - general-purpose
+    needs:
+        - composer
+    dependencies:
+        - composer
+    script:
+        - php bin/console lint:container
+        - php bin/console lint:twig --no-ansi templates
