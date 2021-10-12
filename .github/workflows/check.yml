@@ -1,0 +1,23 @@
+name: Check
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  quality:
+    name: Quality checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: run checks
+        run: composer check
