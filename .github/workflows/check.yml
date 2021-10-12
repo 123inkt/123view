@@ -22,6 +22,6 @@ jobs:
       - name: run checks
         run: composer check
       - name: check twig
-        run: php bin/console lint:twig
+        run: php bin/console lint:twig templates
       - name: check container
         run: php bin/console lint:container
