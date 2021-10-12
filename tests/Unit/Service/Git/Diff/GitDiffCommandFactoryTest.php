@@ -35,6 +35,7 @@ class GitDiffCommandFactoryTest extends AbstractTest
         $rule->ignoreSpaceAtEol    = false;
         $rule->excludeMergeCommits = false;
 
+        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
@@ -57,6 +58,7 @@ class GitDiffCommandFactoryTest extends AbstractTest
         $rule->ignoreSpaceChange = true;
         $rule->ignoreBlankLines  = true;
 
+        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();

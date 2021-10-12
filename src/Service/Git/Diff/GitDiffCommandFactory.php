@@ -18,6 +18,7 @@ class GitDiffCommandFactory
     public function diffHashes(Rule $rule, string $fromHash, string $toHash): GitCommandBuilderInterface
     {
         $this->builder
+            ->start()
             ->hashes($fromHash, $toHash)
             ->diffAlgorithm($rule->diffAlgorithm)
             ->ignoreCrAtEol();

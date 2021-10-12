@@ -59,7 +59,7 @@ class GitLogServiceTest extends AbstractTest
         $rule->repositories = new RepositoryReferences();
         $rule->repositories->addRepository($this->createRepositoryReference('example'));
         $repository     = $this->createMock(GitRepository::class);
-        $commandBuilder = new GitLogCommandBuilder();
+        $commandBuilder = new GitLogCommandBuilder('git');
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
 
         // setup mocks

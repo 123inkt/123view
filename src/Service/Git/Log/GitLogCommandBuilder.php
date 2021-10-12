@@ -10,13 +10,23 @@ use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
  */
 class GitLogCommandBuilder implements GitCommandBuilderInterface
 {
+    private string $git;
+
     /** @var array<string, string> */
     private array $arguments = [];
 
-    public function __construct()
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = 'git';
+        $this->git = $git;
+    }
+
+    public function start(): self
+    {
+        $this->arguments            = [];
+        $this->arguments['app']     = $this->git;
         $this->arguments['command'] = 'log';
+
+        return $this;
     }
 
     public function remotes(): self

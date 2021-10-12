@@ -21,6 +21,7 @@ class GitLogCommandFactory
     public function fromRule(Rule $rule): GitCommandBuilderInterface
     {
         $this->builder
+            ->start()
             ->remotes()
             ->topoOrder()
             ->patch()

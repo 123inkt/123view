@@ -47,7 +47,7 @@ class GitDiffServiceTest extends AbstractTest
         $repositoryConfig      = $this->createRepository('foobar', 'http://foobar.com');
         $rule                  = new Rule();
         $repository            = $this->createMock(GitRepository::class);
-        $commandBuilder        = new GitDiffCommandBuilder();
+        $commandBuilder        = new GitDiffCommandBuilder('git');
 
         $files                = [new DiffFile()];
         $commit               = $this->createCommit();

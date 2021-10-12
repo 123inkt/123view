@@ -5,15 +5,28 @@ namespace DR\GitCommitNotification\Service\Git\Diff;
 
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class GitDiffCommandBuilder implements GitCommandBuilderInterface
 {
+    private string $git;
+
     /** @var array<string, string> */
     private array $arguments = [];
 
-    public function __construct()
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = 'git';
+        $this->git = $git;
+    }
+
+    public function start(): self
+    {
+        $this->arguments            = [];
+        $this->arguments['app']     = $this->git;
         $this->arguments['command'] = 'diff';
+
+        return $this;
     }
 
     public function hashes(string $fromHash, string $toHash): self
