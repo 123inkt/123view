@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
-use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
@@ -29,7 +28,8 @@ class GitLogCommandFactory
             ->diffAlgorithm($rule->diffAlgorithm)
             ->format($this->patternFactory->createPattern())
             ->ignoreCrAtEol()
-            ->since(Frequency::toSince($rule->frequency));
+            ->since($rule->config->startTime)
+            ->until($rule->config->endTime);
 
         if ($rule->excludeMergeCommits) {
             $this->builder->noMerges();

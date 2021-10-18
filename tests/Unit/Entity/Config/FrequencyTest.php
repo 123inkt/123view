@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
+use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Tests\AbstractTest;
 use InvalidArgumentException;
@@ -27,24 +28,37 @@ class FrequencyTest extends AbstractTest
     }
 
     /**
-     * @covers ::toSince
+     * @covers ::getPeriod
+     * @dataProvider getPeriodDataProvider
      */
-    public function testToSince(): void
+    public function testGetPeriod(string $frequency, DateTimeImmutable $expectedStartTime): void
     {
-        static::assertSame('1 hour ago', Frequency::toSince(Frequency::ONCE_PER_HOUR));
-        static::assertSame('2 hours ago', Frequency::toSince(Frequency::ONCE_PER_TWO_HOURS));
-        static::assertSame('3 hours ago', Frequency::toSince(Frequency::ONCE_PER_THREE_HOURS));
-        static::assertSame('4 hours ago', Frequency::toSince(Frequency::ONCE_PER_FOUR_HOURS));
-        static::assertSame('1 day ago', Frequency::toSince(Frequency::ONCE_PER_DAY));
-        static::assertSame('1 week ago', Frequency::toSince(Frequency::ONCE_PER_WEEK));
+        $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');
+        static::assertEquals([$expectedStartTime, $currentTime], Frequency::getPeriod($currentTime, $frequency));
     }
 
     /**
-     * @covers ::toSince
+     * @return array<string, array<string|DateTimeImmutable>>
      */
-    public function testToSinceInvalidArgument(): void
+    public function getPeriodDataProvider(): array
     {
+        return [
+            'ONCE_PER_HOUR'        => [Frequency::ONCE_PER_HOUR, new DateTimeImmutable('2021-10-18 21:05:00')],
+            'ONCE_PER_TWO_HOURS'   => [Frequency::ONCE_PER_TWO_HOURS, new DateTimeImmutable('2021-10-18 20:05:00')],
+            'ONCE_PER_THREE_HOURS' => [Frequency::ONCE_PER_THREE_HOURS, new DateTimeImmutable('2021-10-18 19:05:00')],
+            'ONCE_PER_FOUR_HOURS'  => [Frequency::ONCE_PER_FOUR_HOURS, new DateTimeImmutable('2021-10-18 18:05:00')],
+            'ONCE_PER_DAY'         => [Frequency::ONCE_PER_DAY, new DateTimeImmutable('2021-10-17 22:05:00')],
+            'ONCE_PER_WEEK'        => [Frequency::ONCE_PER_WEEK, new DateTimeImmutable('2021-10-11 22:05:00')],
+        ];
+    }
+
+    /**
+     * @covers ::getPeriod
+     */
+    public function testToGetPeriodInvalidArgument(): void
+    {
+        $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');
         $this->expectException(InvalidArgumentException::class);
-        Frequency::toSince('foobar');
+        Frequency::getPeriod($currentTime, 'foobar');
     }
 }

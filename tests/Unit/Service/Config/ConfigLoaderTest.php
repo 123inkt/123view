@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Service\Config\ConfigLoader;
 use DR\GitCommitNotification\Service\Config\ConfigPathResolver;
 use DR\GitCommitNotification\Service\Config\ConfigValidator;
 use DR\GitCommitNotification\Tests\AbstractTest;
+use Exception;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use SplFileInfo;
@@ -47,6 +48,7 @@ class ConfigLoaderTest extends AbstractTest
 
     /**
      * @covers ::load
+     * @throws Exception
      */
     public function testLoadWithValidateException(): void
     {
@@ -63,12 +65,12 @@ class ConfigLoaderTest extends AbstractTest
         // set expectations
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Failed to validate');
-        $this->loader->load($this->input);
+        $this->loader->load('once-per-hour', $this->input);
     }
 
     /**
      * @covers ::load
-     * @throws ConfigException
+     * @throws Exception
      */
     public function testLoadSuccess(): void
     {
@@ -91,7 +93,8 @@ class ConfigLoaderTest extends AbstractTest
             ->willReturn($config);
 
         // set expectations
-        $actual = $this->loader->load($this->input);
+        $actual = $this->loader->load('once-per-hour', $this->input);
         static::assertSame($config, $actual);
+        static::assertSame(3600, $config->endTime->getTimestamp() - $config->startTime->getTimestamp());
     }
 }

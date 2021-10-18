@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Tests\Integration\Service\Config;
 use DR\GitCommitNotification\Exception\ConfigException;
 use DR\GitCommitNotification\Service\Config\ConfigLoader;
 use DR\GitCommitNotification\Tests\AbstractKernelTest;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -28,7 +29,7 @@ class ConfigLoaderTest extends AbstractKernelTest
     }
 
     /**
-     * @throws ConfigException
+     * @throws Exception
      */
     public function testLoadSuccess(): void
     {
@@ -38,7 +39,7 @@ class ConfigLoaderTest extends AbstractKernelTest
         $this->input->expects(static::exactly(2))->method('getOption')->with('config')->willReturn($configPath->getPathname());
 
         // load config
-        $config = $this->configLoader->load($this->input);
+        $config = $this->configLoader->load('once-per-hour', $this->input);
 
         // assert repository
         static::assertCount(1, $config->repositories->getRepositories());
@@ -85,7 +86,7 @@ class ConfigLoaderTest extends AbstractKernelTest
     }
 
     /**
-     * @throws ConfigException
+     * @throws Exception
      */
     public function testLoadFailure(): void
     {
@@ -95,6 +96,6 @@ class ConfigLoaderTest extends AbstractKernelTest
         $this->input->expects(static::exactly(2))->method('getOption')->with('config')->willReturn($configPath->getPathname());
 
         $this->expectException(ConfigException::class);
-        $this->configLoader->load($this->input);
+        $this->configLoader->load('once-per-hour', $this->input);
     }
 }

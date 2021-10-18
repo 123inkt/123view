@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
+use DateTimeImmutable;
+use DR\GitCommitNotification\Entity\Config\Configuration;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
@@ -37,6 +39,9 @@ class GitLogCommandFactoryTest extends AbstractTest
         $rule->frequency           = Frequency::ONCE_PER_DAY;
         $rule->ignoreSpaceAtEol    = false;
         $rule->excludeMergeCommits = false;
+        $rule->config              = new Configuration();
+        $rule->config->startTime   = new DateTimeImmutable('2021-10-18 21:05:00');
+        $rule->config->endTime     = new DateTimeImmutable('2021-10-18 22:05:00');
 
         $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
@@ -46,7 +51,8 @@ class GitLogCommandFactoryTest extends AbstractTest
         $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('format')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('since')->with(Frequency::toSince($rule->frequency))->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('since')->with($rule->config->startTime)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('until')->with($rule->config->endTime)->willReturnSelf();
 
         $this->commandBuilder->expects(static::never())->method('noMerges')->willReturnSelf();
         $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
@@ -67,6 +73,9 @@ class GitLogCommandFactoryTest extends AbstractTest
         $rule->ignoreAllSpace    = true;
         $rule->ignoreSpaceChange = true;
         $rule->ignoreBlankLines  = true;
+        $rule->config            = new Configuration();
+        $rule->config->startTime = new DateTimeImmutable('2021-10-18 21:05:00');
+        $rule->config->endTime   = new DateTimeImmutable('2021-10-18 22:05:00');
 
         $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
@@ -77,6 +86,7 @@ class GitLogCommandFactoryTest extends AbstractTest
         $this->commandBuilder->expects(static::once())->method('format')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('since')->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('until')->willReturnSelf();
 
         $this->commandBuilder->expects(static::once())->method('noMerges')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreSpaceAtEol')->willReturnSelf();
