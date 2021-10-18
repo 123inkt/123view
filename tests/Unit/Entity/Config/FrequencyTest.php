@@ -38,7 +38,7 @@ class FrequencyTest extends AbstractTest
     }
 
     /**
-     * @return array<string, array<string|DateTimeImmutable>
+     * @return array<string, array<string|DateTimeImmutable>>
      */
     public function getPeriodDataProvider(): array
     {

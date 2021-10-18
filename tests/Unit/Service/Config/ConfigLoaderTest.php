@@ -95,8 +95,6 @@ class ConfigLoaderTest extends AbstractTest
         // set expectations
         $actual = $this->loader->load('once-per-hour', $this->input);
         static::assertSame($config, $actual);
-
-        static::assertNotNull($config->startTime);
-        static::assertNotNull($config->endTime);
+        static::assertSame(3600, $config->endTime->getTimestamp() - $config->startTime->getTimestamp());
     }
 }
