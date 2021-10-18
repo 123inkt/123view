@@ -29,7 +29,8 @@ class GitLogCommandFactory
             ->diffAlgorithm($rule->diffAlgorithm)
             ->format($this->patternFactory->createPattern())
             ->ignoreCrAtEol()
-            ->since(Frequency::toSince($rule->frequency));
+            ->since($rule->config->startTime)
+            ->until($rule->config->endTime);
 
         if ($rule->excludeMergeCommits) {
             $this->builder->noMerges();

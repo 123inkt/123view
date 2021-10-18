@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Config;
 
+use DateInterval;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use InvalidArgumentException;
 
 class Frequency
@@ -24,25 +28,38 @@ class Frequency
             self::ONCE_PER_DAY,
             self::ONCE_PER_WEEK
         ];
+
         return in_array($frequency, $valid, true);
     }
 
-    public static function toSince(string $frequency): string
+    /**
+     * @return array{DateTimeInterface, DateTimeInterface}
+     */
+    public static function getPeriod(DateTimeImmutable $currentTime, string $frequency): array
     {
         switch ($frequency) {
             case self::ONCE_PER_HOUR:
-                return '1 hour ago';
+                $interval = new DateInterval("PT1H");
+                break;
             case self::ONCE_PER_TWO_HOURS:
-                return '2 hours ago';
+                $interval = new DateInterval("PT2H");
+                break;
             case self::ONCE_PER_THREE_HOURS:
-                return '3 hours ago';
+                $interval = new DateInterval("PT3H");
+                break;
             case self::ONCE_PER_FOUR_HOURS:
-                return '4 hours ago';
+                $interval = new DateInterval("PT4H");
+                break;
             case self::ONCE_PER_DAY:
-                return '1 day ago';
+                $interval = new DateInterval("P1D");
+                break;
             case self::ONCE_PER_WEEK:
-                return '1 week ago';
+                $interval = new DateInterval("P7D");
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid frequency: ' . $frequency);
         }
-        throw new InvalidArgumentException('Invalid frequency: ' . $frequency);
+
+        return [DateTime::createFromImmutable($currentTime)->sub($interval), $currentTime];
     }
 }

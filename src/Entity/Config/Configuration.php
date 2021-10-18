@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Config;
 
+use DateTimeInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Configuration
 {
-    public Repositories $repositories;
+    public Repositories      $repositories;
+    public DateTimeInterface $startTime;
+    public DateTimeInterface $endTime;
 
     /**
      * @SerializedName("rule")

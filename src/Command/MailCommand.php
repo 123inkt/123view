@@ -49,7 +49,7 @@ class MailCommand extends Command
         }
 
         try {
-            $config = $this->configLoader->load($input);
+            $config = $this->configLoader->load($frequency, $input);
         } catch (ConfigException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 

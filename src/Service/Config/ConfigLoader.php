@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Config;
 
+use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Configuration;
+use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Exception\ConfigException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -26,9 +29,9 @@ class ConfigLoader
     }
 
     /**
-     * @throws ConfigException
+     * @throws Exception
      */
-    public function load(InputInterface $input): Configuration
+    public function load(string $frequency, InputInterface $input): Configuration
     {
         // find config path
         $configPath = $this->pathResolver->resolve($input);
@@ -48,6 +51,10 @@ class ConfigLoader
         // deserialize config
         /** @var Configuration $config */
         $config = $this->serializer->deserialize($configXml, Configuration::class, XmlEncoder::FORMAT);
+
+        // create date time object in seconds precisely 5 minutes earlier
+        $currentTime = new DateTimeImmutable(date('Y-m-d H:i:00', strtotime("-5 minutes")));
+        [$config->startTime, $config->endTime] = Frequency::getPeriod($currentTime, $frequency);
 
         // log which configuration was loaded
         $this->log->info(sprintf('Config `%s` successfully deserialized. Found %d rules.', $configPath->getPathname(), count($config->getRules())));

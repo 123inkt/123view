@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
+use DateTimeInterface;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 /**
@@ -57,9 +58,16 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
-    public function since(string $since): self
+    public function since(DateTimeInterface $since): self
     {
-        $this->arguments['since'] = sprintf('--since="%s"', $since);
+        $this->arguments['since'] = sprintf('--since="%s"', $since->format('c'));
+
+        return $this;
+    }
+
+    public function until(DateTimeInterface $until): self
+    {
+        $this->arguments['until'] = sprintf('--until="%s"', $until->format('c'));
 
         return $this;
     }

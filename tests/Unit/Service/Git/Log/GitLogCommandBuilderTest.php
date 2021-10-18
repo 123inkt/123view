@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
 use DR\GitCommitNotification\Tests\AbstractTest;
+use Exception;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder
@@ -77,8 +80,10 @@ class GitLogCommandBuilderTest extends AbstractTest
      * @covers ::decorate
      * @covers ::format
      * @covers ::since
+     * @covers ::until
      * @covers ::noMerges
      * @covers ::build
+     * @throws Exception
      */
     public function testBuildFormatting(): void
     {
@@ -90,7 +95,8 @@ class GitLogCommandBuilderTest extends AbstractTest
             ->diffAlgorithm("foobar")
             ->decorate("tree")
             ->format("format")
-            ->since("yesterday")
+            ->since(new DateTimeImmutable('2021-10-18 21:05:00', new DateTimeZone('Europe/Amsterdam')))
+            ->until(new DateTimeImmutable('2021-10-18 22:05:00', new DateTimeZone('Europe/Amsterdam')))
             ->noMerges()
             ->build();
 
@@ -104,7 +110,8 @@ class GitLogCommandBuilderTest extends AbstractTest
                     '--diff-algorithm="foobar"',
                     '--decorate="tree"',
                     '--format="format"',
-                    '--since="yesterday"',
+                    '--since="2021-10-18T21:05:00+02:00"',
+                    '--until="2021-10-18T22:05:00+02:00"',
                     '--no-merges',
                 ]
             ),
