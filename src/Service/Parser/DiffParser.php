@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 
 class DiffParser
 {
-    private const PATTERN = '#(?:^|\n)diff --git a/(\S+) b/(\S+)\s*.*?#s';
+    private const PATTERN = '#(?:^|\n)diff --git a/(.*?) b/(.*?)(?:\n|$)#';
 
     private LoggerInterface $log;
     private DiffFileParser  $fileParser;
