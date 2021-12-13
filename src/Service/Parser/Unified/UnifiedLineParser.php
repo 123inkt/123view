@@ -18,17 +18,12 @@ class UnifiedLineParser
 
         $code = substr($line, 1);
 
-        switch ($line[0]) {
-            case '-':
-                return new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, $code)]);
-            case '+':
-                return new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, $code)]);
-            case ' ':
-                return new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, $code)]);
-            case '\\':
-                return null;
-            default:
-                throw new LogicException(sprintf('Invalid unified patch character `%s` of line `%s`.', $line[0], $line));
-        }
+        return match ($line[0]) {
+            '-' => new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, $code)]),
+            '+' => new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, $code)]),
+            ' ' => new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, $code)]),
+            '\\' => null,
+            default => throw new LogicException(sprintf('Invalid unified patch character `%s` of line `%s`.', $line[0], $line)),
+        };
     }
 }

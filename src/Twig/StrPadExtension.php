@@ -23,24 +23,15 @@ class StrPadExtension extends AbstractExtension
      * Twig wrapper for str_pad to Pad a string to a fixed length.
      * example usage in template:
      * {{ page.title|strpad(50, 'left') }}
-     *
-     * @param int|string|null $input
      */
-    public function strpad($input, int $padLength, string $padType = 'left'): string
+    public function strpad(int|string|null $input, int $padLength, string $padType = 'left'): string
     {
-        switch ($padType) {
-            case 'left':
-                $strPadType = STR_PAD_LEFT;
-                break;
-            case 'right':
-                $strPadType = STR_PAD_RIGHT;
-                break;
-            case 'both':
-                $strPadType = STR_PAD_BOTH;
-                break;
-            default:
-                throw new InvalidArgumentException(sprintf('%s isn\'t a valid pad type', $padType));
-        }
+        $strPadType = match ($padType) {
+            'left' => STR_PAD_LEFT,
+            'right' => STR_PAD_RIGHT,
+            'both' => STR_PAD_BOTH,
+            default => throw new InvalidArgumentException(sprintf('%s isn\'t a valid pad type', $padType)),
+        };
 
         $value = str_pad((string)$input, $padLength, ' ', $strPadType);
 

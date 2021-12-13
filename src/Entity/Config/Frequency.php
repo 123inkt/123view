@@ -37,28 +37,15 @@ class Frequency
      */
     public static function getPeriod(DateTimeImmutable $currentTime, string $frequency): array
     {
-        switch ($frequency) {
-            case self::ONCE_PER_HOUR:
-                $interval = new DateInterval("PT1H");
-                break;
-            case self::ONCE_PER_TWO_HOURS:
-                $interval = new DateInterval("PT2H");
-                break;
-            case self::ONCE_PER_THREE_HOURS:
-                $interval = new DateInterval("PT3H");
-                break;
-            case self::ONCE_PER_FOUR_HOURS:
-                $interval = new DateInterval("PT4H");
-                break;
-            case self::ONCE_PER_DAY:
-                $interval = new DateInterval("P1D");
-                break;
-            case self::ONCE_PER_WEEK:
-                $interval = new DateInterval("P7D");
-                break;
-            default:
-                throw new InvalidArgumentException('Invalid frequency: ' . $frequency);
-        }
+        $interval = match ($frequency) {
+            self::ONCE_PER_HOUR => new DateInterval("PT1H"),
+            self::ONCE_PER_TWO_HOURS => new DateInterval("PT2H"),
+            self::ONCE_PER_THREE_HOURS => new DateInterval("PT3H"),
+            self::ONCE_PER_FOUR_HOURS => new DateInterval("PT4H"),
+            self::ONCE_PER_DAY => new DateInterval("P1D"),
+            self::ONCE_PER_WEEK => new DateInterval("P7D"),
+            default => throw new InvalidArgumentException('Invalid frequency: ' . $frequency),
+        };
 
         return [DateTime::createFromImmutable($currentTime)->sub($interval), $currentTime];
     }
