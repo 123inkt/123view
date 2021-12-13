@@ -9,7 +9,7 @@
         "sort-packages": true,
         "process-timeout": 0,
         "platform": {
-            "php": "8.0.8"
+            "php": "7.4.20"
         },
         "allow-plugins": {
             "phpstan/extension-installer": true,
@@ -32,7 +32,7 @@
         }
     },
     "require": {
-        "php": ">=7.4.10",
+        "php": ">=7.4.20",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
