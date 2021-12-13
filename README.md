@@ -28,7 +28,7 @@ A symfony application to allow receiving commit notification for all commits in 
 ## Requirements
 
 - recent version of `git`
-- php version > 7.4
+- php version >= 8.0
 
 ## Quick start
 
