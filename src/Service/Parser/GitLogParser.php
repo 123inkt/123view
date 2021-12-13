@@ -49,6 +49,7 @@ class GitLogParser
             $parts = explode(FormatPatternFactory::PARTS_DELIMITER, $commit);
 
             // combine keys with the values. (never false, as warnings are converted to exceptions via symfony)
+            /** @var array $data */
             $data = array_combine($pattern, $parts);
 
             // parse porcelain patch log
