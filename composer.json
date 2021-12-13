@@ -8,9 +8,6 @@
     "config": {
         "sort-packages": true,
         "process-timeout": 0,
-        "platform": {
-            "php": "7.4.20"
-        },
         "allow-plugins": {
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -32,7 +29,7 @@
         }
     },
     "require": {
-        "php": ">=7.4.20",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
