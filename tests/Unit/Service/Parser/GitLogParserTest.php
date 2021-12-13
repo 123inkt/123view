@@ -23,7 +23,7 @@ class GitLogParserTest extends AbstractTest
     /** @var DiffParser|MockObject */
     private DiffParser $diffParser;
     /** @var CommitHydrator|MockObject */
-    private $hydrator;
+    private CommitHydrator $hydrator;
     /** @var FormatPatternFactory|MockObject */
     private FormatPatternFactory $patternFactory;
 
