@@ -63,11 +63,11 @@ class DiffFileParser
     private function readFileInfo(DiffFile $fileDiff, LineReader $lines): DiffFile
     {
         for ($line = $lines->current(); $line !== null; $line = $lines->next()) {
-            if (strpos($line, 'new file mode') === 0) {
+            if (str_starts_with($line, 'new file mode')) {
                 $fileDiff->filePathBefore = null;
             }
 
-            if (strpos($line, 'deleted file mode') === 0) {
+            if (str_starts_with($line, 'deleted file mode')) {
                 $fileDiff->filePathAfter = null;
             }
         }

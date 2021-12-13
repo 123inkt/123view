@@ -7,13 +7,10 @@ class HighlighterFactory
 {
     public function getHighlighter(string $language): ?HighlighterInterface
     {
-        switch ($language) {
-            case PHPHighlighter::EXTENSION:
-                return new PHPHighlighter();
-            case TwigHighlighter::EXTENSION:
-                return new TwigHighlighter();
-            default:
-                return null;
-        }
+        return match ($language) {
+            PHPHighlighter::EXTENSION => new PHPHighlighter(),
+            TwigHighlighter::EXTENSION => new TwigHighlighter(),
+            default => null,
+        };
     }
 }
