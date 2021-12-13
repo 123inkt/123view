@@ -9,7 +9,13 @@
         "sort-packages": true,
         "process-timeout": 0,
         "platform": {
-            "php": "7.4.10"
+            "php": "7.4.20"
+        },
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "autoload": {
@@ -26,27 +32,27 @@
         }
     },
     "require": {
-        "php": ">=7.4.10",
+        "php": ">=7.4.20",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
         "czproject/git-php": "^4.0",
         "doctrine/annotations": "^1.13",
-        "symfony/config": "^5.3",
-        "symfony/console": "^5.3",
-        "symfony/dotenv": "^5.3",
-        "symfony/filesystem": "^5.3",
+        "symfony/config": "^5.4",
+        "symfony/console": "^5.4",
+        "symfony/dotenv": "^5.4",
+        "symfony/filesystem": "^5.4",
         "symfony/flex": "^v1.17.0",
-        "symfony/framework-bundle": "^5.3",
-        "symfony/http-client": "^5.3",
-        "symfony/mailer": "^5.3",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/http-client": "^5.4",
+        "symfony/mailer": "^5.4",
         "symfony/monolog-bundle": "^3.7",
-        "symfony/process": "^5.3",
-        "symfony/property-access": "^5.3",
-        "symfony/runtime": "^5.3",
-        "symfony/serializer": "^5.3",
-        "symfony/twig-bundle": "^5.3",
-        "symfony/yaml": "^5.3",
+        "symfony/process": "^5.4",
+        "symfony/property-access": "^5.4",
+        "symfony/runtime": "^5.4",
+        "symfony/serializer": "^5.4",
+        "symfony/twig-bundle": "^5.4",
+        "symfony/yaml": "^5.4",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "twig/twig": "^2.12|^3.0"
     },
@@ -65,7 +71,7 @@
         "roave/security-advisories": "dev-latest",
         "slevomat/coding-standard": "^7.0",
         "squizlabs/php_codesniffer": "^3.6",
-        "symfony/phpunit-bridge": "^5.3",
+        "symfony/phpunit-bridge": "^5.4",
         "symfony/polyfill-php80": "^1.23",
         "yep/reflection": "^2.1"
     },
@@ -107,7 +113,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.3.*"
+            "require": "5.4.*"
         }
     }
 }

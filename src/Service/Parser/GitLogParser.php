@@ -49,7 +49,8 @@ class GitLogParser
             $parts = explode(FormatPatternFactory::PARTS_DELIMITER, $commit);
 
             // combine keys with the values. (never false, as warnings are converted to exceptions via symfony)
-            $data = (array)array_combine($pattern, $parts);
+            /** @var array<string, string> $data */
+            $data = array_combine($pattern, $parts);
 
             // parse porcelain patch log
             $diffFiles = $this->diffParser->parse($data[FormatPattern::PATCH]);
