@@ -51,6 +51,7 @@ class MailCommand extends Command
         try {
             $config = $this->configLoader->load($frequency, $input);
         } catch (ConfigException $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return self::FAILURE;
