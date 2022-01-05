@@ -24,7 +24,7 @@ class ConfigValidator
         try {
             XmlUtils::parse($xml, $this->configSchema);
         } catch (Throwable $e) {
-            throw new ConfigException('Error occurred while validating the config xml.', $e->getCode(), $e);
+            throw new ConfigException('Error occurred while validating the config xml: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 }
