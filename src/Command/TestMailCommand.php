@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command;
 
+use DR\GitCommitNotification\Utility\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,7 +36,7 @@ class TestMailCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $address = $input->getArgument('address');
+        $address = Strings::string($input->getArgument('address'));
 
         $email = (new Email())
             ->addTo(new Address($address))

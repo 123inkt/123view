@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Utility;
 
 use DR\GitCommitNotification\Tests\AbstractTest;
 use DR\GitCommitNotification\Utility\Strings;
+use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Utility\Strings
@@ -73,5 +74,23 @@ class StringsTest extends AbstractTest
         static::assertSame("foo", Strings::replaceSuffix("foobar", "bar"));
         static::assertSame("foobar", Strings::replaceSuffix("foobar", "foo"));
         static::assertSame("foobar", Strings::replaceSuffix("foobar", ""));
+    }
+
+    /**
+     * @covers ::string
+     */
+    public function testString(): void
+    {
+        static::assertSame('foobar', Strings::string('foobar'));
+    }
+
+    /**
+     * @covers ::string
+     */
+    public function testStringNonStringValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expecting value to be `string`, received');
+        static::assertSame('foobar', Strings::string(123));
     }
 }

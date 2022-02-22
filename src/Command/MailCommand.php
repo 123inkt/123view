@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Exception\ConfigException;
 use DR\GitCommitNotification\Service\Config\ConfigLoader;
 use DR\GitCommitNotification\Service\RuleProcessor;
+use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -43,7 +44,7 @@ class MailCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $frequency = $input->getOption('frequency');
+        $frequency = Strings::string($input->getOption('frequency'));
         if (Frequency::isValid($frequency) === false) {
             throw new InvalidArgumentException('Invalid or missing `frequency` argument: ' . $frequency);
         }

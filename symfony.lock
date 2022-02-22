@@ -98,6 +98,9 @@
     "phpstan/phpstan-strict-rules": {
         "version": "0.12.11"
     },
+    "phpstan/phpstan-symfony": {
+        "version": "1.1.5"
+    },
     "phpunit/php-code-coverage": {
         "version": "9.2.6"
     },
@@ -353,17 +356,14 @@
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.23.0"
     },
-    "symfony/polyfill-mbstring": {
-        "version": "v1.23.1"
-    },
-    "symfony/polyfill-php73": {
-        "version": "v1.23.0"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.23.1"
     },
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
+    },
+    "symfony/process": {
+        "version": "v6.0.3"
     },
     "symfony/property-access": {
         "version": "v5.3.7"
