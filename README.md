@@ -1,5 +1,5 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF)](https://php.net/)
-[![Symfony Version](https://img.shields.io/badge/symfony-5.4-4BC51D)](https://symfony.com/releases)
+[![Symfony Version](https://img.shields.io/badge/symfony-6.0-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-4BC51D)](https://php.net/)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
