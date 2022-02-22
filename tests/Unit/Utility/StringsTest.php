@@ -91,6 +91,6 @@ class StringsTest extends AbstractTest
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expecting value to be `string`, received');
-        static::assertSame('foobar', Strings::string('foobar'));
+        static::assertSame('foobar', Strings::string(123));
     }
 }
