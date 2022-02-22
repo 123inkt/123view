@@ -37,7 +37,7 @@ class UnifiedBlockParserTest extends AbstractTest
         $reader = new LineReader(["+added"]);
         $block = $this->parser->parse(10, 12, $reader);
         static::assertCount(1, $block->lines);
-        static::assertDiffChange(DiffChange::ADDED, 'added', $block->lines[0]->changes->first());
+        self::assertDiffChange(DiffChange::ADDED, 'added', $block->lines[0]->changes->first());
     }
 
     /**
@@ -48,7 +48,7 @@ class UnifiedBlockParserTest extends AbstractTest
         $reader = new LineReader(["-removed"]);
         $block = $this->parser->parse(10, 12, $reader);
         static::assertCount(1, $block->lines);
-        static::assertDiffChange(DiffChange::REMOVED, 'removed', $block->lines[0]->changes->first());
+        self::assertDiffChange(DiffChange::REMOVED, 'removed', $block->lines[0]->changes->first());
     }
 
     /**
@@ -59,7 +59,7 @@ class UnifiedBlockParserTest extends AbstractTest
         $reader = new LineReader([" unchanged"]);
         $block = $this->parser->parse(10, 12, $reader);
         static::assertCount(1, $block->lines);
-        static::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[0]->changes->first());
+        self::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[0]->changes->first());
     }
 
     /**
@@ -100,16 +100,16 @@ class UnifiedBlockParserTest extends AbstractTest
         static::assertCount(4, $block->lines);
 
         // assert change types
-        static::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[0]->changes->first());
-        static::assertDiffChange(DiffChange::REMOVED, 'removed', $block->lines[1]->changes->first());
-        static::assertDiffChange(DiffChange::ADDED, 'added', $block->lines[2]->changes->first());
-        static::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[3]->changes->first());
+        self::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[0]->changes->first());
+        self::assertDiffChange(DiffChange::REMOVED, 'removed', $block->lines[1]->changes->first());
+        self::assertDiffChange(DiffChange::ADDED, 'added', $block->lines[2]->changes->first());
+        self::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[3]->changes->first());
 
         // assert line numbers
-        static::assertLineNumber([10, 12], $block->lines[0]);
-        static::assertLineNumber([11, null], $block->lines[1]);
-        static::assertLineNumber([null, 13], $block->lines[2]);
-        static::assertLineNumber([12, 14], $block->lines[3]);
+        self::assertLineNumber([10, 12], $block->lines[0]);
+        self::assertLineNumber([11, null], $block->lines[1]);
+        self::assertLineNumber([null, 13], $block->lines[2]);
+        self::assertLineNumber([12, 14], $block->lines[3]);
     }
 
     /**

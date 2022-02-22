@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\Config;
 
 use DR\GitCommitNotification\Exception\ConfigException;
+use DR\GitCommitNotification\Utility\Strings;
 use SplFileInfo;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,7 +25,7 @@ class ConfigPathResolver
     {
         // resolve config from cli arguments
         if ($input->getOption('config') !== null) {
-            $configPath = str_replace("\\", "/", $input->getOption('config'));
+            $configPath = str_replace("\\", "/", Strings::string($input->getOption('config')));
 
             if ($this->filesystem->exists($configPath) === false) {
                 throw new ConfigException(sprintf('Config %s doesn\'t exist.', $configPath));
