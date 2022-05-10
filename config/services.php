@@ -37,6 +37,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$upsourceApiUrl', '%env(UPSOURCE_API_URL)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%');
 
+    // Register controllers
+    $services->load('DR\GitCommitNotification\Controller\\', '../src/Controller/*Controller.php')->tag('controller.service_arguments');
+
     // auto-wire commands, services and twig-extensions
     $services->load('DR\GitCommitNotification\Command\\', __DIR__ . '/../src/Command');
     $services->load('DR\GitCommitNotification\Service\\', __DIR__ . '/../src/Service')
