@@ -23,7 +23,7 @@ class Repository
     private string $url;
 
     #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, orphanRemoval: true)]
-    private ArrayCollection $repositoryProperties;
+    private Collection $repositoryProperties;
 
     public function __construct()
     {

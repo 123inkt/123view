@@ -1,27 +1,28 @@
 <?php
+declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository;
 
-use DR\GitCommitNotification\Entity\Git;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Repository;
 
 /**
- * @extends ServiceEntityRepository<Git>
+ * @extends ServiceEntityRepository<Repository>
  *
- * @method Git|null find($id, $lockMode = null, $lockVersion = null)
- * @method Git|null findOneBy(array $criteria, array $orderBy = null)
- * @method Git[]    findAll()
- * @method Git[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Repository|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Repository|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Repository[]    findAll()
+ * @method Repository[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class RepositoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Git::class);
+        parent::__construct($registry, Repository::class);
     }
 
-    public function add(Git $entity, bool $flush = false): void
+    public function add(Repository $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +31,7 @@ class RepositoryRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Git $entity, bool $flush = false): void
+    public function remove(Repository $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
