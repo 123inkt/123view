@@ -12,13 +12,13 @@ class Recipient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $name;
+    private ?string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $email;
+    private ?string $email;
 
     public function getId(): ?int
     {

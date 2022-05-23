@@ -12,17 +12,17 @@ class RepositoryProperty
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'repositoryProperties')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $name;
+    private ?string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $value;
+    private ?string $value;
 
     public function getId(): ?int
     {

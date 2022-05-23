@@ -14,16 +14,16 @@ class Repository
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $name;
+    private ?string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $url;
+    private ?string $url;
 
     #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, orphanRemoval: true)]
-    private Collection $repositoryProperties;
+    private ?Collection $repositoryProperties;
 
     public function __construct()
     {
