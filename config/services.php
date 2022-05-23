@@ -46,6 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude('../src/Service/Parser/{DiffParser.php,DiffFileParser.php}');
     $services->load('DR\GitCommitNotification\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
+    $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
 
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
