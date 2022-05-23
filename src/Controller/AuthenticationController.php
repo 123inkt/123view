@@ -32,7 +32,6 @@ class AuthenticationController extends AbstractController
 
             $property = (new RepositoryProperty())->setName("gitlab-project-id")->setValue("1");
             $repository->addRepositoryProperty($property);
-            $em->persist($property);
             $em->persist($repository);
         }
 

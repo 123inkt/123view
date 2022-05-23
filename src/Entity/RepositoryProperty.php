@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
-use DR\GitCommitNotification\Repository\RepositoryPropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Repository\RepositoryPropertyRepository;
 
 #[ORM\Entity(repositoryClass: RepositoryPropertyRepository::class)]
 class RepositoryProperty
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'repositoryProperties')]
+    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist', 'remove'], inversedBy: 'repositoryProperties')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository;
 
