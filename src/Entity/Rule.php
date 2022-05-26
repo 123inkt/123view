@@ -48,6 +48,9 @@ class Rule
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: ExternalLink::class, orphanRemoval: true)]
     private Collection $externalLinks;
 
+    #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
+    private $ruleOptions;
+
     public function __construct()
     {
         $this->repositories  = new ArrayCollection();
@@ -231,6 +234,23 @@ class Rule
                 $externalLink->setRule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRuleOptions(): ?RuleOptions
+    {
+        return $this->ruleOptions;
+    }
+
+    public function setRuleOptions(RuleOptions $ruleOptions): self
+    {
+        // set the owning side of the relation if necessary
+        if ($ruleOptions->getRule() !== $this) {
+            $ruleOptions->setRule($this);
+        }
+
+        $this->ruleOptions = $ruleOptions;
 
         return $this;
     }
