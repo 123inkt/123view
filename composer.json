@@ -86,7 +86,6 @@
         "symfony/stopwatch": "^6.0",
         "symfony/var-dumper": "^6.0",
         "symfony/web-profiler-bundle": "^6.0",
-        "symplify/config-transformer": "^10.2",
         "yep/reflection": "^2.1"
     },
     "replace": {
