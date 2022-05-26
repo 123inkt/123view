@@ -44,11 +44,15 @@ class Rule
     #[ORM\Column(type: 'string', length: 50)]
     private $frequency;
 
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: ExternalLink::class, orphanRemoval: true)]
+    private $externalLinks;
+
     public function __construct()
     {
         $this->repositories = new ArrayCollection();
         $this->recipients   = new ArrayCollection();
         $this->filters      = new ArrayCollection();
+        $this->externalLinks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +200,36 @@ class Rule
     public function setFrequency(string $frequency): self
     {
         $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExternalLink>
+     */
+    public function getExternalLinks(): Collection
+    {
+        return $this->externalLinks;
+    }
+
+    public function addExternalLink(ExternalLink $externalLink): self
+    {
+        if (!$this->externalLinks->contains($externalLink)) {
+            $this->externalLinks[] = $externalLink;
+            $externalLink->setRule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExternalLink(ExternalLink $externalLink): self
+    {
+        if ($this->externalLinks->removeElement($externalLink)) {
+            // set the owning side to null (unless already changed)
+            if ($externalLink->getRule() === $this) {
+                $externalLink->setRule(null);
+            }
+        }
 
         return $this;
     }
