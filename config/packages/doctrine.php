@@ -3,14 +3,24 @@
 declare(strict_types=1);
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
-return static function (DoctrineConfig $doctrineConfig): void {
-    $doctrineConfig->dbal()->defaultConnection('default');
-    $dbal = $doctrineConfig->dbal()->connection('default');
-    $dbal->url('%env(resolve:DATABASE_URL)%');
-    $dbal->mappingType(DiffAlgorithmType::TYPE, DiffAlgorithmType::class);
-    $dbal->mappingType('enum', 'string');
+return static function (ContainerConfigurator $containerConfigurator, DoctrineConfig $doctrineConfig): void {
+    $containerConfigurator->extension(
+        'doctrine',
+        [
+            'dbal' => [
+                'url' => '%env(resolve:DATABASE_URL)%',
+                'mapping_types' => [
+                    'enum' => 'string'
+                ],
+                'types' => [
+                    DiffAlgorithmType::TYPE => DiffAlgorithmType::class
+                ]
+            ]
+        ]
+    );
 
     $doctrineConfig->orm()->autoGenerateProxyClasses(true);
     $doctrineConfig->orm()->defaultEntityManager('default');
