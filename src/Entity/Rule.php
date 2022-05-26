@@ -18,7 +18,7 @@ class Rule
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'rules')]
     #[ORM\JoinColumn(nullable: false)]
-    private User $user;
+    private ?User $user;
 
     #[ORM\Column(type: 'boolean')]
     private bool $active;

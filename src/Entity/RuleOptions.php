@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
@@ -11,32 +12,32 @@ class RuleOptions
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\OneToOne(inversedBy: 'ruleOptions', targetEntity: Rule::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private $rule;
+    private ?Rule $rule;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $diffAlgorithm;
+    private string $diffAlgorithm = 'myers';
 
     #[ORM\Column(type: 'boolean')]
-    private $ignoreSpaceAtEol;
+    private bool $ignoreSpaceAtEol = true;
 
     #[ORM\Column(type: 'boolean')]
-    private $ignoreSpaceChange;
+    private bool $ignoreSpaceChange = false;
 
     #[ORM\Column(type: 'boolean')]
-    private $ignoreAllSpace;
+    private bool $ignoreAllSpace = false;
 
     #[ORM\Column(type: 'boolean')]
-    private $ignoreBlankLines;
+    private bool $ignoreBlankLines = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $subject;
+    private ?string $subject;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $theme;
+    private string $theme = 'upsource';
 
     public function getId(): ?int
     {
