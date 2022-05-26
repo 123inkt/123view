@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 abstract class AbstractEnumType extends Type
 {
-    protected const TYPE   = '';
+    public const TYPE   = '';
     /** @var string[] */
     protected const VALUES = [];
 

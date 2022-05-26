@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Config\DoctrineConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension(
-        'doctrine',
-        ['dbal' => ['dbname_suffix' => '%env(default::TEST_TOKEN)%']]
-    );
+return static function (DoctrineConfig $doctrineConfig): void {
+    $dbal = $doctrineConfig->dbal()->connection('default');
+    $dbal->dbnameSuffix('%env(default::TEST_TOKEN)%');
 };
