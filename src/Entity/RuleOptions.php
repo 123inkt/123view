@@ -22,16 +22,16 @@ class RuleOptions
     #[ORM\Column(type: 'enum_diff_algorithm')]
     private string $diffAlgorithm = DiffAlgorithmType::MYERS;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private bool $ignoreSpaceAtEol = true;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $ignoreSpaceChange = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $ignoreAllSpace = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $ignoreBlankLines = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
