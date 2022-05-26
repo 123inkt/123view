@@ -24,34 +24,35 @@ class Rule
     private bool $active;
 
     #[ORM\Column(type: 'string', length: 50)]
+    private $frequency;
+
+    #[ORM\Column(type: 'string', length: 50)]
     private ?string $diffAlgorithm;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    /** @phpstan-var Collection<int, Repository>  */
+    /** @phpstan-var Collection<int, Repository> */
     #[ORM\ManyToMany(targetEntity: Repository::class)]
     private Collection $repositories;
 
-    /** @phpstan-var Collection<int, Recipient>  */
+    /** @phpstan-var Collection<int, Recipient> */
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, orphanRemoval: true)]
     private Collection $recipients;
 
-    /** @phpstan-var Collection<int, Filter>  */
+    /** @phpstan-var Collection<int, Filter> */
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, orphanRemoval: true)]
     private Collection $filters;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private $frequency;
-
+    /** @phpstan-var Collection<int, ExternalLink> */
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: ExternalLink::class, orphanRemoval: true)]
-    private $externalLinks;
+    private Collection $externalLinks;
 
     public function __construct()
     {
-        $this->repositories = new ArrayCollection();
-        $this->recipients   = new ArrayCollection();
-        $this->filters      = new ArrayCollection();
+        $this->repositories  = new ArrayCollection();
+        $this->recipients    = new ArrayCollection();
+        $this->filters       = new ArrayCollection();
         $this->externalLinks = new ArrayCollection();
     }
 

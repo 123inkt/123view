@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
@@ -11,17 +12,17 @@ class ExternalLink
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $pattern;
+    private ?string $pattern;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $url;
+    private ?string $url;
 
     #[ORM\ManyToOne(targetEntity: Rule::class, inversedBy: 'externalLinks')]
     #[ORM\JoinColumn(nullable: false)]
-    private $rule;
+    private ?Rule $rule;
 
     public function getId(): ?int
     {
