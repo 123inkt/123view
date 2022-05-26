@@ -23,12 +23,6 @@ class Rule
     #[ORM\Column(type: 'boolean')]
     private bool $active;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private $frequency;
-
-    #[ORM\Column(type: 'string', length: 50)]
-    private ?string $diffAlgorithm;
-
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
@@ -49,7 +43,7 @@ class Rule
     private Collection $externalLinks;
 
     #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
-    private $ruleOptions;
+    private ?RuleOptions $ruleOptions;
 
     public function __construct()
     {
@@ -72,6 +66,18 @@ class Rule
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
@@ -142,30 +148,6 @@ class Rule
         return $this;
     }
 
-    public function getDiffAlgorithm(): ?string
-    {
-        return $this->diffAlgorithm;
-    }
-
-    public function setDiffAlgorithm(string $diffAlgorithm): self
-    {
-        $this->diffAlgorithm = $diffAlgorithm;
-
-        return $this;
-    }
-
-    public function isActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Filter>
      */
@@ -192,18 +174,6 @@ class Rule
                 $filter->setRule(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getFrequency(): ?string
-    {
-        return $this->frequency;
-    }
-
-    public function setFrequency(string $frequency): self
-    {
-        $this->frequency = $frequency;
 
         return $this;
     }
