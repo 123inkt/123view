@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
-use DR\GitCommitNotification\Repository\RecipientRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use DR\GitCommitNotification\Repository\RecipientRepository;
 
 #[ORM\Entity(repositoryClass: RecipientRepository::class)]
-#[UniqueEntity(fields: ['rule', 'email'], message: "Email already exists")]
+#[ORM\UniqueConstraint(name: 'rule_email', columns: ['rule_id', 'email'])]
 class Recipient
 {
     #[ORM\Id]
