@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f041354f9c5756f2361f39ea2560bc5f",
+    "content-hash": "3efc5d854f28e3f0a97072d93093d290",
     "packages": [
         {
             "name": "czproject/git-php",
@@ -10258,6 +10258,47 @@
                 }
             ],
             "time": "2022-04-22T08:18:02+00:00"
+        },
+        {
+            "name": "symplify/config-transformer",
+            "version": "10.2.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symplify/config-transformer.git",
+                "reference": "0b78ff71ca428e8cc187b3891aa3503bebb2a5bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symplify/config-transformer/zipball/0b78ff71ca428e8cc187b3891aa3503bebb2a5bc",
+                "reference": "0b78ff71ca428e8cc187b3891aa3503bebb2a5bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "bin": [
+                "bin/config-transformer"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Prefixed version of Symfony YAML/XML to PHP/YAML config converter",
+            "support": {
+                "source": "https://github.com/symplify/config-transformer/tree/10.2.7"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/rectorphp",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-21T11:11:41+00:00"
         },
         {
             "name": "theseer/tokenizer",
