@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
+use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Repository\RuleOptionsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,8 +19,8 @@ class RuleOptions
     #[ORM\JoinColumn(nullable: false)]
     private ?Rule $rule;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $diffAlgorithm = 'myers';
+    #[ORM\Column(type: 'enum_diff_algorithm')]
+    private string $diffAlgorithm = DiffAlgorithmType::MYERS;
 
     #[ORM\Column(type: 'boolean')]
     private bool $ignoreSpaceAtEol = true;
