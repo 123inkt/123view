@@ -41,6 +41,9 @@ class Rule
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, orphanRemoval: true)]
     private Collection $filters;
 
+    #[ORM\Column(type: 'string', length: 50)]
+    private $frequency;
+
     public function __construct()
     {
         $this->repositories = new ArrayCollection();
@@ -181,6 +184,18 @@ class Rule
                 $filter->setRule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFrequency(): ?string
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(string $frequency): self
+    {
+        $this->frequency = $frequency;
 
         return $this;
     }
