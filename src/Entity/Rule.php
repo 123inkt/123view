@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
@@ -19,25 +20,32 @@ class Rule
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
-
-    #[ORM\ManyToMany(targetEntity: Repository::class)]
-    private Collection $repositories;
-
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, orphanRemoval: true)]
-    private Collection $recipients;
+    #[ORM\Column(type: 'boolean')]
+    private bool $active;
 
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $diffAlgorithm;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $active;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name;
+
+    /** @phpstan-var Collection<int, Repository>  */
+    #[ORM\ManyToMany(targetEntity: Repository::class)]
+    private Collection $repositories;
+
+    /** @phpstan-var Collection<int, Recipient>  */
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, orphanRemoval: true)]
+    private Collection $recipients;
+
+    /** @phpstan-var Collection<int, Filter>  */
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, orphanRemoval: true)]
+    private Collection $filters;
 
     public function __construct()
     {
         $this->repositories = new ArrayCollection();
-        $this->recipients = new ArrayCollection();
+        $this->recipients   = new ArrayCollection();
+        $this->filters      = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +151,36 @@ class Rule
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Filter>
+     */
+    public function getFilters(): Collection
+    {
+        return $this->filters;
+    }
+
+    public function addFilter(Filter $filter): self
+    {
+        if (!$this->filters->contains($filter)) {
+            $this->filters[] = $filter;
+            $filter->setRule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFilter(Filter $filter): self
+    {
+        if ($this->filters->removeElement($filter)) {
+            // set the owning side to null (unless already changed)
+            if ($filter->getRule() === $this) {
+                $filter->setRule(null);
+            }
+        }
 
         return $this;
     }
