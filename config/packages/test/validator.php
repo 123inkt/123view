@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Config\Framework\ValidationConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('framework', ['validation' => ['not_compromised_password' => false]]);
+return static function (ValidationConfig $validationConfig): void {
+    $validationConfig->notCompromisedPassword()->enabled(false);
 };
