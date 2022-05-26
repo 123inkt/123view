@@ -22,8 +22,9 @@ class Repository
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url;
 
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, orphanRemoval: true)]
-    private ?Collection $repositoryProperties;
+    /** @phpstan-var Collection<int, RepositoryProperty> */
+    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $repositoryProperties;
 
     public function __construct()
     {
@@ -69,7 +70,10 @@ class Repository
 
     public function addRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        if (!$this->repositoryProperties->contains($repositoryProperty)) {
+        $exists = $this->repositoryProperties->exists(
+            static fn($key, RepositoryProperty $property) => $repositoryProperty->getName() === $property->getName()
+        );
+        if ($exists === false) {
             $this->repositoryProperties[] = $repositoryProperty;
             $repositoryProperty->setRepository($this);
         }

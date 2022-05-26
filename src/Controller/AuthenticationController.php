@@ -17,7 +17,7 @@ class AuthenticationController extends AbstractController
     #[Route('/', self::class)]
     public function __invoke(ManagerRegistry $doctrine): Response
     {
-        $em = $doctrine->getManager();
+        $em           = $doctrine->getManager();
         $recipient    = $doctrine->getRepository(Recipient::class)->find(1);
         $repositories = $doctrine->getRepository(Repository::class)->findAll();
 
