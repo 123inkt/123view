@@ -7,5 +7,6 @@ return [
     'Unable to validate the login attempt. Please retry'                   => 'Unable to validate the login attempt. Please retry',
     'The authorization token doesn\'t contain a username. Unable to login' => 'The authorization token doesn\'t contain a username. Unable to login',
     'Login in with Active Directory'                                       => 'Login in with Active Directory',
+    'Sign in'                                                              => 'Sign in',
     'Retry'                                                                => 'Retry',
 ];
