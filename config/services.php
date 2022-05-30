@@ -25,6 +25,7 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -56,6 +57,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(HighlighterFactory::class);
     $services->set(GitDiffCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
     $services->set(GitLogCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
+
+    // Register AzureAd provider, for SSO
+    $services->set(Azure::class)
+        ->arg(
+            '$options',
+            [
+                'tenant'                 => '%env(OAUTH_AZURE_AD_TENANT_ID)%',
+                'clientId'               => '%env(OAUTH_AZURE_AD_CLIENT_ID)%',
+                'clientSecret'           => '%env(OAUTH_AZURE_AD_CLIENT_SECRET)%',
+                // scopes: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#permission-types
+                'scopes'                 => ['openid', 'profile'],
+                'defaultEndPointVersion' => '2.0'
+            ]
+        );
 
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)

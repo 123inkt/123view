@@ -98,11 +98,26 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "firebase/php-jwt": {
+        "version": "v5.5.1"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
     },
+    "guzzlehttp/guzzle": {
+        "version": "7.4.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.5.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "2.2.1"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "league/oauth2-client": {
+        "version": "2.6.1"
     },
     "micheh/phpcs-gitlab": {
         "version": "1.1.0"
@@ -118,6 +133,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.5"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
     },
     "pdepend/pdepend": {
         "version": "2.10.0"
@@ -202,8 +220,20 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/http-client": {
+        "version": "1.0.1"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "roave/security-advisories": {
         "version": "dev-latest"
@@ -593,6 +623,9 @@
     },
     "symfony/yaml": {
         "version": "v5.3.6"
+    },
+    "thenetworg/oauth2-azure": {
+        "version": "v2.0.1"
     },
     "theseer/tokenizer": {
         "version": "1.2.1"
