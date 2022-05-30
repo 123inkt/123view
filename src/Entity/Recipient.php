@@ -15,13 +15,13 @@ class Recipient
     #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $email;
 
-    #[ORM\ManyToOne(targetEntity: Rule::class, inversedBy: 'recipients')]
+    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'recipients')]
     #[ORM\JoinColumn(nullable: false)]
     private $rule;
 
@@ -35,7 +35,7 @@ class Recipient
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 

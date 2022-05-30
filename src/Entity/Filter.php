@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
+use DR\GitCommitNotification\Doctrine\Type\FilterType;
 use DR\GitCommitNotification\Repository\FilterRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,20 +13,20 @@ class Filter
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Rule::class, inversedBy: 'filters')]
+    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'filters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rule $rule;
+    private ?Rule $rule = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private ?string $type;
+    #[ORM\Column(type: FilterType::TYPE)]
+    private string $type = FilterType::FILE;
 
     #[ORM\Column(type: 'boolean')]
     private bool $inclusion = false;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $pattern;
+    private ?string $pattern = null;
 
     public function getId(): ?int
     {

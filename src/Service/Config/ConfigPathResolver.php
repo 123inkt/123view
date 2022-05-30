@@ -24,7 +24,7 @@ class ConfigPathResolver
     public function resolve(InputInterface $input): SplFileInfo
     {
         // resolve config from cli arguments
-        if ($input->getOption('config') !== null) {
+        if ($input->hasOption('config') && $input->getOption('config') !== null) {
             $configPath = str_replace("\\", "/", Strings::string($input->getOption('config')));
 
             if ($this->filesystem->exists($configPath) === false) {

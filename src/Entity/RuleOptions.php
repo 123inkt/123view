@@ -15,16 +15,16 @@ class RuleOptions
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'ruleOptions', targetEntity: Rule::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rule $rule;
+    private ?Rule $rule = null;
 
-    #[ORM\Column(type: 'enum_frequency')]
+    #[ORM\Column(type: FrequencyType::TYPE)]
     private string $frequency = FrequencyType::ONCE_PER_HOUR;
 
-    #[ORM\Column(type: 'enum_diff_algorithm')]
+    #[ORM\Column(type: DiffAlgorithmType::TYPE)]
     private string $diffAlgorithm = DiffAlgorithmType::MYERS;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
@@ -40,9 +40,9 @@ class RuleOptions
     private bool $ignoreBlankLines = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $subject;
+    private ?string $subject = null;
 
-    #[ORM\Column(type: 'enum_mail_theme')]
+    #[ORM\Column(type: MailThemeType::TYPE)]
     private string $theme = MailThemeType::UPSOURCE;
 
     public function getId(): ?int

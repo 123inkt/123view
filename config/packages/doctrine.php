@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use DR\GitCommitNotification\Doctrine\Type\FilterType;
 use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -20,7 +21,8 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                 'types'         => [
                     FrequencyType::TYPE     => FrequencyType::class,
                     DiffAlgorithmType::TYPE => DiffAlgorithmType::class,
-                    MailThemeType::TYPE     => MailThemeType::class
+                    MailThemeType::TYPE     => MailThemeType::class,
+                    FilterType::TYPE        => FilterType::class
                 ]
             ]
         ]

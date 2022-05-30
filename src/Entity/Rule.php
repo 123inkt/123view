@@ -14,28 +14,28 @@ class Rule
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'rules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $active;
+    private bool $active = false;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    private ?string $name = null;
 
     /** @phpstan-var Collection<int, Repository> */
     #[ORM\ManyToMany(targetEntity: Repository::class)]
     private Collection $repositories;
 
     /** @phpstan-var Collection<int, Recipient> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $recipients;
 
     /** @phpstan-var Collection<int, Filter> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $filters;
 
     #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
