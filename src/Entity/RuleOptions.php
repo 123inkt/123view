@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity;
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
+use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use DR\GitCommitNotification\Repository\RuleOptionsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,6 +20,9 @@ class RuleOptions
     #[ORM\OneToOne(inversedBy: 'ruleOptions', targetEntity: Rule::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Rule $rule;
+
+    #[ORM\Column(type: 'enum_frequency')]
+    private string $frequency = FrequencyType::ONCE_PER_HOUR;
 
     #[ORM\Column(type: 'enum_diff_algorithm')]
     private string $diffAlgorithm = DiffAlgorithmType::MYERS;
@@ -37,8 +42,8 @@ class RuleOptions
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $subject;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $theme = 'upsource';
+    #[ORM\Column(type: 'enum_mail_theme')]
+    private string $theme = MailThemeType::UPSOURCE;
 
     public function getId(): ?int
     {
@@ -53,6 +58,18 @@ class RuleOptions
     public function setRule(Rule $rule): self
     {
         $this->rule = $rule;
+
+        return $this;
+    }
+
+    public function getFrequency(): ?string
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(string $frequency): self
+    {
+        $this->frequency = $frequency;
 
         return $this;
     }

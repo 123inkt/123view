@@ -15,14 +15,10 @@ class ExternalLink
     private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $pattern;
+    private string $pattern;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $url;
-
-    #[ORM\ManyToOne(targetEntity: Rule::class, inversedBy: 'externalLinks')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Rule $rule;
+    private string $url;
 
     public function getId(): ?int
     {
@@ -49,18 +45,6 @@ class ExternalLink
     public function setUrl(string $url): self
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function getRule(): ?Rule
-    {
-        return $this->rule;
-    }
-
-    public function setRule(?Rule $rule): self
-    {
-        $this->rule = $rule;
 
         return $this;
     }

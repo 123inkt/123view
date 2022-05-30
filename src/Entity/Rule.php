@@ -38,10 +38,6 @@ class Rule
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, orphanRemoval: true)]
     private Collection $filters;
 
-    /** @phpstan-var Collection<int, ExternalLink> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: ExternalLink::class, orphanRemoval: true)]
-    private Collection $externalLinks;
-
     #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
     private ?RuleOptions $ruleOptions;
 
@@ -172,36 +168,6 @@ class Rule
             // set the owning side to null (unless already changed)
             if ($filter->getRule() === $this) {
                 $filter->setRule(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ExternalLink>
-     */
-    public function getExternalLinks(): Collection
-    {
-        return $this->externalLinks;
-    }
-
-    public function addExternalLink(ExternalLink $externalLink): self
-    {
-        if (!$this->externalLinks->contains($externalLink)) {
-            $this->externalLinks[] = $externalLink;
-            $externalLink->setRule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExternalLink(ExternalLink $externalLink): self
-    {
-        if ($this->externalLinks->removeElement($externalLink)) {
-            // set the owning side to null (unless already changed)
-            if ($externalLink->getRule() === $this) {
-                $externalLink->setRule(null);
             }
         }
 

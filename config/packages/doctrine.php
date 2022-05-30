@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
+use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -11,12 +13,14 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
         'doctrine',
         [
             'dbal' => [
-                'url' => '%env(resolve:DATABASE_URL)%',
+                'url'           => '%env(resolve:DATABASE_URL)%',
                 'mapping_types' => [
                     'enum' => 'string'
                 ],
-                'types' => [
-                    DiffAlgorithmType::TYPE => DiffAlgorithmType::class
+                'types'         => [
+                    FrequencyType::TYPE     => FrequencyType::class,
+                    DiffAlgorithmType::TYPE => DiffAlgorithmType::class,
+                    MailThemeType::TYPE     => MailThemeType::class
                 ]
             ]
         ]
