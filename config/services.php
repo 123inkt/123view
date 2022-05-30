@@ -7,6 +7,7 @@ use CzProject\GitPhp\Runners\CliRunner;
 use Doctrine\Common\Annotations\AnnotationReader;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
+use DR\GitCommitNotification\Lib\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
@@ -39,7 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%');
 
     // Register controllers
-    $services->load('DR\GitCommitNotification\Controller\\', '../src/Controller/*Controller.php')->tag('controller.service_arguments');
+    $services->load('DR\GitCommitNotification\Controller\\', '../src/Controller/**/*Controller.php')->tag('controller.service_arguments');
 
     // auto-wire commands, services and twig-extensions
     $services->load('DR\GitCommitNotification\Command\\', __DIR__ . '/../src/Command');
@@ -49,6 +50,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
 
+    $services->set(LoginService::class);
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
     $services->set(DiffChangeBundler::class);
