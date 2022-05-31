@@ -1,0 +1,15 @@
+.header-nav-brand {
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 20px;
+    padding: 0;
+    text-align: center;
+    width: 30px;
+}
+
+.content-layout-center {
+    max-width: 1000px;
+    margin: 20px auto;
+}

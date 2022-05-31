@@ -1,0 +1,18 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+<h1>Rules</h1>
+
+<ul>
+    {% for rule in dashboardModel.rules %}
+    <li>
+        <a href="#">
+            {{ rule.active }} - {{ rule.name }} - {{ rule.ruleOptions.frequency }}
+        </a>
+    </li>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}
