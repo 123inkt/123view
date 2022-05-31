@@ -1,10 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Lib\AzureAd;
+namespace DR\GitCommitNotification\Security\AzureAd;
 
-use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Entity\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,8 +15,7 @@ class LoginService
     public function __construct(
         private LoggerInterface $logger,
         private Azure $azureProvider,
-        private TranslatorInterface $translator,
-        private ManagerRegistry $doctrine
+        private TranslatorInterface $translator
     ) {
     }
 

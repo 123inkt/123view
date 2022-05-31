@@ -1,14 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Security;
+namespace DR\GitCommitNotification\Security\AzureAd;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\App\DashboardController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Entity\User;
-use DR\GitCommitNotification\Lib\AzureAd\LoginFailure;
-use DR\GitCommitNotification\Lib\AzureAd\LoginService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

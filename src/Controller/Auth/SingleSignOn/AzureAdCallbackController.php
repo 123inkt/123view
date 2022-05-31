@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\Auth\SingleSignOn;
 
-use DR\GitCommitNotification\Lib\AzureAd\LoginFailure;
-use DR\GitCommitNotification\Lib\AzureAd\LoginService;
+use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
+use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Lib\AzureAd;
+namespace DR\GitCommitNotification\Security\AzureAd;
 
 class LoginFailure implements LoginResultInterface
 {
