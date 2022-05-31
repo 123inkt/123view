@@ -12,11 +12,8 @@ use Throwable;
 
 class LoginService
 {
-    public function __construct(
-        private LoggerInterface $logger,
-        private Azure $azureProvider,
-        private TranslatorInterface $translator
-    ) {
+    public function __construct(private LoggerInterface $logger, private Azure $azureProvider, private TranslatorInterface $translator)
+    {
     }
 
     public function handleLogin(Request $request): LoginSuccess|LoginFailure
