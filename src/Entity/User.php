@@ -7,9 +7,10 @@ use DR\GitCommitNotification\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,7 +23,7 @@ class User
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $email = null;
 
-    /** @phpstan-var Collection<int, Rule>  */
+    /** @phpstan-var Collection<int, Rule> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, orphanRemoval: true)]
     private Collection $rules;
 
@@ -88,5 +89,30 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->email;
+    }
+
+    /**
+     * @return string[]
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // no credentials, authentication via SSO only.
     }
 }

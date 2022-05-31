@@ -6,6 +6,12 @@
 
         <br><br>
 
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
         <a href="{{ azure_ad_url }}" class="btn btn-outline-primary">
             <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgLjA1aDM3Ljc5djM3Ljc5SDB6IiBmaWxsPSIjZjM1MzI1Ii8+PHBhdGggZD0iTTQyLjIxLjA1SDgwdjM3Ljc5SDQyLjIxeiIgZmlsbD0iIzgxYmMwNiIvPjxwYXRoIGQ9Ik0wIDQyLjA3aDM3Ljc5djM3Ljc5SDB6IiBmaWxsPSIjMDVhNmYwIi8+PHBhdGggZD0iTTQyLjIxIDQyLjA3SDgwdjM3Ljc5SDQyLjIxeiIgZmlsbD0iI2ZmYmEwOCIvPjwvc3ZnPg=="
                  width="12" height="12" alt="microsoft" style="margin-right: 10px; margin-bottom: 4px">

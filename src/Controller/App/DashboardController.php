@@ -7,10 +7,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\ViewModel\App\DashboardViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DashboardController
+class DashboardController extends AbstractController
 {
     #[Route('app/', name: self::class)]
     #[Template('app/dashboard.html.twig')]

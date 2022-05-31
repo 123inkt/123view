@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\Lib\AzureAd\LoginService;
+use DR\GitCommitNotification\Security\AzureAdAuthenticator;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
@@ -73,6 +74,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'defaultEndPointVersion' => '2.0'
             ]
         );
+    $services->set(AzureAdAuthenticator::class);
 
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)

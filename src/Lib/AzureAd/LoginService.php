@@ -63,16 +63,6 @@ class LoginService
             return new LoginFailure($this->translator->trans("The authorization token doesn't contain a username. Unable to login"));
         }
 
-        $userEmail = $claims['preferred_username'];
-
-        // fetch user for name (email)
-        $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $userEmail]);
-        if ($user === null) {
-            $user = (new User())->setEmail($userEmail)->setName('');
-            $this->doctrine->getManager()->persist($user);
-        }
-        $this->logger->info('User logged in via AzureAd: ' . $user->getName() . ' - ' . $user->getEmail());
-
-        return new LoginSuccess($user);
+        return new LoginSuccess($claims['name'], $claims['preferred_username']);
     }
 }

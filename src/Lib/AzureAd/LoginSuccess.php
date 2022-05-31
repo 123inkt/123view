@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Lib\AzureAd;
 
-use DR\GitCommitNotification\Entity\User;
-
 class LoginSuccess implements LoginResultInterface
 {
-    public function __construct(private User $user)
+    public function __construct(private string $name, private string $email)
     {
     }
 
@@ -16,8 +14,13 @@ class LoginSuccess implements LoginResultInterface
         return true;
     }
 
-    public function getUser(): User
+    public function getName(): string
     {
-        return $this->user;
+        return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 }
