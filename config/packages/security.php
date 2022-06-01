@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
+use DR\GitCommitNotification\Controller\Auth\LogoutController;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -25,6 +27,11 @@ return static function (ContainerConfigurator $containerConfigurator, SecurityCo
         ->lazy(true)
         ->provider('app_user_provider')
         ->customAuthenticators([AzureAdAuthenticator::class]);
+
+    $security->firewall('main')
+        ->logout()
+        ->path(LogoutController::class)
+        ->target(AuthenticationController::class);
 
     //$security->accessControl()->roles(null);
 };

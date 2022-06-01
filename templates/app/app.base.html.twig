@@ -3,7 +3,8 @@
 {% block page %}
 
     <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand mr-0 mr-md-2 header-nav-brand" href="/app" aria-label="Git commit notification" title="Git commit notification">
+        <a class="navbar-brand mr-0 mr-md-2 header-nav-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}"
+           aria-label="Git commit notification" title="Git commit notification">
             G
         </a>
 
@@ -13,6 +14,10 @@
             </li>
         </ul>
 
+        <a class="navbar-brand mr-0 mr-md-2 header-nav-logout" href="{{ path('DR\\GitCommitNotification\\Controller\\Auth\\LogoutController') }}"
+           aria-label="Logout" title="Logout">
+            Logout
+        </a>
     </header>
 
     <div class="content-layout-center">
