@@ -2,17 +2,15 @@
 
 {% block page_content %}
 
-<h1>Rules</h1>
+    <h1>Rules</h1>
 
-<ul>
-    {% for rule in dashboardModel.rules %}
-    <li>
-        <a href="#">
-            {{ rule.active }} - {{ rule.name }} - {{ rule.ruleOptions.frequency }}
-        </a>
-    </li>
+    <div class="list-group">
+        {% for rule in dashboardModel.rules %}
 
-    {% endfor %}
-</ul>
+            <a href="#" class="list-group-item list-group-item-action">
+                {{ rule.active }} - {{ rule.name }} - {{ rule.ruleOptions.frequency }}
+            </a>
+        {% endfor %}
+    </div>
 
 {% endblock %}
