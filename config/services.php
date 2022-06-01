@@ -5,6 +5,7 @@ declare(strict_types=1);
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use Doctrine\Common\Annotations\AnnotationReader;
+use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
@@ -50,6 +51,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->load('DR\GitCommitNotification\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
+
+    $services->set(User::class)->factory([service(\Symfony\Component\Security\Core\Security::class), 'getUser']);
 
     $services->set(LoginService::class);
     $services->set(DiffParser::class);

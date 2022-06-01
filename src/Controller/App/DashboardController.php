@@ -3,23 +3,25 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\ViewModel\App\DashboardViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DashboardController extends AbstractController
 {
     #[Route('app/', name: self::class)]
     #[Template('app/dashboard.html.twig')]
-    public function __invoke(ManagerRegistry $doctrine): array
+    public function __invoke(): array
     {
-        $user = $doctrine->getRepository(User::class)->findOneBy(['email' => 'fdekker@123inkt.nl']);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var User $user */
+        $user = $this->getUser();
         if ($user === null) {
-            throw new NotFoundHttpException();
+            throw new AccessDeniedException('Not authenticated');
         }
 
         $model = new DashboardViewModel();

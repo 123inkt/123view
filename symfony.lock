@@ -313,6 +313,9 @@
             "./phpcs.xml.dist"
         ]
     },
+    "symfony/asset": {
+        "version": "v6.0.7"
+    },
     "symfony/browser-kit": {
         "version": "v6.0.3"
     },

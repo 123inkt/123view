@@ -3,9 +3,10 @@
 declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
+return static function (ContainerConfigurator $containerConfigurator, FrameworkConfig $framework): void {
     $containerConfigurator->extension(
         'framework',
         [
@@ -51,10 +52,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'throw_exception_on_invalid_index'         => true,
                 'throw_exception_on_invalid_property_path' => true,
             ],
-            'router'               => ['enabled' => false, 'utf8' => true],
             'secret'               => '%env(APP_SECRET)%',
-            'translator'           => ['enabled' => false],
-            'validation'           => ['enabled' => false]
         ]
     );
+
+    $framework->session()->enabled(true);
 };
