@@ -8,7 +8,6 @@ use DR\GitCommitNotification\ViewModel\App\DashboardViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DashboardController extends AbstractController
 {
@@ -20,9 +19,6 @@ class DashboardController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        if ($user === null) {
-            throw new AccessDeniedException('Not authenticated');
-        }
 
         $model = new DashboardViewModel();
         $model->setRules(iterator_to_array($user->getRules()));
