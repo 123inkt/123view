@@ -7,17 +7,35 @@
            aria-label="Git commit notification" title="Git commit notification">
             G
         </a>
+        <a class="navbar-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}">it Commit Notification</a>
 
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
-            </li>
-        </ul>
 
-        <a class="navbar-brand mr-0 mr-md-2 header-nav-logout" href="{{ path('DR\\GitCommitNotification\\Controller\\Auth\\LogoutController') }}"
-           aria-label="Logout" title="Logout">
-            Logout
-        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-label="{{ 'Home'|trans }}" title="{{ 'Home'|trans }}"
+                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}"> <i class="bi-house"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-label="{{ 'Logout'|trans }}" title="{{ 'Logout'|trans }}"
+                       href="{{ path('DR\\GitCommitNotification\\Controller\\Auth\\LogoutController') }}"><i class="bi-box-arrow-right"></i></a>
+                </li>
+            </ul>
+        </div>
+
+        {#        <ul class="navbar-nav"> #}
+        {#            <li class="nav-item active"> #}
+        {#                <a class="nav-link" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}" #}
+        {#                   aria-label="{{ 'Home'|trans }}" title="{{ 'Home'|trans }}"> #}
+        {#                    <i class="bi-house"></i> #}
+        {#                </a> #}
+        {#                <a class="nav-link" href="{{ path('DR\\GitCommitNotification\\Controller\\Auth\\LogoutController') }}" #}
+        {#                   aria-label="{{ 'Logout'|trans }}" title="{{ 'Logout'|trans }}"> #}
+        {#                    <i class="bi-box-arrow-right"></i> #}
+        {#                </a> #}
+        {#            </li> #}
+        {#        </ul> #}
+
     </header>
 
     <div class="content-layout-center">

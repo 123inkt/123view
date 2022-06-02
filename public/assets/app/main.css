@@ -2,19 +2,9 @@
     border: 1px solid #ffffff;
     border-radius: 5px;
     height: 30px;
-    line-height: 30px;
+    line-height: 28px;
     margin-left: 20px;
-    padding: 0;
-    text-align: center;
-    width: 30px;
-}
-
-.header-nav-logout {
-    border: 1px solid #ffffff;
-    border-radius: 5px;
-    height: 30px;
-    line-height: 30px;
-    margin-left: 20px;
+    margin-right: 3px;
     padding: 0;
     text-align: center;
     width: 30px;

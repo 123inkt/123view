@@ -9,4 +9,7 @@ return [
     'Login in with Active Directory'                                       => 'Login in with Active Directory',
     'Sign in'                                                              => 'Sign in',
     'Retry'                                                                => 'Retry',
+    'Rules'                                                                => 'Rules',
+    'Home'                                                                 => 'Home',
+    'Logout'                                                               => 'Logout',
 ];
