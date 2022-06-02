@@ -36,7 +36,6 @@ class SaveRuleController extends AbstractController
 
         /** @var Rule $rule */
         $rule = $form->getData()['rule'];
-        $rule->setRuleOptions(new RuleOptions());
         $rule->setUser($user);
 
         $this->doctrine->getManager()->persist($rule);

@@ -19,6 +19,7 @@ class RuleType extends AbstractType
     {
         $builder->add('name', TextType::class, ['required' => true]);
         $builder->add('active', CheckboxType::class, ['required' => false]);
+        $builder->add('ruleOptions', RuleOptionsType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

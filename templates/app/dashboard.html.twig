@@ -4,6 +4,12 @@
 
     <h1 class="mt-2">{{ 'Rules'|trans }}</h1>
 
+    {% if dashboardModel.message %}
+        <div class="alert alert-success" role="alert">
+            {{ dashboardModel.message }}
+        </div>
+    {% endif %}
+
     <div class="list-group mb-3">
         {% for rule in dashboardModel.rules %}
 

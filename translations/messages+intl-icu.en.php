@@ -15,6 +15,12 @@ return [
     'New rule'                                                             => 'New rule',
     'Save'                                                                 => 'Save',
     'Rule successfully saved.'                                             => 'Rule successfully saved.',
-    'Active' => 'Active',
-    'Name' => 'Name'
+    'Active'                                                               => 'Active',
+    'Name'                                                                 => 'Name',
+    'Once per hour'                                                        => 'Once per hour',
+    'Once per two hours'                                                   => 'Once per two hours',
+    'Once per three hours'                                                 => 'Once per three hours',
+    'Once per four hours'                                                  => 'Once per four hours',
+    'Once per day'                                                         => 'Once per day',
+    'Once per week'                                                        => 'Once per week',
 ];
