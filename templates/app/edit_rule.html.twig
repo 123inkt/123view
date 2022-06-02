@@ -1,0 +1,9 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+    <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
+
+    {{ form(editRuleModel.form) }}
+
+{% endblock %}

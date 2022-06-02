@@ -7,7 +7,8 @@
     <div class="list-group mb-3">
         {% for rule in dashboardModel.rules %}
 
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="#"
+               class="list-group-item list-group-item-action">
                 {% if rule.active %}
                     <i class="bi-check-circle mr-1"></i>
                 {% else %}
@@ -18,7 +19,7 @@
         {% endfor %}
     </div>
 
-    <a href="#" class="btn btn-outline-primary">
+    <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\EditRuleController') }}" class="btn btn-outline-primary">
         <i class="bi-plus"></i>
         {{ 'New rule'|trans }}
     </a>

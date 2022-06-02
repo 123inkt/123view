@@ -313,9 +313,6 @@
             "./phpcs.xml.dist"
         ]
     },
-    "symfony/asset": {
-        "version": "v6.0.7"
-    },
     "symfony/browser-kit": {
         "version": "v6.0.3"
     },
@@ -397,6 +394,9 @@
             "./.env"
         ]
     },
+    "symfony/form": {
+        "version": "v6.0.9"
+    },
     "symfony/framework-bundle": {
         "version": "5.3",
         "recipe": {
@@ -470,6 +470,9 @@
             "./config/packages/test/monolog.yaml"
         ]
     },
+    "symfony/options-resolver": {
+        "version": "v6.0.3"
+    },
     "symfony/password-hasher": {
         "version": "v6.0.8"
     },
@@ -490,6 +493,9 @@
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.23.1"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.26.0"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.23.0"

@@ -44,6 +44,7 @@
         "symfony/dotenv": "^6.0",
         "symfony/filesystem": "^6.0",
         "symfony/flex": "^v1.17.0",
+        "symfony/form": "^6.0",
         "symfony/framework-bundle": "^6.0",
         "symfony/http-client": "^6.0",
         "symfony/mailer": "^6.0",
