@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Controller\App;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\RuleOptions;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Form\EditRuleFormType;
 use RuntimeException;
@@ -13,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SaveRuleController extends AbstractController
@@ -21,14 +21,19 @@ class SaveRuleController extends AbstractController
     {
     }
 
-    #[Route('/rules/rule', self::class, methods: 'POST')]
-    public function __invoke(Request $request): RedirectResponse
+    #[Route('/rules/rule/{id<\d+>?}', self::class, methods: 'POST')]
+    public function __invoke(Request $request, ?Rule $rule): RedirectResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /** @var User $user */
         $user = $this->getUser();
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($rule !== null && $rule->getUser() !== $user) {
+            throw new AccessDeniedException('Access denied');
+        }
 
-        $form = $this->createForm(EditRuleFormType::class);
+        $form = $this->createForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             throw new RuntimeException('Form validation failed. TODO');
