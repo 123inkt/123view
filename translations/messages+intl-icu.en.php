@@ -12,5 +12,6 @@ return [
     'Rules'                                                                => 'Rules',
     'Home'                                                                 => 'Home',
     'Logout'                                                               => 'Logout',
-    'New rule'                                                             => 'New rule'
+    'New rule'                                                             => 'New rule',
+    'Save'                                                                 => 'Save',
 ];

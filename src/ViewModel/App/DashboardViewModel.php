@@ -20,8 +20,6 @@ class DashboardViewModel
 
     /**
      * @param Rule[] $rules
-     *
-     * @return void
      */
     public function setRules(array $rules): void
     {

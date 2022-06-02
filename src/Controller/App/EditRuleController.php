@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use DR\GitCommitNotification\Form\RuleType;
+use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +16,7 @@ class EditRuleController extends AbstractController
     public function __invoke(): array
     {
         $model = new EditRuleViewModel();
-        $model->setForm($this->createForm(RuleType::class)->createView());
+        $model->setForm($this->createForm(EditRuleFormType::class)->createView());
 
         return ['editRuleModel' => $model];
     }

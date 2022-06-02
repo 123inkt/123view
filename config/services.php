@@ -46,6 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // auto-wire commands, services and twig-extensions
     $services->load('DR\GitCommitNotification\Command\\', __DIR__ . '/../src/Command');
+    $services->load('DR\GitCommitNotification\Form\\', __DIR__ . '/../src/Form');
     $services->load('DR\GitCommitNotification\Service\\', __DIR__ . '/../src/Service')
         ->exclude('../src/Service/Parser/{DiffParser.php,DiffFileParser.php}');
     $services->load('DR\GitCommitNotification\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
