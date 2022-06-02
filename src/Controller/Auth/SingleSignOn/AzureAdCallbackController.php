@@ -16,7 +16,7 @@ class AzureAdCallbackController
     {
     }
 
-    #[Route('/single-sign-on/azure-ad/callback', name: self::class)]
+    #[Route('/single-sign-on/azure-ad/callback', name: self::class, methods: 'GET')]
     public function __invoke(Request $request): RedirectResponse|JsonResponse
     {
         $result = $this->loginService->handleLogin($request);

@@ -14,4 +14,7 @@ return [
     'Logout'                                                               => 'Logout',
     'New rule'                                                             => 'New rule',
     'Save'                                                                 => 'Save',
+    'Rule successfully saved.'                                             => 'Rule successfully saved.',
+    'Active' => 'Active',
+    'Name' => 'Name'
 ];

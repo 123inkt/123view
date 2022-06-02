@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    #[Route('app/', name: self::class)]
+    #[Route('app/', name: self::class, methods: 'GET')]
     #[Template('app/dashboard.html.twig')]
     public function __invoke(): array
     {

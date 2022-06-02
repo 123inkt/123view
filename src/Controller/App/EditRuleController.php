@@ -11,10 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditRuleController extends AbstractController
 {
-    #[Route('/rules/rule', self::class)]
+    #[Route('/rules/rule', self::class, methods: 'GET')]
     #[Template('app/edit_rule.html.twig')]
     public function __invoke(): array
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $model = new EditRuleViewModel();
         $model->setForm($this->createForm(EditRuleFormType::class)->createView());
 

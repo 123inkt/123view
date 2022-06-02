@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LogoutController
 {
-    #[Route('logout', self::class)]
+    #[Route('logout', self::class, methods: 'GET')]
     public function __invoke(): void
     {
         // never called, handled by security.php

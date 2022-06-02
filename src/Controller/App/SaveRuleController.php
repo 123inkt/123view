@@ -3,14 +3,47 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
+use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleOptions;
+use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Form\EditRuleFormType;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SaveRuleController extends AbstractController
 {
-    #[Route('/rules/rule', self::class, methods: 'POST')]
-    public function __invoke(): array
+    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator)
     {
-        throw new \RuntimeException('Woohoo');
+    }
+
+    #[Route('/rules/rule', self::class, methods: 'POST')]
+    public function __invoke(Request $request): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $form = $this->createForm(EditRuleFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() === false || $form->isValid() === false) {
+            throw new RuntimeException('Form validation failed. TODO');
+        }
+
+        /** @var Rule $rule */
+        $rule = $form->getData()['rule'];
+        $rule->setRuleOptions(new RuleOptions());
+        $rule->setUser($user);
+
+        $this->doctrine->getManager()->persist($rule);
+        $this->doctrine->getManager()->flush();
+
+        $url = $this->generateUrl(DashboardController::class, ['message' => $this->translator->trans('Rule successfully saved.')]);
+
+        return new RedirectResponse($url);
     }
 }

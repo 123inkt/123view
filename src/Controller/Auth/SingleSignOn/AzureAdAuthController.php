@@ -24,7 +24,7 @@ class AzureAdAuthController extends AbstractController
     /**
      * @throws JsonException
      */
-    #[Route('/single-sign-on/azure-ad', self::class)]
+    #[Route('/single-sign-on/azure-ad', self::class, methods: 'GET')]
     public function __invoke(Request $request): RedirectResponse
     {
         // forward all requests parameters as state
