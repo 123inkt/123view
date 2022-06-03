@@ -25,7 +25,7 @@
 
             <div data-role="recipients" data-edit-rule-target="recipients">
                 {% for recipient in form.rule.recipients %}
-                    <div class="row pb-2" data-role="recipient">
+                    <div class="row pb-2" data-edit-rule-target="recipient">
                         <div class="col-5">
                             {{ form_widget(recipient.email) }}
                         </div>
@@ -42,7 +42,7 @@
 
             <template data-edit-rule-target="recipientTemplate">
                 {% set recipient = form.rule.recipients.vars.prototype %}
-                <div class="row pb-2">
+                <div class="row pb-2" data-edit-rule-target="recipient">
                     <div class="col-5">
                         {{ form_widget(recipient.email) }}
                     </div>

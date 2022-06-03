@@ -20,7 +20,7 @@ class RecipientCollectionType extends AbstractType
                 'allow_delete' => true,
                 'prototype'    => true,
                 'delete_empty' => static fn(?Recipient $recipient) => $recipient?->getEmail() === null,
-                'constraints'  => [new Assert\Count(['min' => 1])]
+                'constraints'  => [new Assert\Count(['min' => 1, 'max' => 10])]
             ]
         );
     }

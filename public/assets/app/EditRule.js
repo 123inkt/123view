@@ -1,10 +1,14 @@
 import {Controller} from 'https://unpkg.com/@hotwired/stimulus/dist/stimulus.js'
 
 export default class EditRule extends Controller {
-    static targets = ['recipients', 'recipientTemplate']
+    static targets = ['recipients', 'recipient', 'recipientTemplate', ]
     static values  = {recipientCount: Number}
 
     addRecipient() {
+        if (this.recipientsTarget.children.length >= 10) {
+            return;
+        }
+
         // gather recipient container and template
         const template = this.recipientTemplateTarget.innerHTML;
 
@@ -17,6 +21,10 @@ export default class EditRule extends Controller {
     }
 
     deleteRecipient(event) {
-        event.target.closest('[data-role=recipient]').remove();
+        this.recipientTargets.forEach((recipient) => {
+            if (recipient.contains(event.target)) {
+                recipient.remove();
+            }
+        });
     }
 }
