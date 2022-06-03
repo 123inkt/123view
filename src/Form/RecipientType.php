@@ -17,8 +17,8 @@ class RecipientType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('email', EmailType::class, ['label' => 'Email']);
-        $builder->add('name', TextType::class, ['required' => false, 'label' => 'Name', 'attr' => ['maxlength' => 255]]);
+        $builder->add('email', EmailType::class, ['attr' => ['placeholder' => 'Email']]);
+        $builder->add('name', TextType::class, ['required' => false, 'attr' => ['maxlength' => 255, 'placeholder' => 'Name']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

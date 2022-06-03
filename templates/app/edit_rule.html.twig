@@ -1,9 +1,67 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-
     <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
 
-    {{ form(editRuleModel.form) }}
+    {% set form = editRuleModel.form %}
+
+    {{ form_start(form) }}
+
+    {# rule #}
+    {{ form_label(form.rule.name) }}
+    {{ form_widget(form.rule.name) }}
+
+    {{ form_label(form.rule.active) }}
+    {{ form_widget(form.rule.active) }}
+
+    {{ form_label(form.rule.ruleOptions.frequency) }}
+    {{ form_widget(form.rule.ruleOptions.frequency) }}
+
+    {# recipients #}
+    <fieldset class="pb-2">
+        <legend>Recipients</legend>
+
+        <div>
+            {% for recipient in form.rule.recipients %}
+                <div class="row pb-2">
+                    <div class="col-5">
+                        {{ form_widget(recipient.email) }}
+                    </div>
+                    <div class="col-5">
+                        {{ form_widget(recipient.name) }}
+                    </div>
+
+                    <div class="col">
+                        <a href="javascript:" data-role="delete-recipient" class="btn btn-outline-danger">&times;</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <template data-role="recipient-template">
+            {% set recipient = form.rule.recipients.vars.prototype %}
+            <div class="row pb-2">
+                <div class="col-5">
+                    {{ form_widget(recipient.email) }}
+                </div>
+                <div class="col-5">
+                    {{ form_widget(recipient.name) }}
+                </div>
+
+                <div class="col">
+                    <a href="javascript:" data-role="delete-recipient" class="btn btn-outline-danger">&times;</a>
+                </div>
+            </div>
+        </template>
+
+        <a href="javascript:" data-role="add-recipient" class="btn btn-outline-primary">
+            <i class="bi-plus"></i>
+            {{ 'Add recipient'|trans }}
+        </a>
+
+    </fieldset>
+
+
+    {{ form_end(form) }}
 
 {% endblock %}
