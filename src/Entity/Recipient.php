@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Repository\RecipientRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipientRepository::class)]
 #[ORM\UniqueConstraint(name: 'rule_email', columns: ['rule_id', 'email'])]
@@ -16,9 +17,11 @@ class Recipient
     private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Email]
     private ?string $email;
 
     #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'recipients')]
