@@ -23,4 +23,5 @@ return [
     'Once per four hours'                                                  => 'Once per four hours',
     'Once per day'                                                         => 'Once per day',
     'Once per week'                                                        => 'Once per week',
+    'Add recipient'                                                        => 'Add recipient'
 ];

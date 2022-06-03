@@ -1,28 +1,47 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
-
     {% set form = editRuleModel.form %}
 
-    {{ form_start(form) }}
+    <div data-controller="edit-rule" data-edit-rule-recipient-count-value="{{ form.rule.recipients|length }}">
 
-    {# rule #}
-    {{ form_label(form.rule.name) }}
-    {{ form_widget(form.rule.name) }}
+        <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
 
-    {{ form_label(form.rule.active) }}
-    {{ form_widget(form.rule.active) }}
+        {{ form_start(form) }}
 
-    {{ form_label(form.rule.ruleOptions.frequency) }}
-    {{ form_widget(form.rule.ruleOptions.frequency) }}
+        {# rule #}
+        {{ form_label(form.rule.name) }}
+        {{ form_widget(form.rule.name) }}
 
-    {# recipients #}
-    <fieldset class="pb-2">
-        <legend>Recipients</legend>
+        {{ form_label(form.rule.active) }}
+        {{ form_widget(form.rule.active) }}
 
-        <div>
-            {% for recipient in form.rule.recipients %}
+        {{ form_label(form.rule.ruleOptions.frequency) }}
+        {{ form_widget(form.rule.ruleOptions.frequency) }}
+
+        {# recipients #}
+        <fieldset class="pb-2">
+            <legend>Recipients</legend>
+
+            <div data-role="recipients" data-edit-rule-target="recipients">
+                {% for recipient in form.rule.recipients %}
+                    <div class="row pb-2" data-role="recipient">
+                        <div class="col-5">
+                            {{ form_widget(recipient.email) }}
+                        </div>
+                        <div class="col-5">
+                            {{ form_widget(recipient.name) }}
+                        </div>
+
+                        <div class="col">
+                            <a href="javascript:" data-action="edit-rule#deleteRecipient" class="btn btn-outline-danger">&times;</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <template data-edit-rule-target="recipientTemplate">
+                {% set recipient = form.rule.recipients.vars.prototype %}
                 <div class="row pb-2">
                     <div class="col-5">
                         {{ form_widget(recipient.email) }}
@@ -32,36 +51,18 @@
                     </div>
 
                     <div class="col">
-                        <a href="javascript:" data-role="delete-recipient" class="btn btn-outline-danger">&times;</a>
+                        <a href="javascript:" data-action="edit-rule#deleteRecipient" class="btn btn-outline-danger">&times;</a>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </template>
 
-        <template data-role="recipient-template">
-            {% set recipient = form.rule.recipients.vars.prototype %}
-            <div class="row pb-2">
-                <div class="col-5">
-                    {{ form_widget(recipient.email) }}
-                </div>
-                <div class="col-5">
-                    {{ form_widget(recipient.name) }}
-                </div>
+            <a href="javascript:" data-action="edit-rule#addRecipient" class="btn btn-outline-primary">
+                {{ 'Add recipient'|trans }}
+            </a>
 
-                <div class="col">
-                    <a href="javascript:" data-role="delete-recipient" class="btn btn-outline-danger">&times;</a>
-                </div>
-            </div>
-        </template>
+        </fieldset>
 
-        <a href="javascript:" data-role="add-recipient" class="btn btn-outline-primary">
-            <i class="bi-plus"></i>
-            {{ 'Add recipient'|trans }}
-        </a>
+        {{ form_end(form) }}
 
-    </fieldset>
-
-
-    {{ form_end(form) }}
-
+    </div>
 {% endblock %}
