@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Form;
 
 use DR\GitCommitNotification\Entity\Rule;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,6 +23,8 @@ class RuleType extends AbstractType
         $builder->add('ruleOptions', RuleOptionsType::class);
         $builder->add('recipients', RecipientCollectionType::class);
         $builder->add('repositories', RepositoryChoiceType::class);
+
+        $builder->get('repositories')->addModelTransformer(new CollectionToArrayTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void

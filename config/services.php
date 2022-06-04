@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
+use DR\GitCommitNotification\Repository\RepositoryRepository;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
@@ -82,6 +83,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(HighlighterFactory::class);
     $services->set(GitDiffCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
     $services->set(GitLogCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
+
+    $services->set(RepositoryRepository::class);
 
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)

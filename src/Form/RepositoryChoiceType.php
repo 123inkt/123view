@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Repository\RepositoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RepositoryChoiceType extends AbstractType
 {
@@ -25,6 +26,7 @@ class RepositoryChoiceType extends AbstractType
                 'choice_label' => static fn(?Repository $repository) => $repository?->getName() ?? '',
                 'multiple'     => true,
                 'expanded'     => true,
+                'constraints'  => [new Assert\Count(['min' => 1, 'minMessage' => 'At least {{ limit }} repository is required'])]
             ]
         );
     }

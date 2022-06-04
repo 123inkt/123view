@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 return [
     'The log in was cancelled'                                             => 'The log in was cancelled',
@@ -25,5 +26,6 @@ return [
     'Once per week'                                                        => 'Once per week',
     'Add recipient'                                                        => 'Add recipient',
     'At least {{ limit }} recipient is required'                           => 'At least {{ limit }} recipient is required',
-    'At most {{ limit }} recipients can be set'                            => 'At most {{ limit }} recipients can be set'
+    'At most {{ limit }} recipients can be set'                            => 'At most {{ limit }} recipients can be set',
+    'At least {{ limit }} repository is required'                          => 'At least {{ limit }} repository is required',
 ];

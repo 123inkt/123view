@@ -24,7 +24,7 @@ class RuleController extends AbstractController
     {
     }
 
-    #[Route('/rules/rule/{id<\d+>?}', self::class, methods: 'GET')]
+    #[Route('/rules/rule/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/edit_rule.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('rule')]
