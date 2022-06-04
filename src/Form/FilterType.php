@@ -19,18 +19,6 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'inclusion',
-            ChoiceType::class,
-            [
-                'choices' => [
-                    'Include on match' => true,
-                    'Exclude on match' => false,
-                ],
-                'multiple' => false,
-                'expanded' => false
-            ]
-        );
-        $builder->add(
             'type',
             ChoiceType::class,
             [

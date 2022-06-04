@@ -23,7 +23,7 @@ class RuleType extends AbstractType
         $builder->add('ruleOptions', RuleOptionsType::class);
         $builder->add('recipients', RecipientCollectionType::class);
         $builder->add('repositories', RepositoryChoiceType::class);
-        $builder->add('filters', FilterCollectionType::class);
+        $builder->add('filters', InExclusionFilterType::class);
 
         $builder->get('repositories')->addModelTransformer(new CollectionToArrayTransformer());
     }

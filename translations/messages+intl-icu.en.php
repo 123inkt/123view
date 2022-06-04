@@ -32,6 +32,4 @@ return [
     'File'                                                                 => 'File',
     'Subject'                                                              => 'Subject',
     'Author'                                                               => 'Author',
-    'Include on match'                                                     => 'Include on match',
-    'Exclude on match'                                                     => 'Exclude on match',
 ];
