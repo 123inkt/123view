@@ -23,5 +23,7 @@ return [
     'Once per four hours'                                                  => 'Once per four hours',
     'Once per day'                                                         => 'Once per day',
     'Once per week'                                                        => 'Once per week',
-    'Add recipient'                                                        => 'Add recipient'
+    'Add recipient'                                                        => 'Add recipient',
+    'At least {{ limit }} recipient is required'                           => 'At least {{ limit }} recipient is required',
+    'At most {{ limit }} recipients can be set'                            => 'At most {{ limit }} recipients can be set'
 ];

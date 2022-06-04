@@ -20,6 +20,7 @@ use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
@@ -53,7 +54,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
 
-    $services->set(User::class)->factory([service(\Symfony\Component\Security\Core\Security::class), 'getUser']);
+    $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
 
     $services->set(LoginService::class);
     $services->set(DiffParser::class);

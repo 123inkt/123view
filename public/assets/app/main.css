@@ -14,3 +14,7 @@
     max-width: 1000px;
     margin: 20px auto;
 }
+
+.form-control:required {
+    border-left: 4px solid #dc3545;
+}

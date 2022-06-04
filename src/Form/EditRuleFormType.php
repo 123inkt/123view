@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form;
 
-use DR\GitCommitNotification\Controller\App\SaveRuleController;
+use DR\GitCommitNotification\Controller\App\RuleController;
 use DR\GitCommitNotification\Entity\Rule;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,7 +24,7 @@ class EditRuleFormType extends AbstractType
         /** @var Rule|null $rule */
         $rule = $options['data']['rule'] ?? null;
 
-        $builder->setAction($this->urlGenerator->generate(SaveRuleController::class, ['id' => $rule?->getId()]));
+        $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $rule?->getId()]));
         $builder->setMethod('POST');
         $builder->add('rule', RuleType::class);
         $builder->add('save', SubmitType::class, ['label' => 'Save']);

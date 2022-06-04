@@ -9,6 +9,8 @@
 
         {{ form_start(form) }}
 
+        {{ form_errors(form) }}
+
         {# rule #}
         {{ form_label(form.rule.name) }}
         {{ form_widget(form.rule.name) }}

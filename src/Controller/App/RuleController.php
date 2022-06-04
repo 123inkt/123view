@@ -7,7 +7,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Form\EditRuleFormType;
-use RuntimeException;
+use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,33 +18,31 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SaveRuleController extends AbstractController
+class RuleController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator)
+    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator, private User $user)
     {
     }
 
-    #[Route('/rules/rule/{id<\d+>?}', self::class, methods: 'POST')]
-    public function __invoke(Request $request, ?Rule $rule): RedirectResponse
+    #[Route('/rules/rule/{id<\d+>?}', self::class, methods: 'GET')]
+    #[Template('app/edit_rule.html.twig')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Entity('rule')]
+    public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        /** @var User $user */
-        $user = $this->getUser();
-        /** @var User $user */
-        $user = $this->getUser();
-        if ($rule !== null && $rule->getUser() !== $user) {
+        if ($rule !== null && $rule->getUser() !== $this->user) {
             throw new AccessDeniedException('Access denied');
         }
 
         $form = $this->createForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            throw new RuntimeException('Form validation failed. TODO');
+            return ['editRuleModel' => (new EditRuleViewModel())->setForm($form->createView())];
         }
 
         /** @var Rule $rule */
         $rule = $form->getData()['rule'];
-        $rule->setUser($user);
+        $rule->setUser($this->user);
 
         $this->doctrine->getManager()->persist($rule);
         $this->doctrine->getManager()->flush();

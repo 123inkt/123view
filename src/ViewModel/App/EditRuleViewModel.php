@@ -14,8 +14,10 @@ class EditRuleViewModel
         return $this->form;
     }
 
-    public function setForm(?FormView $form): void
+    public function setForm(?FormView $form): static
     {
         $this->form = $form;
+
+        return $this;
     }
 }
