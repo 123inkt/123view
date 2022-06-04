@@ -21,6 +21,7 @@ class RuleType extends AbstractType
         $builder->add('active', CheckboxType::class, ['required' => false]);
         $builder->add('ruleOptions', RuleOptionsType::class);
         $builder->add('recipients', RecipientCollectionType::class);
+        $builder->add('repositories', RepositoryChoiceType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -54,17 +54,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
 
-    $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
-
+    // Register Symfony Filesystem
+    $services->set(Filesystem::class);
     $services->set(LoginService::class);
-    $services->set(DiffParser::class);
-    $services->set(DiffFileParser::class);
-    $services->set(DiffChangeBundler::class);
-    $services->set(DiffLineDiffer::class);
-    $services->set(CssToInlineStyles::class);
-    $services->set(HighlighterFactory::class);
-    $services->set(GitDiffCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
-    $services->set(GitLogCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)
@@ -81,6 +74,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         );
     $services->set(AzureAdAuthenticator::class);
 
+    $services->set(DiffParser::class);
+    $services->set(DiffFileParser::class);
+    $services->set(DiffChangeBundler::class);
+    $services->set(DiffLineDiffer::class);
+    $services->set(CssToInlineStyles::class);
+    $services->set(HighlighterFactory::class);
+    $services->set(GitDiffCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(GitLogCommandBuilder::class)->arg('$git', '%env(GIT_BINARY)%');
+
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)
         ->public()
@@ -89,9 +91,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Register Git
     $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
     $services->set(Git::class)->arg('$runner', service(CliRunner::class));
-
-    // Register Symfony Filesystem
-    $services->set(Filesystem::class);
 
     // Register Symfony Serializer and configuration
     $services->set(XmlEncoder::class);
