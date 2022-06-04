@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form;
+namespace DR\GitCommitNotification\Form\Filter;
 
 use DR\GitCommitNotification\Transformer\FilterCollectionTransformer;
 use Symfony\Component\Form\AbstractType;
