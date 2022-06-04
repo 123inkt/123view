@@ -15,6 +15,7 @@
     margin: 20px auto;
 }
 
-.form-control:required {
+.form-control:required,
+.form-select {
     border-left: 4px solid #dc3545;
 }
