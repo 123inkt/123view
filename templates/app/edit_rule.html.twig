@@ -23,7 +23,7 @@
 
         {# recipients #}
         <fieldset class="pb-2">
-            <legend>Recipients</legend>
+            <legend>{{ 'Recipients'|trans }}</legend>
 
             <div data-role="recipients" data-edit-rule-target="recipients">
                 {% for recipient in form.rule.recipients %}
@@ -39,6 +39,51 @@
                 {{ 'Add recipient'|trans }}
             </a>
 
+        </fieldset>
+
+        {# repositories #}
+        <fieldset class="pb-2">
+            <legend>{{ 'Repository'|trans }}</legend>
+
+            {{ form_widget(form.rule.repositories) }}
+
+        </fieldset>
+
+        {# filters #}
+        <fieldset class="pb-2">
+            <legend>{{ 'Include commits'|trans }}</legend>
+
+            <div data-role="recipients" data-edit-rule-target="recipients">
+                {% for filter in form.rule.filters.inclusions %}
+                    {% include '/app/edit_rule.filter.html.twig' %}
+                {% endfor %}
+            </div>
+
+            <template data-edit-rule-target="recipientTemplate">
+                {% include '/app/edit_rule.filter.html.twig' with {filter: form.rule.filters.inclusions.vars.prototype} %}
+            </template>
+
+            <a href="javascript:" data-action="edit-rule#addFilter" class="btn btn-outline-primary">
+                {{ 'Add filter'|trans }}
+            </a>
+        </fieldset>
+
+        <fieldset class="pb-2">
+            <legend>{{ 'Exclude commits'|trans }}</legend>
+
+            <div data-role="recipients" data-edit-rule-target="recipients">
+                {% for filter in form.rule.filters.exclusions %}
+                    {% include '/app/edit_rule.filter.html.twig' %}
+                {% endfor %}
+            </div>
+
+            <template data-edit-rule-target="recipientTemplate">
+                {% include '/app/edit_rule.filter.html.twig' with {filter: form.rule.filters.exclusions.vars.prototype} %}
+            </template>
+
+            <a href="javascript:" data-action="edit-rule#addFilter" class="btn btn-outline-primary">
+                {{ 'Add filter'|trans }}
+            </a>
         </fieldset>
 
         {{ form_end(form) }}
