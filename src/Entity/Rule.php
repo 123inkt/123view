@@ -49,7 +49,6 @@ class Rule
         $this->repositories  = new ArrayCollection();
         $this->recipients    = new ArrayCollection();
         $this->filters       = new ArrayCollection();
-        $this->externalLinks = new ArrayCollection();
     }
 
     public function getId(): ?int

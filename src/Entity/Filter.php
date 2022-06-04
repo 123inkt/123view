@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\FilterType;
 use DR\GitCommitNotification\Repository\FilterRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FilterRepository::class)]
 class Filter
@@ -26,6 +27,7 @@ class Filter
     private bool $inclusion = false;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 1, max: 255)]
     private ?string $pattern = null;
 
     public function getId(): ?int

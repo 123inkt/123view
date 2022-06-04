@@ -14,7 +14,7 @@ class Recipient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -22,11 +22,11 @@ class Recipient
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Email]
-    private ?string $email;
+    private ?string $email = null;
 
     #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'recipients')]
     #[ORM\JoinColumn(nullable: false)]
-    private $rule;
+    private ?Rule $rule = null;
 
     public function getId(): ?int
     {

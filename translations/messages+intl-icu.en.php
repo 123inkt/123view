@@ -28,4 +28,10 @@ return [
     'At least {{ limit }} recipient is required'                           => 'At least {{ limit }} recipient is required',
     'At most {{ limit }} recipients can be set'                            => 'At most {{ limit }} recipients can be set',
     'At least {{ limit }} repository is required'                          => 'At least {{ limit }} repository is required',
+    'At most {{ limit }} filters can be set'                               => 'At most {{ limit }} filters can be set',
+    'File'                                                                 => 'File',
+    'Subject'                                                              => 'Subject',
+    'Author'                                                               => 'Author',
+    'Include on match'                                                     => 'Include on match',
+    'Exclude on match'                                                     => 'Exclude on match',
 ];
