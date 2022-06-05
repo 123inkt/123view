@@ -48,7 +48,7 @@ class RuleOptionsType extends AbstractType
                 'expanded'                  => false,
             ]
         );
-        $builder->add('subject', TextType::class, ['required' => false]);
+        $builder->add('subject', TextType::class, ['required' => false, 'label' => 'Mail subject']);
         $builder->add(
             'diffAlgorithm',
             ChoiceType::class,
