@@ -13,8 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    public function __construct(private User $user) { }
+    public function __construct(private User $user)
+    {
+    }
 
+    /**
+     * @return array<string, DashboardViewModel>
+     */
     #[Route('app/', name: self::class, methods: 'GET')]
     #[Template('app/dashboard.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

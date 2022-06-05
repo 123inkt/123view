@@ -21,10 +21,10 @@ class EditRuleFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var Rule|null $rule */
-        $rule = $options['data']['rule'] ?? null;
+        /** @var array{rule: Rule|null} $data */
+        $data = $options['data'];
 
-        $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $rule?->getId()]));
+        $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $data['rule']?->getId()]));
         $builder->setMethod('POST');
         $builder->add('rule', RuleType::class);
         $builder->add('save', SubmitType::class, ['label' => 'Save']);

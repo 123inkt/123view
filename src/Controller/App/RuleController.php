@@ -25,6 +25,9 @@ class RuleController extends AbstractController
     {
     }
 
+    /**
+     * @return array<string, EditRuleViewModel>|RedirectResponse
+     */
     #[Route('/rules/rule/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/edit_rule.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

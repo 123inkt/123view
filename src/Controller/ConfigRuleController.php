@@ -24,6 +24,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class ConfigRuleController extends AbstractController
 {
     private function handleDefinition(Rule $rule, Definition $definition, bool $include): void

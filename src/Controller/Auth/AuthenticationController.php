@@ -11,6 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AuthenticationController extends AbstractController
 {
+    /**
+     * @return array<string, mixed>
+     */
     #[Route('/', self::class, methods: 'GET')]
     #[Template('authentication/single-sign-on.html.twig')]
     public function __invoke(Request $request): array
