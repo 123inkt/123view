@@ -4,7 +4,7 @@
     {% set form = editRuleModel.form %}
     {% set rule = form.rule.vars.value %}
 
-    <div>
+    <div class="pb-5">
         <h1 class="mt-2">{% if rule.id %}{{ 'Rule'|trans }}{% else %}{{ 'New rule'|trans }}{% endif %}</h1>
 
         {{ form_start(form) }}
@@ -56,9 +56,12 @@
                 {{ form_row(form.rule.ruleOptions.diffAlgorithm) }}
             </div>
             <div class="col">
-                <label class="form-label" >{{ 'Diff whitespace options'|trans }}</label>
+                <label class="form-label">&nbsp;</label>
                 {{ form_widget(form.rule.ruleOptions.ignoreSpaceAtEol) }}
                 {{ form_widget(form.rule.ruleOptions.ignoreSpaceChange) }}
+            </div>
+            <div class="col">
+                <label class="form-label">&nbsp;</label>
                 {{ form_widget(form.rule.ruleOptions.ignoreAllSpace) }}
                 {{ form_widget(form.rule.ruleOptions.ignoreBlankLines) }}
             </div>
