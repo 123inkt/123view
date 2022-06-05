@@ -26,12 +26,12 @@
 
             <div data-role="recipient-list">
                 {% for recipient in form.rule.recipients %}
-                    {% include '/app/edit_rule.recipient.html.twig' %}
+                    {% include '/app/recipient.html.twig' %}
                 {% endfor %}
             </div>
 
             <template data-role="recipient-template">
-                {% include '/app/edit_rule.recipient.html.twig' with {recipient: form.rule.recipients.vars.prototype} %}
+                {% include '/app/recipient.html.twig' with {recipient: form.rule.recipients.vars.prototype} %}
             </template>
 
             <a href="javascript:" data-role="addRecipient" class="btn btn-outline-primary">
@@ -44,45 +44,11 @@
             <legend>{{ 'Repository'|trans }}</legend>
 
             {{ form_widget(form.rule.repositories) }}
-
         </fieldset>
 
         {# filters #}
-        <fieldset class="pb-2" data-controller="Filter">
-            <legend>{{ 'Include commits'|trans }}</legend>
-
-            <div data-role="filters">
-                {% for filter in form.rule.filters.inclusions %}
-                    {% include '/app/edit_rule.filter.html.twig' %}
-                {% endfor %}
-            </div>
-
-            <template data-role="filter-template">
-                {% include '/app/edit_rule.filter.html.twig' with {filter: form.rule.filters.inclusions.vars.prototype} %}
-            </template>
-
-            <a href="javascript:" data-role="addFilter" class="btn btn-outline-primary">
-                {{ 'Add filter'|trans }}
-            </a>
-        </fieldset>
-
-        <fieldset class="pb-2" data-controller="Filter">
-            <legend>{{ 'Exclude commits'|trans }}</legend>
-
-            <div data-role="filters">
-                {% for filter in form.rule.filters.exclusions %}
-                    {% include '/app/edit_rule.filter.html.twig' %}
-                {% endfor %}
-            </div>
-
-            <template data-role="filter-template">
-                {% include '/app/edit_rule.filter.html.twig' with {filter: form.rule.filters.exclusions.vars.prototype} %}
-            </template>
-
-            <a href="javascript:" data-role="addFilter" class="btn btn-outline-primary">
-                {{ 'Add filter'|trans }}
-            </a>
-        </fieldset>
+        {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'Include commits'|trans} %}
+        {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
 
         {{ form_end(form) }}
 
