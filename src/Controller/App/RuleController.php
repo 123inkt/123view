@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleFactory;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
@@ -34,15 +35,13 @@ class RuleController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
+        $rule ??= RuleFactory::createDefault($this->user);
+
         $form = $this->createForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             return ['editRuleModel' => (new EditRuleViewModel())->setForm($form->createView())];
         }
-
-        /** @var Rule $rule */
-        $rule = $form->getData()['rule'];
-        $rule->setUser($this->user);
 
         $this->doctrine->getManager()->persist($rule);
         $this->doctrine->getManager()->flush();
