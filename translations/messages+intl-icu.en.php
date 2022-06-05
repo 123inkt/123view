@@ -36,5 +36,5 @@ return [
     'Recipients'                                                           => 'Recipients',
     'Repository'                                                           => 'Repository',
     'Include commits'                                                      => 'Include commits',
-    'Exclude commits'                                                      => 'Exclude commits'
+    'Exclude commits'                                                      => 'Exclude commits',
 ];
