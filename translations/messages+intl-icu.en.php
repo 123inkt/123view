@@ -32,4 +32,9 @@ return [
     'File'                                                                 => 'File',
     'Subject'                                                              => 'Subject',
     'Author'                                                               => 'Author',
+    'Add filter'                                                           => 'Add filter',
+    'Recipients'                                                           => 'Recipients',
+    'Repository'                                                           => 'Repository',
+    'Include commits'                                                      => 'Include commits',
+    'Exclude commits'                                                      => 'Exclude commits'
 ];
