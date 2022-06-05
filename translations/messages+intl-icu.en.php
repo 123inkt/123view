@@ -36,8 +36,8 @@ return [
     'Repository'                                                           => 'Repository',
     'Include commits'                                                      => 'Include commits',
     'Exclude commits'                                                      => 'Exclude commits',
-    'The subject of the e-mail. If left empty will default to'             => 'The subject of the e-mail. If left empty will default to',
-    '[Commit Notification] New revisions for: {name}'                      => '[Commit Notification] New revisions for: {name}',
+    'ruleOptions.subject.help'                                             => 'The subject of the e-mail. If left empty will default to',
+    'ruleOptions.subject.example'                                          => '[Commit Notification] New revisions for: {name}',
     'Email'                                                                => 'Email',
     'Repositories'                                                         => 'Repositories',
     'Frequency'                                                            => 'Frequency',
@@ -45,5 +45,11 @@ return [
     'Rule'                                                                 => 'Rule',
     'Filters'                                                              => 'Filters',
     'Inclusions'                                                           => 'Inclusions',
-    'Theme'                                                                => 'Mail theme'
+    'Theme'                                                                => 'Mail theme',
+    'Advanced'                                                             => 'Advanced',
+    'Ignore space at eol'                                                  => 'Ignore space at end-of-line',
+    'Ignore space change'                                                  => 'Ignore space changes',
+    'Ignore all space'                                                     => 'Ignore all space',
+    'Ignore blank lines'                                                   => 'Ignore blank lines',
+    'Diff algorithm'                                                       => 'Diff algorithm'
 ];

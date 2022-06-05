@@ -19,40 +19,21 @@
         </div>
 
         {# name #}
-        <div class="form-group row mb-2">
-            {{ form_label(form.rule.name, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
-            <div class="col-sm-10">
-                {{ form_widget(form.rule.name) }}
-            </div>
-        </div>
+        {% include '/app/form_row.html.twig' with {form: form.rule.name} %}
 
         {# frequency #}
-        <div class="form-group row mb-2">
-            {{ form_label(form.rule.ruleOptions.frequency, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
-            <div class="col-sm-10">
-                {{ form_widget(form.rule.ruleOptions.frequency) }}
-            </div>
-        </div>
+        {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.frequency} %}
 
         {# mail theme #}
-        <div class="form-group row mb-2">
-            {{ form_label(form.rule.ruleOptions.theme, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
-            <div class="col-sm-10">
-                {{ form_widget(form.rule.ruleOptions.theme) }}
-            </div>
-        </div>
+        {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.theme} %}
 
         {# subject #}
-        <div class="form-group row mb-2">
-            {{ form_label(form.rule.ruleOptions.subject, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
-            <div class="col-sm-10">
-                {{ form_widget(form.rule.ruleOptions.subject) }}
-                <small class="form-text">
-                    {{ 'The subject of the e-mail. If left empty will default to'|trans }}
-                    <code>{{ '[Commit Notification] New revisions for: {name}'|trans }}</code>
-                </small>
-            </div>
-        </div>
+        {% include '/app/form_row.html.twig' with
+            {
+                form: form.rule.ruleOptions.subject,
+                form_help: 'ruleOptions.subject.help'|trans ~ ' <code>' ~ 'ruleOptions.subject.example'|trans ~ '</code>'
+            }
+        %}
 
         {# repositories #}
         <div class="form-group row mb-4">
@@ -70,7 +51,15 @@
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
 
         {# advanced #}
+        <fieldset>
+            <legend>{{ 'Advanced'|trans }}</legend>
 
+            {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.diffAlgorithm} %}
+            {{ form_widget(form.rule.ruleOptions.ignoreSpaceAtEol) }}
+            {{ form_widget(form.rule.ruleOptions.ignoreSpaceChange) }}
+            {{ form_widget(form.rule.ruleOptions.ignoreAllSpace) }}
+            {{ form_widget(form.rule.ruleOptions.ignoreBlankLines) }}
+        </fieldset>
 
         {{ form_row(form.save) }}
 
