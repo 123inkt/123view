@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form;
 
+use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\RuleOptions;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,8 +25,7 @@ class RuleOptionsType extends AbstractType
             'frequency',
             ChoiceType::class,
             [
-                'required' => true,
-                'choices'  => [
+                'choices' => [
                     'Once per hour'        => Frequency::ONCE_PER_HOUR,
                     'Once per two hours'   => Frequency::ONCE_PER_TWO_HOURS,
                     'Once per three hours' => Frequency::ONCE_PER_THREE_HOURS,
@@ -33,7 +35,35 @@ class RuleOptionsType extends AbstractType
                 ]
             ]
         );
+        $builder->add(
+            'theme',
+            ChoiceType::class,
+            [
+                'choices' => [
+                    'Upsource' => MailThemeType::UPSOURCE,
+                    'Darcula' => MailThemeType::DARCULA
+                ],
+                'choice_translation_domain' => false,
+                'multiple'                  => false,
+                'expanded'                  => false,
+            ]
+        );
         $builder->add('subject', TextType::class, ['required' => false]);
+        $builder->add(
+            'diffAlgorithm',
+            ChoiceType::class,
+            [
+                'choices'                   => array_combine(DiffAlgorithmType::VALUES, DiffAlgorithmType::VALUES),
+                'preferred_choices'         => [DiffAlgorithmType::MYERS],
+                'choice_translation_domain' => false,
+                'multiple'                  => false,
+                'expanded'                  => false,
+            ]
+        );
+        $builder->add('ignoreSpaceAtEol', CheckboxType::class, ['required' => false]);
+        $builder->add('ignoreSpaceChange', CheckboxType::class, ['required' => false]);
+        $builder->add('ignoreAllSpace', CheckboxType::class, ['required' => false]);
+        $builder->add('ignoreBlankLines', CheckboxType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

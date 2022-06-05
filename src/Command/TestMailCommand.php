@@ -40,7 +40,7 @@ class TestMailCommand extends Command
 
         $email = (new Email())
             ->addTo(new Address($address))
-            ->subject('[GitCommitMail] test mail')
+            ->subject('[Commit Notification] test mail')
             ->text('Git log test mail');
 
         $this->mailer->send($email);

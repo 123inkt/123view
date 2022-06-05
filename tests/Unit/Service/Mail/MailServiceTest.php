@@ -55,7 +55,7 @@ class MailServiceTest extends AbstractTest
                 static::callback(
                     static fn(TemplatedEmail $email) => count($email->getTo()) > 0
                         && $email->getHtmlTemplate() === 'mail/commits.html.twig'
-                        && $email->getSubject() === '[GitCommitMail] New revisions for: Sherlock Holmes'
+                        && $email->getSubject() === '[Commit Notification] New revisions for: Sherlock Holmes'
                         && $email->getTextBody() === ''
                         && count($email->getContext()) > 0
                 )

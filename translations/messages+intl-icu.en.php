@@ -29,7 +29,7 @@ return [
     'At least {{ limit }} repository is required'                          => 'At least {{ limit }} repository is required',
     'At most {{ limit }} filters can be set'                               => 'At most {{ limit }} filters can be set',
     'File'                                                                 => 'File',
-    'Subject'                                                              => 'Subject',
+    'Subject'                                                              => 'Mail subject',
     'Author'                                                               => 'Author',
     'Add filter'                                                           => 'Add filter',
     'Recipients'                                                           => 'Recipients',
@@ -37,12 +37,13 @@ return [
     'Include commits'                                                      => 'Include commits',
     'Exclude commits'                                                      => 'Exclude commits',
     'The subject of the e-mail. If left empty will default to'             => 'The subject of the e-mail. If left empty will default to',
-    '[GitCommitMail] New revisions for: {name}'                            => '[GitCommitMail] New revisions for: {name}',
+    '[Commit Notification] New revisions for: {name}'                      => '[Commit Notification] New revisions for: {name}',
     'Email'                                                                => 'Email',
     'Repositories'                                                         => 'Repositories',
     'Frequency'                                                            => 'Frequency',
     'Pattern'                                                              => 'Pattern',
     'Rule'                                                                 => 'Rule',
     'Filters'                                                              => 'Filters',
-    'Inclusions'                                                           => 'Inclusions'
+    'Inclusions'                                                           => 'Inclusions',
+    'Theme'                                                                => 'Mail theme'
 ];

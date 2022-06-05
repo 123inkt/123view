@@ -11,5 +11,5 @@ class DiffAlgorithmType extends AbstractEnumType
     public const MYERS     = 'myers';
 
     public const    TYPE   = 'enum_diff_algorithm';
-    protected const VALUES = [self::PATIENCE, self::MINIMAL, self::HISTOGRAM, self::MYERS];
+    public const VALUES = [self::PATIENCE, self::MINIMAL, self::HISTOGRAM, self::MYERS];
 }

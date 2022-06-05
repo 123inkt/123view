@@ -2,9 +2,10 @@
 
 {% block page_content %}
     {% set form = editRuleModel.form %}
+    {% set rule = form.rule.vars.value %}
 
     <div>
-        <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
+        <h1 class="mt-2">{% if rule.id %}{{ 'Rule'|trans }}{% else %}{{ 'New rule'|trans }}{% endif %}</h1>
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -21,7 +22,23 @@
         <div class="form-group row mb-2">
             {{ form_label(form.rule.name, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
             <div class="col-sm-10">
-            {{ form_widget(form.rule.name) }}
+                {{ form_widget(form.rule.name) }}
+            </div>
+        </div>
+
+        {# frequency #}
+        <div class="form-group row mb-2">
+            {{ form_label(form.rule.ruleOptions.frequency, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.rule.ruleOptions.frequency) }}
+            </div>
+        </div>
+
+        {# mail theme #}
+        <div class="form-group row mb-2">
+            {{ form_label(form.rule.ruleOptions.theme, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.rule.ruleOptions.theme) }}
             </div>
         </div>
 
@@ -32,16 +49,8 @@
                 {{ form_widget(form.rule.ruleOptions.subject) }}
                 <small class="form-text">
                     {{ 'The subject of the e-mail. If left empty will default to'|trans }}
-                    <code>{{ '[GitCommitMail] New revisions for: {name}'|trans }}</code>
+                    <code>{{ '[Commit Notification] New revisions for: {name}'|trans }}</code>
                 </small>
-            </div>
-        </div>
-
-        {# frequency #}
-        <div class="form-group row mb-2">
-            {{ form_label(form.rule.ruleOptions.frequency, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
-            <div class="col-sm-10">
-                {{ form_widget(form.rule.ruleOptions.frequency) }}
             </div>
         </div>
 
@@ -59,6 +68,9 @@
         {# filters #}
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'Include commits'|trans} %}
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
+
+        {# advanced #}
+
 
         {{ form_row(form.save) }}
 
