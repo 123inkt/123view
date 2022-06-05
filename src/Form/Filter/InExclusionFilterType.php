@@ -14,8 +14,8 @@ class InExclusionFilterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('inclusions', FilterCollectionType::class);
-        $builder->add('exclusions', FilterCollectionType::class);
+        $builder->add('inclusions', FilterCollectionType::class, ['label' => false]);
+        $builder->add('exclusions', FilterCollectionType::class, ['label' => false]);
         $builder->addModelTransformer(new FilterCollectionTransformer());
     }
 }

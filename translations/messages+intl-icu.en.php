@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 return [
     'The log in was cancelled'                                             => 'The log in was cancelled',
@@ -37,4 +36,13 @@ return [
     'Repository'                                                           => 'Repository',
     'Include commits'                                                      => 'Include commits',
     'Exclude commits'                                                      => 'Exclude commits',
+    'The subject of the e-mail. If left empty will default to'             => 'The subject of the e-mail. If left empty will default to',
+    '[GitCommitMail] New revisions for: {name}'                            => '[GitCommitMail] New revisions for: {name}',
+    'Email'                                                                => 'Email',
+    'Repositories'                                                         => 'Repositories',
+    'Frequency'                                                            => 'Frequency',
+    'Pattern'                                                              => 'Pattern',
+    'Rule'                                                                 => 'Rule',
+    'Filters'                                                              => 'Filters',
+    'Inclusions'                                                           => 'Inclusions'
 ];

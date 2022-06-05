@@ -30,6 +30,10 @@
             {{ form_label(form.rule.ruleOptions.subject, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
             <div class="col-sm-10">
                 {{ form_widget(form.rule.ruleOptions.subject) }}
+                <small class="form-text">
+                    {{ 'The subject of the e-mail. If left empty will default to'|trans }}
+                    <code>{{ '[GitCommitMail] New revisions for: {name}'|trans }}</code>
+                </small>
             </div>
         </div>
 
@@ -56,7 +60,9 @@
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'Include commits'|trans} %}
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
 
-        {{ form_end(form) }}
+        {{ form_row(form.save) }}
+
+        {{ form_end(form, {render_rest: false}) }}
 
     </div>
 {% endblock %}

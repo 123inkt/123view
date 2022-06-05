@@ -21,13 +21,14 @@ class RepositoryChoiceType extends AbstractType
         $repositories = $this->repositoryRepository->findBy([], ['name' => 'ASC']);
         $resolver->setDefaults(
             [
-                'label_attr'   => ['class' => 'checkbox-inline'],
-                'choices'      => $repositories,
-                'choice_value' => 'id',
-                'choice_label' => static fn(?Repository $repository) => $repository?->getName() ?? '',
-                'multiple'     => true,
-                'expanded'     => true,
-                'constraints'  => [new Assert\Count(['min' => 1, 'minMessage' => 'At least {{ limit }} repository is required'])]
+                'label_attr'                => ['class' => 'checkbox-inline'],
+                'choices'                   => $repositories,
+                'choice_value'              => 'id',
+                'choice_label'              => static fn(?Repository $repository) => $repository?->getName() ?? '',
+                'choice_translation_domain' => false,
+                'multiple'                  => true,
+                'expanded'                  => true,
+                'constraints'               => [new Assert\Count(['min' => 1, 'minMessage' => 'At least {{ limit }} repository is required'])]
             ]
         );
     }
