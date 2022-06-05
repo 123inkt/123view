@@ -48,38 +48,38 @@
         </fieldset>
 
         {# filters #}
-        <fieldset class="pb-2">
+        <fieldset class="pb-2" data-controller="Filter">
             <legend>{{ 'Include commits'|trans }}</legend>
 
-            <div data-role="recipients" data-edit-rule-target="recipients">
+            <div data-role="filters">
                 {% for filter in form.rule.filters.inclusions %}
                     {% include '/app/edit_rule.filter.html.twig' %}
                 {% endfor %}
             </div>
 
-            <template data-edit-rule-target="recipientTemplate">
+            <template data-role="filter-template">
                 {% include '/app/edit_rule.filter.html.twig' with {filter: form.rule.filters.inclusions.vars.prototype} %}
             </template>
 
-            <a href="javascript:" data-action="edit-rule#addFilter" class="btn btn-outline-primary">
+            <a href="javascript:" data-role="addFilter" class="btn btn-outline-primary">
                 {{ 'Add filter'|trans }}
             </a>
         </fieldset>
 
-        <fieldset class="pb-2">
+        <fieldset class="pb-2" data-controller="Filter">
             <legend>{{ 'Exclude commits'|trans }}</legend>
 
-            <div data-role="recipients" data-edit-rule-target="recipients">
+            <div data-role="filters">
                 {% for filter in form.rule.filters.exclusions %}
                     {% include '/app/edit_rule.filter.html.twig' %}
                 {% endfor %}
             </div>
 
-            <template data-edit-rule-target="recipientTemplate">
+            <template data-role="filter-template">
                 {% include '/app/edit_rule.filter.html.twig' with {filter: form.rule.filters.exclusions.vars.prototype} %}
             </template>
 
-            <a href="javascript:" data-action="edit-rule#addFilter" class="btn btn-outline-primary">
+            <a href="javascript:" data-role="addFilter" class="btn btn-outline-primary">
                 {{ 'Add filter'|trans }}
             </a>
         </fieldset>
