@@ -7,10 +7,12 @@ use DR\GitCommitNotification\Doctrine\Type\FilterType;
 
 class RuleFactory
 {
-    public static function createDefault(User $user)
+    public static function createDefault(User $user): Rule
     {
         return (new Rule())
-            ->addRecipient((new Recipient())->setEmail($user->getEmail())->setName($user->getName()))
-            ->addFilter((new Filter())->setInclusion(false)->setType(FilterType::AUTHOR)->setPattern($user->getEmail()));
+            ->setActive(true)
+            ->setRuleOptions(new RuleOptions())
+            ->addRecipient((new Recipient())->setEmail($user->getEmail() ?? '')->setName($user->getName() ?? ''))
+            ->addFilter((new Filter())->setInclusion(false)->setType(FilterType::AUTHOR)->setPattern($user->getEmail() ?? ''));
     }
 }

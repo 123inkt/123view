@@ -52,6 +52,13 @@
         {# advanced #}
         <fieldset class="mb-4 row">
             <legend>{{ 'Advanced'|trans }}</legend>
+
+            <small class="form-text">
+                Options passed to the <code>git diff</code> command. See the
+                <a href="https://git-scm.com/docs/git-diff" target="_blank">git documentation</a>
+                for what each specific option does.
+            </small>
+
             <div class="col">
                 {{ form_row(form.rule.ruleOptions.diffAlgorithm) }}
             </div>
@@ -68,6 +75,8 @@
         </fieldset>
 
         {{ form_row(form.save) }}
+
+        {{ form_widget(form._token) }}
 
         {{ form_end(form, {render_rest: false}) }}
 
