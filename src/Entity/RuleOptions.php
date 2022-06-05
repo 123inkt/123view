@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use DR\GitCommitNotification\Repository\RuleOptionsRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RuleOptionsRepository::class)]
 class RuleOptions
@@ -40,6 +41,7 @@ class RuleOptions
     private bool $ignoreBlankLines = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $subject = null;
 
     #[ORM\Column(type: MailThemeType::TYPE)]

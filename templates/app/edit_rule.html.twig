@@ -3,48 +3,54 @@
 {% block page_content %}
     {% set form = editRuleModel.form %}
 
-    <div >
+    <div>
         <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
 
         {{ form_start(form) }}
-
         {{ form_errors(form) }}
 
-        {# rule #}
-        {{ form_label(form.rule.name) }}
-        {{ form_widget(form.rule.name) }}
-
-        {{ form_label(form.rule.active) }}
-        {{ form_widget(form.rule.active) }}
-
-        {{ form_label(form.rule.ruleOptions.frequency) }}
-        {{ form_widget(form.rule.ruleOptions.frequency) }}
-
-        {# recipients #}
-        <fieldset class="pb-2" data-controller="Recipients" data-recipient-count="{{ form.rule.recipients|length }}">
-            <legend>{{ 'Recipients'|trans }}</legend>
-
-            <div data-role="recipient-list">
-                {% for recipient in form.rule.recipients %}
-                    {% include '/app/recipient.html.twig' %}
-                {% endfor %}
+        {# active #}
+        <div class="form-group row mb-2">
+            <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                {{ form_widget(form.rule.active) }}
             </div>
+        </div>
 
-            <template data-role="recipient-template">
-                {% include '/app/recipient.html.twig' with {recipient: form.rule.recipients.vars.prototype} %}
-            </template>
+        {# name #}
+        <div class="form-group row mb-2">
+            {{ form_label(form.rule.name, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+            <div class="col-sm-10">
+            {{ form_widget(form.rule.name) }}
+            </div>
+        </div>
 
-            <a href="javascript:" data-role="addRecipient" class="btn btn-outline-primary">
-                {{ 'Add recipient'|trans }}
-            </a>
-        </fieldset>
+        {# subject #}
+        <div class="form-group row mb-2">
+            {{ form_label(form.rule.ruleOptions.subject, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.rule.ruleOptions.subject) }}
+            </div>
+        </div>
+
+        {# frequency #}
+        <div class="form-group row mb-2">
+            {{ form_label(form.rule.ruleOptions.frequency, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.rule.ruleOptions.frequency) }}
+            </div>
+        </div>
 
         {# repositories #}
-        <fieldset class="pb-2">
-            <legend>{{ 'Repository'|trans }}</legend>
+        <div class="form-group row mb-4">
+            {{ form_label(form.rule.repositories, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.rule.repositories) }}
+            </div>
+        </div>
 
-            {{ form_widget(form.rule.repositories) }}
-        </fieldset>
+        {# recipients #}
+        {% include '/app/recipients.html.twig' with {recipients: form.rule.recipients} %}
 
         {# filters #}
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'Include commits'|trans} %}
