@@ -1,4 +1,4 @@
-<div class="row pb-2" data-edit-rule-target="recipient">
+<div class="row pb-2" data-role="recipient">
     <div class="col-6">
         {{ form_widget(recipient.email) }}
     </div>
@@ -6,6 +6,6 @@
         {{ form_widget(recipient.name) }}
     </div>
     <div class="col">
-        <a href="javascript:" data-action="edit-rule#deleteRecipient" class="btn btn-outline-danger">&times;</a>
+        <a href="javascript:" data-role="deleteRecipient" class="btn btn-outline-danger">&times;</a>
     </div>
 </div>

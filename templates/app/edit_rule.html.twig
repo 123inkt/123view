@@ -3,8 +3,7 @@
 {% block page_content %}
     {% set form = editRuleModel.form %}
 
-    <div data-controller="edit-rule" data-edit-rule-recipient-count-value="{{ form.rule.recipients|length }}">
-
+    <div >
         <h1 class="mt-2">{{ 'New rule'|trans }}</h1>
 
         {{ form_start(form) }}
@@ -22,23 +21,22 @@
         {{ form_widget(form.rule.ruleOptions.frequency) }}
 
         {# recipients #}
-        <fieldset class="pb-2">
+        <fieldset class="pb-2" data-controller="Recipients" data-recipient-count="{{ form.rule.recipients|length }}">
             <legend>{{ 'Recipients'|trans }}</legend>
 
-            <div data-role="recipients" data-edit-rule-target="recipients">
+            <div data-role="recipient-list">
                 {% for recipient in form.rule.recipients %}
                     {% include '/app/edit_rule.recipient.html.twig' %}
                 {% endfor %}
             </div>
 
-            <template data-edit-rule-target="recipientTemplate">
+            <template data-role="recipient-template">
                 {% include '/app/edit_rule.recipient.html.twig' with {recipient: form.rule.recipients.vars.prototype} %}
             </template>
 
-            <a href="javascript:" data-action="edit-rule#addRecipient" class="btn btn-outline-primary">
+            <a href="javascript:" data-role="addRecipient" class="btn btn-outline-primary">
                 {{ 'Add recipient'|trans }}
             </a>
-
         </fieldset>
 
         {# repositories #}

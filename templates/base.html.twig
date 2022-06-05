@@ -13,16 +13,20 @@
           integrity="sha384-YdM/o2MTG+kIKs1sV/gSEWXZo5d1DdBeuo/6s8qMJd5I5FKkStdHSXeNukljrWUZ" crossorigin="anonymous">
 
     <link href="/assets/app/main.css" rel="stylesheet">
-
-    <script type="module">
-        import {Application} from 'https://unpkg.com/@hotwired/stimulus/dist/stimulus.js';
-        import EditRule from '/assets/app/EditRule.js';
-
-        const stimulus = Application.start()
-        stimulus.register("edit-rule", EditRule);
-    </script>
 </head>
 <body>
 {%- block page %}{% endblock -%}
+
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-controller]').forEach(async (el) => {
+            const module = await import('/assets/app/' + el.dataset.controller + '.js');
+
+            // instantiate module and notify controller
+            new module.default(el).connect();
+        });
+    })
+</script>
 </body>
 </html>
