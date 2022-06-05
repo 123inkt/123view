@@ -51,5 +51,6 @@ return [
     'Ignore space change'                                                  => 'Ignore space changes',
     'Ignore all space'                                                     => 'Ignore all space',
     'Ignore blank lines'                                                   => 'Ignore blank lines',
-    'Diff algorithm'                                                       => 'Diff algorithm'
+    'Diff algorithm'                                                       => 'Diff algorithm',
+    'Diff whitespace options'                                              => 'Diff whitespace options'
 ];

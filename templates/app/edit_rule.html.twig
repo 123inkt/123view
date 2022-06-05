@@ -32,8 +32,7 @@
             {
                 form: form.rule.ruleOptions.subject,
                 form_help: 'ruleOptions.subject.help'|trans ~ ' <code>' ~ 'ruleOptions.subject.example'|trans ~ '</code>'
-            }
-        %}
+            } %}
 
         {# repositories #}
         <div class="form-group row mb-4">
@@ -51,14 +50,18 @@
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
 
         {# advanced #}
-        <fieldset>
+        <fieldset class="mb-4 row">
             <legend>{{ 'Advanced'|trans }}</legend>
-
-            {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.diffAlgorithm} %}
-            {{ form_widget(form.rule.ruleOptions.ignoreSpaceAtEol) }}
-            {{ form_widget(form.rule.ruleOptions.ignoreSpaceChange) }}
-            {{ form_widget(form.rule.ruleOptions.ignoreAllSpace) }}
-            {{ form_widget(form.rule.ruleOptions.ignoreBlankLines) }}
+            <div class="col">
+                {{ form_row(form.rule.ruleOptions.diffAlgorithm) }}
+            </div>
+            <div class="col">
+                <label class="form-label" >{{ 'Diff whitespace options'|trans }}</label>
+                {{ form_widget(form.rule.ruleOptions.ignoreSpaceAtEol) }}
+                {{ form_widget(form.rule.ruleOptions.ignoreSpaceChange) }}
+                {{ form_widget(form.rule.ruleOptions.ignoreAllSpace) }}
+                {{ form_widget(form.rule.ruleOptions.ignoreBlankLines) }}
+            </div>
         </fieldset>
 
         {{ form_row(form.save) }}
