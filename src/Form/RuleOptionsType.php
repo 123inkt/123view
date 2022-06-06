@@ -39,9 +39,9 @@ class RuleOptionsType extends AbstractType
             'theme',
             ChoiceType::class,
             [
-                'choices' => [
+                'choices'                   => [
                     'Upsource' => MailThemeType::UPSOURCE,
-                    'Darcula' => MailThemeType::DARCULA
+                    'Darcula'  => MailThemeType::DARCULA
                 ],
                 'choice_translation_domain' => false,
                 'multiple'                  => false,

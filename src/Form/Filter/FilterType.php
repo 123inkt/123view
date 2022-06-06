@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Form\Filter;
 
 use DR\GitCommitNotification\Doctrine\Type\FilterType as EntityFilterType;
 use DR\GitCommitNotification\Entity\Filter;
-use DR\GitCommitNotification\Validator\IsValidPattern;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,10 +22,10 @@ class FilterType extends AbstractType
             'type',
             ChoiceType::class,
             [
-                'choices'  => [
-                    'File'    => EntityFilterType::FILE,
+                'choices' => [
+                    'File' => EntityFilterType::FILE,
                     'Subject' => EntityFilterType::SUBJECT,
-                    'Author'  => EntityFilterType::AUTHOR,
+                    'Author' => EntityFilterType::AUTHOR,
                 ],
                 'multiple' => false,
                 'expanded' => false
@@ -37,11 +36,6 @@ class FilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(
-            [
-                'data_class'  => Filter::class,
-                'constraints' => [new IsValidPattern()]
-            ]
-        );
+        $resolver->setDefaults(['data_class' => Filter::class,]);
     }
 }

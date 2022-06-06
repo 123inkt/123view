@@ -53,5 +53,7 @@ return [
     'Ignore all space'                                                     => 'Ignore all space',
     'Ignore blank lines'                                                   => 'Ignore blank lines',
     'Diff algorithm'                                                       => 'Diff algorithm',
-    'Diff whitespace options'                                              => 'Diff whitespace options'
+    'Diff whitespace options'                                              => 'Diff whitespace options',
+    'Not a valid e-mail address.'                                          => 'Not a valid e-mail address.',
+    'Not a valid regular expression.'                                      => 'Not a valid regular expression.',
 ];
