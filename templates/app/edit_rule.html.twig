@@ -75,7 +75,13 @@
             </div>
         </fieldset>
 
-        {{ form_row(form.save) }}
+        <div>
+            {{ form_widget(form.save, {attr: {style: 'width: 150px; max-width: 40%'}}) }}
+
+            <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}" class="btn btn-outline-primary">
+                {{ 'Cancel'|trans }}
+            </a>
+        </div>
 
         {{ form_widget(form._token) }}
 

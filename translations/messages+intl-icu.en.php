@@ -56,4 +56,5 @@ return [
     'Diff whitespace options'                                              => 'Diff whitespace options',
     'Not a valid e-mail address.'                                          => 'Not a valid e-mail address.',
     'Not a valid regular expression.'                                      => 'Not a valid regular expression.',
+    'Cancel'                                                               => 'Cancel',
 ];
