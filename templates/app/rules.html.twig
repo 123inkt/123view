@@ -11,21 +11,34 @@
     {% endif %}
 
     {% if rulesModel.rules %}
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover rule-table">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'Name'|trans }}</th>
+                <th scope="col">{{ 'Active'|trans }}</th>
+                <th scope="col">{{ 'Frequency'|trans }}</th>
+                <th scope="col">{{ 'Theme'|trans }}s</th>
+                <th scope="col">{{ 'Options'|trans }}</th>
+            </tr>
+            </thead>
             <tbody>
             {% for rule in rulesModel.rules %}
                 <tr>
+                    <td>{{ rule.name }}</td>
                     <td>
                         {% if rule.active %}
-                            <i class="bi-check-circle mr-1"></i>
+                            {{ 'Active'|trans }}
                         {% else %}
-                            <i class="bi-circle mr-1"></i>
+                            {{ 'Inactive'|trans }}
                         {% endif %}
                     </td>
-                    <td>{{ rule.name }}</td>
-                    <td>{{ rule.ruleOptions.frequency }}</td>
-                    <td>
-                        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DeleteRuleController', {id: rule.id}) }}"
+
+                    <td>{{ rule.ruleOptions.frequency|trans }}</td>
+
+                    <td>{{ rule.ruleOptions.theme|trans }}</td>
+
+                    <td class="rule-table-options">
+                        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController', {id: rule.id}) }}"
                            class="btn btn-success">
                             <i class="bi-pencil-square"></i>
                         </a>

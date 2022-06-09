@@ -26,12 +26,12 @@ class RuleOptionsType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => [
-                    'Once per hour'        => Frequency::ONCE_PER_HOUR,
-                    'Once per two hours'   => Frequency::ONCE_PER_TWO_HOURS,
-                    'Once per three hours' => Frequency::ONCE_PER_THREE_HOURS,
-                    'Once per four hours'  => Frequency::ONCE_PER_FOUR_HOURS,
-                    'Once per day'         => Frequency::ONCE_PER_DAY,
-                    'Once per week'        => Frequency::ONCE_PER_WEEK,
+                    Frequency::ONCE_PER_HOUR        => Frequency::ONCE_PER_HOUR,
+                    Frequency::ONCE_PER_TWO_HOURS   => Frequency::ONCE_PER_TWO_HOURS,
+                    Frequency::ONCE_PER_THREE_HOURS => Frequency::ONCE_PER_THREE_HOURS,
+                    Frequency::ONCE_PER_FOUR_HOURS  => Frequency::ONCE_PER_FOUR_HOURS,
+                    Frequency::ONCE_PER_DAY         => Frequency::ONCE_PER_DAY,
+                    Frequency::ONCE_PER_WEEK        => Frequency::ONCE_PER_WEEK,
                 ]
             ]
         );
@@ -39,6 +39,7 @@ class RuleOptionsType extends AbstractType
             'theme',
             ChoiceType::class,
             [
+                'label'                     => 'Mail theme',
                 'choices'                   => [
                     'Upsource' => MailThemeType::UPSOURCE,
                     'Darcula'  => MailThemeType::DARCULA
