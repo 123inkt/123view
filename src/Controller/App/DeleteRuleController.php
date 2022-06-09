@@ -21,7 +21,7 @@ class DeleteRuleController extends AbstractController
     {
     }
 
-    #[Route('/rules/rule/{id<\d+>}', self::class, methods: ['DELETE'])]
+    #[Route('/rules/rule/delete/{id<\d+>}', self::class, methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('rule')]
     public function __invoke(Request $request, Rule $rule): RedirectResponse
@@ -34,8 +34,8 @@ class DeleteRuleController extends AbstractController
         //$this->doctrine->getManager()->flush();
 
         return $this->redirectToRoute(
-            DashboardController::class,
-            ['message' => $this->translator->trans('Rule {name} successfully removed.', ['name' => $rule->getName()])]
+            RulesController::class,
+            ['message' => $this->translator->trans('rule.removed.successful', ['name' => $rule->getName()])]
         );
     }
 }

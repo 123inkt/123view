@@ -1,0 +1,59 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+    <h1 class="mt-2">{{ 'Rules'|trans }}</h1>
+
+    {% if rulesModel.message %}
+        <div class="alert alert-success" role="alert">
+            {{ rulesModel.message }}
+        </div>
+    {% endif %}
+
+    {% if rulesModel.rules %}
+        <table class="table table-bordered table-hover">
+            <tbody>
+            {% for rule in rulesModel.rules %}
+                <tr>
+                    <td>
+                        {% if rule.active %}
+                            <i class="bi-check-circle mr-1"></i>
+                        {% else %}
+                            <i class="bi-circle mr-1"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ rule.name }}</td>
+                    <td>{{ rule.ruleOptions.frequency }}</td>
+                    <td>
+                        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DeleteRuleController', {id: rule.id}) }}"
+                           class="btn btn-success">
+                            <i class="bi-pencil-square"></i>
+                        </a>
+
+                        <form method="POST"
+                              class="d-inline-block"
+                              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\DeleteRuleController', {id: rule.id}) }}"
+                              onsubmit="return confirm('{{ 'Are you sure you want to delete this rule?'|trans|e('js')|e('html') }}');">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController') }}" class="btn btn-outline-primary">
+            <i class="bi-plus"></i>
+            {{ 'New rule'|trans }}
+        </a>
+
+    {% else %}
+
+    {% endif %}
+
+
+
+
+{% endblock %}

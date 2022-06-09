@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\ViewModel\App;
 
 use DR\GitCommitNotification\Entity\Rule;
 
-class DashboardViewModel
+class RulesViewModel
 {
     /** @var Rule[] */
     private array $rules = [];

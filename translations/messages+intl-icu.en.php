@@ -57,4 +57,6 @@ return [
     'Not a valid e-mail address.'                                          => 'Not a valid e-mail address.',
     'Not a valid regular expression.'                                      => 'Not a valid regular expression.',
     'Cancel'                                                               => 'Cancel',
+    'Are you sure you want to delete this rule?'                           => 'Are you sure you want to delete this rule?',
+    'rule.removed.successful'                                              => 'Rule {name} successfully removed.',
 ];

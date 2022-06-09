@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Security\AzureAd;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Controller\App\DashboardController;
+use DR\GitCommitNotification\Controller\App\RulesController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -62,7 +62,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // redirect to app dashboard
-        $url = $this->urlGenerator->generate(DashboardController::class);
+        $url = $this->urlGenerator->generate(RulesController::class);
 
         return new RedirectResponse($url);
     }

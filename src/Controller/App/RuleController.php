@@ -49,6 +49,6 @@ class RuleController extends AbstractController
         $this->doctrine->getManager()->persist($rule);
         $this->doctrine->getManager()->flush();
 
-        return $this->redirectToRoute(DashboardController::class, ['message' => $this->translator->trans('Rule successfully saved.')]);
+        return $this->redirectToRoute(RulesController::class, ['message' => $this->translator->trans('Rule successfully saved.')]);
     }
 }

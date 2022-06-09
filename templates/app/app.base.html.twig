@@ -3,18 +3,18 @@
 {% block page %}
 
     <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand mr-0 mr-md-2 header-nav-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}"
+        <a class="navbar-brand mr-0 mr-md-2 header-nav-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}"
            aria-label="Git commit notification" title="Git commit notification">
             G
         </a>
-        <a class="navbar-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}">it Commit Notification</a>
+        <a class="navbar-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}">it Commit Notification</a>
 
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" aria-label="{{ 'Home'|trans }}" title="{{ 'Home'|trans }}"
-                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}">
+                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}">
                         <i class="bi-house"></i>
                     </a>
                 </li>
@@ -26,20 +26,6 @@
                 </li>
             </ul>
         </div>
-
-        {#        <ul class="navbar-nav"> #}
-        {#            <li class="nav-item active"> #}
-        {#                <a class="nav-link" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\DashboardController') }}" #}
-        {#                   aria-label="{{ 'Home'|trans }}" title="{{ 'Home'|trans }}"> #}
-        {#                    <i class="bi-house"></i> #}
-        {#                </a> #}
-        {#                <a class="nav-link" href="{{ path('DR\\GitCommitNotification\\Controller\\Auth\\LogoutController') }}" #}
-        {#                   aria-label="{{ 'Logout'|trans }}" title="{{ 'Logout'|trans }}"> #}
-        {#                    <i class="bi-box-arrow-right"></i> #}
-        {#                </a> #}
-        {#            </li> #}
-        {#        </ul> #}
-
     </header>
 
     <div class="container-xl">
