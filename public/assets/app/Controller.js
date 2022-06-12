@@ -24,7 +24,7 @@ export default class Controller {
             return document.createElement(html);
         }
 
-        const container = document.createElement('div');
+        const container     = document.createElement('div');
         container.innerHTML = html;
         return container.firstElementChild;
     }
@@ -38,6 +38,6 @@ export default class Controller {
     }
 
     roles(role) {
-        return this.el.querySelectorAll('[data-role="' + role + '"]').entries();
+        return this.el.querySelectorAll('[data-role="' + role + '"]').values();
     }
 }
