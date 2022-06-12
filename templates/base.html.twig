@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
           integrity="sha384-YdM/o2MTG+kIKs1sV/gSEWXZo5d1DdBeuo/6s8qMJd5I5FKkStdHSXeNukljrWUZ" crossorigin="anonymous">
 
-    <link href="/assets/app/main.css" rel="stylesheet">
+    <link href="{{ asset('assets/styles/main.css') }}" rel="stylesheet">
 </head>
 <body>
 {%- block page %}{% endblock -%}
@@ -25,7 +25,7 @@
 <script>
     window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-controller]').forEach(async (el) => {
-            const module = await import('/assets/app/' + el.dataset.controller + '.js');
+            const module = await import('/assets/js/' + el.dataset.controller + '.js');
 
             // instantiate module and notify controller
             new module.default(el).connect();
