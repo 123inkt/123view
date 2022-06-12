@@ -12,7 +12,7 @@ return [
     'Rules'                                       => 'Rules',
     'Home'                                        => 'Home',
     'Logout'                                      => 'Logout',
-    'New rule'                                    => 'New rule',
+    'rule.new'                                    => 'New rule',
     'Save'                                        => 'Save',
     'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
