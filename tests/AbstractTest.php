@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests;
 
+use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -12,6 +13,7 @@ use Psr\Log\LoggerInterface;
  */
 class AbstractTest extends TestCase
 {
+    use AccessorPairAsserter;
     use TestTrait;
 
     /** @var MockObject|LoggerInterface */
