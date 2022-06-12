@@ -45,10 +45,13 @@ class AzureAdAuthenticator extends AbstractAuthenticator
             new UserBadge($result->getEmail(), function (string $email) use ($result) {
                 // fetch user for name (email), or create when non-existent.
                 $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
+
+                // create user if not exists
                 if ($user === null) {
                     $manager = $this->doctrine->getManager();
                     $manager->persist((new User())->setEmail($email)->setName($result->getName()));
                     $manager->flush();
+                    $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
                 }
 
                 return $user;
