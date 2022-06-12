@@ -14,7 +14,7 @@ return [
     'Logout'                                      => 'Logout',
     'New rule'                                    => 'New rule',
     'Save'                                        => 'Save',
-    'Rule successfully saved.'                    => 'Rule successfully saved.',
+    'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
     'Inactive'                                    => 'Inactive',
     'Name'                                        => 'Name',
@@ -67,4 +67,6 @@ return [
     'rules.welcome.banner'                        => 'Welcome to git commit notification',
     'rules.welcome.description'                   => 'Receive notifications about one or more commits in one or more repositories.',
     'rules.add.first.rule'                        => 'Add your first rule',
+    'rule.edit.title'                             => 'Edit rule',
+    'rule.delete.title'                           => 'Delete rule',
 ];

@@ -26,7 +26,6 @@ class RulesController extends AbstractController
     public function __invoke(Request $request): array
     {
         $model = new RulesViewModel();
-        $model->setMessage($request->query->has('message') ? $request->query->get('message') : null);
         $model->setRules(iterator_to_array($this->user->getRules()));
 
         return ['rulesModel' => $model];

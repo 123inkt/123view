@@ -10,6 +10,7 @@ class RuleFactory
     public static function createDefault(User $user): Rule
     {
         return (new Rule())
+            ->setUser($user)
             ->setActive(true)
             ->setRuleOptions(new RuleOptions())
             ->addRecipient((new Recipient())->setEmail($user->getEmail() ?? '')->setName($user->getName() ?? ''))

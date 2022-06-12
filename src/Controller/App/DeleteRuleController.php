@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,7 +23,7 @@ class DeleteRuleController extends AbstractController
     #[Route('/rules/rule/delete/{id<\d+>}', self::class, methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('rule')]
-    public function __invoke(Request $request, Rule $rule): RedirectResponse
+    public function __invoke(Rule $rule): RedirectResponse
     {
         if ($rule->getUser() !== $this->user) {
             throw new AccessDeniedException('Access denied');
@@ -33,9 +32,8 @@ class DeleteRuleController extends AbstractController
         $this->doctrine->getManager()->remove($rule);
         $this->doctrine->getManager()->flush();
 
-        return $this->redirectToRoute(
-            RulesController::class,
-            ['message' => $this->translator->trans('rule.removed.successful', ['name' => $rule->getName()])]
-        );
+        $this->addFlash('success', $this->translator->trans('rule.removed.successful', ['name' => $rule->getName()]));
+
+        return $this->redirectToRoute(RulesController::class);
     }
 }

@@ -49,6 +49,8 @@ class RuleController extends AbstractController
         $this->doctrine->getManager()->persist($rule);
         $this->doctrine->getManager()->flush();
 
-        return $this->redirectToRoute(RulesController::class, ['message' => $this->translator->trans('Rule successfully saved.')]);
+        $this->addFlash('success', $this->translator->trans('rule.successful.saved'));
+
+        return $this->redirectToRoute(RulesController::class);
     }
 }
