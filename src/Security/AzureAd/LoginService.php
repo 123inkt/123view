@@ -28,14 +28,14 @@ class LoginService
 
             // registration cancelled
             if ($request->query->get('error_subcode') === 'cancel') {
-                return new LoginFailure($this->translator->trans('The log in was cancelled'));
+                return new LoginFailure($this->translator->trans('login.cancelled'));
             }
 
-            return new LoginFailure($this->translator->trans('The log in was not successful'));
+            return new LoginFailure($this->translator->trans('login.not.successful'));
         }
 
         if ($request->query->has('code') === false) {
-            return new LoginFailure($this->translator->trans('Invalid AzureAd callback. The `code` argument is missing.'));
+            return new LoginFailure($this->translator->trans('login.invalid.azuread.callback'));
         }
 
         // exchange authorization code for access token
@@ -47,14 +47,14 @@ class LoginService
         } catch (Throwable $e) {
             $this->logger->notice($e->getMessage(), ['exception' => $e]);
 
-            return new LoginFailure($this->translator->trans('Unable to validate the login attempt. Please retry'));
+            return new LoginFailure($this->translator->trans('login.unable.to.validate.login.attempt'));
         }
 
         $claims = $token instanceof AccessToken ? $token->getIdTokenClaims() : [];
         if (isset($claims['preferred_username']) === false) {
             $this->logger->notice('Authorization token doesnt contain preferred_username', $claims);
 
-            return new LoginFailure($this->translator->trans("The authorization token doesn't contain a username. Unable to login"));
+            return new LoginFailure($this->translator->trans("login.authorization.has.no.token"));
         }
 
         return new LoginSuccess($claims['name'], $claims['preferred_username']);

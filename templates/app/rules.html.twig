@@ -2,8 +2,6 @@
 
 {% block page_content %}
 
-    <h1 class="mt-2">{{ 'Rules'|trans }}</h1>
-
     {% if rulesModel.message %}
         <div class="alert alert-success" role="alert">
             {{ rulesModel.message }}
@@ -11,6 +9,8 @@
     {% endif %}
 
     {% if rulesModel.rules %}
+        <h1 class="mt-2">{{ 'Rules'|trans }}</h1>
+
         <table class="table table-bordered table-hover rule-table">
             <thead>
             <tr>
@@ -63,10 +63,16 @@
         </a>
 
     {% else %}
-
+        <div class="jumbotron mt-5">
+            <h1 class="display-4">{{ 'rules.welcome.banner'|trans }}</h1>
+            <p class="lead">{{ 'rules.welcome.description'|trans }}</p>
+            <hr class="my-4">
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController') }}">
+                    {{ 'rules.add.first.rule'|trans }}
+                </a>
+            </p>
+        </div>
     {% endif %}
-
-
-
 
 {% endblock %}
