@@ -27,7 +27,7 @@ class IsValidPatternValidator extends ConstraintValidator
                     return true;
                 }
 
-                $this->context->buildViolation('Not a valid e-mail address.')
+                $this->context->buildViolation(IsValidPattern::MESSAGE_EMAIL)
                     ->atPath('pattern')
                     ->addViolation();
 
@@ -41,7 +41,7 @@ class IsValidPatternValidator extends ConstraintValidator
                     return true;
                 }
 
-                $this->context->buildViolation('Not a valid regular expression.')
+                $this->context->buildViolation(IsValidPattern::MESSAGE_REGEX)
                     ->atPath('pattern')
                     ->addViolation();
 
