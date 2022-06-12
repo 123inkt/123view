@@ -30,8 +30,8 @@ class DeleteRuleController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
-        //$this->doctrine->getManager()->remove($rule);
-        //$this->doctrine->getManager()->flush();
+        $this->doctrine->getManager()->remove($rule);
+        $this->doctrine->getManager()->flush();
 
         return $this->redirectToRoute(
             RulesController::class,
