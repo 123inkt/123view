@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository;
 
-use DR\GitCommitNotification\Entity\RepositoryProperty;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\RepositoryProperty;
 
 /**
  * @extends ServiceEntityRepository<RepositoryProperty>

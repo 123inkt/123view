@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity;
 
-use DR\GitCommitNotification\Repository\ExternalLinkRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Repository\ExternalLinkRepository;
 
 #[ORM\Entity(repositoryClass: ExternalLinkRepository::class)]
 class ExternalLink

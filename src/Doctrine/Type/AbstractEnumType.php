@@ -10,7 +10,6 @@ use InvalidArgumentException;
 abstract class AbstractEnumType extends Type
 {
     public const TYPE   = '';
-    /** @var string[] */
     protected const VALUES = [];
 
     /**
@@ -31,7 +30,7 @@ abstract class AbstractEnumType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-        if (in_array($value, static::VALUES, true) === false) {
+        if (is_string($value) === false || in_array($value, static::VALUES, true) === false) {
             throw new InvalidArgumentException("Invalid value '" . $value . "' for type '" . static::TYPE . "'.");
         }
 
