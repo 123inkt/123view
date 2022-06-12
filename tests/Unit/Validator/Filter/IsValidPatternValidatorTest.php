@@ -90,6 +90,19 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
+    /**
+     * @covers ::validate
+     */
+    public function testValidateInvalidTypeShouldThrowException(): void
+    {
+        $filter = new Filter();
+        $filter->setType('foobar');
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Invalid filter type: foobar');
+        $this->validator->validate($filter, $this->constraint);
+    }
+
     protected function createValidator(): IsValidPatternValidator
     {
         return new IsValidPatternValidator();
