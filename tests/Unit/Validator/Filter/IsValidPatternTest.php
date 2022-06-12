@@ -19,6 +19,6 @@ class IsValidPatternTest extends AbstractTest
     {
         $constraint = new IsValidPattern();
 
-        static::assertSame([[Constraint::CLASS_CONSTRAINT]], $constraint->getTargets());
+        static::assertSame([Constraint::CLASS_CONSTRAINT], $constraint->getTargets());
     }
 }
