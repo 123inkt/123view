@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Validator\Filter\IsValidPatternValidator
- * @covers ::__construct
  */
 class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
 {
@@ -59,6 +58,19 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
     {
         $filter = new Filter();
         $filter->setType(EntityFilterType::SUBJECT);
+        $filter->setPattern('foobar');
+
+        $this->validator->validate($filter, $this->constraint);
+        $this->buildViolation(IsValidPattern::MESSAGE_REGEX)->atPath('property.path.pattern')->assertRaised();
+    }
+
+    /**
+     * @covers ::validate
+     */
+    public function testValidateFilePatternWithInvalidRegexShouldFail(): void
+    {
+        $filter = new Filter();
+        $filter->setType(EntityFilterType::FILE);
         $filter->setPattern('foobar');
 
         $this->validator->validate($filter, $this->constraint);
