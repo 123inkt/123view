@@ -6,7 +6,7 @@ namespace ${NAMESPACE};
 #end
 
 use ${TESTED_NAMESPACE}\\${TESTED_NAME};
-use DR\GitLogMail\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTest;
 
 #parse("PHPUnit Class Doc Comment.php")
 class ${NAME} extends AbstractTest
