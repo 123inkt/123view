@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RulesController extends AbstractController
 {
-    public function __construct(private User $user)
+    public function __construct(private ?User $user)
     {
     }
 

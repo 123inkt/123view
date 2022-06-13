@@ -69,5 +69,5 @@ return [
     'rules.add.first.rule'                        => 'Add your first rule',
     'rule.edit.title'                             => 'Edit rule',
     'rule.delete.title'                           => 'Delete rule',
-    'page.title.single.sign.on' => 'Single Sign On',
+    'page.title.single.sign.on'                   => 'Login',
 ];

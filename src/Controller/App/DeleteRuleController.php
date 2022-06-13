@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeleteRuleController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator, private User $user)
+    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator, private ?User $user)
     {
     }
 
