@@ -17,22 +17,39 @@ services:
         ports:
             - 8000:80
 
-
-    ###> doctrine/doctrine-bundle ###
-    database:
-        image: postgres:${POSTGRES_VERSION:-13}-alpine
+    php-fpm:
+        build:
+            args:
+                VERSION: $PHP_VERSION
+                COMPOSER_VERSION: $COMPOSER_VERSION
+                PIPELINE_NUMBER: dev
+            context: .
+            dockerfile: ./docker/php-fpm/Dockerfile
+            target: dev
         environment:
-            POSTGRES_DB: ${POSTGRES_DB:-app}
-            # You should definitely change the password in production
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-            POSTGRES_USER: ${POSTGRES_USER:-symfony}
+            XDEBUG_MODE: debug
+            XDEBUG_CONFIG: client_host=host.docker.internal discover_client_host=true start_with_request=trigger
+            PHP_IDE_CONFIG: serverName=localhost
+            BUILDNUMBER: dev
+            APP_ENV: dev
         volumes:
-            - db-data:/var/lib/postgresql/data:rw
-            # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-            # - ./docker/db/data:/var/lib/postgresql/data:rw
-    ###< doctrine/doctrine-bundle ###
+            - .:/app:rw
+        depends_on:
+            - mysql
 
-volumes:
-    ###> doctrine/doctrine-bundle ###
-    db-data:
-    ###< doctrine/doctrine-bundle ###
+    mysql:
+        build:
+            args:
+                VERSION: $MYSQL_VERSION
+                PIPELINE_NUMBER: dev
+            context: ./docker/mysql
+            target: dev
+        environment:
+            MYSQL_USER: ${DB_USER:-root}
+            MYSQL_PASSWORD: ${DB_PASS:-123inkt}
+            MYSQL_DATABASE: ${DB_NAME:-commit-notification}
+            MYSQL_ROOT_PASSWORD: ${DB_PASS:-123inkt}
+        volumes:
+            - ./docker/db/data:/var/lib/mysql
+        ports:
+            - 3306:3306

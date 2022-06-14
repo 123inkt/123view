@@ -31,4 +31,4 @@ FROM ${APPLICATION_IMAGE} as application
 FROM dev as prod
 
 # Copy assets from application/php-fpm image to nginx public directory
-COPY --from=application /app/public/ /app/public/
+#COPY --from=application /app/public/ /app/public/
