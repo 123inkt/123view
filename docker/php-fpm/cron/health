@@ -1,0 +1,5 @@
+\SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/app
+BASH_ENV=/tmp/env
+*/5 * * * * www-data php bin/console drscanner:scanner-health >> /tmp/health.log 2>&1
