@@ -16,7 +16,7 @@ php bin/console cache:clear
 ##
 # run doctrine migrations
 #
-php bin/console doctrine:migrations:migrate --no-interaction
+#php bin/console doctrine:migrations:migrate --no-interaction
 
 export -p > /tmp/env
 mkdir -p /app/var/log

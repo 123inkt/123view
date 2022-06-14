@@ -10,8 +10,6 @@ RUN apk del freetype nginx-module-image-filter
 # CVE-2022-1586 & CVE-2022-1587 see: https://avd.aquasec.com/nvd/cve-2022-1586 and https://avd.aquasec.com/nvd/cve-2022-1587
 RUN apk --no-cache --virtual add pcre2=10.40-r0
 
-ARG PIPELINE_NUMBER=dev
-ENV BUILDNUMBER=$PIPELINE_NUMBER
 ENV PHP_FPM_HOST=php-fpm:9000
 
 # Copy nginx config
@@ -24,8 +22,6 @@ COPY ./docker/nginx/run/entrypoint.sh /run/entrypoint.sh
 RUN chmod +x /run/entrypoint.sh
 
 ENTRYPOINT ["/run/entrypoint.sh"]
-
-FROM ${APPLICATION_IMAGE} as application
 
 # Prod image
 FROM dev as prod
