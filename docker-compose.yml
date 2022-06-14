@@ -45,7 +45,7 @@ services:
             context: ./docker/mysql
             target: dev
         environment:
-            MYSQL_USER: ${DB_USER:-root}
+            MYSQL_USER: ${DB_USER:-dev}
             MYSQL_PASSWORD: ${DB_PASS:-123inkt}
             MYSQL_DATABASE: ${DB_NAME:-commit-notification}
             MYSQL_ROOT_PASSWORD: ${DB_PASS:-123inkt}
