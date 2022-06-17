@@ -24,12 +24,19 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     openssl=1.1.1n-0+deb11u2 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pecl channel-update pecl.php.net && \
+    pecl install apcu && \
+    docker-php-ext-enable apcu && \
+    docker-php-source delete
+
 RUN docker-php-ext-install \
+    opcache \
     pdo_mysql \
     intl
 
 ## Copy php default configuration
 COPY ./docker/php-fpm/default.ini /usr/local/etc/php/conf.d/default.ini
+COPY ./docker/php-fpm/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
 COPY ./docker/php-fpm/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./docker/php-fpm/cron/* /etc/cron.d/
 RUN chmod -R 600 /etc/cron.d/
