@@ -7,7 +7,6 @@ services:
                 VERSION: $NGINX_VERSION
             context: .
             dockerfile: ./docker/nginx/Dockerfile
-            target: dev
         volumes:
             - ./public:/app/public
         depends_on:
@@ -30,8 +29,6 @@ services:
             APP_ENV: dev
         volumes:
             - .:/app:rw
-        depends_on:
-            - mysql
 
     mysql:
         build:

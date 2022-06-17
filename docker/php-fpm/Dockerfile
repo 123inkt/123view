@@ -5,7 +5,10 @@ ARG VERSION=8.1
 ###################################################################################
 
 # Base image
-FROM php:${VERSION}-zts-bullseye AS base
+FROM php:${VERSION}-fpm-bullseye as base
+
+RUN addgroup --system --gid 3000 app
+RUN adduser --system --disabled-login --uid 3000 --gid 3000 app
 
 # Install packages and remove libldap due to a known vulnerability and upgrade openssl
 RUN apt-get update && apt-get purge -y libldap-2.4-2 \
@@ -17,13 +20,13 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     cron \
     libcurl4 \
     curl \
+    libicu-dev \
     openssl=1.1.1n-0+deb11u2 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install \
     pdo_mysql \
-    pcntl \
-    gd
+    intl
 
 ## Copy php default configuration
 COPY ./docker/php-fpm/default.ini /usr/local/etc/php/conf.d/default.ini
@@ -104,3 +107,5 @@ RUN pecl install \
 COPY ./docker/php-fpm/run/entrypoint.sh /run/entrypoint.sh
 RUN chmod +x /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
+
+CMD ["/usr/bin/supervisord", "-n"]
