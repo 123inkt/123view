@@ -107,5 +107,3 @@ RUN pecl install \
 COPY ./docker/php-fpm/run/entrypoint.sh /run/entrypoint.sh
 RUN chmod +x /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
-
-CMD ["/usr/bin/supervisord", "-n"]
