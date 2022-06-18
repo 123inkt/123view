@@ -3,9 +3,6 @@ ARG APPLICATION_IMAGE
 
 FROM nginx:${VERSION}-alpine
 
-RUN addgroup -g 3000 -S app
-RUN adduser -u 3000 -S -D -G app app
-
 # https://github.com/nginxinc/docker-nginx/issues/657
 RUN apk del freetype nginx-module-image-filter
 

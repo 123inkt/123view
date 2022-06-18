@@ -7,9 +7,6 @@ ARG VERSION=8.1
 # Base image
 FROM php:${VERSION}-fpm-bullseye as base
 
-RUN addgroup --system --gid 3000 app
-RUN adduser --system --disabled-login --uid 3000 --gid 3000 app
-
 # Install packages and remove libldap due to a known vulnerability and upgrade openssl
 RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     && apt-get install -y \
@@ -18,6 +15,7 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     zip \
     libpng-dev \
     cron \
+    git \
     libcurl4 \
     curl \
     libicu-dev \
@@ -35,9 +33,9 @@ RUN docker-php-ext-install \
     intl
 
 ## Copy php default configuration
-COPY ./docker/php-fpm/default.ini /usr/local/etc/php/conf.d/default.ini
-COPY ./docker/php-fpm/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
-COPY ./docker/php-fpm/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
+COPY ./docker/php-fpm/conf/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
+COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./docker/php-fpm/cron/* /etc/cron.d/
 RUN chmod -R 600 /etc/cron.d/
 
@@ -50,7 +48,7 @@ RUN chmod -R 600 /etc/cron.d/
 FROM base as composer_build
 ENV APP_ENV=prod
 
-COPY --from=composer:2.3.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 # Copy the lock file only, this way cache is used for this part unless the lock file changed
@@ -58,13 +56,13 @@ COPY ./composer.* /app/
 
 RUN composer install --no-dev --no-interaction --no-autoloader --no-scripts --prefer-dist
 COPY . /app
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Use the previous composer_build also for dev (and test) composer installs for the already build cache
 FROM base as composer_build_dev
 ENV APP_ENV=dev
 
-COPY --from=composer:2.3.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 # Copy the lock file only, this way cache is used for this part unless the lock file changed
@@ -72,7 +70,7 @@ COPY ./composer.* /app/
 
 RUN composer install --no-interaction --no-autoloader --no-scripts --prefer-dist
 COPY . /app
-RUN composer install --optimize-autoloader
+RUN composer install --optimize-autoloader --no-scripts
 
 ###################################################################################
 # FINAL STAGES                                                                    #
@@ -86,6 +84,10 @@ WORKDIR /app
 ## Copy only from composer_build stage and set owner to php-fpm default user
 COPY --chown=www-data --from=composer_build /app/ /app
 
+## copy production ini settings
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+
+COPY ./docker/php-fpm/conf/production.ini /usr/local/etc/php/conf.d/production.ini
 COPY ./docker/php-fpm/run/entrypoint.sh /run/entrypoint.sh
 RUN chmod +x /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
@@ -99,7 +101,11 @@ RUN pecl install \
     pcov \
     && docker-php-ext-enable pcov
 
-COPY --from=composer:2.3.7 /usr/bin/composer /usr/bin/composer
+## copy test/dev ini settings
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+
+COPY ./docker/php-fpm/conf/development.ini /usr/local/etc/php/conf.d/development.ini
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data --from=composer_build_dev /app/ /app
 
 # syntax=docker/dockerfile:experimental

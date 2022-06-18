@@ -2,7 +2,9 @@
 set -e
 
 if [ "${APP_ENV}" == "dev" ]; then
-  composer install --no-interaction --optimize-autoloader
+    composer install --no-interaction --optimize-autoloader
+else
+    composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative
 fi
 
 ##

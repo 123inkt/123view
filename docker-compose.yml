@@ -18,7 +18,6 @@ services:
         build:
             args:
                 VERSION: $PHP_VERSION
-                COMPOSER_VERSION: $COMPOSER_VERSION
             context: .
             dockerfile: ./docker/php-fpm/Dockerfile
             target: dev
