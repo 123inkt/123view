@@ -14,7 +14,6 @@
 /public/bundles/
 /var/
 /vendor/
-/docker-compose.override.yml
 ###< symfony/framework-bundle ###
 
 ###> squizlabs/php_codesniffer ###
