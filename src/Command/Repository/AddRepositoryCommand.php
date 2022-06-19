@@ -29,6 +29,9 @@ class AddRepositoryCommand extends Command
         $this->addOption('gitlab', '', InputOption::VALUE_REQUIRED, 'The gitlab project id this repository is related to.');
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $repository = new Repository();

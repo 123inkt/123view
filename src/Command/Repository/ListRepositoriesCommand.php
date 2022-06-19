@@ -19,6 +19,9 @@ class ListRepositoriesCommand extends Command
         parent::__construct($name);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $repositories = $this->doctrine->getRepository(Repository::class)->findAll();

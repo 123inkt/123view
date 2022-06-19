@@ -34,6 +34,7 @@
         "ext-dom": "*",
         "ext-iconv": "*",
         "czproject/git-php": "^4.0",
+        "digitalrevolution/symfony-input-validation": "dev-Create-input-validator",
         "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -90,6 +91,12 @@
         "symfony/web-profiler-bundle": "^6.0",
         "yep/reflection": "^2.1"
     },
+    "repositories": {
+        "digitalrevolution/symfony-input-validation": {
+            "type": "git",
+            "url": "https://github.com/123inkt/symfony-input-validation"
+        }
+    },
     "replace": {
         "symfony/polyfill-mbstring": "*",
         "symfony/polyfill-ctype": "*",
@@ -97,7 +104,7 @@
         "symfony/polyfill-php72": "*",
         "symfony/polyfill-php73": "*",
         "symfony/polyfill-php74": "*",
-		"symfony/polyfill-php80": "*"
+        "symfony/polyfill-php80": "*"
     },
     "scripts": {
         "check": ["@check:phpstan", "@check:phpmd", "@check:phpcs"],

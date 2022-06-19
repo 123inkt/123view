@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03789256e2ce0712625428e150cf790d",
+    "content-hash": "cf8699fb03379e8041bc330f7c036663",
     "packages": [
         {
             "name": "czproject/git-php",
@@ -57,6 +57,125 @@
                 }
             ],
             "time": "2022-04-27T12:20:53+00:00"
+        },
+        {
+            "name": "digitalrevolution/symfony-input-validation",
+            "version": "dev-Create-input-validator",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/123inkt/symfony-input-validation",
+                "reference": "167ce22f820111c2307e421411cf9305fca20511"
+            },
+            "require": {
+                "digitalrevolution/symfony-validation-shorthand": "^1.0.4",
+                "php": ">=8.0",
+                "symfony/console": "^6.0",
+                "symfony/validator": "^6.0"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "@stable",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.4",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "phpunit/phpunit": "^9.5",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "DigitalRevolution\\SymfonyInputValidation\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "DigitalRevolution\\SymfonyInputValidation\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "check": [
+                    "@check:phpstan",
+                    "@check:phpmd",
+                    "@check:phpcs"
+                ],
+                "check:phpstan": [
+                    "phpstan analyse"
+                ],
+                "check:phpmd": [
+                    "phpmd src,tests text phpmd.xml.dist --suffixes=php"
+                ],
+                "check:phpcs": [
+                    "phpcs src tests"
+                ],
+                "fix": [
+                    "@fix:phpcbf"
+                ],
+                "fix:phpcbf": [
+                    "phpcbf src tests"
+                ],
+                "test": [
+                    "phpunit"
+                ],
+                "test:integration": [
+                    "phpunit --testsuite integration"
+                ],
+                "test:unit": [
+                    "phpunit --testsuite unit"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Symfony command input argument and option validation",
+            "time": "2022-06-19T15:06:14+00:00"
+        },
+        {
+            "name": "digitalrevolution/symfony-validation-shorthand",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/123inkt/symfony-validation-shorthand.git",
+                "reference": "12c20955609b7db4fc1244e6ebf32ac787f77b9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/123inkt/symfony-validation-shorthand/zipball/12c20955609b7db4fc1244e6ebf32ac787f77b9f",
+                "reference": "12c20955609b7db4fc1244e6ebf32ac787f77b9f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/validator": "^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "@stable",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "0.12.*",
+                "phpstan/phpstan-phpunit": "0.12.*",
+                "phpstan/phpstan-strict-rules": "0.12.*",
+                "phpstan/phpstan-symfony": "0.12.*",
+                "phpunit/phpunit": "^9.5",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "DigitalRevolution\\SymfonyValidationShorthand\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Validation shorthand for symfony",
+            "support": {
+                "issues": "https://github.com/123inkt/symfony-validation-shorthand/issues",
+                "source": "https://github.com/123inkt/symfony-validation-shorthand/tree/v1.0.5"
+            },
+            "time": "2021-12-13T20:24:01+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -384,16 +503,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.3.6",
+            "version": "3.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "9e7f76dd1cde81c62574fdffa5a9c655c847ad21"
+                "reference": "9f79d4650430b582f4598fe0954ef4d52fbc0a8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/9e7f76dd1cde81c62574fdffa5a9c655c847ad21",
-                "reference": "9e7f76dd1cde81c62574fdffa5a9c655c847ad21",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/9f79d4650430b582f4598fe0954ef4d52fbc0a8a",
+                "reference": "9f79d4650430b582f4598fe0954ef4d52fbc0a8a",
                 "shasum": ""
             },
             "require": {
@@ -408,11 +527,11 @@
             "require-dev": {
                 "doctrine/coding-standard": "9.0.0",
                 "jetbrains/phpstorm-stubs": "2022.1",
-                "phpstan/phpstan": "1.6.3",
+                "phpstan/phpstan": "1.7.13",
                 "phpstan/phpstan-strict-rules": "^1.2",
                 "phpunit/phpunit": "9.5.20",
                 "psalm/plugin-phpunit": "0.16.1",
-                "squizlabs/php_codesniffer": "3.6.2",
+                "squizlabs/php_codesniffer": "3.7.0",
                 "symfony/cache": "^5.2|^6.0",
                 "symfony/console": "^2.7|^3.0|^4.0|^5.0|^6.0",
                 "vimeo/psalm": "4.23.0"
@@ -475,7 +594,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.3.6"
+                "source": "https://github.com/doctrine/dbal/tree/3.3.7"
             },
             "funding": [
                 {
@@ -491,7 +610,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-02T17:21:01+00:00"
+            "time": "2022-06-13T21:43:03+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1177,16 +1296,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.12.2",
+            "version": "2.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "8291a7f09b12d14783ed6537b4586583d155869e"
+                "reference": "c05e1709e9ffb9abe8d37260a78975cc816ee385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/8291a7f09b12d14783ed6537b4586583d155869e",
-                "reference": "8291a7f09b12d14783ed6537b4586583d155869e",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/c05e1709e9ffb9abe8d37260a78975cc816ee385",
+                "reference": "c05e1709e9ffb9abe8d37260a78975cc816ee385",
                 "shasum": ""
             },
             "require": {
@@ -1215,10 +1334,10 @@
                 "doctrine/annotations": "^1.13",
                 "doctrine/coding-standard": "^9.0",
                 "phpbench/phpbench": "^0.16.10 || ^1.0",
-                "phpstan/phpstan": "~1.4.10 || 1.6.3",
+                "phpstan/phpstan": "~1.4.10 || 1.7.13",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
                 "psr/log": "^1 || ^2 || ^3",
-                "squizlabs/php_codesniffer": "3.6.2",
+                "squizlabs/php_codesniffer": "3.7.0",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
                 "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0",
                 "vimeo/psalm": "4.23.0"
@@ -1270,9 +1389,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.12.2"
+                "source": "https://github.com/doctrine/orm/tree/2.12.3"
             },
-            "time": "2022-05-02T19:10:07+00:00"
+            "time": "2022-06-16T13:42:23+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -1377,16 +1496,16 @@
         },
         {
             "name": "doctrine/sql-formatter",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/sql-formatter.git",
-                "reference": "20c39c2de286a9d3262cc8ed282a4ae60e265894"
+                "reference": "25a06c7bf4c6b8218f47928654252863ffc890a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/sql-formatter/zipball/20c39c2de286a9d3262cc8ed282a4ae60e265894",
-                "reference": "20c39c2de286a9d3262cc8ed282a4ae60e265894",
+                "url": "https://api.github.com/repos/doctrine/sql-formatter/zipball/25a06c7bf4c6b8218f47928654252863ffc890a5",
+                "reference": "25a06c7bf4c6b8218f47928654252863ffc890a5",
                 "shasum": ""
             },
             "require": {
@@ -1412,7 +1531,7 @@
                 {
                     "name": "Jeremy Dorn",
                     "email": "jeremy@jeremydorn.com",
-                    "homepage": "http://jeremydorn.com/"
+                    "homepage": "https://jeremydorn.com/"
                 }
             ],
             "description": "a PHP SQL highlighting library",
@@ -1423,22 +1542,22 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/sql-formatter/issues",
-                "source": "https://github.com/doctrine/sql-formatter/tree/1.1.2"
+                "source": "https://github.com/doctrine/sql-formatter/tree/1.1.3"
             },
-            "time": "2021-11-05T11:11:14+00:00"
+            "time": "2022-05-23T21:33:49+00:00"
         },
         {
             "name": "egulias/email-validator",
-            "version": "3.2",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "a5ed8d58ed0c340a7c2109f587951b1c84cf6286"
+                "reference": "f88dcf4b14af14a98ad96b14b2b317969eab6715"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a5ed8d58ed0c340a7c2109f587951b1c84cf6286",
-                "reference": "a5ed8d58ed0c340a7c2109f587951b1c84cf6286",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/f88dcf4b14af14a98ad96b14b2b317969eab6715",
+                "reference": "f88dcf4b14af14a98ad96b14b2b317969eab6715",
                 "shasum": ""
             },
             "require": {
@@ -1485,7 +1604,7 @@
             ],
             "support": {
                 "issues": "https://github.com/egulias/EmailValidator/issues",
-                "source": "https://github.com/egulias/EmailValidator/tree/3.2"
+                "source": "https://github.com/egulias/EmailValidator/tree/3.2.1"
             },
             "funding": [
                 {
@@ -1493,7 +1612,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-28T22:19:18+00:00"
+            "time": "2022-06-18T20:57:19+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -3840,16 +3959,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.19.1",
+            "version": "v1.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "9c612796a68de4196fff4bc159db5071aa62d428"
+                "reference": "d1a692369be53445af6e391170b509d7f5d026cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/9c612796a68de4196fff4bc159db5071aa62d428",
-                "reference": "9c612796a68de4196fff4bc159db5071aa62d428",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/d1a692369be53445af6e391170b509d7f5d026cf",
+                "reference": "d1a692369be53445af6e391170b509d7f5d026cf",
                 "shasum": ""
             },
             "require": {
@@ -3885,7 +4004,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.19.1"
+                "source": "https://github.com/symfony/flex/tree/v1.19.2"
             },
             "funding": [
                 {
@@ -3901,7 +4020,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-06T15:14:39+00:00"
+            "time": "2022-06-14T21:13:39+00:00"
         },
         {
             "name": "symfony/form",
@@ -7628,16 +7747,16 @@
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
-            "version": "v2.1.9",
+            "version": "v2.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/accessorpair-constraint.git",
-                "reference": "861f1724c89d393344ae3e4d4dcc4b3e95e9b731"
+                "reference": "c1bd008f897907522f1b554055789e39549f301b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/861f1724c89d393344ae3e4d4dcc4b3e95e9b731",
-                "reference": "861f1724c89d393344ae3e4d4dcc4b3e95e9b731",
+                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/c1bd008f897907522f1b554055789e39549f301b",
+                "reference": "c1bd008f897907522f1b554055789e39549f301b",
                 "shasum": ""
             },
             "require": {
@@ -7668,9 +7787,9 @@
             "description": "Digital Revolution PHPUnit Constraint for accessorpairs",
             "support": {
                 "issues": "https://github.com/123inkt/accessorpair-constraint/issues",
-                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.9"
+                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.10"
             },
-            "time": "2022-05-22T10:56:43+00:00"
+            "time": "2022-06-13T12:45:35+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
@@ -8527,16 +8646,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.6.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "76150ae7512439b4e6903db834e4a327596b617d"
+                "reference": "4a07085f74cb1f3fc7103efa537d9f00ebb74ec7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/76150ae7512439b4e6903db834e4a327596b617d",
-                "reference": "76150ae7512439b4e6903db834e4a327596b617d",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/4a07085f74cb1f3fc7103efa537d9f00ebb74ec7",
+                "reference": "4a07085f74cb1f3fc7103efa537d9f00ebb74ec7",
                 "shasum": ""
             },
             "require": {
@@ -8566,22 +8685,22 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.6.2"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.6.3"
             },
-            "time": "2022-06-10T09:29:33+00:00"
+            "time": "2022-06-14T11:40:08+00:00"
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.7.12",
+            "version": "1.7.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "32f10779d9cd88a9cbd972ec611a4148a3cbbc7e"
+                "reference": "e6f145f196a59c7ca91ea926c87ef3d936c4305f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/32f10779d9cd88a9cbd972ec611a4148a3cbbc7e",
-                "reference": "32f10779d9cd88a9cbd972ec611a4148a3cbbc7e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e6f145f196a59c7ca91ea926c87ef3d936c4305f",
+                "reference": "e6f145f196a59c7ca91ea926c87ef3d936c4305f",
                 "shasum": ""
             },
             "require": {
@@ -8607,7 +8726,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.7.12"
+                "source": "https://github.com/phpstan/phpstan/tree/1.7.14"
             },
             "funding": [
                 {
@@ -8627,7 +8746,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-09T12:39:36+00:00"
+            "time": "2022-06-14T13:09:35+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -9120,16 +9239,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.20",
+            "version": "9.5.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba"
+                "reference": "0e32b76be457de00e83213528f6bb37e2a38fcb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/12bc8879fb65aef2138b26fc633cb1e3620cffba",
-                "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0e32b76be457de00e83213528f6bb37e2a38fcb1",
+                "reference": "0e32b76be457de00e83213528f6bb37e2a38fcb1",
                 "shasum": ""
             },
             "require": {
@@ -9163,7 +9282,6 @@
                 "sebastian/version": "^3.0.2"
             },
             "require-dev": {
-                "ext-pdo": "*",
                 "phpspec/prophecy-phpunit": "^2.0.1"
             },
             "suggest": {
@@ -9207,7 +9325,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.20"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.21"
             },
             "funding": [
                 {
@@ -9219,7 +9337,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-04-01T12:37:26+00:00"
+            "time": "2022-06-19T12:14:25+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -9227,12 +9345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "bf362097fbfe4580b99b696dd8208b24ffd112b2"
+                "reference": "0a2664d739af6996ce1a24a35cb59ed2bbd27f4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bf362097fbfe4580b99b696dd8208b24ffd112b2",
-                "reference": "bf362097fbfe4580b99b696dd8208b24ffd112b2",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0a2664d739af6996ce1a24a35cb59ed2bbd27f4b",
+                "reference": "0a2664d739af6996ce1a24a35cb59ed2bbd27f4b",
                 "shasum": ""
             },
             "conflict": {
@@ -9266,6 +9384,8 @@
                 "bottelet/flarepoint": "<2.2.1",
                 "brightlocal/phpwhois": "<=4.2.5",
                 "brotkrueml/codehighlight": "<2.7",
+                "brotkrueml/schema": "<1.13.1|>=2,<2.5.1",
+                "brotkrueml/typo3-matomo-integration": "<1.3.2",
                 "buddypress/buddypress": "<7.2.1",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
                 "bytefury/crater": "<6.0.2",
@@ -9308,7 +9428,7 @@
                 "doctrine/mongodb-odm": ">=1,<1.0.2",
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1|>=2.8.3,<2.8.4",
-                "dolibarr/dolibarr": "= 12.0.5|<16|>= 3.3.beta1, < 13.0.2",
+                "dolibarr/dolibarr": "<16|= 12.0.5|>= 3.3.beta1, < 13.0.2",
                 "dompdf/dompdf": "<1.2.1",
                 "drupal/core": ">=7,<7.88|>=8,<9.2.13|>=9.3,<9.3.6",
                 "drupal/drupal": ">=7,<7.80|>=8,<8.9.16|>=9,<9.1.12|>=9.2,<9.2.4",
@@ -9351,7 +9471,7 @@
                 "fooman/tcpdf": "<6.2.22",
                 "forkcms/forkcms": "<5.11.1",
                 "fossar/tcpdf-parser": "<6.2.22",
-                "francoisjacquet/rosariosis": "<9",
+                "francoisjacquet/rosariosis": "<9.1",
                 "friendsofsymfony/oauth2-php": "<1.3",
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
@@ -9617,9 +9737,9 @@
                 "tribalsystems/zenario": "<9.2.55826",
                 "truckersmp/phpwhois": "<=4.3.1",
                 "twig/twig": "<1.38|>=2,<2.14.11|>=3,<3.3.8",
-                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.38|>=9,<9.5.29|>=10,<10.4.19|>=11,<11.5",
+                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.38|>=9,<9.5.29|>=10,<10.4.29|>=11,<11.5.11",
                 "typo3/cms-backend": ">=7,<=7.6.50|>=8,<=8.7.39|>=9,<=9.5.24|>=10,<=10.4.13|>=11,<=11.1",
-                "typo3/cms-core": ">=6.2,<=6.2.56|>=7,<=7.6.52|>=8,<=8.7.41|>=9,<9.5.29|>=10,<10.4.19|>=11,<11.5",
+                "typo3/cms-core": ">=6.2,<=6.2.56|>=7,<7.6.57|>=8,<8.7.47|>=9,<9.5.35|>=10,<10.4.29|>=11,<11.5.11",
                 "typo3/cms-form": ">=8,<=8.7.39|>=9,<=9.5.24|>=10,<=10.4.13|>=11,<=11.1",
                 "typo3/flow": ">=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.12|>=3.1,<3.1.10|>=3.2,<3.2.13|>=3.3,<3.3.13|>=4,<4.0.6",
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4|>=2.3,<2.3.99|>=3,<3.0.20|>=3.1,<3.1.18|>=3.2,<3.2.14|>=3.3,<3.3.23|>=4,<4.0.17|>=4.1,<4.1.16|>=4.2,<4.2.12|>=4.3,<4.3.3",
@@ -9718,7 +9838,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-10T00:15:15+00:00"
+            "time": "2022-06-17T21:04:24+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -10747,16 +10867,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.6.2",
+            "version": "3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
+                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
-                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1359e176e9307e906dc3d890bcc9603ff6d90619",
+                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619",
                 "shasum": ""
             },
             "require": {
@@ -10799,7 +10919,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2021-12-12T21:44:58+00:00"
+            "time": "2022-06-18T07:21:10+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -11444,6 +11564,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "digitalrevolution/symfony-input-validation": 20,
         "pdepend/pdepend": 20,
         "roave/security-advisories": 20
     },
