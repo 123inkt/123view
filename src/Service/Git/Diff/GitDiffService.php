@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
@@ -40,11 +40,11 @@ class GitDiffService
         }
 
         // clone or pull the repository for the given rule.
-        $repository = $this->repositoryService->getRepository($commit->repository->url);
+        $repository = $this->repositoryService->getRepository((string)$commit->repository->getUrl());
 
         $commandBuilder = $this->commandFactory->diffHashes($rule, $commit->parentHash, end($commit->commitHashes));
 
-        $this->log->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $commit->repository->name));
+        $this->log->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $commit->repository->getName()));
 
         // create `git log ...` command and execute.
         $output = $repository->execute($commandBuilder);

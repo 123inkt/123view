@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service;
 
-use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
@@ -46,22 +47,22 @@ class RuleProcessor
     /**
      * @throws Throwable
      */
-    public function processRule(Rule $rule): void
+    public function processRule(RuleConfiguration $ruleConfig): void
     {
-        $this->logger->info(sprintf('Executing rule `%s`.', $rule->getName()));
+        $this->logger->info(sprintf('Executing rule `%s`.', $ruleConfig->rule->getName()));
 
-        $commits = $this->gitLogService->getCommits($rule);
+        $commits = $this->gitLogService->getCommits($ruleConfig);
 
         // bundle similar commits
         $commits = $this->bundler->bundle($commits);
 
         // Fetch the single diff for commits with multiple commit hashes
         foreach ($commits as $commit) {
-            $this->diffService->getBundledDiff($rule, $commit);
+            $this->diffService->getBundledDiff($ruleConfig->rule, $commit);
         }
 
         // include or exclude certain commits
-        $commits = $this->filter($rule, $commits);
+        $commits = $this->filter($ruleConfig->rule, $commits);
 
         if (count($commits) === 0) {
             $this->logger->info('Found 0 new commits, ending...');
@@ -75,7 +76,7 @@ class RuleProcessor
         }
 
         // send mail
-        $this->mailService->sendCommitsMail($rule, $commits);
+        $this->mailService->sendCommitsMail($ruleConfig->rule, $commits);
     }
 
     /**

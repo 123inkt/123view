@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Service\Git\Log;
 
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
@@ -33,16 +34,17 @@ class GitLogService
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommits(Rule $rule): array
+    public function getCommits(RuleConfiguration $ruleConfig): array
     {
+        $rule   = $ruleConfig->rule;
         $result = [];
 
         foreach ($rule->getRepositories() as $repositoryConfig) {
             // clone or pull the repository for the given rule.
-            $repository = $this->repositoryService->getRepository($repositoryConfig->getUrl());
+            $repository = $this->repositoryService->getRepository((string)$repositoryConfig->getUrl());
 
             // create command
-            $commandBuilder = $this->commandFactory->fromRule($rule);
+            $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
 
             $this->log->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
 

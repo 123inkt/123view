@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\Git;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 
 class Commit
@@ -50,7 +50,7 @@ class Commit
      */
     public function getRepositoryName(): string
     {
-        $repository = (string)preg_replace('/\.git$/', '', $this->repository->url);
+        $repository = (string)preg_replace('/\.git$/', '', $this->repository->getUrl());
 
         return basename($repository);
     }

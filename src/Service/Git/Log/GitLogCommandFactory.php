@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\Git\Log;
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 class GitLogCommandFactory
@@ -18,33 +18,35 @@ class GitLogCommandFactory
         $this->patternFactory = $patternFactory;
     }
 
-    public function fromRule(Rule $rule): GitCommandBuilderInterface
+    public function fromRule(RuleConfiguration $ruleConfig): GitCommandBuilderInterface
     {
+        $rule    = $ruleConfig->rule;
+        $options = $rule->getRuleOptions();
         $this->builder
             ->start()
             ->remotes()
             ->topoOrder()
             ->patch()
             ->decorate()
-            ->diffAlgorithm($rule->getRuleOptions()?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
+            ->diffAlgorithm($options?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
             ->format($this->patternFactory->createPattern())
             ->ignoreCrAtEol()
-            ->since($rule->config->startTime)
-            ->until($rule->config->endTime);
+            ->since($ruleConfig->startTime)
+            ->until($ruleConfig->endTime);
 
-        if ($rule->getRuleOptions()?->isExcludeMergeCommits() === true) {
+        if ($options?->isExcludeMergeCommits() === true) {
             $this->builder->noMerges();
         }
-        if ($rule->getRuleOptions()?->isIgnoreSpaceAtEol() === true) {
+        if ($options?->isIgnoreSpaceAtEol() === true) {
             $this->builder->ignoreSpaceAtEol();
         }
-        if ($rule->getRuleOptions()?->isIgnoreSpaceChange() === true) {
+        if ($options?->isIgnoreSpaceChange() === true) {
             $this->builder->ignoreSpaceChange();
         }
-        if ($rule->getRuleOptions()?->isIgnoreAllSpace() === true) {
+        if ($options?->isIgnoreAllSpace() === true) {
             $this->builder->ignoreAllSpace();
         }
-        if ($rule->getRuleOptions()?->isIgnoreBlankLines() === true) {
+        if ($options?->isIgnoreBlankLines() === true) {
             $this->builder->ignoreBlankLines();
         }
 

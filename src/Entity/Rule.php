@@ -46,9 +46,9 @@ class Rule
 
     public function __construct()
     {
-        $this->repositories  = new ArrayCollection();
-        $this->recipients    = new ArrayCollection();
-        $this->filters       = new ArrayCollection();
+        $this->repositories = new ArrayCollection();
+        $this->recipients   = new ArrayCollection();
+        $this->filters      = new ArrayCollection();
     }
 
     public function getId(): ?int

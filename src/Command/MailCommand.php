@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command;
 
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
@@ -45,12 +47,16 @@ class MailCommand extends Command implements LoggerAwareInterface
             throw new InvalidArgumentException('Invalid or missing `frequency` argument: ' . $frequency);
         }
 
+        // create date time object in seconds precisely 5 minutes earlier
+        $currentTime = new DateTimeImmutable(date('Y-m-d H:i:00', strtotime("-5 minutes")));
+        [$startTime, $endTime] = Frequency::getPeriod($currentTime, $frequency);
+
         $rules = $this->doctrine->getRepository(Rule::class)->getActiveRulesForFrequency(true, $frequency);
 
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
             try {
-                $this->ruleProcessor->processRule($rule);
+                $this->ruleProcessor->processRule(new RuleConfiguration($startTime, $endTime, $rule));
             } catch (Throwable $exception) {
                 $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;
