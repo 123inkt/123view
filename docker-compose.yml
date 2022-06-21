@@ -7,6 +7,9 @@ services:
                 VERSION: $NGINX_VERSION
             context: .
             dockerfile: ./docker/nginx/Dockerfile
+        ports:
+            - ${NGINX_PORT:-8080}:80
+            - ${NGINX_SSL_PORT:-8443}:443
         volumes:
             - ./public:/app/public
         depends_on:

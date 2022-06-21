@@ -6,9 +6,6 @@ services:
     nginx:
         build:
             target: dev
-        ports:
-            - ${NGINX_PORT:-8080}:80
-            - ${NGINX_SSL_PORT:-8443}:443
 
     php-fpm:
         build:
