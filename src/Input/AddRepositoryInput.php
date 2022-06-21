@@ -21,6 +21,11 @@ class AddRepositoryInput extends AbstractValidatedInput
         /** @var ?string $name */
         $name = $this->input->getOption('name');
 
+        // try to retrieve name from repository url
+        if ($name === null && preg_match('#/([^/]+?)(?:.git)?$#i', $this->getRepository(), $matches) === 1) {
+            $name = $matches[1];
+        }
+
         return $name;
     }
 

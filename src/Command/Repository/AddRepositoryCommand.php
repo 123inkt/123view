@@ -45,12 +45,9 @@ class AddRepositoryCommand extends Command
         // determine name
         $name = $validatedInput->getName();
         if ($name === null) {
-            if (preg_match('#/([^/]+?)(?:.git)?$#i', (string)$repository->getUrl(), $matches) !== 1) {
-                $output->writeln('<error>Unable to determine the name of the repository. Specify repository name with the --name flag</error>');
+            $output->writeln('<error>Unable to determine the name of the repository. Specify repository name with the --name flag</error>');
 
-                return Command::FAILURE;
-            }
-            $name = $matches[1];
+            return Command::FAILURE;
         }
         if ($this->doctrine->getRepository(Repository::class)->findOneBy(['name' => $name]) !== null) {
             $output->writeln(sprintf('<error>A repository with name `%s` already exists.</error>', $name));
