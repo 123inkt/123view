@@ -3,31 +3,27 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command;
 
+use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Exception\ConfigException;
-use DR\GitCommitNotification\Service\Config\ConfigLoader;
+use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
-class MailCommand extends Command
+class MailCommand extends Command implements LoggerAwareInterface
 {
-    private LoggerInterface $logger;
-    private ConfigLoader    $configLoader;
-    private RuleProcessor   $ruleProcessor;
+    use LoggerAwareTrait;
 
-    public function __construct(LoggerInterface $logger, ConfigLoader $configLoader, RuleProcessor $ruleProcessor)
+    public function __construct(private ManagerRegistry $doctrine, private RuleProcessor $ruleProcessor)
     {
         parent::__construct();
-        $this->logger        = $logger;
-        $this->configLoader  = $configLoader;
-        $this->ruleProcessor = $ruleProcessor;
     }
 
     protected function configure(): void
@@ -49,32 +45,14 @@ class MailCommand extends Command
             throw new InvalidArgumentException('Invalid or missing `frequency` argument: ' . $frequency);
         }
 
-        try {
-            $config = $this->configLoader->load($frequency, $input);
-        } catch (ConfigException $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e]);
-            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
-
-            return self::FAILURE;
-        }
+        $rules = $this->doctrine->getRepository(Rule::class)->getActiveRulesForFrequency(true, $frequency);
 
         $exitCode = self::SUCCESS;
-        foreach ($config->getRules() as $rule) {
-            if ($rule->active === false) {
-                $this->logger->info(sprintf('Skipping rule `%s`, because it is not active', $rule->name));
-                continue;
-            }
-
-            // verify the current frequency matches the rule frequency
-            if ($rule->frequency !== $frequency) {
-                $this->logger->info(sprintf('Skipping rule `%s` based on frequency: %s vs %s', $rule->name, $rule->frequency, $frequency));
-                continue;
-            }
-
+        foreach ($rules as $rule) {
             try {
                 $this->ruleProcessor->processRule($rule);
             } catch (Throwable $exception) {
-                $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+                $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;
             }
         }

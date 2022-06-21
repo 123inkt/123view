@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Rule;
 
 /**
@@ -40,28 +41,20 @@ class RuleRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Rule[] Returns an array of Rule objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Rule
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @phpstan-param Frequency::* $frequency
+     * @return Rule[] Returns an array of Rule objects
+     */
+    public function getActiveRulesForFrequency(bool $active, string $frequency): array
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.ruleOptions', 'o')
+            ->andWhere('r.active = :active')
+            ->andWhere('o.frequency = :frequency')
+            ->setParameter('active', $active ? 1 : 0)
+            ->setParameter('frequency', $frequency)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

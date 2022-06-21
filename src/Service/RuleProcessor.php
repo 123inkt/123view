@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\Service\Filter\CommitFilter;
@@ -48,7 +48,7 @@ class RuleProcessor
      */
     public function processRule(Rule $rule): void
     {
-        $this->logger->info(sprintf('Executing rule `%s`.', $rule->name));
+        $this->logger->info(sprintf('Executing rule `%s`.', $rule->getName()));
 
         $commits = $this->gitLogService->getCommits($rule);
 

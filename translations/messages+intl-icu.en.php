@@ -70,4 +70,5 @@ return [
     'rule.edit.title'                             => 'Edit rule',
     'rule.delete.title'                           => 'Delete rule',
     'page.title.single.sign.on'                   => 'Login',
+    'Exclude merge commits'                       => 'Exclude merge commits'
 ];

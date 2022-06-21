@@ -40,6 +40,9 @@ class RuleOptions
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $ignoreBlankLines = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
+    private bool $excludeMergeCommits = true;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $subject = null;
@@ -132,6 +135,18 @@ class RuleOptions
     public function setIgnoreBlankLines(bool $ignoreBlankLines): self
     {
         $this->ignoreBlankLines = $ignoreBlankLines;
+
+        return $this;
+    }
+
+    public function isExcludeMergeCommits(): ?bool
+    {
+        return $this->excludeMergeCommits;
+    }
+
+    public function setExcludeMergeCommits(bool $excludeMergeCommits): self
+    {
+        $this->excludeMergeCommits = $excludeMergeCommits;
 
         return $this;
     }

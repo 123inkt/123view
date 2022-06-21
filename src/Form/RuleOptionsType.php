@@ -65,6 +65,7 @@ class RuleOptionsType extends AbstractType
         $builder->add('ignoreSpaceChange', CheckboxType::class, ['required' => false]);
         $builder->add('ignoreAllSpace', CheckboxType::class, ['required' => false]);
         $builder->add('ignoreBlankLines', CheckboxType::class, ['required' => false]);
+        $builder->add('excludeMergeCommits', CheckboxType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 class GitLogCommandFactory
@@ -25,25 +26,25 @@ class GitLogCommandFactory
             ->topoOrder()
             ->patch()
             ->decorate()
-            ->diffAlgorithm($rule->diffAlgorithm)
+            ->diffAlgorithm($rule->getRuleOptions()?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
             ->format($this->patternFactory->createPattern())
             ->ignoreCrAtEol()
             ->since($rule->config->startTime)
             ->until($rule->config->endTime);
 
-        if ($rule->excludeMergeCommits) {
+        if ($rule->getRuleOptions()?->isExcludeMergeCommits() === true) {
             $this->builder->noMerges();
         }
-        if ($rule->ignoreSpaceAtEol) {
+        if ($rule->getRuleOptions()?->isIgnoreSpaceAtEol() === true) {
             $this->builder->ignoreSpaceAtEol();
         }
-        if ($rule->ignoreSpaceChange) {
+        if ($rule->getRuleOptions()?->isIgnoreSpaceChange() === true) {
             $this->builder->ignoreSpaceChange();
         }
-        if ($rule->ignoreAllSpace) {
+        if ($rule->getRuleOptions()?->isIgnoreAllSpace() === true) {
             $this->builder->ignoreAllSpace();
         }
-        if ($rule->ignoreBlankLines) {
+        if ($rule->getRuleOptions()?->isIgnoreBlankLines() === true) {
             $this->builder->ignoreBlankLines();
         }
 
