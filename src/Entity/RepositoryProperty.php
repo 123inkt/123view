@@ -21,6 +21,12 @@ class RepositoryProperty
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $value;
 
+    public function __construct(?string $name = null, ?string $value = null)
+    {
+        $this->name  = $name;
+        $this->value = $value;
+    }
+
     public function getRepository(): ?Repository
     {
         return $this->repository;

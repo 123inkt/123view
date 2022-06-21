@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command\Repository;
 
+use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\RepositoryProperty;
+use DR\GitCommitNotification\Input\AddRepositoryInput;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('git:repository:add', 'Add a git repository to monitor commits for.')]
 class AddRepositoryCommand extends Command
 {
-    public function __construct(private ManagerRegistry $doctrine, ?string $name = null)
+    public function __construct(private ManagerRegistry $doctrine, private InputValidator $inputValidator, ?string $name = null)
     {
         parent::__construct($name);
     }
@@ -30,43 +33,44 @@ class AddRepositoryCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $repository = new Repository();
+        $validatedInput = $this->inputValidator->validate($input, AddRepositoryInput::class);
 
-        $repositoryUrl = (string)$input->getArgument('repository');
-        $repository->setUrl($repositoryUrl);
+        $repository = new Repository();
+        $repository->setUrl($validatedInput->getRepository());
 
         // determine name
-        if ($input->getOption('name') === null) {
-            if (preg_match('#/([^/]+?)(?:.git)?$#i', $repositoryUrl, $matches) !== 1) {
-                $output->writeln(
-                    '<error>Unable to determine the name of the repository based on the url. Specify repository name with the --name flag</error>'
-                );
+        $name = $validatedInput->getName();
+        if ($name === null) {
+            if (preg_match('#/([^/]+?)(?:.git)?$#i', (string)$repository->getUrl(), $matches) !== 1) {
+                $output->writeln('<error>Unable to determine the name of the repository. Specify repository name with the --name flag</error>');
 
                 return Command::FAILURE;
             }
-            $repository->setName($matches[1]);
-        } else {
-            $repository->setName((string)$input->getOption('name'));
+            $name = $matches[1];
+        }
+        if ($this->doctrine->getRepository(Repository::class)->findOneBy(['name' => $name]) !== null) {
+            $output->writeln(sprintf('<error>A repository with name `%s` already exists.</error>', $name));
+
+            return Command::FAILURE;
         }
 
-        if ($input->getOption('upsource') !== null) {
-            $property = new RepositoryProperty();
-            $property->setName('upsource-project-id');
-            $property->setValue((string)$input->getOption('upsource'));
-            $repository->addRepositoryProperty($property);
+        $repository->setName($name);
+
+        // set upsource project id
+        if ($validatedInput->getUpsourceId() !== null) {
+            $repository->addRepositoryProperty(new RepositoryProperty('upsource-project-id', $validatedInput->getUpsourceId()));
         }
 
-        if ($input->getOption('gitlab') !== null) {
-            $property = new RepositoryProperty();
-            $property->setName('gitlab-project-id');
-            $property->setValue((string)$input->getOption('gitlab'));
-            $repository->addRepositoryProperty($property);
+        // set gitlab project id
+        if ($validatedInput->getGitlabId() !== null) {
+            $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', (string)$validatedInput->getGitlabId()));
         }
 
+        // save
         $entityManager = $this->doctrine->getManager();
         $entityManager->persist($repository);
         $entityManager->flush();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
+use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use Doctrine\Common\Annotations\AnnotationReader;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
@@ -55,8 +56,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
 
-    // Register Symfony Filesystem
     $services->set(Filesystem::class);
+    $services->set(InputValidator::class);
     $services->set(LoginService::class);
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
 
