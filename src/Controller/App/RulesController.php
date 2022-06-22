@@ -8,6 +8,7 @@ use DR\GitCommitNotification\ViewModel\App\RulesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RulesController extends AbstractController
@@ -24,6 +25,10 @@ class RulesController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function __invoke(): array
     {
+        if ($this->user === null) {
+            throw new AccessDeniedException('Access denied');
+        }
+
         $model = new RulesViewModel();
         $model->setRules(iterator_to_array($this->user->getRules()));
 

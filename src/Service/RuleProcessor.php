@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service;
 
+use DR\GitCommitNotification\Entity\Filter;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\RuleConfiguration;
@@ -87,13 +88,15 @@ class RuleProcessor
     private function filter(Rule $rule, array $commits): array
     {
         // exclude certain commits
-        if ($rule->exclude !== null) {
-            $commits = $this->filter->exclude($commits, $rule->exclude);
+        $exclusions = $rule->getFilters()->filter(static fn(Filter $filter) => $filter->isInclusion() === false);
+        if (count($exclusions) > 0) {
+            $commits = $this->filter->exclude($commits, $exclusions);
         }
 
         // include certain commits
-        if ($rule->include !== null) {
-            $commits = $this->filter->include($commits, $rule->include);
+        $inclusions = $rule->getFilters()->filter(static fn(Filter $filter) => $filter->isInclusion());
+        if (count($inclusions) > 0) {
+            $commits = $this->filter->include($commits, $inclusions);
         }
 
         return $commits;

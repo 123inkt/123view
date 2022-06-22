@@ -16,7 +16,7 @@ class AddExternalLinkInput extends AbstractValidatedInput
         return $pattern;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         /** @var string $url */
         $url = $this->input->getArgument('url');
