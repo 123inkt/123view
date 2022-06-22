@@ -76,7 +76,7 @@ class RuleProcessor
         }
 
         // send mail
-        $this->mailService->sendCommitsMail($ruleConfig->rule, $commits);
+        $this->mailService->sendCommitsMail($ruleConfig, $commits);
     }
 
     /**

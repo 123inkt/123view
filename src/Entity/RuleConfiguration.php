@@ -7,7 +7,14 @@ use DateTimeInterface;
 
 class RuleConfiguration
 {
-    public function __construct(public DateTimeInterface $startTime, public DateTimeInterface $endTime, public Rule $rule)
-    {
+    /**
+     * @param ExternalLink[] $externalLinks
+     */
+    public function __construct(
+        public DateTimeInterface $startTime,
+        public DateTimeInterface $endTime,
+        public array $externalLinks,
+        public Rule $rule
+    ) {
     }
 }

@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\ViewModel\CommitsViewModel;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -28,20 +29,21 @@ class MailService
      *
      * @throws TransportExceptionInterface
      */
-    public function sendCommitsMail(Rule $rule, array $commits): void
+    public function sendCommitsMail(RuleConfiguration $config, array $commits): void
     {
-        $externalLinks = $rule->externalLinks === null ? [] : $rule->externalLinks->getExternalLinks();
+        $rule          = $config->rule;
+        $externalLinks = $config->externalLinks;
 
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
-            ->subject($rule->subject ?? '[Commit Notification] New revisions for: ' . $rule->name)
+            ->subject($rule->subject ?? '[Commit Notification] New revisions for: ' . $rule->getName())
             ->htmlTemplate('mail/commits.html.twig')
             ->text('')
-            ->context(['viewModel' => new CommitsViewModel($commits, $rule->theme, $externalLinks)]);
+            ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource', $config->externalLinks)]);
 
-        foreach ($rule->recipients->getRecipients() as $recipient) {
-            $email->addTo(new Address($recipient->email, $recipient->name ?? ''));
-            $this->log->info(sprintf('Sending %s commit mail to %s.', $rule->name, $recipient->email));
+        foreach ($rule->getRecipients() as $recipient) {
+            $email->addTo(new Address((string)$recipient->getEmail(), $recipient->getName() ?? ''));
+            $this->log->info(sprintf('Sending %s commit mail to %s.', $rule->getName(), $recipient->getEmail()));
         }
         $this->mailer->send($email);
     }
