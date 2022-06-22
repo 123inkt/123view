@@ -42,6 +42,7 @@ class MailCommand extends Command implements LoggerAwareInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @phpstan-var Frequency::* $frequency */
         $frequency = Strings::string($input->getOption('frequency'));
         if (Frequency::isValid($frequency) === false) {
             throw new InvalidArgumentException('Invalid or missing `frequency` argument: ' . $frequency);

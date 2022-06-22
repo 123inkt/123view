@@ -60,6 +60,18 @@ class Repository
         return $this;
     }
 
+    public function getRepositoryProperty(string $name): ?string
+    {
+        /** @var RepositoryProperty $property */
+        foreach ($this->repositoryProperties as $property) {
+            if ($property->getName() === $name) {
+                return $property->getValue();
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return Collection<int, RepositoryProperty>
      */

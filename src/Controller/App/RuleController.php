@@ -34,7 +34,7 @@ class RuleController extends AbstractController
     #[Entity('rule')]
     public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
     {
-        if ($rule !== null && $rule->getUser() !== $this->user) {
+        if ($this->user === null || ($rule !== null && $rule->getUser() !== $this->user)) {
             throw new AccessDeniedException('Access denied');
         }
 

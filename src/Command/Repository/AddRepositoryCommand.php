@@ -7,7 +7,7 @@ use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\RepositoryProperty;
-use DR\GitCommitNotification\Input\AddRepositoryInput;
+use DR\GitCommitNotification\Input\AddExternalLinkInput;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -37,13 +37,13 @@ class AddRepositoryCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $validatedInput = $this->inputValidator->validate($input, AddRepositoryInput::class);
+        $validatedInput = $this->inputValidator->validate($input, AddExternalLinkInput::class);
 
         $repository = new Repository();
         $repository->setUrl($validatedInput->getRepository());
 
         // determine name
-        $name = $validatedInput->getName();
+        $name = $validatedInput->getUrl();
         if ($name === null) {
             $output->writeln('<error>Unable to determine the name of the repository. Specify repository name with the --name flag</error>');
 

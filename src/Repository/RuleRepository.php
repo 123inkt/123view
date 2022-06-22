@@ -47,14 +47,16 @@ class RuleRepository extends ServiceEntityRepository
      */
     public function getActiveRulesForFrequency(bool $active, string $frequency): array
     {
-        return $this->createQueryBuilder('r')
+        /** @var Rule[] $result */
+        $result = $this->createQueryBuilder('r')
             ->leftJoin('r.ruleOptions', 'o')
             ->andWhere('r.active = :active')
             ->andWhere('o.frequency = :frequency')
             ->setParameter('active', $active ? 1 : 0)
             ->setParameter('frequency', $frequency)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+
+        return $result;
     }
 }
