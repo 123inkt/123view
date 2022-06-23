@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\ExternalTool\Gitlab;
 
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\RepositoryProperty;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabApi;
 use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabIntegration;
@@ -17,7 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitlabIntegrationTest extends AbstractTest
 {
-    /** @var GitlabApi|MockObject */
+    /** @var GitlabApi&MockObject */
     private GitlabApi         $api;
     private GitlabIntegration $integration;
 
@@ -58,8 +59,7 @@ class GitlabIntegrationTest extends AbstractTest
      */
     public function testOnCommitEventShouldSkipOnMissingGitlabProjectId(): void
     {
-        $repository                  = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->gitlabProjectId = null;
+        $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;
@@ -78,8 +78,8 @@ class GitlabIntegrationTest extends AbstractTest
      */
     public function testOnCommitEventShouldSkipOnNoUrl(): void
     {
-        $repository                  = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->gitlabProjectId = 123;
+        $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
+        $repository->addRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;
@@ -88,11 +88,11 @@ class GitlabIntegrationTest extends AbstractTest
         // setup mocks
         $this->api->expects(static::once())
             ->method('getMergeRequestUrl')
-            ->with($repository->gitlabProjectId, $commit->getRemoteRef())
+            ->with("123", $commit->getRemoteRef())
             ->willReturn(null);
         $this->api->expects(static::once())
             ->method('getBranchUrl')
-            ->with($repository->gitlabProjectId, $commit->getRemoteRef())
+            ->with("123", $commit->getRemoteRef())
             ->willReturn(null);
 
         $this->integration->onCommitEvent(new CommitEvent($commit));
@@ -106,8 +106,8 @@ class GitlabIntegrationTest extends AbstractTest
      */
     public function testOnCommitEventShouldSkipOnHttpClientException(): void
     {
-        $repository                  = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->gitlabProjectId = 123;
+        $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
+        $repository->addRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;
@@ -127,8 +127,8 @@ class GitlabIntegrationTest extends AbstractTest
      */
     public function testOnCommitEvent(): void
     {
-        $repository                  = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->gitlabProjectId = 123;
+        $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
+        $repository->addRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;
@@ -137,7 +137,7 @@ class GitlabIntegrationTest extends AbstractTest
         // setup mock
         $this->api->expects(static::once())
             ->method('getMergeRequestUrl')
-            ->with($repository->gitlabProjectId, $commit->getRemoteRef())
+            ->with("123", $commit->getRemoteRef())
             ->willReturn('https://gitlab.example.com/merge-request/1');
 
         $this->integration->onCommitEvent(new CommitEvent($commit));
