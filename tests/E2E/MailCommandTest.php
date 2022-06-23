@@ -21,7 +21,7 @@ use Symfony\Component\Mailer\Event\MessageEvent;
  */
 class MailCommandTest extends AbstractKernelTest
 {
-    /** @var GitRepositoryService|MockObject */
+    /** @var GitRepositoryService&MockObject */
     private GitRepositoryService  $repositoryService;
     private MessageEventCollector $messageCollector;
 
