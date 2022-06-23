@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Config\Recipient;
-use DR\GitCommitNotification\Entity\Config\Recipients;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DateTime;
+use DR\GitCommitNotification\Entity\Recipient;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
+use DR\GitCommitNotification\Entity\RuleOptions;
 use DR\GitCommitNotification\Service\Mail\MailService;
 use DR\GitCommitNotification\Tests\AbstractTest;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,7 +21,7 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class MailServiceTest extends AbstractTest
 {
-    /** @var MockObject|MailerInterface */
+    /** @var MockObject&MailerInterface */
     private MailerInterface $mailer;
     private MailService     $service;
     private Rule            $rule;
@@ -30,13 +32,13 @@ class MailServiceTest extends AbstractTest
         $this->mailer  = $this->createMock(MailerInterface::class);
         $this->service = new MailService($this->log, $this->mailer);
 
-        $recipient        = new Recipient();
-        $recipient->email = 'recipient@example.com';
+        $recipient = new Recipient();
+        $recipient->setEmail('recipient@example.com');
 
-        $this->rule             = new Rule();
-        $this->rule->name       = "Sherlock Holmes";
-        $this->rule->recipients = new Recipients();
-        $this->rule->recipients->addRecipient($recipient);
+        $this->rule = new Rule();
+        $this->rule->setName("Sherlock Holmes");
+        $this->rule->addRecipient($recipient);
+        $this->rule->setRuleOptions(new RuleOptions());
     }
 
     /**
@@ -47,6 +49,7 @@ class MailServiceTest extends AbstractTest
     {
         // prep data
         $commits = [$this->createCommit(), $this->createCommit()];
+        $config  = new RuleConfiguration(new DateTime(), new DateTime(), [], $this->rule);
 
         // assert mailer send argument
         $this->mailer->expects(static::once())
@@ -61,6 +64,6 @@ class MailServiceTest extends AbstractTest
                 )
             );
 
-        $this->service->sendCommitsMail($this->rule, $commits);
+        $this->service->sendCommitsMail($config, $commits);
     }
 }

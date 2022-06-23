@@ -31,8 +31,7 @@ class MailService
      */
     public function sendCommitsMail(RuleConfiguration $config, array $commits): void
     {
-        $rule          = $config->rule;
-        $externalLinks = $config->externalLinks;
+        $rule = $config->rule;
 
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
