@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\Config\RepositoryReference;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Commit;
@@ -38,8 +38,8 @@ trait TestTrait
     protected function createRepository(string $name, string $url): Repository
     {
         $repository       = new Repository();
-        $repository->name = $name;
-        $repository->url  = $url;
+        $repository->setName($name);
+        $repository->setUrl($url);
 
         return $repository;
     }

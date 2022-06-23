@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service;
 
-use DR\GitCommitNotification\Entity\Config\Definition;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DateTime;
+use DR\GitCommitNotification\Entity\Filter;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
@@ -23,17 +25,17 @@ use Throwable;
  */
 class RuleProcessorTest extends AbstractTest
 {
-    /** @var GitLogService|MockObject */
+    /** @var GitLogService&MockObject */
     private GitLogService $gitLogService;
-    /** @var GitDiffService|MockObject */
+    /** @var GitDiffService&MockObject */
     private GitDiffService $diffService;
-    /** @var CommitFilter|MockObject */
+    /** @var CommitFilter&MockObject */
     private CommitFilter $commitFilter;
-    /** @var CommitBundler|MockObject */
+    /** @var CommitBundler&MockObject */
     private CommitBundler $commitBundler;
-    /** @var MockObject|EventDispatcherInterface */
+    /** @var MockObject&EventDispatcherInterface */
     private EventDispatcherInterface $dispatcher;
-    /** @var MailService|MockObject */
+    /** @var MailService&MockObject */
     private MailService   $mailService;
     private RuleProcessor $ruleProcessor;
 
@@ -64,18 +66,19 @@ class RuleProcessorTest extends AbstractTest
      */
     public function testProcessRule(): void
     {
-        $rule       = new Rule();
-        $rule->name = 'foobar';
-        $commit     = $this->createCommit();
-        $commits    = [$commit];
+        $rule = new Rule();
+        $rule->setName('foobar');
+        $config  = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
+        $commit  = $this->createCommit();
+        $commits = [$commit];
 
-        $this->gitLogService->expects(static::once())->method('getCommits')->with($rule)->willReturn($commits);
+        $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn($commits);
         $this->commitBundler->expects(static::once())->method('bundle')->with($commits)->willReturn($commits);
         $this->diffService->expects(static::once())->method('getBundledDiff')->with($rule, $commit);
         $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
-        $this->mailService->expects(static::once())->method('sendCommitsMail')->with($rule, $commits);
+        $this->mailService->expects(static::once())->method('sendCommitsMail')->with($config, $commits);
 
-        $this->ruleProcessor->processRule($rule);
+        $this->ruleProcessor->processRule($config);
     }
 
     /**
@@ -85,22 +88,30 @@ class RuleProcessorTest extends AbstractTest
      */
     public function testProcessRuleWithExclusionAndInclusions(): void
     {
-        $rule          = new Rule();
-        $rule->name    = 'foobar';
-        $rule->exclude = new Definition();
-        $rule->include = new Definition();
+        $excludeFilter = (new Filter())->setInclusion(false);
+        $includeFilter = (new Filter())->setInclusion(true);
+        $rule          = (new Rule())->setName('foobar')->addFilter($excludeFilter)->addFilter($includeFilter);
+        $config        = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
         $commit        = $this->createCommit();
         $commits       = [$commit];
 
-        $this->gitLogService->expects(static::once())->method('getCommits')->with($rule)->willReturn($commits);
+        $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn($commits);
         $this->commitBundler->expects(static::once())->method('bundle')->with($commits)->willReturn($commits);
         $this->diffService->expects(static::once())->method('getBundledDiff')->with($rule, $commit)->willReturn($commit);
-        $this->commitFilter->expects(static::once())->method('exclude')->with($commits, $rule->exclude)->willReturn($commits);
-        $this->commitFilter->expects(static::once())->method('include')->with($commits, $rule->include)->willReturn($commits);
+        $this->commitFilter
+            ->expects(static::once())
+            ->method('exclude')
+            ->with($commits, static::callback(static fn($collection) => $collection->contains($excludeFilter)))
+            ->willReturn($commits);
+        $this->commitFilter
+            ->expects(static::once())
+            ->method('include')
+            ->with($commits, static::callback(static fn($collection) => $collection->contains($includeFilter)))
+            ->willReturn($commits);
         $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
-        $this->mailService->expects(static::once())->method('sendCommitsMail')->with($rule, $commits);
+        $this->mailService->expects(static::once())->method('sendCommitsMail')->with($config, $commits);
 
-        $this->ruleProcessor->processRule($rule);
+        $this->ruleProcessor->processRule($config);
     }
 
     /**
@@ -109,15 +120,16 @@ class RuleProcessorTest extends AbstractTest
      */
     public function testProcessRuleShouldNotSendMailOnNoCommits(): void
     {
-        $rule       = new Rule();
-        $rule->name = 'foobar';
+        $rule = new Rule();
+        $rule->setName('foobar');
+        $config = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
 
-        $this->gitLogService->expects(static::once())->method('getCommits')->with($rule)->willReturn([]);
+        $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn([]);
         $this->commitBundler->expects(static::once())->method('bundle')->with([])->willReturn([]);
         $this->diffService->expects(static::never())->method('getBundledDiff');
         $this->dispatcher->expects(static::never())->method('dispatch');
         $this->mailService->expects(static::never())->method('sendCommitsMail');
 
-        $this->ruleProcessor->processRule($rule);
+        $this->ruleProcessor->processRule($config);
     }
 }
