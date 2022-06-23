@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Service\CommitHydrator;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
@@ -20,11 +20,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 class GitLogParserTest extends AbstractTest
 {
     private GitLogParser $parser;
-    /** @var DiffParser|MockObject */
+    /** @var DiffParser&MockObject */
     private DiffParser $diffParser;
-    /** @var CommitHydrator|MockObject */
+    /** @var CommitHydrator&MockObject */
     private CommitHydrator $hydrator;
-    /** @var FormatPatternFactory|MockObject */
+    /** @var FormatPatternFactory&MockObject */
     private FormatPatternFactory $patternFactory;
 
     protected function setUp(): void
