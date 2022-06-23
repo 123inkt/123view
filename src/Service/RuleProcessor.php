@@ -94,7 +94,7 @@ class RuleProcessor
         }
 
         // include certain commits
-        $inclusions = $rule->getFilters()->filter(static fn(Filter $filter) => $filter->isInclusion());
+        $inclusions = $rule->getFilters()->filter(static fn(Filter $filter) => (bool)$filter->isInclusion());
         if (count($inclusions) > 0) {
             $commits = $this->filter->include($commits, $inclusions);
         }

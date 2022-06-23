@@ -11,7 +11,7 @@ use RuntimeException;
 class DefinitionFileMatcher
 {
     /**
-     * @param Collection<Filter> $filters
+     * @param Collection<int, Filter> $filters
      * @suppressWarnings(PHPMD.ErrorControlOperator)
      */
     public function matches(DiffFile $file, Collection $filters): bool

@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Command;
 
+use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Command\MailCommand;
-use DR\GitCommitNotification\Entity\Config\Configuration;
-use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Exception\ConfigException;
-use DR\GitCommitNotification\Service\Config\ConfigLoader;
+use DR\GitCommitNotification\Entity\ExternalLink;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
+use DR\GitCommitNotification\Repository\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\RuleRepository;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Tests\AbstractTest;
 use Exception;
@@ -22,19 +24,26 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class MailCommandTest extends AbstractTest
 {
-    /** @var ConfigLoader|MockObject */
-    private ConfigLoader $configLoader;
-    /** @var RuleProcessor|MockObject */
+    /** @var ManagerRegistry&MockObject */
+    private ManagerRegistry $doctrine;
+    /** @var RuleProcessor&MockObject */
     private RuleProcessor $ruleProcessor;
-    private MailCommand $command;
+    /** @var ExternalLinkRepository&MockObject */
+    private ExternalLinkRepository $externalLinkRepository;
+    /** @var RuleRepository&MockObject */
+    private RuleRepository $ruleRepository;
+    private MailCommand    $command;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->configLoader  = $this->createMock(ConfigLoader::class);
+        $this->doctrine      = $this->createMock(ManagerRegistry::class);
         $this->ruleProcessor = $this->createMock(RuleProcessor::class);
 
-        $this->command = new MailCommand($this->log, $this->configLoader, $this->ruleProcessor);
+        $this->externalLinkRepository = $this->createMock(ExternalLinkRepository::class);
+        $this->ruleRepository         = $this->createMock(RuleRepository::class);
+
+        $this->command = new MailCommand($this->doctrine, $this->ruleProcessor);
     }
 
     /**
@@ -68,67 +77,24 @@ class MailCommandTest extends AbstractTest
     /**
      * @covers ::execute
      */
-    public function testCommandInvalidConfig(): void
+    public function testCommandSuccessful(): void
     {
-        $commandTester = new CommandTester($this->command);
-        $this->configLoader->expects(static::once())->method('load')->willThrowException(new ConfigException());
+        $rule = new Rule();
+        $rule->setName('foobar');
+        $externalLink = new ExternalLink();
 
-        static::assertSame(Command::FAILURE, $commandTester->execute(['--frequency' => 'once-per-hour']));
-    }
+        // setup mocks
+        $this->externalLinkRepository->expects(self::once())->method('findAll')->willReturn([$externalLink]);
+        $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
+        $this->doctrine->expects(static::exactly(2))
+            ->method('getRepository')
+            ->withConsecutive([ExternalLink::class], [Rule::class])
+            ->willReturn($this->externalLinkRepository, $this->ruleRepository);
 
-    /**
-     * @covers ::execute
-     */
-    public function testCommandInactiveRuleShouldBeSkipped(): void
-    {
-        $rule         = new Rule();
-        $rule->active = false;
-        $rule->name   = 'foobar';
-
-        $config = new Configuration();
-        $config->addRule($rule);
-
-        $this->configLoader->method('load')->willReturn($config);
-        $this->ruleProcessor->expects(static::never())->method('processRule');
-
-        $commandTester = new CommandTester($this->command);
-        $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
-        static::assertSame(Command::SUCCESS, $exitCode);
-    }
-
-    /**
-     * @covers ::execute
-     */
-    public function testCommandRuleFrequencyShouldMatchCliFrequency(): void
-    {
-        $rule            = new Rule();
-        $rule->frequency = 'once-per-two-hours';
-        $rule->name      = 'foobar';
-
-        $config = new Configuration();
-        $config->addRule($rule);
-
-        $this->configLoader->method('load')->willReturn($config);
-        $this->ruleProcessor->expects(static::never())->method('processRule');
-
-        $commandTester = new CommandTester($this->command);
-        $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
-        static::assertSame(Command::SUCCESS, $exitCode);
-    }
-
-    /**
-     * @covers ::execute
-     */
-    public function testCommandProcessRuleShouldBeInvoked(): void
-    {
-        $rule       = new Rule();
-        $rule->name = 'foobar';
-
-        $config = new Configuration();
-        $config->addRule($rule);
-
-        $this->configLoader->method('load')->willReturn($config);
-        $this->ruleProcessor->expects(static::once())->method('processRule')->with($rule);
+        $this->ruleProcessor
+            ->expects(static::once())
+            ->method('processRule')
+            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule && count($config->externalLinks) === 1));
 
         $commandTester = new CommandTester($this->command);
         $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
@@ -140,15 +106,19 @@ class MailCommandTest extends AbstractTest
      */
     public function testCommandShouldExitWithFailureOnException(): void
     {
-        $rule       = new Rule();
-        $rule->name = 'foobar';
-        $exception  = new Exception('error');
+        $rule = new Rule();
+        $rule->setName('foobar');
+        $externalLink = new ExternalLink();
 
-        $config = new Configuration();
-        $config->addRule($rule);
+        // setup mocks
+        $this->externalLinkRepository->expects(self::once())->method('findAll')->willReturn([$externalLink]);
+        $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
+        $this->doctrine->expects(static::exactly(2))
+            ->method('getRepository')
+            ->withConsecutive([ExternalLink::class], [Rule::class])
+            ->willReturn($this->externalLinkRepository, $this->ruleRepository);
 
-        $this->configLoader->method('load')->willReturn($config);
-        $this->ruleProcessor->method('processRule')->willThrowException($exception);
+        $this->ruleProcessor->expects(static::once())->method('processRule')->willThrowException(new Exception('error'));
 
         $commandTester = new CommandTester($this->command);
         $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);

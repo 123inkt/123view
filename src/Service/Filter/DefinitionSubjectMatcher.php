@@ -11,7 +11,7 @@ use RuntimeException;
 class DefinitionSubjectMatcher
 {
     /**
-     * @param Collection<Filter> $filters
+     * @param Collection<int, Filter> $filters
      * @suppressWarnings(PHPMD.ErrorControlOperator)
      */
     public function matches(Commit $commit, Collection $filters): bool
