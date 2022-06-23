@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Commit;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
 use DR\GitCommitNotification\Service\Git\Commit\CommitCombiner;
