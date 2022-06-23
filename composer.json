@@ -34,7 +34,7 @@
         "ext-dom": "*",
         "ext-iconv": "*",
         "czproject/git-php": "^4.0",
-        "digitalrevolution/symfony-input-validation": "dev-Create-input-validator",
+        "digitalrevolution/symfony-console-validation": "dev-Create-input-validator",
         "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -95,7 +95,7 @@
     "repositories": {
         "digitalrevolution/symfony-input-validation": {
             "type": "git",
-            "url": "https://github.com/123inkt/symfony-input-validation"
+            "url": "https://github.com/123inkt/symfony-console-validation"
         }
     },
     "replace": {

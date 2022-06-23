@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "315bbfc38235bb623cfe02eb8cb8bf5e",
+    "content-hash": "86cbc4cbc7463c55bca53d4d92e91474",
     "packages": [
         {
             "name": "czproject/git-php",
@@ -59,11 +59,11 @@
             "time": "2022-04-27T12:20:53+00:00"
         },
         {
-            "name": "digitalrevolution/symfony-input-validation",
+            "name": "digitalrevolution/symfony-console-validation",
             "version": "dev-Create-input-validator",
             "source": {
                 "type": "git",
-                "url": "https://github.com/123inkt/symfony-input-validation",
+                "url": "https://github.com/123inkt/symfony-console-validation",
                 "reference": "7f6c5108a8fb5d0e23396d496fde819be9f31c69"
             },
             "require": {
@@ -1617,23 +1617,28 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v5.5.1",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "83b609028194aa042ea33b5af2d41a7427de80e6"
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/83b609028194aa042ea33b5af2d41a7427de80e6",
-                "reference": "83b609028194aa042ea33b5af2d41a7427de80e6",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d28e6df83830252650da4623c78aaaf98fb385f3",
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^7.1||^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=4.8 <=9"
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^1.1",
+                "phpunit/phpunit": "^7.5||^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
             },
             "suggest": {
                 "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
@@ -1668,9 +1673,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v5.5.1"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.2.0"
             },
-            "time": "2021-11-08T20:18:51+00:00"
+            "time": "2022-05-13T20:54:50+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
@@ -7350,22 +7355,24 @@
         },
         {
             "name": "thenetworg/oauth2-azure",
-            "version": "v2.0.1",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TheNetworg/oauth2-azure.git",
-                "reference": "2649422a0dc74af32d21d9d738d37abcd5b03998"
+                "reference": "56e0776776476da0b2de8cb7c201bfe7dec7aee1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TheNetworg/oauth2-azure/zipball/2649422a0dc74af32d21d9d738d37abcd5b03998",
-                "reference": "2649422a0dc74af32d21d9d738d37abcd5b03998",
+                "url": "https://api.github.com/repos/TheNetworg/oauth2-azure/zipball/56e0776776476da0b2de8cb7c201bfe7dec7aee1",
+                "reference": "56e0776776476da0b2de8cb7c201bfe7dec7aee1",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~3.0||~4.0||~5.0",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "firebase/php-jwt": "~3.0||~4.0||~5.0||~6.0",
                 "league/oauth2-client": "~2.0",
-                "php": "^5.6|^7.0|^8.0"
+                "php": "^7.1|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -7399,9 +7406,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TheNetworg/oauth2-azure/issues",
-                "source": "https://github.com/TheNetworg/oauth2-azure/tree/v2.0.1"
+                "source": "https://github.com/TheNetworg/oauth2-azure/tree/v2.1.0"
             },
-            "time": "2021-01-11T12:20:12+00:00"
+            "time": "2022-06-02T15:06:54+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -9414,12 +9421,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "bd1c2ed6f37c9a9e81417b8367865c0bbeabed55"
+                "reference": "a66635bf19583447f296db28180762367690ac5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bd1c2ed6f37c9a9e81417b8367865c0bbeabed55",
-                "reference": "bd1c2ed6f37c9a9e81417b8367865c0bbeabed55",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a66635bf19583447f296db28180762367690ac5a",
+                "reference": "a66635bf19583447f296db28180762367690ac5a",
                 "shasum": ""
             },
             "conflict": {
@@ -9592,6 +9599,7 @@
                 "kevinpapst/kimai2": "<1.16.7",
                 "kitodo/presentation": "<3.1.2",
                 "klaviyo/magento2-extension": ">=1,<3",
+                "krayin/laravel-crm": "<1.2.2",
                 "kreait/firebase-php": ">=3.2,<3.8.1",
                 "la-haute-societe/tcpdf": "<6.2.22",
                 "laminas/laminas-form": "<2.17.1|>=3,<3.0.2|>=3.1,<3.1.1",
@@ -9641,7 +9649,7 @@
                 "nette/nette": ">=2,<2.0.19|>=2.1,<2.1.13",
                 "nilsteampassnet/teampass": "<=2.1.27.36",
                 "noumo/easyii": "<=0.9",
-                "nukeviet/nukeviet": "<4.3.4",
+                "nukeviet/nukeviet": "<4.5.2",
                 "nystudio107/craft-seomatic": "<3.4.12",
                 "nzo/url-encryptor-bundle": ">=4,<4.3.2|>=5,<5.0.1",
                 "october/backend": "<1.1.2",
@@ -9681,7 +9689,7 @@
                 "phpwhois/phpwhois": "<=4.2.5",
                 "phpxmlrpc/extras": "<0.6.1",
                 "pimcore/data-hub": "<1.2.4",
-                "pimcore/pimcore": "<10.4",
+                "pimcore/pimcore": "<10.4.4",
                 "pocketmine/bedrock-protocol": "<8.0.2",
                 "pocketmine/pocketmine-mp": ">= 4.0.0-BETA5, < 4.4.2|<4.2.10",
                 "pressbooks/pressbooks": "<5.18",
@@ -9715,7 +9723,7 @@
                 "shopware/core": "<=6.4.9",
                 "shopware/platform": "<=6.4.9",
                 "shopware/production": "<=6.3.5.2",
-                "shopware/shopware": "<5.7.9",
+                "shopware/shopware": "<5.7.12",
                 "shopware/storefront": "<=6.4.8.1",
                 "shopxo/shopxo": "<2.2.6",
                 "showdoc/showdoc": "<2.10.4",
@@ -9907,7 +9915,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-21T17:12:40+00:00"
+            "time": "2022-06-23T07:04:20+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -11633,7 +11641,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "digitalrevolution/symfony-input-validation": 20,
+        "digitalrevolution/symfony-console-validation": 20,
         "pdepend/pdepend": 20,
         "roave/security-advisories": 20
     },
