@@ -15,7 +15,8 @@ class EditRuleViewModelTest extends AbstractTest
      * @covers ::setForm
      * @covers ::getForm
      */
-    public function testAccessorPairs(): void {
+    public function testAccessorPairs(): void
+    {
         static::assertAccessorPairs(EditRuleViewModel::class);
     }
 }

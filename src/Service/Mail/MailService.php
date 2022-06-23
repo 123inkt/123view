@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\ViewModel\CommitsViewModel;

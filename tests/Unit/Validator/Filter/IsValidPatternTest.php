@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Validator\Filter;
 
-use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
 use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
 use Symfony\Component\Validator\Constraint;
 
 /**

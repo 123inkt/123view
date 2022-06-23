@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\Git\Log;
 
 use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;

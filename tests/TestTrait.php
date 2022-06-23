@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\Config\RepositoryReference;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Repository;
 use SplFileInfo;
 
 trait TestTrait
