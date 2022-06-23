@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleOptions;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
 use DR\GitCommitNotification\Tests\AbstractTest;
@@ -15,7 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitDiffCommandFactoryTest extends AbstractTest
 {
-    /** @var GitDiffCommandBuilder|MockObject */
+    /** @var GitDiffCommandBuilder&MockObject */
     private GitDiffCommandBuilder $commandBuilder;
     private GitDiffCommandFactory $factory;
 
@@ -31,13 +32,16 @@ class GitDiffCommandFactoryTest extends AbstractTest
      */
     public function testDiffHashesMinimalOptions(): void
     {
-        $rule                      = new Rule();
-        $rule->ignoreSpaceAtEol    = false;
-        $rule->excludeMergeCommits = false;
+        $rule = new Rule();
+        $rule->setRuleOptions(
+            (new RuleOptions())
+                ->setIgnoreSpaceAtEol(false)
+                ->setExcludeMergeCommits(false)
+        );
 
         $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
 
         $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
@@ -53,14 +57,17 @@ class GitDiffCommandFactoryTest extends AbstractTest
      */
     public function testFromRuleWithAllOptions(): void
     {
-        $rule                    = new Rule();
-        $rule->ignoreAllSpace    = true;
-        $rule->ignoreSpaceChange = true;
-        $rule->ignoreBlankLines  = true;
+        $rule = new Rule();
+        $rule->setRuleOptions(
+            (new RuleOptions())
+                ->setIgnoreAllSpace(true)
+                ->setIgnoreSpaceChange(true)
+                ->setIgnoreBlankLines(true)
+        );
 
         $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
 
         $this->commandBuilder->expects(static::once())->method('ignoreSpaceAtEol')->willReturnSelf();
