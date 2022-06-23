@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
-use DR\GitCommitNotification\Entity\Config\Configuration;
-use DR\GitCommitNotification\Entity\Config\Repositories;
-use DR\GitCommitNotification\Entity\Config\RepositoryReferences;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DateTime;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
@@ -24,11 +23,11 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitLogServiceTest extends AbstractTest
 {
-    /** @var CacheableGitRepositoryService|MockObject */
+    /** @var CacheableGitRepositoryService&MockObject */
     private CacheableGitRepositoryService $repositoryService;
-    /** @var GitLogCommandFactory|MockObject */
+    /** @var GitLogCommandFactory&MockObject */
     private GitLogCommandFactory $commandFactory;
-    /** @var GitLogParser|MockObject */
+    /** @var GitLogParser&MockObject */
     private GitLogParser  $logParser;
     private GitLogService $logFactory;
 
@@ -48,28 +47,24 @@ class GitLogServiceTest extends AbstractTest
     public function testGetCommits(): void
     {
         // setup config
-        $repositoryConfig            = $this->createRepository("example", "https://example.com");
-        $configuration               = new Configuration();
-        $configuration->repositories = new Repositories();
-        $configuration->repositories->addRepository($repositoryConfig);
+        $repositoryConfig = $this->createRepository("example", "https://example.com");
 
         // setup rule
-        $rule               = new Rule();
-        $rule->config       = $configuration;
-        $rule->repositories = new RepositoryReferences();
-        $rule->repositories->addRepository($this->createRepositoryReference('example'));
+        $rule = new Rule();
+        $rule->addRepository($repositoryConfig);
+        $config  = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
         $repository     = $this->createMock(GitRepository::class);
         $commandBuilder = new GitLogCommandBuilder('git');
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
 
         // setup mocks
         $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($repository);
-        $this->commandFactory->expects(static::once())->method('fromRule')->with($rule)->willReturn($commandBuilder);
+        $this->commandFactory->expects(static::once())->method('fromRule')->with($config)->willReturn($commandBuilder);
         $repository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects(static::once())->method('parse')->with($repositoryConfig, 'output')->willReturn($commits);
 
         // execute test
-        $actual = $this->logFactory->getCommits($rule);
+        $actual = $this->logFactory->getCommits($config);
         static::assertSame(array_reverse($commits), $actual);
     }
 }
