@@ -23,6 +23,7 @@ services:
             dockerfile: ./docker/php-fpm/Dockerfile
         depends_on:
             - mysql
+            - mail
         volumes:
             - .:/app:rw
 
@@ -35,6 +36,10 @@ services:
             - ./docker/db/data:/var/lib/mysql
         ports:
             - ${MYSQL_PORT:-3306}:3306
+
+    mail:
+        image: bytemark/smtp
+
 
 networks:
     default:
