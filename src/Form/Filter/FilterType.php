@@ -23,9 +23,9 @@ class FilterType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => [
-                    'File' => EntityFilterType::FILE,
-                    'Subject' => EntityFilterType::SUBJECT,
-                    'Author' => EntityFilterType::AUTHOR,
+                    'filter.type.file' => EntityFilterType::FILE,
+                    'filter.type.subject' => EntityFilterType::SUBJECT,
+                    'filter.type.author' => EntityFilterType::AUTHOR,
                 ],
                 'multiple' => false,
                 'expanded' => false
