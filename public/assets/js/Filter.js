@@ -1,10 +1,10 @@
 import Controller from './Controller.js';
 
 export default class Filter extends Controller {
-    recipientCount = 0;
+    filterCount = 0;
 
     connect() {
-        this.recipientCount = parseInt(this.el.dataset.recipientCount);
+        this.filterCount = parseInt(this.el.dataset.filterCount);
         this.listen('click', 'addFilter', this.addFilter.bind(this));
         this.listen('click', 'deleteFilter', this.deleteFilter.bind(this));
     }
@@ -20,9 +20,9 @@ export default class Filter extends Controller {
         const template = this.role('filter-template').innerHTML;
 
         // create new element from template
-        const element = this.createElement(template.replace(/__name__/g, String(this.recipientCount++)));
+        const element = this.createElement(template.replace(/__name__/g, String(this.filterCount++)));
 
-        // add to recipient list
+        // add to filter list
         list.appendChild(element);
     }
 
