@@ -1,0 +1,25 @@
+## overrides for production
+
+version: '3'
+
+services:
+    nginx:
+        build:
+            target: prod
+        restart: unless-stopped
+
+    php-fpm:
+        build:
+            target: prod
+        environment:
+            DATABASE_URL: mysql://${DB_USER}:${DB_PASS}@mysql:3306/${DB_NAME:-commit-notification}?serverVersion=8.0&charset=utf8mb4
+            APP_ENV: prod
+        restart: unless-stopped
+
+    mysql:
+        environment:
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASS}
+            MYSQL_DATABASE: ${DB_NAME:-commit-notification}
+            MYSQL_ROOT_PASSWORD: ${DB_PASS}
+        restart: unless-stopped

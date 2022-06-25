@@ -29,4 +29,4 @@ chown www-data:www-data /tmp/env
 chown www-data:www-data -R /app/var
 
 # exec is needed to make supervisord pid 1 and able to receive SIGTERM signal
-exec supervisord
+exec supervisord -c /etc/supervisor/conf.d/supervisord.conf

@@ -32,6 +32,8 @@ services:
             args:
                 VERSION: $MYSQL_VERSION
             context: ./docker/mysql
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
         volumes:
             - ./docker/db/data:/var/lib/mysql
         ports:
