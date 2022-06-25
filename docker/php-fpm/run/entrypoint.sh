@@ -7,6 +7,9 @@ else
     composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative
 fi
 
+# wait for mysql
+sleep 20
+
 ##
 # warmup cache
 #
