@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\App\RulesController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
-use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadge;
+use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Security\AzureAd\LoginSuccess;
@@ -18,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
 /**
@@ -28,20 +28,21 @@ class AzureAdAuthenticatorTest extends AbstractTest
 {
     /** @var MockObject&LoginService */
     private LoginService $loginService;
-    /** @var MockObject&ManagerRegistry */
-    private ManagerRegistry $doctrine;
     /** @var MockObject&UrlGeneratorInterface */
-    private UrlGeneratorInterface $urlGenerator;
-    private AzureAdAuthenticator  $authenticator;
+    private UrlGeneratorInterface   $urlGenerator;
+    /** @var AzureAdUserBadgeFactory&MockObject */
+    private AzureAdUserBadgeFactory $badgeFactory;
+    private AzureAdAuthenticator    $authenticator;
+
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->loginService  = $this->createMock(LoginService::class);
-        $this->doctrine      = $this->createMock(ManagerRegistry::class);
+        $this->badgeFactory  = $this->createMock(AzureAdUserBadgeFactory::class);
         $this->urlGenerator  = $this->createMock(UrlGeneratorInterface::class);
-        $this->authenticator = new AzureAdAuthenticator($this->loginService, $this->doctrine, $this->urlGenerator);
+        $this->authenticator = new AzureAdAuthenticator($this->loginService, $this->badgeFactory, $this->urlGenerator);
     }
 
     /**
@@ -80,15 +81,16 @@ class AzureAdAuthenticatorTest extends AbstractTest
      */
     public function testAuthenticateSuccess(): void
     {
+        $badge = new UserBadge('email');
+
         $request = new Request();
         $this->loginService->expects(self::once())->method('handleLogin')->with($request)->willReturn(new LoginSuccess('name', 'email'));
+        $this->badgeFactory->expects(self::once())->method('create')->with('email', 'name')->willReturn($badge);
 
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);
 
-        $badge  = $passport->getBadge(AzureAdUserBadge::class);
-        $expect = new AzureAdUserBadge($this->doctrine, 'email', 'name');
-        static::assertEquals($expect, $badge);
+        static::assertSame($badge,$passport->getBadge(UserBadge::class));
     }
 
     /**

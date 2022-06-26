@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\Repository\RepositoryRepository;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
+use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
@@ -66,6 +67,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'defaultEndPointVersion' => '2.0'
             ]
         );
+    $services->set(AzureAdUserBadgeFactory::class);
     $services->set(AzureAdAuthenticator::class);
 
     $services->set(DiffParser::class);

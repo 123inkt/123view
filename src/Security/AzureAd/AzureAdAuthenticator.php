@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Security\AzureAd;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\App\RulesController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,8 +17,11 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class AzureAdAuthenticator extends AbstractAuthenticator
 {
-    public function __construct(private LoginService $loginService, private ManagerRegistry $doctrine, private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private LoginService $loginService,
+        private AzureAdUserBadgeFactory $userBadgeFactory,
+        private UrlGeneratorInterface $urlGenerator
+    ) {
     }
 
     /**
@@ -39,7 +41,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
             throw new AuthenticationException($result->getMessage());
         }
 
-        return new SelfValidatingPassport(new AzureAdUserBadge($this->doctrine, $result->getEmail(), $result->getName()));
+        return new SelfValidatingPassport($this->userBadgeFactory->create($result->getEmail(), $result->getName()));
     }
 
     /**
