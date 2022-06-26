@@ -40,7 +40,8 @@ class AddRepositoryInputTest extends AbstractTest
                 'name'       => 'name',
                 'upsource'   => 'upsource',
                 'gitlab'     => '123'
-            ], $definition
+            ],
+            $definition
         );
         $validatedInput = new AddRepositoryInput($input, new ConstraintViolationList());
 

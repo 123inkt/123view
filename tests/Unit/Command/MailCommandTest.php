@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Command;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Command\MailCommand;
 use DR\GitCommitNotification\Entity\ExternalLink;
 use DR\GitCommitNotification\Entity\Rule;
@@ -24,8 +23,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class MailCommandTest extends AbstractTest
 {
-    /** @var ManagerRegistry&MockObject */
-    private ManagerRegistry $doctrine;
     /** @var RuleProcessor&MockObject */
     private RuleProcessor $ruleProcessor;
     /** @var ExternalLinkRepository&MockObject */
@@ -37,13 +34,12 @@ class MailCommandTest extends AbstractTest
     protected function setUp(): void
     {
         parent::setUp();
-        $this->doctrine      = $this->createMock(ManagerRegistry::class);
         $this->ruleProcessor = $this->createMock(RuleProcessor::class);
 
         $this->externalLinkRepository = $this->createMock(ExternalLinkRepository::class);
         $this->ruleRepository         = $this->createMock(RuleRepository::class);
 
-        $this->command = new MailCommand($this->doctrine, $this->ruleProcessor);
+        $this->command = new MailCommand($this->ruleRepository, $this->externalLinkRepository, $this->ruleProcessor);
     }
 
     /**
@@ -86,10 +82,6 @@ class MailCommandTest extends AbstractTest
         // setup mocks
         $this->externalLinkRepository->expects(self::once())->method('findAll')->willReturn([$externalLink]);
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
-        $this->doctrine->expects(static::exactly(2))
-            ->method('getRepository')
-            ->withConsecutive([ExternalLink::class], [Rule::class])
-            ->willReturn($this->externalLinkRepository, $this->ruleRepository);
 
         $this->ruleProcessor
             ->expects(static::once())
@@ -113,11 +105,6 @@ class MailCommandTest extends AbstractTest
         // setup mocks
         $this->externalLinkRepository->expects(self::once())->method('findAll')->willReturn([$externalLink]);
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
-        $this->doctrine->expects(static::exactly(2))
-            ->method('getRepository')
-            ->withConsecutive([ExternalLink::class], [Rule::class])
-            ->willReturn($this->externalLinkRepository, $this->ruleRepository);
-
         $this->ruleProcessor->expects(static::once())->method('processRule')->willThrowException(new Exception('error'));
 
         $commandTester = new CommandTester($this->command);

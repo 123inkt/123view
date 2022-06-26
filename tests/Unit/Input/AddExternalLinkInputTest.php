@@ -46,6 +46,6 @@ class AddExternalLinkInputTest extends AbstractTest
         $definitions = $validatedInput->getValidationRules()->getDefinitions();
         static::assertArrayHasKey('arguments', $definitions);
         static::assertArrayNotHasKey('options', $definitions);
-        static::assertCount(2, $definitions['arguments'] ?? []);
+        static::assertCount(2, $definitions['arguments']);
     }
 }
