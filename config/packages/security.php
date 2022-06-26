@@ -33,5 +33,8 @@ return static function (ContainerConfigurator $containerConfigurator, SecurityCo
         ->path(LogoutController::class)
         ->target(AuthenticationController::class);
 
-    //$security->accessControl()->roles(null);
+    // require IS_AUTHENTICATED_FULLY for /app/*
+    $security->accessControl()
+        ->path('^/app')
+        ->roles(['IS_AUTHENTICATED_FULLY']);
 };
