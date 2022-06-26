@@ -43,7 +43,9 @@ class AddExternalLinkInputTest extends AbstractTest
     {
         $validatedInput = new AddExternalLinkInput($this->createMock(InputInterface::class), new ConstraintViolationList());
 
-        $rules = $validatedInput->getValidationRules();
-        static::assertCount(2, $rules->getDefinitions()['arguments'] ?? null);
+        $definitions = $validatedInput->getValidationRules()->getDefinitions();
+        static::assertArrayHasKey('arguments', $definitions);
+        static::assertArrayNotHasKey('options', $definitions);
+        static::assertCount(2, $definitions['arguments'] ?? []);
     }
 }
