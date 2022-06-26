@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Command;
 
 use DateTimeImmutable;
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Entity\ExternalLink;
-use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\RuleConfiguration;
+use DR\GitCommitNotification\Repository\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\RuleRepository;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
@@ -24,8 +23,11 @@ class MailCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private ManagerRegistry $doctrine, private RuleProcessor $ruleProcessor)
-    {
+    public function __construct(
+        private RuleRepository $ruleRepository,
+        private ExternalLinkRepository $linkRepository,
+        private RuleProcessor $ruleProcessor
+    ) {
         parent::__construct();
     }
 
@@ -54,10 +56,10 @@ class MailCommand extends Command implements LoggerAwareInterface
         [$startTime, $endTime] = Frequency::getPeriod($currentTime, $frequency);
 
         // gather external links
-        $externalLinks = $this->doctrine->getRepository(ExternalLink::class)->findAll();
+        $externalLinks = $this->linkRepository->findAll();
 
         // gather active rules
-        $rules = $this->doctrine->getRepository(Rule::class)->getActiveRulesForFrequency(true, $frequency);
+        $rules = $this->ruleRepository->getActiveRulesForFrequency(true, $frequency);
 
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
