@@ -37,9 +37,9 @@ class AddRepositoryInputTest extends AbstractTest
         $input          = new ArrayInput(
             [
                 'repository' => 'repository',
-                '--name'       => 'name',
-                '--upsource'   => 'upsource',
-                '--gitlab'     => '123'
+                '--name'     => 'name',
+                '--upsource' => 'upsource',
+                '--gitlab'   => '123'
             ],
             $definition
         );
@@ -49,6 +49,29 @@ class AddRepositoryInputTest extends AbstractTest
         static::assertSame('name', $validatedInput->getName());
         static::assertSame('upsource', $validatedInput->getUpsourceId());
         static::assertSame(123, $validatedInput->getGitlabId());
+    }
+
+    /**
+     * @covers ::getRepository
+     * @covers ::getName
+     * @covers ::getGitlabId
+     * @covers ::getUpsourceId
+     */
+    public function testGetRepositoryGetNameFromRepository(): void
+    {
+        $definition     = new InputDefinition(
+            [
+                new InputArgument('repository', InputArgument::REQUIRED),
+                new InputOption('name'),
+                new InputOption('upsource'),
+                new InputOption('gitlab'),
+            ]
+        );
+        $input          = new ArrayInput(['repository' => '/url/to/repository.git',], $definition);
+        $validatedInput = new AddRepositoryInput($input, new ConstraintViolationList());
+
+        static::assertSame('/url/to/repository.git', $validatedInput->getRepository());
+        static::assertSame('repository', $validatedInput->getName());
     }
 
     /**

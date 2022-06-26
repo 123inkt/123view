@@ -48,7 +48,7 @@ class FilterCollectionTransformerTest extends AbstractTest
     }
 
     /**
-     * @covers ::transform
+     * @covers ::reverseTransform
      */
     public function testReverseTransformValueMustBeArray(): void
     {
