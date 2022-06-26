@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Config\FrameworkConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('framework', ['validation' => ['email_validation_mode' => 'html5', 'enabled' => true]]);
+return static function (FrameworkConfig $framework): void {
+    $framework->validation()
+        ->enabled(true)
+        ->emailValidationMode('html5');
 };
