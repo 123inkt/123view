@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\RuleFactory;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Form\EditRuleFormType;
+use DR\GitCommitNotification\Repository\RuleRepository;
 use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RuleController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator, private ?User $user)
+    public function __construct(private RuleRepository $ruleRepository, private TranslatorInterface $translator, private ?User $user)
     {
     }
 
@@ -46,8 +46,7 @@ class RuleController extends AbstractController
             return ['editRuleModel' => (new EditRuleViewModel())->setForm($form->createView())];
         }
 
-        $this->doctrine->getManager()->persist($rule);
-        $this->doctrine->getManager()->flush();
+        $this->ruleRepository->add($rule, true);
 
         $this->addFlash('success', $this->translator->trans('rule.successful.saved'));
 

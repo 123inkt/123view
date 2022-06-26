@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Rule;
 use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Repository\RuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeleteRuleController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $doctrine, private TranslatorInterface $translator, private ?User $user)
+    public function __construct(private RuleRepository $ruleRepository, private TranslatorInterface $translator, private ?User $user)
     {
     }
 
@@ -29,8 +29,7 @@ class DeleteRuleController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
-        $this->doctrine->getManager()->remove($rule);
-        $this->doctrine->getManager()->flush();
+        $this->ruleRepository->remove($rule, true);
 
         $this->addFlash('success', $this->translator->trans('rule.removed.successful', ['name' => $rule->getName()]));
 
