@@ -12,10 +12,6 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
     $framework->httpMethodOverride(false);
     $framework->phpErrors()->log(true)->throw(true);
 
-    // disable some components by default
-    $framework->assets()->enabled(false);
-    $framework->profiler()->enabled(false);
-
     $containerConfigurator->extension(
         'framework',
         [
