@@ -41,6 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->defaults()
         ->autowire()
         ->autoconfigure()
+        ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$upsourceApiUrl', '%env(UPSOURCE_API_URL)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%');
 

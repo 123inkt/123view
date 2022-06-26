@@ -15,6 +15,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleType extends AbstractType
 {
+    public function __construct(private bool $allowCustomRecipients)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -23,7 +27,9 @@ class RuleType extends AbstractType
         $builder->add('name', TextType::class, ['required' => true]);
         $builder->add('active', CheckboxType::class, ['required' => false]);
         $builder->add('ruleOptions', RuleOptionsType::class);
-        $builder->add('recipients', RecipientCollectionType::class);
+        if ($this->allowCustomRecipients) {
+            $builder->add('recipients', RecipientCollectionType::class);
+        }
         $builder->add('repositories', RepositoryChoiceType::class);
         $builder->add('filters', InExclusionFilterType::class);
 

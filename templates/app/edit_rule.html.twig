@@ -50,7 +50,9 @@
         </div>
 
         {# recipients #}
-        {% include '/app/recipients.html.twig' with {recipients: form.rule.recipients} %}
+        {% if form.rule.recipients is defined %}
+            {% include '/app/recipients.html.twig' with {recipients: form.rule.recipients} %}
+        {% endif %}
 
         {# filters #}
         <small class="form-text" data-role="explanation">
@@ -68,7 +70,6 @@
                 </li>
             </ul>
         </small>
-
 
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'Include commits'|trans} %}
         {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
