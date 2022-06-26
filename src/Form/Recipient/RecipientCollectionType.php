@@ -19,6 +19,7 @@ class RecipientCollectionType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'prototype'    => true,
+                'by_reference' => false,
                 'delete_empty' => static fn(?Recipient $recipient) => $recipient?->getEmail() === null,
                 'constraints'  => [
                     new Assert\Count(

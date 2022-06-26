@@ -55,6 +55,4 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
             'secret'               => '%env(APP_SECRET)%',
         ]
     );
-
-    $framework->session()->enabled(true);
 };
