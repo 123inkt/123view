@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Config\RepositoryReference;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
@@ -42,14 +41,6 @@ trait TestTrait
         $repository->setUrl($url);
 
         return $repository;
-    }
-
-    protected function createRepositoryReference(string $name): RepositoryReference
-    {
-        $reference       = new RepositoryReference();
-        $reference->name = $name;
-
-        return $reference;
     }
 
     protected function getFileContents(string $relativeFilePath): string
