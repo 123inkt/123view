@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Command\Repository;
 
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Repository;
 use DR\GitCommitNotification\Entity\RepositoryProperty;
 use DR\GitCommitNotification\Input\AddRepositoryInput;
+use DR\GitCommitNotification\Repository\RepositoryRepository;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('git:repository:add', 'Add a git repository to monitor commits for.')]
 class AddRepositoryCommand extends Command
 {
-    public function __construct(private ManagerRegistry $doctrine, private InputValidator $inputValidator, ?string $name = null)
+    public function __construct(private RepositoryRepository $repositoryRepository, private InputValidator $inputValidator, ?string $name = null)
     {
         parent::__construct($name);
     }
@@ -49,7 +49,7 @@ class AddRepositoryCommand extends Command
 
             return Command::FAILURE;
         }
-        if ($this->doctrine->getRepository(Repository::class)->findOneBy(['name' => $name]) !== null) {
+        if ($this->repositoryRepository->findOneBy(['name' => $name]) !== null) {
             $output->writeln(sprintf('<error>A repository with name `%s` already exists.</error>', $name));
 
             return Command::FAILURE;
@@ -68,9 +68,7 @@ class AddRepositoryCommand extends Command
         }
 
         // save
-        $entityManager = $this->doctrine->getManager();
-        $entityManager->persist($repository);
-        $entityManager->flush();
+        $this->repositoryRepository->add($repository, true);
 
         $output->writeln('<info>Successfully added repository: ' . $repository->getName() . '</info>');
         foreach ($repository->getRepositoryProperties() as $property) {
