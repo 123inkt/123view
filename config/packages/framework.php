@@ -41,11 +41,6 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
                     ],
                 ],
             ],
-            'mailer'               => [
-                'dsn'      => '%env(MAILER_DSN)%',
-                'envelope' => ['sender' => '%env(MAILER_SENDER)%'],
-                'headers'  => ['from' => '%env(MAILER_SENDER)%']
-            ],
             'property_access' => [
                 'magic_call'                               => false,
                 'magic_get'                                => false,
