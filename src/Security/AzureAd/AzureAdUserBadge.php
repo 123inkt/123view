@@ -21,9 +21,7 @@ class AzureAdUserBadge extends UserBadge
 
         // create user if not exists
         if ($user === null) {
-            $manager = $this->doctrine->getManager();
-            $manager->persist((new User())->setEmail($this->email)->setName($this->name));
-            $manager->flush();
+            $this->doctrine->getRepository(User::class)->add((new User())->setEmail($this->email)->setName($this->name), true);
             $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $this->email]);
         }
 
