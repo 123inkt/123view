@@ -29,11 +29,10 @@ class AzureAdAuthenticatorTest extends AbstractTest
     /** @var MockObject&LoginService */
     private LoginService $loginService;
     /** @var MockObject&UrlGeneratorInterface */
-    private UrlGeneratorInterface   $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
     /** @var AzureAdUserBadgeFactory&MockObject */
     private AzureAdUserBadgeFactory $badgeFactory;
     private AzureAdAuthenticator    $authenticator;
-
 
     protected function setUp(): void
     {
@@ -90,7 +89,7 @@ class AzureAdAuthenticatorTest extends AbstractTest
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);
 
-        static::assertSame($badge,$passport->getBadge(UserBadge::class));
+        static::assertSame($badge, $passport->getBadge(UserBadge::class));
     }
 
     /**
