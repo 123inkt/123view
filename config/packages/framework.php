@@ -7,6 +7,8 @@ use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (ContainerConfigurator $containerConfigurator, FrameworkConfig $framework): void {
+    $framework->phpErrors()->log(true)->throw(true);
+
     $containerConfigurator->extension(
         'framework',
         [
@@ -43,13 +45,12 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
                 'envelope' => ['sender' => '%env(MAILER_SENDER)%'],
                 'headers'  => ['from' => '%env(MAILER_SENDER)%']
             ],
-            'php_errors'           => ['log' => true, 'throw' => true],
             'profiler'             => ['enabled' => false],
             'property_access'      => [
                 'magic_call'                               => false,
                 'magic_get'                                => false,
                 'magic_set'                                => false,
-                'throw_exception_on_invalid_index'         => true,
+                'throw_exception_on_invalid_index'         => false,  // must be false to allow CollectionType: allow_add.
                 'throw_exception_on_invalid_property_path' => true,
             ],
             'secret'               => '%env(APP_SECRET)%',
