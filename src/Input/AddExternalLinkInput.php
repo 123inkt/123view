@@ -24,14 +24,6 @@ class AddExternalLinkInput extends AbstractValidatedInput
         return $url;
     }
 
-    public function getUpsourceId(): ?string
-    {
-        /** @var ?string $upsourceId */
-        $upsourceId = $this->input->getOption('upsource');
-
-        return $upsourceId;
-    }
-
     public function getValidationRules(): ValidationRules
     {
         return (new ValidationRules())
