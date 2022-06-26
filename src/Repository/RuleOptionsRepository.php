@@ -21,22 +21,4 @@ class RuleOptionsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RuleOptions::class);
     }
-
-    public function add(RuleOptions $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(RuleOptions $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
 }
