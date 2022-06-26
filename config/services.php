@@ -5,7 +5,6 @@ declare(strict_types=1);
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use Doctrine\Common\Annotations\AnnotationReader;
 use DR\GitCommitNotification\Entity\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
@@ -21,16 +20,7 @@ use DR\GitCommitNotification\Twig\Highlight\HighlighterFactory;
 use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
-use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -97,21 +87,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Register Git
     $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
     $services->set(Git::class)->arg('$runner', service(CliRunner::class));
-
-    // Register Symfony Serializer and configuration
-    $services->set(XmlEncoder::class);
-    $services->set(AnnotationReader::class);
-    $services->set(AnnotationLoader::class)->alias(LoaderInterface::class, AnnotationLoader::class);
-    $services->set(ClassMetadataFactory::class);
-    $services->set(MetadataAwareNameConverter::class);
-    $services->set(ArrayDenormalizer::class);
-    $services->set(ReflectionExtractor::class);
-    $services->set(ObjectNormalizer::class)
-        ->arg('$classMetadataFactory', service(ClassMetadataFactory::class))
-        ->arg('$nameConverter', service(MetadataAwareNameConverter::class))
-        ->arg('$propertyTypeExtractor', service(ReflectionExtractor::class));
-
-    $services->set(Serializer::class)
-        ->arg('$normalizers', [service(ArrayDenormalizer::class), service(ObjectNormalizer::class)])
-        ->arg('$encoders', [service(XmlEncoder::class)]);
 };
