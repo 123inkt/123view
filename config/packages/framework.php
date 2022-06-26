@@ -15,15 +15,15 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
     $containerConfigurator->extension(
         'framework',
         [
-            'cache'           => [
-                'app'       => 'cache.adapter.filesystem',
+            'cache'       => [
+                'app' => 'cache.adapter.filesystem',
                 'directory' => '%kernel.cache_dir%/pools',
-                'pools'     => [
+                'pools' => [
                     ['name' => 'upsource.cache', 'default_lifetime' => 3600],
                     ['name' => 'gitlab.cache', 'default_lifetime' => 3600]
                 ]
             ],
-            'http_client'     => [
+            'http_client' => [
                 'default_options' => [
                     'verify_host' => env('HTTP_CLIENT_VERIFY_HOST')->bool(),
                     'verify_peer' => env('HTTP_CLIENT_VERIFY_PEER')->bool(),
@@ -40,13 +40,6 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
                         'scope'    => 'gitlab'
                     ],
                 ],
-            ],
-            'property_access' => [
-                'magic_call'                               => false,
-                'magic_get'                                => false,
-                'magic_set'                                => false,
-                'throw_exception_on_invalid_index'         => false,  // must be false to allow CollectionType: allow_add.
-                'throw_exception_on_invalid_property_path' => true,
             ]
         ]
     );
