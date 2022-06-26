@@ -37,9 +37,9 @@ class AddRepositoryInputTest extends AbstractTest
         $input          = new ArrayInput(
             [
                 'repository' => 'repository',
-                'name'       => 'name',
-                'upsource'   => 'upsource',
-                'gitlab'     => '123'
+                '--name'       => 'name',
+                '--upsource'   => 'upsource',
+                '--gitlab'     => '123'
             ],
             $definition
         );
