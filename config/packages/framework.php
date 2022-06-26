@@ -7,13 +7,19 @@ use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (ContainerConfigurator $containerConfigurator, FrameworkConfig $framework): void {
+    // framework configuration
+    $framework->secret('%env(APP_SECRET)%');
+    $framework->httpMethodOverride(false);
     $framework->phpErrors()->log(true)->throw(true);
+
+    // disable some components by default
+    $framework->assets()->enabled(false);
+    $framework->profiler()->enabled(false);
 
     $containerConfigurator->extension(
         'framework',
         [
-            'assets'               => ['enabled' => false],
-            'cache'                => [
+            'cache'           => [
                 'app'       => 'cache.adapter.filesystem',
                 'directory' => '%kernel.cache_dir%/pools',
                 'pools'     => [
@@ -21,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
                     ['name' => 'gitlab.cache', 'default_lifetime' => 3600]
                 ]
             ],
-            'http_client'          => [
+            'http_client'     => [
                 'default_options' => [
                     'verify_host' => env('HTTP_CLIENT_VERIFY_HOST')->bool(),
                     'verify_peer' => env('HTTP_CLIENT_VERIFY_PEER')->bool(),
@@ -39,21 +45,18 @@ return static function (ContainerConfigurator $containerConfigurator, FrameworkC
                     ],
                 ],
             ],
-            'http_method_override' => false,
             'mailer'               => [
                 'dsn'      => '%env(MAILER_DSN)%',
                 'envelope' => ['sender' => '%env(MAILER_SENDER)%'],
                 'headers'  => ['from' => '%env(MAILER_SENDER)%']
             ],
-            'profiler'             => ['enabled' => false],
-            'property_access'      => [
+            'property_access' => [
                 'magic_call'                               => false,
                 'magic_get'                                => false,
                 'magic_set'                                => false,
                 'throw_exception_on_invalid_index'         => false,  // must be false to allow CollectionType: allow_add.
                 'throw_exception_on_invalid_property_path' => true,
-            ],
-            'secret'               => '%env(APP_SECRET)%',
+            ]
         ]
     );
 };
