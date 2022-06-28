@@ -36,8 +36,8 @@ RUN docker-php-ext-install \
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
 COPY ./docker/php-fpm/conf/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
 COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ./docker/php-fpm/cron/* /etc/cron.d/
-RUN chmod -R 600 /etc/cron.d/
+#COPY ./docker/php-fpm/cron/* /etc/cron.d/
+#RUN chmod -R 600 /etc/cron.d/
 
 ###################################################################################
 # COMPOSER                                                                        #
@@ -86,6 +86,10 @@ COPY --chown=www-data --from=composer_build /app/ /app
 
 ## copy production ini settings
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+
+## copy production cron
+COPY ./docker/php-fpm/cron/notification-schedule /etc/cron.d/notification-schedule
+RUN chmod -R 600 /etc/cron.d/
 
 COPY ./docker/php-fpm/conf/production.ini /usr/local/etc/php/conf.d/production.ini
 COPY ./docker/php-fpm/run/entrypoint.sh /run/entrypoint.sh

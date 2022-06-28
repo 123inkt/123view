@@ -1,0 +1,6 @@
+0 */1 * * *   /usr/bin/php /app/to/bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
+0 */2 * * *   /usr/bin/php /app/to/bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
+0 */3 * * *   /usr/bin/php /app/to/bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
+0 */4 * * *   /usr/bin/php /app/to/bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
+0 0 * * *     /usr/bin/php /app/to/bin/console mail --frequency=once-per-day          > /dev/null 2>&1
+0 0 * * 1     /usr/bin/php /app/to/bin/console mail --frequency=once-per-week         > /dev/null 2>&1
