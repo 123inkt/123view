@@ -34,9 +34,9 @@ if [ "$mode" == 'prod' ]; then
     source .env
     [[ -f ".env.prod" ]] && source .env.prod
     [[ -f ".env.prod.local" ]] && source .env.prod.local
-    +o allexport
+    set +o allexport
 
-    #docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
+    docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
     exit 0;
 
 elif [ "$mode" == 'dev' ]; then
