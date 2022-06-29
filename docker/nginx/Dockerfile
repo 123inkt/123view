@@ -33,7 +33,7 @@ FROM base as prod
 
 # setup https with production certificates
 COPY ./docker/nginx/ssl/production/production.crt /etc/ssl/certs/commit-notification-cert.crt
-COPY ./docker/nginx/ssl/production/production.key /etc/ssl/private/commit-notification-cert..key
+COPY ./docker/nginx/ssl/production/production.key /etc/ssl/private/commit-notification-cert.key
 
 ENTRYPOINT ["/run/entrypoint.sh"]
 
