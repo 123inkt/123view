@@ -82,6 +82,7 @@ ENV APP_ENV=prod
 WORKDIR /app
 
 ## Copy only from composer_build stage and set owner to php-fpm default user
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data --from=composer_build /app/ /app
 
 ## copy production ini settings
