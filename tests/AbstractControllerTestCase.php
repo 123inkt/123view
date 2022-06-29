@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests;
 
+use DR\GitCommitNotification\Tests\Helper\FormAssertion;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -28,6 +31,21 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         $this->controller->setContainer($this->container);
     }
 
+    /**
+     * @param array<string, string> $options
+     */
+    public function expectCreateForm(string $type, mixed $data = null, array $options = []): FormAssertion
+    {
+        $form = $this->createMock(FormInterface::class);
+
+        $factory = $this->createMock(FormFactoryInterface::class);
+        $factory->expects(self::once())->method('create')->with($type, $data, $options)->willReturn($form);
+
+        $this->container->set('form.factory', $factory);
+
+        return new FormAssertion($form);
+    }
+
     public function expectAddFlash(string $type, mixed $message): void
     {
         $flashBag = $this->createMock(FlashBagInterface::class);
@@ -43,6 +61,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
 
     /**
      * @param array<string, string> $parameters
+     *
      * @return InvocationMocker<RouterInterface>
      */
     public function expectGenerateUrl(
