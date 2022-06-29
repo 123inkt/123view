@@ -2,6 +2,9 @@
 
 set -e
 
+BINDIR=$(dirname $(realpath "$0"))
+SOURCEDIR=$(dirname ${BINDIR})
+
 echo -n "Deployment mode: [prod/dev] "
 read mode
 
@@ -20,6 +23,11 @@ docker-compose down
 #
 docker network rm commit-notification-network || true
 docker network create --driver bridge commit-notification-network || true
+
+##
+# remove cache directory
+#
+rm -rf ${SOURCEDIR}/var/cache
 
 ##
 # Start new container
