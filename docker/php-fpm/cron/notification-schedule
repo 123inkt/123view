@@ -2,9 +2,9 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 HOME=/app
 BASH_ENV=/tmp/env
-0 */1 * * * www-data php bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
-0 */2 * * * www-data php bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
-0 */3 * * * www-data php bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
-0 */4 * * * www-data php bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
-0 0 * * *   www-data php bin/console mail --frequency=once-per-day          > /dev/null 2>&1
-0 0 * * 1   www-data php bin/console mail --frequency=once-per-week         > /dev/null 2>&1
+0 */1 * * * www-data php bin/console mail --frequency=once-per-hour
+0 */2 * * * www-data php bin/console mail --frequency=once-per-two-hours
+0 */3 * * * www-data php bin/console mail --frequency=once-per-three-hours
+0 */4 * * * www-data php bin/console mail --frequency=once-per-four-hours
+0 0 * * *   www-data php bin/console mail --frequency=once-per-day
+0 0 * * 1   www-data php bin/console mail --frequency=once-per-week
