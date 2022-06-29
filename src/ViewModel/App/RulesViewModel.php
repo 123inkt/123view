@@ -21,8 +21,10 @@ class RulesViewModel
     /**
      * @param Rule[] $rules
      */
-    public function setRules(array $rules): void
+    public function setRules(array $rules): self
     {
         $this->rules = $rules;
+
+        return $this;
     }
 }
