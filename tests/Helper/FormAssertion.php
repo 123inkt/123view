@@ -5,7 +5,9 @@ namespace DR\GitCommitNotification\Tests\Helper;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use function PHPUnit\Framework\atLeastOnce;
 
 class FormAssertion
 {
@@ -18,22 +20,27 @@ class FormAssertion
 
     public function handleRequest(Request $request): self
     {
-        $this->form->method('handleRequest')->with($request)->willReturnSelf();
+        $this->form->expects(atLeastOnce())->method('handleRequest')->with($request)->willReturnSelf();
 
         return $this;
     }
 
-    public function isValidWillReturn($value): self
+    public function isValidWillReturn(bool $value): self
     {
-        $this->form->method('isValid')->willReturn($value);
+        $this->form->expects(atLeastOnce())->method('isValid')->willReturn($value);
 
         return $this;
     }
 
-    public function isSubmittedWillReturn($value): self
+    public function isSubmittedWillReturn(bool $value): self
     {
-        $this->form->method('isSubmitted')->willReturn($value);
+        $this->form->expects(atLeastOnce())->method('isSubmitted')->willReturn($value);
 
         return $this;
+    }
+
+    public function createViewWillReturn(FormView $formView)
+    {
+        $this->form->expects(atLeastOnce())->method('createView')->willReturn($formView);
     }
 }
