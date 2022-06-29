@@ -22,11 +22,6 @@ docker network rm commit-notification-network || true
 docker network create --driver bridge commit-notification-network || true
 
 ##
-# rebuild containers
-#
-DOCKER_BUILDKIT=1 docker-compose build
-
-##
 # Start new container
 #
 if [ "$mode" == 'prod' ]; then
@@ -36,6 +31,7 @@ if [ "$mode" == 'prod' ]; then
     [[ -f ".env.prod.local" ]] && source .env.prod.local
     set +o allexport
 
+    DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.production.yml build
     docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 
     echo ""
@@ -51,6 +47,7 @@ elif [ "$mode" == 'dev' ]; then
     [[ -f ".env.dev.local" ]] && source .env.dev.local
     set +o allexport
 
+    DOCKER_BUILDKIT=1 docker-compose build
     docker-compose up -d
     docker-compose logs --tail=2 --follow
 fi
