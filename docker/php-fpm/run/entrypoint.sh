@@ -15,9 +15,6 @@ sleep 20
 #
 php bin/console cache:clear
 
-# echo 'dumping environment variables to local file'
-# composer dump-env prod # Currently no composer in production container
-
 ##
 # run doctrine migrations
 #
