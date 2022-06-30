@@ -20,6 +20,7 @@ php bin/console cache:clear
 #
 php bin/console doctrine:migrations:migrate --no-interaction
 
+printenv > /etc/environment
 export -p > /tmp/env
 mkdir -p /app/var/log
 chown www-data:www-data /tmp/env
