@@ -1,5 +1,0 @@
-\SHELL=/bin/bash
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-HOME=/app
-BASH_ENV=/tmp/env
-# */5 * * * * app php bin/console test >> /tmp/health.log 2>&1
