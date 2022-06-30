@@ -15,11 +15,17 @@ fi
 #
 rm -rf /app/var/cache
 php bin/console cache:clear
+ls -lF /app/var/cache/
 
 ##
 # run doctrine migrations
 #
 php bin/console doctrine:migrations:migrate --no-interaction
+
+ls -lF /app/var/cache/
+rm -rf /app/var/cache
+php bin/console cache:clear
+ls -lF /app/var/cache/
 
 printenv > /etc/environment
 mkdir -p /app/var/log
