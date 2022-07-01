@@ -7,7 +7,6 @@ sleep 20
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader
 else
-    rm -rf /var/cache/prod
     composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative -vvv
 fi
 
