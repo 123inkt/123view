@@ -9,7 +9,6 @@ use RuntimeException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\Auth\LogoutController
- * @covers ::__construct
  */
 class LogoutControllerTest extends AbstractTestCase
 {

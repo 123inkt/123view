@@ -9,7 +9,6 @@ use RuntimeException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdCallbackController
- * @covers ::__construct
  */
 class AzureAdCallbackControllerTest extends AbstractTestCase
 {
