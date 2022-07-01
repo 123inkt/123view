@@ -15,11 +15,6 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    public function getLogDir(): string
-    {
-        return $this->environment === 'prod' ? '/var/log/' . $this->environment . '/' : parent::getLogDir();
-    }
-
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{packages}/*.php');
