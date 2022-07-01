@@ -14,11 +14,12 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
         'doctrine',
         [
             'dbal' => [
-                'url'           => '%env(resolve:DATABASE_URL)%',
-                'mapping_types' => [
+                'url'            => '%env(resolve:DATABASE_URL)%',
+                'server_version' => '%env(MYSQL_VERSION)%',
+                'mapping_types'  => [
                     'enum' => 'string'
                 ],
-                'types'         => [
+                'types'          => [
                     FrequencyType::TYPE     => FrequencyType::class,
                     DiffAlgorithmType::TYPE => DiffAlgorithmType::class,
                     MailThemeType::TYPE     => MailThemeType::class,
