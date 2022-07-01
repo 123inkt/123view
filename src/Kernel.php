@@ -15,10 +15,10 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    //public function getCacheDir(): string
-    //{
-    //    return $this->environment === 'prod' ? '/var/cache/' . $this->environment . '/' : parent::getCacheDir();
-    //}
+    public function getCacheDir(): string
+    {
+        return $this->environment === 'prod' ? '/var/cache/' . $this->environment . '/' : parent::getCacheDir();
+    }
 
     public function getBuildDir(): string
     {
