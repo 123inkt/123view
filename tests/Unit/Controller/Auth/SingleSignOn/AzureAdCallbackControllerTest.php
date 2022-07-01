@@ -16,7 +16,7 @@ class AzureAdCallbackControllerTest extends AbstractTestCase
     /**
      * @covers ::__invoke
      */
-    public function tesInvoke(): void
+    public function testInvoke(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('AzureAdAuthenticator route is not configured');
