@@ -7,6 +7,9 @@ sleep 20
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader
 else
+    # strange behaviour when doctrine classes are cached. symlink pro~ and prod together
+    mkdir -p /app/var/log/cache/prod
+    ln -s /app/var/log/prod /app/var/log/pro~
     composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative
 fi
 
