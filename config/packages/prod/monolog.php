@@ -13,7 +13,7 @@ return static function (MonologConfig $monolog) {
 
     $monolog->handler('error')
         ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.log')
+        ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
         ->level('error')
         ->maxFiles(10);
 
