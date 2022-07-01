@@ -20,11 +20,6 @@ class Kernel extends BaseKernel
         return $this->environment === 'prod' ? '/var/cache/' . $this->environment . '/' : parent::getCacheDir();
     }
 
-    public function getBuildDir(): string
-    {
-        return $this->getProjectDir() . '/var/build/' . $this->environment . '/';
-    }
-
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{packages}/*.php');
