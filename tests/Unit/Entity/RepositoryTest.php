@@ -26,6 +26,18 @@ class RepositoryTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::getRepositoryProperty
+     */
+    public function testGetRepositoryProperty(): void
+    {
+        $repository = new Repository();
+        $repository->addRepositoryProperty((new RepositoryProperty())->setName('property')->setValue('value'));
+
+        static::assertNull($repository->getRepositoryProperty('foobar'));
+        static::assertSame('value', $repository->getRepositoryProperty('property'));
+    }
+
+    /**
      * @covers ::addRepositoryProperty
      * @covers ::getRepositoryProperties
      * @covers ::removeRepositoryProperty
