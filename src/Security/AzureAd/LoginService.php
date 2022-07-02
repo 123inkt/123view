@@ -3,16 +3,19 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Security\AzureAd;
 
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use TheNetworg\OAuth2\Client\Token\AccessToken;
 use Throwable;
 
-class LoginService
+class LoginService implements LoggerAwareInterface
 {
-    public function __construct(private LoggerInterface $logger, private Azure $azureProvider, private TranslatorInterface $translator)
+    use LoggerAwareTrait;
+
+    public function __construct(private Azure $azureProvider, private TranslatorInterface $translator)
     {
     }
 
@@ -20,11 +23,11 @@ class LoginService
     {
         // error handling
         if ($request->query->has('error')) {
-            $this->logger->info("azure-ad-error: error:       " . $request->query->get('error', ''));
-            $this->logger->info("azure-ad-error: subcode:     " . $request->query->get('error_subcode', ''));
-            $this->logger->info("azure-ad-error: description: " . $request->query->get('error_description', ''));
-            $this->logger->info("azure-ad-error: error_codes: " . implode(", ", $request->query->all('error_codes')));
-            $this->logger->info("azure-ad-error: error_uri:   " . $request->query->get('error_description', ''));
+            $this->logger?->info("azure-ad-error: error:       " . $request->query->get('error', ''));
+            $this->logger?->info("azure-ad-error: subcode:     " . $request->query->get('error_subcode', ''));
+            $this->logger?->info("azure-ad-error: description: " . $request->query->get('error_description', ''));
+            $this->logger?->info("azure-ad-error: error_codes: " . implode(", ", $request->query->all('error_codes')));
+            $this->logger?->info("azure-ad-error: error_uri:   " . $request->query->get('error_uri', ''));
 
             // registration cancelled
             if ($request->query->get('error_subcode') === 'cancel') {
@@ -45,14 +48,14 @@ class LoginService
                 'code'  => $request->query->get('code'),
             ]);
         } catch (Throwable $e) {
-            $this->logger->notice($e->getMessage(), ['exception' => $e]);
+            $this->logger?->notice($e->getMessage(), ['exception' => $e]);
 
             return new LoginFailure($this->translator->trans('login.unable.to.validate.login.attempt'));
         }
 
         $claims = $token instanceof AccessToken ? $token->getIdTokenClaims() : [];
         if (isset($claims['preferred_username']) === false) {
-            $this->logger->notice('Authorization token doesnt contain preferred_username', $claims);
+            $this->logger?->notice('Authorization token doesnt contain preferred_username', $claims);
 
             return new LoginFailure($this->translator->trans("login.authorization.has.no.token"));
         }
