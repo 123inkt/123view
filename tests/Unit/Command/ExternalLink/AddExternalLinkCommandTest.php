@@ -11,8 +11,7 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -40,15 +39,13 @@ class AddExternalLinkCommandTest extends AbstractTestCase
      */
     public function testExecute(): void
     {
-        $input  = new ArrayInput(['pattern' => 'pattern', 'url' => 'https://url/']);
-        $output = new NullOutput();
-
         $this->linkRepository
             ->expects(self::once())
             ->method('add')
             ->with((new ExternalLink())->setPattern('pattern')->setUrl('https://url/'));
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute(['pattern' => 'pattern', 'url' => 'https://url/']);
         static::assertSame(Command::SUCCESS, $result);
     }
 }

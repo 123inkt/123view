@@ -10,8 +10,7 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Command\ExternalLink\ListExternalLinksCommand
@@ -36,16 +35,15 @@ class ListExternalLinksCommandTest extends AbstractTestCase
      */
     public function testExecute(): void
     {
-        $input  = new ArrayInput([]);
-        $output = new NullOutput();
-        $link   = (new ExternalLink())->setPattern('pattern')->setUrl('url');
+        $link = (new ExternalLink())->setPattern('pattern')->setUrl('url');
 
         $this->linkRepository
             ->expects(self::once())
             ->method('findAll')
             ->willReturn([$link]);
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute([]);
         static::assertSame(Command::SUCCESS, $result);
     }
 
@@ -55,15 +53,13 @@ class ListExternalLinksCommandTest extends AbstractTestCase
      */
     public function testExecuteEmptyList(): void
     {
-        $input  = new ArrayInput([]);
-        $output = new NullOutput();
-
         $this->linkRepository
             ->expects(self::once())
             ->method('findAll')
             ->willReturn([]);
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute([]);
         static::assertSame(Command::SUCCESS, $result);
     }
 }

@@ -16,7 +16,7 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class TestMailCommandTest extends AbstractTestCase
 {
-    /** @var MailerInterface|MockObject */
+    /** @var MailerInterface&MockObject */
     private MailerInterface $mailer;
     private TestMailCommand $command;
 

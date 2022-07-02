@@ -10,8 +10,7 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Command\ExternalLink\RemoveExternalLinkCommand
@@ -37,14 +36,13 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
      */
     public function testExecute(): void
     {
-        $input  = new ArrayInput(['id' => 'id']);
-        $output = new NullOutput();
-        $link   = (new ExternalLink())->setPattern('pattern')->setUrl('url');
+        $link = (new ExternalLink())->setPattern('pattern')->setUrl('url');
 
         $this->linkRepository->expects(self::once())->method('find')->with('id')->willReturn($link);
         $this->linkRepository->expects(self::once())->method('remove')->with($link, true);
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute(['id' => 'id']);
         static::assertSame(Command::SUCCESS, $result);
     }
 
@@ -55,13 +53,11 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
      */
     public function testExecuteFailure(): void
     {
-        $input  = new ArrayInput(['id' => 'id']);
-        $output = new NullOutput();
-
         $this->linkRepository->expects(self::once())->method('find')->with('id')->willReturn(null);
         $this->linkRepository->expects(self::never())->method('remove');
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute(['id' => 'id']);
         static::assertSame(Command::FAILURE, $result);
     }
 }

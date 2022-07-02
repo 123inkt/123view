@@ -10,8 +10,7 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Command\Repository\ListRepositoriesCommand
@@ -36,16 +35,15 @@ class ListRepositoriesCommandTest extends AbstractTestCase
      */
     public function testExecute(): void
     {
-        $input  = new ArrayInput([]);
-        $output = new NullOutput();
-        $repository   = new Repository();
+        $repository = new Repository();
 
         $this->repositoryRepository
             ->expects(self::once())
             ->method('findAll')
             ->willReturn([$repository]);
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute([]);
         static::assertSame(Command::SUCCESS, $result);
     }
 
@@ -55,15 +53,13 @@ class ListRepositoriesCommandTest extends AbstractTestCase
      */
     public function testExecuteEmptyList(): void
     {
-        $input  = new ArrayInput([]);
-        $output = new NullOutput();
-
         $this->repositoryRepository
             ->expects(self::once())
             ->method('findAll')
             ->willReturn([]);
 
-        $result = $this->command->run($input, $output);
+        $tester = new CommandTester($this->command);
+        $result = $tester->execute([]);
         static::assertSame(Command::SUCCESS, $result);
     }
 }
