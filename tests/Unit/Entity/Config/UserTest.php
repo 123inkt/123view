@@ -9,7 +9,7 @@ use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass User
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\User
  */
 class UserTest extends AbstractTestCase
 {

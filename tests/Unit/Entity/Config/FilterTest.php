@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass Filter
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\Filter
  */
 class FilterTest extends AbstractTestCase
 {
