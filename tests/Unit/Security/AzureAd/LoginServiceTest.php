@@ -11,7 +11,6 @@ use InvalidArgumentException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use TheNetworg\OAuth2\Client\Token\AccessToken;
@@ -35,7 +34,6 @@ class LoginServiceTest extends AbstractTestCase
         $this->azureProvider        = $this->createMock(Azure::class);
         $this->azureProvider->scope = ['scope'];
         $this->translator           = $this->createMock(TranslatorInterface::class);
-        $this->urlGenerator         = $this->createMock(UrlGeneratorInterface::class);
         $this->service              = new LoginService($this->azureProvider, $this->translator);
     }
 
