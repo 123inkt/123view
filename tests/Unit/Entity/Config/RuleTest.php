@@ -24,6 +24,7 @@ class RuleTest extends AbstractTestCase
         $config = new ConstraintConfig();
         $config->setExcludedMethods(['getRepositories', 'addRepository', 'getRecipients', 'addRecipient', 'getFilters', 'addFilter']);
 
+        static::assertNull((new Rule())->getId());
         static::assertAccessorPairs(Rule::class, $config);
     }
 
