@@ -39,7 +39,7 @@ class FormAssertion
         return $this;
     }
 
-    public function createViewWillReturn(FormView $formView)
+    public function createViewWillReturn(FormView $formView): void
     {
         $this->form->expects(atLeastOnce())->method('createView')->willReturn($formView);
     }

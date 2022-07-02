@@ -8,18 +8,17 @@ use Doctrine\DBAL\Types\ConversionException;
 use DR\GitCommitNotification\Doctrine\Type\AbstractEnumType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use InvalidArgumentException;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Doctrine\Type\AbstractEnumType
  */
 class AbstractEnumTypeTest extends AbstractTestCase
 {
-    /** @var AbstractEnumType&MockObject */
     private AbstractEnumType $enumType;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->enumType = new class extends AbstractEnumType {
             public const TYPE   = 'type';
             public const VALUES = ['foo', 'bar'];
