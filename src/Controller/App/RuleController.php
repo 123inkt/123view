@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\RuleFactory;
-use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\RuleFactory;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Form\EditRuleFormType;
-use DR\GitCommitNotification\Repository\RuleRepository;
+use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

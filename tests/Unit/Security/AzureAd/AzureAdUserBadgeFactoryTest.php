@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Entity\User;
-use DR\GitCommitNotification\Repository\UserRepository;
+use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Repository\Config\UserRepository;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

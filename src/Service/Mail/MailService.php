@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Mail;
 
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\RuleConfiguration;
 use DR\GitCommitNotification\ViewModel\CommitsViewModel;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Repository;
+namespace DR\GitCommitNotification\Repository\Config;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Entity\Repository;
+use DR\GitCommitNotification\Entity\Config\Repository;
 
 /**
  * @extends ServiceEntityRepository<Repository>

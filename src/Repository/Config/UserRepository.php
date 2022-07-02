@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Repository;
+namespace DR\GitCommitNotification\Repository\Config;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Entity\Config\User;
 
 /**
  * @extends ServiceEntityRepository<User>
- *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()

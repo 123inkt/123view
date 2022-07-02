@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\User;
-use DR\GitCommitNotification\Repository\RuleRepository;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

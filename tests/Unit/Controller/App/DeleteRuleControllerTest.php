@@ -5,9 +5,9 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App;
 
 use DR\GitCommitNotification\Controller\App\DeleteRuleController;
 use DR\GitCommitNotification\Controller\App\RulesController;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\User;
-use DR\GitCommitNotification\Repository\RuleRepository;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

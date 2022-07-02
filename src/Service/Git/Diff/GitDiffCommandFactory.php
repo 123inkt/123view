@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\Git\Diff;
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 class GitDiffCommandFactory

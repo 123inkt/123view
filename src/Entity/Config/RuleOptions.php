@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity;
+namespace DR\GitCommitNotification\Entity\Config;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
-use DR\GitCommitNotification\Repository\RuleOptionsRepository;
+use DR\GitCommitNotification\Repository\Config\RuleOptionsRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RuleOptionsRepository::class)]

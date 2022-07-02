@@ -5,9 +5,9 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
 use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\RuleConfiguration;
-use DR\GitCommitNotification\Entity\RuleOptions;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory;

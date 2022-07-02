@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Twig;
 
-use DR\GitCommitNotification\Entity\ExternalLink;
+use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use LogicException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

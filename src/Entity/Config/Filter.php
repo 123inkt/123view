@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity;
+namespace DR\GitCommitNotification\Entity\Config;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\FilterType;
-use DR\GitCommitNotification\Repository\FilterRepository;
+use DR\GitCommitNotification\Repository\Config\FilterRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FilterRepository::class)]

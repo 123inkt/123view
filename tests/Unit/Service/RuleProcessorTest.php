@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Filter;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\RuleConfiguration;
+use DR\GitCommitNotification\Entity\Config\Filter;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;

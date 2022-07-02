@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command\Repository;
 
-use DR\GitCommitNotification\Repository\RepositoryRepository;
+use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

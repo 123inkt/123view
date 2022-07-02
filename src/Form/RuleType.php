@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form;
 
-use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Form\Filter\InExclusionFilterType;
 use DR\GitCommitNotification\Form\Recipient\RecipientCollectionType;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;

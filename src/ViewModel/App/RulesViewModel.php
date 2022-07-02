@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App;
 
-use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\Config\Rule;
 
 class RulesViewModel
 {

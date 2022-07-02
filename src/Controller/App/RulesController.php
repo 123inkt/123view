@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\ViewModel\App\RulesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

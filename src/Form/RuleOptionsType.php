@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Form;
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Entity\RuleOptions;
+use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

@@ -5,9 +5,9 @@ namespace DR\GitCommitNotification\Command;
 
 use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Entity\RuleConfiguration;
-use DR\GitCommitNotification\Repository\ExternalLinkRepository;
-use DR\GitCommitNotification\Repository\RuleRepository;
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;

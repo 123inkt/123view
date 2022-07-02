@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
-use DR\GitCommitNotification\Entity\Filter;
+use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Filter
+ * @coversDefaultClass Filter
  */
 class FilterTest extends AbstractTestCase
 {

@@ -5,8 +5,8 @@ namespace DR\GitCommitNotification\Tests\Unit\Command\ExternalLink;
 
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\GitCommitNotification\Command\ExternalLink\AddExternalLinkCommand;
-use DR\GitCommitNotification\Entity\ExternalLink;
-use DR\GitCommitNotification\Repository\ExternalLinkRepository;
+use DR\GitCommitNotification\Entity\Config\ExternalLink;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;

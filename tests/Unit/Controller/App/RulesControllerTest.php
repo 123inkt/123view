@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Controller\App;
 
 use DR\GitCommitNotification\Controller\App\RulesController;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

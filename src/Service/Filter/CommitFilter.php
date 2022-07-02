@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Service\Filter;
 
 use Doctrine\Common\Collections\Collection;
 use DR\GitCommitNotification\Doctrine\Type\FilterType;
-use DR\GitCommitNotification\Entity\Filter;
+use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use Psr\Log\LoggerInterface;
 

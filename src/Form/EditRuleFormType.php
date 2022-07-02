@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Form;
 
 use DR\GitCommitNotification\Controller\App\RuleController;
-use DR\GitCommitNotification\Entity\Rule;
+use DR\GitCommitNotification\Entity\Config\Rule;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;

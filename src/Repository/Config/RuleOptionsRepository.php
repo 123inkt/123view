@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Repository;
+namespace DR\GitCommitNotification\Repository\Config;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Entity\RuleOptions;
+use DR\GitCommitNotification\Entity\Config\RuleOptions;
 
 /**
  * @extends ServiceEntityRepository<RuleOptions>
- *
  * @method RuleOptions|null find($id, $lockMode = null, $lockVersion = null)
  * @method RuleOptions|null findOneBy(array $criteria, array $orderBy = null)
  * @method RuleOptions[]    findAll()

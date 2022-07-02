@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form;
 
-use DR\GitCommitNotification\Entity\Repository;
-use DR\GitCommitNotification\Repository\RepositoryRepository;
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

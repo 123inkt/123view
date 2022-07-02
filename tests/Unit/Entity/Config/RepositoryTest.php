@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
-use DR\GitCommitNotification\Entity\Repository;
-use DR\GitCommitNotification\Entity\RepositoryProperty;
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Config\RepositoryProperty;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Repository
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\Repository
  */
 class RepositoryTest extends AbstractTestCase
 {

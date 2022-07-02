@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Command;
 
 use DR\GitCommitNotification\Command\MailCommand;
-use DR\GitCommitNotification\Entity\ExternalLink;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\RuleConfiguration;
-use DR\GitCommitNotification\Repository\ExternalLinkRepository;
-use DR\GitCommitNotification\Repository\RuleRepository;
+use DR\GitCommitNotification\Entity\Config\ExternalLink;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;

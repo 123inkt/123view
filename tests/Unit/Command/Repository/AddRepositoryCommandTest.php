@@ -5,9 +5,9 @@ namespace DR\GitCommitNotification\Tests\Unit\Command\Repository;
 
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\GitCommitNotification\Command\Repository\AddRepositoryCommand;
-use DR\GitCommitNotification\Entity\Repository;
-use DR\GitCommitNotification\Entity\RepositoryProperty;
-use DR\GitCommitNotification\Repository\RepositoryRepository;
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Config\RepositoryProperty;
+use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;

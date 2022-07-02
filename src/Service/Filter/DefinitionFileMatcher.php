@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\Filter;
 
 use Doctrine\Common\Collections\Collection;
-use DR\GitCommitNotification\Entity\Filter;
+use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use RuntimeException;
 

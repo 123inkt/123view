@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\User
+ * @coversDefaultClass User
  */
 class UserTest extends AbstractTestCase
 {

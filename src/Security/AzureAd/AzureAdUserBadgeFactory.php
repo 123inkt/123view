@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Security\AzureAd;
 
-use DR\GitCommitNotification\Entity\User;
-use DR\GitCommitNotification\Repository\UserRepository;
+use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Repository\Config\UserRepository;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
 class AzureAdUserBadgeFactory

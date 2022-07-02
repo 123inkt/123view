@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Command\ExternalLink;
 
 use DR\GitCommitNotification\Command\ExternalLink\RemoveExternalLinkCommand;
-use DR\GitCommitNotification\Entity\ExternalLink;
-use DR\GitCommitNotification\Repository\ExternalLinkRepository;
+use DR\GitCommitNotification\Entity\Config\ExternalLink;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;

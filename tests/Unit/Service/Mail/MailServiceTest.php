@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Recipient;
-use DR\GitCommitNotification\Entity\Rule;
-use DR\GitCommitNotification\Entity\RuleConfiguration;
-use DR\GitCommitNotification\Entity\RuleOptions;
+use DR\GitCommitNotification\Entity\Config\Recipient;
+use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use DR\GitCommitNotification\Service\Mail\MailService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
-use DR\GitCommitNotification\Entity\ExternalLink;
+use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\ExternalLink
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\ExternalLink
  */
 class ExternalLinkTest extends AbstractTestCase
 {

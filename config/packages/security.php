@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Controller\Auth\LogoutController;
-use DR\GitCommitNotification\Entity\User;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;

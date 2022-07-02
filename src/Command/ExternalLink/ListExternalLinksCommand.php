@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command\ExternalLink;
 
-use DR\GitCommitNotification\Repository\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
