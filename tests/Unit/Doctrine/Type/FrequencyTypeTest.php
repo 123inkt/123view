@@ -8,13 +8,23 @@ use DateTime;
 use DateTimeImmutable;
 use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Doctrine\Type\FrequencyType
- * @covers ::__construct
  */
 class FrequencyTypeTest extends AbstractTestCase
 {
+    /**
+     * @covers ::getPeriod
+     */
+    public function testGetPeriodInvalidFrequency(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid frequency: foobar');
+        FrequencyType::getPeriod(new DateTimeImmutable(), 'foobar');
+    }
+
     /**
      * @covers ::getPeriod
      * @dataProvider dataProvider
