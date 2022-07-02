@@ -25,6 +25,6 @@ class RuleConfigurationTest extends AbstractTestCase
         $config = new RuleConfiguration($dateA, $dateB, [], $rule);
         static::assertSame($dateA, $config->startTime);
         static::assertSame($dateB, $config->endTime);
-        static::assertSame($rule, $rule);
+        static::assertSame($rule, $config->rule);
     }
 }
