@@ -16,6 +16,15 @@ use InvalidArgumentException;
 class FrequencyTypeTest extends AbstractTestCase
 {
     /**
+     * @covers ::isValid
+     */
+    public function testIsValid(): void
+    {
+        static::assertTrue(FrequencyType::isValid('once-per-hour'));
+        static::assertFalse(FrequencyType::isValid('foobar'));
+    }
+
+    /**
      * @covers ::getPeriod
      */
     public function testGetPeriodInvalidFrequency(): void
