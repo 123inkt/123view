@@ -6,13 +6,10 @@ namespace DR\GitCommitNotification\Tests\Unit\Form;
 use DR\GitCommitNotification\Controller\App\RuleController;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Form\EditRuleFormType;
-use DR\GitCommitNotification\Form\Recipient\RecipientType;
 use DR\GitCommitNotification\Form\Rule\RuleType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
