@@ -14,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Form\Recipient\RecipientType
- * @covers ::__construct
  */
 class RecipientTypeTest extends AbstractTestCase
 {

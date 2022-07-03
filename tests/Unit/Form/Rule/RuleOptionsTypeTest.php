@@ -15,7 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Form\Rule\RuleOptionsType
- * @covers ::__construct
  */
 class RuleOptionsTypeTest extends AbstractTestCase
 {

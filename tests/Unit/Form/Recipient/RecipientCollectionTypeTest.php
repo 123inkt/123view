@@ -13,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Form\Recipient\RecipientCollectionType
- * @covers ::__construct
  */
 class RecipientCollectionTypeTest extends AbstractTestCase
 {

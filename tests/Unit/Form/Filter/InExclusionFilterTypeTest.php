@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Form\Filter\InExclusionFilterType
- * @covers ::__construct
  */
 class InExclusionFilterTypeTest extends AbstractTestCase
 {
