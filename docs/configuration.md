@@ -1,149 +1,37 @@
 # Configuration
 
-Create the following basic `config.xml`:
+See `.env` for the available configuration options. See `.env.prod.local.dist` for env options required to set for production.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="config.xsd">
-</configuration>
-```
+## Mandatory options
 
-Add a rule for a repository you want to receive notifications for:
+- `APP_ENV`: controls the environment. Is set to `dev` for dev and `prod` for prod.
+- `APP_SECRET`: is Symfony secret. Needs to be specifically set to randomly generated string for production!
+- `MAILER_SENDER`: controls the sender e-mail address. Format: `'Sherlock Holmes <sherlock@example.com>'`
+- `DATABASE_URL`: controls the full url to the database. Default can be used for dev, _must_ be set for production.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="config.xsd">
-    <repositories>
-        <repository name="my-repo" url="https://username:password@git.example.com/repository/example.git"/>
-    </repositories>
+### Azure Ad Single Sign on:
 
-    <rule>
-        <name>MyFirstNotification</name>
-        <repositories>
-            <repository name="my-repo"/>
-        </repositories>
-        <recipients>
-            <recipient email="sherlock@example.com" name="Sherlock Holmes"/>
-        </recipients>
-    </rule>
-</configuration>
-```
+Register an application on https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps.
 
-**Requirements:**
+Add `Web` platform and specify redirect url: `https://<domain>(:<port>)/single-sign-on/azure-ad/callback/`.
 
-- A name of the rule, this will be added to the subject of the notification.
-- One or more repositories to scan. Add credentials to the url.
-- One or more repository references in the rule.
-- One or more recipients.
+For `Front-channel logout URL` set url to: `https://<domain>(:<port>)/sign-out`.
 
-## Rule options
+Add a secret, and fill in the `.env` options below:
 
-| Option | Default | Values | Description |
-|--------|---------|--------|-------------|
-| active | true | true,false | toggle to enable/disable a rule |
-| theme | upsource | upsource,darcula | either light or dark theme in the mail |
-| frequency | once-per-hour | once-per-hour<br>once-per-two-hours<br>once-per-three-hours<br>once-per-four-hours<br>once-per-day<br>once-per-week | the frequency the notification will be sent for this rule | 
-| diffAlgorithm | histogram | myers,patience,minimal,histogram  | diff algorithm type, see: https://git-scm.com/docs/git-diff |
-| excludeMergeCommits | true | true,false | should merge commits be excluded? |
-| ignoreAllSpace | false | true,false | should _all_ whitespace changes be ignored? |
-| ignoreBlankLines | false | true,false | should blank lines be ignored? |
-| ignoreSpaceAtEol | true | true,false | should whitespace at the end of the line be ignored?|
-| ignoreSpaceChange | false | true,false | should whitespace changes be ignored? |
+- `OAUTH_AZURE_AD_TENANT_ID`: the `Directory (tenant) ID` from azure ad
+- `OAUTH_AZURE_AD_CLIENT_ID`: the `Application (client) ID` from azure ad
+- `OAUTH_AZURE_AD_CLIENT_SECRET`: the secret `value` created in the step above.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="config.xsd">
-    <rule active="true"
-          theme="darcula"
-          frequency="once-per-week"
-          diffAlgorithm="myers"
-          excludeMergeCommits="true"
-          ignoreAllSpace="false"
-          ignoreBlankLines="true"
-          ignoreSpaceAtEol="true"
-          ignoreSpaceChange="true">
-        ...
-    </rule>
-</configuration>
-```
+## Extra options
 
-## Inclusion and Exclusions
-
-It's possible to exclude or include entire commits by author or subject, aswell as excluding/including certain files or directories within commits.
-For file and subject inclusion/exclusion it expects regex pattern accepted by `preg_match`.
-
-### Example
-
-- Exclude all commits where the commit message starts with `JB1234`.
-- Exclude `composer.lock` from all commits.
-- Only include commits from `sherlock@example.com` and `watson@example.com`.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="config.xsd">
-    <rule>
-        ...
-        <exclude>
-            <subject>#^JB1234#</subject>
-            <file>#^composer\.lock$#</file>
-        </exclude>
-        <include>
-            <author>sherlock@example.com</author>
-            <author>watson@example.com</author>
-        </include>
-    </rule>
-</configuration>
-```
-
-## Add external links
-
-With certain commits the ticket or task number is included in the commit message. With the external links options these can be converted to links. Add
-the `external_links` section to the rule:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="config.xsd">
-    <rule>
-        ...
-        <external_links>
-            <external_link pattern="T#{}" url="https://jira.example.com/entity/{}"/>
-            <external_link pattern="B#{}" url="https://jira.example.com/entity/{}"/>
-        </external_links>
-    </rule>
-</configuration>
-```
-
-## Upsource review link integration
-
-To add an icon + url to the review of each commit, you have to specify the upsource project id for your repository:
-
-```xml
-<repositories>
-    <repository name="my-repo"
-                url="https://username:password@git.example.com/repository/example.git"
-                upsource-project-id="my-project"
-    />
-</repositories>
-```
-
-And in `.env` configure `UPSOURCE_API_URL` and `UPSOURCE_BASIC_AUTH`. See the `.env` for configurations examples.
-
-## Gitlab merge request or branch link integration
-
-To add an icon + url to the merge request or branch for each commit, you have to specify the gitlab project id for your repository:
-
-```xml
-<repositories>
-    <repository name="my-repo"
-                url="https://username:password@git.example.com/repository/example.git"
-                gitlab-project-id="165"
-    />
-</repositories>
-```
-
-And in `.env` configure `GITLAB_API_URL` and `GITLAB_ACCESS_TOKEN`. See the `.env` for configurations examples.
+- `NGINX_VERSION`: controls the version of nginx.
+- `NGINX_PORT`: controls the port nginx is started on. Default 8080 for dev, 80 for prod.
+- `NGINX_SSL_PORT`: controls the https port for nginx. Default 8443 for dev, 443 for prod.
+- `PHP_VERSION`: controls the php version. Defaults to 8.1
+- `MYSQL_VERSION`: controls the mysql versions. Default to 8.0
+- `MYSQL_PORT`: controls the mysql port. Default to 3306
+- `MAILER_DSN`: controls the used mail procotol, default to the docker image: `smtp://mail:25`.
+- `HTTP_CLIENT_VERIFY_HOST`: controls if curls VERIFY_HOST is enabled for API calls. `true` recommended for production.
+- `HTTP_CLIENT_VERIFY_PEER`: controls if curls VERIFY_PEER is enabled for API calls. `true` recommended for production.
+- `ERROR_MAIL`: specify the email-address error mails should be send to.

@@ -1,5 +1,5 @@
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF)](https://php.net/)
-[![Symfony Version](https://img.shields.io/badge/symfony-6.0-4BC51D)](https://symfony.com/releases)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
+[![Symfony Version](https://img.shields.io/badge/symfony-6.1-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-4BC51D)](https://php.net/)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
@@ -32,49 +32,30 @@ A symfony application to allow receiving commit notification for all commits in 
 
 ## Quick start
 
+1) clone repository
 ```shell
 git clone https://github.com/123inkt/git-commit-notification.git git-commit-notification
 cd git-commit-notification
-composer install --optimize-autoloader --classmap-authoritative --no-dev --no-progress
-composer dump-env prod
 ```
-Check `.env` for mailer settings, update (if necessary)
-```dotenv
-MAILER_DSN=native://default
-MAILER_SENDER='Sherlock Holmes <sherlock@example.com>'
+2) create `.env.dev.local` or `.env.prod.local`. See `.env` [configuration](docs/configuration.md) for how to configure the options.
+
+3) Start
+```shell
+./bin/start.sh
 ```
+4) choose `prod` or `dev` based on your environment. The project will be available on your host on:
+   1) dev: `https://<domain>:8443/`
+   2) prod: `https://<domain>/`
 
-Create config in the root of the project:
-
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="config.xsd">
-    <repositories>
-        <repository name="example" url="https://username:password@github.com/example.git"/>
-    </repositories>
-
-    <rule>
-        <name>Example repository once per hour</name>
-        <repositories>
-            <repository name="example"/>
-        </repositories>
-        <recipients>
-            <recipient email="sherlock@example.com" name="Sherlock Holmes"/>
-        </recipients>
-    </rule>
-</configuration>
-```
-See [configuration](docs/configuration.md) for more configuration options.
-
-### Add to crontab:
+## The crontab (prod):
 
 ```shell
-0 */1 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
-0 */2 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
-0 */3 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
-0 */4 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
-0 0 * * *     /usr/bin/php /path/to/bin/console mail --frequency=once-per-day          > /dev/null 2>&1
-0 0 * * 1     /usr/bin/php /path/to/bin/console mail --frequency=once-per-week         > /dev/null 2>&1
+0 */1 * * * php bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
+0 */2 * * * php bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
+0 */3 * * * php bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
+0 */4 * * * php bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
+0 0 * * *   php bin/console mail --frequency=once-per-day          > /dev/null 2>&1
+0 0 * * 1   php bin/console mail --frequency=once-per-week         > /dev/null 2>&1
 ```
 
 See [command line options](docs/command-line.md) for more information about the console commands.
