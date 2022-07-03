@@ -50,6 +50,11 @@ trait TestTrait
         return (string)file_get_contents($path);
     }
 
+    protected function loadFixture(string $fixture): mixed
+    {
+        return require $this->getDataDir() . '/Fixtures/' . $fixture;
+    }
+
     private function getDataDir(): string
     {
         $namespace = str_replace(

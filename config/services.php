@@ -82,9 +82,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RepositoryRepository::class);
 
     // custom register GitRepositoryService with cache dir
-    $services->set(CacheableGitRepositoryService::class)
-        ->public()
-        ->arg('$cacheDirectory', "%kernel.cache_dir%");
+    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
 
     // Register Git
     $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');

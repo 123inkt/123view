@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\E2E;
 
 use DR\GitCommitNotification\Git\GitRepository;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Tests\AbstractKernelTestCase;
@@ -23,8 +25,12 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 class MailCommandTest extends AbstractKernelTestCase
 {
     /** @var GitRepositoryService&MockObject */
-    private GitRepositoryService  $repositoryService;
-    private MessageEventCollector $messageCollector;
+    private GitRepositoryService $repositoryService;
+    /** @var MockObject&RuleRepository */
+    private RuleRepository $ruleRepository;
+    /** @var ExternalLinkRepository&MockObject */
+    private ExternalLinkRepository $linkRepository;
+    private MessageEventCollector  $messageCollector;
 
     /**
      * @throws Exception
@@ -33,10 +39,14 @@ class MailCommandTest extends AbstractKernelTestCase
     {
         parent::setUp();
 
+        $this->ruleRepository    = $this->createMock(RuleRepository::class);
+        $this->linkRepository    = $this->createMock(ExternalLinkRepository::class);
         $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
         $this->messageCollector  = new MessageEventCollector();
 
         // register mock repository service
+        self::getContainer()->set(RuleRepository::class, $this->ruleRepository);
+        self::getContainer()->set(ExternalLinkRepository::class, $this->linkRepository);
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
 
         // register MessageEventCollector to subscribe to send e-mails
@@ -48,6 +58,10 @@ class MailCommandTest extends AbstractKernelTestCase
 
     public function testMail(): void
     {
+        // setup data
+        $this->linkRepository->method('findAll')->willReturn($this->loadFixture('links.php'));
+        $this->ruleRepository->method('getActiveRulesForFrequency')->willReturn($this->loadFixture('rules.php'));
+
         // setup repository mocks
         $repository = $this->createMock(GitRepository::class);
         $this->repositoryService->method('getRepository')->with('https://example.com/detectives/sherlock.git')->willReturn($repository);
@@ -58,7 +72,7 @@ class MailCommandTest extends AbstractKernelTestCase
 
         // execute command
         $commandTester = new CommandTester($command);
-        $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour', '--config' => $this->getFilePath('config.xml')->getPathname()]);
+        $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
         static::assertSame(Command::SUCCESS, $exitCode);
 
         // assert 1 mail was send
