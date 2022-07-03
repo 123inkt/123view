@@ -14,6 +14,7 @@ use DR\GitCommitNotification\Entity\Config\Filter;
  * @method Filter|null findOneBy(array $criteria, array $orderBy = null)
  * @method Filter[]    findAll()
  * @method Filter[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class FilterRepository extends ServiceEntityRepository
 {

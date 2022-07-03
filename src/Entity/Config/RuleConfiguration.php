@@ -11,10 +11,10 @@ class RuleConfiguration
      * @param ExternalLink[] $externalLinks
      */
     public function __construct(
-        public DateTimeInterface $startTime,
-        public DateTimeInterface $endTime,
-        public array $externalLinks,
-        public Rule $rule
+        public readonly DateTimeInterface $startTime,
+        public readonly DateTimeInterface $endTime,
+        public readonly array $externalLinks,
+        public readonly Rule $rule
     ) {
     }
 }

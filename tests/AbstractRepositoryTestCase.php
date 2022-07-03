@@ -9,48 +9,49 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @template T of ServiceEntityRepository
- */
 abstract class AbstractRepositoryTestCase extends AbstractTestCase
 {
     /** @var MockObject&EntityManagerInterface */
-    private MockObject $objectManager;
-    /** @var T */
-    protected ServiceEntityRepository $repository;
+    protected MockObject $objectManager;
+    /** @var ManagerRegistry&MockObject */
+    protected ManagerRegistry $registry;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->objectManager = $this->createMock(EntityManagerInterface::class);
-        $this->objectManager->method('getClassMetadata')->willReturn($this->createMock(ClassMetadata::class));
-        $registry = $this->createMock(ManagerRegistry::class);
-        $registry->method('getManagerForClass')->willReturn($this->objectManager);
-        $this->repository = new ($this->getRepositoryClass())($registry);
+        $this->objectManager->method('getClassMetadata')->willReturn(new ClassMetadata('class-meta-data'));
+        $this->registry = $this->createMock(ManagerRegistry::class);
+        $this->registry->method('getManagerForClass')->willReturn($this->objectManager);
     }
 
-    protected function expectPersist(object $object): void
+    /**
+     * @template T of ServiceEntityRepository
+     * @phpstan-param class-string<T>
+     * @phpstan-return T
+     */
+    final protected function getRepository(string $classString): ServiceEntityRepository
+    {
+        return new $classString($this->registry);
+    }
+
+    final protected function expectPersist(object $object): void
     {
         $this->objectManager->expects(self::once())->method('persist')->with($object);
     }
 
-    protected function expectRemove(object $object): void
+    final protected function expectRemove(object $object): void
     {
         $this->objectManager->expects(self::once())->method('remove')->with($object);
     }
 
-    protected function neverExpectFlush(): void
+    final protected function neverExpectFlush(): void
     {
         $this->objectManager->expects(self::never())->method('flush');
     }
 
-    protected function expectFlush(): void
+    final protected function expectFlush(): void
     {
         $this->objectManager->expects(self::once())->method('flush');
     }
-
-    /**
-     * @return class-string<T>
-     */
-    abstract public function getRepositoryClass(): string;
 }
