@@ -13,12 +13,14 @@ use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
+#[AsCommand('mail', "With current configuration mail the latest commit changes")]
 class MailCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -33,10 +35,8 @@ class MailCommand extends Command implements LoggerAwareInterface
 
     protected function configure(): void
     {
-        $this->setName("mail")
-            ->setDescription("With current configuration mail the latest commit changes")
-            ->addOption('--frequency', '-f', InputOption::VALUE_REQUIRED, 'The current frequency of the mail command.')
-            ->addOption('--config', '-c', InputOption::VALUE_REQUIRED, 'The path to the config.xml');
+        $this->addOption('--frequency', '-f', InputOption::VALUE_REQUIRED, 'The current frequency of the mail command.');
+        $this->addOption('--config', '-c', InputOption::VALUE_REQUIRED, 'The path to the config.xml');
     }
 
     /**

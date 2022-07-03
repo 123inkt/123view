@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Tests\AbstractKernelTestCase;
 use DR\GitCommitNotification\Tests\Helper\MessageEventCollector;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -25,14 +26,19 @@ class MailCommandTest extends AbstractKernelTestCase
     private GitRepositoryService  $repositoryService;
     private MessageEventCollector $messageCollector;
 
+    /**
+     * @throws Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
         $this->messageCollector  = new MessageEventCollector();
+
         // register mock repository service
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
+
         // register MessageEventCollector to subscribe to send e-mails
         /** @var EventDispatcherInterface|null $dispatcher */
         $dispatcher = self::getContainer()->get(EventDispatcherInterface::class);
