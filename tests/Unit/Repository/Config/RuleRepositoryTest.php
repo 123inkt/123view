@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
 
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;

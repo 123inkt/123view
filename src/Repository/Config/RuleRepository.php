@@ -43,6 +43,7 @@ class RuleRepository extends ServiceEntityRepository
     /**
      * @phpstan-param Frequency::* $frequency
      * @return Rule[] Returns an array of Rule objects
+     * @codeCoverageIgnore  getQuery returns final class. Didn't find solution to mock it.
      */
     public function getActiveRulesForFrequency(bool $active, string $frequency): array
     {
