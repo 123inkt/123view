@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
 
+use DR\GitCommitNotification\Entity\Config\Recipient;
 use DR\GitCommitNotification\Repository\Config\RecipientRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
 
@@ -17,6 +18,11 @@ class RecipientRepositoryTest extends AbstractRepositoryTestCase
     public function testConstruct(): void
     {
         $repository = new RecipientRepository($this->registry);
-        static::assertSame('class-meta-data', $repository->getClassName());
+        static::assertSame(Recipient::class, $repository->getClassName());
+    }
+
+    protected function getRepositoryEntityClassString(): string
+    {
+        return Recipient::class;
     }
 }

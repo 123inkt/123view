@@ -20,14 +20,14 @@ abstract class AbstractRepositoryTestCase extends AbstractTestCase
     {
         parent::setUp();
         $this->objectManager = $this->createMock(EntityManagerInterface::class);
-        $this->objectManager->method('getClassMetadata')->willReturn(new ClassMetadata('class-meta-data'));
+        $this->objectManager->method('getClassMetadata')->willReturn(new ClassMetadata($this->getRepositoryEntityClassString()));
         $this->registry = $this->createMock(ManagerRegistry::class);
         $this->registry->method('getManagerForClass')->willReturn($this->objectManager);
     }
 
     /**
      * @template T of ServiceEntityRepository
-     * @phpstan-param class-string<T>
+     * @phpstan-param class-string<T> $classString
      * @phpstan-return T
      */
     final protected function getRepository(string $classString): ServiceEntityRepository
@@ -54,4 +54,9 @@ abstract class AbstractRepositoryTestCase extends AbstractTestCase
     {
         $this->objectManager->expects(self::once())->method('flush');
     }
+
+    /**
+     * @return class-string
+     */
+    abstract protected function getRepositoryEntityClassString(): string;
 }

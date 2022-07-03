@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Validator\Filter\IsValidPatternValidator
+ * @extends ConstraintValidatorTestCase<IsValidPatternValidator>
  */
 class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
 {

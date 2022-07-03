@@ -6,16 +6,13 @@ namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @implements ExternalLinkRepository
  * @coversDefaultClass \DR\GitCommitNotification\Repository\Config\ExternalLinkRepository
  * @covers ::__construct
  */
 class ExternalLinkRepositoryTest extends AbstractRepositoryTestCase
 {
-    /** @var ExternalLinkRepository&MockObject */
     private ExternalLinkRepository $repository;
 
     protected function setUp(): void
@@ -46,5 +43,10 @@ class ExternalLinkRepositoryTest extends AbstractRepositoryTestCase
         $this->expectRemove($link);
         $this->expectFlush();
         $this->repository->remove($link, true);
+    }
+
+    protected function getRepositoryEntityClassString(): string
+    {
+        return ExternalLink::class;
     }
 }

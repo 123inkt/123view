@@ -6,7 +6,6 @@ namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Repository\Config\RepositoryRepository
@@ -14,7 +13,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class RepositoryRepositoryTest extends AbstractRepositoryTestCase
 {
-    /** @var RepositoryRepository&MockObject */
     private RepositoryRepository $repository;
 
     protected function setUp(): void
@@ -45,5 +43,10 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
         $this->expectRemove($repository);
         $this->expectFlush();
         $this->repository->remove($repository, true);
+    }
+
+    protected function getRepositoryEntityClassString(): string
+    {
+        return Repository::class;
     }
 }

@@ -38,7 +38,9 @@ class RecipientCollectionTypeTest extends AbstractTestCase
         static::assertTrue($deleteEmpty((new Recipient())));
         static::assertFalse($deleteEmpty((new Recipient())->setEmail('email')));
 
-        static::assertCount(1, $introspector->getDefault('constraints'));
+        $constraints = $introspector->getDefault('constraints');
+        static::assertIsArray($constraints);
+        static::assertCount(1, $constraints);
     }
 
     /**

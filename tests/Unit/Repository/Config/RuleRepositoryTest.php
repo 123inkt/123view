@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
 
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Repository\Config\RuleRepository
@@ -18,7 +13,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class RuleRepositoryTest extends AbstractRepositoryTestCase
 {
-    /** @var RuleRepository&MockObject */
     private RuleRepository $repository;
 
     protected function setUp(): void
@@ -49,5 +43,10 @@ class RuleRepositoryTest extends AbstractRepositoryTestCase
         $this->expectRemove($rule);
         $this->expectFlush();
         $this->repository->remove($rule, true);
+    }
+
+    protected function getRepositoryEntityClassString(): string
+    {
+        return Rule::class;
     }
 }

@@ -37,7 +37,9 @@ class FilterCollectionTypeTest extends AbstractTestCase
         static::assertTrue($deleteEmpty((new Filter())));
         static::assertFalse($deleteEmpty((new Filter())->setPattern('pattern')));
 
-        static::assertCount(1, $introspector->getDefault('constraints'));
+        $constraints = $introspector->getDefault('constraints');
+        static::assertIsArray($constraints);
+        static::assertCount(1, $constraints);
     }
 
     /**

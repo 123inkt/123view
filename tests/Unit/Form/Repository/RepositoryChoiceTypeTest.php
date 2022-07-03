@@ -54,7 +54,9 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         static::assertSame('', $choiceLabel(new Repository()));
         static::assertSame('name', $choiceLabel((new Repository())->setName('name')));
 
-        static::assertCount(1, $introspector->getDefault('constraints'));
+        $constraints = $introspector->getDefault('constraints');
+        static::assertIsArray($constraints);
+        static::assertCount(1, $constraints);
     }
 
     /**
