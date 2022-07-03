@@ -8,22 +8,31 @@ use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use DR\GitCommitNotification\Entity\Config\User;
 
-$repository = new Repository();
-$repository->setName('sherlock');
-$repository->setUrl('https://example.com/detectives/sherlock.git');
+$name  = 'Sherlock Holmes';
+$email = 'sherlock@example.com';
 
-$user = new User();
-$user->setName('Sherlock Holmes');
-$user->setEmail('sherlock@example.com');
-
-$rule = (new Rule())
-    ->setUser($user)
-    ->setName('Detectives')
-    ->setActive(true)
-    ->setRuleOptions(new RuleOptions())
-    ->addRecipient((new Recipient())->setEmail($user->getEmail() ?? '')->setName($user->getName() ?? ''))
-    ->addRepository($repository);
-$rule->getRuleOptions()?->setSubject('My commits');
-$rule->getRuleOptions()?->setTheme(MailThemeType::DARCULA);
-
-return [$rule];
+return [
+    (new Rule())
+        ->setUser(
+            (new User())
+                ->setName($name)
+                ->setEmail($email)
+        )
+        ->setName('Detectives')
+        ->setActive(true)
+        ->setRuleOptions(
+            (new RuleOptions())
+                ->setSubject('My commits')
+                ->setTheme(MailThemeType::DARCULA)
+        )
+        ->addRecipient(
+            (new Recipient())
+                ->setEmail($email)
+                ->setName($name)
+        )
+        ->addRepository(
+            (new Repository())
+                ->setName('sherlock')
+                ->setUrl('https://example.com/detectives/sherlock.git')
+        )
+];
