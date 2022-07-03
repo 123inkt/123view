@@ -7,18 +7,18 @@ sleep 20
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader
 else
-    composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative -vvv
+    composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative
 fi
 
 ##
 # warmup cache
 #
-php bin/console cache:clear -vvv
+php bin/console cache:clear
 
 ##
 # run doctrine migrations
 #
-php bin/console doctrine:migrations:migrate --no-interaction -vvv
+php bin/console doctrine:migrations:migrate --no-interaction
 
 printenv > /etc/environment
 mkdir -p /app/var/log

@@ -2,6 +2,7 @@ version: '3'
 
 services:
     nginx:
+        container_name: nginx
         build:
             args:
                 VERSION: $NGINX_VERSION
@@ -16,6 +17,7 @@ services:
             - php-fpm
 
     php-fpm:
+        container_name: php-fpm
         build:
             args:
                 VERSION: $PHP_VERSION
@@ -28,6 +30,7 @@ services:
             - .:/app:rw
 
     mysql:
+        container_name: mysql
         build:
             args:
                 VERSION: $MYSQL_VERSION
@@ -40,6 +43,7 @@ services:
             - ${MYSQL_PORT:-3306}:3306
 
     mail:
+        container_name: mail
         image: bytemark/smtp
 
 
