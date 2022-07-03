@@ -17,8 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FilterCollectionTypeTest extends AbstractTestCase
 {
     /**
- * @covers ::configureOptions
- */
+     * @covers ::configureOptions
+     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
