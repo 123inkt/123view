@@ -3,16 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form\Repository;
 
-use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Form\Filter\FilterCollectionType;
-use DR\GitCommitNotification\Form\Filter\FilterType;
 use DR\GitCommitNotification\Form\Repository\RepositoryChoiceType;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
