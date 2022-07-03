@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\Framework\ValidationConfig;
+use Symfony\Config\FrameworkConfig;
 
-return static function (ValidationConfig $validationConfig): void {
-    $validationConfig->notCompromisedPassword()->enabled(false);
+return static function (FrameworkConfig $frameworkConfig): void {
+    $frameworkConfig->validation()->notCompromisedPassword()->enabled(false);
 };
