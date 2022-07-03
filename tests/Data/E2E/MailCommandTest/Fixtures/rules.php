@@ -23,7 +23,7 @@ $rule = (new Rule())
     ->setRuleOptions(new RuleOptions())
     ->addRecipient((new Recipient())->setEmail($user->getEmail() ?? '')->setName($user->getName() ?? ''))
     ->addRepository($repository);
-$rule->getRuleOptions()->setSubject('My commits');
-$rule->getRuleOptions()->setTheme(MailThemeType::DARCULA);
+$rule->getRuleOptions()?->setSubject('My commits');
+$rule->getRuleOptions()?->setTheme(MailThemeType::DARCULA);
 
 return [$rule];
