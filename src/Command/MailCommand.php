@@ -36,7 +36,6 @@ class MailCommand extends Command implements LoggerAwareInterface
     protected function configure(): void
     {
         $this->addOption('--frequency', '-f', InputOption::VALUE_REQUIRED, 'The current frequency of the mail command.');
-        $this->addOption('--config', '-c', InputOption::VALUE_REQUIRED, 'The path to the config.xml');
     }
 
     /**
