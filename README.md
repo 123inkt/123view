@@ -25,10 +25,22 @@ A symfony application to allow receiving commit notification for all commits in 
 <img src="docs/images/upsource.png" alt="Upsource" title="Upsource" width="400">
 <img src="docs/images/darcula.png" alt="Darcula" title="Darcula" width="400">
 
+**UI**
+
+<img src="docs/images/login.png" alt="Login screen" title="Login screen" width="400">
+<img src="docs/images/add-rule.png" alt="Add rule" title="Add rule" width="400">
+
 ## Requirements
 
-- recent version of `git`
-- php version >= 8.1
+- docker
+- docker-compose
+
+Or
+
+- nginx
+- php8.1+
+- mysql
+- git latest version
 
 ## Quick start
 
@@ -44,10 +56,12 @@ cd git-commit-notification
 ./bin/start.sh
 ```
 4) choose `prod` or `dev` based on your environment. The project will be available on your host on:
-   1) dev: `https://<domain>:8443/`
-   2) prod: `https://<domain>/`
+   - dev: `https://<domain>:8443/`
+   - prod: `https://<domain>/`
 
 ## The crontab (prod):
+
+When starting docker in production mode, the crontab will be configured as below:
 
 ```shell
 0 */1 * * * php bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
