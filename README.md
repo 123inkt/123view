@@ -59,6 +59,10 @@ cd git-commit-notification
    - dev: `https://<domain>:8443/`
    - prod: `https://<domain>/`
 
+### Next
+- [Adding repositories](docs/adding-repositories.md)
+- [Adding external links](docs/adding-external-link.md)
+
 ## The crontab (prod):
 
 When starting docker in production mode, the crontab will be configured as below:
