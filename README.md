@@ -85,18 +85,6 @@ See [command line options](docs/command-line.md) for more information about the 
 3) For a set of commits, fetches the bundled changes between the first commit and the last
 4) Send a notification mail in the desired formatting
 
-## Troubleshooting
-
-I'm not getting mails:
-- In `.env` verify MAILER_DSN is set correctly. See https://symfony.com/doc/current/mailer.html#using-built-in-transports
-- Run command with `-vvv` for verbose output. Verify your rules are configured correctly.
-- send a test mail `php bin/console test:mail sherlock@example.com`
-- Check the mail log for additional error messages. Depending on your system check:
-  - /var/log/maillog
-  - /var/log/mail.log
-  - /var/adm/maillog
-  - /var/adm/syslog/mail.log
-
 ## About us
 
 At 123inkt (Part of Digital Revolution B.V.), every day more than 30 developers are working on improving our internal ERP and our several shops. Do
