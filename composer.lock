@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2d06452591ef153856647f4ef4d49ca",
+    "content-hash": "76556252d3b04a2d9a65b71e863ffc82",
     "packages": [
         {
             "name": "czproject/git-php",
@@ -60,11 +60,17 @@
         },
         {
             "name": "digitalrevolution/symfony-console-validation",
-            "version": "dev-Create-input-validator",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/123inkt/symfony-console-validation",
-                "reference": "7f6c5108a8fb5d0e23396d496fde819be9f31c69"
+                "url": "https://github.com/123inkt/symfony-console-validation.git",
+                "reference": "a79e204b5d80bce227d27397019a46061b6ec9da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/123inkt/symfony-console-validation/zipball/a79e204b5d80bce227d27397019a46061b6ec9da",
+                "reference": "a79e204b5d80bce227d27397019a46061b6ec9da",
+                "shasum": ""
             },
             "require": {
                 "digitalrevolution/symfony-validation-shorthand": "^1.0.4",
@@ -89,47 +95,16 @@
                     "DigitalRevolution\\SymfonyConsoleValidation\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "DigitalRevolution\\SymfonyConsoleValidation\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "check": [
-                    "@check:phpstan",
-                    "@check:phpmd",
-                    "@check:phpcs"
-                ],
-                "check:phpstan": [
-                    "phpstan analyse"
-                ],
-                "check:phpmd": [
-                    "phpmd src,tests text phpmd.xml.dist --suffixes=php"
-                ],
-                "check:phpcs": [
-                    "phpcs src tests"
-                ],
-                "fix": [
-                    "@fix:phpcbf"
-                ],
-                "fix:phpcbf": [
-                    "phpcbf src tests"
-                ],
-                "test": [
-                    "phpunit"
-                ],
-                "test:integration": [
-                    "phpunit --testsuite integration"
-                ],
-                "test:unit": [
-                    "phpunit --testsuite unit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Symfony command input argument and option validation",
-            "time": "2022-06-20T19:34:20+00:00"
+            "support": {
+                "issues": "https://github.com/123inkt/symfony-console-validation/issues",
+                "source": "https://github.com/123inkt/symfony-console-validation/tree/v1.0.0"
+            },
+            "time": "2022-07-04T10:10:34+00:00"
         },
         {
             "name": "digitalrevolution/symfony-validation-shorthand",
@@ -11655,7 +11630,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "digitalrevolution/symfony-console-validation": 20,
         "pdepend/pdepend": 20,
         "roave/security-advisories": 20
     },
