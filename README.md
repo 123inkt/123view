@@ -65,7 +65,7 @@ cd git-commit-notification
 
 ## The crontab (prod):
 
-When starting docker in production mode, the crontab will be configured as below:
+When starting docker in production mode, the crontab will be configured. For manual setup, configure the crontab as below:
 
 ```shell
 0 */1 * * * php bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
