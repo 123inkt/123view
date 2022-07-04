@@ -1,6 +1,6 @@
 # Adding repositories
 
-Once docker has started, your project is available, but no repositories have been added yet. Follow the steps below to add repositories:
+Once docker has started, your project is available, but no repositories have been added yet. Follow the steps below to add a repository:
 
 1) Start bash in your docker container:
 ```shell
