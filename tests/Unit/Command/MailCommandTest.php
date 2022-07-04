@@ -51,10 +51,8 @@ class MailCommandTest extends AbstractTestCase
 
         // test options
         $options = $this->command->getDefinition()->getOptions();
-        static::assertCount(2, $options);
-        static::assertArrayHasKey('config', $options);
+        static::assertCount(1, $options);
         static::assertArrayHasKey('frequency', $options);
-        static::assertSame('config', $options['config']->getName());
         static::assertSame('frequency', $options['frequency']->getName());
     }
 
