@@ -14,6 +14,7 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     netcat \
     zip \
     libpng-dev \
+    sudo \
     cron \
     git \
     libcurl4 \
