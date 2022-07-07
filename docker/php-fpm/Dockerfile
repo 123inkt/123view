@@ -90,10 +90,8 @@ COPY --chown=www-data --from=composer_build /app/ /app
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
 ## copy production cron
-COPY ./docker/php-fpm/cron/notification-schedule /etc/cron.d/notification-schedule
+COPY ./docker/php-fpm/cron/notifications /etc/cron.d/notifications
 RUN chmod -R 644 /etc/cron.d/
-RUN crontab /etc/cron.d/notification-schedule
-RUN touch /var/log/commit-notification.log
 
 COPY ./docker/php-fpm/conf/production.ini /usr/local/etc/php/conf.d/production.ini
 COPY ./docker/php-fpm/run/entrypoint.sh /run/entrypoint.sh
