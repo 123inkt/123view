@@ -30,11 +30,12 @@ class MailService
      */
     public function sendCommitsMail(RuleConfiguration $config, array $commits): void
     {
-        $rule = $config->rule;
+        $rule    = $config->rule;
+        $subject = $rule->getRuleOptions()?->getSubject() ?? '[Commit Notification] New revisions for: {name}';
 
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
-            ->subject($rule->getRuleOptions()?->getSubject() ?? '[Commit Notification] New revisions for: ' . $rule->getName())
+            ->subject(str_ireplace('{name}', $rule->getName(), $subject))
             ->htmlTemplate('mail/commits.html.twig')
             ->text('')
             ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource', $config->externalLinks)]);
