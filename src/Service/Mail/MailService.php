@@ -34,7 +34,7 @@ class MailService
 
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
-            ->subject($rule->subject ?? '[Commit Notification] New revisions for: ' . $rule->getName())
+            ->subject($rule->getRuleOptions()?->getSubject() ?? '[Commit Notification] New revisions for: ' . $rule->getName())
             ->htmlTemplate('mail/commits.html.twig')
             ->text('')
             ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource', $config->externalLinks)]);
