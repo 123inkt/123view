@@ -15,6 +15,7 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     zip \
     libpng-dev \
     cron \
+    ntp \
     git \
     libcurl4 \
     curl \
@@ -36,8 +37,6 @@ RUN docker-php-ext-install \
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
 COPY ./docker/php-fpm/conf/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
 COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-#COPY ./docker/php-fpm/cron/* /etc/cron.d/
-#RUN chmod -R 600 /etc/cron.d/
 
 ###################################################################################
 # COMPOSER                                                                        #
