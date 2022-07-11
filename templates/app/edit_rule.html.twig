@@ -37,7 +37,9 @@
         {% include '/app/form_row.html.twig' with
             {
                 form: form.rule.ruleOptions.subject,
-                form_help: 'ruleOptions.subject.help'|trans ~ ' <code>' ~ 'ruleOptions.subject.example'|trans ~ '</code>'
+                form_help: 'ruleOptions.subject.help'|trans
+                ~ ' <code>' ~ 'ruleOptions.subject.example'|trans ~ '</code>'
+                ~ '. ' ~ 'ruleOptions.subject.vars'|trans|raw
             } %}
 
         {# repositories #}

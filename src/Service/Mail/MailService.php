@@ -14,13 +14,8 @@ use Symfony\Component\Mime\Address;
 
 class MailService
 {
-    private MailerInterface $mailer;
-    private LoggerInterface $log;
-
-    public function __construct(LoggerInterface $log, MailerInterface $mailer)
+    public function __construct(private LoggerInterface $log, private MailerInterface $mailer, private MailSubjectFormatter $subjectFormatter)
     {
-        $this->mailer = $mailer;
-        $this->log    = $log;
     }
 
     /**
@@ -35,7 +30,7 @@ class MailService
 
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
-            ->subject(str_ireplace('{name}', $rule->getName() ?? '', $subject))
+            ->subject($this->subjectFormatter->format($subject, $rule, $commits))
             ->htmlTemplate('mail/commits.html.twig')
             ->text('')
             ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource', $config->externalLinks)]);
