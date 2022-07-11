@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -34,8 +35,14 @@ class RuleController extends AbstractController
     #[Entity('rule')]
     public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
     {
-        if ($this->user === null || ($rule !== null && $rule->getUser() !== $this->user)) {
+        if ($this->user === null) {
             throw new AccessDeniedException('Access denied');
+        }
+        if ($rule !== null && $rule->getUser() !== $this->user) {
+            throw new NotFoundHttpException('Rule not found');
+        }
+        if ($rule === null && $request->attributes->get('id') !== null) {
+            throw new NotFoundHttpException('Rule not found');
         }
 
         $rule ??= RuleFactory::createDefault($this->user);

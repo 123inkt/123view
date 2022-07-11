@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,8 +26,11 @@ class DeleteRuleController extends AbstractController
     #[Entity('rule')]
     public function __invoke(Rule $rule): RedirectResponse
     {
-        if ($rule->getUser() !== $this->user) {
+        if ($this->user === null) {
             throw new AccessDeniedException('Access denied');
+        }
+        if ($rule->getUser() !== $this->user) {
+            throw new NotFoundHttpException('Rule not found');
         }
 
         $this->ruleRepository->remove($rule, true);
