@@ -27,3 +27,7 @@
 .rule-table .rule-table-options {
     width: 110px;
 }
+
+.repository-columns > * {
+    column-count: 6;
+}
