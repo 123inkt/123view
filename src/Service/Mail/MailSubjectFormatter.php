@@ -21,7 +21,11 @@ class MailSubjectFormatter
         }
 
         $search  = ['{name}', '{authors}', '{repositories}'];
-        $replace = [$rule->getName() ?? '', implode(', ', $authors), implode(', ', array_filter($repositories))];
+        $replace = [
+            $rule->getName() ?? '',
+            implode(', ', array_unique(array_filter($authors))),
+            implode(', ', array_unique(array_filter($repositories)))
+        ];
 
         return str_ireplace($search, $replace, $subject);
     }
