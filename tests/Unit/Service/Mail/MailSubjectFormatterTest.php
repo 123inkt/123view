@@ -30,7 +30,7 @@ class MailSubjectFormatterTest extends AbstractTestCase
         $subject = '{name} {authors} {repositories}';
 
         $result = (new MailSubjectFormatter())->format($subject, $rule, [$commit]);
-        static::assertsame('name Sherlock repository', $result);
+        static::assertSame('name Sherlock repository', $result);
     }
 
     /**
@@ -42,6 +42,6 @@ class MailSubjectFormatterTest extends AbstractTestCase
         $subject = '#{name}#{authors}#{repositories}#';
 
         $result = (new MailSubjectFormatter())->format($subject, $rule, []);
-        static::assertsame('####', $result);
+        static::assertSame('####', $result);
     }
 }

@@ -41,7 +41,6 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         $type = new RepositoryChoiceType($this->repository);
         $type->configureOptions($resolver);
 
-        static::assertSame(['class' => 'checkbox-inline'], $introspector->getDefault('label_attr'));
         static::assertSame($repositories, $introspector->getDefault('choices'));
         static::assertSame('id', $introspector->getDefault('choice_value'));
 
