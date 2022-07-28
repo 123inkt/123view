@@ -19,7 +19,7 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     libcurl4 \
     curl \
     libicu-dev \
-    openssl=1.1.1n-0+deb11u2 \
+    openssl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pecl channel-update pecl.php.net && \
