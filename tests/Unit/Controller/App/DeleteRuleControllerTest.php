@@ -12,6 +12,7 @@ use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -45,6 +46,20 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Access denied');
         $controller((new Rule())->setUser(new User()));
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeUserIsNotRuleOwner(): void
+    {
+        $userA = new User();
+        $userB = new User();
+        $controller = new DeleteRuleController($this->ruleRepository, $this->translator, $userA);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('Rule not found');
+        $controller((new Rule())->setUser($userB));
     }
 
     /**

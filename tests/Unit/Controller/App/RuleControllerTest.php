@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -49,6 +50,32 @@ class RuleControllerTest extends AbstractControllerTestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Access denied');
         $controller(new Request(), (new Rule())->setUser(new User()));
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeUserIsNotRuleOwner(): void
+    {
+        $userA      = new User();
+        $userB      = new User();
+        $controller = new RuleController($this->ruleRepository, $this->translator, $userA);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('Rule not found');
+        $controller(new Request(), (new Rule())->setUser($userB));
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeUnknownRuleId(): void
+    {
+        $controller = new RuleController($this->ruleRepository, $this->translator, new User());
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('Rule not found');
+        $controller(new Request([], [], ['id' => -1]), null);
     }
 
     /**
