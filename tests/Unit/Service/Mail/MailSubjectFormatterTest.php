@@ -11,7 +11,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Mail\MailSubjectFormatter
- * @covers ::__construct
  */
 class MailSubjectFormatterTest extends AbstractTestCase
 {
