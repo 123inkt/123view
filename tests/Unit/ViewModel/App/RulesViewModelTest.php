@@ -12,7 +12,6 @@ use DR\GitCommitNotification\ViewModel\App\RulesViewModel;
 class RulesViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::setRules
      * @covers ::getRules
      */
     public function testAccessorPairs(): void

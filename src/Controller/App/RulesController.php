@@ -29,9 +29,6 @@ class RulesController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
-        $model = new RulesViewModel();
-        $model->setRules(iterator_to_array($this->user->getRules()));
-
-        return ['rulesModel' => $model];
+        return ['rulesModel' => new RulesViewModel($this->user->getRules())];
     }
 }

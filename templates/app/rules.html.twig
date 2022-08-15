@@ -10,7 +10,7 @@
         </div>
     {% endif %}
 
-    {% if rulesModel.rules %}
+    {% if rulesModel.rules|length > 0 %}
         <h1 class="mt-2">{{ 'Rules'|trans }}</h1>
 
         <table class="table table-bordered table-hover rule-table">

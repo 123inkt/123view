@@ -3,28 +3,24 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App;
 
+use Countable;
 use DR\GitCommitNotification\Entity\Config\Rule;
+use IteratorAggregate;
 
 class RulesViewModel
 {
-    /** @var Rule[] */
-    private array $rules = [];
-
     /**
-     * @return Rule[]
+     * @param Countable&IteratorAggregate<Rule> $rules
      */
-    public function getRules(): array
+    public function __construct(private Countable&IteratorAggregate $rules)
     {
-        return $this->rules;
     }
 
     /**
-     * @param Rule[] $rules
+     * @return Countable&IteratorAggregate<Rule>
      */
-    public function setRules(array $rules): self
+    public function getRules(): Countable&IteratorAggregate
     {
-        $this->rules = $rules;
-
-        return $this;
+        return $this->rules;
     }
 }
