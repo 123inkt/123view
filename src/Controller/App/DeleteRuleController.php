@@ -6,10 +6,10 @@ namespace DR\GitCommitNotification\Controller\App;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,10 +24,8 @@ class DeleteRuleController extends AbstractController
     #[Entity('rule')]
     public function __invoke(Rule $rule): RedirectResponse
     {
-        $user = $this->getUser();
-        if ($rule->getUser() !== $user) {
-            throw new NotFoundHttpException('Rule not found');
-        }
+        // check rule owner
+        $this->denyAccessUnlessGranted(RuleVoter::DELETE, $rule);
 
         $this->ruleRepository->remove($rule, true);
 

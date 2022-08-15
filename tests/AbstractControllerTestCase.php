@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 abstract class AbstractControllerTestCase extends AbstractTestCase
 {
@@ -43,6 +44,14 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         $storage->expects(self::atLeastOnce())->method('getToken')->willReturn($token);
 
         $this->container->set('security.token_storage', $storage);
+    }
+
+    public function expectedDenyAccessUnlessGranted(string $attribute, mixed $subject, bool $granted = true): void
+    {
+        $checker = $this->createMock(AuthorizationCheckerInterface::class);
+        $checker->expects(self::atLeastOnce())->method('isGranted')->with($attribute, $subject)->willReturn($granted);
+
+        $this->container->set('security.authorization_checker', $checker);
     }
 
     /**

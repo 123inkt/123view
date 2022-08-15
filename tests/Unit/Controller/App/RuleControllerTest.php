@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -44,13 +46,13 @@ class RuleControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeUserIsNotRuleOwner(): void
     {
-        $userA = new User();
         $userB = new User();
+        $rule  = (new Rule())->setUser($userB);
 
-        $this->expectUser($userA);
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('Rule not found');
-        ($this->controller)(new Request(), (new Rule())->setUser($userB));
+        $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule, false);
+        $this->expectException(AccessDeniedException::class);
+        $this->expectExceptionMessage('Access Denied');
+        ($this->controller)(new Request(), $rule);
     }
 
     /**
@@ -58,7 +60,6 @@ class RuleControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeUnknownRuleId(): void
     {
-        $this->expectUser($this->user);
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('Rule not found');
         ($this->controller)(new Request([], [], ['id' => -1]), null);
@@ -77,7 +78,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isSubmittedWillReturn(true);
         $form->isValidWillReturn(true);
 
-        $this->expectUser($this->user);
+        $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleRepository->expects(self::once())->method('add')->with($rule, true);
         $this->translator->expects(self::once())->method('trans')->willReturn('added');
         $this->expectAddFlash('success', 'added');
@@ -103,7 +104,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isSubmittedWillReturn(false);
         $form->createViewWillReturn($formView);
 
-        $this->expectUser($this->user);
+        $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleRepository->expects(self::never())->method('add');
 
         $response = ($this->controller)($request, $rule);

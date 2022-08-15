@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleFactory;
 use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -33,15 +34,13 @@ class RuleController extends AbstractController
     #[Entity('rule')]
     public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
     {
-        $user = $this->getUser();
-        if ($rule !== null && $rule->getUser() !== $user) {
-            throw new NotFoundHttpException('Rule not found');
-        }
-        if ($rule === null && $request->attributes->get('id') !== null) {
+        if ($rule !== null) {
+            $this->denyAccessUnlessGranted(RuleVoter::EDIT, $rule);
+        } elseif ($request->attributes->get('id') !== null) {
             throw new NotFoundHttpException('Rule not found');
         }
 
-        $rule ??= RuleFactory::createDefault($user);
+        $rule ??= RuleFactory::createDefault($this->getUser());
 
         $form = $this->createForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
