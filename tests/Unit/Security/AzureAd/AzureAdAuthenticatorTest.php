@@ -15,6 +15,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -115,10 +117,13 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $this->urlGenerator
             ->expects(self::once())
             ->method('generate')
-            ->with(AuthenticationController::class, ['error_message' => 'error'])
+            ->with(AuthenticationController::class)
             ->willReturn($url);
 
-        $result = $this->authenticator->onAuthenticationFailure(new Request(), new AuthenticationException('error'));
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $result = $this->authenticator->onAuthenticationFailure($request, new AuthenticationException('error'));
         $expect = new RedirectResponse($url);
 
         static::assertEquals($expect, $result);

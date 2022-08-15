@@ -10,6 +10,8 @@ use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -75,12 +77,15 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         $this->urlGenerator
             ->expects(self::once())
             ->method('generate')
-            ->with(AuthenticationController::class, ['error_message' => 'message'])
+            ->with(AuthenticationController::class)
             ->willReturn('url');
+
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
 
         $event = new ExceptionEvent(
             $this->createMock(HttpKernelInterface::class),
-            new Request(),
+            $request,
             HttpKernelInterface::MAIN_REQUEST,
             new AccessDeniedException('access-denied')
         );
