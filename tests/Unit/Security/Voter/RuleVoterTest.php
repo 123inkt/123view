@@ -66,6 +66,24 @@ class RuleVoterTest extends AbstractTestCase
      * @covers ::supports
      * @covers ::voteOnAttribute
      */
+    public function testSupportsAbsentUser(): void
+    {
+        $user = new User();
+        $user->setId(1);
+        $rule = new Rule();
+        $rule->setUser($user);
+
+        $token = $this->createMock(TokenInterface::class);
+        $token->expects(self::once())->method('getUser')->willReturn(null);
+
+        $voter = new RuleVoter();
+        static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $rule, [RuleVoter::EDIT]));
+    }
+
+    /**
+     * @covers ::supports
+     * @covers ::voteOnAttribute
+     */
     public function testSupportsNotRuleOwner(): void
     {
         $user = new User();

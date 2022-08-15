@@ -7,6 +7,9 @@ use DR\GitCommitNotification\Entity\Config\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class AbstractController extends SymfonyAbstractController
 {
     public function getUser(): User

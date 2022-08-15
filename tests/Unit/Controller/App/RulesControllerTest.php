@@ -17,7 +17,6 @@ class RulesControllerTest extends AbstractControllerTestCase
 {
     /**
      * @covers ::__invoke
-     * @covers \DR\GitCommitNotification\Controller\AbstractController
      */
     public function testInvokeWithoutUser(): void
     {
