@@ -10,14 +10,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class RuleVoter extends Voter
 {
-    public const  EDIT    = 'rule.edit';
-    public const  DELETE  = 'rule.delete';
-    private const ALLOWED = [self::EDIT, self::DELETE];
+    public const  EDIT   = 'rule.edit';
+    public const  DELETE = 'rule.delete';
+
+    private const SUPPORTED_ATTRIBUTES = [self::EDIT, self::DELETE];
 
     protected function supports(string $attribute, mixed $subject): bool
     {
         // only support rules, and correct attributes
-        return $subject instanceof Rule && in_array($attribute, self::ALLOWED, true);
+        return $subject instanceof Rule && in_array($attribute, self::SUPPORTED_ATTRIBUTES, true);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

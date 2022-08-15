@@ -21,7 +21,6 @@ class UserTest extends AbstractTestCase
         $config = new ConstraintConfig();
         $config->setExcludedMethods(['getRules', 'addRule']);
 
-        static::assertNull((new User())->getId());
         static::assertAccessorPairs(User::class, $config);
     }
 
