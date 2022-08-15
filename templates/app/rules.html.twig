@@ -50,6 +50,7 @@
                               action="{{ path('DR\\GitCommitNotification\\Controller\\App\\DeleteRuleController', {id: rule.id}) }}"
                               title="{{ 'rule.delete.title'|trans }}"
                               onsubmit="return confirm('{{ 'Are you sure you want to delete this rule?'|trans|e('js')|e('html') }}');">
+                            <input type="hidden" name="_method" value="DELETE" />
                             <button type="submit" class="btn btn-danger">
                                 <i class="bi-trash"></i>
                             </button>

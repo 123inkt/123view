@@ -21,7 +21,7 @@ class DeleteRuleController extends AbstractController
     {
     }
 
-    #[Route('/app/rules/rule/delete/{id<\d+>}', self::class, methods: ['POST'])]
+    #[Route('/app/rules/rule/delete/{id<\d+>}', self::class, methods: ['DELETE'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('rule')]
     public function __invoke(Rule $rule): RedirectResponse

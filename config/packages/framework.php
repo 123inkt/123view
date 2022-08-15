@@ -6,6 +6,6 @@ use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {
     $framework->secret('%env(APP_SECRET)%');
-    $framework->httpMethodOverride(false);
+    $framework->httpMethodOverride(true);
     $framework->phpErrors()->log(true)->throw(true);
 };
