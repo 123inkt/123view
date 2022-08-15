@@ -16,7 +16,7 @@ fi
 ##
 # Stop current containers
 #
-docker-compose stop
+docker-compose down
 
 ##
 # setup network

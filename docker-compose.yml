@@ -2,7 +2,7 @@ version: '3'
 
 services:
     nginx:
-        container_name: nginx
+        container_name: ${NGINX_CONTAINER:-nginx}
         build:
             args:
                 VERSION: $NGINX_VERSION
@@ -17,7 +17,7 @@ services:
             - php-fpm
 
     php-fpm:
-        container_name: php-fpm
+        container_name: ${PHP_CONTAINER:-php-fpm}
         build:
             args:
                 VERSION: $PHP_VERSION
@@ -30,7 +30,7 @@ services:
             - .:/app:rw
 
     mysql:
-        container_name: mysql
+        container_name: ${MYSQL_CONTAINER:-mysql}
         build:
             args:
                 VERSION: $MYSQL_VERSION
