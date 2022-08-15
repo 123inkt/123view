@@ -3,20 +3,14 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App;
 
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\ViewModel\App\RulesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class RulesController extends AbstractController
 {
-    public function __construct(private ?User $user)
-    {
-    }
-
     /**
      * @return array<string, RulesViewModel>
      */
@@ -25,10 +19,6 @@ class RulesController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function __invoke(): array
     {
-        if ($this->user === null) {
-            throw new AccessDeniedException('Access denied');
-        }
-
-        return ['rulesModel' => new RulesViewModel($this->user->getRules())];
+        return ['rulesModel' => new RulesViewModel($this->getUser()->getRules())];
     }
 }
