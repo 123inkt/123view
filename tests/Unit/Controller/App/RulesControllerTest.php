@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\RulesController
- * @covers ::__construct
  */
 class RulesControllerTest extends AbstractControllerTestCase
 {
