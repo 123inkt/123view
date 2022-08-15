@@ -24,9 +24,8 @@ class AuthenticationController extends AbstractController
     public function __invoke(Request $request): array
     {
         return [
-            'page_title'    => $this->translator->trans('page.title.single.sign.on'),
-            'error_message' => $request->query->get('error_message'),
-            'azure_ad_url'  => $this->generateUrl(AzureAdAuthController::class)
+            'page_title'   => $this->translator->trans('page.title.single.sign.on'),
+            'azure_ad_url' => $this->generateUrl(AzureAdAuthController::class)
         ];
     }
 }

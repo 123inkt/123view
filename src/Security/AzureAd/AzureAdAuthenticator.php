@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -60,9 +61,12 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        // redirect to login page
-        $url = $this->urlGenerator->generate(AuthenticationController::class, ['error_message' => $exception->getMessage()]);
+        $session = $request->getSession();
+        if ($session instanceof Session) {
+            $session->getFlashBag()->add('error', $exception->getMessage());
+        }
 
-        return new RedirectResponse($url);
+        // redirect to login page
+        return new RedirectResponse($this->urlGenerator->generate(AuthenticationController::class));
     }
 }

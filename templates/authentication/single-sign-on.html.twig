@@ -6,9 +6,11 @@
 
         <br><br>
 
-        {% if error_message %}
+        {% if app.session.flashbag.peek('error')|length > 0 %}
             <div class="alert alert-danger" role="alert">
-                {{ error_message }}
+                {% for message in app.flashes('error') %}
+                    <div>{{ message }}</div>
+                {% endfor %}
             </div>
         {% endif %}
 

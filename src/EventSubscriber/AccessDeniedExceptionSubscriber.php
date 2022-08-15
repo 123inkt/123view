@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\EventSubscriber;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,11 +29,13 @@ class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $message = $this->translator->trans('redirect.access.denied.session.expired');
-        $url     = $this->urlGenerator->generate(AuthenticationController::class, ['error_message' => $message]);
+        $session = $event->getRequest()->getSession();
+        if ($session instanceof Session) {
+            $session->getFlashBag()->add('error', $this->translator->trans('redirect.access.denied.session.expired'));
+        }
 
         // redirect to frontend when access is denied
-        $event->setResponse(new RedirectResponse($url));
+        $event->setResponse(new RedirectResponse($this->urlGenerator->generate(AuthenticationController::class)));
     }
 
     /**
