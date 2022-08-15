@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -43,27 +42,15 @@ class RuleControllerTest extends AbstractControllerTestCase
     /**
      * @covers ::__invoke
      */
-    public function testInvokeWithoutUser(): void
-    {
-        $controller = new RuleController($this->ruleRepository, $this->translator, null);
-
-        $this->expectException(AccessDeniedException::class);
-        $this->expectExceptionMessage('Access denied');
-        $controller(new Request(), (new Rule())->setUser(new User()));
-    }
-
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeUserIsNotRuleOwner(): void
     {
-        $userA      = new User();
-        $userB      = new User();
-        $controller = new RuleController($this->ruleRepository, $this->translator, $userA);
+        $userA = new User();
+        $userB = new User();
 
+        $this->expectUser($userA);
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('Rule not found');
-        $controller(new Request(), (new Rule())->setUser($userB));
+        ($this->controller)(new Request(), (new Rule())->setUser($userB));
     }
 
     /**
@@ -71,11 +58,10 @@ class RuleControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeUnknownRuleId(): void
     {
-        $controller = new RuleController($this->ruleRepository, $this->translator, new User());
-
+        $this->expectUser($this->user);
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('Rule not found');
-        $controller(new Request([], [], ['id' => -1]), null);
+        ($this->controller)(new Request([], [], ['id' => -1]), null);
     }
 
     /**
@@ -91,6 +77,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isSubmittedWillReturn(true);
         $form->isValidWillReturn(true);
 
+        $this->expectUser($this->user);
         $this->ruleRepository->expects(self::once())->method('add')->with($rule, true);
         $this->translator->expects(self::once())->method('trans')->willReturn('added');
         $this->expectAddFlash('success', 'added');
@@ -116,6 +103,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isSubmittedWillReturn(false);
         $form->createViewWillReturn($formView);
 
+        $this->expectUser($this->user);
         $this->ruleRepository->expects(self::never())->method('add');
 
         $response = ($this->controller)($request, $rule);
@@ -126,6 +114,6 @@ class RuleControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new RuleController($this->ruleRepository, $this->translator, $this->user);
+        return new RuleController($this->ruleRepository, $this->translator);
     }
 }

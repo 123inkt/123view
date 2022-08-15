@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests;
 
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Tests\Helper\FormAssertion;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 abstract class AbstractControllerTestCase extends AbstractTestCase
 {
@@ -29,6 +32,17 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         $this->controller = $this->getController();
         $this->container  = new Container();
         $this->controller->setContainer($this->container);
+    }
+
+    public function expectUser(?User $user): void
+    {
+        $token = $this->createMock(TokenInterface::class);
+        $token->expects(self::atLeastOnce())->method('getUser')->willReturn($user);
+
+        $storage = $this->createMock(TokenStorageInterface::class);
+        $storage->expects(self::atLeastOnce())->method('getToken')->willReturn($token);
+
+        $this->container->set('security.token_storage', $storage);
     }
 
     /**

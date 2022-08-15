@@ -13,7 +13,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -39,27 +38,15 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
     /**
      * @covers ::__invoke
      */
-    public function testInvokeWithoutUser(): void
-    {
-        $controller = new DeleteRuleController($this->ruleRepository, $this->translator, null);
-
-        $this->expectException(AccessDeniedException::class);
-        $this->expectExceptionMessage('Access denied');
-        $controller((new Rule())->setUser(new User()));
-    }
-
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeUserIsNotRuleOwner(): void
     {
         $userA = new User();
         $userB = new User();
-        $controller = new DeleteRuleController($this->ruleRepository, $this->translator, $userA);
 
+        $this->expectUser($userA);
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('Rule not found');
-        $controller((new Rule())->setUser($userB));
+        ($this->controller)((new Rule())->setUser($userB));
     }
 
     /**
@@ -69,6 +56,7 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
     {
         $rule = (new Rule())->setUser($this->user);
 
+        $this->expectUser($this->user);
         $this->ruleRepository->expects(self::once())->method('remove')->with($rule, true);
         $this->translator->expects(self::once())->method('trans')->willReturn('removed');
         $this->expectAddFlash('success', 'removed');
@@ -84,6 +72,6 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
      */
     public function getController(): AbstractController
     {
-        return new DeleteRuleController($this->ruleRepository, $this->translator, $this->user);
+        return new DeleteRuleController($this->ruleRepository, $this->translator);
     }
 }

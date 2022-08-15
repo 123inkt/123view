@@ -10,10 +10,7 @@ class RuleConfiguration
     /**
      * @param ExternalLink[] $externalLinks
      */
-    public function __construct(
-        public readonly DatePeriod $period,
-        public readonly array $externalLinks,
-        public readonly Rule $rule
-    ) {
+    public function __construct(public readonly DatePeriod $period, public readonly array $externalLinks, public readonly Rule $rule)
+    {
     }
 }

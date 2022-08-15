@@ -38,7 +38,7 @@ class AuthenticationControllerTest extends AbstractControllerTestCase
 
         $result = ($this->controller)($request);
         static::assertSame(
-            ['page_title' => 'page title', 'error_message' => 'pretty bad', 'azure_ad_url' => 'http://azure.ad.auth.controller'],
+            ['page_title' => 'page title', 'azure_ad_url' => 'http://azure.ad.auth.controller'],
             $result
         );
     }

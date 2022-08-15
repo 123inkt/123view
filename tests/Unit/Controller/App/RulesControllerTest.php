@@ -6,24 +6,27 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App;
 use DR\GitCommitNotification\Controller\App\RulesController;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\User;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\RulesController
  * @covers ::__construct
  */
-class RulesControllerTest extends AbstractTestCase
+class RulesControllerTest extends AbstractControllerTestCase
 {
     /**
      * @covers ::__invoke
+     * @covers \DR\GitCommitNotification\Controller\AbstractController
      */
     public function testInvokeWithoutUser(): void
     {
         // invoke controller
+        $this->expectUser(null);
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Access denied');
-        (new RulesController(null))();
+        ($this->controller)();
     }
 
     /**
@@ -35,10 +38,17 @@ class RulesControllerTest extends AbstractTestCase
         $user = new User();
         $user->addRule($rule);
 
+        $this->expectUser($user);
+
         // invoke controller
-        $result = (new RulesController($user))();
+        $result = ($this->controller)();
 
         static::assertArrayHasKey('rulesModel', $result);
         static::assertSame([$rule], iterator_to_array($result['rulesModel']->getRules()));
+    }
+
+    public function getController(): AbstractController
+    {
+        return new RulesController();
     }
 }
