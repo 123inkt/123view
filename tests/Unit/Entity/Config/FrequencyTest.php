@@ -34,7 +34,10 @@ class FrequencyTest extends AbstractTestCase
     public function testGetPeriod(string $frequency, DateTimeImmutable $expectedStartTime): void
     {
         $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');
-        static::assertEquals([$expectedStartTime, $currentTime], Frequency::getPeriod($currentTime, $frequency));
+        $period      = Frequency::getPeriod($currentTime, $frequency);
+
+        static::assertEquals($expectedStartTime, $period->getStartDate());
+        static::assertEquals($currentTime, $period->getEndDate());
     }
 
     /**

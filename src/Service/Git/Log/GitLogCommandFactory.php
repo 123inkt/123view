@@ -31,8 +31,8 @@ class GitLogCommandFactory
             ->diffAlgorithm($options?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
             ->format($this->patternFactory->createPattern())
             ->ignoreCrAtEol()
-            ->since($ruleConfig->startTime)
-            ->until($ruleConfig->endTime);
+            ->since($ruleConfig->period->getStartDate())
+            ->until($ruleConfig->period->getEndDate());
 
         if ($options?->isExcludeMergeCommits() === true) {
             $this->builder->noMerges();

@@ -50,9 +50,8 @@ class MailCommand extends Command implements LoggerAwareInterface
             throw new InvalidArgumentException('Invalid or missing `frequency` argument: ' . $frequency);
         }
 
-        // create date time object in seconds precisely 5 minutes earlier
-        $currentTime = new DateTimeImmutable(date('Y-m-d H:i:00', strtotime("-5 minutes")));
-        [$startTime, $endTime] = Frequency::getPeriod($currentTime, $frequency);
+        // create date time object in seconds precisely 5 minutes earlier, and with the interval given by the frequency
+        $period = Frequency::getPeriod(new DateTimeImmutable(date('Y-m-d H:i:00', strtotime("-5 minutes"))), $frequency);
 
         // gather external links
         $externalLinks = $this->linkRepository->findAll();
@@ -63,7 +62,7 @@ class MailCommand extends Command implements LoggerAwareInterface
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
             try {
-                $this->ruleProcessor->processRule(new RuleConfiguration($startTime, $endTime, $externalLinks, $rule));
+                $this->ruleProcessor->processRule(new RuleConfiguration($period, $externalLinks, $rule));
             } catch (Throwable $exception) {
                 $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
+use DateInterval;
+use DatePeriod;
 use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\Rule;
@@ -43,7 +45,10 @@ class GitLogCommandFactoryTest extends AbstractTestCase
                 ->setIgnoreSpaceAtEol(false)
                 ->setExcludeMergeCommits(false)
         );
-        $config = new RuleConfiguration(new DateTimeImmutable('2021-10-18 21:05:00'), new DateTimeImmutable('2021-10-18 22:05:00'), [], $rule);
+        $startDate = new DateTimeImmutable('2021-10-18 21:05:00');
+        $endDate   = new DateTimeImmutable('2021-10-18 22:05:00');
+        $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
+        $config    = new RuleConfiguration($period, [], $rule);
 
         $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
@@ -53,8 +58,8 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('format')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('since')->with($config->startTime)->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('until')->with($config->endTime)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('since')->with($startDate)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('until')->with($endDate)->willReturnSelf();
 
         $this->commandBuilder->expects(static::never())->method('noMerges')->willReturnSelf();
         $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
@@ -78,7 +83,10 @@ class GitLogCommandFactoryTest extends AbstractTestCase
                 ->setIgnoreSpaceChange(true)
                 ->setIgnoreBlankLines(true)
         );
-        $config = new RuleConfiguration(new DateTimeImmutable('2021-10-18 21:05:00'), new DateTimeImmutable('2021-10-18 22:05:00'), [], $rule);
+        $startDate = new DateTimeImmutable('2021-10-18 21:05:00');
+        $endDate   = new DateTimeImmutable('2021-10-18 22:05:00');
+        $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
+        $config    = new RuleConfiguration($period, [], $rule);
 
         $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
