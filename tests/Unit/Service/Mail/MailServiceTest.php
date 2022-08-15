@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
 
+use DateInterval;
+use DatePeriod;
 use DateTime;
 use DR\GitCommitNotification\Entity\Config\Recipient;
 use DR\GitCommitNotification\Entity\Config\Rule;
@@ -53,7 +55,7 @@ class MailServiceTest extends AbstractTestCase
     {
         // prep data
         $commits = [$this->createCommit(), $this->createCommit()];
-        $config  = new RuleConfiguration(new DateTime(), new DateTime(), [], $this->rule);
+        $config  = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), [], $this->rule);
 
         // assert mailer send argument
         $this->formatter->expects(self::once())->method('format')->with('subject', $this->rule, $commits)->willReturn('replaced-subject');

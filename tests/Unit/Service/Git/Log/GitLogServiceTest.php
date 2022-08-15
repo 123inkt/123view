@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
+use DateInterval;
+use DatePeriod;
 use DateTime;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
@@ -52,7 +54,7 @@ class GitLogServiceTest extends AbstractTestCase
         // setup rule
         $rule = new Rule();
         $rule->addRepository($repositoryConfig);
-        $config  = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
+        $config         = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), [], $rule);
         $repository     = $this->createMock(GitRepository::class);
         $commandBuilder = new GitLogCommandBuilder('git');
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];

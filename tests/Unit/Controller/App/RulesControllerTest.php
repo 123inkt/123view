@@ -39,6 +39,6 @@ class RulesControllerTest extends AbstractTestCase
         $result = (new RulesController($user))();
 
         static::assertArrayHasKey('rulesModel', $result);
-        static::assertSame([$rule], $result['rulesModel']->getRules());
+        static::assertSame([$rule], iterator_to_array($result['rulesModel']->getRules()));
     }
 }

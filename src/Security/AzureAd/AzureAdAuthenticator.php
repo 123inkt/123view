@@ -61,10 +61,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $session = $request->getSession();
-        if ($session instanceof Session) {
-            $session->getFlashBag()->add('error', $exception->getMessage());
-        }
+        $request->getSession()->getFlashBag()->add('error', $exception->getMessage());
 
         // redirect to login page
         return new RedirectResponse($this->urlGenerator->generate(AuthenticationController::class));

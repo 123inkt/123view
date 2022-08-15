@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service;
 
+use DateInterval;
+use DatePeriod;
 use DateTime;
 use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Entity\Config\Rule;
@@ -68,7 +70,7 @@ class RuleProcessorTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setName('foobar');
-        $config  = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
+        $config  = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), [], $rule);
         $commit  = $this->createCommit();
         $commits = [$commit];
 
@@ -91,7 +93,7 @@ class RuleProcessorTest extends AbstractTestCase
         $excludeFilter = (new Filter())->setInclusion(false);
         $includeFilter = (new Filter())->setInclusion(true);
         $rule          = (new Rule())->setName('foobar')->addFilter($excludeFilter)->addFilter($includeFilter);
-        $config        = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
+        $config        = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), [], $rule);
         $commit        = $this->createCommit();
         $commits       = [$commit];
 
@@ -122,7 +124,7 @@ class RuleProcessorTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setName('foobar');
-        $config = new RuleConfiguration(new DateTime(), new DateTime(), [], $rule);
+        $config = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), [], $rule);
 
         $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn([]);
         $this->commitBundler->expects(static::once())->method('bundle')->with([])->willReturn([]);
