@@ -36,6 +36,6 @@ class CircuitBreaker
             }
         }
 
-        throw new RuntimeException('CircuitBreaker failed after: ' . $this->attempts, 0, $exception);
+        throw new RuntimeException(sprintf('CircuitBreaker failed after %d attempts.', $this->attempts), 0, $exception);
     }
 }
