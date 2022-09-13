@@ -21,9 +21,9 @@ class GitRepositoryServiceTest extends AbstractTestCase
 {
     private const CACHE_DIRECTORY = "/cache/directory";
 
-    /** @var MockObject|Filesystem */
+    /** @var MockObject&Filesystem */
     private Filesystem $filesystem;
-    /** @var Git|MockObject */
+    /** @var Git&MockObject */
     private Git                  $git;
     private GitRepositoryService $service;
 
@@ -87,12 +87,12 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
-        $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
-        $this->filesystem->expects(static::once())->method('exists')->willReturn(true);
-        $this->git->expects(static::once())->method('open')->willThrowException(new GitException('exception', 5, null, $runnerResult));
+        $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
+        $this->filesystem->expects(static::exactly(5))->method('exists')->willReturn(true);
+        $this->git->expects(static::exactly(5))->method('open')->willThrowException(new GitException('exception', 5, null, $runnerResult));
 
         $this->expectException(RepositoryException::class);
-        $this->expectExceptionMessage('exception: failure');
+        $this->expectExceptionMessage('CircuitBreaker failed after 5 attempts.');
         $this->service->getRepository($url);
     }
 }
