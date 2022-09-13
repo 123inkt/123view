@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Utility;
 
+use RuntimeException;
 use Throwable;
 
 class CircuitBreaker
@@ -38,6 +39,6 @@ class CircuitBreaker
             }
         }
 
-        throw $exception;
+        throw ($exception ?? new RuntimeException('Failed after ' . $this->attempts . ' attempts'));
     }
 }
