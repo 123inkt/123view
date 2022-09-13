@@ -10,6 +10,7 @@ use CzProject\GitPhp\RunnerResult;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -81,9 +82,9 @@ class GitRepositoryServiceTest extends AbstractTestCase
      * @covers ::tryGetRepository
      * @throws RepositoryException
      */
-    public function testGetRepositoryWithException(): void
+    public function testGetRepositoryWithGitException(): void
     {
-        $url        = 'http://my.repository.com';
+        $url          = 'http://my.repository.com';
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
@@ -92,7 +93,26 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->git->expects(static::exactly(5))->method('open')->willThrowException(new GitException('exception', 5, null, $runnerResult));
 
         $this->expectException(RepositoryException::class);
-        $this->expectExceptionMessage('CircuitBreaker failed after 5 attempts.');
+        $this->expectExceptionMessage('failure');
+        $this->service->getRepository($url);
+    }
+
+    /**
+     * @covers ::getRepository
+     * @covers ::tryGetRepository
+     * @throws RepositoryException
+     */
+    public function testGetRepositoryWithException(): void
+    {
+        $url = 'http://my.repository.com';
+
+        // setup mocks
+        $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
+        $this->filesystem->expects(static::exactly(5))->method('exists')->willReturn(true);
+        $this->git->expects(static::exactly(5))->method('open')->willThrowException(new InvalidArgumentException(('foobar')));
+
+        $this->expectException(RepositoryException::class);
+        $this->expectExceptionMessage('foobar');
         $this->service->getRepository($url);
     }
 }

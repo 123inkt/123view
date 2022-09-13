@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Utility;
 
-use RuntimeException;
 use Throwable;
 
 class CircuitBreaker
@@ -28,14 +27,17 @@ class CircuitBreaker
     {
         $exception = null;
         for ($i = 0; $i < $this->attempts; $i++) {
+            if ($i > 0) {
+                usleep($this->wait);
+            }
+
             try {
                 return $action();
             } catch (Throwable $e) {
-                usleep($this->wait);
                 $exception = $e;
             }
         }
 
-        throw new RuntimeException(sprintf('CircuitBreaker failed after %d attempts.', $this->attempts), 0, $exception);
+        throw $exception;
     }
 }
