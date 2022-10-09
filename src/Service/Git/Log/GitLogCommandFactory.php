@@ -10,21 +10,16 @@ use DR\GitCommitNotification\Utility\Type;
 
 class GitLogCommandFactory
 {
-    private GitLogCommandBuilder $builder;
-    private FormatPatternFactory $patternFactory;
-
-    public function __construct(GitLogCommandBuilder $builder, FormatPatternFactory $patternFactory)
+    public function __construct(private GitLogCommandBuilderFactory $builderFactory, private FormatPatternFactory $patternFactory)
     {
-        $this->builder        = $builder;
-        $this->patternFactory = $patternFactory;
     }
 
     public function fromRule(RuleConfiguration $ruleConfig): GitCommandBuilderInterface
     {
         $rule    = $ruleConfig->rule;
         $options = $rule->getRuleOptions();
-        $this->builder
-            ->start()
+        $builder = $this->builderFactory->create();
+        $builder
             ->remotes()
             ->topoOrder()
             ->patch()
@@ -36,21 +31,21 @@ class GitLogCommandFactory
             ->until(Type::notNull($ruleConfig->period->getEndDate()));
 
         if ($options?->isExcludeMergeCommits() === true) {
-            $this->builder->noMerges();
+            $builder->noMerges();
         }
         if ($options?->isIgnoreSpaceAtEol() === true) {
-            $this->builder->ignoreSpaceAtEol();
+            $builder->ignoreSpaceAtEol();
         }
         if ($options?->isIgnoreSpaceChange() === true) {
-            $this->builder->ignoreSpaceChange();
+            $builder->ignoreSpaceChange();
         }
         if ($options?->isIgnoreAllSpace() === true) {
-            $this->builder->ignoreAllSpace();
+            $builder->ignoreAllSpace();
         }
         if ($options?->isIgnoreBlankLines() === true) {
-            $this->builder->ignoreBlankLines();
+            $builder->ignoreBlankLines();
         }
 
-        return $this->builder;
+        return $builder;
     }
 }

@@ -33,11 +33,10 @@ class GitLogCommandBuilderTest extends AbstractTestCase
      */
     public function testBuildDefaults(): void
     {
-        static::assertSame(self::DEFAULTS, $this->builder->start()->build());
+        static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
     /**
-     * @covers ::start
      * @covers ::ignoreSpaceChange
      * @covers ::ignoreBlankLines
      * @covers ::ignoreAllSpace
@@ -48,7 +47,6 @@ class GitLogCommandBuilderTest extends AbstractTestCase
     public function testBuildSpace(): void
     {
         $actual = $this->builder
-            ->start()
             ->ignoreSpaceChange()
             ->ignoreBlankLines()
             ->ignoreAllSpace()
@@ -72,7 +70,6 @@ class GitLogCommandBuilderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::start
      * @covers ::remotes
      * @covers ::topoOrder
      * @covers ::patch
@@ -88,7 +85,6 @@ class GitLogCommandBuilderTest extends AbstractTestCase
     public function testBuildFormatting(): void
     {
         $actual = $this->builder
-            ->start()
             ->remotes()
             ->topoOrder()
             ->patch()
@@ -124,6 +120,6 @@ class GitLogCommandBuilderTest extends AbstractTestCase
      */
     public function testToString(): void
     {
-        static::assertSame('git log', (string)$this->builder->start());
+        static::assertSame('git log', (string)$this->builder);
     }
 }

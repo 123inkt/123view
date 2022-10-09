@@ -19,7 +19,7 @@ class RepositoryTest extends AbstractTestCase
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['addRepositoryProperty', 'getRepositoryProperties']);
+        $config->setExcludedMethods(['addRepositoryProperty', 'getRepositoryProperties', 'getReviews', 'getRevisions']);
 
         static::assertNull((new Repository())->getId());
         static::assertAccessorPairs(Repository::class, $config);

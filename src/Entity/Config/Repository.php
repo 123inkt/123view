@@ -140,7 +140,7 @@ class Repository
      */
     public function getReviews(): Collection
     {
-        return $this->revisions;
+        return $this->reviews;
     }
 
     /**

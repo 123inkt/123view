@@ -19,7 +19,7 @@ class UserTest extends AbstractTestCase
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['getRules', 'addRule']);
+        $config->setExcludedMethods(['getRules', 'addRule', 'getReviewers']);
 
         static::assertAccessorPairs(User::class, $config);
     }

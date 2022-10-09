@@ -12,6 +12,7 @@ use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
+use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,7 +31,9 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitLogCommandBuilder::class);
-        $this->factory        = new GitLogCommandFactory($this->commandBuilder, new FormatPatternFactory());
+        $factory              = $this->createMock(GitLogCommandBuilderFactory::class);
+        $factory->method('create')->willReturn($this->commandBuilder);
+        $this->factory = new GitLogCommandFactory($factory, new FormatPatternFactory());
     }
 
     /**
@@ -50,7 +53,6 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
         $config    = new RuleConfiguration($period, [], $rule);
 
-        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('patch')->willReturnSelf();
@@ -88,7 +90,6 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
         $config    = new RuleConfiguration($period, [], $rule);
 
-        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('patch')->willReturnSelf();
