@@ -6,6 +6,8 @@ namespace DR\GitCommitNotification\Entity\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -27,9 +29,14 @@ class User implements UserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, orphanRemoval: true)]
     private Collection $rules;
 
+    /** @phpstan-var Collection<int, CodeReviewer> */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, orphanRemoval: true)]
+    private Collection $reviewers;
+
     public function __construct()
     {
-        $this->rules = new ArrayCollection();
+        $this->rules     = new ArrayCollection();
+        $this->reviewers = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -121,5 +128,23 @@ class User implements UserInterface
     public function eraseCredentials(): void
     {
         // no credentials, authentication via SSO only.
+    }
+
+    /**
+     * @return Collection<int, CodeReviewer>
+     */
+    public function getReviewers(): Collection
+    {
+        return $this->reviewers;
+    }
+
+    /**
+     * @param Collection<int, CodeReviewer> $reviewers
+     */
+    public function setReviewers(Collection $reviewers): self
+    {
+        $this->reviewers = $reviewers;
+
+        return $this;
     }
 }

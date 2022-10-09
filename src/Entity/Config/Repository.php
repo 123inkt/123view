@@ -6,6 +6,8 @@ namespace DR\GitCommitNotification\Entity\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
@@ -26,9 +28,19 @@ class Repository
     #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $repositoryProperties;
 
+    /** @phpstan-var Collection<int, Revision> */
+    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: Revision::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $revisions;
+
+    /** @phpstan-var Collection<int, CodeReview> */
+    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: CodeReview::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->repositoryProperties = new ArrayCollection();
+        $this->revisions            = new ArrayCollection();
+        $this->reviews              = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +113,42 @@ class Repository
                 $repositoryProperty->setRepository(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Revision>
+     */
+    public function getRevisions(): Collection
+    {
+        return $this->revisions;
+    }
+
+    /**
+     * @param Collection<int, Revision> $revisions
+     */
+    public function setRevisions(Collection $revisions): self
+    {
+        $this->revisions = $revisions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CodeReview>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->revisions;
+    }
+
+    /**
+     * @param Collection<int, CodeReview> $reviews
+     */
+    public function setReviews(Collection $reviews): self
+    {
+        $this->reviews = $reviews;
 
         return $this;
     }
