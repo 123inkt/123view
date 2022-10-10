@@ -50,7 +50,6 @@ class ImportReviewController
         $command->noMerges()
             ->remotes()
             ->reverse()
-            ->maxCount(1000)
             ->format($this->formatPatternFactory->createPattern());
         if ($latestRevision !== null) {
             $command->since((new DateTime())->setTimestamp($latestRevision->getCreateTimestamp()));
@@ -64,15 +63,27 @@ class ImportReviewController
 
         // save
         $doctrine = $this->registry->getManager();
+        $count = 0;
         foreach ($commits as $commit) {
+            $hash = (string)reset($commit->commitHashes);
+            if ($latestRevision?->getCommitHash() === $hash) {
+                continue;
+            }
+
             $revision = new Revision();
             $revision->setRepository($repository);
             $revision->setAuthorEmail($commit->author->email);
             $revision->setAuthorName($commit->author->name);
             $revision->setCreateTimestamp($commit->date->getTimestamp());
-            $revision->setCommitHash((string)reset($commit->commitHashes));
-            $revision->setTitle(trim($commit->getSubjectLine()));
+            $revision->setCommitHash($hash);
+            $revision->setTitle(mb_substr(trim($commit->getSubjectLine()), 0, 255));
+            $latestRevision = $revision;
             $doctrine->persist($revision);
+
+            if ($count++ > 1000) {
+                $count = 0;
+                $doctrine->flush();
+            }
         }
         $doctrine->flush();
 
