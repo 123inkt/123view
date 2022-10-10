@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]
+#[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
 class Revision
 {
     #[ORM\Id]
