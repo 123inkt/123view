@@ -69,10 +69,8 @@ class GitRepositoryService
             $repository = $this->git->open($repositoryDir);
         } else {
             // is new repository
-            $this->log->info(sprintf('git: init repository `%s`.', $repositoryDir));
-            $repository = $this->git->init($repositoryDir);
-            $this->log->info(sprintf('git: add origin: `%s`.', $repositoryUrl));
-            $repository->addRemote('origin', $repositoryUrl);
+            $this->log->info(sprintf('git: clone repository `%s`.', $repositoryUrl));
+            $repository = $this->git->cloneRepository($repositoryUrl, $repositoryDir);
         }
 
         $this->log->info(sprintf('git: fetch --all (%s)', $repositoryUrl));

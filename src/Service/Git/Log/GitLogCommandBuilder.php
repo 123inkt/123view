@@ -41,6 +41,13 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function reverse(): self
+    {
+        $this->arguments['reverse'] = '--reverse';
+
+        return $this;
+    }
+
     public function noMerges(): self
     {
         $this->arguments['no-merges'] = '--no-merges';
