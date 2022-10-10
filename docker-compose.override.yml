@@ -23,3 +23,8 @@ services:
             MYSQL_PASSWORD: ${DB_PASS:-123inkt}
             MYSQL_DATABASE: ${DB_NAME:-commit-notification}
             MYSQL_ROOT_PASSWORD: ${DB_PASS:-123inkt}
+
+    rabbitmq:
+        environment:
+            RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
+            RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}

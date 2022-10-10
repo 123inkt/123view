@@ -23,3 +23,9 @@ services:
             MYSQL_DATABASE: ${DB_NAME:-commit-notification}
             MYSQL_ROOT_PASSWORD: ${DB_PASS}
         restart: unless-stopped
+
+    rabbitmq:
+        environment:
+            RABBITMQ_USERNAME: ${RABBITMQ_USERNAME}
+            RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+        restart: unless-stopped
