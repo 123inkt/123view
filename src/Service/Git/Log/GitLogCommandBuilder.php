@@ -55,6 +55,13 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function maxCount(int $max): self
+    {
+        $this->arguments['max-count'] = '--max-counts=' . $max;
+
+        return $this;
+    }
+
     public function since(DateTimeInterface $since): self
     {
         $this->arguments['since'] = sprintf('--since="%s"', $since->format('c'));

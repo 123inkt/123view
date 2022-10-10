@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]
 #[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
+#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp_idx')]
 class Revision
 {
     #[ORM\Id]
@@ -27,6 +28,9 @@ class Revision
 
     #[ORM\Column(length: 255)]
     private ?string $authorName = null;
+
+    #[ORM\Column]
+    private ?int $createTimestamp = null;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist', 'remove'], inversedBy: 'revisions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -88,6 +92,18 @@ class Revision
     public function setAuthorName(string $authorName): self
     {
         $this->authorName = $authorName;
+
+        return $this;
+    }
+
+    public function getCreateTimestamp(): ?int
+    {
+        return $this->createTimestamp;
+    }
+
+    public function setCreateTimestamp(int $createTimestamp): self
+    {
+        $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
