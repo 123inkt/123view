@@ -19,12 +19,15 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     libcurl4 \
     curl \
     libicu-dev \
+    librabbitmq-dev \
     openssl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pecl channel-update pecl.php.net && \
     pecl install apcu && \
+    pecl install amqp && \
     docker-php-ext-enable apcu && \
+    docker-php-ext-enable amqp && \
     docker-php-source delete
 
 RUN docker-php-ext-install \
