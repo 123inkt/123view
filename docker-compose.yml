@@ -46,9 +46,6 @@ services:
     rabbitmq:
         container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
         image: bitnami/rabbitmq:latest
-        ports:
-            - ${RABBITMQ_CLIENT_PORT:-5672}:5672
-            - ${RABBITMQ_API_PORT:-15672}:15672
 
     mail:
         container_name: mail
