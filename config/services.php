@@ -16,6 +16,7 @@ use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
+use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
 use DR\GitCommitNotification\Twig\Highlight\HighlighterFactory;
 use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -46,6 +47,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude('../src/Service/Parser/{DiffParser.php,DiffFileParser.php}');
     $services->load('DR\GitCommitNotification\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
+    $services->load('DR\GitCommitNotification\MessageHandler\\', __DIR__ . '/../src/MessageHandler');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
     $services->load('DR\GitCommitNotification\Security\Voter\\', __DIR__ . '/../src/Security/Voter');
 
@@ -81,6 +83,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
+
+    // custom register with matching pattern
+    $services->set(RevisionPatternMatcher::class)->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%');
 
     // Register Git
     $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');

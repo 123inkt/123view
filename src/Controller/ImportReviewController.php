@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
@@ -15,6 +16,7 @@ use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ImportReviewController
@@ -26,7 +28,8 @@ class ImportReviewController
         private FormatPatternFactory $formatPatternFactory,
         private GitLogParser $logParser,
         private RevisionRepository $revisionRepository,
-        private ManagerRegistry $registry
+        private ManagerRegistry $registry,
+        private MessageBusInterface $bus
     ) {
     }
 
@@ -79,13 +82,11 @@ class ImportReviewController
             $revision->setTitle(mb_substr(trim($commit->getSubjectLine()), 0, 255));
             $latestRevision = $revision;
             $doctrine->persist($revision);
+            $doctrine->flush();
 
-            if ($count++ > 1000) {
-                $count = 0;
-                $doctrine->flush();
-            }
+            $this->bus->dispatch(new RevisionAddedMessage($revision->getId()));
+            break;
         }
-        $doctrine->flush();
 
         return new JsonResponse($commits);
     }

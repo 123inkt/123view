@@ -43,6 +43,7 @@
         "symfony/amqp-messenger": "6.1.*",
         "symfony/config": "^6.1",
         "symfony/console": "^6.1",
+        "symfony/doctrine-messenger": "^6.1",
         "symfony/dotenv": "^6.1",
         "symfony/filesystem": "^6.1",
         "symfony/flex": "^v2.2",

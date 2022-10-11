@@ -30,7 +30,11 @@ class CodeReview
     private ?Repository $repository = null;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $revisions;
+
+    /** @phpstan-var Collection<int, CodeReviewer> */
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, User> */
@@ -87,6 +91,24 @@ class CodeReview
     public function setRepository(?Repository $repository): self
     {
         $this->repository = $repository;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Revision>
+     */
+    public function getRevisions(): Collection
+    {
+        return $this->revisions;
+    }
+
+    /**
+     * @param Collection<int, Revision> $revisions
+     */
+    public function setRevisions(Collection $revisions): self
+    {
+        $this->revisions = $revisions;
 
         return $this;
     }
