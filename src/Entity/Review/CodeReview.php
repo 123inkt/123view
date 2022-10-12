@@ -12,6 +12,8 @@ use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
+#[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
+#[ORM\Index(['repository_id', 'state'], name: 'IDX_REPOSITORY_STATE')]
 class CodeReview
 {
     #[ORM\Id]
