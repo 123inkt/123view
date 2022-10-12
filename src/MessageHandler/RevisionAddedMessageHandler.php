@@ -22,7 +22,7 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
     public function __construct(
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
-        private CodeReviewRevisionMatcher $reviewFinder,
+        private CodeReviewRevisionMatcher $reviewRevisionMatcher,
         private CodeReviewFactory $reviewFactory
     ) {
     }
@@ -41,7 +41,7 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
         }
 
         // find or create review and add revision
-        $review = $this->reviewFinder->match($revision);
+        $review = $this->reviewRevisionMatcher->match($revision);
         if ($review === null) {
             $this->logger?->info('MessageHandler: no code review for commit message ' . $revision->getTitle());
 

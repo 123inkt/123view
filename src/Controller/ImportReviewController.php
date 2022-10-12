@@ -82,9 +82,9 @@ class ImportReviewController
 
             $this->bus->dispatch(new RevisionAddedMessage($revision->getId()));
 
-            if ($count++ > 10) {
-                break;
-            }
+            //if ($count++ > 10) {
+            //    break;
+            //}
         }
 
         return new JsonResponse($count);
