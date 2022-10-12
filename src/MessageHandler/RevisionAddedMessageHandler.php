@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewFactory;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewFinder;
+use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,7 +22,7 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
     public function __construct(
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
-        private CodeReviewFinder $reviewFinder,
+        private CodeReviewRevisionMatcher $reviewFinder,
         private CodeReviewFactory $reviewFactory
     ) {
     }
@@ -41,7 +41,13 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
         }
 
         // find or create review and add revision
-        $review = $this->reviewFinder->findForRevision($revision) ?? $this->reviewFactory->createFromRevision($revision);
+        $review = $this->reviewFinder->match($revision);
+        if ($review === null) {
+            $this->logger?->info('MessageHandler: no code review for commit message ' . $revision->getTitle());
+
+            return;
+        }
+
         $review->addRevision($revision);
         $this->reviewRepository->save($review, true);
 

@@ -13,13 +13,14 @@ use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-class CodeReviewFinder implements LoggerAwareInterface
+class CodeReviewRevisionMatcher implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
         private RevisionTitleNormalizer $titleNormalizer,
         private CodeReviewRepository $reviewRepository,
+        private CodeReviewFactory $reviewFactory,
         private RevisionPatternMatcher $patternMatcher
     ) {
     }
@@ -27,7 +28,7 @@ class CodeReviewFinder implements LoggerAwareInterface
     /**
      * @throws NonUniqueResultException
      */
-    public function findForRevision(Revision $revision): ?CodeReview
+    public function match(Revision $revision): ?CodeReview
     {
         // normalize message
         $revisionTitle = $this->titleNormalizer->normalize($revision->getTitle());
@@ -35,7 +36,7 @@ class CodeReviewFinder implements LoggerAwareInterface
         // get review id matcher
         $reviewTitleIdentifier = $this->patternMatcher->match($revisionTitle);
         if ($reviewTitleIdentifier === null) {
-            $this->logger?->info('CodeReviewFinder: revision doesn\'t match pattern: ' . $revision->getTitle());
+            $this->logger?->info('CodeReviewRevisionMatcher: revision doesn\'t match pattern: ' . $revision->getTitle());
 
             return null;
         }
@@ -43,6 +44,6 @@ class CodeReviewFinder implements LoggerAwareInterface
         /** @var CodeReview|null $review */
         $review = $this->reviewRepository->findOneByTitle($revision->getRepository()->getId(), $reviewTitleIdentifier);
 
-        return $review;
+        return $review ?? $this->reviewFactory->createFromRevision($revision);
     }
 }
