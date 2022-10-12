@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller;
 
 use DateTime;
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
@@ -28,7 +27,6 @@ class ImportReviewController
         private FormatPatternFactory $formatPatternFactory,
         private GitLogParser $logParser,
         private RevisionRepository $revisionRepository,
-        private ManagerRegistry $registry,
         private MessageBusInterface $bus
     ) {
     }
@@ -65,7 +63,6 @@ class ImportReviewController
         $commits = $this->logParser->parse($repository, $output);
 
         // save
-        $doctrine = $this->registry->getManager();
         $count = 0;
         foreach ($commits as $commit) {
             $hash = (string)reset($commit->commitHashes);
@@ -81,13 +78,15 @@ class ImportReviewController
             $revision->setCommitHash($hash);
             $revision->setTitle(mb_substr(trim($commit->getSubjectLine()), 0, 255));
             $latestRevision = $revision;
-            $doctrine->persist($revision);
-            $doctrine->flush();
+            $this->revisionRepository->save($revision, true);
 
             $this->bus->dispatch(new RevisionAddedMessage($revision->getId()));
-            break;
+
+            if ($count++ > 10) {
+                break;
+            }
         }
 
-        return new JsonResponse($commits);
+        return new JsonResponse($count);
     }
 }

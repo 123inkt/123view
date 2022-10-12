@@ -1,14 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Review;
 
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NonUniqueResultException;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<CodeReview>
- *
  * @method CodeReview|null find($id, $lockMode = null, $lockVersion = null)
  * @method CodeReview|null findOneBy(array $criteria, array $orderBy = null)
  * @method CodeReview[]    findAll()
@@ -39,28 +41,22 @@ class CodeReviewRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return CodeReview[] Returns an array of CodeReview objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneByTitle(int $repositoryId, string $reviewTitleIdentifier): ?CodeReview
+    {
+        /** @var CodeReview|null $review */
+        $review = $this->createQueryBuilder('c')
+            ->where('c.title LIKE :match')
+            ->andWhere('c.repository = :repositoryId')
+            ->orderBy('c.id', 'DESC')
+            ->setParameter('match', $reviewTitleIdentifier . '%')
+            ->setParameter('repositoryId', $repositoryId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
 
-//    public function findOneBySomeField($value): ?CodeReview
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $review;
+    }
 }

@@ -43,6 +43,7 @@ class CodeReview
 
     public function __construct()
     {
+        $this->revisions = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
         $this->watchers  = new ArrayCollection();
     }
@@ -91,6 +92,16 @@ class CodeReview
     public function setRepository(?Repository $repository): self
     {
         $this->repository = $repository;
+
+        return $this;
+    }
+
+    public function addRevision(Revision $revision): self
+    {
+        if ($revision->getReview() !== $this) {
+            $revision->setReview($this);
+        }
+        $this->revisions->add($revision);
 
         return $this;
     }
