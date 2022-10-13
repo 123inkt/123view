@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Review;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
@@ -31,21 +31,20 @@ class ReviewsController extends AbstractController
     public function __invoke(Request $request, Repository $repository): array
     {
         $searchQuery = trim((string)$request->query->get('search'));
+        $page        = $request->query->getInt('page', 1);
 
         $query = $this->reviewRepository->createQueryBuilder('r')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', (int)$repository->getId())
             ->orderBy('r.id', 'DESC')
+            ->setFirstResult(max(0, ($page - 1)) * 50)
             ->setMaxResults(50);
 
         if ($searchQuery !== '') {
             $query->andWhere('r.title LIKE :title')
-                ->setParameter('title',  '%' . addcslashes($searchQuery, "%_") . '%');
+                ->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
         }
 
-        /** @var CodeReview[] $reviews */
-        $reviews = $query->getQuery()->getResult();
-
-        return ['reviewsModel' => new ReviewsViewModel($reviews, $searchQuery)];
+        return ['reviewsModel' => new ReviewsViewModel(new Paginator($query, false), $page, $searchQuery)];
     }
 }

@@ -5,10 +5,7 @@
     <h1 class="mt-2">{{ 'Reviews'|trans }}</h1>
 
     <form method="get" class="mb-3">
-        <input type="search"
-               name="search"
-               value="{{ reviewsModel.searchQuery }}"
-               class="form-control"
+        <input type="search" name="search" value="{{ reviewsModel.searchQuery }}" class="form-control"
                placeholder="{{ 'Search code review'|trans }}"/>
     </form>
 
@@ -20,4 +17,28 @@
         {%- endfor -%}
     </div>
 
+    <br>
+    {% set firstPage = max(1, reviewsModel.page - 10) %}
+    {% set lastPage = min(reviewsModel.lastPage, reviewsModel.page + 10) %}
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="?page=1&searchQuery={{ reviewsModel.searchQuery|e('url') }}">
+                    <span>&laquo;</span>
+                </a>
+            </li>
+
+            {% for i in range(firstPage, lastPage) %}
+                <li class="page-item  {{ reviewsModel.page == i ? 'active' : '' }}">
+                    <a class="page-link" href="?page={{ i }}&searchQuery={{ reviewsModel.searchQuery|e('url') }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ reviewsModel.lastPage }}&searchQuery={{ reviewsModel.searchQuery|e('url') }}">
+                    <span>&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}

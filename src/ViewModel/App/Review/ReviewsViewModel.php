@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 
 class ReviewsViewModel
 {
     /**
-     * @param CodeReview[] $reviews
+     * @param Paginator<CodeReview> $reviews
      */
-    public function __construct(private readonly array $reviews, private readonly string $searchQuery)
+    public function __construct(private readonly Paginator $reviews, private readonly int $page, private readonly string $searchQuery)
     {
     }
 
@@ -24,6 +25,16 @@ class ReviewsViewModel
      */
     public function getReviews(): array
     {
-        return $this->reviews;
+        return iterator_to_array($this->reviews);
+    }
+
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    public function getLastPage(): int
+    {
+        return (int)ceil($this->reviews->count() / $this->reviews->getQuery()->getMaxResults());
     }
 }
