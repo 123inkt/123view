@@ -12,8 +12,8 @@
             <div class="list-group">
                 {% for repository in batch %}
 
-                    {#  {{ path('DR\\GitCommitNotification\\Controller\\App\\Review\ReviewsController', {id: repository.id}) }} #}
-                    <a class="list-group-item list-group-item-action" href="">
+                    <a class="list-group-item list-group-item-action"
+                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewsController', {id: repository.id}) }}">
                         {{ repository.name }}
                     </a>
                 {% endfor %}
