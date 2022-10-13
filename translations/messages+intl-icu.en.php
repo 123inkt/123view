@@ -49,6 +49,7 @@ return [
     'Pattern'                                     => 'Pattern',
     'Projects'                                    => 'Projects',
     'Reviews'                                     => 'Reviews',
+    'Search code review'                          => 'Search code review',
     'Rule'                                        => 'Rule',
     'Filters'                                     => 'Filters',
     'Inclusions'                                  => 'Inclusions',

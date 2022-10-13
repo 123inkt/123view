@@ -13,6 +13,9 @@ class ProjectsViewModel
     public function __construct(private readonly array $repositories) {
     }
 
+    /**
+     * @return Repository[]
+     */
     public function getRepositories(): array
     {
         return $this->repositories;
