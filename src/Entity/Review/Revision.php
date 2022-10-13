@@ -36,7 +36,7 @@ class Revision
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
 
-    #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist', 'remove'], inversedBy: 'reviews')]
+    #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist', 'remove'], inversedBy: 'revisions')]
     private ?CodeReview $review = null;
 
     public function setId(int $id): self
