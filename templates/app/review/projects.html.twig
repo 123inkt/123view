@@ -5,7 +5,7 @@
     <h1 class="mt-2">{{ 'Projects'|trans }}</h1>
 
     {% set columnSize = projectsModel.repositories|length / 4 %}
-    {% set batches =  projectsModel.repositories|batch(columnSize) %}
+    {% set batches    = projectsModel.repositories|batch(columnSize) %}
 
     <div class="grid-display">
         {%- for batch in batches -%}
