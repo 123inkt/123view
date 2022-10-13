@@ -8,17 +8,16 @@
     {% set batches =  projectsModel.repositories|batch(columnSize) %}
 
     <div class="grid-display">
-        {% for batch in batches %}
+        {%- for batch in batches -%}
             <div class="list-group">
-                {% for repository in batch %}
-
+                {%- for repository in batch -%}
                     <a class="list-group-item list-group-item-action"
                        href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewsController', {id: repository.id}) }}">
-                        {{ repository.name }}
+                        {{- repository.name -}}
                     </a>
-                {% endfor %}
+                {%- endfor -%}
             </div>
-        {% endfor %}
+        {%- endfor -%}
     </div>
 
 {% endblock %}
