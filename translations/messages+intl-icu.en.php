@@ -48,6 +48,7 @@ return [
     'Frequency'                                   => 'Frequency',
     'Pattern'                                     => 'Pattern',
     'Projects'                                    => 'Projects',
+    'Reviews'                                     => 'Reviews',
     'Rule'                                        => 'Rule',
     'Filters'                                     => 'Filters',
     'Inclusions'                                  => 'Inclusions',
