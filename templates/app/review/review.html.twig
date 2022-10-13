@@ -9,14 +9,14 @@
     <fieldset>
         <legend>Author</legend>
         {% for email, name in reviewModel.authors %}
-            <a href="mailto:{{ email|e('url') }}">{{ name }}</a>
+            {{ name }}
         {% endfor %}
     </fieldset>
 
     <fieldset>
         <legend>Reviewers</legend>
         {% for reviewer in review.reviewers %}
-            <a href="mailto:{{ reviewer.user.email|e('url') }}">{{ reviewer.user.name }}</a>
+           {{ reviewer.user.name }} ({{ reviewer.state }})
         {% endfor %}
     </fieldset>
 
