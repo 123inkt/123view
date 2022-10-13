@@ -9,7 +9,8 @@
 
     <div class="list-group">
         {%- for review in reviewsModel.reviews -%}
-            <a class="list-group-item list-group-item-action" href="#">
+            <a class="list-group-item list-group-item-action"
+               href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id}) }}">
                 <b>CR-{{- review.id -}}</b>{{- ' ' ~ review.title -}}
             </a>
         {%- endfor -%}
