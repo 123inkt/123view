@@ -6,10 +6,9 @@ use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Controller\Auth\LogoutController;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\SecurityConfig;
 
-return static function (ContainerConfigurator $containerConfigurator, SecurityConfig $security): void {
+return static function (SecurityConfig $security): void {
     $security->enableAuthenticatorManager(true);
 
     $security->provider('app_user_provider')
