@@ -2,14 +2,22 @@
 
 {% block page_content %}
     {% set review = reviewModel.review %}
-    {% set revisions = review.revisions %}
 
     <h3 class="mt-2">{{ 'CR-' ~ review.id ~ ' ' ~ review.title }}</h3>
+    State: {{ review.state }}
 
-    {% for revision in revisions %}
-        {{ revision.commitHash|slice(0, 7) }}<br>
-        {{ revision.authorName }}<br>
-        {{ revision.createTimestamp|date }}<br>
-    {% endfor %}
+    <fieldset>
+        <legend>Author</legend>
+        {% for email, name in reviewModel.authors %}
+            <a href="mailto:{{ email|e('url') }}">{{ name }}</a>
+        {% endfor %}
+    </fieldset>
+
+    <fieldset>
+        <legend>Reviewers</legend>
+        {% for reviewer in review.reviewers %}
+            <a href="mailto:{{ reviewer.user.email|e('url') }}">{{ reviewer.user.name }}</a>
+        {% endfor %}
+    </fieldset>
 
 {% endblock %}

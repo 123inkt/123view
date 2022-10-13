@@ -11,6 +11,16 @@ class ReviewViewModel
     {
     }
 
+    public function getAuthors(): array
+    {
+        $authors = [];
+        foreach ($this->review->getRevisions() as $revision) {
+            $authors[$revision->getAuthorEmail()] = $revision->getAuthorName();
+        }
+
+        return $authors;
+    }
+
     public function getReview(): CodeReview
     {
         return $this->review;
