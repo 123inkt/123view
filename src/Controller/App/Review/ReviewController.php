@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Review;
 
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -14,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
-class ReviewController
+class ReviewController extends AbstractController
 {
     public function __construct(private readonly GitCodeReviewDiffService $diffService)
     {
@@ -29,6 +31,8 @@ class ReviewController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): array
     {
+        $addReviewerForm = $this->createForm(AddReviewerFormType::class)->createView();
+
         $revisions = $review->getRevisions()->toArray();
         $files     = $this->diffService->getDiffFiles($revisions);
 
@@ -43,6 +47,6 @@ class ReviewController
         /** @var DiffFile $selectedFile */
         $selectedFile ??= reset($files);
 
-        return ['reviewModel' => new ReviewViewModel($review, $files, $selectedFile)];
+        return ['reviewModel' => new ReviewViewModel($review, $files, $selectedFile, $addReviewerForm)];
     }
 }

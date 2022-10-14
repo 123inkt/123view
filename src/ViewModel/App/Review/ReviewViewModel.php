@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
@@ -15,8 +16,14 @@ class ReviewViewModel
     public function __construct(
         private readonly CodeReview $review,
         private readonly array $files,
-        private readonly DiffFile $selectedFile
+        private readonly DiffFile $selectedFile,
+        private readonly FormView $addReviewerForm
     ) {
+    }
+
+    public function getAddReviewerForm(): FormView
+    {
+        return $this->addReviewerForm;
     }
 
     public function getFiles(): array

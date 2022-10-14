@@ -26,6 +26,8 @@
         {% for reviewer in review.reviewers %}
             {{ reviewer.user.name }} ({{ reviewer.state }})<br>
         {% endfor %}
+
+        {{ form(reviewModel.addReviewerForm) }}
     </fieldset>
 
     <fieldset>
