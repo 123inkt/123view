@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
+use DR\GitCommitNotification\Service\Git\Branch\GitBranchService;
 use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
@@ -19,7 +20,8 @@ class GitCodeReviewDiffService
         private readonly GitCheckoutService $checkoutService,
         private readonly GitCherryPickService $cherryPickService,
         private readonly GitDiffService $diffService,
-        private readonly GitResetService $resetService
+        private readonly GitResetService $resetService,
+        private readonly GitBranchService $branchService
     ) {
     }
 
@@ -41,7 +43,7 @@ class GitCodeReviewDiffService
         $repository = $revision->getRepository();
 
         // create branch
-        $this->checkoutService->checkoutRevision($revision);
+        $branchName = $this->checkoutService->checkoutRevision($revision);
 
         // cherry-pick revisions
         $this->cherryPickService->cherryPickRevisions($revisions);
@@ -52,8 +54,11 @@ class GitCodeReviewDiffService
         // reset the repository again
         $this->resetService->resetHard($repository);
 
-        // check master
+        // checkout master
         $this->checkoutService->checkout($repository, 'master');
+
+        // cleanup branch
+        $this->branchService->deleteBranch($repository, $branchName);
 
         return $files;
     }

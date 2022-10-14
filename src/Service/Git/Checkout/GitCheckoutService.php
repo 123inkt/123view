@@ -25,7 +25,7 @@ class GitCheckoutService implements LoggerAwareInterface
      */
     public function checkout(Repository $repository, string $ref): void
     {
-        $commandBuilder = $this->commandFactory->create()->branch($ref);
+        $commandBuilder = $this->commandFactory->create()->startPoint($ref);
 
         // create branch
         $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
@@ -36,18 +36,22 @@ class GitCheckoutService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
-    public function checkoutRevision(Revision $revision): void
+    public function checkoutRevision(Revision $revision): string
     {
         /** @var Repository $repository */
-        $repository     = $revision->getRepository();
+        $repository = $revision->getRepository();
+        $branchName = sprintf('repository-%s-revision-%s', $repository->getId(), $revision->getId());
+
         $commandBuilder = $this->commandFactory
             ->create()
-            ->branch(sprintf('repository-%s-revision-%s', $repository->getId(), $revision->getId()))
+            ->branch($branchName)
             ->startPoint($revision->getCommitHash());
 
-        // create branch
+        // checkout revisions
         $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
 
         $this->logger->info($output);
+
+        return $branchName;
     }
 }

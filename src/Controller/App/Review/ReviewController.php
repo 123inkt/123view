@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel;
+use DR\GitCommitNotification\Exception\ParseException;
+use DR\GitCommitNotification\Exception\RepositoryException;
+use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -13,8 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReviewController
 {
+    public function __construct(private readonly GitCodeReviewDiffService $diffService)
+    {
+    }
+
     /**
-     * @return array<string, ProjectsViewModel>
+     * @throws ParseException|RepositoryException
      */
     #[Route('app/reviews/{id<\d+>}', name: self::class, methods: 'GET')]
     #[Template('app/review/review.html.twig')]
@@ -22,6 +28,9 @@ class ReviewController
     #[Entity('review')]
     public function __invoke(CodeReview $review): array
     {
+        $revisions = $review->getRevisions()->toArray();
+        $files     = $this->diffService->getDiffFiles($revisions);
+
         return ['reviewModel' => new ReviewViewModel($review)];
     }
 }
