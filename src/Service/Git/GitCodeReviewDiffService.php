@@ -13,6 +13,8 @@ use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
+use Symfony\Contracts\Cache\CacheInterface;
+use Throwable;
 
 class GitCodeReviewDiffService
 {
@@ -21,8 +23,34 @@ class GitCodeReviewDiffService
         private readonly GitCherryPickService $cherryPickService,
         private readonly GitDiffService $diffService,
         private readonly GitResetService $resetService,
-        private readonly GitBranchService $branchService
+        private readonly GitBranchService $branchService,
+        private readonly CacheInterface $revisionCache,
     ) {
+    }
+
+    /**
+     * @param Revision[] $revisions
+     *
+     * @return DiffFile[]
+     * @throws Throwable
+     */
+    public function getDiffFiles(array $revisions): array
+    {
+        if (count($revisions) === 0) {
+            return [];
+        }
+
+        // gather hashes
+        $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
+
+        /** @var Revision $revision */
+        $revision = array_shift($revisions);
+        /** @var Repository $repository */
+        $repository = $revision->getRepository();
+
+        $key = sprintf('%s-%s', $repository->getId(), implode('-', $hashes));
+
+        return $this->revisionCache->get($key, fn() => $this->getDiffFilesFromGit($repository, $revision, $revisions));
     }
 
     /**
@@ -31,17 +59,8 @@ class GitCodeReviewDiffService
      * @return DiffFile[]
      * @throws RepositoryException|ParseException
      */
-    public function getDiffFiles(array $revisions): array
+    private function getDiffFilesFromGit(Repository $repository, Revision $revision, array $revisions): array
     {
-        if (count($revisions) === 0) {
-            return [];
-        }
-
-        /** @var Revision $revision */
-        $revision = array_shift($revisions);
-        /** @var Repository $repository */
-        $repository = $revision->getRepository();
-
         if (count($revisions) === 0) {
             // get the diff for the single revision
             $files = $this->diffService->getDiffFromRevision($revision);
