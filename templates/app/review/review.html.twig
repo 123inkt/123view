@@ -2,21 +2,29 @@
 
 {% block page_content %}
     {% set review = reviewModel.review %}
+    {% set revisions = review.revisions %}
 
     <h3 class="mt-2">{{ 'CR-' ~ review.id ~ ' ' ~ review.title }}</h3>
     State: {{ review.state }}
 
     <fieldset>
+        <legend>Revisions</legend>
+        {% for revision in revisions %}
+            {{ revision.commitHash }}<br>
+        {% endfor %}
+    </fieldset>
+
+    <fieldset>
         <legend>Author</legend>
         {% for email, name in reviewModel.authors %}
-            {{ name }}
+            {{ name }}<br>
         {% endfor %}
     </fieldset>
 
     <fieldset>
         <legend>Reviewers</legend>
         {% for reviewer in review.reviewers %}
-           {{ reviewer.user.name }} ({{ reviewer.state }})
+            {{ reviewer.user.name }} ({{ reviewer.state }})<br>
         {% endfor %}
     </fieldset>
 

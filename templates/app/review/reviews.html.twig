@@ -16,6 +16,7 @@
         {%- endfor -%}
     </div>
 
+    {% if reviewsModel.lastPage > 1 %}
     <nav class="mt-3">
         <ul class="pagination">
             <li class="page-item">
@@ -38,4 +39,5 @@
             </li>
         </ul>
     </nav>
+    {% endif %}
 {% endblock %}
