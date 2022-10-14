@@ -18,7 +18,7 @@ class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
 
     public function strategy(string $strategy): self
     {
-        $this->arguments['strategy'] = 'strategy=' . $strategy;
+        $this->arguments['strategy'] = '--strategy=' . $strategy;
 
         return $this;
     }
