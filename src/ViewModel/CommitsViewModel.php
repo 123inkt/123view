@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\ViewModel;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 
 class CommitsViewModel
 {
@@ -52,13 +53,15 @@ class CommitsViewModel
      *
      * @param bool $before if true, take the `before` line numbers, `after` otherwise.
      */
-    public function getMaxLineNumberLength(DiffBlock $block, bool $before): int
+    public function getMaxLineNumberLength(DiffFile $file, bool $before): int
     {
         $length = 0;
 
-        foreach ($block->lines as $line) {
-            $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
-            $length     = max($length, strlen($lineNumber));
+        foreach($file->blocks as $block) {
+            foreach ($block->lines as $line) {
+                $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
+                $length     = max($length, strlen($lineNumber));
+            }
         }
 
         return $length;

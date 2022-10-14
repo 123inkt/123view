@@ -28,4 +28,15 @@
         {% endfor %}
     </fieldset>
 
+    <fieldset>
+        <legend>Files</legend>
+        {% for file in reviewModel.files %}
+            {{ file.filename }}<br>
+        {% endfor %}
+    </fieldset>
+
+    {%- set line_nr_length_before = 5 -%}
+    {%- set line_nr_length_after = 5 -%}
+    {% include 'commit/commit.file.html.twig' with {file: reviewModel.selectedFile} %}
+
 {% endblock %}

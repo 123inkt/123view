@@ -45,7 +45,7 @@ class GitCheckoutService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory
             ->create()
             ->branch($branchName)
-            ->startPoint($revision->getCommitHash());
+            ->startPoint($revision->getCommitHash() . '~');
 
         // checkout revisions
         $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);

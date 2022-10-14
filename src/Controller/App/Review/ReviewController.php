@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Review;
 
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
@@ -31,6 +32,9 @@ class ReviewController
         $revisions = $review->getRevisions()->toArray();
         $files     = $this->diffService->getDiffFiles($revisions);
 
-        return ['reviewModel' => new ReviewViewModel($review)];
+        /** @var DiffFile $file */
+        $file = reset($files);
+
+        return ['reviewModel' => new ReviewViewModel($review, $files, $file)];
     }
 }

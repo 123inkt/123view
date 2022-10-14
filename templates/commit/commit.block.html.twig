@@ -1,7 +1,4 @@
 {# determine maximum line number length for each column #}
-{%- set line_nr_length_before = viewModel.getMaxLineNumberLength(block, true) -%}
-{%- set line_nr_length_after = viewModel.getMaxLineNumberLength(block, false) -%}
-
 <div class="diffBlock">
     {%- for line in block.lines -%}
         {%- set line_modifier = '&nbsp;' -%}

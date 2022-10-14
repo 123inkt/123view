@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
-    <body>
+    <body class="mailBody">
     {%- for commit in viewModel.commits -%}
         <div class="revisions">
             New revision{% if commit.commitHashes|length > 1 %}s{% endif %} by {{ commit.author.name }} in branch
@@ -39,43 +39,10 @@
         <br>
 
         {%- for file in commit.files -%}
-            <div class="revisionFile">
-                <div>
-                    <span class="fileChangeState">
-                        {%- if file.added -%}
-                            +
-                        {%- elseif file.deleted -%}
-                            -
-                        {%- elseif file.modified -%}
-                            *
-                        {%- endif -%}
-                    </span>
-                    <span class="fileName">{{ file.filename }}</span>
-                    <span class="directoryName">{{ file.dirname }}</span>
-                </div>
+            {%- set line_nr_length_before = viewModel.getMaxLineNumberLength(file, true) -%}
+            {%- set line_nr_length_after = viewModel.getMaxLineNumberLength(file, false) -%}
 
-                {%- if file.rename -%}
-                    <div class="fileRename">renamed from {{ file.filePathBefore }}</div>
-                {%- endif -%}
-
-                {%- if file.blocks -%}
-                    <div class="fileDiff">
-                        {%- if file.modified -%}
-                            {%- include 'mail/commit.block.spacer.html.twig' -%}
-                        {%- endif -%}
-
-                        {%- for block in file.blocks -%}
-                            {%- include 'mail/commit.block.html.twig' -%}
-
-                            {%- if file.modified -%}
-                                {%- include 'mail/commit.block.spacer.html.twig' -%}
-                            {%- endif -%}
-                        {%- endfor -%}
-                    </div>
-                {% else %}
-                    <br><br>
-                {%- endif -%}
-            </div>
+            {% include 'commit/commit.file.html.twig' %}
         {%- endfor -%}
 
     {%- endfor -%}
