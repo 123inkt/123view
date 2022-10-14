@@ -12,7 +12,9 @@ use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
+use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
@@ -78,7 +80,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(HighlighterFactory::class);
-    $services->set(GitDiffCommandBuilder::class)->share(false)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(GitCheckoutCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(GitCherryPickCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(GitDiffCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
     $services->set(GitLogCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
 
     // custom register GitRepositoryService with cache dir

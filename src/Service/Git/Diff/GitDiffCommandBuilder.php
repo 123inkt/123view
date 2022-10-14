@@ -10,21 +10,18 @@ use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
  */
 class GitDiffCommandBuilder implements GitCommandBuilderInterface
 {
-    private string $git;
-
     /** @var array<string, string> */
     private array $arguments = [];
 
-    public function __construct(string $git)
+    public function __construct(private string $git)
     {
-        $this->git = $git;
-    }
-
-    public function start(): self
-    {
-        $this->arguments            = [];
         $this->arguments['app']     = $this->git;
         $this->arguments['command'] = 'diff';
+    }
+
+    public function hash(string $hash): self
+    {
+        $this->arguments['hash'] = $hash;
 
         return $this;
     }

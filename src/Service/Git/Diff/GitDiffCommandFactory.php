@@ -9,36 +9,32 @@ use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 class GitDiffCommandFactory
 {
-    private GitDiffCommandBuilder $builder;
-
-    public function __construct(GitDiffCommandBuilder $builder)
+    public function __construct(private readonly GitDiffCommandBuilderFactory $builderFactory)
     {
-        $this->builder = $builder;
     }
 
     public function diffHashes(Rule $rule, string $fromHash, string $toHash): GitCommandBuilderInterface
     {
         $options = $rule->getRuleOptions();
 
-        $this->builder
-            ->start()
-            ->hashes($fromHash, $toHash)
+        $builder = $this->builderFactory->create();
+        $builder->hashes($fromHash, $toHash)
             ->diffAlgorithm($options?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
             ->ignoreCrAtEol();
 
         if ($options?->isIgnoreSpaceAtEol() === true) {
-            $this->builder->ignoreSpaceAtEol();
+            $builder->ignoreSpaceAtEol();
         }
         if ($options?->isIgnoreSpaceChange() === true) {
-            $this->builder->ignoreSpaceChange();
+            $builder->ignoreSpaceChange();
         }
         if ($options?->isIgnoreAllSpace() === true) {
-            $this->builder->ignoreAllSpace();
+            $builder->ignoreAllSpace();
         }
         if ($options?->isIgnoreBlankLines() === true) {
-            $this->builder->ignoreBlankLines();
+            $builder->ignoreBlankLines();
         }
 
-        return $this->builder;
+        return $builder;
     }
 }
