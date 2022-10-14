@@ -42,23 +42,28 @@ class GitCodeReviewDiffService
         /** @var Repository $repository */
         $repository = $revision->getRepository();
 
-        // create branch
-        $branchName = $this->checkoutService->checkoutRevision($revision);
+        if (count($revisions) === 0) {
+            // get the diff for the single revision
+            $files = $this->diffService->getDiffFromRevision($revision);
+        } else {
+            // create branch
+            $branchName = $this->checkoutService->checkoutRevision($revision);
 
-        // cherry-pick revisions
-        $this->cherryPickService->cherryPickRevisions($revisions);
+            // cherry-pick revisions
+            $this->cherryPickService->cherryPickRevisions($revisions);
 
-        // get the diff
-        $files = $this->diffService->getBundledDiffFromRevisions($repository);
+            // get the diff
+            $files = $this->diffService->getBundledDiffFromRevisions($repository);
 
-        // reset the repository again
-        $this->resetService->resetHard($repository);
+            // reset the repository again
+            $this->resetService->resetHard($repository);
 
-        // checkout master
-        $this->checkoutService->checkout($repository, 'master');
+            // checkout master
+            $this->checkoutService->checkout($repository, 'master');
 
-        // cleanup branch
-        $this->branchService->deleteBranch($repository, $branchName);
+            // cleanup branch
+            $this->branchService->deleteBranch($repository, $branchName);
+        }
 
         return $files;
     }

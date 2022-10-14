@@ -8,9 +8,11 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -22,6 +24,7 @@ class GitDiffService implements LoggerAwareInterface
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitDiffCommandBuilderFactory $builderFactory,
+        private readonly GitShowCommandBuilderFactory $showBuilderFactory,
         private readonly GitDiffCommandFactory $commandFactory,
         private readonly DiffParser $parser
     ) {
@@ -50,6 +53,24 @@ class GitDiffService implements LoggerAwareInterface
         $commit->files = $this->parser->parse($output);
 
         return $commit;
+    }
+
+    /**
+     * @return DiffFile[]
+     * @throws RepositoryException|ParseException
+     */
+    public function getDiffFromRevision(Revision $revision): array
+    {
+        /** @var Repository $repository */
+        $repository     = $revision->getRepository();
+        $commandBuilder = $this->showBuilderFactory->create()->startPoint($revision->getCommitHash());
+
+        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
+
+        $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
+
+        // parse files
+        return $this->parser->parse($output);
     }
 
     /**

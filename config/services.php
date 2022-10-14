@@ -18,6 +18,7 @@ use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilderF
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
@@ -88,6 +89,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(GitResetCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
     $services->set(GitLogCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
     $services->set(GitBranchCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(GitShowCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
 
     // custom register GitRepositoryService with cache dir
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");

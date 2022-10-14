@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Branch;
+namespace DR\GitCommitNotification\Service\Git\Show;
 
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
-class GitBranchCommandBuilder implements GitCommandBuilderInterface
+class GitShowCommandBuilder implements GitCommandBuilderInterface
 {
     /** @var array<string, string> */
     private array $arguments = [];
@@ -13,12 +13,12 @@ class GitBranchCommandBuilder implements GitCommandBuilderInterface
     public function __construct(private readonly string $git)
     {
         $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'branch';
+        $this->arguments['command'] = 'show';
     }
 
-    public function delete(string $ref): self
+    public function startPoint(string $hash): self
     {
-        $this->arguments['strategy'] = '-D ' . $ref;
+        $this->arguments['start-point'] = $hash;
 
         return $this;
     }
