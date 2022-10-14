@@ -10,6 +10,7 @@ use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
@@ -26,14 +27,22 @@ class ReviewController
     #[Template('app/review/review.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review')]
-    public function __invoke(CodeReview $review): array
+    public function __invoke(Request $request, CodeReview $review): array
     {
         $revisions = $review->getRevisions()->toArray();
         $files     = $this->diffService->getDiffFiles($revisions);
 
-        /** @var DiffFile $file */
-        $file = reset($files);
+        $selectedFile = null;
+        $filePath     = $request->query->get('filePath');
+        foreach ($files as $file) {
+            if ($file->getFile()?->getPathname() === $filePath) {
+                $selectedFile = $file;
+            }
+        }
 
-        return ['reviewModel' => new ReviewViewModel($review, $files, $file)];
+        /** @var DiffFile $selectedFile */
+        $selectedFile ??= reset($files);
+
+        return ['reviewModel' => new ReviewViewModel($review, $files, $selectedFile)];
     }
 }

@@ -31,7 +31,9 @@
     <fieldset>
         <legend>Files</legend>
         {% for file in reviewModel.files %}
-            {{ file.filename }}<br>
+            <a href="?filePath={{ file.file.pathname|e('url') }}">
+                {{ file.filename }}
+            </a><br>
         {% endfor %}
     </fieldset>
 

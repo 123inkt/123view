@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Git\Diff;
 
+use SplFileInfo;
+
 class DiffFile
 {
     public const FILE_ADDED    = 'file.added';
@@ -57,6 +59,19 @@ class DiffFile
         $filepath = $this->filePathAfter ?? $this->filePathBefore ?? '';
 
         return pathinfo($filepath, PATHINFO_EXTENSION);
+    }
+
+    public function getFile(): ?SplFileInfo
+    {
+        if ($this->filePathAfter !== null) {
+            return new SplFileInfo($this->filePathAfter);
+        }
+
+        if ($this->filePathBefore !== null) {
+            return new SplFileInfo($this->filePathBefore);
+        }
+
+        return null;
     }
 
     public function getFilename(): string
