@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
@@ -27,7 +26,7 @@ class CodeReview
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     private string $state = CodeReviewStateType::OPEN;
 
-    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'reviews')]
+    #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
 
@@ -36,18 +35,13 @@ class CodeReview
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist'], orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
-
-    /** @phpstan-var Collection<int, User> */
-    #[ORM\ManyToMany(targetEntity: User::class)]
-    private Collection $watchers;
 
     public function __construct()
     {
         $this->revisions = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
-        $this->watchers  = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -140,24 +134,6 @@ class CodeReview
     public function setReviewers(Collection $reviewers): self
     {
         $this->reviewers = $reviewers;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getWatchers(): Collection
-    {
-        return $this->watchers;
-    }
-
-    /**
-     * @param Collection<int, User> $watchers
-     */
-    public function setWatchers(Collection $watchers): self
-    {
-        $this->watchers = $watchers;
 
         return $this;
     }

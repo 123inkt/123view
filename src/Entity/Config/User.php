@@ -25,11 +25,11 @@ class User implements UserInterface
     private ?string $email = null;
 
     /** @phpstan-var Collection<int, Rule> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $rules;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
     public function __construct()

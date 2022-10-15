@@ -60,19 +60,4 @@ class CodeReviewTest extends AbstractTestCase
         $review->setReviewers($collection);
         static::assertSame($collection, $review->getReviewers());
     }
-
-    /**
-     * @covers ::getWatchers
-     * @covers ::setWatchers
-     */
-    public function testWatchers(): void
-    {
-        $collection = new ArrayCollection();
-
-        $review = new CodeReview();
-        static::assertInstanceOf(ArrayCollection::class, $review->getWatchers());
-
-        $review->setWatchers($collection);
-        static::assertSame($collection, $review->getWatchers());
-    }
 }

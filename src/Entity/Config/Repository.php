@@ -29,11 +29,11 @@ class Repository
     private Collection $repositoryProperties;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: Revision::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: Revision::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReview> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: CodeReview::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: CodeReview::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $reviews;
 
     public function __construct()
