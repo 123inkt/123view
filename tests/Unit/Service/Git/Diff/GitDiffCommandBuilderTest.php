@@ -34,7 +34,6 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::start
      * @covers ::ignoreSpaceChange
      * @covers ::ignoreBlankLines
      * @covers ::ignoreAllSpace
