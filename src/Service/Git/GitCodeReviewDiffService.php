@@ -13,6 +13,7 @@ use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
@@ -63,17 +64,23 @@ class GitCodeReviewDiffService
     {
         if (count($revisions) === 0) {
             // get the diff for the single revision
-            $files = $this->diffService->getDiffFromRevision($revision);
-        } else {
-            // create branch
-            $branchName = $this->checkoutService->checkoutRevision($revision);
+            return $this->diffService->getDiffFromRevision($revision);
+        }
 
+        // create branch
+        $branchName = $this->checkoutService->checkoutRevision($revision);
+
+        try {
             // cherry-pick revisions
             $this->cherryPickService->cherryPickRevisions($revisions);
 
             // get the diff
             $files = $this->diffService->getBundledDiffFromRevisions($repository);
+        } catch (RepositoryException|ProcessFailedException $exception) {
+            $this->cherryPickService->cherryPickAbort($repository);
 
+            throw $exception;
+        } finally {
             // reset the repository again
             $this->resetService->resetHard($repository);
 
