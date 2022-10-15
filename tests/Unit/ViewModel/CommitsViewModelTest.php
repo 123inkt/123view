@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\ViewModel;
 
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\ViewModel\CommitsViewModel;
@@ -47,8 +48,11 @@ class CommitsViewModelTest extends AbstractTestCase
         $block        = new DiffBlock();
         $block->lines = [$lineA, $lineB, $lineC];
 
+        $file = new DiffFile();
+        $file->blocks[] = $block;
+
         $model = new CommitsViewModel([], 'foobar', []);
-        static::assertSame(4, $model->getMaxLineNumberLength($block, true));
-        static::assertSame(5, $model->getMaxLineNumberLength($block, false));
+        static::assertSame(4, $model->getMaxLineNumberLength($file, true));
+        static::assertSame(5, $model->getMaxLineNumberLength($file, false));
     }
 }
