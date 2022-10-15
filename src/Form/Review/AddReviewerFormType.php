@@ -21,7 +21,12 @@ class AddReviewerFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['review' => null]);
+        $resolver->setDefaults(
+            [
+                'review' => null,
+                'attr'   => ['id' => 'form-add-reviewer']
+            ]
+        );
         $resolver->addAllowedTypes('review', CodeReview::class);
     }
 
@@ -35,7 +40,7 @@ class AddReviewerFormType extends AbstractType
 
         $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => 5]));
         $builder->setMethod('POST');
-        $builder->add('users', ChoiceType::class, [
+        $builder->add('user', ChoiceType::class, [
             'required'                  => false,
             'label'                     => false,
             'choice_translation_domain' => false,
@@ -45,6 +50,7 @@ class AddReviewerFormType extends AbstractType
             'preferred_choices'         => [$this->user],
             'multiple'                  => false,
             'expanded'                  => false,
+            'attr'                      => ['onchange' => "document.getElementById('form-add-reviewer').submit()"]
         ]);
     }
 
@@ -56,7 +62,7 @@ class AddReviewerFormType extends AbstractType
         $builder = $this->userRepository->createQueryBuilder('u');
 
         // filter out users already on the review
-        $userIds = array_map(static fn($reviewer) => (int)$reviewer->getId(), $review->getReviewers()->toArray());
+        $userIds = array_map(static fn($reviewer) => (int)$reviewer->getUser()?->getId(), $review->getReviewers()->toArray());
         if (count($userIds) > 0) {
             $builder->where($builder->expr()->notIn('u.id', $userIds));
         }
