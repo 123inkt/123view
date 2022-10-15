@@ -23,13 +23,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class MailCommandTest extends AbstractTestCase
 {
-    /** @var RuleProcessor&MockObject */
-    private RuleProcessor $ruleProcessor;
-    /** @var ExternalLinkRepository&MockObject */
-    private ExternalLinkRepository $externalLinkRepository;
-    /** @var RuleRepository&MockObject */
-    private RuleRepository $ruleRepository;
-    private MailCommand    $command;
+    private RuleProcessor&MockObject          $ruleProcessor;
+    private ExternalLinkRepository&MockObject $externalLinkRepository;
+    private RuleRepository&MockObject         $ruleRepository;
+    private MailCommand                       $command;
 
     protected function setUp(): void
     {

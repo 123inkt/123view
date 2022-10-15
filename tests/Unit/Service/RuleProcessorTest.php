@@ -27,19 +27,13 @@ use Throwable;
  */
 class RuleProcessorTest extends AbstractTestCase
 {
-    /** @var GitLogService&MockObject */
-    private GitLogService $gitLogService;
-    /** @var GitDiffService&MockObject */
-    private GitDiffService $diffService;
-    /** @var CommitFilter&MockObject */
-    private CommitFilter $commitFilter;
-    /** @var CommitBundler&MockObject */
-    private CommitBundler $commitBundler;
-    /** @var MockObject&EventDispatcherInterface */
-    private EventDispatcherInterface $dispatcher;
-    /** @var MailService&MockObject */
-    private MailService   $mailService;
-    private RuleProcessor $ruleProcessor;
+    private GitLogService&MockObject            $gitLogService;
+    private GitDiffService&MockObject           $diffService;
+    private CommitFilter&MockObject             $commitFilter;
+    private CommitBundler&MockObject            $commitBundler;
+    private EventDispatcherInterface&MockObject $dispatcher;
+    private MailService&MockObject              $mailService;
+    private RuleProcessor                       $ruleProcessor;
 
     protected function setUp(): void
     {

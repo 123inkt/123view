@@ -25,13 +25,10 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitLogServiceTest extends AbstractTestCase
 {
-    /** @var CacheableGitRepositoryService&MockObject */
-    private CacheableGitRepositoryService $repositoryService;
-    /** @var GitLogCommandFactory&MockObject */
-    private GitLogCommandFactory $commandFactory;
-    /** @var GitLogParser&MockObject */
-    private GitLogParser  $logParser;
-    private GitLogService $logFactory;
+    private CacheableGitRepositoryService&MockObject $repositoryService;
+    private GitLogCommandFactory&MockObject          $commandFactory;
+    private GitLogParser&MockObject                  $logParser;
+    private GitLogService                            $logFactory;
 
     protected function setUp(): void
     {

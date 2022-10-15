@@ -28,13 +28,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
  */
 class AzureAdAuthenticatorTest extends AbstractTestCase
 {
-    /** @var MockObject&LoginService */
-    private LoginService $loginService;
-    /** @var MockObject&UrlGeneratorInterface */
-    private UrlGeneratorInterface $urlGenerator;
-    /** @var AzureAdUserBadgeFactory&MockObject */
-    private AzureAdUserBadgeFactory $badgeFactory;
-    private AzureAdAuthenticator    $authenticator;
+    private LoginService&MockObject            $loginService;
+    private UrlGeneratorInterface&MockObject   $urlGenerator;
+    private AzureAdUserBadgeFactory&MockObject $badgeFactory;
+    private AzureAdAuthenticator               $authenticator;
 
     protected function setUp(): void
     {

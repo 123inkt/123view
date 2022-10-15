@@ -19,8 +19,7 @@ use TheNetworg\OAuth2\Client\Provider\Azure;
  */
 class AzureAdAuthControllerTest extends AbstractControllerTestCase
 {
-    /** @var Azure&MockObject */
-    private Azure $azureProvider;
+    private Azure&MockObject $azureProvider;
 
     protected function setUp(): void
     {

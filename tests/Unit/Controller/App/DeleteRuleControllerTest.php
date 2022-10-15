@@ -22,11 +22,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class DeleteRuleControllerTest extends AbstractControllerTestCase
 {
-    /** @var MockObject&RuleRepository */
-    private RuleRepository $ruleRepository;
-    /** @var TranslatorInterface&MockObject */
-    private TranslatorInterface $translator;
-    private User                $user;
+    private RuleRepository&MockObject      $ruleRepository;
+    private TranslatorInterface&MockObject $translator;
+    private User                           $user;
 
     protected function setUp(): void
     {
@@ -42,7 +40,7 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
     public function testInvokeUserIsNotRuleOwner(): void
     {
         $userB = new User();
-        $rule = (new Rule())->setUser($userB);
+        $rule  = (new Rule())->setUser($userB);
 
         $this->expectedDenyAccessUnlessGranted(RuleVoter::DELETE, $rule, false);
         $this->expectException(AccessDeniedException::class);

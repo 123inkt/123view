@@ -27,11 +27,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RuleControllerTest extends AbstractControllerTestCase
 {
-    /** @var MockObject&RuleRepository */
-    private RuleRepository $ruleRepository;
-    /** @var TranslatorInterface&MockObject */
-    private TranslatorInterface $translator;
-    private User                $user;
+    private RuleRepository&MockObject      $ruleRepository;
+    private TranslatorInterface&MockObject $translator;
+    private User                           $user;
 
     protected function setUp(): void
     {

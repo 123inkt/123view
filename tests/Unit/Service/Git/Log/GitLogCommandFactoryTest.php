@@ -23,9 +23,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitLogCommandFactoryTest extends AbstractTestCase
 {
-    /** @var GitLogCommandBuilder&MockObject */
-    private GitLogCommandBuilder $commandBuilder;
-    private GitLogCommandFactory $factory;
+    private GitLogCommandBuilder&MockObject $commandBuilder;
+    private GitLogCommandFactory            $factory;
 
     protected function setUp(): void
     {

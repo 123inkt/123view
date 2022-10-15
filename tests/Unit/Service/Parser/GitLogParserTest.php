@@ -19,13 +19,10 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitLogParserTest extends AbstractTestCase
 {
-    private GitLogParser $parser;
-    /** @var DiffParser&MockObject */
-    private DiffParser $diffParser;
-    /** @var CommitHydrator&MockObject */
-    private CommitHydrator $hydrator;
-    /** @var FormatPatternFactory&MockObject */
-    private FormatPatternFactory $patternFactory;
+    private GitLogParser                    $parser;
+    private DiffParser&MockObject           $diffParser;
+    private CommitHydrator&MockObject       $hydrator;
+    private FormatPatternFactory&MockObject $patternFactory;
 
     protected function setUp(): void
     {

@@ -18,8 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RepositoryChoiceTypeTest extends AbstractTestCase
 {
-    /** @var RepositoryRepository&MockObject */
-    private RepositoryRepository $repository;
+    private RepositoryRepository&MockObject $repository;
 
     protected function setUp(): void
     {

@@ -18,9 +18,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitlabIntegrationTest extends AbstractTestCase
 {
-    /** @var GitlabApi&MockObject */
-    private GitlabApi         $api;
-    private GitlabIntegration $integration;
+    private GitlabApi&MockObject $api;
+    private GitlabIntegration    $integration;
 
     protected function setUp(): void
     {

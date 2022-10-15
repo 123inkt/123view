@@ -18,9 +18,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class UpsourceIntegrationTest extends AbstractTestCase
 {
-    /** @var UpsourceApi&MockObject */
-    private UpsourceApi         $api;
-    private UpsourceIntegration $integration;
+    private UpsourceApi&MockObject $api;
+    private UpsourceIntegration    $integration;
 
     protected function setUp(): void
     {
@@ -95,7 +94,7 @@ class UpsourceIntegrationTest extends AbstractTestCase
      */
     public function testOnCommitEventShouldSkipOnHttpClientException(): void
     {
-        $repository                    = $this->createRepository('upsource', 'https://git.repository.example.com/');
+        $repository = $this->createRepository('upsource', 'https://git.repository.example.com/');
         $repository->addRepositoryProperty(new RepositoryProperty("upsource-project-id", "foobar"));
 
         $commit             = $this->createCommit();
@@ -115,7 +114,7 @@ class UpsourceIntegrationTest extends AbstractTestCase
      */
     public function testOnCommitEvent(): void
     {
-        $repository                    = $this->createRepository('upsource', 'https://git.repository.example.com/');
+        $repository = $this->createRepository('upsource', 'https://git.repository.example.com/');
         $repository->addRepositoryProperty(new RepositoryProperty("upsource-project-id", "foobar"));
 
         $commit             = $this->createCommit();

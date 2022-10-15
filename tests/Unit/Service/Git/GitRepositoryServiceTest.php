@@ -22,11 +22,9 @@ class GitRepositoryServiceTest extends AbstractTestCase
 {
     private const CACHE_DIRECTORY = "/cache/directory";
 
-    /** @var MockObject&Filesystem */
-    private Filesystem $filesystem;
-    /** @var Git&MockObject */
-    private Git                  $git;
-    private GitRepositoryService $service;
+    private Filesystem&MockObject $filesystem;
+    private Git&MockObject        $git;
+    private GitRepositoryService  $service;
 
     protected function setUp(): void
     {

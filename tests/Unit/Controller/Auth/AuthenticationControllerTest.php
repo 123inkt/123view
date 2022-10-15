@@ -17,8 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AuthenticationControllerTest extends AbstractControllerTestCase
 {
-    /** @var TranslatorInterface&MockObject */
-    private TranslatorInterface $translator;
+    private TranslatorInterface&MockObject $translator;
 
     protected function setUp(): void
     {
