@@ -18,10 +18,8 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {
     private const CACHE_DIRECTORY = "/cache/directory";
 
-    /** @var MockObject|Filesystem */
-    private Filesystem $filesystem;
-    /** @var Git|MockObject */
-    private Git                           $git;
+    private Filesystem&MockObject         $filesystem;
+    private Git&MockObject                $git;
     private CacheableGitRepositoryService $service;
 
     protected function setUp(): void

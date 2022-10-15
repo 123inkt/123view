@@ -18,9 +18,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class DiffFileParserTest extends AbstractTestCase
 {
-    /** @var UnifiedBlockParser|MockObject */
-    private UnifiedBlockParser $blockParser;
-    private DiffFileParser     $parser;
+    private UnifiedBlockParser&MockObject $blockParser;
+    private DiffFileParser                $parser;
 
     protected function setUp(): void
     {

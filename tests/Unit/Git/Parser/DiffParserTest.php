@@ -16,9 +16,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class DiffParserTest extends AbstractTestCase
 {
-    private DiffParser $parser;
-    /** @var DiffFileParser|MockObject */
-    private DiffFileParser $fileParser;
+    private DiffParser                $parser;
+    private DiffFileParser&MockObject $fileParser;
 
     protected function setUp(): void
     {
@@ -86,7 +85,6 @@ class DiffParserTest extends AbstractTestCase
         $input .= "foobar A\n";
         $input .= "diff --git a/example.git b/example.git\n";
         $input .= "foobar B\n";
-
 
         $fileA = new DiffFile();
         $fileB = new DiffFile();
