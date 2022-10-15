@@ -40,6 +40,9 @@ class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    /**
+     * @param string[] $hashes
+     */
     public function hashes(array $hashes): self
     {
         $this->arguments['hashes'] = implode(' ', $hashes);

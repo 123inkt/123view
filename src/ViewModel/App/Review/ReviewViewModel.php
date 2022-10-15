@@ -25,6 +25,9 @@ class ReviewViewModel
         return $this->addReviewerForm;
     }
 
+    /**
+     * @return DiffFile[]
+     */
     public function getFiles(): array
     {
         return $this->files;
@@ -35,6 +38,9 @@ class ReviewViewModel
         return $this->selectedFile;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getAuthors(): array
     {
         $authors = [];

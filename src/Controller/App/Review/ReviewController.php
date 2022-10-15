@@ -23,6 +23,7 @@ class ReviewController extends AbstractController
     }
 
     /**
+     * @return array<string, object>
      * @throws Throwable
      */
     #[Route('app/reviews/{id<\d+>}', name: self::class, methods: 'GET')]

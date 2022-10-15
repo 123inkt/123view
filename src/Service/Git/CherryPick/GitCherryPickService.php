@@ -18,10 +18,10 @@ class GitCherryPickService implements LoggerAwareInterface
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
-    ) {
-    }
+    ) {}
 
     /**
+     * @param Revision[] $revisions
      * @throws RepositoryException
      */
     public function cherryPickRevisions(array $revisions): void
