@@ -41,7 +41,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('init')->willReturn($repository);
+        $this->git->expects(static::once())->method('cloneRepository')->willReturn($repository);
 
         // first call should invoke parent method
         $firstRepository = $this->service->getRepository($url);
