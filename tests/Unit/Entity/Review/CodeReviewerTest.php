@@ -8,7 +8,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\CodeReviewer
- * @covers ::__construct
  */
 class CodeReviewerTest extends AbstractTestCase
 {
