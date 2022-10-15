@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -16,15 +17,16 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitDiffCommandFactoryTest extends AbstractTestCase
 {
-    /** @var GitDiffCommandBuilder&MockObject */
-    private GitDiffCommandBuilder $commandBuilder;
-    private GitDiffCommandFactory $factory;
+    private GitDiffCommandBuilder&MockObject $commandBuilder;
+    private GitDiffCommandFactory            $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitDiffCommandBuilder::class);
-        $this->factory        = new GitDiffCommandFactory($this->commandBuilder);
+        $factory              = $this->createMock(GitCommandBuilderFactory::class);
+        $factory->method('createDiff')->willReturn($this->commandBuilder);
+        $this->factory = new GitDiffCommandFactory($factory);
     }
 
     /**
@@ -39,7 +41,6 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
                 ->setExcludeMergeCommits(false)
         );
 
-        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
@@ -65,7 +66,6 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
                 ->setIgnoreBlankLines(true)
         );
 
-        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
