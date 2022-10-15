@@ -38,7 +38,7 @@ class AddReviewerFormType extends AbstractType
         /** @var CodeReview $review */
         $review = $options['review'];
 
-        $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => 5]));
+        $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => $review->getId()]));
         $builder->setMethod('POST');
         $builder->add('user', ChoiceType::class, [
             'required'                  => false,
