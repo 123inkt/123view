@@ -5,8 +5,8 @@ namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
@@ -28,16 +28,22 @@ class CodeReviewTest extends AbstractTestCase
     /**
      * @covers ::getRevisions
      * @covers ::setRevisions
+     * @covers ::addRevision
      */
     public function testRevisions(): void
     {
         $collection = new ArrayCollection();
 
-        $repository = new CodeReview();
-        static::assertInstanceOf(ArrayCollection::class, $repository->getRevisions());
+        $review = new CodeReview();
+        static::assertInstanceOf(ArrayCollection::class, $review->getRevisions());
 
-        $repository->setRevisions($collection);
-        static::assertSame($collection, $repository->getRevisions());
+        $review->setRevisions($collection);
+        static::assertSame($collection, $review->getRevisions());
+
+        $revision = new Revision();
+        $review->addRevision($revision);
+        static::assertSame($review, $revision->getReview());
+        static::assertSame($revision, $collection->first());
     }
 
     /**
@@ -48,11 +54,11 @@ class CodeReviewTest extends AbstractTestCase
     {
         $collection = new ArrayCollection();
 
-        $repository = new User();
-        static::assertInstanceOf(ArrayCollection::class, $repository->getReviewers());
+        $review = new CodeReview();
+        static::assertInstanceOf(ArrayCollection::class, $review->getReviewers());
 
-        $repository->setReviewers($collection);
-        static::assertSame($collection, $repository->getReviewers());
+        $review->setReviewers($collection);
+        static::assertSame($collection, $review->getReviewers());
     }
 
     /**
@@ -63,10 +69,10 @@ class CodeReviewTest extends AbstractTestCase
     {
         $collection = new ArrayCollection();
 
-        $repository = new CodeReview();
-        static::assertInstanceOf(ArrayCollection::class, $repository->getWatchers());
+        $review = new CodeReview();
+        static::assertInstanceOf(ArrayCollection::class, $review->getWatchers());
 
-        $repository->setWatchers($collection);
-        static::assertSame($collection, $repository->getWatchers());
+        $review->setWatchers($collection);
+        static::assertSame($collection, $review->getWatchers());
     }
 }
