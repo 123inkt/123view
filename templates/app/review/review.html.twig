@@ -6,7 +6,7 @@
 
     <h3 class="mt-2">
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
-        {{ 'CR-' ~ review.id ~ ' ' ~ review.title }}
+        {{ 'CR-' ~ review.id ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
     </h3>
 
     {% if reviewModel.isReviewer(app.user) and review.state == 'open' %}

@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
@@ -18,7 +19,7 @@ use Throwable;
 
 class ReviewController extends AbstractController
 {
-    public function __construct(private readonly GitCodeReviewDiffService $diffService)
+    public function __construct(private readonly ExternalLinkRepository $linkRepository, private readonly GitCodeReviewDiffService $diffService)
     {
     }
 
@@ -47,6 +48,8 @@ class ReviewController extends AbstractController
 
         $selectedFile ??= Type::notFalse(reset($files));
 
-        return ['reviewModel' => new ReviewViewModel($review, $files, $selectedFile, $addReviewerForm)];
+        $links = $this->linkRepository->findAll();
+
+        return ['reviewModel' => new ReviewViewModel($review, $files, $selectedFile, $addReviewerForm, $links)];
     }
 }

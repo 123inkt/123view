@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
+use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
@@ -11,13 +12,15 @@ use Symfony\Component\Form\FormView;
 class ReviewViewModel
 {
     /**
-     * @param DiffFile[] $files
+     * @param DiffFile[]     $files
+     * @param ExternalLink[] $externalLinks
      */
     public function __construct(
         private readonly CodeReview $review,
         private readonly array $files,
         private readonly DiffFile $selectedFile,
-        private readonly FormView $addReviewerForm
+        private readonly FormView $addReviewerForm,
+        private readonly array $externalLinks
     ) {
     }
 
@@ -66,5 +69,13 @@ class ReviewViewModel
     public function getReview(): CodeReview
     {
         return $this->review;
+    }
+
+    /**
+     * @return ExternalLink[]
+     */
+    public function getExternalLinks(): array
+    {
+        return $this->externalLinks;
     }
 }
