@@ -67,7 +67,6 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::start
      * @covers ::hashes
      * @covers ::diffAlgorithm
      */
