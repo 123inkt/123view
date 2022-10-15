@@ -4,88 +4,100 @@
     {% set review = reviewModel.review %}
     {% set revisions = review.revisions %}
 
-    <h3 class="mt-2">
-        <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
-        {{ 'CR-' ~ review.id ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
-    </h3>
 
-    {% if reviewModel.isReviewer(app.user) and review.state == 'open' %}
-        <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="accepted"/>
-            <button type="submit" class="btn btn-outline-success btn-sm">😃 {{ 'accept'|trans }}</button>
-        </form>
+    <div class="review-grid-layout">
+        <div class="review-grid-header">
+            <h3 class="mt-2">
+                <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
+                {{ 'CR-' ~ review.id ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
+            </h3>
 
-        <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="rejected"/>
-            <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'raise.concern'|trans }}</button>
-        </form>
-    {% endif %}
+            {% if reviewModel.isReviewer(app.user) and review.state == 'open' %}
+                <form method="POST" class="d-inline-block"
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
+                    <input type="hidden" name="state" value="accepted"/>
+                    <button type="submit" class="btn btn-outline-success btn-sm">😃 {{ 'accept'|trans }}</button>
+                </form>
 
-    {% if review.state == 'open' %}
-        <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="closed"/>
-            <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'close.review'|trans }}</button>
-        </form>
-    {% elseif review.state == 'closed' %}
-        <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="open"/>
-            <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'reopen.review'|trans }}</button>
-        </form>
-    {% endif %}
+                <form method="POST" class="d-inline-block"
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
+                    <input type="hidden" name="state" value="rejected"/>
+                    <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'raise.concern'|trans }}</button>
+                </form>
+            {% endif %}
 
-    <fieldset>
-        <legend>Revisions</legend>
-        {% for revision in revisions %}
-            {{ revision.commitHash }}<br>
-        {% endfor %}
-    </fieldset>
+            {% if review.state == 'open' %}
+                <form method="POST" class="d-inline-block"
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
+                    <input type="hidden" name="state" value="closed"/>
+                    <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'close.review'|trans }}</button>
+                </form>
+            {% elseif review.state == 'closed' %}
+                <form method="POST" class="d-inline-block"
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
+                    <input type="hidden" name="state" value="open"/>
+                    <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'reopen.review'|trans }}</button>
+                </form>
+            {% endif %}
+        </div>
 
-    <fieldset>
-        <legend>Author</legend>
-        {% for email, name in reviewModel.authors %}
-            {{ name }}<br>
-        {% endfor %}
-    </fieldset>
+        <div class="review-grid-sidebar">
 
-    <fieldset>
-        <legend>Reviewers</legend>
-        {% for reviewer in review.reviewers %}
-            <span>
-                {%- if reviewer.state == 'accepted' -%}
-                    😃
-                {%- elseif reviewer.state == 'rejected' -%}
-                    😞
-                {%- endif -%}
-            </span>
+            <fieldset>
+                <legend>Revisions</legend>
+                {% for revision in revisions %}
+                    <span title="{{ revision.authorName }} - {{ revision.commitHash }}">
+                        {{ revision.commitHash|slice(0, 7)}}
+                    </span>
+                {% endfor %}
+            </fieldset>
 
-            {{ reviewer.user.name }}
+            <fieldset>
+                <legend>Author</legend>
+                {% for email, name in reviewModel.authors %}
+                    {{ name }}<br>
+                {% endfor %}
+            </fieldset>
 
-            <form method="POST" class="d-inline-block"
-                  action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
-                <input type="hidden" name="_method" value="DELETE"/>
-                <button type="submit" class="btn btn-light btn-sm">&times;</button>
-            </form><br>
+            <fieldset>
+                <legend>Reviewers</legend>
+                {% for reviewer in review.reviewers %}
+                    <span>
+                        {%- if reviewer.state == 'accepted' -%}
+                            😃
+                        {%- elseif reviewer.state == 'rejected' -%}
+                            😞
+                        {%- endif -%}
+                    </span>
 
-        {% endfor %}
+                    {{ reviewer.user.name }}
 
-        {{ form(reviewModel.addReviewerForm) }}
-    </fieldset>
+                    <form method="POST" class="d-inline-block"
+                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit" class="btn btn-light btn-sm">&times;</button>
+                    </form><br>
 
-    <fieldset>
-        <legend>Files</legend>
-        {% for file in reviewModel.files %}
-            <a href="?filePath={{ file.file.pathname|e('url') }}">
-                {{ file.filename }}
-            </a><br>
-        {% endfor %}
-    </fieldset>
+                {% endfor %}
 
-    {%- set line_nr_length_before = 5 -%}
-    {%- set line_nr_length_after = 5 -%}
-    {% include 'commit/commit.file.html.twig' with {file: reviewModel.selectedFile} %}
+                {{ form(reviewModel.addReviewerForm) }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Files</legend>
+                {% for file in reviewModel.files %}
+                    <a href="?filePath={{ file.file.pathname|e('url') }}">
+                        {{ file.filename }}
+                    </a><br>
+                {% endfor %}
+            </fieldset>
+        </div>
+
+        <div class="review-grid-code">
+            {%- set line_nr_length_before = 5 -%}
+            {%- set line_nr_length_after = 5 -%}
+            {% include 'commit/commit.file.html.twig' with {file: reviewModel.selectedFile} %}
+        </div>
+    </div>
 
 {% endblock %}
