@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -16,7 +17,7 @@ class GitCheckoutService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitCheckoutCommandBuilderFactory $commandFactory,
+        private readonly GitCommandBuilderFactory $commandFactory,
     ) {
     }
 
@@ -25,7 +26,7 @@ class GitCheckoutService implements LoggerAwareInterface
      */
     public function checkout(Repository $repository, string $ref): void
     {
-        $commandBuilder = $this->commandFactory->create()->startPoint($ref);
+        $commandBuilder = $this->commandFactory->createCheckout()->startPoint($ref);
 
         // create branch
         $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
@@ -43,7 +44,7 @@ class GitCheckoutService implements LoggerAwareInterface
         $branchName = sprintf('repository-%s-revision-%s', $repository->getId(), $revision->getId());
 
         $commandBuilder = $this->commandFactory
-            ->create()
+            ->createCheckout()
             ->branch($branchName)
             ->startPoint($revision->getCommitHash() . '~');
 

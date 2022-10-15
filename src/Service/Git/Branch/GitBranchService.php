@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -16,7 +17,7 @@ class GitBranchService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitBranchCommandBuilderFactory $commandFactory,
+        private readonly GitCommandBuilderFactory $commandFactory,
     ) {
     }
 
@@ -25,7 +26,7 @@ class GitBranchService implements LoggerAwareInterface
      */
     public function deleteBranch(Repository $repository, string $ref): void
     {
-        $commandBuilder = $this->commandFactory->create()->delete($ref);
+        $commandBuilder = $this->commandFactory->createBranch()->delete($ref);
 
         // delete branch
         $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);

@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -16,7 +17,7 @@ class GitCherryPickService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitCherryPickCommandBuilderFactory $commandFactory,
+        private readonly GitCommandBuilderFactory $commandFactory,
     ) {
     }
 
@@ -30,7 +31,7 @@ class GitCherryPickService implements LoggerAwareInterface
         $gitRepository = $this->repositoryService->getRepository($repository->getUrl());
 
         $commandBuilder = $this->commandFactory
-            ->create()
+            ->createCheryPick()
             ->strategy('recursive')
             ->conflictResolution('theirs')
             ->noCommit()

@@ -12,7 +12,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -23,8 +23,7 @@ class GitDiffService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitDiffCommandBuilderFactory $builderFactory,
-        private readonly GitShowCommandBuilderFactory $showBuilderFactory,
+        private readonly GitCommandBuilderFactory $builderFactory,
         private readonly GitDiffCommandFactory $commandFactory,
         private readonly DiffParser $parser
     ) {
@@ -63,7 +62,7 @@ class GitDiffService implements LoggerAwareInterface
     {
         /** @var Repository $repository */
         $repository     = $revision->getRepository();
-        $commandBuilder = $this->showBuilderFactory->create()->startPoint($revision->getCommitHash());
+        $commandBuilder = $this->builderFactory->createShow()->startPoint($revision->getCommitHash());
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
@@ -80,7 +79,7 @@ class GitDiffService implements LoggerAwareInterface
     public function getBundledDiffFromRevisions(Repository $repository): array
     {
         // create git diff HEAD command
-        $commandBuilder = $this->builderFactory->create()
+        $commandBuilder = $this->builderFactory->createDiff()
             ->hash('HEAD')
             ->diffAlgorithm(DiffAlgorithmType::MYERS)
             ->ignoreCrAtEol()

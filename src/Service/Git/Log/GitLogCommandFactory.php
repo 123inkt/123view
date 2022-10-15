@@ -5,12 +5,13 @@ namespace DR\GitCommitNotification\Service\Git\Log;
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 use DR\GitCommitNotification\Utility\Type;
 
 class GitLogCommandFactory
 {
-    public function __construct(private GitLogCommandBuilderFactory $builderFactory, private FormatPatternFactory $patternFactory)
+    public function __construct(private GitCommandBuilderFactory $builderFactory, private FormatPatternFactory $patternFactory)
     {
     }
 
@@ -18,7 +19,7 @@ class GitLogCommandFactory
     {
         $rule    = $ruleConfig->rule;
         $options = $rule->getRuleOptions();
-        $builder = $this->builderFactory->create();
+        $builder = $this->builderFactory->createLog();
         $builder
             ->remotes()
             ->topoOrder()

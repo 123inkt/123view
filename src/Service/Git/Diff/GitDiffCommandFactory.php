@@ -5,11 +5,12 @@ namespace DR\GitCommitNotification\Service\Git\Diff;
 
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 class GitDiffCommandFactory
 {
-    public function __construct(private readonly GitDiffCommandBuilderFactory $builderFactory)
+    public function __construct(private readonly GitCommandBuilderFactory $builderFactory)
     {
     }
 
@@ -17,7 +18,7 @@ class GitDiffCommandFactory
     {
         $options = $rule->getRuleOptions();
 
-        $builder = $this->builderFactory->create();
+        $builder = $this->builderFactory->createDiff();
         $builder->hashes($fromHash, $toHash)
             ->diffAlgorithm($options?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
             ->ignoreCrAtEol();

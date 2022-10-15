@@ -9,8 +9,8 @@ use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
-use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +23,7 @@ class ImportReviewController
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private CacheableGitRepositoryService $gitRepository,
-        private GitLogCommandBuilderFactory $commandBuilderFactory,
+        private GitCommandBuilderFactory $commandBuilderFactory,
         private FormatPatternFactory $formatPatternFactory,
         private GitLogParser $logParser,
         private RevisionRepository $revisionRepository,
@@ -47,7 +47,7 @@ class ImportReviewController
         $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
 
         // build git log command
-        $command = $this->commandBuilderFactory->create();
+        $command = $this->commandBuilderFactory->createLog();
         $command->noMerges()
             ->remotes()
             ->reverse()
