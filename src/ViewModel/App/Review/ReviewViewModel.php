@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use Symfony\Component\Form\FormView;
@@ -49,6 +50,17 @@ class ReviewViewModel
         }
 
         return $authors;
+    }
+
+    public function isReviewer(User $user): bool
+    {
+        foreach ($this->review->getReviewers() as $reviewer) {
+            if ($reviewer->getUser()?->getId() === $user->getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getReview(): CodeReview

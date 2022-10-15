@@ -6,8 +6,10 @@ namespace DR\GitCommitNotification\Entity\Review;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
@@ -118,6 +120,32 @@ class CodeReview
         $this->revisions = $revisions;
 
         return $this;
+    }
+
+    public function isAccepted(): bool
+    {
+        if (count($this->getReviewers()) === 0) {
+            return false;
+        }
+
+        foreach ($this->reviewers as $reviewer) {
+            if ($reviewer->getState() !== CodeReviewerStateType::ACCEPTED) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getReviewer(User $user): ?CodeReviewer
+    {
+        foreach ($this->reviewers as $reviewer) {
+            if ($reviewer->getUser()?->getId() === $user->getId()) {
+                return $reviewer;
+            }
+        }
+
+        return null;
     }
 
     /**
