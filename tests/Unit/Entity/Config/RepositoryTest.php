@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
+use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\RepositoryProperty;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -52,5 +53,35 @@ class RepositoryTest extends AbstractTestCase
 
         $repository->removeRepositoryProperty($property);
         static::assertCount(0, $repository->getRepositoryProperties());
+    }
+
+    /**
+     * @covers ::getRevisions
+     * @covers ::setRevisions
+     */
+    public function testRevisions(): void
+    {
+        $collection = new ArrayCollection();
+
+        $repository = new Repository();
+        static::assertInstanceOf(ArrayCollection::class, $repository->getRevisions());
+
+        $repository->setRevisions($collection);
+        static::assertSame($collection, $repository->getRevisions());
+    }
+
+    /**
+     * @covers ::getReviews
+     * @covers ::setReviews
+     */
+    public function testReviews(): void
+    {
+        $collection = new ArrayCollection();
+
+        $repository = new Repository();
+        static::assertInstanceOf(ArrayCollection::class, $repository->getReviews());
+
+        $repository->setReviews($collection);
+        static::assertSame($collection, $repository->getReviews());
     }
 }

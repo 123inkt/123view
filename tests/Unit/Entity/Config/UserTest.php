@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
+use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -51,5 +52,20 @@ class UserTest extends AbstractTestCase
         $user->setEmail('email');
         static::assertSame('email', $user->getUserIdentifier());
         static::assertSame(['ROLE_USER'], $user->getRoles());
+    }
+
+    /**
+     * @covers ::getReviewers
+     * @covers ::setReviewers
+     */
+    public function testReviewers(): void
+    {
+        $collection = new ArrayCollection();
+
+        $repository = new User();
+        static::assertInstanceOf(ArrayCollection::class, $repository->getReviewers());
+
+        $repository->setReviewers($collection);
+        static::assertSame($collection, $repository->getReviewers());
     }
 }
