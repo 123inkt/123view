@@ -38,6 +38,9 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
 
     $em = $doctrineConfig->orm()->entityManager('default');
     $em->autoMapping(true);
+    $em->metadataCacheDriver()->type('pool')->pool('doctrine.system_cache_pool');
+    $em->queryCacheDriver()->type('pool')->pool('doctrine.system_cache_pool');
+    $em->resultCacheDriver()->type('pool')->pool('doctrine.result_cache_pool');
     $em->connection('default');
     $em->namingStrategy('doctrine.orm.naming_strategy.underscore_number_aware');
     $em->mapping('DR\GitCommitNotification')
