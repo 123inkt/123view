@@ -38,7 +38,7 @@ class ChangeReviewerStateController extends AbstractController
             throw new BadRequestHttpException('Invalid state value: ' . $state);
         }
 
-        $userReviewer->setState(CodeReviewerStateType::ACCEPTED);
+        $userReviewer->setState($state);
         if ($review->isAccepted()) {
             $review->setState(CodeReviewStateType::CLOSED);
         }
