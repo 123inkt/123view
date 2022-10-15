@@ -32,11 +32,11 @@ class Revision
     #[ORM\Column]
     private ?int $createTimestamp = null;
 
-    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist', 'remove'], inversedBy: 'revisions')]
+    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'revisions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
 
-    #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist', 'remove'], inversedBy: 'revisions')]
+    #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'revisions')]
     private ?CodeReview $review = null;
 
     public function setId(int $id): self

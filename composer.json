@@ -45,6 +45,7 @@
         "symfony/console": "^6.1",
         "symfony/doctrine-messenger": "^6.1",
         "symfony/dotenv": "^6.1",
+        "symfony/expression-language": "6.1.*",
         "symfony/filesystem": "^6.1",
         "symfony/flex": "^v2.2",
         "symfony/form": "^6.1",

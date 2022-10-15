@@ -27,16 +27,16 @@ class CodeReview
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     private string $state = CodeReviewStateType::OPEN;
 
-    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist', 'remove'], inversedBy: 'reviews')]
+    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false)]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist'], orphanRemoval: false)]
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, User> */

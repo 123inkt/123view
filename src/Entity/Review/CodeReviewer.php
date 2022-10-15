@@ -19,11 +19,11 @@ class CodeReviewer
     #[ORM\Column(type: CodeReviewerStateType::TYPE, options: ['default' => CodeReviewerStateType::OPEN])]
     private ?string $state = CodeReviewerStateType::OPEN;
 
-    #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist', 'remove'], inversedBy: 'reviewers')]
+    #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'reviewers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CodeReview $review = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist', 'remove'], inversedBy: 'reviewers')]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'reviewers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

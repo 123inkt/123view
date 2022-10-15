@@ -24,7 +24,16 @@
     <fieldset>
         <legend>Reviewers</legend>
         {% for reviewer in review.reviewers %}
-            {{ reviewer.user.name }} ({{ reviewer.state }})<br>
+            {{ reviewer.user.name }} ({{ reviewer.state }})
+
+            <form method="POST" class="d-inline-block"
+                  action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi-trash"></i>
+                </button>
+            </form><br>
+
         {% endfor %}
 
         {{ form(reviewModel.addReviewerForm) }}
