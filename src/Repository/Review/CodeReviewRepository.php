@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Repository\Review;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 
@@ -39,6 +40,37 @@ class CodeReviewRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @return Paginator<CodeReview>
+     */
+    public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery): Paginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->where('r.repository = :repositoryId')
+            ->setParameter('repositoryId', $repositoryId)
+            ->orderBy('r.id', 'DESC')
+            ->setFirstResult(max(0, $page - 1) * 50)
+            ->setMaxResults(50);
+
+        if ($searchQuery !== '') {
+            if (preg_match('/id:(\d+)/', $searchQuery, $matches) === 1) {
+                $query->andWhere('r.id = :id')->setParameter('id', $matches[1]);
+                $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
+            }
+
+            if (preg_match('/state:(\w+)/', $searchQuery, $matches) === 1) {
+                $query->andWhere('r.state = :state')->setParameter('state', $matches[1]);
+                $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
+            }
+
+            if ($searchQuery !== '') {
+                $query->andWhere('r.title LIKE :title')->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
+            }
+        }
+
+        return new Paginator($query->getQuery(), false);
     }
 
     /**

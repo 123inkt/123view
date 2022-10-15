@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Review;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
@@ -31,19 +30,8 @@ class ReviewsController extends AbstractController
     {
         $searchQuery = trim((string)$request->query->get('search'));
         $page        = $request->query->getInt('page', 1);
+        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
 
-        $query = $this->reviewRepository->createQueryBuilder('r')
-            ->where('r.repository = :repositoryId')
-            ->setParameter('repositoryId', (int)$repository->getId())
-            ->orderBy('r.id', 'DESC')
-            ->setFirstResult(max(0, $page - 1) * 50)
-            ->setMaxResults(50);
-
-        if ($searchQuery !== '') {
-            $query->andWhere('r.title LIKE :title')
-                ->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
-        }
-
-        return ['reviewsModel' => new ReviewsViewModel(new Paginator($query, false), $page, $searchQuery)];
+        return ['reviewsModel' => new ReviewsViewModel($paginator, $page, $searchQuery)];
     }
 }
