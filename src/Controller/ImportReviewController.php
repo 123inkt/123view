@@ -38,7 +38,7 @@ class ImportReviewController
     public function __invoke(): Response
     {
         // get druid repository
-        $repository = $this->repositoryRepository->findOneBy(['name' => 'drcore']);
+        $repository = $this->repositoryRepository->findOneBy(['name' => 'druid']);
         if ($repository === null) {
             return new JsonResponse(['no repository']);
         }
@@ -81,10 +81,6 @@ class ImportReviewController
             $this->revisionRepository->save($revision, true);
 
             $this->bus->dispatch(new RevisionAddedMessage((int)$revision->getId()));
-
-            //if ($count++ > 10) {
-            //    break;
-            //}
         }
 
         return new JsonResponse($count);
