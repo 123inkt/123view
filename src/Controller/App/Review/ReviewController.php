@@ -32,7 +32,7 @@ class ReviewController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): array
     {
-        $addReviewerForm = $this->createForm(AddReviewerFormType::class)->createView();
+        $addReviewerForm = $this->createForm(AddReviewerFormType::class, null, ['review' => $review])->createView();
 
         $revisions = $review->getRevisions()->toArray();
         $files     = $this->diffService->getDiffFiles($revisions);
