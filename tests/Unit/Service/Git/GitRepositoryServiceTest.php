@@ -47,9 +47,8 @@ class GitRepositoryServiceTest extends AbstractTestCase
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('init')->willReturn($repository);
+        $this->git->expects(static::once())->method('cloneRepository')->willReturn($repository);
 
-        $repository->expects(static::once())->method('addRemote')->with('origin', $url);
         $repository->expects(static::once())->method('fetch')->with(null, ['--all']);
 
         $this->service->getRepository($url);
