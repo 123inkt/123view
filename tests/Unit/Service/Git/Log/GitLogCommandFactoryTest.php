@@ -10,9 +10,9 @@ use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Config\RuleOptions;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,8 +31,8 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitLogCommandBuilder::class);
-        $factory              = $this->createMock(GitLogCommandBuilderFactory::class);
-        $factory->method('create')->willReturn($this->commandBuilder);
+        $factory              = $this->createMock(GitCommandBuilderFactory::class);
+        $factory->method('createLog')->willReturn($this->commandBuilder);
         $this->factory = new GitLogCommandFactory($factory, new FormatPatternFactory());
     }
 

@@ -48,11 +48,9 @@ class CircuitBreakerTest extends AbstractTestCase
                 ++$attempt;
                 throw new RuntimeException('Failed');
             });
-            $success = true;
         } catch (Throwable) {
-            $success = false;
+            // ignored, expecting exception
         }
-        static::assertFalse($success);
         static::assertSame(2, $attempt);
     }
 }
