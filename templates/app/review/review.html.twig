@@ -11,13 +11,13 @@
 
     {% if reviewModel.isReviewer(app.user) and review.state == 'open' %}
         <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerState', {id: review.id}) }}">
+              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
             <input type="hidden" name="state" value="accepted"/>
             <button type="submit" class="btn btn-outline-success btn-sm">😃 {{ 'accept'|trans }}</button>
         </form>
 
         <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerState', {id: review.id}) }}">
+              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
             <input type="hidden" name="state" value="rejected"/>
             <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'raise.concern'|trans }}</button>
         </form>
@@ -25,13 +25,13 @@
 
     {% if review.state == 'open' %}
         <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewState', {id: review.id}) }}">
+              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
             <input type="hidden" name="state" value="closed"/>
             <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'close.review'|trans }}</button>
         </form>
     {% elseif review.state == 'closed' %}
         <form method="POST" class="d-inline-block"
-              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewState', {id: review.id}) }}">
+              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
             <input type="hidden" name="state" value="open"/>
             <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'reopen.review'|trans }}</button>
         </form>
@@ -54,14 +54,20 @@
     <fieldset>
         <legend>Reviewers</legend>
         {% for reviewer in review.reviewers %}
-            {{ reviewer.user.name }} ({{ reviewer.state }})
+            <span>
+                {%- if reviewer.state == 'accepted' -%}
+                    😃
+                {%- elseif reviewer.state == 'rejected' -%}
+                    😞
+                {%- endif -%}
+            </span>
+
+            {{ reviewer.user.name }}
 
             <form method="POST" class="d-inline-block"
                   action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
                 <input type="hidden" name="_method" value="DELETE"/>
-                <button type="submit" class="btn btn-danger btn-sm">
-                    <i class="bi-trash"></i>
-                </button>
+                <button type="submit" class="btn btn-light btn-sm">&times;</button>
             </form><br>
 
         {% endfor %}

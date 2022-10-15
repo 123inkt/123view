@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ChangeReviewState extends AbstractController
+class ChangeReviewStateController extends AbstractController
 {
     public function __construct(private readonly CodeReviewRepository $reviewRepository)
     {

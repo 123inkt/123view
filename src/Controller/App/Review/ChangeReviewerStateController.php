@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ChangeReviewerState extends AbstractController
+class ChangeReviewerStateController extends AbstractController
 {
     public function __construct(private readonly ManagerRegistry $registry)
     {

@@ -8,9 +8,10 @@ class HighlighterFactory
     public function getHighlighter(string $language): ?HighlighterInterface
     {
         return match ($language) {
-            PHPHighlighter::EXTENSION => new PHPHighlighter(),
-            TwigHighlighter::EXTENSION => new TwigHighlighter(),
-            default => null,
+            PHPHighlighter::EXTENSION        => new PHPHighlighter(),
+            TwigHighlighter::EXTENSION       => new TwigHighlighter(),
+            TypescriptHighlighter::EXTENSION => new TypescriptHighlighter(),
+            default                          => null,
         };
     }
 }
