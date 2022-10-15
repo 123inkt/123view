@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Form\Review;
 
 use Doctrine\ORM\EntityRepository;
+use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Config\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -24,14 +25,14 @@ class AddReviewerFormType extends AbstractType
     {
         $currentUser = $this->security->getUser();
 
-        //$builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $data['rule']?->getId()]));
+        $builder->setAction($this->urlGenerator->generate(ReviewController::class, ['id' => 5]));
         $builder->setMethod('POST');
 
         $builder->add('users', EntityType::class, [
             'label'             => '',
             'class'             => User::class,
             'choice_label'      => 'name',
-            'choice_value'      => static fn(?User $entity) => $entity ? $entity->getId() : '',
+            'choice_value'      => static fn(?User $entity) => $entity?->getId() ?? 0,
             'query_builder'     => static fn(EntityRepository $er) => $er->createQueryBuilder('u')->orderBy('u.name', 'ASC'),
             'preferred_choices' => [$currentUser],
             'multiple'          => false,

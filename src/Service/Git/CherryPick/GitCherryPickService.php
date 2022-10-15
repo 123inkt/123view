@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Utility\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -28,22 +29,18 @@ class GitCherryPickService implements LoggerAwareInterface
      */
     public function cherryPickRevisions(array $revisions): void
     {
-        /** @var Revision $revision */
-        $revision = reset($revisions);
         /** @var Repository $repository */
-        $repository = $revision->getRepository();
-        $gitRepository = $this->repositoryService->getRepository($repository->getUrl());
-
+        $repository     = Type::notFalse(reset($revisions))->getRepository();
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
             ->strategy('recursive')
             ->conflictResolution('theirs')
             ->noCommit()
-            ->hashes(array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions));
+            ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
 
         // merge given hashes
-        $output = $gitRepository->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
-        $this->logger->info($output);
+        $this->logger?->info($output);
     }
 }

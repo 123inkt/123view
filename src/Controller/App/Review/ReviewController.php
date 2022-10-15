@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
+use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -45,8 +45,7 @@ class ReviewController extends AbstractController
             }
         }
 
-        /** @var DiffFile $selectedFile */
-        $selectedFile ??= reset($files);
+        $selectedFile ??= Type::notFalse(reset($files));
 
         return ['reviewModel' => new ReviewViewModel($review, $files, $selectedFile, $addReviewerForm)];
     }

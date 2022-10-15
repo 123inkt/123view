@@ -29,9 +29,9 @@ class GitCheckoutService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createCheckout()->startPoint($ref);
 
         // create branch
-        $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
-        $this->logger->info($output);
+        $this->logger?->info($output);
     }
 
     /**
@@ -49,9 +49,9 @@ class GitCheckoutService implements LoggerAwareInterface
             ->startPoint($revision->getCommitHash() . '~');
 
         // checkout revisions
-        $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
-        $this->logger->info($output);
+        $this->logger?->info($output);
 
         return $branchName;
     }

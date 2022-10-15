@@ -7,7 +7,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +21,7 @@ class ReviewsController extends AbstractController
     }
 
     /**
-     * @return array<string, ProjectsViewModel>
+     * @return array<string, object>
      */
     #[Route('app/projects/{id<\d+>}/reviews', name: self::class, methods: 'GET')]
     #[Template('app/review/reviews.html.twig')]

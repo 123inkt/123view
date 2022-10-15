@@ -7,7 +7,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewFactory;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -22,8 +21,7 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
     public function __construct(
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
-        private CodeReviewRevisionMatcher $reviewRevisionMatcher,
-        private CodeReviewFactory $reviewFactory
+        private CodeReviewRevisionMatcher $reviewRevisionMatcher
     ) {
     }
 
@@ -32,7 +30,7 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
      */
     public function __invoke(RevisionAddedMessage $message): void
     {
-        $this->logger->info("MessageHandler: revision: " . $message->revisionId);
+        $this->logger?->info("MessageHandler: revision: " . $message->revisionId);
         $revision = $this->revisionRepository->find($message->revisionId);
         if ($revision === null) {
             $this->logger?->notice('MessageHandler: unknown revision: ' . $message->revisionId);

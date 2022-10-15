@@ -16,7 +16,7 @@ class CodeReviewFactory
     public function createFromRevision(Revision $revision): CodeReview
     {
         $review = new CodeReview();
-        $review->setTitle($this->titleNormalizer->normalize($revision->getTitle()));
+        $review->setTitle($this->titleNormalizer->normalize((string)$revision->getTitle()));
         $review->setRepository($revision->getRepository());
 
         return $review;

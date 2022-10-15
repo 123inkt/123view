@@ -23,4 +23,21 @@ class Type
 
         return $value;
     }
+
+    /**
+     * Typecast value to not false
+     * @template T
+     *
+     * @param T|false $value
+     *
+     * @return T
+     */
+    public static function notFalse(mixed $value): mixed
+    {
+        if ($value === false) {
+            throw new RuntimeException('Expecting value to be not false');
+        }
+
+        return $value;
+    }
 }

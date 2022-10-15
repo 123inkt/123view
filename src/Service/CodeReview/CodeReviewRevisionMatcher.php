@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
 use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
+use DR\GitCommitNotification\Utility\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -30,7 +31,7 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
     public function match(Revision $revision): ?CodeReview
     {
         // normalize message
-        $revisionTitle = $this->titleNormalizer->normalize($revision->getTitle());
+        $revisionTitle = $this->titleNormalizer->normalize((string)$revision->getTitle());
 
         // get review id matcher
         $reviewTitleIdentifier = $this->patternMatcher->match($revisionTitle);
@@ -41,7 +42,7 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
         }
 
         /** @var CodeReview|null $review */
-        $review = $this->reviewRepository->findOneByTitle($revision->getRepository()->getId(), $reviewTitleIdentifier);
+        $review = $this->reviewRepository->findOneByTitle((int)Type::notNull($revision->getRepository())->getId(), $reviewTitleIdentifier);
 
         return $review ?? $this->reviewFactory->createFromRevision($revision);
     }

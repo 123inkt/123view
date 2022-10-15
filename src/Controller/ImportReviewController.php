@@ -53,11 +53,11 @@ class ImportReviewController
             ->reverse()
             ->format($this->formatPatternFactory->createPattern());
         if ($latestRevision !== null) {
-            $command->since((new DateTime())->setTimestamp($latestRevision->getCreateTimestamp()));
+            $command->since((new DateTime())->setTimestamp((int)$latestRevision->getCreateTimestamp()));
         }
 
         // get output
-        $output = $this->gitRepository->getRepository($repository->getUrl())->execute($command);
+        $output = $this->gitRepository->getRepository((string)$repository->getUrl())->execute($command);
 
         // get commits
         $commits = $this->logParser->parse($repository, $output);
@@ -80,7 +80,7 @@ class ImportReviewController
             $latestRevision = $revision;
             $this->revisionRepository->save($revision, true);
 
-            $this->bus->dispatch(new RevisionAddedMessage($revision->getId()));
+            $this->bus->dispatch(new RevisionAddedMessage((int)$revision->getId()));
 
             //if ($count++ > 10) {
             //    break;
