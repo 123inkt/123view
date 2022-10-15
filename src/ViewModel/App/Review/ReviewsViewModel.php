@@ -35,6 +35,6 @@ class ReviewsViewModel
 
     public function getLastPage(): int
     {
-        return (int)ceil($this->reviews->count() / $this->reviews->getQuery()->getMaxResults());
+        return (int)ceil($this->reviews->count() / (int)$this->reviews->getQuery()->getMaxResults());
     }
 }

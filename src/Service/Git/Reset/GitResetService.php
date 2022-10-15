@@ -28,8 +28,8 @@ class GitResetService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createReset()->hard();
 
         // merge given hashes
-        $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
-        $this->logger->info($output);
+        $this->logger?->info($output);
     }
 }

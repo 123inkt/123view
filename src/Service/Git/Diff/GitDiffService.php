@@ -62,11 +62,11 @@ class GitDiffService implements LoggerAwareInterface
     {
         /** @var Repository $repository */
         $repository     = $revision->getRepository();
-        $commandBuilder = $this->builderFactory->createShow()->startPoint($revision->getCommitHash());
+        $commandBuilder = $this->builderFactory->createShow()->startPoint((string)$revision->getCommitHash());
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
-        $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         // parse files
         return $this->parser->parse($output);
@@ -87,7 +87,7 @@ class GitDiffService implements LoggerAwareInterface
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
-        $output = $this->repositoryService->getRepository($repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         // parse files
         return $this->parser->parse($output);

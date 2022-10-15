@@ -45,7 +45,7 @@ class ReviewViewModel
     {
         $authors = [];
         foreach ($this->review->getRevisions() as $revision) {
-            $authors[$revision->getAuthorEmail()] = $revision->getAuthorName();
+            $authors[(string)$revision->getAuthorEmail()] = (string)$revision->getAuthorName();
         }
 
         return $authors;
