@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\ViewModel;
 
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 
 class CommitsViewModel
@@ -57,7 +56,7 @@ class CommitsViewModel
     {
         $length = 0;
 
-        foreach($file->blocks as $block) {
+        foreach ($file->blocks as $block) {
             foreach ($block->lines as $line) {
                 $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
                 $length     = max($length, strlen($lineNumber));

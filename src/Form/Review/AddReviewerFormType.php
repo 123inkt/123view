@@ -31,10 +31,8 @@ class AddReviewerFormType extends AbstractType
             'label'             => '',
             'class'             => User::class,
             'choice_label'      => 'name',
-            'choice_value'      => fn(?User $entity) => $entity ? $entity->getId() : '',
-            'query_builder'     => function (EntityRepository $er) {
-                return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');
-            },
+            'choice_value'      => static fn(?User $entity) => $entity ? $entity->getId() : '',
+            'query_builder'     => static fn(EntityRepository $er) => $er->createQueryBuilder('u')->orderBy('u.name', 'ASC'),
             'preferred_choices' => [$currentUser],
             'multiple'          => false,
             'expanded'          => false,

@@ -39,6 +39,6 @@ class CircuitBreaker
             }
         }
 
-        throw ($exception ?? new RuntimeException('Failed after ' . $this->attempts . ' attempts'));
+        throw $exception ?? new RuntimeException('Failed after ' . $this->attempts . ' attempts');
     }
 }

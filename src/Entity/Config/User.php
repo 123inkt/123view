@@ -6,7 +6,6 @@ namespace DR\GitCommitNotification\Entity\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;

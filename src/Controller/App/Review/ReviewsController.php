@@ -37,7 +37,7 @@ class ReviewsController extends AbstractController
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', (int)$repository->getId())
             ->orderBy('r.id', 'DESC')
-            ->setFirstResult(max(0, ($page - 1)) * 50)
+            ->setFirstResult(max(0, $page - 1) * 50)
             ->setMaxResults(50);
 
         if ($searchQuery !== '') {

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Review;
 
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 
 /**
  * @extends ServiceEntityRepository<CodeReviewer>

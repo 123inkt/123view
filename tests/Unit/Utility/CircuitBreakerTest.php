@@ -43,7 +43,7 @@ class CircuitBreakerTest extends AbstractTestCase
         $circuitBreaker = new CircuitBreaker(2, 1);
 
         try {
-            $circuitBreaker->execute(static function () use (&$attempt) {
+            $circuitBreaker->execute(static function () use (&$attempt): void {
                 ++$attempt;
                 throw new RuntimeException('Failed');
             });

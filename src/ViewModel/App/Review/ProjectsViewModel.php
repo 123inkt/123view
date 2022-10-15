@@ -10,7 +10,8 @@ class ProjectsViewModel
     /**
      * @param Repository[] $repositories
      */
-    public function __construct(private readonly array $repositories) {
+    public function __construct(private readonly array $repositories)
+    {
     }
 
     /**

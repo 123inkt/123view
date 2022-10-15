@@ -109,7 +109,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         // setup mocks
         $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
         $this->filesystem->expects(static::exactly(5))->method('exists')->willReturn(true);
-        $this->git->expects(static::exactly(5))->method('open')->willThrowException(new InvalidArgumentException(('foobar')));
+        $this->git->expects(static::exactly(5))->method('open')->willThrowException(new InvalidArgumentException('foobar'));
 
         $this->expectException(RepositoryException::class);
         $this->expectExceptionMessage('foobar');

@@ -11,7 +11,6 @@ class ReviewViewModel
 {
     /**
      * @param DiffFile[] $files
-     * @param DiffFile   $selectedFile
      */
     public function __construct(
         private readonly CodeReview $review,

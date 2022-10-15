@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Review;
 
+use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]
 #[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]

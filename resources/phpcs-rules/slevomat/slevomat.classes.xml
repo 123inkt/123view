@@ -29,6 +29,8 @@
     <rule ref="SlevomatCodingStandard.Classes.ClassStructure">
         <properties>
             <property name="groups" type="array">
+                <!-- enum -->
+                <element value="enum cases"/>
                 <!-- traits -->
                 <element value="uses"/>
                 <!-- constants -->
@@ -50,10 +52,10 @@
                 <element value="static constructors"/>
                 <element value="destructor"/>
                 <!-- methods -->
-                <element value="public methods"/>
-                <element value="public static methods"/>
-                <element value="protected methods"/>
-                <element value="protected static methods"/>
+                <element value="public methods, public final methods"/>
+                <element value="public static methods, public static final methods"/>
+                <element value="protected methods, protected final methods"/>
+                <element value="protected static methods, protected static final methods"/>
                 <element value="private methods"/>
                 <element value="private static methods"/>
                 <element value="magic methods"/>

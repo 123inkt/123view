@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\CodeReview;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;

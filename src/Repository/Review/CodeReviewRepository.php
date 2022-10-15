@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Review;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
 
 /**
  * @extends ServiceEntityRepository<CodeReview>

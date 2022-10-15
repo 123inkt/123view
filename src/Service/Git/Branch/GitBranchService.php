@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\Git\Branch;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
