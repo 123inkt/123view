@@ -4,20 +4,22 @@
     {% set review = reviewModel.review %}
     {% set revisions = review.revisions %}
 
-    <h3 class="mt-2">{{ 'CR-' ~ review.id ~ ' ' ~ review.title }}</h3>
-    State: {{ review.state }}
+    <h3 class="mt-2">
+        <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
+        {{ 'CR-' ~ review.id ~ ' ' ~ review.title }}
+    </h3>
 
     {% if reviewModel.isReviewer(app.user) and review.state == 'open' %}
         <form method="POST" class="d-inline-block"
               action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerState', {id: review.id}) }}">
             <input type="hidden" name="state" value="accepted"/>
-            <button type="submit" class="btn btn-outline-success btn-sm">😃 {{ 'Accept' }}</button>
+            <button type="submit" class="btn btn-outline-success btn-sm">😃 {{ 'accept'|trans }}</button>
         </form>
 
         <form method="POST" class="d-inline-block"
               action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerState', {id: review.id}) }}">
             <input type="hidden" name="state" value="rejected"/>
-            <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'Raise concern' }}</button>
+            <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'raise.concern'|trans }}</button>
         </form>
     {% endif %}
 
@@ -25,13 +27,13 @@
         <form method="POST" class="d-inline-block"
               action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewState', {id: review.id}) }}">
             <input type="hidden" name="state" value="closed"/>
-            <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'Close review' }}</button>
+            <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'close.review'|trans }}</button>
         </form>
     {% elseif review.state == 'closed' %}
         <form method="POST" class="d-inline-block"
               action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewState', {id: review.id}) }}">
             <input type="hidden" name="state" value="open"/>
-            <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'Reopen review' }}</button>
+            <button type="submit" class="btn btn-outline-dark btn-sm">{{ 'reopen.review'|trans }}</button>
         </form>
     {% endif %}
 
