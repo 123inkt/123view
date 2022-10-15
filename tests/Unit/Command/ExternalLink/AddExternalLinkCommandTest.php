@@ -20,9 +20,8 @@ use Symfony\Component\Validator\Validation;
  */
 class AddExternalLinkCommandTest extends AbstractTestCase
 {
-    /** @var MockObject&ExternalLinkRepository */
-    private ExternalLinkRepository $linkRepository;
-    private AddExternalLinkCommand $command;
+    private ExternalLinkRepository&MockObject $linkRepository;
+    private AddExternalLinkCommand            $command;
 
     protected function setUp(): void
     {

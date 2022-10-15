@@ -15,9 +15,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class AzureAdUserBadgeFactoryTest extends AbstractTestCase
 {
-    /** @var MockObject&UserRepository */
-    private UserRepository          $userRepository;
-    private AzureAdUserBadgeFactory $factory;
+    private UserRepository&MockObject $userRepository;
+    private AzureAdUserBadgeFactory   $factory;
 
     protected function setUp(): void
     {

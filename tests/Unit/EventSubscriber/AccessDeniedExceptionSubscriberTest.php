@@ -25,12 +25,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 {
-    /** @var MockObject&TranslatorInterface */
-    private TranslatorInterface $translator;
-    /** @var MockObject&UrlGeneratorInterface */
-    private UrlGeneratorInterface $urlGenerator;
-
-    private AccessDeniedExceptionSubscriber $subscriber;
+    private TranslatorInterface&MockObject   $translator;
+    private UrlGeneratorInterface&MockObject $urlGenerator;
+    private AccessDeniedExceptionSubscriber  $subscriber;
 
     protected function setUp(): void
     {

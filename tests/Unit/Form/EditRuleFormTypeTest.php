@@ -19,9 +19,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class EditRuleFormTypeTest extends AbstractTestCase
 {
-    /** @var MockObject&UrlGeneratorInterface */
-    private UrlGeneratorInterface $urlGenerator;
-    private EditRuleFormType      $type;
+    private UrlGeneratorInterface&MockObject $urlGenerator;
+    private EditRuleFormType                 $type;
 
     protected function setUp(): void
     {
@@ -35,7 +34,7 @@ class EditRuleFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url = 'https://commit-notification/add/rule';
+        $url  = 'https://commit-notification/add/rule';
         $rule = (new Rule())->setId(123);
 
         $this->urlGenerator->expects(self::once())

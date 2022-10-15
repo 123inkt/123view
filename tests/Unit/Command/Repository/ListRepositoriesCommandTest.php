@@ -18,9 +18,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class ListRepositoriesCommandTest extends AbstractTestCase
 {
-    /** @var MockObject&RepositoryRepository */
-    private RepositoryRepository    $repositoryRepository;
-    private ListRepositoriesCommand $command;
+    private RepositoryRepository&MockObject $repositoryRepository;
+    private ListRepositoriesCommand         $command;
 
     protected function setUp(): void
     {

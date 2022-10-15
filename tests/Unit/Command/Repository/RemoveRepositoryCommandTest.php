@@ -18,9 +18,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class RemoveRepositoryCommandTest extends AbstractTestCase
 {
-    /** @var MockObject&RepositoryRepository */
-    private RepositoryRepository    $repositoryRepository;
-    private RemoveRepositoryCommand $command;
+    private RepositoryRepository&MockObject $repositoryRepository;
+    private RemoveRepositoryCommand         $command;
 
     protected function setUp(): void
     {

@@ -18,9 +18,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class RemoveExternalLinkCommandTest extends AbstractTestCase
 {
-    /** @var MockObject&ExternalLinkRepository */
-    private ExternalLinkRepository    $linkRepository;
-    private RemoveExternalLinkCommand $command;
+    private ExternalLinkRepository&MockObject $linkRepository;
+    private RemoveExternalLinkCommand         $command;
 
     protected function setUp(): void
     {

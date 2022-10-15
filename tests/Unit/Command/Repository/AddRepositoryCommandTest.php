@@ -21,9 +21,8 @@ use Symfony\Component\Validator\Validation;
  */
 class AddRepositoryCommandTest extends AbstractTestCase
 {
-    /** @var MockObject&RepositoryRepository */
-    private RepositoryRepository $repositoryRepository;
-    private AddRepositoryCommand $command;
+    private RepositoryRepository&MockObject $repositoryRepository;
+    private AddRepositoryCommand            $command;
 
     protected function setUp(): void
     {

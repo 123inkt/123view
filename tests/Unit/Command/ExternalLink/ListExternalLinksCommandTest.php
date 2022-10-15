@@ -18,9 +18,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class ListExternalLinksCommandTest extends AbstractTestCase
 {
-    /** @var MockObject&ExternalLinkRepository */
-    private ExternalLinkRepository   $linkRepository;
-    private ListExternalLinksCommand $command;
+    private ExternalLinkRepository&MockObject $linkRepository;
+    private ListExternalLinksCommand          $command;
 
     protected function setUp(): void
     {

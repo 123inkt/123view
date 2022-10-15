@@ -21,11 +21,9 @@ use TheNetworg\OAuth2\Client\Token\AccessToken;
  */
 class LoginServiceTest extends AbstractTestCase
 {
-    /** @var MockObject&Azure */
-    private Azure $azureProvider;
-    /** @var MockObject&TranslatorInterface */
-    private TranslatorInterface $translator;
-    private LoginService        $service;
+    private Azure&MockObject               $azureProvider;
+    private TranslatorInterface&MockObject $translator;
+    private LoginService                   $service;
 
     protected function setUp(): void
     {

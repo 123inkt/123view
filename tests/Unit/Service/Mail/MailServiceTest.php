@@ -24,12 +24,10 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class MailServiceTest extends AbstractTestCase
 {
-    /** @var MockObject&MailerInterface */
-    private MailerInterface $mailer;
-    /** @var MockObject&MailSubjectFormatter */
-    private MailSubjectFormatter $formatter;
-    private MailService          $service;
-    private Rule                 $rule;
+    private MailerInterface&MockObject      $mailer;
+    private MailSubjectFormatter&MockObject $formatter;
+    private MailService                     $service;
+    private Rule                            $rule;
 
     protected function setUp(): void
     {
