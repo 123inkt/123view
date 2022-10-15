@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
@@ -21,21 +22,25 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitDiffServiceTest extends AbstractTestCase
 {
-    /** @var CacheableGitRepositoryService&MockObject */
-    private CacheableGitRepositoryService $repositoryService;
-    /** @var GitDiffCommandFactory&MockObject */
-    private GitDiffCommandFactory $commandFactory;
-    /** @var DiffParser&MockObject */
-    private DiffParser     $parser;
-    private GitDiffService $diffService;
+    private CacheableGitRepositoryService&MockObject $repositoryService;
+    private GitCommandBuilderFactory&MockObject      $commandBuilderFactory;
+    private GitDiffCommandFactory&MockObject         $commandFactory;
+    private DiffParser&MockObject                    $parser;
+    private GitDiffService                           $diffService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
-        $this->commandFactory    = $this->createMock(GitDiffCommandFactory::class);
-        $this->parser            = $this->createMock(DiffParser::class);
-        $this->diffService       = new GitDiffService($this->log, $this->repositoryService, $this->commandFactory, $this->parser);
+        $this->repositoryService     = $this->createMock(CacheableGitRepositoryService::class);
+        $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
+        $this->commandFactory        = $this->createMock(GitDiffCommandFactory::class);
+        $this->parser                = $this->createMock(DiffParser::class);
+        $this->diffService           = new GitDiffService(
+            $this->repositoryService,
+            $this->commandBuilderFactory,
+            $this->commandFactory,
+            $this->parser
+        );
     }
 
     /**
