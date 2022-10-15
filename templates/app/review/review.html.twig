@@ -5,7 +5,7 @@
     {% set revisions = review.revisions %}
 
 
-    <div class="review-grid-layout">
+    <div class="review-grid-layout" data-controller="Review">
         <div class="review-grid-header">
             <h3 class="mt-2">
                 <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
