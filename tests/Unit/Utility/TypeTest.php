@@ -31,4 +31,23 @@ class TypeTest extends AbstractTestCase
         $rule = new Rule();
         static::assertSame($rule, Type::notNull($rule));
     }
+
+    /**
+     * @covers ::notFalse
+     */
+    public function testNotFalseFailure(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be not false');
+        Type::notFalse(false);
+    }
+
+    /**
+     * @covers ::notFalse
+     */
+    public function testNotFalseSuccess(): void
+    {
+        $rule = new Rule();
+        static::assertSame($rule, Type::notFalse($rule));
+    }
 }
