@@ -14,12 +14,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand('revisions:fetch', "Fetch revisions for repositories at specific intervals")]
-class FetchRevisionsCommand implements LoggerAwareInterface
+class FetchRevisionsCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(private readonly RepositoryRepository $repositoryRepository, private readonly MessageBusInterface $bus)
     {
+        parent::__construct();
     }
 
     /**
