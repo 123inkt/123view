@@ -24,7 +24,7 @@ class ProjectsController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function __invoke(): array
     {
-        $repositories = $this->repositoryRepository->findBy([], ['name' => 'ASC']);
+        $repositories = $this->repositoryRepository->findBy(['active' => 1], ['name' => 'ASC']);
 
         return ['projectsModel' => new ProjectsViewModel($repositories)];
     }
