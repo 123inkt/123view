@@ -16,8 +16,9 @@ use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
 class ReviewsViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::setForm
-     * @covers ::getForm
+     * @covers ::getReviews
+     * @covers ::getPage
+     * @covers ::getSearchQuery
      */
     public function testAccessorPairs(): void
     {

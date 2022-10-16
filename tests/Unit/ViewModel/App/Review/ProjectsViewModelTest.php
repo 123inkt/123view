@@ -14,7 +14,6 @@ class ProjectsViewModelTest extends AbstractTestCase
 {
     /**
      * @covers ::getRepositories
-     * @covers ::getForm
      */
     public function testAccessorPairs(): void
     {
