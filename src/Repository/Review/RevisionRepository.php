@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 
 /**
  * @extends ServiceEntityRepository<Revision>
- *
  * @method Revision|null find($id, $lockMode = null, $lockVersion = null)
  * @method Revision|null findOneBy(array $criteria, array $orderBy = null)
  * @method Revision[]    findAll()
@@ -40,28 +39,8 @@ class RevisionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Revision[] Returns an array of Revision objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Revision
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function flush(): void
+    {
+        $this->getEntityManager()->flush();
+    }
 }

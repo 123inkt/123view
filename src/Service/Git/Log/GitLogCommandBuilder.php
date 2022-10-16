@@ -20,6 +20,13 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         $this->arguments['command'] = 'log';
     }
 
+    public function hashRange(string $fromHash, string $toHash): self
+    {
+        $this->arguments['hash-range'] = sprintf('%s..%s', $fromHash, $toHash);
+
+        return $this;
+    }
+
     public function remotes(): self
     {
         $this->arguments['remotes'] = '--remotes';

@@ -3,30 +3,29 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
+use DateTime;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class GitLogService
+class GitLogService implements LoggerAwareInterface
 {
-    private CacheableGitRepositoryService $repositoryService;
-    private GitLogCommandFactory          $commandFactory;
-    private GitLogParser                  $logParser;
-    private LoggerInterface               $log;
+    use LoggerAwareTrait;
 
     public function __construct(
-        LoggerInterface $log,
-        CacheableGitRepositoryService $repositoryService,
-        GitLogCommandFactory $commandFactory,
-        GitLogParser $logParser
+        private CacheableGitRepositoryService $repositoryService,
+        private GitCommandBuilderFactory $commandBuilderFactory,
+        private GitLogCommandFactory $commandFactory,
+        private FormatPatternFactory $formatPatternFactory,
+        private GitLogParser $logParser
     ) {
-        $this->log               = $log;
-        $this->repositoryService = $repositoryService;
-        $this->commandFactory    = $commandFactory;
-        $this->logParser         = $logParser;
     }
 
     /**
@@ -45,7 +44,7 @@ class GitLogService
             // create command
             $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
 
-            $this->log->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
+            $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
 
             // execute `git log ...` command
             $output = $repository->execute($commandBuilder);
@@ -59,5 +58,34 @@ class GitLogService
 
         // merge everything together
         return count($result) === 0 ? [] : array_merge(...$result);
+    }
+
+    /**
+     * @return Commit[]
+     * @throws Exception
+     */
+    public function getCommitsSince(Repository $repository, ?Revision $revision = null, ?int $limit = null): array
+    {
+        $command = $this->commandBuilderFactory->createLog();
+        $command->noMerges()
+            ->remotes()
+            ->reverse()
+            ->format($this->formatPatternFactory->createPattern());
+        if ($revision !== null) {
+            $command->hashRange($revision->getCommitHash(), 'HEAD');
+        }
+
+        // get output
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($command);
+
+        // get commits
+        $commits = $this->logParser->parse($repository, $output);
+
+        // slice it if necessary
+        if ($limit !== null) {
+            $commits = array_slice($commits, 0, $limit);
+        }
+
+        return $commits;
     }
 }
