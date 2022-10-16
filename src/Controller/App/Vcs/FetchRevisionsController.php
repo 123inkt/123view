@@ -15,7 +15,7 @@ class FetchRevisionsController
     {
     }
 
-    #[Route('/~vcs/{repositoryName<[\w-]+>}', self::class, methods: ['GET', 'POST'])]
+    #[Route('/~vcs/{repositoryIdentifier<[\w-]+>}', self::class, methods: ['GET', 'POST'])]
     public function __invoke(string $repositoryIdentifier): Response
     {
         if (preg_match('/^\d+$/', $repositoryIdentifier) === 1) {
@@ -27,11 +27,11 @@ class FetchRevisionsController
         }
 
         if ($repository === null) {
-            return new Response('[rejected]', Response::HTTP_BAD_REQUEST);
+            return new Response('Rejected', Response::HTTP_BAD_REQUEST);
         }
 
         $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
 
-        return new Response('[accepted]');
+        return new Response('Accepted');
     }
 }
