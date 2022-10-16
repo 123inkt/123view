@@ -33,6 +33,9 @@ class ReviewsViewModel
         return $this->page;
     }
 
+    /**
+     * @codeCoverageIgnore hard to mock as Query is final...
+     */
     public function getLastPage(): int
     {
         return (int)ceil($this->reviews->count() / (int)$this->reviews->getQuery()->getMaxResults());
