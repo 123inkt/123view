@@ -23,7 +23,7 @@ class TypescriptHighlighterTest extends AbstractTestCase
     }
 
     /**
-     * @return array<string, string[]>
+     * @return string[][]
      */
     public function keywordDataProvider(): array
     {

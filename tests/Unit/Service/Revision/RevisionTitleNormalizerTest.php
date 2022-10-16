@@ -14,8 +14,8 @@ class RevisionTitleNormalizerTest extends AbstractTestCase
     /**
      * @covers ::normalize
      */
-    public function testNormalize(): void {
-
+    public function testNormalize(): void
+    {
         $normalizer = new RevisionTitleNormalizer();
         static::assertSame('F#123 US#456 My task', $normalizer->normalize('F#123 US#456 My task'));
         static::assertSame('F#123 US#456 My task', $normalizer->normalize('   F#123 US#456 My task'));

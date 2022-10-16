@@ -23,7 +23,7 @@ class CodeReviewFactoryTest extends AbstractTestCase
     {
         parent::setUp();
         $this->titleNormalizer = $this->createMock(RevisionTitleNormalizer::class);
-        $this->factory         = new CodeReviewFactory($this->titleNormalizer,);
+        $this->factory         = new CodeReviewFactory($this->titleNormalizer);
     }
 
     /**

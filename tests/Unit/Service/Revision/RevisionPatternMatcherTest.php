@@ -15,8 +15,8 @@ class RevisionPatternMatcherTest extends AbstractTestCase
     /**
      * @covers ::match
      */
-    public function testMatch(): void {
-
+    public function testMatch(): void
+    {
         $matcher = new RevisionPatternMatcher('^F#\d+');
 
         static::assertNull($matcher->match('foobar'));
