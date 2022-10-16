@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App;
+namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Rule;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\RulesViewModel;
+use DR\GitCommitNotification\ViewModel\App\Rule\RulesViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\RulesViewModel
+ * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Rule\RulesViewModel
  */
 class RulesViewModelTest extends AbstractTestCase
 {

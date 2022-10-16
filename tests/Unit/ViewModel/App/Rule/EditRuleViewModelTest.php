@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App;
+namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Rule;
 
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
+use DR\GitCommitNotification\ViewModel\App\Rule\EditRuleViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\EditRuleViewModel
+ * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Rule\EditRuleViewModel
  */
 class EditRuleViewModelTest extends AbstractTestCase
 {

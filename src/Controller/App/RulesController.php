@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App;
 
 use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\ViewModel\App\RulesViewModel;
+use DR\GitCommitNotification\ViewModel\App\Rule\RulesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;

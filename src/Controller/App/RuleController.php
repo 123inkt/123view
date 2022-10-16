@@ -9,7 +9,7 @@ use DR\GitCommitNotification\Entity\Config\RuleFactory;
 use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
-use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
+use DR\GitCommitNotification\ViewModel\App\Rule\EditRuleViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

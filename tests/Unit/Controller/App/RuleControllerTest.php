@@ -11,7 +11,7 @@ use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\EditRuleViewModel;
+use DR\GitCommitNotification\ViewModel\App\Rule\EditRuleViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormView;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App;
+namespace DR\GitCommitNotification\ViewModel\App\Rule;
 
 use Countable;
 use DR\GitCommitNotification\Entity\Config\Rule;
