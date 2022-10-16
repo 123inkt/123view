@@ -7,17 +7,11 @@ SOURCEDIR=$(dirname ${BINDIR})
 REBUILD='no'
 
 # Map arguments
-while [ $# -gt 0 ]; do
-    case "$1" in
-    --build=*)
-        REBUILD='yes'
-        ;;
-    *)
-        warning "Error: Invalid argument: ${NORMAL}${1}\n"
-        exit 1
-        ;;
+while getopts b flag
+do
+    case "${flag}" in
+        b) REBUILD='yes';;
     esac
-    shift
 done
 
 echo -n "Deployment mode: [prod/dev] "
@@ -26,6 +20,14 @@ read mode
 if [ "$mode" != 'prod' ] && [ "$mode" != 'dev' ]; then
     echo "Invalid mode: ${mode}"
     exit 1;
+fi
+
+if [ "$mode" == 'dev' ]; then
+    if [ "$REBUILD" == 'yes' ]; then
+        echo "[REBUILD]: yes"
+    else
+        echo "[REBUILD]: no.  Use '-b' flag to force docker image rebuild."
+    fi
 fi
 
 ##
@@ -72,7 +74,7 @@ elif [ "$mode" == 'dev' ]; then
 
     if [ "$REBUILD" == 'yes' ]; then
         DOCKER_BUILDKIT=1 docker-compose build
-    endif
+    fi
     docker-compose up -d
     docker-compose logs --tail=2 --follow
 fi
