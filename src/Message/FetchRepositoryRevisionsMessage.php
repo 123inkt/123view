@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Message;
 
 /**
  * Message to notify consumers to fetch new revisions from given repository
+ * @codeCoverageIgnore
  */
 class FetchRepositoryRevisionsMessage implements AsyncMessageInterface
 {

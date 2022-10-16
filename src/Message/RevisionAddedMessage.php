@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Message;
 
 /**
  * Message to notify consumers a new revision was added to the database.
+ * @codeCoverageIgnore
  */
 class RevisionAddedMessage implements AsyncMessageInterface
 {
