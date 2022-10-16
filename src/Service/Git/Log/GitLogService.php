@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
+use DateTime;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
@@ -72,7 +73,7 @@ class GitLogService implements LoggerAwareInterface
             ->dateOrder()
             ->format($this->formatPatternFactory->createPattern());
         if ($revision !== null) {
-            $command->hashRange($revision->getCommitHash(), 'HEAD');
+            $command->since((new DateTime())->setTimestamp($revision->getCreateTimestamp()));
         }
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
