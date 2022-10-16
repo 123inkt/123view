@@ -90,6 +90,13 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function dateOrder(): self
+    {
+        $this->arguments['date-order'] = '--date-order';
+
+        return $this;
+    }
+
     public function format(string $format): self
     {
         $this->arguments['format'] = sprintf('--format="%s"', $format);

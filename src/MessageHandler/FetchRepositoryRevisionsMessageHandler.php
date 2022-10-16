@@ -22,7 +22,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
 {
     use LoggerAwareTrait;
 
-    private const MAX_COMMITS_PER_MESSAGE = 10000;
+    private const MAX_COMMITS_PER_MESSAGE = 1000;
 
     public function __construct(
         private RepositoryRepository $repositoryRepository,
@@ -68,8 +68,15 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
 
             foreach ($commitChunk as $commit) {
                 foreach ($this->revisionFactory->createFromCommit($repository, $commit) as $revision) {
+                    // validate revision doesn't already exist in the db, git history doesn't always honor sequential
+                    if ($this->revisionRepository->exists($repository, $revision)) {
+                        continue;
+                    }
+
                     $this->revisionRepository->save($revision);
                     $revisions[] = $revision;
+
+                    $this->logger?->info("MessageHandler: added revision {hash}", ['hash' => $revision->getCommitHash()]);
                 }
             }
 

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
-use DateTime;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
@@ -44,7 +43,7 @@ class GitLogService implements LoggerAwareInterface
             // create command
             $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
 
-            $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
+            $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
 
             // execute `git log ...` command
             $output = $repository->execute($commandBuilder);
@@ -70,22 +69,18 @@ class GitLogService implements LoggerAwareInterface
         $command->noMerges()
             ->remotes()
             ->reverse()
+            ->dateOrder()
             ->format($this->formatPatternFactory->createPattern());
         if ($revision !== null) {
             $command->hashRange($revision->getCommitHash(), 'HEAD');
         }
 
+        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
+
         // get output
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($command);
 
         // get commits
-        $commits = $this->logParser->parse($repository, $output);
-
-        // slice it if necessary
-        if ($limit !== null) {
-            $commits = array_slice($commits, 0, $limit);
-        }
-
-        return $commits;
+        return $this->logParser->parse($repository, $output, $limit);
     }
 }

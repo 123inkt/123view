@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Repository\Review;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 
 /**
@@ -19,6 +20,11 @@ class RevisionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Revision::class);
+    }
+
+    public function exists(Repository $repository, Revision $revision): bool
+    {
+        return $this->findOneBy(['repository' => $repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
     }
 
     public function save(Revision $entity, bool $flush = false): void
