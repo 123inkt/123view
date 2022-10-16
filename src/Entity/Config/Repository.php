@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
+#[ORM\Index(columns: ['active'], name: 'active_idx')]
 class Repository
 {
     #[ORM\Id]
@@ -18,11 +19,20 @@ class Repository
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
+    private bool $active = true;
+
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
+
+    #[ORM\Column(type: 'smallint', options: ['default' => 900])]
+    private ?int $updateRevisionsInterval = 900;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $updateRevisionsTimestamp = null;
 
     /** @phpstan-var Collection<int, RepositoryProperty> */
     #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -48,6 +58,16 @@ class Repository
         return $this->id;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -70,6 +90,26 @@ class Repository
         $this->url = $url;
 
         return $this;
+    }
+
+    public function getUpdateRevisionsInterval(): ?int
+    {
+        return $this->updateRevisionsInterval;
+    }
+
+    public function setUpdateRevisionsInterval(int $updateRevisionsInterval): void
+    {
+        $this->updateRevisionsInterval = $updateRevisionsInterval;
+    }
+
+    public function getUpdateRevisionsTimestamp(): ?int
+    {
+        return $this->updateRevisionsTimestamp;
+    }
+
+    public function setUpdateRevisionsTimestamp(int $updateRevisionsTimestamp): void
+    {
+        $this->updateRevisionsTimestamp = $updateRevisionsTimestamp;
     }
 
     public function getRepositoryProperty(string $name): ?string

@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Repository\Config\RepositoryPropertyRepository;
 class RepositoryProperty
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist', 'remove'], inversedBy: 'repositoryProperties')]
+    #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'repositoryProperties')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository;
 
