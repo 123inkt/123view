@@ -55,6 +55,9 @@ class RepositoryRepository extends ServiceEntityRepository
             )
             ->setParameter('currentTime', time());
 
-        return $qb->getQuery()->getResult();
+        /** @var Repository[] $result */
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
     }
 }

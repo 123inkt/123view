@@ -33,7 +33,9 @@ class AddReviewerController extends AbstractController
             return $this->redirect($url);
         }
 
-        $user = $form->getData()['user'] ?? null;
+        /** @var array<string, User|null> $data */
+        $data = $form->getData();
+        $user = $data['user'] ?? null;
         if ($user instanceof User === false) {
             return $this->redirect($url);
         }

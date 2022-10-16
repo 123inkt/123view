@@ -32,6 +32,7 @@ class CodeReviewTest extends AbstractTestCase
      */
     public function testRevisions(): void
     {
+        /** @var ArrayCollection<int, Revision> $collection */
         $collection = new ArrayCollection();
 
         $review = new CodeReview();

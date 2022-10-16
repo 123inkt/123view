@@ -73,7 +73,7 @@ class GitLogService implements LoggerAwareInterface
             ->dateOrder()
             ->format($this->formatPatternFactory->createPattern());
         if ($revision !== null) {
-            $command->since((new DateTime())->setTimestamp($revision->getCreateTimestamp()));
+            $command->since((new DateTime())->setTimestamp((int)$revision->getCreateTimestamp()));
         }
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));

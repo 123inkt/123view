@@ -37,10 +37,10 @@ class DiffFileTest extends AbstractTestCase
         static::assertNull($file->getFile());
 
         $file->filePathBefore = '/foo/before.txt';
-        static::assertSame('/foo/before.txt', $file->getFile()->getPathname());
+        static::assertSame('/foo/before.txt', $file->getFile()?->getPathname());
 
         $file->filePathAfter = '/foo/after.txt';
-        static::assertSame('/foo/after.txt', $file->getFile()->getPathname());
+        static::assertSame('/foo/after.txt', $file->getFile()?->getPathname());
     }
 
     /**

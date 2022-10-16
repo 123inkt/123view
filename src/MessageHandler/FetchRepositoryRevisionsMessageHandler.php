@@ -34,6 +34,16 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
     }
 
     /**
+     * @param Revision[] $revisions
+     */
+    private function dispatchRevisions(array $revisions): void
+    {
+        foreach ($revisions as $revision) {
+            $this->bus->dispatch(new RevisionAddedMessage((int)$revision->getId()));
+        }
+    }
+
+    /**
      * @throws Exception
      */
     public function __invoke(FetchRepositoryRevisionsMessage $message): void
@@ -56,7 +66,8 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         }
 
         $this->logger?->info(
-            "MessageHandler: found {commits} commits since: {date}", ['commits' => count($commits), 'date' => $latestRevision?->getCreateTimestamp()]
+            "MessageHandler: found {commits} commits since: {date}",
+            ['commits' => count($commits), 'date' => $latestRevision?->getCreateTimestamp()]
         );
 
         // chunk it
@@ -86,16 +97,6 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
 
         if (count($commits) === self::MAX_COMMITS_PER_MESSAGE) {
             $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
-        }
-    }
-
-    /**
-     * @param Revision[] $revisions
-     */
-    private function dispatchRevisions(array $revisions): void
-    {
-        foreach ($revisions as $revision) {
-            $this->bus->dispatch(new RevisionAddedMessage($revision->getId()));
         }
     }
 }

@@ -11,6 +11,8 @@ use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
@@ -26,17 +28,27 @@ use PHPUnit\Framework\MockObject\MockObject;
 class GitLogServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
+    private GitCommandBuilderFactory&MockObject      $commandBuilderFactory;
     private GitLogCommandFactory&MockObject          $commandFactory;
+    private FormatPatternFactory&MockObject          $patternFactory;
     private GitLogParser&MockObject                  $logParser;
     private GitLogService                            $logFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
-        $this->commandFactory    = $this->createMock(GitLogCommandFactory::class);
-        $this->logParser         = $this->createMock(GitLogParser::class);
-        $this->logFactory        = new GitLogService($this->log, $this->repositoryService, $this->commandFactory, $this->logParser);
+        $this->repositoryService     = $this->createMock(CacheableGitRepositoryService::class);
+        $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
+        $this->commandFactory        = $this->createMock(GitLogCommandFactory::class);
+        $this->patternFactory        = $this->createMock(FormatPatternFactory::class);
+        $this->logParser             = $this->createMock(GitLogParser::class);
+        $this->logFactory            = new GitLogService(
+            $this->repositoryService,
+            $this->commandBuilderFactory,
+            $this->commandFactory,
+            $this->patternFactory,
+            $this->logParser
+        );
     }
 
     /**

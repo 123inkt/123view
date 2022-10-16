@@ -55,7 +55,7 @@ class AddReviewerFormType extends AbstractType
     }
 
     /**
-     * @return array<string, int>
+     * @return User[]
      */
     private function getUserChoices(CodeReview $review): array
     {
@@ -67,6 +67,9 @@ class AddReviewerFormType extends AbstractType
             $builder->where($builder->expr()->notIn('u.id', $userIds));
         }
 
-        return $builder->orderBy('u.name', 'ASC')->getQuery()->getResult();
+        /** @var User[] $result */
+        $result = $builder->orderBy('u.name', 'ASC')->getQuery()->getResult();
+
+        return $result;
     }
 }
