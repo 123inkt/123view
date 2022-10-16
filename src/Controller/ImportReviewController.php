@@ -37,8 +37,11 @@ class ImportReviewController
     #[Route(path: '/app/import-reviews', name: self::class, methods: 'GET')]
     public function __invoke(): Response
     {
+        set_time_limit(0);
+        ini_set('max_execution_time', 600);
+
         // get druid repository
-        $repository = $this->repositoryRepository->findOneBy(['name' => 'druid']);
+        $repository = $this->repositoryRepository->findOneBy(['name' => 'drshop']);
         if ($repository === null) {
             return new JsonResponse(['no repository']);
         }
@@ -63,6 +66,7 @@ class ImportReviewController
         $commits = $this->logParser->parse($repository, $output);
 
         // save
+        $revisions = [];
         $count = 0;
         foreach ($commits as $commit) {
             $hash = (string)reset($commit->commitHashes);
@@ -78,11 +82,34 @@ class ImportReviewController
             $revision->setCommitHash($hash);
             $revision->setTitle(mb_substr(trim($commit->getSubjectLine()), 0, 255));
             $latestRevision = $revision;
-            $this->revisionRepository->save($revision, true);
 
-            $this->bus->dispatch(new RevisionAddedMessage((int)$revision->getId()));
+            $revisions[] = $revision;
+
+            if (count($revisions) > 40) {
+                $this->revisionRepository->save($revision, true);
+                $this->dispatchRevisions($revisions);
+                $revisions = [];
+            } else {
+                $this->revisionRepository->save($revision);
+            }
+
+            if (++$count > 10000) {
+                break;
+            }
         }
 
+        $this->dispatchRevisions($revisions);
+
         return new JsonResponse($count);
+    }
+
+    /**
+     * @param Revision[] $revisions
+     */
+    private function dispatchRevisions(array $revisions): void
+    {
+        foreach ($revisions as $revision) {
+            $this->bus->dispatch(new RevisionAddedMessage($revision->getId()));
+        }
     }
 }

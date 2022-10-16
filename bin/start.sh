@@ -4,6 +4,21 @@ set -e
 
 BINDIR=$(dirname $(realpath "$0"))
 SOURCEDIR=$(dirname ${BINDIR})
+REBUILD='no'
+
+# Map arguments
+while [ $# -gt 0 ]; do
+    case "$1" in
+    --build=*)
+        REBUILD='yes'
+        ;;
+    *)
+        warning "Error: Invalid argument: ${NORMAL}${1}\n"
+        exit 1
+        ;;
+    esac
+    shift
+done
 
 echo -n "Deployment mode: [prod/dev] "
 read mode
@@ -55,7 +70,9 @@ elif [ "$mode" == 'dev' ]; then
     [[ -f ".env.dev.local" ]] && source .env.dev.local
     set +o allexport
 
-    DOCKER_BUILDKIT=1 docker-compose build
+    if [ "$REBUILD" == 'yes' ]; then
+        DOCKER_BUILDKIT=1 docker-compose build
+    endif
     docker-compose up -d
     docker-compose logs --tail=2 --follow
 fi
