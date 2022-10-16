@@ -56,7 +56,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         }
 
         $this->logger?->info(
-            "MessageHandler: found {commits} commits since: {hash}", ['commits' => count($commits), 'hash' => $latestRevision?->getCommitHash()]
+            "MessageHandler: found {commits} commits since: {date}", ['commits' => count($commits), 'date' => $latestRevision?->getCreateTimestamp()]
         );
 
         // chunk it
