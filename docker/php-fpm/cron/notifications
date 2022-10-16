@@ -6,3 +6,4 @@ HOME=/app
 0 */4 * * *     www-data     php bin/console mail --frequency=once-per-four-hours    2>&1
 0 0 * * *       www-data     php bin/console mail --frequency=once-per-day           2>&1
 0 0 * * 1       www-data     php bin/console mail --frequency=once-per-week          2>&1
+*/5 * * * *     www-data     php bin/console revisions:fetch                         2>&1
