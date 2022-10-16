@@ -22,7 +22,7 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::add
+     * @covers ::save
      */
     public function testAdd(): void
     {
@@ -30,7 +30,7 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
 
         $this->expectPersist($repository);
         $this->expectFlush();
-        $this->repository->add($repository, true);
+        $this->repository->save($repository, true);
     }
 
     /**

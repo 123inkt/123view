@@ -78,7 +78,7 @@ class AddRepositoryCommandTest extends AbstractTestCase
         $repository->setName('foobar');
 
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'foobar'])->willReturn(null);
-        $this->repositoryRepository->expects(self::once())->method('add')->with($repository);
+        $this->repositoryRepository->expects(self::once())->method('save')->with($repository);
 
         $tester = new CommandTester($this->command);
         $tester->execute(['repository' => 'http://my/foobar']);
@@ -99,7 +99,7 @@ class AddRepositoryCommandTest extends AbstractTestCase
         $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'name'])->willReturn(null);
-        $this->repositoryRepository->expects(self::once())->method('add')->with($repository);
+        $this->repositoryRepository->expects(self::once())->method('save')->with($repository);
 
         $tester = new CommandTester($this->command);
         $tester->execute(

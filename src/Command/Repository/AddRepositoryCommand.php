@@ -68,7 +68,7 @@ class AddRepositoryCommand extends Command
         }
 
         // save
-        $this->repositoryRepository->add($repository, true);
+        $this->repositoryRepository->save($repository, true);
 
         $output->writeln('<info>Successfully added repository: ' . $repository->getName() . '</info>');
         foreach ($repository->getRepositoryProperties() as $property) {

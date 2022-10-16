@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 
 /**
  * @extends ServiceEntityRepository<Repository>
- *
  * @method Repository|null find($id, $lockMode = null, $lockVersion = null)
  * @method Repository|null findOneBy(array $criteria, array $orderBy = null)
  * @method Repository[]    findAll()
@@ -22,7 +21,7 @@ class RepositoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Repository::class);
     }
 
-    public function add(Repository $entity, bool $flush = false): void
+    public function save(Repository $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -38,5 +37,24 @@ class RepositoryRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @return Repository[]
+     */
+    public function findByUpdateRevisions(): array
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb
+            ->where('r.active = 1')
+            ->andWhere(
+                $qb->expr()->orX(
+                    'r.updateRevisionsTimestamp + r.updateRevisionsInterval < :currentTime',
+                    'r.updateRevisionsTimestamp IS NULL'
+                )
+            )
+            ->setParameter('currentTime', time());
+
+        return $qb->getQuery()->getResult();
     }
 }
