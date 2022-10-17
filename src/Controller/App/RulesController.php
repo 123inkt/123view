@@ -14,7 +14,7 @@ class RulesController extends AbstractController
     /**
      * @return array<string, RulesViewModel>
      */
-    #[Route('app/', name: self::class, methods: 'GET')]
+    #[Route('app/rules', name: self::class, methods: 'GET')]
     #[Template('app/rules.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function __invoke(): array

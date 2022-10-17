@@ -23,6 +23,7 @@ return [
     'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
     'Inactive'                                    => 'Inactive',
+    'Notifications'                               => 'Notifications',
     'Name'                                        => 'Name',
     'once-per-hour'                               => 'Once per hour',
     'once-per-two-hours'                          => 'Once per two hours',
