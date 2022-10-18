@@ -16,15 +16,15 @@
         <ul class="review-file-tree--files">
             {% for file in directory.files %}
                 <li class="review-file-tree--file">
-                    <span class="fileChangeState">
-                        {%- if file.added -%}
-                            +
-                        {%- elseif file.deleted -%}
-                            -
-                        {%- elseif file.modified -%}
-                            *
-                        {%- endif -%}
-                    </span>
+
+                    {%- if file.added -%}
+                        <span class="file-change-state text-success">+</span>
+                    {%- elseif file.deleted -%}
+                        <span class="file-change-state text-danger">-</span>
+                    {%- elseif file.modified -%}
+                        <span class="file-change-state text-primary">*</span>
+                    {%- endif -%}
+
                     <i class="bi bi-file-earmark-code-fill icon-file"></i>
 
                     <a href="?filePath={{ file.file.pathname|e('url') }}">
