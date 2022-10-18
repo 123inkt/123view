@@ -41,6 +41,7 @@
         "doctrine/orm": "^2.12",
         "sensio/framework-extra-bundle": "^6.2.0",
         "symfony/amqp-messenger": "6.1.*",
+        "symfony/asset": "^6.1",
         "symfony/config": "^6.1",
         "symfony/console": "^6.1",
         "symfony/doctrine-messenger": "^6.1",

@@ -1,4 +1,4 @@
-{% extends 'app/app.base.html.twig' %}
+{% extends 'app/app.wide.base.html.twig' %}
 
 {% block page_content %}
     {% set review = reviewModel.review %}
@@ -70,12 +70,12 @@
                         {%- endif -%}
                     </span>
 
-                    {{ reviewer.user.name }}
+                    <span class="reviewer-name">{{ reviewer.user.name }}</span>
 
                     <form method="POST" class="d-inline-block"
                           action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
                         <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit" class="btn btn-light btn-sm">&times;</button>
+                        <button type="submit" class="btn-close reviewer-remove"></button>
                     </form><br>
 
                 {% endfor %}

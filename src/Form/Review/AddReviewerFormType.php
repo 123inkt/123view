@@ -40,18 +40,23 @@ class AddReviewerFormType extends AbstractType
 
         $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => $review->getId()]));
         $builder->setMethod('POST');
-        $builder->add('user', ChoiceType::class, [
-            'required'                  => false,
-            'label'                     => false,
-            'choice_translation_domain' => false,
-            'choice_label'              => static fn(?User $user) => (string)$user?->getName(),
-            'choice_value'              => static fn(?User $user) => (string)$user?->getId(),
-            'choices'                   => $this->getUserChoices($review),
-            'preferred_choices'         => [$this->user],
-            'multiple'                  => false,
-            'expanded'                  => false,
-            'attr'                      => ['onchange' => "document.getElementById('form-add-reviewer').submit()"]
-        ]);
+
+        $choices = $this->getUserChoices($review);
+        if (count($choices) > 0) {
+            $builder->add('user', ChoiceType::class, [
+                'required'                  => false,
+                'placeholder'               => 'Add reviewer',
+                'label'                     => false,
+                'choice_translation_domain' => false,
+                'choice_label'              => static fn(?User $user) => (string)$user?->getName(),
+                'choice_value'              => static fn(?User $user) => (string)$user?->getId(),
+                'choices'                   => $choices,
+                'preferred_choices'         => [$this->user],
+                'multiple'                  => false,
+                'expanded'                  => false,
+                'attr'                      => ['onchange' => "document.getElementById('form-add-reviewer').submit()"]
+            ]);
+        }
     }
 
     /**
