@@ -50,6 +50,12 @@
     vertical-align: middle;
 }
 
+.review-grid-sidebar .reviewer-state {
+    display: block;
+    float: left;
+    margin-right: 3px;
+}
+
 .review-grid-sidebar .reviewer-name {
     display: block;
     float: left;

@@ -48,6 +48,6 @@ class ChangeReviewerStateController extends AbstractController
         $em->persist($userReviewer);
         $em->flush();
 
-        return $this->redirectToRoute(ReviewController::class, ['id' => $review->getId()]);
+        return $this->redirect($request->server->get('HTTP_REFERER') ?? $this->generateUrl(ReviewController::class, ['id' => $review->getId()]));
     }
 }

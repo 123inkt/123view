@@ -4,7 +4,6 @@
     {% set review = reviewModel.review %}
     {% set revisions = review.revisions %}
 
-
     <div class="review-grid-layout" data-controller="Review">
         <div class="review-grid-header">
             <h3 class="mt-2">
@@ -62,7 +61,7 @@
             <fieldset>
                 <legend>Reviewers</legend>
                 {% for reviewer in review.reviewers %}
-                    <span>
+                    <span class="reviewer-state">
                         {%- if reviewer.state == 'accepted' -%}
                             😃
                         {%- elseif reviewer.state == 'rejected' -%}

@@ -26,7 +26,7 @@ class AddReviewerController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {
-        $url  = $this->generateUrl(ReviewController::class, ['id' => $review->getId()]);
+        $url  = $request->server->get('HTTP_REFERER') ?? $this->generateUrl(ReviewController::class, ['id' => $review->getId()]);
         $form = $this->createForm(AddReviewerFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);
         if ($form->isValid() === false) {
