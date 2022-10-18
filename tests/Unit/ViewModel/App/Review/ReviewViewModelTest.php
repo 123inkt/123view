@@ -20,7 +20,7 @@ class ReviewViewModelTest extends AbstractTestCase
 {
     /**
      * @covers ::getExternalLinks
-     * @covers ::getFiles
+     * @covers ::getFileTree
      * @covers ::getReview
      * @covers ::getAddReviewerForm
      * @covers ::getSelectedFile

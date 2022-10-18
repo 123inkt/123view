@@ -14,7 +14,7 @@ class FileTreeGenerator
     public function generate(array $diffFiles): DirectoryTreeNode
     {
         /** @var DirectoryTreeNode<DiffFile> $node */
-        $node = new DirectoryTreeNode('');
+        $node = new DirectoryTreeNode('root');
         foreach ($diffFiles as $file) {
             $filepath = explode('/', trim($file->getFile()?->getPathname(), '/'));
 

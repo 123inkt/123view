@@ -47,7 +47,7 @@
                 <legend>Revisions</legend>
                 {%- for revision in revisions -%}
                     <span title="{{ revision.authorName }} - {{ revision.commitHash }}">
-                        {{- revision.commitHash|slice(0, 7)}}{{ loop.last ? '' : ',' }}
+                        {{- revision.commitHash|slice(0, 7) }}{{ loop.last ? '' : ',' }}
                     </span>
                 {%- endfor -%}
             </fieldset>
@@ -85,11 +85,7 @@
 
             <fieldset>
                 <legend>Files</legend>
-                {% for file in reviewModel.files %}
-                    <a href="?filePath={{ file.file.pathname|e('url') }}">
-                        {{ file.filename }}
-                    </a><br>
-                {% endfor %}
+                {% include 'app/review/review.file_tree.html.twig' with {fileTree: reviewModel.fileTree} %}
             </fieldset>
         </div>
 

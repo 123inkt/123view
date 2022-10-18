@@ -47,6 +47,7 @@
     height: calc(100vh - 56px);
 }
 
+/* Review detail page */
 .review-grid-layout .review-grid-header {
     grid-column-end: 3;
     grid-column-start: 1;
@@ -55,4 +56,23 @@
 .review-grid-layout .review-grid-sidebar,
 .review-grid-layout .review-grid-code {
     overflow-y: auto;
+}
+
+.review-file-tree--directories {
+    list-style: none;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0 0 0 10px;
+    color: #999999;
+}
+
+.review-file-tree--directories-root > .review-file-tree--directories {
+    padding: 0;
+}
+
+.review-file-tree--files {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 16px;
+    color: #000000;
 }

@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
@@ -17,7 +18,8 @@ class ReviewViewModelProvider
     public function __construct(
         private readonly ExternalLinkRepository $linkRepository,
         private readonly GitCodeReviewDiffService $diffService,
-        private readonly FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory,
+        private readonly FileTreeGenerator $treeGenerator
     ) {
     }
 
@@ -40,7 +42,7 @@ class ReviewViewModelProvider
 
         return new ReviewViewModel(
             $review,
-            $files,
+            $this->treeGenerator->generate($files)->flatten(),
             $selectedFile ?? Type::notFalse(reset($files)),
             $this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView(),
             $this->linkRepository->findAll()

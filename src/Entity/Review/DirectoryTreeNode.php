@@ -50,11 +50,11 @@ class DirectoryTreeNode
         return $this->files;
     }
 
-    public function flatten(): void
+    public function flatten(): self
     {
         // keep flattening till we have multiple children
         while (true) {
-            if (count($this->directories) !== 1 || count($this->files) !== 0) {
+            if ($this->name === 'root' || count($this->directories) !== 1 || count($this->files) !== 0) {
                 break;
             }
             $subdirectory      = $this->directories[0];
@@ -67,6 +67,8 @@ class DirectoryTreeNode
         foreach ($this->directories as $directory) {
             $directory->flatten();
         }
+
+        return $this;
     }
 
     /**
