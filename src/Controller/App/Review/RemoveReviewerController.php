@@ -10,7 +10,6 @@ use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RemoveReviewerController extends AbstractController
@@ -23,12 +22,12 @@ class RemoveReviewerController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review', expr: 'repository.find(reviewId)')]
     #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
-    public function __invoke(Request $request, CodeReview $review, CodeReviewer $reviewer): RedirectResponse
+    public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse
     {
         $em = $this->registry->getManager();
         $em->remove($reviewer);
         $em->flush();
 
-        return $this->redirect($request->server->get('HTTP_REFERER') ?? $this->generateUrl(ReviewController::class, ['id' => $review->getId()]));
+        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }
 }

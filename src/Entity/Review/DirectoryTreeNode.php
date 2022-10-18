@@ -11,8 +11,8 @@ use LogicException;
 class DirectoryTreeNode
 {
     /**
-     * @param DirectoryTreeNode[] $directories
-     * @param T[]                 $files
+     * @param DirectoryTreeNode<T>[] $directories
+     * @param T[]                    $files
      */
     public function __construct(private string $name, private array $directories = [], private array $files = [])
     {
@@ -23,6 +23,9 @@ class DirectoryTreeNode
         return $this->name;
     }
 
+    /**
+     * @return DirectoryTreeNode<T>|null
+     */
     public function getDirectory(string $path): ?self
     {
         foreach ($this->directories as $directory) {
@@ -35,7 +38,7 @@ class DirectoryTreeNode
     }
 
     /**
-     * @return DirectoryTreeNode[]
+     * @return DirectoryTreeNode<T>[]
      */
     public function getDirectories(): array
     {
@@ -43,13 +46,16 @@ class DirectoryTreeNode
     }
 
     /**
-     * @return T
+     * @return T[]
      */
     public function getFiles(): array
     {
         return $this->files;
     }
 
+    /**
+     * @return DirectoryTreeNode<T>
+     */
     public function flatten(): self
     {
         // keep flattening till we have multiple children

@@ -26,18 +26,17 @@ class AddReviewerController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {
-        $url  = $request->server->get('HTTP_REFERER') ?? $this->generateUrl(ReviewController::class, ['id' => $review->getId()]);
         $form = $this->createForm(AddReviewerFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);
         if ($form->isValid() === false) {
-            return $this->redirect($url);
+            return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
         }
 
         /** @var array<string, User|null> $data */
         $data = $form->getData();
         $user = $data['user'] ?? null;
         if ($user instanceof User === false) {
-            return $this->redirect($url);
+            return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
         }
 
         $reviewer = new CodeReviewer();
@@ -50,6 +49,6 @@ class AddReviewerController extends AbstractController
         $em->persist($review);
         $em->flush();
 
-        return $this->redirect($url);
+        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }
 }

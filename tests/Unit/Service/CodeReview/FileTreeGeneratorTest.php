@@ -17,6 +17,7 @@ class FileTreeGeneratorTest extends AbstractTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->generator = new FileTreeGenerator();
     }
 

@@ -43,7 +43,7 @@ class ReviewViewModelProvider
         return new ReviewViewModel(
             $review,
             $this->treeGenerator->generate($files)->flatten(),
-            $selectedFile ?? Type::notFalse(reset($files)),
+            $selectedFile,
             $this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView(),
             $this->linkRepository->findAll()
         );

@@ -27,7 +27,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
         parent::setUp();
         $this->git        = $this->createMock(Git::class);
         $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new CacheableGitRepositoryService($this->log, $this->git, $this->filesystem, self::CACHE_DIRECTORY);
+        $this->service    = new CacheableGitRepositoryService($this->git, $this->filesystem, null, self::CACHE_DIRECTORY);
     }
 
     /**
