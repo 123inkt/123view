@@ -49,6 +49,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->load('DR\GitCommitNotification\MessageHandler\\', __DIR__ . '/../src/MessageHandler');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
     $services->load('DR\GitCommitNotification\Security\Voter\\', __DIR__ . '/../src/Security/Voter');
+    $services->load('DR\GitCommitNotification\ViewModelProvider\\', __DIR__ . '/../src/ViewModelProvider');
 
     $services->set(Filesystem::class);
     $services->set(InputValidator::class);

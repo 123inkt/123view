@@ -45,11 +45,11 @@
 
             <fieldset>
                 <legend>Revisions</legend>
-                {% for revision in revisions %}
+                {%- for revision in revisions -%}
                     <span title="{{ revision.authorName }} - {{ revision.commitHash }}">
-                        {{ revision.commitHash|slice(0, 7)}}
+                        {{- revision.commitHash|slice(0, 7)}}{{ loop.last ? '' : ',' }}
                     </span>
-                {% endfor %}
+                {%- endfor -%}
             </fieldset>
 
             <fieldset>
