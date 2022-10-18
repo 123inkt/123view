@@ -23,6 +23,11 @@ class GitResetCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'reset';
+    }
+
     /**
      * @return string[]
      */

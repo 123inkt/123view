@@ -23,6 +23,11 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'show';
+    }
+
     /**
      * @return string[]
      */

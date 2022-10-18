@@ -23,6 +23,11 @@ class GitBranchCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'branch';
+    }
+
     /**
      * @return string[]
      */

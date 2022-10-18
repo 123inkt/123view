@@ -57,6 +57,11 @@ class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'cherry-pick';
+    }
+
     /**
      * @return string[]
      */

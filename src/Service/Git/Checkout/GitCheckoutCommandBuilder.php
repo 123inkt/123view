@@ -30,6 +30,11 @@ class GitCheckoutCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'checkout';
+    }
+
     /**
      * @return string[]
      */

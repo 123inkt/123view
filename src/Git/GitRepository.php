@@ -23,13 +23,13 @@ class GitRepository
      */
     public function execute(GitCommandBuilderInterface $commandBuilder): string
     {
-        $this->stopWatch?->start('git', 'git');
+        $this->stopWatch?->start('git.' . $commandBuilder->command(), 'git');
         try {
             $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
             $process->setWorkingDirectory($this->repositoryPath);
             $process->run();
         } finally {
-            $this->stopWatch?->stop('git');
+            $this->stopWatch?->stop('git.' . $commandBuilder->command());
         }
 
         // executes after the command finishes

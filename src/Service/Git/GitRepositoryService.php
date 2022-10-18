@@ -84,6 +84,6 @@ class GitRepositoryService implements LoggerAwareInterface
         $repository->fetch(null, ['--all']);
         $this->stopwatch?->stop('repository.fetch');
 
-        return new GitRepository($repositoryDir);
+        return new GitRepository($this->stopwatch, $repositoryDir);
     }
 }

@@ -76,6 +76,11 @@ class GitDiffCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'diff';
+    }
+
     /**
      * @return string[]
      */

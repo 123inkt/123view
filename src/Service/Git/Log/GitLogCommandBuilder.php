@@ -146,6 +146,11 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function command(): string
+    {
+        return 'log';
+    }
+
     /**
      * @return string[]
      */
