@@ -12,7 +12,7 @@ return static function (FrameworkConfig $framework): void {
     // application caches
     $cache->pool('upsource.cache')->defaultLifetime(3600);
     $cache->pool('gitlab.cache')->defaultLifetime(3600);
-    $cache->pool('revision.cache')->defaultLifetime(86400);
+    $cache->pool('revision.cache')->defaultLifetime(2628000); // 1 month
 
     // doctrine cache
     $cache->pool('doctrine.result_cache_pool')->adapters(['cache.app']);
