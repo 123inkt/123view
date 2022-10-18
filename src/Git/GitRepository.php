@@ -6,17 +6,15 @@ namespace DR\GitCommitNotification\Git;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @codeCoverageIgnore
  */
 class GitRepository
 {
-    private string $repositoryPath;
-
-    public function __construct(string $repositoryPath)
+    public function __construct(private readonly ?StopWatch $stopWatch, private readonly string $repositoryPath)
     {
-        $this->repositoryPath = $repositoryPath;
     }
 
     /**
@@ -25,9 +23,14 @@ class GitRepository
      */
     public function execute(GitCommandBuilderInterface $commandBuilder): string
     {
-        $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
-        $process->setWorkingDirectory($this->repositoryPath);
-        $process->run();
+        $this->stopWatch?->start('git', 'git');
+        try {
+            $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
+            $process->setWorkingDirectory($this->repositoryPath);
+            $process->run();
+        } finally {
+            $this->stopWatch?->stop('git');
+        }
 
         // executes after the command finishes
         if ($process->isSuccessful() === false) {

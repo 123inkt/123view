@@ -9,26 +9,28 @@ use CzProject\GitPhp\Helpers;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Utility\CircuitBreaker;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Throwable;
 
 /**
  * Service to clone or pull the repository from the given url.
  */
-class GitRepositoryService
+class GitRepositoryService implements LoggerAwareInterface
 {
-    private Git             $git;
-    private Filesystem      $filesystem;
-    private LoggerInterface $log;
-    private string          $cacheDirectory;
-    private CircuitBreaker  $circuitBreaker;
+    use LoggerAwareTrait;
 
-    public function __construct(LoggerInterface $log, Git $git, Filesystem $filesystem, string $cacheDirectory)
-    {
-        $this->log            = $log;
-        $this->git            = $git;
-        $this->filesystem     = $filesystem;
+    private string         $cacheDirectory;
+    private CircuitBreaker $circuitBreaker;
+
+    public function __construct(
+        private readonly Git $git,
+        private readonly Filesystem $filesystem,
+        private readonly ?Stopwatch $stopwatch,
+        string $cacheDirectory
+    ) {
         $this->circuitBreaker = new CircuitBreaker(5, 5000);
         $this->cacheDirectory = $cacheDirectory . '/git/';
     }
@@ -65,16 +67,22 @@ class GitRepositoryService
 
         if ($this->filesystem->exists($repositoryDir . '.git')) {
             // is existing repository
-            $this->log->info(sprintf('git: open repository `%s`', $repositoryDir));
+            $this->stopwatch?->start('repository.open', 'git');
+            $this->logger?->info(sprintf('git: open repository `%s`', $repositoryDir));
             $repository = $this->git->open($repositoryDir);
+            $this->stopwatch?->stop('repository.open');
         } else {
             // is new repository
-            $this->log->info(sprintf('git: clone repository `%s`.', $repositoryUrl));
+            $this->stopwatch?->start('repository.clone', 'git');
+            $this->logger?->info(sprintf('git: clone repository `%s`.', $repositoryUrl));
             $repository = $this->git->cloneRepository($repositoryUrl, $repositoryDir);
+            $this->stopwatch?->stop('repository.clone');
         }
 
-        $this->log->info(sprintf('git: fetch --all (%s)', $repositoryUrl));
+        $this->stopwatch?->start('repository.fetch', 'git');
+        $this->logger?->info(sprintf('git: fetch --all (%s)', $repositoryUrl));
         $repository->fetch(null, ['--all']);
+        $this->stopwatch?->stop('repository.fetch');
 
         return new GitRepository($repositoryDir);
     }
