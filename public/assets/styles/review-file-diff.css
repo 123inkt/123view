@@ -44,7 +44,7 @@
   white-space: pre;
 }
 
-.diffLineNumber {
+.diff-file__diff-line-number {
   border-right: 1px solid #CCC;
   color: rgba(0, 0, 0, 0.3);
   display: inline-block;
@@ -52,7 +52,7 @@
   padding: 0 4px;
 }
 
-.diffChangeState {
+.diff-file__diff-change-state {
   margin: 0 4px 0 2px;
 }
 
@@ -68,14 +68,14 @@
   background: #EAF0FE;
 }
 
-.changeAdded {
+.diff-file__change-added {
   background-color: #A6F3A6;
 }
 
-.changeRemoved {
+.diff-file__change-removed {
   background-color: #F8CBCB;
 }
 
-.codeKeyword {
+.diff-file__code-keyword {
   color: #000080;
 }
