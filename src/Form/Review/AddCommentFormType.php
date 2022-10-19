@@ -21,12 +21,7 @@ class AddCommentFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(
-            [
-                'lineReference' => null,
-                'review'        => null,
-            ]
-        );
+        $resolver->setDefaults(['lineReference' => null, 'review' => null,]);
         $resolver->addAllowedTypes('lineReference', LineReference::class);
         $resolver->addAllowedTypes('review', CodeReview::class);
     }
@@ -49,9 +44,9 @@ class AddCommentFormType extends AbstractType
             'comment',
             TextareaType::class,
             [
-                'label'                       => false,
+                'label' => false,
                 'attr_translation_parameters' => ['line' => $lineReference->getLine()],
-                'attr'                        => ['placeholder' => 'leave.a.comment.on.line']
+                'attr' => ['placeholder' => 'leave.a.comment.on.line']
             ]
         );
         $builder->add('save', SubmitType::class, ['label' => 'Add comment']);
