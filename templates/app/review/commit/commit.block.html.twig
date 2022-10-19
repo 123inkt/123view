@@ -14,13 +14,21 @@
             {%- set line_style = 'diff-file__line-change-changed' -%}
         {%- endif -%}
 
-        <div class="diff-file__diff-line {{ line_style }}"
-        ><span class="diff-file__diff-line-number">
+        <div class="diff-file__diff-line {{ line_style }}">
+            {#- line number -#}
+            <span class="diff-file__diff-line-number"
+                  data-role="line-add-comment"
+                  data-line-before="{{ line.lineNumberBefore }}"
+                  data-line-after="{{ line.lineNumberAfter }}"
+            >
                 {{- line.lineNumberBefore|strpad(line_nr_length_before) -}}
                 &nbsp;
                 {{- line.lineNumberAfter|strpad(line_nr_length_after) -}}
-            </span><span class="diff-file__diff-change-state">{{ line_modifier|raw }}</span>
+            </span>
+            {#- line state -#}
+            <span class="diff-file__diff-change-state">{{ line_modifier|raw }}</span>
 
+            {#- code changes -#}
             {%- for change in line.changes -%}
                 {%- set code = change.code|highlight(file.extension, 'diff-file__code-keyword') -%}
 
@@ -31,5 +39,5 @@
                 {%- else %}{{ code|raw }}{% endif -%}
             {%- endfor -%}
         </div>
-    {%- endfor %}
+    {%- endfor -%}
 </div>
