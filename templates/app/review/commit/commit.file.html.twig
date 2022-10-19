@@ -1,0 +1,35 @@
+<div class="revision-file">
+    <div>
+        {%- if file.added -%}
+            <span class="diff-file__file-change-state text-success">+</span>
+        {%- elseif file.deleted -%}
+            <span class="diff-file__file-change-state text-danger">-</span>
+        {%- elseif file.modified -%}
+            <span class="diff-file__file-change-state text-primary">*</span>
+        {%- endif -%}
+        <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
+        <span class="diff-file__directory-name">{{ file.dirname }}</span>
+    </div>
+
+    {%- if file.rename -%}
+        <div class="diff-file__file-rename">renamed from {{ file.filePathBefore }}</div>
+    {%- endif -%}
+
+    {%- if file.blocks -%}
+        <div class="diff-file__file-diff">
+            {%- if file.modified -%}
+                {%- include 'commit/commit.block.spacer.html.twig' -%}
+            {%- endif -%}
+
+            {%- for block in file.blocks -%}
+                {%- include 'commit/commit.block.html.twig' -%}
+
+                {%- if file.modified -%}
+                    {%- include 'commit/commit.block.spacer.html.twig' -%}
+                {%- endif -%}
+            {%- endfor -%}
+        </div>
+    {% else %}
+        <br><br>
+    {%- endif -%}
+</div>

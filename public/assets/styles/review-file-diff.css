@@ -1,0 +1,79 @@
+.diff-file__file-change-state {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 5px;
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.diff-file__directory-name {
+    color: #999999;
+    font-size: 12px
+}
+
+.diff-file__file-rename {
+    color: #999999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.diff-file__file-diff {
+    border: 1px solid #E9E9E9;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: auto;
+}
+
+.blockSpacer {
+    background-color: #F8F8F8;
+    color: #CCC;
+    padding-left: 4px;
+}
+
+.diffBlock {
+    color: #444;
+    font-family: Menlo, 'Ubuntu Mono', 'Courier New', Courier, monospace;
+    font-size: 12px;
+    margin: 0;
+}
+
+.diffLine {
+    white-space: pre;
+}
+
+.diffLineNumber {
+    border-right: 1px solid #CCC;
+    color: #CCC;
+    display: inline-block;
+    margin-right: 2px;
+    padding: 0 4px;
+}
+
+.diffChangeState {
+    margin: 0 4px 0 2px;
+}
+
+.lineChangeAdded {
+    background:#EAFFEA;
+}
+
+.lineChangeRemoved {
+    background:#FFECEC;
+}
+
+.lineChangeChanged {
+    background:#EAF0FE;
+}
+
+.changeAdded {
+    background-color:#A6F3A6;
+}
+
+.changeRemoved {
+    background-color:#F8CBCB;
+}
+
+.codeKeyword {
+    color: #000080;
+}

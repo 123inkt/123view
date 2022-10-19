@@ -18,11 +18,11 @@
                 <li class="review-file-tree--file">
 
                     {%- if file.added -%}
-                        <span class="file-change-state text-success">+</span>
+                        <span class="diff-file__file-change-state text-success">+</span>
                     {%- elseif file.deleted -%}
-                        <span class="file-change-state text-danger">-</span>
+                        <span class="diff-file__file-change-state text-danger">-</span>
                     {%- elseif file.modified -%}
-                        <span class="file-change-state text-primary">*</span>
+                        <span class="diff-file__file-change-state text-primary">*</span>
                     {%- endif -%}
 
                     <i class="bi bi-file-earmark-code-fill icon-file"></i>
