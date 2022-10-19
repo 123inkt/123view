@@ -1,79 +1,81 @@
 .diff-file__file-change-state {
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 5px;
-    margin-right: 3px;
-    vertical-align: middle;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 5px;
+  margin-right: 3px;
+  vertical-align: middle;
 }
 
 .diff-file__directory-name {
-    color: #999999;
-    font-size: 12px
+  color: #999999;
+  font-size: 12px
 }
 
 .diff-file__file-rename {
-    color: #999999;
-    font-size: 12px;
-    font-style: italic;
+  color: #999999;
+  font-size: 12px;
+  font-style: italic;
 }
 
 .diff-file__file-diff {
-    border: 1px solid #E9E9E9;
-    border-radius: 2px;
-    margin-bottom: 16px;
-    overflow: auto;
+  border: 1px solid #E9E9E9;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  overflow: auto;
 }
 
 .blockSpacer {
-    background-color: #F8F8F8;
-    color: #CCC;
-    padding-left: 4px;
+  background-color: #F8F8F8;
+  color: #CCC;
+  padding-left: 4px;
 }
 
-.diffBlock {
-    color: #444;
-    font-family: Menlo, 'Ubuntu Mono', 'Courier New', Courier, monospace;
-    font-size: 12px;
-    margin: 0;
+.diff-file__diff-block {
+  color: #0C0C0D;
+  font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0;
+  white-space: pre;
 }
 
-.diffLine {
-    white-space: pre;
+.diff-file__diff-line {
+  white-space: pre;
 }
 
 .diffLineNumber {
-    border-right: 1px solid #CCC;
-    color: #CCC;
-    display: inline-block;
-    margin-right: 2px;
-    padding: 0 4px;
+  border-right: 1px solid #CCC;
+  color: rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  margin-right: 2px;
+  padding: 0 4px;
 }
 
 .diffChangeState {
-    margin: 0 4px 0 2px;
+  margin: 0 4px 0 2px;
 }
 
-.lineChangeAdded {
-    background:#EAFFEA;
+.diff-file__line-change-added {
+  background: #EAFFEA;
 }
 
-.lineChangeRemoved {
-    background:#FFECEC;
+.diff-file__line-change-removed {
+  background: #FFECEC;
 }
 
-.lineChangeChanged {
-    background:#EAF0FE;
+.diff-file__line-change-changed {
+  background: #EAF0FE;
 }
 
 .changeAdded {
-    background-color:#A6F3A6;
+  background-color: #A6F3A6;
 }
 
 .changeRemoved {
-    background-color:#F8CBCB;
+  background-color: #F8CBCB;
 }
 
 .codeKeyword {
-    color: #000080;
+  color: #000080;
 }

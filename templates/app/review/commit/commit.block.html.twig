@@ -1,21 +1,21 @@
 {# determine maximum line number length for each column #}
-<div class="diffBlock">
+<div class="diff-file__diff-block">
     {%- for line in block.lines -%}
         {%- set line_modifier = '&nbsp;' -%}
         {%- set line_style = '' -%}
 
         {%- if line.state == 1 -%}
             {%- set line_modifier = '+' %}
-            {%- set line_style = 'lineChangeAdded' -%}
+            {%- set line_style = 'diff-file__line-change-added' -%}
         {%- elseif line.state == 2 -%}
             {%- set line_modifier = '-' %}
-            {%- set line_style = 'lineChangeRemoved' %}
+            {%- set line_style = 'diff-file__line-change-removed' %}
         {%- elseif line.state == 3 -%}
             {%- set line_modifier = '*' %}
-            {%- set line_style = 'lineChangeChanged' -%}
+            {%- set line_style = 'diff-file__line-change-changed' -%}
         {%- endif -%}
 
-        <div class="diffLine {{ line_style }}"
+        <div class="diff-file__diff-line {{ line_style }}"
         ><span class="diffLineNumber">
                 {{- line.lineNumberBefore|strpad(line_nr_length_before) -}}
                 &nbsp;
