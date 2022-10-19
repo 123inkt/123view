@@ -41,14 +41,31 @@
 }
 
 .diff-file__diff-line {
-  white-space: pre;
   cursor: default;
+  white-space: pre;
 }
 
-.diff-file__diff-line-number {
+.diff-file__line-gutter {
   border-right: 1px solid #CCC;
   color: rgba(0, 0, 0, 0.3);
   display: inline-block;
+  position: relative;
+}
+
+.diff-file__add-comment {
+  background: #FFFEE0;
+  bottom: 0;
+  color: #FF008C;
+  display: none;
+  left: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  cursor: pointer;
+}
+
+.diff-file__line-numbers {
   margin-right: 2px;
   padding: 0 4px;
 }
@@ -71,6 +88,10 @@
 
 .diff-file__diff-line:hover {
   background: #FFFEE0;
+}
+
+.diff-file__diff-line:hover .diff-file__add-comment {
+  display: block;
 }
 
 .diff-file__change-added {

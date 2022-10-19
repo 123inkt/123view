@@ -15,16 +15,22 @@
         {%- endif -%}
 
         <div class="diff-file__diff-line {{ line_style }}">
-            {#- line number -#}
-            <span class="diff-file__diff-line-number"
+            {#- gutter -#}
+            <span class="diff-file__line-gutter"
                   data-role="line-add-comment"
                   data-line-before="{{ line.lineNumberBefore }}"
                   data-line-after="{{ line.lineNumberAfter }}"
             >
+                {#- add comments -#}
+                <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
+
+                {#- line number -#}
+                <span class="diff-file__line-numbers">
                 {{- line.lineNumberBefore|strpad(line_nr_length_before) -}}
                 &nbsp;
                 {{- line.lineNumberAfter|strpad(line_nr_length_after) -}}
-            </span>
+                </span
+                ></span>
             {#- line state -#}
             <span class="diff-file__diff-change-state">{{ line_modifier|raw }}</span>
 
