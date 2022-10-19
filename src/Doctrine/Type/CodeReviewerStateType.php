@@ -10,5 +10,5 @@ class CodeReviewerStateType extends AbstractEnumType
     public const ACCEPTED = 'accepted';
 
     public const    TYPE   = 'enum_code_reviewer_state_type';
-    protected const VALUES = [self::OPEN, self::REJECTED, self::ACCEPTED];
+    public const    VALUES = [self::OPEN, self::REJECTED, self::ACCEPTED];
 }

@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use Symfony\Component\Form\FormView;
 
@@ -56,15 +57,15 @@ class ReviewViewModel
         return $authors;
     }
 
-    public function isReviewer(User $user): bool
+    public function getReviewer(User $user): ?CodeReviewer
     {
         foreach ($this->review->getReviewers() as $reviewer) {
             if ($reviewer->getUser()?->getId() === $user->getId()) {
-                return true;
+                return $reviewer;
             }
         }
 
-        return false;
+        return null;
     }
 
     public function getReview(): CodeReview

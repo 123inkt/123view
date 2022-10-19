@@ -34,7 +34,7 @@ class ChangeReviewerStateController extends AbstractController
             throw new AccessDeniedHttpException('You cant accept a review you\'re not a reviewer on');
         }
 
-        if (in_array($state, [CodeReviewerStateType::ACCEPTED, CodeReviewerStateType::REJECTED], true) === false) {
+        if (in_array($state, CodeReviewerStateType::VALUES, true) === false) {
             throw new BadRequestHttpException('Invalid state value: ' . $state);
         }
 
