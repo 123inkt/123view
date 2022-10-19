@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\MessageHandler;
 
 use Doctrine\ORM\NonUniqueResultException;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
@@ -47,6 +48,11 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
         }
 
         $review->addRevision($revision);
+
+        foreach ($review->getReviewers() as $reviewer) {
+            $reviewer->setState(CodeReviewerStateType::OPEN);
+        }
+
         $this->reviewRepository->save($review, true);
 
         $this->logger?->info('MessageHandler: add revision ' . $revision->getCommitHash() . ' to review ' . $revision->getTitle());
