@@ -105,12 +105,12 @@
   color: #000080;
 }
 
-.diff-file_add-commit {
+.diff-file__add-comment {
   padding: 10px 10px 5px 10px;
   background: #FFFEE0;
 }
 
-.diff-file_add-commit form {
+.diff-file__add-comment form {
   display: block;
   margin: 0;
   padding: 0;

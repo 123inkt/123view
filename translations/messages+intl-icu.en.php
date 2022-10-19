@@ -21,6 +21,7 @@ return [
     'open'                                        => 'Open',
     'closed'                                      => 'Closed',
     'Save'                                        => 'Save',
+    'Add comment'                                 => 'Add comment',
     'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
     'Inactive'                                    => 'Inactive',

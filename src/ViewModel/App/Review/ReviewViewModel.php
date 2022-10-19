@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
-    private ?AddCommentViewModel $addCommentForm;
+    private ?AddCommentViewModel $addCommentForm = null;
 
     /**
      * @param DirectoryTreeNode<DiffFile> $fileTree
