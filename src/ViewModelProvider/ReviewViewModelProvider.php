@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Form\Review\AddCommentFormType;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
@@ -31,7 +32,7 @@ class ReviewViewModelProvider
     /**
      * @throws Throwable
      */
-    public function getViewModel(CodeReview $review, ?string $filePath, ?string $lineReference): ReviewViewModel
+    public function getViewModel(CodeReview $review, ?string $filePath, ?LineReference $lineReference): ReviewViewModel
     {
         $files = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
 
@@ -53,7 +54,7 @@ class ReviewViewModelProvider
         return $viewModel;
     }
 
-    public function getAddCommentViewModel(CodeReview $review, DiffFile $file, string $lineReference): AddCommentViewModel
+    public function getAddCommentViewModel(CodeReview $review, DiffFile $file, LineReference $lineReference): AddCommentViewModel
     {
         $line = $this->diffFinder->findLineInFile($file, $lineReference);
         $form = $this->formFactory->create(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])->createView();

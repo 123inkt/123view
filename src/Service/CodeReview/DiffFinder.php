@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 
 class DiffFinder
 {
@@ -26,7 +27,7 @@ class DiffFinder
         return null;
     }
 
-    public function findLineInFile(DiffFile $file, string $lineReference): ?DiffLine
+    public function findLineInFile(DiffFile $file, LineReference $lineReference): ?DiffLine
     {
         foreach ($file->blocks as $block) {
             $line = $this->findLineInLines($block->lines, $lineReference);
@@ -41,10 +42,14 @@ class DiffFinder
     /**
      * @param DiffLine[] $lines
      */
-    public function findLineInLines(array $lines, string $lineReference): ?DiffLine
+    public function findLineInLines(array $lines, LineReference $lineReference): ?DiffLine
     {
         foreach ($lines as $line) {
-            if (sprintf('%s:%s', $line->lineNumberBefore, $line->lineNumberAfter) === $lineReference) {
+            if ($line->lineNumberAfter !== null && $line->lineNumberAfter === $lineReference->lineAfter) {
+                return $line;
+            }
+
+            if ($line->lineNumberBefore !== null && $line->lineNumberBefore === $lineReference->lineBefore) {
                 return $line;
             }
         }

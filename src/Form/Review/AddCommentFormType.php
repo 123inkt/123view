@@ -5,17 +5,21 @@ namespace DR\GitCommitNotification\Form\Review;
 
 use DR\GitCommitNotification\Controller\App\Review\AddCommentController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AddCommentFormType extends AbstractType
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -26,7 +30,7 @@ class AddCommentFormType extends AbstractType
                 'review'        => null,
             ]
         );
-        $resolver->addAllowedTypes('lineReference', 'string');
+        $resolver->addAllowedTypes('lineReference', LineReference::class);
         $resolver->addAllowedTypes('review', CodeReview::class);
     }
 
@@ -37,16 +41,17 @@ class AddCommentFormType extends AbstractType
     {
         /** @var CodeReview $review */
         $review = $options['review'];
-        /** @var string $lineReference */
+        /** @var LineReference $lineReference */
         $lineReference = $options['lineReference'];
 
         $url = $this->urlGenerator->generate(AddCommentController::class, ['id' => $review->getId(), 'lineReference' => $lineReference]);
 
-        $lineNumber = preg_replace('/(\d*):(\d*)/', '$2', $lineReference);
+        // create placeholder text
+        $placeholder = $this->translator->trans('Leave a comment on line %line%', ['%line%' => $lineReference->getLine()]);
 
         $builder->setAction($url);
         $builder->setMethod('POST');
-        $builder->add('comment', TextareaType::class, ['label' => false, 'attr' => ['placeholder' => 'Leave comment on line ' . $lineNumber]]);
+        $builder->add('comment', TextareaType::class, ['label' => false, 'attr' => ['placeholder' => $placeholder]]);
         $builder->add('save', SubmitType::class, ['label' => 'Add comment']);
     }
 }
