@@ -46,9 +46,9 @@
 
         {#- add comment form -#}
         {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
-            <div class="diff-file__add-comment">
+            <div class="diff-file__add-comment_form" data-controller="AddComment">
                 {{- form_start(addCommentForm.form) -}}
-                {{- form_widget(addCommentForm.form.comment) -}}
+                {{- form_widget(addCommentForm.form.comment, {attr: {class: 'diff-file__add-comment_textarea', 'data-role': 'add-comment-textarea'}}) -}}
                 {{- form_widget(addCommentForm.form.save) -}}
                 {{- form_end(addCommentForm.form) -}}
             </div>
