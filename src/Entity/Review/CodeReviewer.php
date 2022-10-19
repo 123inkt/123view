@@ -19,6 +19,9 @@ class CodeReviewer
     #[ORM\Column(type: CodeReviewerStateType::TYPE, options: ['default' => CodeReviewerStateType::OPEN])]
     private ?string $state = CodeReviewerStateType::OPEN;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $stateTimestamp = null;
+
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'reviewers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CodeReview $review = null;
@@ -42,6 +45,16 @@ class CodeReviewer
         $this->state = $state;
 
         return $this;
+    }
+
+    public function getStateTimestamp(): ?int
+    {
+        return $this->stateTimestamp;
+    }
+
+    public function setStateTimestamp(?int $stateTimestamp): void
+    {
+        $this->stateTimestamp = $stateTimestamp;
     }
 
     public function getReview(): ?CodeReview

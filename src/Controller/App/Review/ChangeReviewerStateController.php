@@ -39,6 +39,7 @@ class ChangeReviewerStateController extends AbstractController
         }
 
         $userReviewer->setState($state);
+        $userReviewer->setStateTimestamp(time());
         if ($review->isAccepted()) {
             $review->setState(CodeReviewStateType::CLOSED);
         }
