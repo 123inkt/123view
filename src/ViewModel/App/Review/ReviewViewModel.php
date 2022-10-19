@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
+use DR\GitCommitNotification\Controller\App\Review\AddCommentController;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
+    private ?AddCommentViewModel $addCommentForm;
+
     /**
      * @param DirectoryTreeNode<DiffFile> $fileTree
      * @param ExternalLink[]              $externalLinks
@@ -29,6 +32,18 @@ class ReviewViewModel
     public function getAddReviewerForm(): FormView
     {
         return $this->addReviewerForm;
+    }
+
+    public function setAddCommentForm(AddCommentViewModel $addCommentForm): self
+    {
+        $this->addCommentForm = $addCommentForm;
+
+        return $this;
+    }
+
+    public function getAddCommentForm(): ?AddCommentViewModel
+    {
+        return $this->addCommentForm;
     }
 
     /**

@@ -32,16 +32,15 @@
 }
 
 .diff-file__diff-block {
-  color: #0C0C0D;
-  font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
-  font-size: 13px;
-  line-height: 20px;
   margin: 0;
-  white-space: pre;
 }
 
 .diff-file__diff-line {
   cursor: default;
+  color: #0C0C0D;
+  font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+  font-size: 13px;
+  line-height: 20px;
   white-space: pre;
 }
 
@@ -104,4 +103,15 @@
 
 .diff-file__code-keyword {
   color: #000080;
+}
+
+.diff-file_add-commit {
+  padding: 10px 10px 5px 10px;
+  background: #FFFEE0;
+}
+
+.diff-file_add-commit form {
+  display: block;
+  margin: 0;
+  padding: 0;
 }

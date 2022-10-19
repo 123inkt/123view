@@ -45,5 +45,13 @@
                 {%- else %}{{ code|raw }}{% endif -%}
             {%- endfor -%}
         </div>
+
+        {#- add comment form -#}
+        {%- if addCommentForm is defined and addCommentForm.diffLine is same as line -%}
+        <div class="diff-file_add-commit">
+            {{- form(addCommentForm.form) -}}
+        </div>
+        {%- endif -%}
+
     {%- endfor -%}
 </div>
