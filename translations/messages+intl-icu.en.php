@@ -22,6 +22,7 @@ return [
     'closed'                                      => 'Closed',
     'Save'                                        => 'Save',
     'Add comment'                                 => 'Add comment',
+    'leave.a.comment.on.line'                     => 'Leave a comment on line {line}',
     'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
     'Inactive'                                    => 'Inactive',

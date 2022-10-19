@@ -12,14 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AddCommentFormType extends AbstractType
 {
-    public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
-    ) {
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    {
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -46,12 +43,17 @@ class AddCommentFormType extends AbstractType
 
         $url = $this->urlGenerator->generate(AddCommentController::class, ['id' => $review->getId(), 'lineReference' => $lineReference]);
 
-        // create placeholder text
-        $placeholder = $this->translator->trans('Leave a comment on line %line%', ['%line%' => $lineReference->getLine()]);
-
         $builder->setAction($url);
         $builder->setMethod('POST');
-        $builder->add('comment', TextareaType::class, ['label' => false, 'attr' => ['placeholder' => $placeholder]]);
+        $builder->add(
+            'comment',
+            TextareaType::class,
+            [
+                'label'                       => false,
+                'attr_translation_parameters' => ['line' => $lineReference->getLine()],
+                'attr'                        => ['placeholder' => 'leave.a.comment.on.line']
+            ]
+        );
         $builder->add('save', SubmitType::class, ['label' => 'Add comment']);
     }
 }
