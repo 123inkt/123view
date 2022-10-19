@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
 
-use DR\GitCommitNotification\Entity\Review\DirectoryTreeNode;
+use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use LogicException;
 use stdClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\DirectoryTreeNode
+ * @coversDefaultClass \DR\GitCommitNotification\Model\Review\DirectoryTreeNode
  * @covers ::__construct
  */
 class DirectoryTreeNodeTest extends AbstractTestCase

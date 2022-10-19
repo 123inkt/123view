@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\DirectoryTreeNode;
+use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 

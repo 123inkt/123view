@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\DirectoryTreeNode;
+use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use Symfony\Component\Form\FormView;
 
 class ReviewViewModel

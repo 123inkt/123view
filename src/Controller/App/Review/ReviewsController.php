@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -31,7 +32,11 @@ class ReviewsController extends AbstractController
         $searchQuery = trim((string)$request->query->get('search'));
         $page        = $request->query->getInt('page', 1);
         $paginator   = $this->reviewRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
+        $breadcrumbs = [new Breadcrumb($repository->getName(), $this->generateUrl(self::class, ['id' => $repository->getId()]))];
 
-        return ['reviewsModel' => new ReviewsViewModel($paginator, $page, $searchQuery)];
+        return [
+            'breadcrumbs' => $breadcrumbs,
+            'reviewsModel' => new ReviewsViewModel($paginator, $page, $searchQuery)
+        ];
     }
 }

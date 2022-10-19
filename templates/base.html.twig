@@ -27,9 +27,9 @@
 <header class="navbar navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand mr-0 header-nav-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}"
        aria-label="Git commit notification" title="Git commit notification">
-        G
+        DR
     </a>
-    <a class="navbar-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}">it Commit Notification</a>
+    <a class="navbar-brand" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}">eview</a>
 
     {% if app.user %}
         <div class="navbar-nav">
@@ -40,6 +40,15 @@
                         {{ 'Projects'|trans }}
                     </a>
                 </li>
+
+                {%- if breadcrumbs is defined -%}
+                    {%- for breadcrumb in breadcrumbs -%}
+                        <li class="nav-item">
+                           <a class="nav-link" href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a>
+                        </li>
+                    {%- endfor -%}
+                {%- endif -%}
+
                 <li class="nav-item">
                     <a class="nav-link" aria-label="{{ 'Notifications'|trans }}" title="{{ 'Notifications'|trans }}"
                        href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RulesController') }}">
