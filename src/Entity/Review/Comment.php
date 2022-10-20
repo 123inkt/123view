@@ -16,14 +16,11 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $fileReference = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 500)]
     private ?string $lineReference = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $comment = null;
+    private ?string $message = null;
 
     #[ORM\Column]
     private ?int $createTimestamp = null;
@@ -44,38 +41,26 @@ class Comment
         return $this->id;
     }
 
-    public function getFileReference(): ?string
+    public function getLineReference(): ?LineReference
     {
-        return $this->fileReference;
+        return LineReference::fromString($this->lineReference);
     }
 
-    public function setFileReference(string $fileReference): self
+    public function setLineReference(LineReference $lineReference): self
     {
-        $this->fileReference = $fileReference;
+        $this->lineReference = (string)$lineReference;
 
         return $this;
     }
 
-    public function getLineReference(): ?string
+    public function getMessage(): ?string
     {
-        return $this->lineReference;
+        return $this->message;
     }
 
-    public function setLineReference(string $lineReference): self
+    public function setMessage(string $message): self
     {
-        $this->lineReference = $lineReference;
-
-        return $this;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(string $comment): self
-    {
-        $this->comment = $comment;
+        $this->message = $message;
 
         return $this;
     }

@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Review;
 
-use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Form\Review\AddCommentFormType;
+use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AddCommentController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $registry)
+    public function __construct(private readonly CommentRepository $commentRepository)
     {
     }
 
@@ -29,8 +31,17 @@ class AddCommentController extends AbstractController
             $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
         }
 
-        /** @var array<string, string> $data */
-        $data    = $form->getData();
-        $comment = $data['comment'];
+        /** @var array{lineReference: string, message: string} $data */
+        $data = $form->getData();
+
+        $comment = new Comment();
+        $comment->setUser($this->getUser());
+        $comment->setReview($review);
+        $comment->setLineReference(LineReference::fromString($data['lineReference']));
+        $comment->setMessage($data['message']);
+        $comment->setCreateTimestamp(time());
+        $comment->setUpdateTimestamp(time());
+
+        $this->commentRepository->save($comment, true);
     }
 }

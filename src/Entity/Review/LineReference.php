@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 class LineReference
 {
-    public function __construct(public readonly string $filePath, public readonly int $line, public readonly int $offset)
+    public function __construct(public readonly string $filePath = '', public readonly int $line = 1, public readonly int $offset = 0)
     {
     }
 
