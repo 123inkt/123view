@@ -1,0 +1,8 @@
+<div class="diff-file__add-comment_form" data-controller="AddComment">
+    {{- form_start(addCommentForm.form) -}}
+    {{- form_widget(addCommentForm.form.message, {attr: {class: 'diff-file__add-comment_textarea', 'data-role': 'add-comment-textarea'}}) -}}
+    {{- form_widget(addCommentForm.form.save) -}}
+    <button type="button" class="ms-2 btn btn-outline-secondary" data-role="cancel-comment">{{ 'Cancel'|trans }}</button>
+
+    {{- form_end(addCommentForm.form) -}}
+</div>

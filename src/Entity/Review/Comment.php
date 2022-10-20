@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
 class Comment
 {
     #[ORM\Id]
@@ -16,7 +17,10 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 500)]
+    #[ORM\Column(type: 'string', length: 500)]
+    private ?string $filePath = null;
+
+    #[ORM\Column(type: 'string', length: 500)]
     private ?string $lineReference = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -39,6 +43,16 @@ class Comment
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): void
+    {
+        $this->filePath = $filePath;
     }
 
     public function getLineReference(): ?LineReference

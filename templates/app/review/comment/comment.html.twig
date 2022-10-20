@@ -1,0 +1,10 @@
+<div class="comment__comment">
+    <div class="comment__author_and_time">
+        <span class="comment__author">{{ comment.user.name }}</span>
+        <span class="comment_datetime" title="{{ comment.updateTimestamp|date }}">{{ 'on'|trans }} {{ comment.updateTimestamp|date('M j, H:i') }}</span>
+    </div>
+
+    <div class="comment__message">
+        {{ comment.message }}
+    </div>
+</div>

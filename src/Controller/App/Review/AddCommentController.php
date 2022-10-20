@@ -35,10 +35,13 @@ class AddCommentController extends AbstractController
         /** @var array{lineReference: string, message: string} $data */
         $data = $form->getData();
 
+        $lineReference = LineReference::fromString($data['lineReference']);
+
         $comment = new Comment();
         $comment->setUser($this->getUser());
         $comment->setReview($review);
-        $comment->setLineReference(LineReference::fromString($data['lineReference']));
+        $comment->setFilePath($lineReference->filePath);
+        $comment->setLineReference($lineReference);
         $comment->setMessage($data['message']);
         $comment->setCreateTimestamp(time());
         $comment->setUpdateTimestamp(time());

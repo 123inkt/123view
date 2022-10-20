@@ -9,11 +9,13 @@ use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Form\Review\AddCommentFormType;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\AddCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
@@ -22,6 +24,7 @@ class ReviewViewModelProvider
 {
     public function __construct(
         private readonly ExternalLinkRepository $linkRepository,
+        private readonly CommentRepository $commentRepository,
         private readonly GitCodeReviewDiffService $diffService,
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
@@ -51,6 +54,10 @@ class ReviewViewModelProvider
             $viewModel->setAddCommentForm($this->getAddCommentViewModel($review, $selectedFile, $lineReference));
         }
 
+        if ($selectedFile !== null) {
+            $viewModel->setCommentsViewModel($this->getCommentsViewModel($review, $selectedFile));
+        }
+
         return $viewModel;
     }
 
@@ -60,5 +67,26 @@ class ReviewViewModelProvider
         $form = $this->formFactory->create(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])->createView();
 
         return new AddCommentViewModel($form, $line);
+    }
+
+    public function getCommentsViewModel(CodeReview $review, DiffFile $file): CommentsViewModel
+    {
+        $comments = $this->commentRepository->findByReview($review, (string)($file->filePathBefore ?? $file->filePathAfter));
+
+        $diffLines       = [];
+        $groupedComments = [];
+        foreach ($comments as $comment) {
+            $lineReference = (string)$comment->getLineReference();
+
+            $groupedComments[$lineReference][] = $comment;
+            if (isset($diffLines[$lineReference]) === false) {
+                $line = $this->diffFinder->findLineInFile($file, $comment->getLineReference());
+                if ($line !== null) {
+                    $diffLines[spl_object_hash($line)] = $lineReference;
+                }
+            }
+        }
+
+        return new CommentsViewModel($groupedComments, $diffLines);
     }
 }

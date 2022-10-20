@@ -1,0 +1,15 @@
+.comment__comment {
+  background: #FFFEE0;
+  padding: 5px 5px 5px 20px;
+  font-size: 0.9rem;
+}
+
+.comment__comment .comment__author {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.comment__comment .comment_datetime {
+  color: #999999;
+  font-size: 0.8rem;
+}

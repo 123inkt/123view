@@ -20,6 +20,7 @@ return [
     'rule.new'                                    => 'New rule',
     'open'                                        => 'Open',
     'closed'                                      => 'Closed',
+    'on'                                          => 'on',
     'Save'                                        => 'Save',
     'Add comment'                                 => 'Add comment',
     'leave.a.comment.on.line'                     => 'Leave a comment on line {line}',

@@ -1,4 +1,4 @@
-<div class="revision-file" data-role="revision-file" data-file="{{ file.file.pathname }}">
+<div class="revision-file" data-role="revision-file" data-file="{{ file.filePathBefore ?? file.filePathAfter }}">
     <div>
         {%- if file.added -%}
             <span class="diff-file__file-change-state text-success">+</span>
