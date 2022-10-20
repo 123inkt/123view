@@ -30,7 +30,9 @@
             <span class="diff-file__line-gutter"
                   data-role="line-add-comment"
                   data-line="{{ line_number }}"
-                  data-line-offset="{{ line_offset }}">
+                  data-line-offset="{{ line_offset }}"
+                  data-line-after="{{ line.lineNumberAfter|default('0') }}"
+            >
                 {#- add comments -#}
                 <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
 
@@ -59,7 +61,7 @@
         {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
             <div class="diff-file__add-comment_form" data-controller="AddComment">
                 {{- form_start(addCommentForm.form) -}}
-                {{- form_widget(addCommentForm.form.comment, {attr: {class: 'diff-file__add-comment_textarea', 'data-role': 'add-comment-textarea'}}) -}}
+                {{- form_widget(addCommentForm.form.message, {attr: {class: 'diff-file__add-comment_textarea', 'data-role': 'add-comment-textarea'}}) -}}
                 {{- form_widget(addCommentForm.form.save) -}}
                 <button type="button" class="ms-2 btn btn-outline-secondary" data-role="cancel-comment">{{ 'Cancel'|trans }}</button>
 

@@ -51,11 +51,15 @@ class DiffFinder
 
             // find the next line with the correct offset. Must have empty lineNumberBefore
             $lineMatch = $lines[$index + $lineReference->offset] ?? null;
-            if ($lineMatch === null || $lineMatch->lineNumberBefore !== null) {
+            if ($lineMatch === null) {
                 return $line;
             }
 
-            return $lineMatch;
+            if ($lineMatch->lineNumberAfter === null || $lineMatch->lineNumberAfter === $lineReference->lineAfter) {
+                return $lineMatch;
+            }
+
+            return $line;
         }
 
         return null;
