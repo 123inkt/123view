@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
@@ -41,11 +42,12 @@ class AddReviewerController extends AbstractController
 
         $reviewer = new CodeReviewer();
         $reviewer->setUser($user);
+        $reviewer->setState(CodeReviewerStateType::OPEN);
+        $reviewer->setStateTimestamp(time());
         $reviewer->setReview($review);
         $review->getReviewers()->add($reviewer);
 
         $em = $this->registry->getManager();
-        //$em->persist($reviewer);
         $em->persist($review);
         $em->flush();
 
