@@ -44,14 +44,18 @@ class DiffFinder
      */
     public function findLineInLines(array $lines, LineReference $lineReference): ?DiffLine
     {
-        foreach ($lines as $line) {
-            if ($line->lineNumberAfter !== null && $line->lineNumberAfter === $lineReference->lineAfter) {
+        foreach ($lines as $index => $line) {
+            if ($line->lineNumberBefore !== $lineReference->line) {
+                continue;
+            }
+
+            // find the next line with the correct offset. Must have empty lineNumberBefore
+            $lineMatch = $lines[$index + $lineReference->offset] ?? null;
+            if ($lineMatch === null || $lineMatch->lineNumberBefore !== null) {
                 return $line;
             }
 
-            if ($line->lineNumberBefore !== null && $line->lineNumberBefore === $lineReference->lineBefore) {
-                return $line;
-            }
+            return $lineMatch;
         }
 
         return null;

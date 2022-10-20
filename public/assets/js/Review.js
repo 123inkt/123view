@@ -10,7 +10,7 @@ export default class Review extends Controller {
         // build the url
         const location = new URL(window.location.href);
         location.searchParams.set('filePath', this.role('revision-file').dataset.file);
-        location.searchParams.set('addComment', target.dataset.lineBefore + ':' + target.dataset.lineAfter);
+        location.searchParams.set('addComment', target.dataset.line + ':' + target.dataset.lineOffset);
 
         // forward
         window.location = location.toString();

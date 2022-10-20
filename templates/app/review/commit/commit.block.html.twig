@@ -1,5 +1,16 @@
 <div class="diff-file__diff-block">
+    {%- set line_number = 1 %}
+    {%- set line_offset = 0 -%}
+
     {%- for line in block.lines -%}
+        {#- determine line_number and line_number offset -#}
+        {%- if line.lineNumberBefore == null -%}
+            {%- set line_offset = line_offset + 1 -%}
+        {%- else -%}
+            {%- set line_number = line.lineNumberBefore %}
+            {%- set line_offset = 0 -%}
+        {%- endif -%}
+
         {%- set line_modifier = '&nbsp;' -%}
         {%- set line_style = '' -%}
 
@@ -18,8 +29,8 @@
             {#- gutter -#}
             <span class="diff-file__line-gutter"
                   data-role="line-add-comment"
-                  data-line-before="{{ line.lineNumberBefore }}"
-                  data-line-after="{{ line.lineNumberAfter }}">
+                  data-line="{{ line_number }}"
+                  data-line-offset="{{ line_offset }}">
                 {#- add comments -#}
                 <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
 

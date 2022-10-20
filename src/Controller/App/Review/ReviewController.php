@@ -32,7 +32,7 @@ class ReviewController extends AbstractController
     public function __invoke(Request $request, CodeReview $review): array
     {
         $filePath      = $request->query->get('filePath');
-        $lineReference = $request->query->has('addComment') ? new LineReference($request->query->get('addComment', '')) : null;
+        $lineReference = $request->query->has('addComment') ? LineReference::fromString($filePath . ':' . $request->query->get('addComment', '')) : null;
         $breadcrumbs   = [
             new Breadcrumb($review->getRepository()?->getName(), $this->generateUrl(ReviewsController::class, ['id' => $review->getRepository()?->getId()])),
             new Breadcrumb('CR-' . $review->getId(), $this->generateUrl(self::class, ['id' => $review->getId()]))
