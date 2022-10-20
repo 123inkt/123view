@@ -60,11 +60,10 @@
         {#- comments -#}
         {%- for comment in commentsViewModel.getComments(line) -%}
             {%- include 'app/review/comment/comment.html.twig' -%}
-        {%- else -%}
-            {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
-                {%- include 'app/review/comment/comment.add.html.twig' -%}
-            {%- endif -%}
         {%- endfor -%}
+        {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
+            {%- include 'app/review/comment/comment.add.html.twig' -%}
+        {%- endif -%}
 
     {%- endfor -%}
 </div>

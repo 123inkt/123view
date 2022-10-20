@@ -39,6 +39,7 @@
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
+        "league/uri": "^6.8",
         "sensio/framework-extra-bundle": "^6.2.0",
         "symfony/amqp-messenger": "6.1.*",
         "symfony/asset": "^6.1",
