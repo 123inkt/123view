@@ -12,6 +12,7 @@ use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AddCommentController extends AbstractController
@@ -23,7 +24,7 @@ class AddCommentController extends AbstractController
     #[Route('app/reviews/{id<\d+>}/add-comment', name: self::class, methods: 'POST')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): void
+    public function __invoke(Request $request, CodeReview $review): Response
     {
         $form = $this->createForm(AddCommentFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);
@@ -43,5 +44,7 @@ class AddCommentController extends AbstractController
         $comment->setUpdateTimestamp(time());
 
         $this->commentRepository->save($comment, true);
+
+        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }
 }
