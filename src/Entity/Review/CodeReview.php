@@ -40,6 +40,10 @@ class CodeReview
     #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
+    /** @phpstan-var Collection<int, Comment> */
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->revisions = new ArrayCollection();
@@ -162,6 +166,24 @@ class CodeReview
     public function setReviewers(Collection $reviewers): self
     {
         $this->reviewers = $reviewers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Collection<int, Comment> $comments
+     */
+    public function setComments(Collection $comments): self
+    {
+        $this->comments = $comments;
 
         return $this;
     }

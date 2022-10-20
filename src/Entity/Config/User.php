@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,6 +32,10 @@ class User implements UserInterface
     /** @phpstan-var Collection<int, CodeReviewer> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
+
+    /** @phpstan-var Collection<int, Comment> */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $comments;
 
     public function __construct()
     {
@@ -143,6 +148,24 @@ class User implements UserInterface
     public function setReviewers(Collection $reviewers): self
     {
         $this->reviewers = $reviewers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Collection<int, Comment> $comments
+     */
+    public function setComments(Collection $comments): self
+    {
+        $this->comments = $comments;
 
         return $this;
     }
