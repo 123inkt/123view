@@ -30,7 +30,11 @@ class DiffFinder
     public function findLineInFile(DiffFile $file, LineReference $lineReference): ?DiffLine
     {
         foreach ($file->blocks as $block) {
-            $line = $this->findLineInLines($block->lines, $lineReference);
+            if ($file->isAdded()) {
+                $line = $this->findLineInNewFile($block->lines, $lineReference);
+            } else {
+                $line = $this->findLineInLines($block->lines, $lineReference);
+            }
             if ($line !== null) {
                 return $line;
             }
@@ -63,5 +67,12 @@ class DiffFinder
         }
 
         return null;
+    }
+
+    public function findLineInNewFile(array $lines, LineReference $lineReference): ?DiffLine
+    {
+        $lineNumber = $lineReference->lineAfter - 1;
+
+        return $lines[$lineNumber] ?? null;
     }
 }
