@@ -34,6 +34,8 @@
     </div>
 
     <div class="comment__toolbar">
-        <a href="#" title="{{ 'reply'|trans }}"><i class="bi bi-reply-fill"></i></a>
+        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController',
+            {id: comment.review.id, filePath: file.filePathBefore ?? file.filePathAfter, replyComment: comment.id})
+        }}" title="{{ 'reply'|trans }}"><i class="bi bi-reply-fill"></i></a>
     </div>
 </div>

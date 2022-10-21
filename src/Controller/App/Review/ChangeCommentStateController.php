@@ -20,7 +20,7 @@ class ChangeCommentStateController extends AbstractController
     {
     }
 
-    #[Route('app/comment/{id<\d+>}/state', name: self::class, methods: 'POST')]
+    #[Route('app/comments/{id<\d+>}/state', name: self::class, methods: 'POST')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('comment')]
     public function __invoke(Request $request, Comment $comment): RedirectResponse
