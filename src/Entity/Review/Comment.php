@@ -73,7 +73,7 @@ class Comment
 
     public function getLineReference(): ?LineReference
     {
-        return LineReference::fromString($this->lineReference);
+        return $this->lineReference === null ? null : LineReference::fromString($this->lineReference);
     }
 
     public function setLineReference(LineReference $lineReference): self

@@ -18,6 +18,7 @@ abstract class AbstractController extends SymfonyAbstractController
 {
     /**
      * @param array<string, (int|string|null)> $parameters
+     * @param string[]                         $filter
      */
     public function refererRedirect(string $route, array $parameters = [], array $filter = []): RedirectResponse
     {

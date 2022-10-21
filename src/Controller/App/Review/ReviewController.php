@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\LineReference;
+use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -22,7 +23,7 @@ class ReviewController extends AbstractController
     }
 
     /**
-     * @return array<string, object>
+     * @return array<string, object|Breadcrumb[]>
      * @throws Throwable
      */
     #[Route('app/reviews/{id<\d+>}', name: self::class, methods: 'GET')]

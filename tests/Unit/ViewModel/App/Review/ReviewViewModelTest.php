@@ -77,7 +77,7 @@ class ReviewViewModelTest extends AbstractTestCase
 
         $model = new ReviewViewModel($review, new DirectoryTreeNode('root'), new DiffFile(), $this->createMock(FormView::class), []);
 
-        static::assertTrue($model->isReviewer($userA));
-        static::assertFalse($model->isReviewer($userB));
+        static::assertNotNull($model->getReviewer($userA));
+        static::assertNull($model->getReviewer($userB));
     }
 }

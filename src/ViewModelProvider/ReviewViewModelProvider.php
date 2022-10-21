@@ -42,7 +42,10 @@ class ReviewViewModelProvider
         $files = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
 
         // find selected file
-        $selectedFile = $this->diffFinder->findFileByPath($files, $filePath) ?? Type::notFalse(reset($files));
+        $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);
+        if ($selectedFile === null && count($files) > 0) {
+            $selectedFile = Type::notFalse(reset($files));
+        }
 
         $viewModel = new ReviewViewModel(
             $review,
@@ -69,16 +72,19 @@ class ReviewViewModelProvider
 
     public function getAddCommentViewModel(CodeReview $review, DiffFile $file, LineReference $lineReference): AddCommentViewModel
     {
-        $line = $this->diffFinder->findLineInFile($file, $lineReference);
+        $line = Type::notNull($this->diffFinder->findLineInFile($file, $lineReference));
         $form = $this->formFactory->create(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])->createView();
 
         return new AddCommentViewModel($form, $line);
     }
 
-    public function getReplyCommentViewModel(int $replyToComment): ReplyCommentViewModel
+    public function getReplyCommentViewModel(int $replyToComment): ?ReplyCommentViewModel
     {
         $comment = $this->commentRepository->find($replyToComment);
-        $form    = $this->formFactory->create(AddCommentReplyFormType::class, null, ['comment' => $comment])->createView();
+        if ($comment === null) {
+            return null;
+        }
+        $form = $this->formFactory->create(AddCommentReplyFormType::class, null, ['comment' => $comment])->createView();
 
         return new ReplyCommentViewModel($form, $comment);
     }
@@ -97,7 +103,7 @@ class ReviewViewModelProvider
                 continue;
             }
 
-            $line = $this->diffFinder->findLineInFile($file, $comment->getLineReference());
+            $line = $this->diffFinder->findLineInFile($file, Type::notNull($comment->getLineReference()));
             if ($line !== null) {
                 $diffLines[spl_object_hash($line)] = $lineReference;
             }

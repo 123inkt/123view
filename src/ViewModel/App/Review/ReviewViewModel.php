@@ -24,7 +24,7 @@ class ReviewViewModel
     public function __construct(
         private readonly CodeReview $review,
         private readonly DirectoryTreeNode $fileTree,
-        private readonly DiffFile $selectedFile,
+        private readonly ?DiffFile $selectedFile,
         private readonly FormView $addReviewerForm,
         private readonly array $externalLinks
     ) {
@@ -75,7 +75,7 @@ class ReviewViewModel
         return $this->fileTree;
     }
 
-    public function getSelectedFile(): DiffFile
+    public function getSelectedFile(): ?DiffFile
     {
         return $this->selectedFile;
     }

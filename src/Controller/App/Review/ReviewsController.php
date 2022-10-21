@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
@@ -21,7 +22,7 @@ class ReviewsController extends AbstractController
     }
 
     /**
-     * @return array<string, object>
+     * @return array<string, object|Breadcrumb[]>
      */
     #[Route('app/projects/{id<\d+>}/reviews', name: self::class, methods: 'GET')]
     #[Template('app/review/reviews.html.twig')]
