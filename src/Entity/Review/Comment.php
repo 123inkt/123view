@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Review;
 
-use DR\GitCommitNotification\Entity\Config\User;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
+use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Repository\Review\CommentRepository;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
 class Comment
 {
+    public const STATE_OPEN     = 'open';
+    public const STATE_RESOLVED = 'resolved';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,6 +26,10 @@ class Comment
 
     #[ORM\Column(type: 'string', length: 500)]
     private ?string $lineReference = null;
+
+    // todo change to CommentStateType.
+    #[ORM\Column(type: 'string', length: 20, options: ['default' => self::STATE_OPEN])]
+    private ?string $state = self::STATE_OPEN;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
@@ -65,6 +73,16 @@ class Comment
         $this->lineReference = (string)$lineReference;
 
         return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
     }
 
     public function getMessage(): ?string

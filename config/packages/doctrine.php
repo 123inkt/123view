@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
+use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Doctrine\Type\FilterType;
 use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
@@ -28,6 +29,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     FilterType::TYPE            => FilterType::class,
                     CodeReviewStateType::TYPE   => CodeReviewStateType::class,
                     CodeReviewerStateType::TYPE => CodeReviewerStateType::class,
+                    CommentStateType::TYPE      => CommentStateType::class,
                 ]
             ]
         ]
