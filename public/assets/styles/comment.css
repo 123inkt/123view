@@ -33,7 +33,7 @@
 .comment__comment-thread.comment__state_resolved .comment__state *,
 .comment__comment-thread.comment__state_resolved .comment__message *,
 .comment__comment-thread.comment__state_resolved .comment__toolbar * {
-  color: #999999;
+  color: #999999 !important;
 }
 
 .comment__comment .comment__edit,
