@@ -8,9 +8,28 @@
             </span>
             {% if comment.user == app.user %}
             <span class="comment__edit">
-                <a href="javascript:" data-role="edit-comment" data-comment-id="{{ comment.id }}" title="{{ 'edit.comment'|trans }}">
+                {# edit comment #}
+                <a href="javascript:"
+                   class="ms-1 text-decoration-none"
+                   data-role="edit-comment"
+                   data-comment-id="{{ comment.id }}"
+                   title="{{ 'edit.comment'|trans }}">
                     <i class="bi bi-pencil-fill"></i>
                 </a>
+
+                {# delete comment #}
+                <form method="post"
+                      class="d-inline"
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\DeleteCommentController', {id: comment.id}) }}">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <a href="javascript:"
+                       class="ms-1 text-decoration-none"
+                       data-role="delete-comment"
+                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
+                       title="{{ 'delete.comment'|trans }}">
+                        <i class="bi bi-trash-fill text-danger"></i>
+                    </a>
+                </form>
             </span>
             {% endif %}
 

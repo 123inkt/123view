@@ -29,6 +29,8 @@ return [
     'click.to.unresolve'                          => 'Click to mark as unresolved',
     'reply'                                       => 'Reply',
     'edit.comment'                                => 'Edit comment',
+    'delete.comment'                              => 'Delete comment',
+    'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'leave.a.comment.on.line'                     => 'Leave a comment on line {line}',
     'leave.a.reply'                               => 'Leave a comment. Markdown is supported',
     'rule.successful.saved'                       => 'Rule successfully saved.',
