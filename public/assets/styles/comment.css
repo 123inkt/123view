@@ -18,7 +18,14 @@
   font-size: 0.8rem;
 }
 
-.comment__comment.comment__state_resolved, .comment__comment.comment__state_resolved * {
+.comment__comment-thread.comment__state_resolved,
+.comment__comment-thread.comment__state_resolved .comment__author,
+.comment__comment-thread.comment__state_resolved .comment__author,
+.comment__comment-thread.comment__state_resolved .comment__datetime,
+.comment__comment-thread.comment__state_resolved .comment__edit *,
+.comment__comment-thread.comment__state_resolved .comment__state *,
+.comment__comment-thread.comment__state_resolved .comment__message *,
+.comment__comment-thread.comment__state_resolved .comment__toolbar * {
   color: #999999;
 }
 

@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    {% if replyCommentForm != null %}
+    {% if is_reply_on_comment %}
         <div class="foobar">
             {% include 'app/review/comment/comment.add.html.twig' with {form: replyCommentForm.form} %}
         </div>
