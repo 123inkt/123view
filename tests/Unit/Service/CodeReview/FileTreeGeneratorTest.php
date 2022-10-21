@@ -35,7 +35,7 @@ class FileTreeGeneratorTest extends AbstractTestCase
         $node = $this->generator->generate([$diffFileA, $diffFileB]);
 
         $expected = new DirectoryTreeNode(
-            '',
+            'root',
             [
                 new DirectoryTreeNode(
                     'foo',
@@ -61,7 +61,7 @@ class FileTreeGeneratorTest extends AbstractTestCase
         $node = $this->generator->generate([$diffFileA, $diffFileB]);
 
         $expected = new DirectoryTreeNode(
-            '',
+            'root',
             [
                 new DirectoryTreeNode(
                     'foo',
