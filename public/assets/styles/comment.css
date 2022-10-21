@@ -1,8 +1,11 @@
-.comment__comment {
+.comment__comment-thread {
   background: #FFFEE0;
-  padding: 5px 5px 5px 20px;
   font-size: 0.9rem;
   border-bottom: 1px solid #e5e4c9;
+}
+
+.comment__comment {
+  padding: 5px 5px 5px 20px;
 }
 
 .comment__comment .comment__author {
