@@ -27,6 +27,7 @@ return [
     'resolve'                                     => 'Resolve',
     'click.to.resolve'                            => 'Click to resolve',
     'click.to.unresolve'                          => 'Click to mark as unresolved',
+    'reply' => 'Reply',
     'leave.a.comment.on.line'                     => 'Leave a comment on line {line}',
     'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
