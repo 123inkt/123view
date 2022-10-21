@@ -69,6 +69,9 @@ class DiffFinder
         return null;
     }
 
+    /**
+     * @param DiffLine[] $lines
+     */
     public function findLineInNewFile(array $lines, LineReference $lineReference): ?DiffLine
     {
         $lineNumber = $lineReference->lineAfter - 1;
