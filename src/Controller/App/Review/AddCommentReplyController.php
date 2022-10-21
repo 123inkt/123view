@@ -28,7 +28,7 @@ class AddCommentReplyController extends AbstractController
         $form = $this->createForm(AddCommentReplyFormType::class, null, ['comment' => $comment]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()]);
+            return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()]);
         }
 
         /** @var array{message: string} $data */

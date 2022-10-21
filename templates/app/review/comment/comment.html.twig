@@ -1,18 +1,18 @@
 <div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}">
 
-    {% set is_reply_on_comment = replyCommentForm != null and replyCommentForm.comment == comment %}
-
     <div class="comment__comment">
         <div class="comment__author_and_time">
             <span class="comment__author">{{ comment.user.name }}</span>
             <span class="comment__datetime" title="{{ comment.updateTimestamp|date }}">
                 {{ 'on'|trans }} {{ comment.updateTimestamp|date('M j, H:i') }}
             </span>
+            {% if comment.user == app.user %}
             <span class="comment__edit">
                 <a href="javascript:" data-role="edit-comment" data-comment-id="{{ comment.id }}" title="{{ 'edit.comment'|trans }}">
                     <i class="bi bi-pencil-fill"></i>
                 </a>
             </span>
+            {% endif %}
 
             <span class="comment__state float-end">
                 <form id="change-comment-state-{{ comment.id }}"
@@ -38,8 +38,14 @@
         <div class="comment__message">
             {{ comment.message|markdown }}
         </div>
-
     </div>
+
+    {# edit comment form #}
+    {% set is_edit_comment = editCommentForm != null  and editCommentForm.comment == comment %}
+    {% if is_edit_comment %}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form}%}
+    {% endif %}
+
 
     {# comment replies #}
     {% if comment.replies|length > 0 %}
@@ -48,9 +54,11 @@
         {% endfor %}
     {% endif %}
 
+    {% set is_reply_on_comment = replyCommentForm != null and replyCommentForm.comment == comment %}
+
     {# comment action buttons #}
     <div class="comment__toolbar">
-        {% if not is_reply_on_comment %}
+        {% if not is_reply_on_comment and not is_edit_comment %}
             <a href="javascript:" data-reply-to="{{ comment.id }}" data-role="reply-to-comment" title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
@@ -58,6 +66,6 @@
     </div>
 
     {% if is_reply_on_comment %}
-        {% include 'app/review/comment/comment.add.html.twig' with {form: replyCommentForm.form} %}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: replyCommentForm.form} %}
     {% endif %}
 </div>

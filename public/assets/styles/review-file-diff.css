@@ -105,11 +105,11 @@
   color: #000080;
 }
 
-.diff-file__add-comment_form {
+.diff-file__comment_form {
   padding: 10px 10px 5px 10px;
   background: #FFFEE0;
 }
 
-.diff-file__add-comment_textarea {
+.diff-file__comment_textarea {
   margin-bottom: 10px;
 }

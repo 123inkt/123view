@@ -15,6 +15,7 @@ class ReviewViewModel
 {
     private ?CommentsViewModel $commentsViewModel = null;
     private ?AddCommentViewModel $addCommentForm = null;
+    private ?EditCommentViewModel $editCommentForm = null;
     private ?ReplyCommentViewModel $replyCommentForm = null;
 
     /**
@@ -50,6 +51,16 @@ class ReviewViewModel
     public function getCommentsViewModel(): ?CommentsViewModel
     {
         return $this->commentsViewModel;
+    }
+
+    public function getEditCommentForm(): ?EditCommentViewModel
+    {
+        return $this->editCommentForm;
+    }
+
+    public function setEditCommentForm(?EditCommentViewModel $editCommentForm): void
+    {
+        $this->editCommentForm = $editCommentForm;
     }
 
     public function setCommentsViewModel(?CommentsViewModel $commentsViewModel): void

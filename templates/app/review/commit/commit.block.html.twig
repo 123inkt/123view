@@ -62,7 +62,7 @@
             {%- include 'app/review/comment/comment.html.twig' -%}
         {%- endfor -%}
         {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
-            {%- include 'app/review/comment/comment.add.html.twig' with {form: addCommentForm.form} -%}
+            {%- include 'app/review/comment/comment.modify.html.twig' with {form: addCommentForm.form} -%}
         {%- endif -%}
 
     {%- endfor -%}

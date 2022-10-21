@@ -108,6 +108,7 @@
             {%- include 'app/review/commit/commit.file.html.twig'
                 with {file: reviewModel.selectedFile,
                 addCommentForm: reviewModel.addCommentForm,
+                editCommentForm: reviewModel.editCommentForm,
                 replyCommentForm: reviewModel.replyCommentForm,
                 commentsViewModel: reviewModel.commentsViewModel}
             -%}
