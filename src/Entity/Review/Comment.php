@@ -13,9 +13,6 @@ use DR\GitCommitNotification\Repository\Review\CommentRepository;
 #[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
 class Comment
 {
-    public const STATE_OPEN     = 'open';
-    public const STATE_RESOLVED = 'resolved';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,8 +25,8 @@ class Comment
     private ?string $lineReference = null;
 
     // todo change to CommentStateType.
-    #[ORM\Column(type: 'string', length: 20, options: ['default' => self::STATE_OPEN])]
-    private ?string $state = self::STATE_OPEN;
+    #[ORM\Column(type: 'string', length: 20, options: ['default' => CommentStateType::OPEN])]
+    private ?string $state = CommentStateType::OPEN;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
