@@ -5,7 +5,9 @@
             {{ 'on'|trans }} {{ reply.updateTimestamp|date('M j, H:i') }}
         </span>
         <span class="comment__edit">
-            <a href="#" title="{{ 'edit.comment'|trans }}"><i class="bi bi-pencil-fill"></i></a>
+            <a href="javascript:" data-role="edit-reply" data-reply-id="{{ reply.id }}" title="{{ 'edit.comment'|trans }}">
+                <i class="bi bi-pencil-fill"></i>
+            </a>
         </span>
     </div>
 

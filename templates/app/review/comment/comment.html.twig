@@ -9,7 +9,9 @@
                 {{ 'on'|trans }} {{ comment.updateTimestamp|date('M j, H:i') }}
             </span>
             <span class="comment__edit">
-                <a href="#" title="{{ 'edit.comment'|trans }}"><i class="bi bi-pencil-fill"></i></a>
+                <a href="javascript:" data-role="edit-comment" data-comment-id="{{ comment.id }}" title="{{ 'edit.comment'|trans }}">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
             </span>
 
             <span class="comment__state float-end">
@@ -49,7 +51,7 @@
     {# comment action buttons #}
     <div class="comment__toolbar">
         {% if not is_reply_on_comment %}
-            <a href="javascript:;" data-reply-to="{{ comment.id }}" data-role="reply-to-comment" title="{{ 'reply'|trans }}">
+            <a href="javascript:" data-reply-to="{{ comment.id }}" data-role="reply-to-comment" title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
         {% endif %}
