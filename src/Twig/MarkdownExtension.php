@@ -23,7 +23,7 @@ class MarkdownExtension extends AbstractExtension
 
     public function convert(string $string): string
     {
-        $string = str_replace("\n", "\\\n", $string);
+        $string = str_replace("\n", "\\\n", trim($string));
 
         return $this->converter->convert($string)->getContent();
     }

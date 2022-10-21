@@ -37,18 +37,25 @@
             {{ comment.message|markdown }}
         </div>
 
-        <div class="comment__toolbar">
-            {% if not is_reply_on_comment %}
-                <a href="javascript:;" data-reply-to="{{ comment.id }}" data-role="reply-to-comment" title="{{ 'reply'|trans }}">
-                    <i class="bi bi-reply-fill"></i>
-                </a>
-            {% endif %}
-        </div>
+    </div>
+
+    {# comment replies #}
+    {% if comment.replies|length > 0 %}
+        {% for reply in comment.replies %}
+            {% include 'app/review/comment/comment.reply.html.twig' %}
+        {% endfor %}
+    {% endif %}
+
+    {# comment action buttons #}
+    <div class="comment__toolbar">
+        {% if not is_reply_on_comment %}
+            <a href="javascript:;" data-reply-to="{{ comment.id }}" data-role="reply-to-comment" title="{{ 'reply'|trans }}">
+                <i class="bi bi-reply-fill"></i>
+            </a>
+        {% endif %}
     </div>
 
     {% if is_reply_on_comment %}
-        <div class="foobar">
-            {% include 'app/review/comment/comment.add.html.twig' with {form: replyCommentForm.form} %}
-        </div>
+        {% include 'app/review/comment/comment.add.html.twig' with {form: replyCommentForm.form} %}
     {% endif %}
 </div>

@@ -4,16 +4,23 @@
   border-bottom: 1px solid #e5e4c9;
 }
 
-.comment__comment {
+.comment__comment,
+.comment__reply {
   padding: 5px 5px 5px 20px;
 }
 
-.comment__comment .comment__author {
+.comment__reply {
+  padding-left: 40px;
+}
+
+.comment__comment .comment__author,
+.comment__reply .comment__author {
   font-weight: bold;
   font-size: 0.8rem;
 }
 
-.comment__comment .comment__datetime {
+.comment__comment .comment__datetime,
+.comment__reply .comment__datetime {
   color: #999999;
   font-size: 0.8rem;
 }
@@ -29,10 +36,17 @@
   color: #999999;
 }
 
-.comment__comment .comment__edit {
+.comment__comment .comment__edit,
+.comment__reply .comment__edit {
   display: none;
 }
 
-.comment__comment:hover .comment__edit {
+.comment__comment:hover .comment__edit,
+.comment__reply:hover .comment__edit {
   display: inline-block;
+}
+
+.comment__toolbar {
+  padding-left: 20px;
+  padding-bottom: 5px;
 }
