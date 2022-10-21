@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Review;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Comment;
 
 /**
  * @extends ServiceEntityRepository<Comment>

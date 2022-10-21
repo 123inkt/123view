@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Review;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]
 class CommentReply

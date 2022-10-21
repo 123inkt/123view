@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormView;
 
 class AddCommentViewModel
 {
-    public function __construct(public readonly FormView $form, public readonly DiffLine $diffLine) {
+    public function __construct(public readonly FormView $form, public readonly DiffLine $diffLine)
+    {
     }
 }

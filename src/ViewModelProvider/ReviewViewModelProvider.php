@@ -93,11 +93,13 @@ class ReviewViewModelProvider
             $lineReference = (string)$comment->getLineReference();
 
             $groupedComments[$lineReference][] = $comment;
-            if (isset($diffLines[$lineReference]) === false) {
-                $line = $this->diffFinder->findLineInFile($file, $comment->getLineReference());
-                if ($line !== null) {
-                    $diffLines[spl_object_hash($line)] = $lineReference;
-                }
+            if (isset($diffLines[$lineReference]) !== false) {
+                continue;
+            }
+
+            $line = $this->diffFinder->findLineInFile($file, $comment->getLineReference());
+            if ($line !== null) {
+                $diffLines[spl_object_hash($line)] = $lineReference;
             }
         }
 

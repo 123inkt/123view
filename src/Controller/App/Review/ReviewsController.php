@@ -5,8 +5,8 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReviewsController extends AbstractController
 {
-    public function __construct(private readonly CodeReviewRepository $reviewRepository)
+    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly BreadcrumbFactory $breadcrumbFactory)
     {
     }
 
@@ -32,10 +32,9 @@ class ReviewsController extends AbstractController
         $searchQuery = trim((string)$request->query->get('search'));
         $page        = $request->query->getInt('page', 1);
         $paginator   = $this->reviewRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
-        $breadcrumbs = [new Breadcrumb($repository->getName(), $this->generateUrl(self::class, ['id' => $repository->getId()]))];
 
         return [
-            'breadcrumbs' => $breadcrumbs,
+            'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
             'reviewsModel' => new ReviewsViewModel($paginator, $page, $searchQuery)
         ];
     }
