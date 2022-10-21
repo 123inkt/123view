@@ -13,6 +13,7 @@ use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
+use DR\GitCommitNotification\Utility\Type;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
@@ -45,7 +46,7 @@ class GitCodeReviewDiffService
         $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
 
         /** @var Revision $revision */
-        $revision = array_shift($revisions);
+        $revision = Type::notFalse(reset($revisions));
         /** @var Repository $repository */
         $repository = $revision->getRepository();
 

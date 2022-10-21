@@ -21,7 +21,12 @@ class BreadcrumbFactory
      */
     public function createForReviews(Repository $repository): array
     {
-        return [new Breadcrumb((string)$repository->getName(), $this->urlGenerator->generate(self::class, ['id' => $repository->getId()]))];
+        return [
+            new Breadcrumb(
+                (string)$repository->getName(),
+                $this->urlGenerator->generate(ReviewsController::class, ['id' => $repository->getId()])
+            )
+        ];
     }
 
     /**
