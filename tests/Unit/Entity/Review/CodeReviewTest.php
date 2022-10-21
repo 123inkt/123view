@@ -21,7 +21,7 @@ class CodeReviewTest extends AbstractTestCase
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['getWatchers', 'getReviewers', 'getRevisions']);
+        $config->setExcludedMethods(['getWatchers', 'getReviewers', 'getRevisions', 'getComments']);
         static::assertAccessorPairs(CodeReview::class, $config);
     }
 

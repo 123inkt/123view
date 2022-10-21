@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Controller\App\RulesController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
@@ -97,7 +97,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     public function testOnAuthenticationSuccess(): void
     {
         $url = '/my/test/url';
-        $this->urlGenerator->expects(self::once())->method('generate')->with(RulesController::class)->willReturn($url);
+        $this->urlGenerator->expects(self::once())->method('generate')->with(ProjectsController::class)->willReturn($url);
 
         $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken(), 'main');
         $expect = new RedirectResponse($url);
