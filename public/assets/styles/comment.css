@@ -18,3 +18,11 @@
 .comment__comment.comment__state_resolved, .comment__comment.comment__state_resolved * {
   color: #999999;
 }
+
+.comment__comment .comment__edit {
+  display: none;
+}
+
+.comment__comment:hover .comment__edit {
+  display: inline-block;
+}
