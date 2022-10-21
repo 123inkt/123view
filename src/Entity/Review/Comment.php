@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Review;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
@@ -44,6 +46,15 @@ class Comment
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    /** @phpstan-var Collection<int, CommentReply> */
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: false)]
+    private Collection $replies;
+
+    public function __construct()
+    {
+        $this->replies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,5 +147,23 @@ class Comment
     public function setUser(?User $user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return Collection<int, CommentReply>
+     */
+    public function getReplies(): Collection
+    {
+        return $this->replies;
+    }
+
+    /**
+     * @param Collection<int, CommentReply> $replies
+     */
+    public function setReplies(Collection $replies): self
+    {
+        $this->replies = $replies;
+
+        return $this;
     }
 }

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -37,10 +38,16 @@ class User implements UserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $comments;
 
+    /** @phpstan-var Collection<int, CommentReply> */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $replies;
+
     public function __construct()
     {
         $this->rules     = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
+        $this->comments  = new ArrayCollection();
+        $this->replies   = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -166,6 +173,24 @@ class User implements UserInterface
     public function setComments(Collection $comments): self
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommentReply>
+     */
+    public function getReplies(): Collection
+    {
+        return $this->replies;
+    }
+
+    /**
+     * @param Collection<int, CommentReply> $replies
+     */
+    public function setReplies(Collection $replies): self
+    {
+        $this->replies = $replies;
 
         return $this;
     }
