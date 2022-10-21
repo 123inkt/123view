@@ -9,6 +9,7 @@ use CzProject\GitPhp\Helpers;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Utility\CircuitBreaker;
+use League\Uri\Http;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
@@ -68,19 +69,19 @@ class GitRepositoryService implements LoggerAwareInterface
         if ($this->filesystem->exists($repositoryDir . '.git')) {
             // is existing repository
             $this->stopwatch?->start('repository.open', 'git');
-            $this->logger?->info(sprintf('git: open repository `%s`', $repositoryDir));
+            $this->logger?->info(sprintf('git: open repository `%s`', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
             $repository = $this->git->open($repositoryDir);
             $this->stopwatch?->stop('repository.open');
         } else {
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
-            $this->logger?->info(sprintf('git: clone repository `%s`.', $repositoryUrl));
+            $this->logger?->info(sprintf('git: clone repository `%s`.', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
             $repository = $this->git->cloneRepository($repositoryUrl, $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
         }
 
         $this->stopwatch?->start('repository.fetch', 'git');
-        $this->logger?->info(sprintf('git: fetch --all (%s)', $repositoryUrl));
+        $this->logger?->info(sprintf('git: fetch --all (%s)', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
         $repository->fetch(null, ['--all']);
         $this->stopwatch?->stop('repository.fetch');
 

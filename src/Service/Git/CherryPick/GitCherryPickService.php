@@ -38,6 +38,8 @@ class GitCherryPickService implements LoggerAwareInterface
             ->noCommit()
             ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
 
+        $this->logger?->info('Executing: ' . $commandBuilder);
+
         // merge given hashes
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
@@ -52,6 +54,8 @@ class GitCherryPickService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
             ->abort();
+
+        $this->logger?->info('Executing: ' . $commandBuilder);
 
         // abort cherry-pick
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
