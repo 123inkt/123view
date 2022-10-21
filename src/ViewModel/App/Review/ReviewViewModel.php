@@ -15,6 +15,7 @@ class ReviewViewModel
 {
     private ?CommentsViewModel $commentsViewModel = null;
     private ?AddCommentViewModel $addCommentForm = null;
+    private ?ReplyCommentViewModel $replyCommentForm = null;
 
     /**
      * @param DirectoryTreeNode<DiffFile> $fileTree
@@ -54,6 +55,16 @@ class ReviewViewModel
     public function setCommentsViewModel(?CommentsViewModel $commentsViewModel): void
     {
         $this->commentsViewModel = $commentsViewModel;
+    }
+
+    public function getReplyCommentForm(): ?ReplyCommentViewModel
+    {
+        return $this->replyCommentForm;
+    }
+
+    public function setReplyCommentForm(?ReplyCommentViewModel $replyCommentForm): void
+    {
+        $this->replyCommentForm = $replyCommentForm;
     }
 
     /**

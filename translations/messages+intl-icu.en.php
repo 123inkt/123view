@@ -30,6 +30,7 @@ return [
     'reply'                                       => 'Reply',
     'edit.comment'                                => 'Edit comment',
     'leave.a.comment.on.line'                     => 'Leave a comment on line {line}',
+    'leave.a.reply'                               => 'Leave a comment. Markdown is supported',
     'rule.successful.saved'                       => 'Rule successfully saved.',
     'Active'                                      => 'Active',
     'Inactive'                                    => 'Inactive',

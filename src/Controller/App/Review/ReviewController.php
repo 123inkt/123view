@@ -31,16 +31,17 @@ class ReviewController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): array
     {
-        $filePath      = $request->query->get('filePath');
-        $lineReference = $request->query->has('addComment') ? LineReference::fromString($filePath . ':' . $request->query->get('addComment', '')) : null;
-        $breadcrumbs   = [
+        $filePath       = $request->query->get('filePath');
+        $lineReference  = $request->query->has('addComment') ? LineReference::fromString($filePath . ':' . $request->query->get('addComment', '')) : null;
+        $replyToComment = $request->query->getInt('replyComment');
+        $breadcrumbs    = [
             new Breadcrumb($review->getRepository()?->getName(), $this->generateUrl(ReviewsController::class, ['id' => $review->getRepository()?->getId()])),
             new Breadcrumb('CR-' . $review->getId(), $this->generateUrl(self::class, ['id' => $review->getId()]))
         ];
 
         return [
             'breadcrumbs' => $breadcrumbs,
-            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $lineReference)
+            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $lineReference, $replyToComment)
         ];
     }
 }
