@@ -13,6 +13,10 @@
   padding-left: 40px;
 }
 
+.comment__edit-reply {
+  padding-left: 32px;
+}
+
 .comment__comment .comment__author,
 .comment__reply .comment__author {
   font-weight: bold;
