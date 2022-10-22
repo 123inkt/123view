@@ -6,11 +6,11 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Security\Voter\CommentVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteCommentController extends AbstractController
@@ -24,9 +24,7 @@ class DeleteCommentController extends AbstractController
     #[Entity('comment')]
     public function __invoke(Request $request, Comment $comment): Response
     {
-        if ($comment->getUser()?->getId() !== $this->getUser()->getId()) {
-            throw new AccessDeniedHttpException('Access denied');
-        }
+        $this->denyAccessUnlessGranted(CommentVoter::DELETE, $comment);
 
         $this->commentRepository->remove($comment, true);
 

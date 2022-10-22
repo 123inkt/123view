@@ -7,11 +7,11 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
+use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UpdateCommentReplyController extends AbstractController
@@ -25,9 +25,7 @@ class UpdateCommentReplyController extends AbstractController
     #[Entity('reply')]
     public function __invoke(Request $request, CommentReply $reply): Response
     {
-        if ($reply->getUser()?->getId() !== $this->getUser()->getId()) {
-            throw new AccessDeniedHttpException('Access denied');
-        }
+        $this->denyAccessUnlessGranted(CommentReplyVoter::EDIT, $reply);
 
         $form = $this->createForm(EditCommentReplyFormType::class, $reply, ['reply' => $reply]);
         $form->handleRequest($request);
