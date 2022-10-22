@@ -41,6 +41,15 @@
     padding: 0 0 0 16px;
 }
 
+.review-file-tree--file {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.review-file-tree--file-link:hover .review-file-tree--file-name {
+    text-decoration: underline;
+}
+
 .review-grid-sidebar .reviewer-state {
     display: block;
     float: left;

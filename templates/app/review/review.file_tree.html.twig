@@ -17,26 +17,26 @@
             {% for file in directory.files %}
                 <li class="review-file-tree--file">
 
-                    {%- if file.added -%}
-                        <span class="diff-file__file-change-state text-success">+</span>
-                    {%- elseif file.deleted -%}
-                        <span class="diff-file__file-change-state text-danger">-</span>
-                    {%- elseif file.modified -%}
-                        <span class="diff-file__file-change-state text-primary">*</span>
-                    {%- endif -%}
+                    <a href="?filePath={{ file.file.pathname|e('url') }}" class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate">
+                        {%- if file.added -%}
+                            <span class="diff-file__file-change-state text-success">+</span>
+                        {%- elseif file.deleted -%}
+                            <span class="diff-file__file-change-state text-danger">-</span>
+                        {%- elseif file.modified -%}
+                            <span class="diff-file__file-change-state text-primary">*</span>
+                        {%- endif -%}
 
-                    <i class="bi bi-file-earmark-code-fill icon-file"></i>
+                        <i class="bi bi-file-earmark-code-fill text-dark"></i>
 
-                    <a href="?filePath={{ file.file.pathname|e('url') }}">
-                        {{ file.filename }}
+                        <span class="review-file-tree--file-name">{{ file.filename }}</span>
                     </a>
 
-                    <span class="review-file-tree--file-status float-end">
+                    <span class="review-file-tree--file-status float-end text-nowrap">
                         {% set commentStatus = fileTreeModel.getCommentsForFile(file) %}
                         {% if commentStatus.total > 0 %}
                             <span>
                                 {%- if commentStatus.unresolved > 0 -%}
-                                <span class="fw-bold text-danger">{{ commentStatus.unresolved }}</span>/
+                                    <span class="fw-bold text-danger">{{ commentStatus.unresolved }}</span>/
                                 {%- endif -%}
                                 <span class="fw-bold">{{- commentStatus.total -}}</span>
                             </span>
