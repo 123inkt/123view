@@ -25,7 +25,7 @@ class UpdateCommentReplyController extends AbstractController
     #[Entity('reply')]
     public function __invoke(Request $request, CommentReply $reply): Response
     {
-        if ($reply->getUser()?->getId() !== $this->getUser()?->getId()) {
+        if ($reply->getUser()?->getId() !== $this->getUser()->getId()) {
             throw new AccessDeniedHttpException('Access denied');
         }
 

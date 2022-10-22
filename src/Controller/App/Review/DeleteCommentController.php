@@ -24,7 +24,7 @@ class DeleteCommentController extends AbstractController
     #[Entity('comment')]
     public function __invoke(Request $request, Comment $comment): Response
     {
-        if ($comment->getUser()?->getId() !== $this->getUser()?->getId()) {
+        if ($comment->getUser()?->getId() !== $this->getUser()->getId()) {
             throw new AccessDeniedHttpException('Access denied');
         }
 

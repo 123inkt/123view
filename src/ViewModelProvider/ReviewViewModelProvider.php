@@ -46,7 +46,7 @@ class ReviewViewModelProvider
     /**
      * @throws Throwable
      */
-    public function getViewModel(CodeReview $review, ?string $filePath, AbstractReviewAction $reviewAction): ReviewViewModel
+    public function getViewModel(CodeReview $review, ?string $filePath, ?AbstractReviewAction $reviewAction): ReviewViewModel
     {
         $files = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
 
