@@ -1,3 +1,12 @@
+{%- set lineNrLengthBefore   = fileDiffViewModel.maxLineNumberLength(fileDiffViewModel.selectedFile, true) -%}
+{%- set lineNrLengthAfter    = fileDiffViewModel.maxLineNumberLength(fileDiffViewModel.selectedFile, false) -%}
+{%- set addCommentForm       = fileDiffViewModel.addCommentForm -%}
+{%- set editCommentForm      = fileDiffViewModel.editCommentForm -%}
+{%- set replyCommentForm     = fileDiffViewModel.replyCommentForm -%}
+{%- set editReplyCommentForm = fileDiffViewModel.editReplyCommentForm -%}
+{%- set commentsViewModel    = fileDiffViewModel.commentsViewModel -%}
+{%- set file                 = fileDiffViewModel.selectedFile -%}
+
 <div class="revision-file" data-role="revision-file" data-file="{{ file.filePathBefore ?? file.filePathAfter }}">
     <div>
         {%- if file.added -%}
@@ -12,7 +21,7 @@
     </div>
 
     {%- if file.rename -%}
-        <div class="diff-file__file-rename">renamed from {{ file.filePathBefore }}</div>
+        <div class="diff-file__file-rename">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
     {%- endif -%}
 
     {%- if file.blocks -%}

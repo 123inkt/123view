@@ -103,16 +103,7 @@
         </div>
 
         <div class="review-grid-code">
-            {%- set line_nr_length_before = reviewModel.maxLineNumberLength(reviewModel.selectedFile, true) -%}
-            {%- set line_nr_length_after = reviewModel.maxLineNumberLength(reviewModel.selectedFile, false) -%}
-            {%- include 'app/review/commit/commit.file.html.twig'
-                with {file: reviewModel.selectedFile,
-                addCommentForm: reviewModel.addCommentForm,
-                editCommentForm: reviewModel.editCommentForm,
-                replyCommentForm: reviewModel.replyCommentForm,
-                editReplyCommentForm: reviewModel.editReplyCommentForm,
-                commentsViewModel: reviewModel.commentsViewModel}
-            -%}
+            {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
         </div>
     </div>
 

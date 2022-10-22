@@ -5,27 +5,19 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
-    private ?CommentsViewModel         $commentsViewModel    = null;
-    private ?AddCommentViewModel       $addCommentForm       = null;
-    private ?EditCommentViewModel      $editCommentForm      = null;
-    private ?ReplyCommentViewModel     $replyCommentForm     = null;
-    private ?EditCommentReplyViewModel $editReplyCommentForm = null;
-
     /**
      * @param ExternalLink[] $externalLinks
      */
     public function __construct(
         private readonly CodeReview $review,
         private readonly FileTreeViewModel $fileTreeModel,
-        private readonly ?DiffFile $selectedFile,
+        private readonly FileDiffViewModel $fileDiffViewModel,
         private readonly FormView $addReviewerForm,
         private readonly array $externalLinks
     ) {
@@ -36,66 +28,14 @@ class ReviewViewModel
         return $this->addReviewerForm;
     }
 
-    public function setAddCommentForm(AddCommentViewModel $addCommentForm): self
-    {
-        $this->addCommentForm = $addCommentForm;
-
-        return $this;
-    }
-
-    public function getAddCommentForm(): ?AddCommentViewModel
-    {
-        return $this->addCommentForm;
-    }
-
-    public function getCommentsViewModel(): ?CommentsViewModel
-    {
-        return $this->commentsViewModel;
-    }
-
-    public function getEditCommentForm(): ?EditCommentViewModel
-    {
-        return $this->editCommentForm;
-    }
-
-    public function setEditCommentForm(?EditCommentViewModel $editCommentForm): void
-    {
-        $this->editCommentForm = $editCommentForm;
-    }
-
-    public function setCommentsViewModel(?CommentsViewModel $commentsViewModel): void
-    {
-        $this->commentsViewModel = $commentsViewModel;
-    }
-
-    public function getReplyCommentForm(): ?ReplyCommentViewModel
-    {
-        return $this->replyCommentForm;
-    }
-
-    public function setReplyCommentForm(?ReplyCommentViewModel $replyCommentForm): void
-    {
-        $this->replyCommentForm = $replyCommentForm;
-    }
-
-    public function getEditReplyCommentForm(): ?EditCommentReplyViewModel
-    {
-        return $this->editReplyCommentForm;
-    }
-
-    public function setEditReplyCommentForm(?EditCommentReplyViewModel $editReplyCommentForm): void
-    {
-        $this->editReplyCommentForm = $editReplyCommentForm;
-    }
-
     public function getFileTreeModel(): FileTreeViewModel
     {
         return $this->fileTreeModel;
     }
 
-    public function getSelectedFile(): ?DiffFile
+    public function getFileDiffViewModel(): FileDiffViewModel
     {
-        return $this->selectedFile;
+        return $this->fileDiffViewModel;
     }
 
     /**
@@ -133,28 +73,5 @@ class ReviewViewModel
     public function getExternalLinks(): array
     {
         return $this->externalLinks;
-    }
-
-    /**
-     * For the given block of changes, determine the maximum string length of the line numbers.
-     *
-     * @param bool $before if true, take the `before` line numbers, `after` otherwise.
-     */
-    public function getMaxLineNumberLength(?DiffFile $file, bool $before): int
-    {
-        if ($file === null) {
-            return 0;
-        }
-
-        $length = 0;
-
-        foreach ($file->getBlocks() as $block) {
-            foreach ($block->lines as $line) {
-                $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
-                $length     = max($length, strlen($lineNumber));
-            }
-        }
-
-        return $length;
     }
 }
