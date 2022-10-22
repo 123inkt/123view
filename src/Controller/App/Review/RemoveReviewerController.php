@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RemoveReviewerController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $registry)
+    public function __construct(private ManagerRegistry $registry, private readonly ReviewEventService $eventService)
     {
     }
 
@@ -26,6 +27,9 @@ class RemoveReviewerController extends AbstractController
     #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
     public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse
     {
+        $reviewState = $review->getState();
+        $wasAccepted = $review->isAccepted();
+
         $review->getReviewers()->removeElement($reviewer);
         if ($review->isAccepted()) {
             // resolve all comments
@@ -39,6 +43,9 @@ class RemoveReviewerController extends AbstractController
         $em->remove($reviewer);
         $em->persist($review);
         $em->flush();
+
+        $this->eventService->reviewerStateChanged($review, $wasAccepted, null);
+        $this->eventService->reviewStateChanged($review, $reviewState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }

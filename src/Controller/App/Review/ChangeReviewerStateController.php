@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ChangeReviewerStateController extends AbstractController
 {
-    public function __construct(private readonly ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly ReviewEventService $eventService)
     {
     }
 
@@ -28,6 +29,9 @@ class ChangeReviewerStateController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {
+        $reviewState = $review->getState();
+        $wasAccepted = $review->isAccepted();
+
         $state = $request->request->get('state');
 
         $userReviewer = $review->getReviewer($this->getUser());
@@ -46,12 +50,17 @@ class ChangeReviewerStateController extends AbstractController
                 $comment->setState(CommentStateType::RESOLVED);
             }
             $review->setState(CodeReviewStateType::CLOSED);
+        } else {
+            $review->setState(CodeReviewStateType::OPEN);
         }
 
         $em = $this->registry->getManager();
         $em->persist($review);
         $em->persist($userReviewer);
         $em->flush();
+
+        $this->eventService->reviewerStateChanged($review, $wasAccepted, $state);
+        $this->eventService->reviewStateChanged($review, $reviewState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }

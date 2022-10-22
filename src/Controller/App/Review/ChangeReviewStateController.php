@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ChangeReviewStateController extends AbstractController
 {
-    public function __construct(private readonly CodeReviewRepository $reviewRepository)
+    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly ReviewEventService $eventService)
     {
     }
 
@@ -30,7 +31,10 @@ class ChangeReviewStateController extends AbstractController
             throw new BadRequestHttpException('Invalid state value: ' . $state);
         }
 
+        $reviewState = $review->getState();
         $this->reviewRepository->save($review->setState($state), true);
+
+        $this->eventService->reviewStateChanged($review, $reviewState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }
