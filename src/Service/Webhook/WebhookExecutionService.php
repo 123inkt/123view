@@ -1,46 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller;
+namespace DR\GitCommitNotification\Service\Webhook;
 
 use DR\GitCommitNotification\Entity\Webhook\Webhook;
 use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
-use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\RetryableHttpClient;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
-class WebhookController implements LoggerAwareInterface
+class WebhookExecutionService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly WebhookActivityRepository $activityRepository)
+    public function __construct()
     {
     }
 
     /**
-     *
-    review-created
-    review-closed
-    review-opened
-    review-accepted
-    review-rejected
-    reviewer-added
-    reviewer-removed
-    revision-added
-     */
-
-    /**
      * @throws Throwable
      */
-    #[Route('/webhook/{id<\d+>}', self::class, methods: ['GET'])]
-    #[Entity('webhook')]
-    public function __invoke(Webhook $webhook): JsonResponse
+    public function execute(Webhook $webhook, )
     {
         $options = [
             'headers'     => $webhook->getHeaders(),
@@ -77,7 +59,5 @@ class WebhookController implements LoggerAwareInterface
         $activity->setCreateTimestamp(time());
 
         $this->activityRepository->save($activity, true);
-
-        return new JsonResponse($data);
     }
 }

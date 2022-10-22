@@ -27,14 +27,14 @@ class WebhookActivity
     #[ORM\Column(type: 'string', length: 5000)]
     private ?string $response = null;
 
-    /** @var array<string, string> */
+    /** @var array<string, string|string[]> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $responseHeaders = [];
 
     #[ORM\Column(type: 'integer')]
     private ?int $createTimestamp = null;
 
-    #[ORM\ManyToOne(targetEntity: WebhookActivity::class, cascade: ['persist'], inversedBy: 'activities')]
+    #[ORM\ManyToOne(targetEntity: Webhook::class, cascade: ['persist'], inversedBy: 'activities')]
     private ?Webhook $webhook = null;
 
     public function getId(): ?int
@@ -97,7 +97,7 @@ class WebhookActivity
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|string[]>
      */
     public function getResponseHeaders(): array
     {
@@ -105,7 +105,7 @@ class WebhookActivity
     }
 
     /**
-     * @param array<string, string> $responseHeaders
+     * @param array<string, string|string[]> $responseHeaders
      */
     public function setResponseHeaders(array $responseHeaders): self
     {
