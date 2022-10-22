@@ -2,7 +2,9 @@ import Controller from './Controller.js';
 
 export default class Comment extends Controller {
     connect() {
-       this.role('comment-textarea').focus();
+       const textarea = this.role('comment-textarea');
+       textarea.scrollIntoView({block: 'center'});
+       textarea.focus();
        this.listen('keyup', 'comment-textarea', this.commentKeyListener.bind(this));
        this.listen('click', 'cancel-comment', this.cancelComment.bind(this));
     }
