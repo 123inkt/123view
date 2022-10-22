@@ -25,6 +25,9 @@ use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReplyCommentViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 
+/**
+ * @suppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class FileDiffViewModelProvider
 {
     public function __construct(

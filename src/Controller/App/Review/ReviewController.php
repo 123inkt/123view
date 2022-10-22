@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
