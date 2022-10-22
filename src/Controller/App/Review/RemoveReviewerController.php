@@ -5,6 +5,8 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
+use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -24,8 +26,18 @@ class RemoveReviewerController extends AbstractController
     #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
     public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse
     {
+        $review->getReviewers()->removeElement($reviewer);
+        if ($review->isAccepted()) {
+            // resolve all comments
+            foreach ($review->getComments() as $comment) {
+                $comment->setState(CommentStateType::RESOLVED);
+            }
+            $review->setState(CodeReviewStateType::CLOSED);
+        }
+
         $em = $this->registry->getManager();
         $em->remove($reviewer);
+        $em->persist($review);
         $em->flush();
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
