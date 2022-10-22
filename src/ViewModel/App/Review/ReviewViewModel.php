@@ -141,7 +141,7 @@ class ReviewViewModel
 
         $length = 0;
 
-        foreach ($file->blocks as $block) {
+        foreach ($file->getBlocks() as $block) {
             foreach ($block->lines as $line) {
                 $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
                 $length     = max($length, strlen($lineNumber));

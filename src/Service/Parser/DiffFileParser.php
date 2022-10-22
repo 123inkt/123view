@@ -53,7 +53,7 @@ class DiffFileParser
                 $lineNumberBefore = (int)$matches[1][$index - 1];
                 $lineNumberAfter  = (int)$matches[2][$index - 1];
 
-                $fileDiff->blocks[] = $this->blockParser->parse($lineNumberBefore, $lineNumberAfter, $lines);
+                $fileDiff->addBlock($this->blockParser->parse($lineNumberBefore, $lineNumberAfter, $lines));
             }
         }
 

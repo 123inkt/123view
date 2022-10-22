@@ -39,10 +39,10 @@ class DiffFileParserTest extends AbstractTestCase
 
         // expect 2 blocks
         $fileDiff = $this->parser->parse($contents, $fileDiff);
-        static::assertCount(2, $fileDiff->blocks);
+        static::assertCount(2, $fileDiff->getBlocks());
 
         // expect each block have 3 lines
-        [$blockA, $blockB] = $fileDiff->blocks;
+        [$blockA, $blockB] = $fileDiff->getBlocks();
         static::assertCount(3, $blockA->lines);
         static::assertCount(3, $blockB->lines);
 

@@ -32,7 +32,7 @@ class DiffLineIteratorTest extends AbstractTestCase
         $block->lines = [$lineA, $lineB];
 
         $file         = new DiffFile();
-        $file->blocks = [$block];
+        $file->addBlock($block);
 
         $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), new DateTime(), 'subject', 'refs', [$file]);
 

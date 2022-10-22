@@ -15,7 +15,23 @@ class DiffFile
     public ?string $filePathAfter  = null;
 
     /** @var DiffBlock[] */
-    public array $blocks = [];
+    private array $blocks = [];
+
+    private ?int $linesAdded   = null;
+    private ?int $linesRemoved = null;
+
+    /**
+     * @return DiffBlock[]
+     */
+    public function getBlocks(): array
+    {
+        return $this->blocks;
+    }
+
+    public function addBlock(DiffBlock $block): void
+    {
+        $this->blocks[] = $block;
+    }
 
     public function isAdded(): bool
     {
@@ -98,5 +114,39 @@ class DiffFile
         }
 
         return '';
+    }
+
+    public function getNrOfLinesAdded(): int
+    {
+        if ($this->linesAdded === null) {
+            $this->updateLinesChanged();
+        }
+
+        return $this->linesAdded ?? 0;
+    }
+
+    public function getNrOfLinesRemoved(): int
+    {
+        if ($this->linesRemoved === null) {
+            $this->updateLinesChanged();
+        }
+
+        return $this->linesRemoved ?? 0;
+    }
+
+    private function updateLinesChanged(): void
+    {
+        $this->linesAdded   = 0;
+        $this->linesRemoved = 0;
+        foreach ($this->blocks as $block) {
+            foreach ($block->lines as $line) {
+                if ($line->state === DiffLine::STATE_ADDED || $line->state === DiffLine::STATE_CHANGED) {
+                    ++$this->linesAdded;
+                }
+                if ($line->state === DiffLine::STATE_REMOVED || $line->state === DiffLine::STATE_CHANGED) {
+                    ++$this->linesRemoved;
+                }
+            }
+        }
     }
 }

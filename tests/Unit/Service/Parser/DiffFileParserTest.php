@@ -71,7 +71,7 @@ class DiffFileParserTest extends AbstractTestCase
         $result = $this->parser->parse($contents, $file);
         static::assertNull($result->filePathBefore);
         static::assertSame('after', $result->filePathAfter);
-        static::assertSame([$block], $result->blocks);
+        static::assertSame([$block], $result->getBlocks());
     }
 
     /**
@@ -100,7 +100,7 @@ class DiffFileParserTest extends AbstractTestCase
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
         static::assertNull($result->filePathAfter);
-        static::assertSame([$block], $result->blocks);
+        static::assertSame([$block], $result->getBlocks());
     }
 
     /**
@@ -128,7 +128,7 @@ class DiffFileParserTest extends AbstractTestCase
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
         static::assertSame('after', $result->filePathAfter);
-        static::assertSame([$block], $result->blocks);
+        static::assertSame([$block], $result->getBlocks());
     }
 
     /**
@@ -162,6 +162,6 @@ class DiffFileParserTest extends AbstractTestCase
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
         static::assertSame('after', $result->filePathAfter);
-        static::assertSame([$blockA, $blockB], $result->blocks);
+        static::assertSame([$blockA, $blockB], $result->getBlocks());
     }
 }

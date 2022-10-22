@@ -30,6 +30,15 @@
                     <a href="?filePath={{ file.file.pathname|e('url') }}">
                         {{ file.filename }}
                     </a>
+
+                    <span class="review-file-tree--lines-modified float-end">
+                        {% if file.nrOfLinesAdded > 0 %}
+                            <span class="bold text-success">+{{ file.nrOfLinesAdded }}</span>
+                        {% endif %}
+                        {% if file.nrOfLinesRemoved > 0 %}
+                            <span class="bold text-danger">-{{ file.nrOfLinesRemoved }}</span>
+                        {% endif %}
+                    </span>
                 </li>
             {% endfor %}
         </ul>

@@ -29,7 +29,7 @@ class DiffFinder
 
     public function findLineInFile(DiffFile $file, LineReference $lineReference): ?DiffLine
     {
-        foreach ($file->blocks as $block) {
+        foreach ($file->getBlocks() as $block) {
             if ($file->isAdded()) {
                 $line = $this->findLineInNewFile($block->lines, $lineReference);
             } else {
