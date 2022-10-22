@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,12 +21,12 @@ class DeleteCommentReplyController extends AbstractController
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'DELETE')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('reply')]
-    public function __invoke(Request $request, CommentReply $reply): Response
+    public function __invoke(CommentReply $reply): Response
     {
         $this->denyAccessUnlessGranted(CommentReplyVoter::DELETE, $reply);
 
         $this->replyRepository->remove($reply, true);
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $reply->getComment()?->getReview()?->getId()], ['editComment']);
+        return $this->refererRedirect(ReviewController::class, ['id' => $reply->getComment()?->getReview()?->getId()], ['action']);
     }
 }

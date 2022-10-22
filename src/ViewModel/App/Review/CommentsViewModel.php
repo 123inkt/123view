@@ -10,10 +10,19 @@ class CommentsViewModel
 {
     /**
      * @param array<string, Comment[]> $comments
+     * @param Comment[]                $detachedComments
      * @param array<string, string>    $diffLines
      */
-    public function __construct(private readonly array $comments, private readonly array $diffLines)
+    public function __construct(private readonly array $comments, private readonly array $detachedComments, private readonly array $diffLines)
     {
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function getDetachedComments(): array
+    {
+        return $this->detachedComments;
     }
 
     /**

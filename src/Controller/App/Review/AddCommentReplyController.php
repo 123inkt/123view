@@ -43,6 +43,6 @@ class AddCommentReplyController extends AbstractController
 
         $this->replyRepository->save($reply, true);
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()], ['replyComment']);
+        return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()], ['action']);
     }
 }

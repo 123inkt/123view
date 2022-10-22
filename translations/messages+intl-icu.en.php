@@ -98,5 +98,6 @@ return [
     'rule.delete.title'                           => 'Delete rule',
     'page.title.single.sign.on'                   => 'Login',
     'Exclude merge commits'                       => 'Exclude merge commits',
-    'redirect.access.denied.session.expired'      => 'Your session has expired.'
+    'redirect.access.denied.session.expired'      => 'Your session has expired.',
+    'discussion.points.to.modified.code'          => 'Discussion is pointing towards a modified code fragment. Comment was originally at line {line}.'
 ];

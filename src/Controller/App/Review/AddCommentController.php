@@ -48,6 +48,6 @@ class AddCommentController extends AbstractController
 
         $this->commentRepository->save($comment, true);
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()], ['addComment']);
+        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()], ['action']);
     }
 }

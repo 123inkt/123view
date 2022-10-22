@@ -25,6 +25,10 @@
     {%- endif -%}
 
     {%- if file.blocks -%}
+        {%- for detachedComment in commentsViewModel.detachedComments -%}
+            {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
+        {%- endfor -%}
+
         <div class="diff-file__file-diff">
             {%- if file.modified -%}
                 {%- include 'app/review/commit/commit.block.spacer.html.twig' -%}

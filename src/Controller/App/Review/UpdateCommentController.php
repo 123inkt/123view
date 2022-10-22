@@ -36,6 +36,6 @@ class UpdateCommentController extends AbstractController
         $comment->setUpdateTimestamp(time());
         $this->commentRepository->save($comment, true);
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()], ['editComment']);
+        return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()], ['action']);
     }
 }

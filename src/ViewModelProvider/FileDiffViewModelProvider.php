@@ -103,22 +103,26 @@ class FileDiffViewModelProvider
     {
         $comments = $this->commentRepository->findByReview($review, (string)($file->filePathBefore ?? $file->filePathAfter));
 
-        $diffLines       = [];
-        $groupedComments = [];
+        $diffLines        = [];
+        $detachedComments = [];
+        $groupedComments  = [];
         foreach ($comments as $comment) {
             $lineReference = (string)$comment->getLineReference();
 
             $groupedComments[$lineReference][] = $comment;
             if (isset($diffLines[$lineReference]) !== false) {
+                $detachedComments[] = $comment;
                 continue;
             }
 
             $line = $this->diffFinder->findLineInFile($file, Type::notNull($comment->getLineReference()));
             if ($line !== null) {
                 $diffLines[spl_object_hash($line)] = $lineReference;
+            } else {
+                $detachedComments[] = $comment;
             }
         }
 
-        return new CommentsViewModel($groupedComments, $diffLines);
+        return new CommentsViewModel($groupedComments, $detachedComments, $diffLines);
     }
 }

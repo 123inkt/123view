@@ -6,12 +6,12 @@ namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormView;
@@ -33,7 +33,7 @@ class ReviewViewModelTest extends AbstractTestCase
     {
         $review   = new CodeReview();
         $tree     = new FileTreeViewModel($this->createMock(DirectoryTreeNode::class), new ArrayCollection());
-        $diffFile = new DiffFile();
+        $diffFile = new FileDiffViewModel(null);
         $form     = $this->createMock(FormView::class);
         $links    = [new ExternalLink()];
 
@@ -42,7 +42,7 @@ class ReviewViewModelTest extends AbstractTestCase
         static::assertSame($tree, $model->getFileTreeModel());
         static::assertSame($review, $model->getReview());
         static::assertSame($form, $model->getAddReviewerForm());
-        static::assertSame($diffFile, $model->getSelectedFile());
+        static::assertSame($diffFile, $model->getFileDiffViewModel());
     }
 
     /**
@@ -59,7 +59,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getRevisions()->add($revision);
 
-        $model = new ReviewViewModel($review, $tree, new DiffFile(), $this->createMock(FormView::class), []);
+        $model = new ReviewViewModel($review, $tree, new FileDiffViewModel(null), $this->createMock(FormView::class), []);
 
         static::assertSame(['holmes@example.com' => 'Sherlock Holmes'], $model->getAuthors());
     }
@@ -80,7 +80,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getReviewers()->add($reviewer);
 
-        $model = new ReviewViewModel($review, $tree, new DiffFile(), $this->createMock(FormView::class), []);
+        $model = new ReviewViewModel($review, $tree, new FileDiffViewModel(null), $this->createMock(FormView::class), []);
 
         static::assertNotNull($model->getReviewer($userA));
         static::assertNull($model->getReviewer($userB));
