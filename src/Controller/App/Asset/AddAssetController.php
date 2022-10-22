@@ -44,10 +44,22 @@ class AddAssetController extends AbstractController
             throw new BadRequestHttpException('Max data size reached. Data should be under 1MB');
         }
 
+        // data should be base64 encoded
+        $decodedData = base64_decode($data, true);
+        if ($decodedData === false) {
+            throw new BadRequestHttpException('Data is not a valid base64 encoded string');
+        }
+
+        // create stream
+        /** @var resource $stream */
+        $stream = fopen('php://memory', 'rb+');
+        fwrite($stream, $decodedData);
+        rewind($stream);
+
         $asset = new Asset();
         $asset->setUser($this->getUser());
         $asset->setMimeType($mimeType);
-        $asset->setData($data);
+        $asset->setData($stream);
         $asset->setCreateTimestamp(time());
 
         $this->assetRepository->save($asset, true);

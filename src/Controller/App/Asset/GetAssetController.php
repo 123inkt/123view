@@ -16,6 +16,9 @@ class GetAssetController
     #[Entity('asset')]
     public function __invoke(Asset $asset): Response
     {
-        return (new Response($asset->getData(), 200, ['Content-Type' => $asset->getMimeType()]))->setPublic();
+        /** @var resource $data */
+        $data = $asset->getData();
+
+        return (new Response((string)stream_get_contents($data), 200, ['Content-Type' => $asset->getMimeType()]))->setPublic();
     }
 }

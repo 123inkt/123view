@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Repository\Asset\AssetRepository;
 #[ORM\Entity(repositoryClass: AssetRepository::class)]
 class Asset
 {
-    public const MAX_DATA_SIZE = 1048576;
+    public const MAX_DATA_SIZE = 2097152;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,8 +20,9 @@ class Asset
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $mimeType = null;
 
-    #[ORM\Column(type: 'string', length: 16777215)] // mediumtext
-    private ?string $data = null;
+    /** @var resource|null */
+    #[ORM\Column(type: 'binary', length: 16777215)]
+    private $data = null;
 
     #[ORM\Column(type: 'integer')]
     private ?int $createTimestamp = null;
@@ -46,12 +47,18 @@ class Asset
         return $this;
     }
 
-    public function getData(): ?string
+    /**
+     * @return resource|null
+     */
+    public function getData()
     {
         return $this->data;
     }
 
-    public function setData(?string $data): Asset
+    /**
+     * @param resource|null $data
+     */
+    public function setData($data): Asset
     {
         $this->data = $data;
 
