@@ -7,6 +7,7 @@ export default class Review extends Controller {
         this.listen('click', 'edit-comment', this.editComment.bind(this));
         this.listen('click', 'delete-comment', this.deleteComment.bind(this));
         this.listen('click', 'edit-reply', this.editReply.bind(this));
+        this.listen('click', 'delete-reply', this.deleteReply.bind(this));
     }
 
     addComment(target) {
@@ -40,6 +41,12 @@ export default class Review extends Controller {
         location.searchParams.set('filePath', this.role('revision-file').dataset.file);
         location.searchParams.set('editReply', target.dataset.replyId);
         window.location = location.toString();
+    }
+
+    deleteReply(target) {
+        if (confirm(target.dataset.confirmMessage)) {
+            target.closest('form').submit();
+        }
     }
 
     /**
