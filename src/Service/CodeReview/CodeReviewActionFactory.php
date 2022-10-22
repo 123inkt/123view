@@ -21,22 +21,18 @@ class CodeReviewActionFactory
 
     public function createFromRequest(Request $request): ?AbstractReviewAction
     {
-        if ($request->query->has('addComment')) {
-            return new AddCommentAction(LineReference::fromString($request->query->get('filePath') . ':' . $request->query->get('addComment', '')));
+        if (preg_match('/^([a-z-]+):(.*)$/', (string)$request->query->get('action'), $matches) !== 1) {
+            return null;
         }
+        $action = (string)$matches[1];
+        $value  = (string)$matches[2];
 
-        if ($request->query->has('replyComment')) {
-            return new AddCommentReplyAction($this->commentRepository->find($request->query->getInt('replyComment')));
-        }
-
-        if ($request->query->has('editComment')) {
-            return new EditCommentAction($this->commentRepository->find($request->query->getInt('editComment')));
-        }
-
-        if ($request->query->has('editReply')) {
-            return new EditCommentReplyAction($this->replyRepository->find($request->query->getInt('editReply')));
-        }
-
-        return null;
+        return match ($action) {
+            'add-comment'  => new AddCommentAction(LineReference::fromString($request->query->get('filePath') . ':' . $value)),
+            'add-reply'    => new AddCommentReplyAction($this->commentRepository->find((int)$value)),
+            'edit-comment' => new EditCommentAction($this->commentRepository->find((int)$value)),
+            'edit-reply'   => new EditCommentReplyAction($this->replyRepository->find((int)$value)),
+            default        => null,
+        };
     }
 }

@@ -11,16 +11,16 @@ export default class Review extends Controller {
     }
 
     addComment(target) {
-        const location = this.filterUrl(new URL(window.location.href));
+        const location = new URL(window.location.href);
         location.searchParams.set('filePath', this.role('revision-file').dataset.file);
-        location.searchParams.set('addComment', target.dataset.line + ':' + target.dataset.lineOffset + ':' + target.dataset.lineAfter);
+        location.searchParams.set('action', 'add-comment:' + target.dataset.line + ':' + target.dataset.lineOffset + ':' + target.dataset.lineAfter);
         window.location = location.toString();
     }
 
     editComment(target) {
-        const location = this.filterUrl(new URL(window.location.href));
+        const location = new URL(window.location.href);
         location.searchParams.set('filePath', this.role('revision-file').dataset.file);
-        location.searchParams.set('editComment', target.dataset.commentId);
+        location.searchParams.set('action', 'edit-comment:' + target.dataset.commentId);
         window.location = location.toString();
     }
 
@@ -31,15 +31,15 @@ export default class Review extends Controller {
     }
 
     replyToComment(target) {
-        const location = this.filterUrl(new URL(window.location.href));
-        location.searchParams.set('replyComment', target.dataset.replyTo);
+        const location = new URL(window.location.href);
+        location.searchParams.set('action', 'add-reply:' + target.dataset.replyTo);
         window.location = location.toString();
     }
 
     editReply(target) {
-        const location = this.filterUrl(new URL(window.location.href));
+        const location = new URL(window.location.href);
         location.searchParams.set('filePath', this.role('revision-file').dataset.file);
-        location.searchParams.set('editReply', target.dataset.replyId);
+        location.searchParams.set('action', 'edit-reply:' + target.dataset.replyId);
         window.location = location.toString();
     }
 
@@ -47,16 +47,5 @@ export default class Review extends Controller {
         if (confirm(target.dataset.confirmMessage)) {
             target.closest('form').submit();
         }
-    }
-
-    /**
-     * Cleanup existing url actions
-     */
-    filterUrl(url) {
-        url.searchParams.delete('addComment');
-        url.searchParams.delete('editComment');
-        url.searchParams.delete('replyComment');
-        url.searchParams.delete('editReply');
-        return url;
     }
 }

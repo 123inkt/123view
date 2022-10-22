@@ -18,10 +18,7 @@ export default class Comment extends Controller {
 
     cancelComment()  {
         const location = new URL(window.location.href);
-        location.searchParams.delete('addComment');
-        location.searchParams.delete('editComment');
-        location.searchParams.delete('replyComment');
-        location.searchParams.delete('editReply');
+        location.searchParams.delete('action');
         window.location = location.toString();
     }
 }
