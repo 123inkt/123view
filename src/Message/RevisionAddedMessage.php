@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Message;
 
 /**
  * Message to notify consumers a new revision was added to the database.
- * @codeCoverageIgnore
  */
 class RevisionAddedMessage implements AsyncMessageInterface, WebhookEventInterface
 {
@@ -23,6 +22,6 @@ class RevisionAddedMessage implements AsyncMessageInterface, WebhookEventInterfa
      */
     public function getPayload(): array
     {
-        return ['revision-id' => $this->revisionId];
+        return ['revisionId' => $this->revisionId];
     }
 }
