@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Webhook;
 
-use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
 
 #[ORM\Entity(repositoryClass: WebhookActivityRepository::class)]
 class WebhookActivity
@@ -33,6 +33,9 @@ class WebhookActivity
 
     #[ORM\Column(type: 'integer')]
     private ?int $createTimestamp = null;
+
+    #[ORM\ManyToOne(targetEntity: WebhookActivity::class, cascade: ['persist'], inversedBy: 'activities')]
+    private ?Webhook $webhook = null;
 
     public function getId(): ?int
     {
@@ -119,6 +122,18 @@ class WebhookActivity
     public function setCreateTimestamp(int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
+
+        return $this;
+    }
+
+    public function getWebhook(): ?Webhook
+    {
+        return $this->webhook;
+    }
+
+    public function setWebhook(?Webhook $webhook): WebhookActivity
+    {
+        $this->webhook = $webhook;
 
         return $this;
     }

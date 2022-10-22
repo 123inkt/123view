@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Entity\Webhook;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
 
@@ -29,6 +31,15 @@ class Webhook
     /** @var array<string, string> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $headers = [];
+
+    /** @phpstan-var Collection<int, WebhookActivity> */
+    #[ORM\OneToMany(mappedBy: 'webhook', targetEntity: WebhookActivity::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $activities;
+
+    public function __construct()
+    {
+        $this->activities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +70,18 @@ class Webhook
         return $this;
     }
 
+    public function getRetries(): ?int
+    {
+        return $this->retries;
+    }
+
+    public function setRetries(?int $retries): Webhook
+    {
+        $this->retries = $retries;
+
+        return $this;
+    }
+
     public function isVerifySsl(): ?bool
     {
         return $this->verifySsl;
@@ -85,6 +108,24 @@ class Webhook
     public function setHeaders(array $headers): self
     {
         $this->headers = $headers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WebhookActivity>
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    /**
+     * @param Collection<int, WebhookActivity> $activities
+     */
+    public function setActivities(Collection $activities): self
+    {
+        $this->activities = $activities;
 
         return $this;
     }
