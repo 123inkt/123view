@@ -5,14 +5,18 @@ namespace DR\GitCommitNotification\MessageHandler;
 
 use Doctrine\ORM\NonUniqueResultException;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
+use DR\GitCommitNotification\Message\ReviewCreated;
+use DR\GitCommitNotification\Message\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
@@ -22,7 +26,8 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
     public function __construct(
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
-        private CodeReviewRevisionMatcher $reviewRevisionMatcher
+        private CodeReviewRevisionMatcher $reviewRevisionMatcher,
+        private MessageBusInterface $bus
     ) {
     }
 
@@ -47,6 +52,8 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
             return;
         }
 
+        $reviewCreated = $review->getId() === null;
+
         $review->addRevision($revision);
 
         foreach ($review->getReviewers() as $reviewer) {
@@ -56,5 +63,11 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
         $this->reviewRepository->save($review, true);
 
         $this->logger?->info('MessageHandler: add revision ' . $revision->getCommitHash() . ' to review ' . $revision->getTitle());
+
+        // dispatch event
+        if ($reviewCreated) {
+            $this->bus->dispatch(new ReviewCreated((int)$review->getId()));
+        }
+        $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId()));
     }
 }

@@ -29,7 +29,7 @@ class WebhookController implements LoggerAwareInterface
      * review-rejected
      * reviewer-added
      * reviewer-removed
-     * revision-added
+     * review-revision-added
      */
 
     /**
