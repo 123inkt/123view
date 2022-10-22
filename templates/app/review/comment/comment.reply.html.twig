@@ -18,3 +18,7 @@
         {{ reply.message|markdown }}
     </div>
 </div>
+
+{% if editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
+    {% include 'app/review/comment/comment.modify.html.twig' with {form: editReplyCommentForm.form} %}
+{% endif %}

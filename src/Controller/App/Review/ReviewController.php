@@ -38,10 +38,11 @@ class ReviewController extends AbstractController
             : null;
         $replyToComment = $request->query->getInt('replyComment');
         $editComment    = $request->query->getInt('editComment');
+        $editReply      = $request->query->getInt('editReply');
 
         return [
             'breadcrumbs' => $this->breadcrumbFactory->createForReview($review),
-            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $lineReference, $replyToComment, $editComment)
+            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $lineReference, $replyToComment, $editComment, $editReply)
         ];
     }
 }

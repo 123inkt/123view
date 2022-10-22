@@ -13,10 +13,11 @@ use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
-    private ?CommentsViewModel     $commentsViewModel = null;
-    private ?AddCommentViewModel   $addCommentForm    = null;
-    private ?EditCommentViewModel  $editCommentForm   = null;
-    private ?ReplyCommentViewModel $replyCommentForm  = null;
+    private ?CommentsViewModel         $commentsViewModel    = null;
+    private ?AddCommentViewModel       $addCommentForm       = null;
+    private ?EditCommentViewModel      $editCommentForm      = null;
+    private ?ReplyCommentViewModel     $replyCommentForm     = null;
+    private ?EditCommentReplyViewModel $editReplyCommentForm = null;
 
     /**
      * @param ExternalLink[] $externalLinks
@@ -75,6 +76,16 @@ class ReviewViewModel
     public function setReplyCommentForm(?ReplyCommentViewModel $replyCommentForm): void
     {
         $this->replyCommentForm = $replyCommentForm;
+    }
+
+    public function getEditReplyCommentForm(): ?EditCommentReplyViewModel
+    {
+        return $this->editReplyCommentForm;
+    }
+
+    public function setEditReplyCommentForm(?EditCommentReplyViewModel $editReplyCommentForm): void
+    {
+        $this->editReplyCommentForm = $editReplyCommentForm;
     }
 
     public function getFileTreeModel(): FileTreeViewModel
