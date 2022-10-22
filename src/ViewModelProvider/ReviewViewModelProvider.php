@@ -5,14 +5,17 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Form\Review\AddCommentFormType;
 use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Form\Review\EditCommentFormType;
 use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
+use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
+use DR\GitCommitNotification\Model\Review\Action\AddCommentAction;
+use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
+use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
+use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
@@ -33,7 +36,6 @@ class ReviewViewModelProvider
     public function __construct(
         private readonly ExternalLinkRepository $linkRepository,
         private readonly CommentRepository $commentRepository,
-        private readonly CommentReplyRepository $replyRepository,
         private readonly GitCodeReviewDiffService $diffService,
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
@@ -44,14 +46,8 @@ class ReviewViewModelProvider
     /**
      * @throws Throwable
      */
-    public function getViewModel(
-        CodeReview $review,
-        ?string $filePath,
-        ?LineReference $lineReference,
-        int $replyToComment,
-        int $editComment,
-        int $editReply
-    ): ReviewViewModel {
+    public function getViewModel(CodeReview $review, ?string $filePath, AbstractReviewAction $reviewAction): ReviewViewModel
+    {
         $files = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
 
         // find selected file
@@ -68,40 +64,37 @@ class ReviewViewModelProvider
             $this->linkRepository->findAll()
         );
 
-        if ($selectedFile !== null && $lineReference !== null) {
-            $viewModel->setAddCommentForm($this->getAddCommentViewModel($review, $selectedFile, $lineReference));
-        }
-
         if ($selectedFile !== null) {
             $viewModel->setCommentsViewModel($this->getCommentsViewModel($review, $selectedFile));
         }
 
-        if ($editComment > 0) {
-            $viewModel->setEditCommentForm($this->getEditCommentViewModel($editComment));
-        }
-
-        if ($replyToComment > 0) {
-            $viewModel->setReplyCommentForm($this->getReplyCommentViewModel($replyToComment));
-        }
-
-        if ($editReply > 0) {
-            $viewModel->setEditReplyCommentForm($this->getEditCommentReplyViewModel($editReply));
+        // setup action forms
+        if ($selectedFile !== null && $reviewAction instanceof AddCommentAction) {
+            $viewModel->setAddCommentForm($this->getAddCommentViewModel($review, $selectedFile, $reviewAction));
+        } elseif ($reviewAction instanceof EditCommentAction) {
+            $viewModel->setEditCommentForm($this->getEditCommentViewModel($reviewAction));
+        } elseif ($reviewAction instanceof AddCommentReplyAction) {
+            $viewModel->setReplyCommentForm($this->getReplyCommentViewModel($reviewAction));
+        } elseif ($reviewAction instanceof EditCommentReplyAction) {
+            $viewModel->setEditReplyCommentForm($this->getEditCommentReplyViewModel($reviewAction));
         }
 
         return $viewModel;
     }
 
-    public function getAddCommentViewModel(CodeReview $review, DiffFile $file, LineReference $lineReference): AddCommentViewModel
+    public function getAddCommentViewModel(CodeReview $review, DiffFile $file, AddCommentAction $action): AddCommentViewModel
     {
-        $line = Type::notNull($this->diffFinder->findLineInFile($file, $lineReference));
+        $lineReference = $action->lineReference;
+        $line          = Type::notNull($this->diffFinder->findLineInFile($file, $lineReference));
+
         $form = $this->formFactory->create(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])->createView();
 
         return new AddCommentViewModel($form, $line);
     }
 
-    public function getEditCommentViewModel(int $editCommentId): ?EditCommentViewModel
+    public function getEditCommentViewModel(EditCommentAction $action): ?EditCommentViewModel
     {
-        $comment = $this->commentRepository->find($editCommentId);
+        $comment = $action->comment;
         if ($comment === null) {
             return null;
         }
@@ -110,9 +103,9 @@ class ReviewViewModelProvider
         return new EditCommentViewModel($form, $comment);
     }
 
-    public function getReplyCommentViewModel(int $replyToComment): ?ReplyCommentViewModel
+    public function getReplyCommentViewModel(AddCommentReplyAction $action): ?ReplyCommentViewModel
     {
-        $comment = $this->commentRepository->find($replyToComment);
+        $comment = $action->comment;
         if ($comment === null) {
             return null;
         }
@@ -121,9 +114,9 @@ class ReviewViewModelProvider
         return new ReplyCommentViewModel($form, $comment);
     }
 
-    public function getEditCommentReplyViewModel(int $editReplyId): ?EditCommentReplyViewModel
+    public function getEditCommentReplyViewModel(EditCommentReplyAction $action): ?EditCommentReplyViewModel
     {
-        $reply = $this->replyRepository->find($editReplyId);
+        $reply = $action->reply;
         if ($reply === null) {
             return null;
         }

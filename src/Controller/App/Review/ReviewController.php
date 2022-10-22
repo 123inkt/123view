@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
+use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -18,8 +19,11 @@ use Throwable;
 
 class ReviewController extends AbstractController
 {
-    public function __construct(private readonly ReviewViewModelProvider $modelProvider, private readonly BreadcrumbFactory $breadcrumbFactory)
-    {
+    public function __construct(
+        private readonly ReviewViewModelProvider $modelProvider,
+        private readonly BreadcrumbFactory $breadcrumbFactory,
+        private readonly CodeReviewActionFactory $actionFactory
+    ) {
     }
 
     /**
@@ -32,17 +36,12 @@ class ReviewController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): array
     {
-        $filePath       = $request->query->get('filePath');
-        $lineReference  = $request->query->has('addComment')
-            ? LineReference::fromString($filePath . ':' . $request->query->get('addComment', ''))
-            : null;
-        $replyToComment = $request->query->getInt('replyComment');
-        $editComment    = $request->query->getInt('editComment');
-        $editReply      = $request->query->getInt('editReply');
+        $filePath = $request->query->get('filePath');
+        $action   = $this->actionFactory->createFromRequest($request);
 
         return [
             'breadcrumbs' => $this->breadcrumbFactory->createForReview($review),
-            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $lineReference, $replyToComment, $editComment, $editReply)
+            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $action)
         ];
     }
 }
