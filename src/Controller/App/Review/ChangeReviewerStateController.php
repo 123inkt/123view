@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
+use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -40,6 +41,10 @@ class ChangeReviewerStateController extends AbstractController
 
         $userReviewer->setState($state);
         if ($review->isAccepted()) {
+            // resolve all comments
+            foreach ($review->getComments() as $comment) {
+                $comment->setState(CommentStateType::RESOLVED);
+            }
             $review->setState(CodeReviewStateType::CLOSED);
         }
 
