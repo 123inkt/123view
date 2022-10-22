@@ -1,4 +1,4 @@
-{% macro recursiveFileTree(directory) %}
+{% macro recursiveFileTree(fileTreeModel, directory) %}
     {% import _self as self %}
 
     {% if directory.directories|length %}
@@ -6,7 +6,7 @@
             {% for subdirectory in directory.directories %}
                 <li class="review-file-tree--directory">
                     <i class="bi bi-folder-fill icon-directory"></i> {{ subdirectory.name }}
-                    {{ self.recursiveFileTree(subdirectory) }}
+                    {{ self.recursiveFileTree(fileTreeModel, subdirectory) }}
                 </li>
             {% endfor %}
         </ul>
@@ -31,12 +31,22 @@
                         {{ file.filename }}
                     </a>
 
-                    <span class="review-file-tree--lines-modified float-end">
+                    <span class="review-file-tree--file-status float-end">
+                        {% set commentStatus = fileTreeModel.getCommentsForFile(file) %}
+                        {% if commentStatus.total > 0 %}
+                            <span>
+                                {%- if commentStatus.unresolved > 0 -%}
+                                <span class="fw-bold text-danger">{{ commentStatus.unresolved }}</span>/
+                                {%- endif -%}
+                                <span class="fw-bold">{{- commentStatus.total -}}</span>
+                            </span>
+                        {% endif %}
+
                         {% if file.nrOfLinesAdded > 0 %}
-                            <span class="bold text-success">+{{ file.nrOfLinesAdded }}</span>
+                            <span class="ps-1 bold text-success">+{{ file.nrOfLinesAdded }}</span>
                         {% endif %}
                         {% if file.nrOfLinesRemoved > 0 %}
-                            <span class="bold text-danger">-{{ file.nrOfLinesRemoved }}</span>
+                            <span class="ps-1 bold text-danger">-{{ file.nrOfLinesRemoved }}</span>
                         {% endif %}
                     </span>
                 </li>
@@ -47,5 +57,5 @@
 {% from _self import recursiveFileTree %}
 
 <div class="review-file-tree--directories-root">
-    {{ recursiveFileTree(fileTree) }}
+    {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree) }}
 </div>

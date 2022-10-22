@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Form\Review\AddCommentFormType;
 use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Form\Review\EditCommentFormType;
+use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
@@ -19,6 +20,7 @@ use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\AddCommentViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\EditCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReplyCommentViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -56,7 +58,7 @@ class ReviewViewModelProvider
 
         $viewModel = new ReviewViewModel(
             $review,
-            $this->treeGenerator->generate($files)->flatten(),
+            $this->getFileTreeViewModel($review, $files),
             $selectedFile,
             $this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView(),
             $this->linkRepository->findAll()
@@ -109,6 +111,17 @@ class ReviewViewModelProvider
         $form = $this->formFactory->create(AddCommentReplyFormType::class, null, ['comment' => $comment])->createView();
 
         return new ReplyCommentViewModel($form, $comment);
+    }
+
+    /**
+     * @param DiffFile[] $files
+     */
+    public function getFileTreeViewModel(CodeReview $review, array $files): FileTreeViewModel
+    {
+        return new FileTreeViewModel(
+            $this->treeGenerator->generate($files)->flatten(),
+            $review->getComments()
+        );
     }
 
     public function getCommentsViewModel(CodeReview $review, DiffFile $file): CommentsViewModel

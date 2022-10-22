@@ -13,18 +13,17 @@ use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
-    private ?CommentsViewModel $commentsViewModel = null;
-    private ?AddCommentViewModel $addCommentForm = null;
-    private ?EditCommentViewModel $editCommentForm = null;
-    private ?ReplyCommentViewModel $replyCommentForm = null;
+    private ?CommentsViewModel     $commentsViewModel = null;
+    private ?AddCommentViewModel   $addCommentForm    = null;
+    private ?EditCommentViewModel  $editCommentForm   = null;
+    private ?ReplyCommentViewModel $replyCommentForm  = null;
 
     /**
-     * @param DirectoryTreeNode<DiffFile> $fileTree
-     * @param ExternalLink[]              $externalLinks
+     * @param ExternalLink[] $externalLinks
      */
     public function __construct(
         private readonly CodeReview $review,
-        private readonly DirectoryTreeNode $fileTree,
+        private readonly FileTreeViewModel $fileTreeModel,
         private readonly ?DiffFile $selectedFile,
         private readonly FormView $addReviewerForm,
         private readonly array $externalLinks
@@ -78,12 +77,9 @@ class ReviewViewModel
         $this->replyCommentForm = $replyCommentForm;
     }
 
-    /**
-     * @return DirectoryTreeNode<DiffFile>
-     */
-    public function getFileTree(): DirectoryTreeNode
+    public function getFileTreeModel(): FileTreeViewModel
     {
-        return $this->fileTree;
+        return $this->fileTreeModel;
     }
 
     public function getSelectedFile(): ?DiffFile
