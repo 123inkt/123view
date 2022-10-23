@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Message\ReviewAccepted;
 use DR\GitCommitNotification\Message\ReviewClosed;
 use DR\GitCommitNotification\Message\ReviewOpened;
 use DR\GitCommitNotification\Message\ReviewRejected;
+use DR\GitCommitNotification\Message\ReviewResumed;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class ReviewEventService
@@ -24,6 +25,8 @@ class ReviewEventService
             $this->bus->dispatch(new ReviewRejected((int)$review->getId()));
         } elseif ($wasAccepted === false && $review->isAccepted()) {
             $this->bus->dispatch(new ReviewAccepted((int)$review->getId()));
+        } elseif ($reviewerState === CodeReviewerStateType::OPEN) {
+            $this->bus->dispatch(new ReviewResumed((int)$review->getId()));
         }
     }
 
