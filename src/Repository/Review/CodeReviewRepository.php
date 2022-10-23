@@ -101,7 +101,7 @@ class CodeReviewRepository extends ServiceEntityRepository
             ->where('c.referenceId = :referenceId')
             ->andWhere('c.repository = :repositoryId')
             ->orderBy('c.id', 'DESC')
-            ->setParameter('match', $referenceId)
+            ->setParameter('referenceId', $referenceId)
             ->setParameter('repositoryId', $repositoryId)
             ->setMaxResults(1)
             ->getQuery()
