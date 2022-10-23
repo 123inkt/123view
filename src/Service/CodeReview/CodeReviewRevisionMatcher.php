@@ -34,16 +34,23 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
         $revisionTitle = $this->titleNormalizer->normalize((string)$revision->getTitle());
 
         // get review id matcher
-        $reviewTitleIdentifier = $this->patternMatcher->match($revisionTitle);
-        if ($reviewTitleIdentifier === null) {
+        $referenceId = $this->patternMatcher->match($revisionTitle);
+        if ($referenceId === null) {
             $this->logger?->info('CodeReviewRevisionMatcher: revision doesn\'t match pattern: ' . $revision->getTitle());
 
             return null;
         }
 
         /** @var CodeReview|null $review */
-        $review = $this->reviewRepository->findOneByTitle((int)Type::notNull($revision->getRepository())->getId(), $reviewTitleIdentifier);
+        $review = $this->reviewRepository->findOneByReferenceId((int)Type::notNull($revision->getRepository())->getId(), $referenceId);
 
-        return $review ?? $this->reviewFactory->createFromRevision($revision);
+        // create new review, and generate project id
+        if ($review === null) {
+            $review = $this->reviewFactory->createFromRevision($revision, $referenceId);
+            $review->setProjectId($this->reviewRepository->getCreateProjectId((int)$revision->getRepository()?->getId()));
+            $this->logger?->info('Created new review CR-' . $review->getProjectId());
+        }
+
+        return $review;
     }
 }

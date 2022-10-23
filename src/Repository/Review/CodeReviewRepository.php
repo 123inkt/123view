@@ -43,6 +43,24 @@ class CodeReviewRepository extends ServiceEntityRepository
     }
 
     /**
+     * @throws NonUniqueResultException
+     */
+    public function getCreateProjectId(int $repositoryId): int
+    {
+        $query = $this->createQueryBuilder('c')
+            ->where('c.repository = :repositoryId')
+            ->setParameter('repositoryId', $repositoryId)
+            ->orderBy('c.projectId', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery();
+
+        /** @var CodeReview|null $review */
+        $review = $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+
+        return $review?->getProjectId() + 1;
+    }
+
+    /**
      * @return Paginator<CodeReview>
      */
     public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery): Paginator
@@ -76,14 +94,14 @@ class CodeReviewRepository extends ServiceEntityRepository
     /**
      * @throws NonUniqueResultException
      */
-    public function findOneByTitle(int $repositoryId, string $reviewTitleIdentifier): ?CodeReview
+    public function findOneByReferenceId(int $repositoryId, string $referenceId): ?CodeReview
     {
         /** @var CodeReview|null $review */
         $review = $this->createQueryBuilder('c')
-            ->where('c.title LIKE :match')
+            ->where('c.referenceId = :referenceId')
             ->andWhere('c.repository = :repositoryId')
             ->orderBy('c.id', 'DESC')
-            ->setParameter('match', $reviewTitleIdentifier . '%')
+            ->setParameter('match', $referenceId)
             ->setParameter('repositoryId', $repositoryId)
             ->setMaxResults(1)
             ->getQuery()

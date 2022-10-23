@@ -15,13 +15,17 @@ use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
 #[ORM\Index(['repository_id', 'state'], name: 'IDX_REPOSITORY_STATE')]
-#[ORM\Index(['reference_id'], name: 'IDX_REFERENCE_ID')]
+#[ORM\Index(['reference_id', 'repository_id'], name: 'IDX_REFERENCE_ID_REPOSITORY_ID')]
+#[ORM\UniqueConstraint('IDX_REPOSITORY_ID_PROJECT_ID', ['project_id', 'repository_id'])]
 class CodeReview
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column]
+    private ?int $projectId = null;
 
     #[ORM\Column(length: 255)]
     private ?string $referenceId = null;
@@ -64,6 +68,18 @@ class CodeReview
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(?int $projectId): CodeReview
+    {
+        $this->projectId = $projectId;
+
+        return $this;
     }
 
     public function getReferenceId(): ?string
