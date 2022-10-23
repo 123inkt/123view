@@ -29,8 +29,8 @@ class ChangeReviewerStateController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {
-        $reviewState = $review->getState();
-        $wasAccepted = $review->isAccepted();
+        $reviewState   = (string)$review->getState();
+        $reviewerState = $review->getReviewersState();
 
         $state = $request->request->get('state');
 
@@ -59,7 +59,7 @@ class ChangeReviewerStateController extends AbstractController
         $em->persist($userReviewer);
         $em->flush();
 
-        $this->eventService->reviewerStateChanged($review, $wasAccepted, $state);
+        $this->eventService->reviewerStateChanged($review, $reviewerState);
         $this->eventService->reviewStateChanged($review, $reviewState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);

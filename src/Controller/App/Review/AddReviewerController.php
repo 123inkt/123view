@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Message\ReviewerAdded;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,8 +21,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AddReviewerController extends AbstractController
 {
-    public function __construct(private CodeReviewRepository $codeReviewRepository, private MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly CodeReviewRepository $codeReviewRepository,
+        private readonly ReviewEventService $eventService,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     #[Route('app/reviews/{id<\d+>}/reviewer', name: self::class, methods: 'POST')]
@@ -29,6 +33,8 @@ class AddReviewerController extends AbstractController
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {
+        $reviewerState = $review->getReviewersState();
+
         $form = $this->createForm(AddReviewerFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);
         if ($form->isValid() === false) {
@@ -52,6 +58,7 @@ class AddReviewerController extends AbstractController
         $this->codeReviewRepository->save($review, true);
 
         $this->bus->dispatch(new ReviewerAdded((int)$review->getId(), (int)$user->getId()));
+        $this->eventService->reviewerStateChanged($review, $reviewerState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
     }

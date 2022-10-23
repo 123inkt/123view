@@ -19,11 +19,16 @@ class ReviewEventService
     {
     }
 
-    public function reviewerStateChanged(CodeReview $review, bool $wasAccepted, ?string $reviewerState): void
+    public function reviewerStateChanged(CodeReview $review, string $previousReviewerState): void
     {
+        $reviewerState = $review->getReviewersState();
+        if ($reviewerState === $previousReviewerState) {
+            return;
+        }
+
         if ($reviewerState === CodeReviewerStateType::REJECTED) {
             $this->bus->dispatch(new ReviewRejected((int)$review->getId()));
-        } elseif ($wasAccepted === false && $review->isAccepted()) {
+        } elseif ($reviewerState === CodeReviewerStateType::ACCEPTED) {
             $this->bus->dispatch(new ReviewAccepted((int)$review->getId()));
         } elseif ($reviewerState === CodeReviewerStateType::OPEN) {
             $this->bus->dispatch(new ReviewResumed((int)$review->getId()));

@@ -28,7 +28,7 @@ class RemoveReviewerController extends AbstractController
     public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse
     {
         $reviewState = $review->getState();
-        $wasAccepted = $review->isAccepted();
+        $reviewerState = $review->getReviewersState();
 
         $review->getReviewers()->removeElement($reviewer);
         if ($review->isAccepted()) {
@@ -44,7 +44,7 @@ class RemoveReviewerController extends AbstractController
         $em->persist($review);
         $em->flush();
 
-        $this->eventService->reviewerStateChanged($review, $wasAccepted, null);
+        $this->eventService->reviewerStateChanged($review, $reviewerState);
         $this->eventService->reviewStateChanged($review, $reviewState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
