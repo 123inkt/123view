@@ -8,7 +8,7 @@
         <div class="review-grid-header">
             <h3 class="mt-2">
                 <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
-                {{ 'CR-' ~ review.id ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
+                {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
             </h3>
 
             {% set reviewer = reviewModel.getReviewer(app.user) %}

@@ -24,6 +24,7 @@ class CodeReview
     #[ORM\Column]
     private ?int $id = null;
 
+    /** Unique key per project to have a incremental sequence per repository instead of a global sequence */
     #[ORM\Column]
     private ?int $projectId = null;
 
