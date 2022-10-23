@@ -74,7 +74,7 @@ class CodeReviewRepository extends ServiceEntityRepository
 
         if ($searchQuery !== '') {
             if (preg_match('/id:(\d+)/', $searchQuery, $matches) === 1) {
-                $query->andWhere('r.id = :id')->setParameter('id', $matches[1]);
+                $query->andWhere('r.projectId = :id')->setParameter('id', $matches[1]);
                 $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
             }
 
