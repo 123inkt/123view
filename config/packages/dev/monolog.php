@@ -7,7 +7,7 @@ return static function (MonologConfig $monolog) {
     $monolog->handler('main')
         ->type('stream')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
-        ->level('debug')
+        ->level('info')
         ->channel('!event');
 
     $monolog->handler('console')

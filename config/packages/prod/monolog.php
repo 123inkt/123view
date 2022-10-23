@@ -38,5 +38,5 @@ return static function (MonologConfig $monolog) {
 
     $monolog->handler('console')
         ->type('console')
-        ->level('debug');
+        ->level('info');
 };
