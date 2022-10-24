@@ -18,7 +18,7 @@ class RevisionPatternMatcher
         // match pattern against message
         if (preg_match('/' . $this->matchingPattern . '/', $message, $matches) === 1) {
             foreach ($this->matchingGroups as $matchingGroup) {
-                if (isset($matches[$matchingGroup])) {
+                if (isset($matches[$matchingGroup]) && $matches[$matchingGroup] !== '') {
                     return $matches[$matchingGroup];
                 }
             }
