@@ -37,6 +37,9 @@ class CodeReview
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     private string $state = CodeReviewStateType::OPEN;
 
+    #[ORM\Column]
+    private ?int $createTimestamp = null;
+
     #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
@@ -115,6 +118,18 @@ class CodeReview
     public function setState(string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getCreateTimestamp(): ?int
+    {
+        return $this->createTimestamp;
+    }
+
+    public function setCreateTimestamp(?int $createTimestamp): self
+    {
+        $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
