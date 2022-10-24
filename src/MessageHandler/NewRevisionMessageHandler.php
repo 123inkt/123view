@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\MessageHandler;
 
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
+use DR\GitCommitNotification\Message\NewRevisionMessage;
 use DR\GitCommitNotification\Message\ReviewCreated;
 use DR\GitCommitNotification\Message\ReviewOpened;
 use DR\GitCommitNotification\Message\ReviewRevisionAdded;
-use DR\GitCommitNotification\Message\RevisionAddedMessage;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
@@ -21,9 +21,10 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
+use Throwable;
 
 #[AsMessageHandler]
-class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
+class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -31,14 +32,15 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
         private CodeReviewRevisionMatcher $reviewRevisionMatcher,
+        private ManagerRegistry $registry,
         private MessageBusInterface $bus
     ) {
     }
 
     /**
-     * @throws NonUniqueResultException
+     * @throws Throwable
      */
-    public function __invoke(RevisionAddedMessage $message): void
+    public function __invoke(NewRevisionMessage $message): void
     {
         $this->logger?->info("MessageHandler: revision: " . $message->revisionId);
         $revision = $this->revisionRepository->find($message->revisionId);
@@ -69,7 +71,13 @@ class RevisionAddedMessageHandler implements MessageHandlerInterface, LoggerAwar
             $reviewOpened = true;
         }
 
-        $this->reviewRepository->save($review, true);
+        try {
+            $this->reviewRepository->save($review, true);
+        } catch (Throwable $exception) {
+            $this->logger?->error('review persist failure: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
+            $this->registry->resetManager();
+            throw $exception;
+        }
 
         $this->logger?->info('MessageHandler: add revision ' . $revision->getCommitHash() . ' to review ' . $revision->getTitle());
 

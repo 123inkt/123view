@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\MessageHandler;
 
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Message\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Message\RevisionAddedMessage;
+use DR\GitCommitNotification\Message\NewRevisionMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
@@ -39,7 +39,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
     private function dispatchRevisions(array $revisions): void
     {
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new RevisionAddedMessage((int)$revision->getId()));
+            $this->bus->dispatch(new NewRevisionMessage((int)$revision->getId()));
         }
     }
 
