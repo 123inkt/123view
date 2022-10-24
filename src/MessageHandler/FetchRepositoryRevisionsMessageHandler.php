@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\MessageHandler;
 
+use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Message\FetchRepositoryRevisionsMessage;
 use DR\GitCommitNotification\Message\NewRevisionMessage;
@@ -10,12 +11,12 @@ use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
 use DR\GitCommitNotification\Service\Revision\RevisionFactory;
-use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
@@ -29,6 +30,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         private GitLogService $logService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
+        private ManagerRegistry $registry,
         private MessageBusInterface $bus
     ) {
     }
@@ -44,7 +46,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function __invoke(FetchRepositoryRevisionsMessage $message): void
     {
@@ -91,7 +93,13 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
                 }
             }
 
-            $this->revisionRepository->flush();
+            try {
+                $this->revisionRepository->flush();
+            } catch (Throwable $exception) {
+                $this->logger?->error('review persist failure: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
+                $this->registry->resetManager();
+                throw $exception;
+            }
             $this->dispatchRevisions($revisions);
         }
 
