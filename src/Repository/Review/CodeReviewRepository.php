@@ -84,7 +84,14 @@ class CodeReviewRepository extends ServiceEntityRepository
             }
 
             if ($searchQuery !== '') {
-                $query->andWhere('r.title LIKE :title')->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
+                if (preg_match('/^\d+$/', $searchQuery) === 1) {
+                    $query->andWhere('r.title LIKE :title OR r.projectId = :projectId')
+                        ->setParameter('projectId', $searchQuery)
+                        ->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
+                } else {
+                    $query->andWhere('r.title LIKE :title')
+                        ->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
+                }
             }
         }
 

@@ -7,6 +7,15 @@ class RevisionTitleNormalizer
 {
     public function normalize(string $title): string
     {
-        return (string)preg_replace('/^Revert\s+"(.*)"$/', '$1', trim($title));
+        for ($i = 0; $i < 10; $i++) {
+            $titleBefore = $title;
+            $title       = (string)preg_replace('/^Revert\s+"(.*)"$/', '$1', trim($title));
+
+            if ($titleBefore === $title) {
+                break;
+            }
+        }
+
+        return $title;
     }
 }
