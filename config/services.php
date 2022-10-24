@@ -88,7 +88,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
 
     // custom register with matching pattern
-    $services->set(RevisionPatternMatcher::class)->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%');
+    $services->set(RevisionPatternMatcher::class)
+        ->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%')
+        ->arg('$matchingGroups', '%env(CODE_REVIEW_MATCHING_GROUPS)%');
 
     // Register Git
     $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
