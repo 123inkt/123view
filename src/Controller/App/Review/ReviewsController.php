@@ -30,13 +30,13 @@ class ReviewsController extends AbstractController
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
     {
-        $searchQuery = trim((string)$request->query->get('search'));
+        $searchQuery = trim($request->query->get('search', 'state:open'));
         $page        = $request->query->getInt('page', 1);
         $paginator   = $this->reviewRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
 
         return [
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
-            'reviewsModel' => new ReviewsViewModel($paginator, $page, $searchQuery)
+            'reviewsModel' => new ReviewsViewModel($repository, $paginator, $page, $searchQuery)
         ];
     }
 }

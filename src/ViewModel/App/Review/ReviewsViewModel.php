@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 
 class ReviewsViewModel
@@ -11,8 +12,17 @@ class ReviewsViewModel
     /**
      * @param Paginator<CodeReview> $reviews
      */
-    public function __construct(private readonly Paginator $reviews, private readonly int $page, private readonly string $searchQuery)
+    public function __construct(
+        private readonly Repository $repository,
+        private readonly Paginator $reviews,
+        private readonly int $page,
+        private readonly string $searchQuery
+    ) {
+    }
+
+    public function getRepository(): Repository
     {
+        return $this->repository;
     }
 
     public function getSearchQuery(): string

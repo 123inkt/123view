@@ -100,5 +100,9 @@ return [
     'page.title.single.sign.on'                   => 'Login',
     'Exclude merge commits'                       => 'Exclude merge commits',
     'redirect.access.denied.session.expired'      => 'Your session has expired.',
-    'discussion.points.to.modified.code'          => 'Discussion is pointing towards a modified code fragment. Comment was originally at line {line}.'
+    'discussion.points.to.modified.code'          => 'Discussion is pointing towards a modified code fragment. Comment was originally at line {line}.',
+    'all.reviews'                                 => 'All reviews',
+    'open.reviews'                                => 'Open reviews',
+    'closed.reviews'                              => 'Closed reviews',
+    'review.search.hint'                          => 'Search any review, or for a specific id with <code>id:12345</code> or for specific state with <code>state:open|closed</code>.'
 ];
