@@ -32,7 +32,7 @@ class ReviewsController extends AbstractController
     {
         $searchQuery = trim($request->query->get('search', 'state:open'));
         $page        = $request->query->getInt('page', 1);
-        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
+        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), (int)$repository->getId(), $page, $searchQuery);
 
         return [
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),

@@ -8,6 +8,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 
 /**
@@ -63,7 +64,7 @@ class CodeReviewRepository extends ServiceEntityRepository
     /**
      * @return Paginator<CodeReview>
      */
-    public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery): Paginator
+    public function getPaginatorForSearchQuery(User $user, int $repositoryId, int $page, string $searchQuery): Paginator
     {
         $query = $this->createQueryBuilder('r')
             ->where('r.repository = :repositoryId')
@@ -72,6 +73,7 @@ class CodeReviewRepository extends ServiceEntityRepository
             ->setFirstResult(max(0, $page - 1) * 50)
             ->setMaxResults(50);
 
+        // TODO refactor to search query factory
         if ($searchQuery !== '') {
             if (preg_match('/id:(\d+)/', $searchQuery, $matches) === 1) {
                 $query->andWhere('r.projectId = :id')->setParameter('id', $matches[1]);
@@ -80,6 +82,18 @@ class CodeReviewRepository extends ServiceEntityRepository
 
             if (preg_match('/state:(\w+)/', $searchQuery, $matches) === 1) {
                 $query->andWhere('r.state = :state')->setParameter('state', $matches[1]);
+                $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
+            }
+            
+            if (preg_match('/author:(\w+)/', $searchQuery, $matches) === 1) {
+                // search for current user
+                if ($matches[1] === 'me') {
+                    $query->innerJoin('r.revisions', 'rv', 'WITH', 'rv.authorEmail = :authorEmail');
+                    $query->setParameter('authorEmail', (string)$user->getEmail());
+                } else {
+                    $query->innerJoin('r.revisions', 'rv', 'WITH', 'rv.authorEmail LIKE :searchAuthor OR rv.authorName LIKE :searchAuthor');
+                    $query->setParameter('searchAuthor', '%' . addcslashes($matches[1], '%_') . '%');
+                }
                 $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
             }
 
