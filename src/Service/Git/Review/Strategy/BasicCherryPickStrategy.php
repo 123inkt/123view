@@ -53,7 +53,7 @@ class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
             $this->checkoutService->checkout($repository, 'master');
 
             // cleanup branch
-            $this->branchService->deleteBranch($repository, $branchName);
+            $this->branchService->tryDeleteBranch($repository, $branchName);
         }
 
         return $files;

@@ -73,11 +73,13 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
                 $this->cherryPickService->cherryPickRevisions([$revision]);
                 $pickable[] = $revision;
             } catch (RepositoryException|ProcessFailedException) {
-                $this->resetService->resetHard($repository);
-                $this->checkoutService->checkout($repository, 'master');
-                $this->branchService->deleteBranch($repository, $branchName);
+                break;
             }
         }
+
+        $this->resetService->resetHard($repository);
+        $this->checkoutService->checkout($repository, 'master');
+        $this->branchService->tryDeleteBranch($repository, $branchName);
 
         return $pickable;
     }

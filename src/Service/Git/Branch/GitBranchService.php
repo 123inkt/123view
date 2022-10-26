@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class GitBranchService implements LoggerAwareInterface
 {
@@ -18,6 +19,22 @@ class GitBranchService implements LoggerAwareInterface
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
     ) {
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function tryDeleteBranch(Repository $repository, string $ref): bool
+    {
+        try {
+            $this->deleteBranch($repository, $ref);
+
+            return true;
+        } catch (RepositoryException|ProcessFailedException $exception) {
+            $this->logger->notice('Recovered from exception', ['exception' => $exception]);
+
+            return false;
+        }
     }
 
     /**
