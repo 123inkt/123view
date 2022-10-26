@@ -12,7 +12,7 @@ use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class BasicCherryPickAllStrategy implements ReviewDiffStrategyInterface
+class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
 {
     public function __construct(
         private readonly GitCheckoutService $checkoutService,

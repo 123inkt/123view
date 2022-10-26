@@ -9,13 +9,24 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
+use DR\GitCommitNotification\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
+use DR\GitCommitNotification\Utility\Arrays;
 use DR\GitCommitNotification\Utility\Type;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
+use Traversable;
 use function count;
 
-class ReviewDiffService
+class ReviewDiffService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /**
+     * @param Traversable<ReviewDiffStrategyInterface> $reviewDiffStrategies
+     */
     public function __construct(
         private readonly GitDiffService $diffService,
         private readonly CacheInterface $revisionCache,
@@ -38,14 +49,12 @@ class ReviewDiffService
         // gather hashes
         $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
 
-        /** @var Revision $revision */
-        $revision = Type::notFalse(reset($revisions));
-        /** @var Repository $repository */
-        $repository = $revision->getRepository();
+        // obtain the repository from the first revision
+        $repository = Type::notNull(Arrays::first($revisions)->getRepository());
 
         $key = sprintf('%s-%s', $repository->getId(), implode('-', $hashes));
 
-        return $this->revisionCache->get($key, fn() => $this->getDiffFilesFromGit($repository, $revision, $revisions));
+        return $this->revisionCache->get($key, fn() => $this->getDiffFilesFromGit($repository, $revisions));
     }
 
     /**
@@ -54,15 +63,23 @@ class ReviewDiffService
      * @return DiffFile[]
      * @throws RepositoryException|ParseException
      */
-    private function getDiffFilesFromGit(Repository $repository, Revision $revision, array $revisions): array
+    private function getDiffFilesFromGit(Repository $repository, array $revisions): array
     {
         if (count($revisions) === 1) {
             // get the diff for the single revision
-            return $this->diffService->getDiffFromRevision($revision);
+            return $this->diffService->getDiffFromRevision(Arrays::first($revisions));
         }
 
+        /** @var ReviewDiffStrategyInterface $strategy */
+        foreach ($this->reviewDiffStrategies as $strategy) {
+            try {
+                return $strategy->getDiffFiles($repository, $revisions);
+            } catch (Throwable $exception) {
+                $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
+                continue;
+            }
+        }
 
-
-        return $files;
+        throw new RuntimeException('Failed to fetch diff for revisions. All strategies exhausted');
     }
 }
