@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Utility\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class GitCherryPickService implements LoggerAwareInterface
 {
@@ -44,6 +45,17 @@ class GitCherryPickService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         $this->logger?->info($output);
+    }
+
+    public function tryCherryPickAbort(Repository $repository): bool
+    {
+        try {
+            $this->cherryPickAbort($repository);
+
+            return true;
+        } catch (RepositoryException|ProcessFailedException) {
+            return false;
+        }
     }
 
     /**

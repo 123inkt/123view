@@ -15,6 +15,7 @@ use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 use DR\GitCommitNotification\Service\Git\Review\Strategy\BasicCherryPickStrategy;
+use DR\GitCommitNotification\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
@@ -101,5 +102,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 20]);
+    $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
     $services->set(ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
 };

@@ -10,8 +10,12 @@ use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
+use DR\GitCommitNotification\Utility\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
+/**
+ * Strategy tries to cherry-pick all revision hashes in a single pick.
+ */
 class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
 {
     public function __construct(
@@ -28,11 +32,8 @@ class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
      */
     public function getDiffFiles(Repository $repository, array $revisions): array
     {
-        $revision = reset($revisions);
-        assert($revision !== false);
-
         // create branch
-        $branchName = $this->checkoutService->checkoutRevision($revision);
+        $branchName = $this->checkoutService->checkoutRevision(Arrays::first($revisions));
 
         try {
             // cherry-pick revisions
