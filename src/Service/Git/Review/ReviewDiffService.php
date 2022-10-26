@@ -1,32 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\GitCommitNotification\Service\Git\Review;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\Branch\GitBranchService;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
-use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
 use DR\GitCommitNotification\Utility\Type;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
+use function count;
 
-class GitCodeReviewDiffService
+class ReviewDiffService
 {
     public function __construct(
-        private readonly GitCheckoutService $checkoutService,
-        private readonly GitCherryPickService $cherryPickService,
         private readonly GitDiffService $diffService,
-        private readonly GitResetService $resetService,
-        private readonly GitBranchService $branchService,
         private readonly CacheInterface $revisionCache,
+        private readonly Traversable $reviewDiffStrategies,
     ) {
     }
 
@@ -63,34 +56,12 @@ class GitCodeReviewDiffService
      */
     private function getDiffFilesFromGit(Repository $repository, Revision $revision, array $revisions): array
     {
-        if (count($revisions) === 0) {
+        if (count($revisions) === 1) {
             // get the diff for the single revision
             return $this->diffService->getDiffFromRevision($revision);
         }
 
-        // create branch
-        $branchName = $this->checkoutService->checkoutRevision($revision);
 
-        try {
-            // cherry-pick revisions
-            $this->cherryPickService->cherryPickRevisions($revisions);
-
-            // get the diff
-            $files = $this->diffService->getBundledDiffFromRevisions($repository);
-        } catch (RepositoryException | ProcessFailedException $exception) {
-            $this->cherryPickService->cherryPickAbort($repository);
-
-            throw $exception;
-        } finally {
-            // reset the repository again
-            $this->resetService->resetHard($repository);
-
-            // checkout master
-            $this->checkoutService->checkout($repository, 'master');
-
-            // cleanup branch
-            $this->branchService->deleteBranch($repository, $branchName);
-        }
 
         return $files;
     }

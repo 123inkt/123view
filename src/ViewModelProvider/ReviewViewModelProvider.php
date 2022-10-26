@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
-use DR\GitCommitNotification\Service\Git\GitCodeReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
@@ -22,7 +22,7 @@ class ReviewViewModelProvider
     public function __construct(
         private readonly ExternalLinkRepository $linkRepository,
         private readonly FileDiffViewModelProvider $fileDiffViewModelProvider,
-        private readonly GitCodeReviewDiffService $diffService,
+        private readonly ReviewDiffService $diffService,
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
         private readonly DiffFinder $diffFinder

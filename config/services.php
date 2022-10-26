@@ -13,6 +13,8 @@ use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\Strategy\BasicCherryPickAllStrategy;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
@@ -25,6 +27,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Security;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -95,4 +98,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Register Git
     $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
     $services->set(Git::class)->arg('$runner', service(CliRunner::class));
+
+    // Review diff strategies
+    $services->set(BasicCherryPickAllStrategy::class)->tag('review_diff_strategy', ['priority' => 20]);
+    $services->set(ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
 };
