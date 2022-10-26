@@ -56,6 +56,10 @@
     text-align: center;
 }
 
+.review-grid-sidebar {
+    padding-bottom: 50px;
+}
+
 .review-grid-sidebar .reviewer-state {
     display: block;
     float: left;
