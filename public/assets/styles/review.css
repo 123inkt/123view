@@ -50,6 +50,12 @@
     text-decoration: underline;
 }
 
+.review-file-tree--file-link .diff-file__file-change-state {
+    display: inline-block;
+    width: 12px;
+    text-align: center;
+}
+
 .review-grid-sidebar .reviewer-state {
     display: block;
     float: left;

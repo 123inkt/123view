@@ -77,6 +77,19 @@ class DirectoryTreeNode
         return $this;
     }
 
+    public function sort(callable $sorter): self
+    {
+        foreach ($this->directories as $directory) {
+            $directory->sort($sorter);
+        }
+
+        if (count($this->files) > 0) {
+            usort($this->files, $sorter);
+        }
+
+        return $this;
+    }
+
     /**
      * @param string[] $filepath
      * @param T        $item

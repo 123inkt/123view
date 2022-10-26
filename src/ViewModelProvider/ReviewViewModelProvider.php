@@ -57,7 +57,9 @@ class ReviewViewModelProvider
     public function getFileTreeViewModel(CodeReview $review, array $files): FileTreeViewModel
     {
         return new FileTreeViewModel(
-            $this->treeGenerator->generate($files)->flatten(),
+            $this->treeGenerator->generate($files)
+                ->flatten()
+                ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename())),
             $review->getComments()
         );
     }
