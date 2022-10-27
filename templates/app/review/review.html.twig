@@ -82,42 +82,38 @@
             {% endif %}
 
             {% if reviewModel.sidebarTabMode == 'overview' %}
-                <fieldset>
-                    <legend>Author</legend>
-                    {% for email, name in reviewModel.authors %}
-                        {{ name }}<br>
-                    {% endfor %}
-                </fieldset>
 
-                <fieldset>
-                    <legend>Reviewers</legend>
-                    {% for reviewer in review.reviewers %}
-                        <span class="reviewer-state">
-                            {%- if reviewer.state == 'accepted' -%}
-                                😃
-                            {%- elseif reviewer.state == 'rejected' -%}
-                                😞
-                            {%- endif -%}
-                        </span>
+                <h5>Author</h5>
+                {% for email, name in reviewModel.authors %}
+                    {{ name }}<br>
+                {% endfor %}
 
-                        <span class="reviewer-name">{{ reviewer.user.name }}</span>
+                <h5 class="mt-2">Reviewers</h5>
+                {% for reviewer in review.reviewers %}
+                    <span class="reviewer-state">
+                        {%- if reviewer.state == 'accepted' -%}
+                            😃
+                        {%- elseif reviewer.state == 'rejected' -%}
+                            😞
+                        {%- endif -%}
+                    </span>
 
-                        <form method="POST"
-                              class="d-inline-block"
-                              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
-                            <input type="hidden" name="_method" value="DELETE"/>
-                            <button type="submit" class="btn-close reviewer-remove"></button>
-                        </form><br>
+                    <span class="reviewer-name">{{ reviewer.user.name }}</span>
 
-                    {% endfor %}
+                    <form method="POST"
+                          class="d-inline-block"
+                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit" class="btn-close reviewer-remove"></button>
+                    </form><br>
 
-                    {{ form(reviewModel.addReviewerForm) }}
-                </fieldset>
+                {% endfor %}
 
-                <fieldset>
-                    <legend>Files</legend>
-                    {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
-                </fieldset>
+                {{ form(reviewModel.addReviewerForm) }}
+
+                <h5 class="mt-2">Files</h5>
+                {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
+
             {% endif %}
         </div>
 
