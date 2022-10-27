@@ -1,4 +1,4 @@
-{% macro recursiveFileTree(fileTreeModel, directory) %}
+{% macro recursiveFileTree(fileTreeModel, directory, treeDepth) %}
     {% import _self as self %}
 
     {% if directory.directories|length %}
@@ -6,14 +6,14 @@
             {% for subdirectory in directory.directories %}
                 <li class="review-file-tree--directory">
                     <i class="bi bi-folder-fill icon-directory"></i> {{ subdirectory.name }}
-                    {{ self.recursiveFileTree(fileTreeModel, subdirectory) }}
+                    {{ self.recursiveFileTree(fileTreeModel, subdirectory, treeDepth + 1) }}
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
 
     {% if directory.files|length %}
-        <ul class="review-file-tree--files">
+        <ul class="review-file-tree--files text-nowrap {% if treeDepth == 0 %}review-file-tree--files-root{% endif %}">
             {% for file in directory.files %}
                 <li class="review-file-tree--file">
 
@@ -58,5 +58,5 @@
 {% from _self import recursiveFileTree %}
 
 <div class="review-file-tree--directories-root">
-    {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree) }}
+    {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}
 </div>
