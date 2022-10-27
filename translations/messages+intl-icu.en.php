@@ -114,4 +114,5 @@ return [
     'detach.revisions'                            => 'Detach revision(s)',
     'review.no.authors'                           => 'No authors',
     'review.no.files'                             => 'No files',
+    'review.no.revisions'                         => 'No revisions',
 ];

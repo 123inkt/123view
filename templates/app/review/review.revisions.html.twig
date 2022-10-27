@@ -21,10 +21,12 @@
                 {{- revision.commitHash|slice(0, 7) }}
             </small>
         </div>
+    {% else %}
+        <em>{{ 'review.no.revisions'|trans }}</em>
 
     {%- endfor -%}
 
-    <div class="pt-3">
+    <div class="pt-3 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
         {{ form_widget(detachRevisionForm.detach) }}
     </div>
 
