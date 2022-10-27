@@ -7,12 +7,14 @@ use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Message\ReviewAccepted;
 use DR\GitCommitNotification\Message\ReviewClosed;
 use DR\GitCommitNotification\Message\ReviewerAdded;
 use DR\GitCommitNotification\Message\ReviewOpened;
 use DR\GitCommitNotification\Message\ReviewRejected;
 use DR\GitCommitNotification\Message\ReviewResumed;
+use DR\GitCommitNotification\Message\ReviewRevisionRemoved;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class ReviewEventService
@@ -53,6 +55,16 @@ class ReviewEventService
             $this->bus->dispatch(new ReviewOpened((int)$review->getId()));
         } elseif ($review->getState() === CodeReviewStateType::CLOSED) {
             $this->bus->dispatch(new ReviewClosed((int)$review->getId()));
+        }
+    }
+
+    /**
+     * @param Revision[] $detachedRevisions
+     */
+    public function detachRevisions(CodeReview $review, array $detachedRevisions): void
+    {
+        foreach ($detachedRevisions as $revision) {
+            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId()));
         }
     }
 }

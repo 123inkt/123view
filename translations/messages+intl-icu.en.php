@@ -112,4 +112,6 @@ return [
     'author'                                      => 'Author',
     'accept.open.comments'                        => 'There are still {count} open comments.',
     'detach.revisions'                            => 'Detach revision(s)',
+    'review.no.authors'                           => 'No authors',
+    'review.no.files'                             => 'No files',
 ];

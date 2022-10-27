@@ -18,6 +18,11 @@ class DirectoryTreeNode
     {
     }
 
+    public function isEmpty(): bool
+    {
+        return count($this->directories) === 0 && count($this->files) === 0;
+    }
+
     public function getName(): string
     {
         return $this->name;

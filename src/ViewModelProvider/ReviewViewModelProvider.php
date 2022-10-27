@@ -58,7 +58,7 @@ class ReviewViewModelProvider
             $viewModel->setFileTreeModel($this->getFileTreeViewModel($review, $files, $selectedFile));
         }
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_REVISIONS) {
-            $viewModel->setRevisionViewModel($this->getRevisionViewModel($revisions));
+            $viewModel->setRevisionViewModel($this->getRevisionViewModel($review, $revisions));
         }
 
         return $viewModel;
@@ -67,11 +67,11 @@ class ReviewViewModelProvider
     /**
      * @param Revision[] $revisions
      */
-    public function getRevisionViewModel(array $revisions): ReviewRevisionViewModel
+    public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
     {
         return new ReviewRevisionViewModel(
             $revisions,
-            $this->formFactory->create(DetachRevisionsForm::class, null, ['revisions' => $revisions])->createView()
+            $this->formFactory->create(DetachRevisionsForm::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])->createView()
         );
     }
 
