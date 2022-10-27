@@ -110,5 +110,6 @@ return [
     'files'                                       => 'Files',
     'reviewers'                                   => 'Reviewers',
     'author'                                      => 'Author',
-    'accept.open.comments'                        => 'There are still {count} open comments.'
+    'accept.open.comments'                        => 'There are still {count} open comments.',
+    'detach.revisions'                            => 'Detach revision(s)',
 ];

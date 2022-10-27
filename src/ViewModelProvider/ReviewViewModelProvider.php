@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
+use DR\GitCommitNotification\Form\Review\DetachRevisionsForm;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
@@ -34,7 +35,8 @@ class ReviewViewModelProvider
      */
     public function getViewModel(CodeReview $review, ?string $filePath, string $sidebarTab, ?AbstractReviewAction $reviewAction): ReviewViewModel
     {
-        $files = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
+        $revisions = $review->getRevisions()->toArray();
+        $files     = $this->diffService->getDiffFiles($revisions);
 
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);
@@ -44,12 +46,20 @@ class ReviewViewModelProvider
 
         $viewModel = new ReviewViewModel(
             $review,
-            $this->getFileTreeViewModel($review, $files, $selectedFile),
             $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction),
-            $this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView(),
             $this->linkRepository->findAll()
         );
+
         $viewModel->setSidebarTabMode($sidebarTab);
+        if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_OVERVIEW) {
+            $viewModel->setAddReviewerForm($this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView());
+            $viewModel->setFileTreeModel($this->getFileTreeViewModel($review, $files, $selectedFile));
+        }
+        if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_REVISIONS) {
+            $viewModel->setDetachRevisionForm(
+                $this->formFactory->create(DetachRevisionsForm::class, null, ['revisions' => $revisions])->createView()
+            );
+        }
 
         return $viewModel;
     }
