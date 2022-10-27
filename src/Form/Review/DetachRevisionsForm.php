@@ -5,9 +5,12 @@ namespace DR\GitCommitNotification\Form\Review;
 
 use DR\GitCommitNotification\Entity\Review\Revision;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DetachRevisionsForm extends AbstractType
@@ -32,17 +35,20 @@ class DetachRevisionsForm extends AbstractType
 
         //$builder->setAction($this->urlGenerator->generate(UpdateCommentReplyController::class, ['id' => $reply->getId()]));
         $builder->setMethod('POST');
-        $builder->add('revisionList', ChoiceType::class, [
-            'required'                  => false,
-            'label'                     => false,
-            'choice_translation_domain' => false,
-            //'choice_label'              => static fn(?Revision $rev) => (string)$rev?->getCommitHash(),
-            'choice_value'              => static fn(?Revision $rev) => (string)$rev?->getId(),
-            'choices'                   => $revisions,
-            'multiple'                  => true,
-            'expanded'                  => true
-        ]);
+
+        foreach ($revisions as $revision) {
+            $builder->add(
+                'rev' . $revision->getId(),
+                CheckboxType::class,
+                ['data' => true, 'label' => false, 'translation_domain' => false]
+            );
+        }
 
         $builder->add('detach', SubmitType::class, ['label' => 'detach.revisions']);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }

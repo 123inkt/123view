@@ -15,10 +15,10 @@ class ReviewViewModel
     public const SIDEBAR_TAB_OVERVIEW  = 'overview';
     public const SIDEBAR_TAB_REVISIONS = 'revisions';
 
-    private string             $sidebarTabMode     = self::SIDEBAR_TAB_OVERVIEW;
-    private ?FileTreeViewModel $fileTreeModel      = null;
-    private ?FormView          $detachRevisionForm = null;
-    private ?FormView          $addReviewerForm    = null;
+    private string                   $sidebarTabMode    = self::SIDEBAR_TAB_OVERVIEW;
+    private ?FileTreeViewModel       $fileTreeModel     = null;
+    private ?ReviewRevisionViewModel $revisionViewModel = null;
+    private ?FormView                $addReviewerForm   = null;
 
     /**
      * @param ExternalLink[] $externalLinks
@@ -50,14 +50,14 @@ class ReviewViewModel
         return $this->addReviewerForm;
     }
 
-    public function getDetachRevisionForm(): ?FormView
+    public function getRevisionViewModel(): ?ReviewRevisionViewModel
     {
-        return $this->detachRevisionForm;
+        return $this->revisionViewModel;
     }
 
-    public function setDetachRevisionForm(?FormView $detachRevisionForm): void
+    public function setRevisionViewModel(?ReviewRevisionViewModel $revisionViewModel): void
     {
-        $this->detachRevisionForm = $detachRevisionForm;
+        $this->revisionViewModel = $revisionViewModel;
     }
 
     public function setFileTreeModel(?FileTreeViewModel $fileTreeModel): void

@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Form\Review\DetachRevisionsForm;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
@@ -14,6 +15,7 @@ use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
 use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
+use DR\GitCommitNotification\ViewModel\App\Review\ReviewRevisionViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
@@ -56,12 +58,21 @@ class ReviewViewModelProvider
             $viewModel->setFileTreeModel($this->getFileTreeViewModel($review, $files, $selectedFile));
         }
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_REVISIONS) {
-            $viewModel->setDetachRevisionForm(
-                $this->formFactory->create(DetachRevisionsForm::class, null, ['revisions' => $revisions])->createView()
-            );
+            $viewModel->setRevisionViewModel($this->getRevisionViewModel($revisions));
         }
 
         return $viewModel;
+    }
+
+    /**
+     * @param Revision[] $revisions
+     */
+    public function getRevisionViewModel(array $revisions): ReviewRevisionViewModel
+    {
+        return new ReviewRevisionViewModel(
+            $revisions,
+            $this->formFactory->create(DetachRevisionsForm::class, null, ['revisions' => $revisions])->createView()
+        );
     }
 
     /**
