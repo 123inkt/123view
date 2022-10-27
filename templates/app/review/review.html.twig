@@ -12,7 +12,8 @@
             </h3>
 
             {% set reviewer = reviewModel.getReviewer(app.user) %}
-            {% if review.state == 'open' and reviewer and reviewer.state == 'open' %}
+
+            {% if review.state == 'open' and (reviewer == null or reviewer.state == 'open') %}
                 <form method="POST"
                       class="d-inline-block"
                       action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">

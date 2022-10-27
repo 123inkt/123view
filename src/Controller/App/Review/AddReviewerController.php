@@ -4,27 +4,24 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Message\ReviewerAdded;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AddReviewerController extends AbstractController
 {
     public function __construct(
         private readonly CodeReviewRepository $codeReviewRepository,
-        private readonly ReviewEventService $eventService,
-        private readonly MessageBusInterface $bus
+        private readonly CodeReviewerService $reviewerService,
+        private readonly ReviewEventService $eventService
     ) {
     }
 
@@ -48,16 +45,10 @@ class AddReviewerController extends AbstractController
             return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
         }
 
-        $reviewer = new CodeReviewer();
-        $reviewer->setUser($user);
-        $reviewer->setState(CodeReviewerStateType::OPEN);
-        $reviewer->setStateTimestamp(time());
-        $reviewer->setReview($review);
-        $review->getReviewers()->add($reviewer);
-
+        $reviewer = $this->reviewerService->addReviewer($review, $user);
         $this->codeReviewRepository->save($review, true);
 
-        $this->bus->dispatch(new ReviewerAdded((int)$review->getId(), (int)$user->getId()));
+        $this->eventService->reviewerAdded($review, $reviewer, true);
         $this->eventService->reviewerStateChanged($review, $reviewerState);
 
         return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
