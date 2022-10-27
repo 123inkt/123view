@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
+use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
@@ -11,7 +12,7 @@ use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
-    public const SIDEBAR_TAB_OVERVIEW = 'overview';
+    public const SIDEBAR_TAB_OVERVIEW  = 'overview';
     public const SIDEBAR_TAB_REVISIONS = 'revisions';
 
     private string $sidebarTabMode = self::SIDEBAR_TAB_OVERVIEW;
@@ -51,6 +52,18 @@ class ReviewViewModel
     public function getFileDiffViewModel(): FileDiffViewModel
     {
         return $this->fileDiffViewModel;
+    }
+
+    public function getOpenComments(): int
+    {
+        $count = 0;
+        foreach ($this->review->getComments() as $comment) {
+            if ($comment->getState() !== CommentStateType::RESOLVED) {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 
     /**

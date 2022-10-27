@@ -17,7 +17,17 @@
                       class="d-inline-block"
                       action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewerStateController', {id: review.id}) }}">
                     <input type="hidden" name="state" value="accepted"/>
-                    <button type="submit" class="btn btn-outline-success btn-sm">😃 {{ 'accept'|trans }}</button>
+
+
+                    {% set openComments = reviewModel.openComments %}
+                    <button type="submit"
+                            class="btn btn-outline-success btn-sm"
+                            {% if openComments > 0 %}title="{{ 'accept.open.comments'|trans({count: openComments}) }}"{% endif %}>
+                        😃 {{ 'accept'|trans }}
+                        {% if openComments > 0 %}
+                            ({{ openComments }})
+                        {% endif %}
+                    </button>
                 </form>
 
                 <form method="POST"
