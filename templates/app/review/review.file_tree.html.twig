@@ -15,7 +15,7 @@
     {% if directory.files|length %}
         <ul class="review-file-tree--files text-nowrap {% if treeDepth == 0 %}review-file-tree--files-root{% endif %}">
             {% for file in directory.files %}
-                <li class="review-file-tree--file">
+                <li class="review-file-tree--file {% if fileTreeModel.fileSelected(file) %}review-file-tree--selected{% endif %}">
 
                     <a href="?filePath={{ file.file.pathname|e('url') }}"
                        class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate me-2">

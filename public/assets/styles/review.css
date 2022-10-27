@@ -51,6 +51,10 @@
     grid-template-columns: 1fr auto;
 }
 
+.review-file-tree--file.review-file-tree--selected {
+    background: rgba(13, 110, 253, 0.07);
+}
+
 .review-file-tree--file-link:hover .review-file-tree--file-name {
     text-decoration: underline;
 }
@@ -59,6 +63,8 @@
     display: inline-block;
     text-align: center;
     width: 12px;
+    line-height: 20px;
+    vertical-align: baseline;
 }
 
 .review-grid-sidebar {

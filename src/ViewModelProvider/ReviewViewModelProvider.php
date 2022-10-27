@@ -44,7 +44,7 @@ class ReviewViewModelProvider
 
         $viewModel = new ReviewViewModel(
             $review,
-            $this->getFileTreeViewModel($review, $files),
+            $this->getFileTreeViewModel($review, $files, $selectedFile),
             $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction),
             $this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView(),
             $this->linkRepository->findAll()
@@ -57,13 +57,14 @@ class ReviewViewModelProvider
     /**
      * @param DiffFile[] $files
      */
-    public function getFileTreeViewModel(CodeReview $review, array $files): FileTreeViewModel
+    public function getFileTreeViewModel(CodeReview $review, array $files, ?DiffFile $selectedFile): FileTreeViewModel
     {
         return new FileTreeViewModel(
             $this->treeGenerator->generate($files)
                 ->flatten()
                 ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename())),
-            $review->getComments()
+            $review->getComments(),
+            $selectedFile
         );
     }
 }

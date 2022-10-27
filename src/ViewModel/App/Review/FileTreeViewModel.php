@@ -15,8 +15,13 @@ class FileTreeViewModel
      * @param DirectoryTreeNode<DiffFile> $fileTree
      * @param Collection<int, Comment>    $comments
      */
-    public function __construct(public readonly DirectoryTreeNode $fileTree, public readonly Collection $comments)
+    public function __construct(public readonly DirectoryTreeNode $fileTree, public readonly Collection $comments, private ?DiffFile $selectedFile)
     {
+    }
+
+    public function isFileSelected(DiffFile $file): bool
+    {
+        return $file === $this->selectedFile;
     }
 
     /**
