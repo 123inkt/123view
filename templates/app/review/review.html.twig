@@ -2,7 +2,6 @@
 
 {% block page_content %}
     {% set review = reviewModel.review %}
-    {% set revisions = review.revisions %}
 
     <div class="review-grid-layout" data-controller="Review">
         <div class="review-grid-header">
@@ -71,14 +70,7 @@
             </ul>
 
             {% if reviewModel.sidebarTabMode == 'revisions' %}
-                <fieldset>
-                    <legend>Revisions</legend>
-                    {%- for revision in revisions -%}
-                        <span title="{{ revision.authorName }} - {{ revision.commitHash }}">
-                            {{- revision.commitHash|slice(0, 7) }}{{ loop.last ? '' : ',' }}
-                        </span>
-                    {%- endfor -%}
-                </fieldset>
+               {% include 'app/review/review.revisions.html.twig' with {revisions: review.revisions} %}
             {% endif %}
 
             {% if reviewModel.sidebarTabMode == 'overview' %}

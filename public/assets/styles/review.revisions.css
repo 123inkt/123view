@@ -1,0 +1,17 @@
+.review-revision {
+    padding-top: 10px
+}
+
+.review-revision--grid {
+    display: grid;
+    grid-template-columns: auto 1fr 50px;
+    grid-column-gap: 5px;
+}
+
+.review-revision--author-time {
+    font-size: .9rem;
+}
+
+.review-revision--commit-hash {
+    font-size: .7rem;
+}
