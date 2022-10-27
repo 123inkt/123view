@@ -1,7 +1,3 @@
-.review-revision {
-    padding-top: 10px
-}
-
 .review-revision--grid {
     display: grid;
     grid-template-columns: auto 1fr 50px;

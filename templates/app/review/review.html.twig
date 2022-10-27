@@ -64,7 +64,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if reviewModel.sidebarTabMode == 'revisions' %}active{% endif %}"
-                       href="{{ url_query_params({tab: 'revisions'}) }}">{{ 'revisions'|trans }}
+                       href="{{ url_query_params({tab: 'revisions'}) }}">
+                        {{ 'revisions'|trans }} ({{ review.revisions|length }})
                     </a>
                 </li>
             </ul>
@@ -74,13 +75,12 @@
             {% endif %}
 
             {% if reviewModel.sidebarTabMode == 'overview' %}
-
-                <h5>Author</h5>
+                <h5 class="mt-3">{{ 'author'|trans }}</h5>
                 {% for email, name in reviewModel.authors %}
                     {{ name }}<br>
                 {% endfor %}
 
-                <h5 class="mt-2">Reviewers</h5>
+                <h5 class="mt-2">{{ 'reviewers'|trans }}</h5>
                 {% for reviewer in review.reviewers %}
                     <span class="reviewer-state">
                         {%- if reviewer.state == 'accepted' -%}
@@ -103,7 +103,7 @@
 
                 {{ form(reviewModel.addReviewerForm) }}
 
-                <h5 class="mt-2">Files</h5>
+                <h5 class="mt-2">{{ 'files'|trans }}</h5>
                 {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
 
             {% endif %}
