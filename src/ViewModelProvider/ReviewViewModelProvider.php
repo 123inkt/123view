@@ -32,7 +32,7 @@ class ReviewViewModelProvider
     /**
      * @throws Throwable
      */
-    public function getViewModel(CodeReview $review, ?string $filePath, ?AbstractReviewAction $reviewAction): ReviewViewModel
+    public function getViewModel(CodeReview $review, ?string $filePath, string $sidebarTab, ?AbstractReviewAction $reviewAction): ReviewViewModel
     {
         $files = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
 
@@ -42,13 +42,16 @@ class ReviewViewModelProvider
             $selectedFile = Type::notFalse(reset($files));
         }
 
-        return new ReviewViewModel(
+        $viewModel = new ReviewViewModel(
             $review,
             $this->getFileTreeViewModel($review, $files),
             $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction),
             $this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView(),
             $this->linkRepository->findAll()
         );
+        $viewModel->setSidebarTabMode($sidebarTab);
+
+        return $viewModel;
     }
 
     /**

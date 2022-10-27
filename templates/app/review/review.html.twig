@@ -56,51 +56,69 @@
 
         <div class="review-grid-sidebar">
 
-            <fieldset>
-                <legend>Revisions</legend>
-                {%- for revision in revisions -%}
-                    <span title="{{ revision.authorName }} - {{ revision.commitHash }}">
-                        {{- revision.commitHash|slice(0, 7) }}{{ loop.last ? '' : ',' }}
-                    </span>
-                {%- endfor -%}
-            </fieldset>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link {% if reviewModel.sidebarTabMode == 'overview' %}active{% endif %}"
+                       href="{{ url_query_params({tab: 'overview'}) }}">
+                        {{ 'overview'|trans }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if reviewModel.sidebarTabMode == 'revisions' %}active{% endif %}"
+                       href="{{ url_query_params({tab: 'revisions'}) }}">{{ 'revisions'|trans }}
+                    </a>
+                </li>
+            </ul>
 
-            <fieldset>
-                <legend>Author</legend>
-                {% for email, name in reviewModel.authors %}
-                    {{ name }}<br>
-                {% endfor %}
-            </fieldset>
+            {% if reviewModel.sidebarTabMode == 'revisions' %}
+                <fieldset>
+                    <legend>Revisions</legend>
+                    {%- for revision in revisions -%}
+                        <span title="{{ revision.authorName }} - {{ revision.commitHash }}">
+                            {{- revision.commitHash|slice(0, 7) }}{{ loop.last ? '' : ',' }}
+                        </span>
+                    {%- endfor -%}
+                </fieldset>
+            {% endif %}
 
-            <fieldset>
-                <legend>Reviewers</legend>
-                {% for reviewer in review.reviewers %}
-                    <span class="reviewer-state">
-                        {%- if reviewer.state == 'accepted' -%}
-                            😃
-                        {%- elseif reviewer.state == 'rejected' -%}
-                            😞
-                        {%- endif -%}
-                    </span>
+            {% if reviewModel.sidebarTabMode == 'overview' %}
+                <fieldset>
+                    <legend>Author</legend>
+                    {% for email, name in reviewModel.authors %}
+                        {{ name }}<br>
+                    {% endfor %}
+                </fieldset>
 
-                    <span class="reviewer-name">{{ reviewer.user.name }}</span>
+                <fieldset>
+                    <legend>Reviewers</legend>
+                    {% for reviewer in review.reviewers %}
+                        <span class="reviewer-state">
+                            {%- if reviewer.state == 'accepted' -%}
+                                😃
+                            {%- elseif reviewer.state == 'rejected' -%}
+                                😞
+                            {%- endif -%}
+                        </span>
 
-                    <form method="POST"
-                          class="d-inline-block"
-                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
-                        <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit" class="btn-close reviewer-remove"></button>
-                    </form><br>
+                        <span class="reviewer-name">{{ reviewer.user.name }}</span>
 
-                {% endfor %}
+                        <form method="POST"
+                              class="d-inline-block"
+                              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                            <input type="hidden" name="_method" value="DELETE"/>
+                            <button type="submit" class="btn-close reviewer-remove"></button>
+                        </form><br>
 
-                {{ form(reviewModel.addReviewerForm) }}
-            </fieldset>
+                    {% endfor %}
 
-            <fieldset>
-                <legend>Files</legend>
-                {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
-            </fieldset>
+                    {{ form(reviewModel.addReviewerForm) }}
+                </fieldset>
+
+                <fieldset>
+                    <legend>Files</legend>
+                    {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
+                </fieldset>
+            {% endif %}
         </div>
 
         <div class="review-grid-code">

@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
+use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -36,11 +37,12 @@ class ReviewController extends AbstractController
     public function __invoke(Request $request, CodeReview $review): array
     {
         $filePath = $request->query->get('filePath');
+        $tab      = $request->query->get('tab', ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
         $action   = $this->actionFactory->createFromRequest($request);
 
         return [
             'breadcrumbs' => $this->breadcrumbFactory->createForReview($review),
-            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $action)
+            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $tab, $action)
         ];
     }
 }

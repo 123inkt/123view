@@ -104,5 +104,7 @@ return [
     'all.reviews'                                 => 'All reviews',
     'open.reviews'                                => 'Open reviews',
     'closed.reviews'                              => 'Closed reviews',
-    'review.search.hint'                          => 'Search any review, or for a id: <code>id:12345</code>, for state: <code>state:open|closed</code>, for author: <code>author:me|&lt;email&gt;|&lt;name&gt;</code>.'
+    'review.search.hint'                          => 'Search any review, or for a id: <code>id:12345</code>, for state: <code>state:open|closed</code>, for author: <code>author:me|&lt;email&gt;|&lt;name&gt;</code>.',
+    'overview'                                    => 'Overview',
+    'revisions'                                   => 'Revisions',
 ];

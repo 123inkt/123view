@@ -11,6 +11,11 @@ use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
 {
+    public const SIDEBAR_TAB_OVERVIEW = 'overview';
+    public const SIDEBAR_TAB_REVISIONS = 'revisions';
+
+    private string $sidebarTabMode = self::SIDEBAR_TAB_OVERVIEW;
+
     /**
      * @param ExternalLink[] $externalLinks
      */
@@ -21,6 +26,16 @@ class ReviewViewModel
         private readonly FormView $addReviewerForm,
         private readonly array $externalLinks
     ) {
+    }
+
+    public function setSidebarTabMode(string $sidebarTabMode): void
+    {
+        $this->sidebarTabMode = $sidebarTabMode;
+    }
+
+    public function getSidebarTabMode(): string
+    {
+        return $this->sidebarTabMode;
     }
 
     public function getAddReviewerForm(): FormView
