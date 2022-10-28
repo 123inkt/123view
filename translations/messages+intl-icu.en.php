@@ -72,7 +72,7 @@ return [
     'Frequency'                                   => 'Frequency',
     'Pattern'                                     => 'Pattern',
     'Projects'                                    => 'Projects',
-    'Reviews'                                     => 'Reviews',
+    'reviews'                                     => 'Reviews',
     'search.review'                               => 'Search code review',
     'Rule'                                        => 'Rule',
     'Filters'                                     => 'Filters',
@@ -115,4 +115,8 @@ return [
     'review.no.authors'                           => 'No authors',
     'review.no.files'                             => 'No files',
     'review.no.revisions'                         => 'No revisions',
+    'hash'                                        => 'Hash',
+    'title'                                       => 'Title',
+    'at'                                          => 'At',
+    'review'                                      => 'Review',
 ];

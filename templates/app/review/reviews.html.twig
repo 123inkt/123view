@@ -1,7 +1,7 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h1 class="mt-2">{{ reviewsModel.repository.name|capitalize }} - {{ 'Reviews'|trans }}</h1>
+    <h1 class="mt-2">{{ reviewsModel.repository.name|capitalize }} - {{ 'reviews'|trans }}</h1>
 
     <form method="get">
         <div class="input-group">
@@ -32,7 +32,7 @@
         <nav class="mt-3">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href="?page=1&searchQuery={{ reviewsModel.searchQuery|e('url') }}">
+                    <a class="page-link" href="?page=1&search={{ reviewsModel.searchQuery|e('url') }}">
                         <span>&laquo;</span>
                     </a>
                 </li>
@@ -41,11 +41,11 @@
                 {% set lastPage = min(reviewsModel.lastPage, reviewsModel.page + 10) %}
                 {% for i in range(firstPage, lastPage) %}
                     <li class="page-item  {{ reviewsModel.page == i ? 'active' : '' }}">
-                        <a class="page-link" href="?page={{ i }}&searchQuery={{ reviewsModel.searchQuery|e('url') }}">{{ i }}</a>
+                        <a class="page-link" href="?page={{ i }}&search={{ reviewsModel.searchQuery|e('url') }}">{{ i }}</a>
                     </li>
                 {% endfor %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ reviewsModel.lastPage }}&searchQuery={{ reviewsModel.searchQuery|e('url') }}">
+                    <a class="page-link" href="?page={{ reviewsModel.lastPage }}&search={{ reviewsModel.searchQuery|e('url') }}">
                         <span>&raquo;</span>
                     </a>
                 </li>
