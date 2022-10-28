@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review;
+namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Form\Review\EditCommentFormType;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;

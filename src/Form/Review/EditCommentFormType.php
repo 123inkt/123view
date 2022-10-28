@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\UpdateCommentController;
+use DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentController;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
