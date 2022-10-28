@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -18,9 +19,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AuthenticationControllerTest extends AbstractControllerTestCase
 {
     private TranslatorInterface&MockObject $translator;
+    private Security&MockObject            $security;
 
     protected function setUp(): void
     {
+        $this->security   = $this->createMock(Security::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
         parent::setUp();
     }
@@ -32,6 +35,7 @@ class AuthenticationControllerTest extends AbstractControllerTestCase
     {
         $request = new Request(['error_message' => 'pretty bad']);
 
+        $this->security->expects(self::once())->method('getUser')->willReturn(null);
         $this->translator->expects(self::once())->method('trans')->with('page.title.single.sign.on')->willReturn('page title');
         $this->expectGenerateUrl(AzureAdAuthController::class)->willReturn('http://azure.ad.auth.controller');
 
@@ -44,6 +48,6 @@ class AuthenticationControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new AuthenticationController($this->translator);
+        return new AuthenticationController($this->translator, $this->security);
     }
 }

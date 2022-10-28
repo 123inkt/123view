@@ -5,10 +5,13 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
+/**
+ * @template T
+ */
 class PaginatorViewModel
 {
     /**
-     * @param Paginator<object> $paginator
+     * @param Paginator<T> $paginator
      */
     public function __construct(private readonly Paginator $paginator, private readonly int $page)
     {

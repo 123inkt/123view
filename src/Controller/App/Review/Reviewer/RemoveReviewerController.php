@@ -28,7 +28,7 @@ class RemoveReviewerController extends AbstractController
     #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
     public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse
     {
-        $reviewState = $review->getState();
+        $reviewState   = (string)$review->getState();
         $reviewerState = $review->getReviewersState();
 
         $review->getReviewers()->removeElement($reviewer);

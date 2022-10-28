@@ -32,7 +32,8 @@ class DetachRevisionsForm extends AbstractType
     {
         /** @var Revision[] $revisions */
         $revisions = $options['revisions'];
-        $reviewId  = (int)$options['reviewId'];
+        /** @var int $reviewId */
+        $reviewId = $options['reviewId'];
 
         $builder->setAction($this->urlGenerator->generate(DetachRevisionController::class, ['id' => $reviewId]));
         $builder->setMethod('POST');

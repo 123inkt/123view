@@ -31,7 +31,7 @@ class GitBranchService implements LoggerAwareInterface
 
             return true;
         } catch (RepositoryException|ProcessFailedException $exception) {
-            $this->logger->notice('Recovered from exception', ['exception' => $exception]);
+            $this->logger?->notice('Recovered from exception', ['exception' => $exception]);
 
             return false;
         }

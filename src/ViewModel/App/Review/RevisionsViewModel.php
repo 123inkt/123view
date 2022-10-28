@@ -12,8 +12,9 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 class RevisionsViewModel
 {
     /**
-     * @param ExternalLink[] $externalLinks
-     * @param Paginator<Revision> $revisions
+     * @param ExternalLink[]               $externalLinks
+     * @param Paginator<Revision>          $revisions
+     * @param PaginatorViewModel<Revision> $paginator
      */
     public function __construct(
         private readonly Repository $repository,
@@ -50,6 +51,9 @@ class RevisionsViewModel
         return iterator_to_array($this->revisions);
     }
 
+    /**
+     * @return PaginatorViewModel<Revision>
+     */
     public function getPaginator(): PaginatorViewModel
     {
         return $this->paginator;

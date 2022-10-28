@@ -82,6 +82,9 @@ class DirectoryTreeNode
         return $this;
     }
 
+    /**
+     * @return DirectoryTreeNode<T>
+     */
     public function sort(callable $sorter): self
     {
         foreach ($this->directories as $directory) {

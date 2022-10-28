@@ -15,6 +15,9 @@ class ReviewRevisionViewModel
     {
     }
 
+    /**
+     * @return Revision[]
+     */
     public function getRevisions(): array
     {
         return $this->revisions;

@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
@@ -35,9 +36,12 @@ class ReviewsController extends AbstractController
         $page        = $request->query->getInt('page', 1);
         $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), (int)$repository->getId(), $page, $searchQuery);
 
+        /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
+        $paginatorViewModel = new PaginatorViewModel($paginator, $page);
+
         return [
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
-            'reviewsModel' => new ReviewsViewModel($repository, $paginator, new PaginatorViewModel($paginator, $page), $searchQuery)
+            'reviewsModel' => new ReviewsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery)
         ];
     }
 }

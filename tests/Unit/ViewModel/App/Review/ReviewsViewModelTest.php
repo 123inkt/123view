@@ -5,8 +5,10 @@ namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 
 use ArrayIterator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
 
 /**
@@ -22,16 +24,18 @@ class ReviewsViewModelTest extends AbstractTestCase
      */
     public function testAccessorPairs(): void
     {
-        $reviews   = [new CodeReview()];
-        $paginator = $this->createMock(Paginator::class);
+        $reviews    = [new CodeReview()];
+        $repository = new Repository();
+        $paginator  = $this->createMock(Paginator::class);
         $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
-        $page        = 5;
+        $paginatorVm = $this->createMock(PaginatorViewModel::class);
         $searchQuery = 'foobar';
 
-        $viewModel = new ReviewsViewModel($paginator, $page, $searchQuery);
+        $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery);
 
         static::assertSame($reviews, $viewModel->getReviews());
-        static::assertSame($page, $viewModel->getPage());
+        static::assertSame($repository, $viewModel->getRepository());
+        static::assertSame($paginatorVm, $viewModel->getPaginator());
         static::assertSame('foobar', $viewModel->getSearchQuery());
     }
 }

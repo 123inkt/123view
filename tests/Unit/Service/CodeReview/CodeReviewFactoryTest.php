@@ -38,8 +38,9 @@ class CodeReviewFactoryTest extends AbstractTestCase
 
         $this->titleNormalizer->expects(self::once())->method('normalize')->with('foobar')->willReturn('foobar');
 
-        $review = $this->factory->createFromRevision($revision);
+        $review = $this->factory->createFromRevision($revision, 'referenceId');
         static::assertSame('foobar', $review->getTitle());
         static::assertSame($repository, $review->getRepository());
+        static::assertSame('referenceId', $review->getReferenceId());
     }
 }

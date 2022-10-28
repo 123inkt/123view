@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
@@ -40,15 +41,12 @@ class RevisionsController extends AbstractController
         $paginator     = $this->revisionRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
         $externalLinks = $this->externalLinkRepository->findAll();
 
+        /** @var PaginatorViewModel<Revision> $paginatorViewModel */
+        $paginatorViewModel = new PaginatorViewModel($paginator, $page);
+
         return [
             'breadcrumbs'    => $this->breadcrumbFactory->createForReviews($repository),
-            'revisionsModel' => new RevisionsViewModel(
-                $repository,
-                $paginator,
-                new PaginatorViewModel($paginator, $page),
-                $externalLinks,
-                $searchQuery
-            )
+            'revisionsModel' => new RevisionsViewModel($repository, $paginator, $paginatorViewModel, $externalLinks, $searchQuery)
         ];
     }
 }

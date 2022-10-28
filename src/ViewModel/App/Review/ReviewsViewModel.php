@@ -10,7 +10,8 @@ use DR\GitCommitNotification\Entity\Review\CodeReview;
 class ReviewsViewModel
 {
     /**
-     * @param Paginator<CodeReview> $reviews
+     * @param Paginator<CodeReview>          $reviews
+     * @param PaginatorViewModel<CodeReview> $paginator
      */
     public function __construct(
         private readonly Repository $repository,
@@ -38,6 +39,9 @@ class ReviewsViewModel
         return iterator_to_array($this->reviews);
     }
 
+    /**
+     * @return PaginatorViewModel<CodeReview>
+     */
     public function getPaginator(): PaginatorViewModel
     {
         return $this->paginator;
