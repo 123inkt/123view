@@ -45,8 +45,9 @@ class RevisionsController extends AbstractController
             'revisionsModel' => new RevisionsViewModel(
                 $repository,
                 $paginator,
-                new PaginatorViewModel($paginator, $page, $searchQuery),
-                $externalLinks
+                new PaginatorViewModel($paginator, $page),
+                $externalLinks,
+                $searchQuery
             )
         ];
     }

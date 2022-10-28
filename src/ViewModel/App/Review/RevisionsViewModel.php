@@ -20,7 +20,13 @@ class RevisionsViewModel
         private readonly Paginator $revisions,
         private readonly PaginatorViewModel $paginator,
         private readonly array $externalLinks,
+        private readonly string $searchQuery
     ) {
+    }
+
+    public function getSearchQuery(): string
+    {
+        return $this->searchQuery;
     }
 
     public function getRepository(): Repository
