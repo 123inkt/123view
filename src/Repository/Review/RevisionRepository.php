@@ -54,7 +54,7 @@ class RevisionRepository extends ServiceEntityRepository
     /**
      * @return Paginator<Revision>
      */
-    public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery): Paginator
+    public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery, ?bool $attached): Paginator
     {
         $query = $this->createQueryBuilder('r')
             ->leftJoin('r.review', 'c')
@@ -67,6 +67,10 @@ class RevisionRepository extends ServiceEntityRepository
         if ($searchQuery !== '') {
             $query->andWhere('r.title LIKE :searchQuery OR r.authorEmail LIKE :searchQuery OR r.authorName LIKE :searchQuery');
             $query->setParameter('searchQuery', '%' . addcslashes($searchQuery, '%_') . '%');
+        }
+
+        if ($attached !== null) {
+            $query->andWhere($attached ? 'r.review IS NOT NULL' : 'r.review IS NULL');
         }
 
         return new Paginator($query->getQuery(), false);

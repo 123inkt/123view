@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review;
+namespace DR\GitCommitNotification\Controller\App\Revision;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Config\Repository;

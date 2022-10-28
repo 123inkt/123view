@@ -18,9 +18,9 @@ class RevisionViewModelProvider
     ) {
     }
 
-    public function getRevisionViewModel(Repository $repository, int $page, string $searchQuery): RevisionsViewModel
+    public function getRevisionViewModel(Repository $repository, int $page, string $searchQuery, ?bool $attached = null): RevisionsViewModel
     {
-        $paginator = $this->revisionRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery);
+        $paginator = $this->revisionRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery, $attached);
         $externalLinks = $this->externalLinkRepository->findAll();
 
         /** @var PaginatorViewModel<Revision> $paginatorViewModel */

@@ -29,7 +29,7 @@
 
     <div class="pt-3 ">
         <div class="float-start">
-            <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RevisionsController', {id: review.repository.id, addRevisionTo: review.id}) }}"
+            <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
                class="btn btn-outline-success">{{ 'add.revisions'|trans }}</a>
         </div>
 

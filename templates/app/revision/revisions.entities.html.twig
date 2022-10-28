@@ -22,7 +22,7 @@
             <td>
                 {% if revision.review != null %}
                     <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: revision.review.id}) }}">
-                        CR-{{ revision.review.id }}
+                        CR-{{ revision.review.projectId }}
                     </a>
                 {% endif %}
             </td>

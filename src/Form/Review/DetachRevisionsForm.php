@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\DetachRevisionController;
+use DR\GitCommitNotification\Controller\App\Revision\DetachRevisionController;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
