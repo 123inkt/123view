@@ -15,7 +15,7 @@
             {# delete comment #}
             <form method="post"
                   class="d-inline"
-                  action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\DeleteCommentReplyController', {id: reply.id}) }}">
+                  action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Comment\\DeleteCommentReplyController', {id: reply.id}) }}">
                 <input type="hidden" name="_method" value="DELETE" />
                 <a href="javascript:"
                    class="ms-1 text-decoration-none"

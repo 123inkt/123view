@@ -27,7 +27,7 @@
                 {# delete comment #}
                 <form method="post"
                       class="d-inline"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\DeleteCommentController', {id: comment.id}) }}">
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Comment\\DeleteCommentController', {id: comment.id}) }}">
                     <input type="hidden" name="_method" value="DELETE" />
                     <a href="javascript:"
                        class="ms-1 text-decoration-none"
@@ -43,7 +43,7 @@
             <span class="comment__state float-end">
                 <form id="change-comment-state-{{ comment.id }}"
                       method="post"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeCommentStateController', {id: comment.id}) }}">
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}">
 
                     {% if comment.state == 'open' %}
                         {% set state = 'resolved' %}
