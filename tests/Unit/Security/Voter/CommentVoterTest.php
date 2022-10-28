@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Security\Voter\CommentVoter
- * @covers ::__construct
  */
 class CommentVoterTest extends AbstractTestCase
 {

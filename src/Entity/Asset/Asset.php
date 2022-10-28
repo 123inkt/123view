@@ -30,6 +30,13 @@ class Asset
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     private ?User $user = null;
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
