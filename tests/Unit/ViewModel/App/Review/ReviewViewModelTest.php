@@ -21,7 +21,6 @@ class ReviewViewModelTest extends AbstractTestCase
     /**
      * @covers ::getExternalLinks
      * @covers ::getReview
-     * @covers ::getSelectedFile
      */
     public function testAccessorPairs(): void
     {

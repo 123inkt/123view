@@ -19,7 +19,6 @@ class ReviewsViewModelTest extends AbstractTestCase
 {
     /**
      * @covers ::getReviews
-     * @covers ::getPage
      * @covers ::getSearchQuery
      */
     public function testAccessorPairs(): void
