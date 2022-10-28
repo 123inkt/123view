@@ -17,8 +17,8 @@
         </ul>
     </div>
 
-    {%- include 'app/review/revisions.searchbar.html.twig' with {searchQuery: revisionsModel.searchQuery} -%}
-    {%- include 'app/review/revisions.entities.html.twig' with {revisions: revisionsModel.revisions, externalLinks: revisionsModel.externalLinks} -%}
-    {%- include 'app/review/paginator.html.twig' with {paginatorModel: revisionsModel.paginator} -%}
+    {%- include 'app/revision/revisions.searchbar.html.twig' with {searchQuery: revisionsModel.searchQuery} -%}
+    {%- include 'app/revision/revisions.entities.html.twig' with {revisions: revisionsModel.revisions, externalLinks: revisionsModel.externalLinks} -%}
+    {%- include 'app/paginator/paginator.html.twig' with {paginatorModel: revisionsModel.paginator} -%}
 
 {% endblock %}

@@ -31,7 +31,7 @@ class RevisionsController extends AbstractController
      * @return array<string, object|Breadcrumb[]>
      */
     #[Route('app/projects/{id<\d+>}/revisions', name: self::class, methods: 'GET')]
-    #[Template('app/review/revisions.html.twig')]
+    #[Template('app/revision/revisions.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
