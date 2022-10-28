@@ -80,7 +80,7 @@
             </ul>
 
             {% if reviewModel.sidebarTabMode == 'revisions' %}
-                {% include 'app/review/review.revisions.html.twig' with {revisionViewModel: reviewModel.revisionViewModel} %}
+                {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
             {% endif %}
 
             {% if reviewModel.sidebarTabMode == 'overview' %}

@@ -1,0 +1,32 @@
+{#- revisions: Revision[] -#}
+{#- externalLinks: ExternalLink[] -#}
+
+<table class="table table-bordered table-hover rule-table">
+    <thead>
+    <tr>
+        <th scope="col">{{ 'hash'|trans }}</th>
+        <th scope="col">{{ 'title'|trans }}</th>
+        <th scope="col">{{ 'author'|trans }}</th>
+        <th scope="col">{{ 'at'|trans }}</th>
+        <th scope="col">{{ 'review'|trans }}</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {%- for revision in revisions -%}
+        <tr>
+            <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
+            <td class="fw-bold">{{ revision.title|external_links(externalLinks) }}</td>
+            <td>{{ revision.authorName }}</td>
+            <td>{{ revision.createTimestamp|date('M j, H:i') }}</td>
+            <td>
+                {% if revision.review != null %}
+                    <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: revision.review.id}) }}">
+                        CR-{{ revision.review.id }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+    {%- endfor -%}
+    <tbody>
+</table>

@@ -1,3 +1,4 @@
+{# review:            CodeReview #}
 {# revisionViewModel: ReviewRevisionViewModel #}
 
 {% set detachRevisionForm = revisionViewModel.detachRevisionForm %}
@@ -26,8 +27,15 @@
 
     {%- endfor -%}
 
-    <div class="pt-3 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
-        {{ form_widget(detachRevisionForm.detach) }}
+    <div class="pt-3 ">
+        <div class="float-start">
+            <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RevisionsController', {id: review.repository.id, addRevisionTo: review.id}) }}"
+               class="btn btn-outline-success">{{ 'add.revisions'|trans }}</a>
+        </div>
+
+        <div class="float-start ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
+            {{ form_widget(detachRevisionForm.detach, {attr: {class: 'btn-outline-danger btn'}}) }}
+        </div>
     </div>
 
     {{ form_end(detachRevisionForm) }}
