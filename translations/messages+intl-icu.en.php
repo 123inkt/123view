@@ -119,4 +119,5 @@ return [
     'title'                                       => 'Title',
     'at'                                          => 'At',
     'review'                                      => 'Review',
+    'search.revisions'                            => 'Search revision',
 ];

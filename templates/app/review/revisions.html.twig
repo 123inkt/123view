@@ -3,6 +3,16 @@
 {% block page_content %}
     <h1 class="mt-2">{{ revisionsModel.repository.name|capitalize }} - {{ 'revisions'|trans }}</h1>
 
+    <form method="get" class="pb-3">
+        <div class="input-group">
+            <input type="search" name="search" value="{{ revisionsModel.paginator.searchQuery }}"
+                   class="form-control"
+                   placeholder="{{ 'search.revisions'|trans }}"/>
+            {% if revisionsModel.paginator.searchQuery != '' %}
+                <a href="?search=" class="btn btn-secondary">&times;</a>
+            {% endif %}
+        </div>
+    </form>
 
     <table class="table table-bordered table-hover rule-table">
         <thead>

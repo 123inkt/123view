@@ -10,11 +10,8 @@ class PaginatorViewModel
     /**
      * @param Paginator<object> $paginator
      */
-    public function __construct(
-        private readonly Paginator $paginator,
-        private readonly int $page,
-        private readonly string $searchQuery
-    ) {
+    public function __construct(private readonly Paginator $paginator, private readonly int $page, private readonly string $searchQuery)
+    {
     }
 
     public function getSearchQuery(): string
