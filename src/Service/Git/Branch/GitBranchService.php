@@ -30,7 +30,7 @@ class GitBranchService implements LoggerAwareInterface
             $this->deleteBranch($repository, $ref);
 
             return true;
-        } catch (RepositoryException|ProcessFailedException $exception) {
+        } catch (RepositoryException | ProcessFailedException $exception) {
             $this->logger?->notice('Recovered from exception', ['exception' => $exception]);
 
             return false;

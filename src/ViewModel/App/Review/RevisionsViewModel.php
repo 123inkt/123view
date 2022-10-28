@@ -6,7 +6,6 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
 
 class RevisionsViewModel

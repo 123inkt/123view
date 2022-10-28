@@ -72,7 +72,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
             try {
                 $this->cherryPickService->cherryPickRevisions([$revision]);
                 $pickable[] = $revision;
-            } catch (RepositoryException|ProcessFailedException) {
+            } catch (RepositoryException | ProcessFailedException) {
                 break;
             }
         }

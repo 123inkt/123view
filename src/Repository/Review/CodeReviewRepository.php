@@ -58,7 +58,7 @@ class CodeReviewRepository extends ServiceEntityRepository
         /** @var CodeReview|null $review */
         $review = $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
 
-        return ((int)$review?->getProjectId()) + 1;
+        return (int)$review?->getProjectId() + 1;
     }
 
     /**

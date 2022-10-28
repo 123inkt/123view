@@ -37,6 +37,11 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
     ) {
     }
 
+    private function dispatchAfter(AsyncMessageInterface $event): void
+    {
+        $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
+    }
+
     /**
      * @throws Throwable
      */
@@ -89,10 +94,5 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
             $this->dispatchAfter(new ReviewOpened((int)$review->getId()));
         }
         $this->dispatchAfter(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId()));
-    }
-
-    private function dispatchAfter(AsyncMessageInterface $event): void
-    {
-        $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
     }
 }

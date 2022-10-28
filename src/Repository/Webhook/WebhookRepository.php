@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Webhook;
 
-use DR\GitCommitNotification\Entity\Webhook\Webhook;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Entity\Webhook\Webhook;
 
 /**
  * @extends ServiceEntityRepository<Webhook>

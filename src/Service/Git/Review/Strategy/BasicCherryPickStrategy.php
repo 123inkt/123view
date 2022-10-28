@@ -41,7 +41,7 @@ class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
 
             // get the diff
             $files = $this->diffService->getBundledDiffFromRevisions($repository);
-        } catch (RepositoryException|ProcessFailedException $exception) {
+        } catch (RepositoryException | ProcessFailedException $exception) {
             $this->cherryPickService->cherryPickAbort($repository);
 
             throw $exception;
