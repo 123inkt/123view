@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review;
+namespace DR\GitCommitNotification\Controller\App\Review\Reviewer;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
