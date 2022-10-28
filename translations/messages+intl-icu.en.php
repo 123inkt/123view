@@ -111,7 +111,7 @@ return [
     'reviewers'                                   => 'Reviewers',
     'author'                                      => 'Author',
     'accept.open.comments'                        => 'There are still {count} open comments.',
-    'detach.revisions'                            => 'Detach revision(s)',
+    'detach.revisions'                            => 'Detach selected',
     'review.no.authors'                           => 'No authors',
     'review.no.files'                             => 'No files',
     'review.no.revisions'                         => 'No revisions',
