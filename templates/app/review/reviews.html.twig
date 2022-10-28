@@ -1,7 +1,21 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h1 class="mt-2">{{ reviewsModel.repository.name|capitalize }} - {{ 'reviews'|trans }}</h1>
+    <div class="mt-2 pb-3">
+        <h2 class="float-start pe-3">{{ reviewsModel.repository.name|capitalize }}</h2>
+
+        <ul class="nav nav-pills float-start">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:">{{ 'reviews'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RevisionsController', {id: reviewsModel.repository.id}) }}">
+                    {{ 'revisions'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <form method="get">
         <div class="input-group">
@@ -28,28 +42,5 @@
         {%- endfor -%}
     </div>
 
-    {% if reviewsModel.lastPage > 1 %}
-        <nav class="mt-3">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="?page=1&search={{ reviewsModel.searchQuery|e('url') }}">
-                        <span>&laquo;</span>
-                    </a>
-                </li>
-
-                {% set firstPage = max(1, reviewsModel.page - 10) %}
-                {% set lastPage = min(reviewsModel.lastPage, reviewsModel.page + 10) %}
-                {% for i in range(firstPage, lastPage) %}
-                    <li class="page-item  {{ reviewsModel.page == i ? 'active' : '' }}">
-                        <a class="page-link" href="?page={{ i }}&search={{ reviewsModel.searchQuery|e('url') }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ reviewsModel.lastPage }}&search={{ reviewsModel.searchQuery|e('url') }}">
-                        <span>&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    {% endif %}
+    {% include 'app/review/paginator.html.twig' with {paginatorModel: reviewsModel.paginator} %}
 {% endblock %}

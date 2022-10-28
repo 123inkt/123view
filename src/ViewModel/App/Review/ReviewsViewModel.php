@@ -15,7 +15,7 @@ class ReviewsViewModel
     public function __construct(
         private readonly Repository $repository,
         private readonly Paginator $reviews,
-        private readonly int $page,
+        private readonly PaginatorViewModel $paginator,
         private readonly string $searchQuery
     ) {
     }
@@ -38,16 +38,8 @@ class ReviewsViewModel
         return iterator_to_array($this->reviews);
     }
 
-    public function getPage(): int
+    public function getPaginator(): PaginatorViewModel
     {
-        return $this->page;
-    }
-
-    /**
-     * @codeCoverageIgnore hard to mock as Query is final...
-     */
-    public function getLastPage(): int
-    {
-        return (int)ceil($this->reviews->count() / (int)$this->reviews->getQuery()->getMaxResults());
+        return $this->paginator;
     }
 }

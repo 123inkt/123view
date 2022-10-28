@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
+use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -36,7 +37,7 @@ class ReviewsController extends AbstractController
 
         return [
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
-            'reviewsModel' => new ReviewsViewModel($repository, $paginator, $page, $searchQuery)
+            'reviewsModel' => new ReviewsViewModel($repository, $paginator, new PaginatorViewModel($paginator, $page), $searchQuery)
         ];
     }
 }
