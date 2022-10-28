@@ -121,4 +121,7 @@ return [
     'review'                                      => 'Review',
     'search.revisions'                            => 'Search revision',
     'add.revisions'                               => 'Add revisions',
+    'attach.to.review'                            => 'Attach to review',
+    'revisions.added.to.review'                   => '{count} revision(s) added to review {review}',
+    'revisions.skipped.to.add.to.review'          => '{count} revision(s) were not added to review {review}',
 ];
