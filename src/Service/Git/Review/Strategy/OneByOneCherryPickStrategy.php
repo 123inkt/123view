@@ -27,21 +27,22 @@ class OneByOneCherryPickStrategy implements ReviewDiffStrategyInterface
      */
     public function getDiffFiles(Repository $repository, array $revisions): array
     {
-        // create branch
-        $branchName = $this->checkoutService->checkoutRevision(Arrays::first($revisions));
+        return $this->resetManager->start(
+            $repository,
+            $this->checkoutService->checkoutRevision(Arrays::first($revisions)),
+            function () use ($repository, $revisions) {
+                foreach ($revisions as $revision) {
+                    // cherry-pick single revision
+                    $result = $this->cherryPickService->tryCherryPickRevisions([$revision]);
 
-        return $this->resetManager->start($repository, $branchName, function () use ($repository, $revisions) {
-            foreach ($revisions as $revision) {
-                // cherry-pick single revision
-                $result = $this->cherryPickService->tryCherryPickRevisions([$revision]);
-
-                // cherry-pick failed due to merge conflicts. Take theirs:
-                if ($result === false) {
-                    $this->addService->add($repository, '.');
+                    // cherry-pick failed due to merge conflicts. Take theirs:
+                    if ($result === false) {
+                        $this->addService->add($repository, '.');
+                    }
                 }
-            }
 
-            return $this->diffService->getBundledDiffFromRevisions($repository);
-        });
+                return $this->diffService->getBundledDiffFromRevisions($repository);
+            }
+        );
     }
 }
