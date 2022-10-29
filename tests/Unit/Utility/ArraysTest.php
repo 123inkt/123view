@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Utility;
+namespace DR\GitCommitNotification\Tests\Unit\Utility;
 
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Utility\Arrays;
