@@ -11,6 +11,11 @@
          beStrictAboutTodoAnnotatedTests="true"
          executionOrder="defects"
 >
+    <php>
+        <ini name="error_reporting" value="24575"/> <!-- E_ALL^E_DEPRECATED -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+    </php>
+
     <testsuites>
         <testsuite name="e2e">
             <directory>tests/E2E</directory>
@@ -22,7 +27,7 @@
             <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <coverage processUncoveredFiles="true">
+    <coverage>
         <include>
             <directory suffix=".php">src</directory>
         </include>
