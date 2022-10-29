@@ -62,11 +62,11 @@ class UserTest extends AbstractTestCase
     {
         $collection = new ArrayCollection();
 
-        $repository = new User();
-        static::assertInstanceOf(ArrayCollection::class, $repository->getReviewers());
+        $user = new User();
+        static::assertInstanceOf(ArrayCollection::class, $user->getReviewers());
 
-        $repository->setReviewers($collection);
-        static::assertSame($collection, $repository->getReviewers());
+        $user->setReviewers($collection);
+        static::assertSame($collection, $user->getReviewers());
     }
 
     /**
@@ -77,11 +77,11 @@ class UserTest extends AbstractTestCase
     {
         $collection = new ArrayCollection();
 
-        $repository = new User();
-        static::assertInstanceOf(ArrayCollection::class, $repository->getComments());
+        $user = new User();
+        static::assertInstanceOf(ArrayCollection::class, $user->getComments());
 
-        $repository->setComments($collection);
-        static::assertSame($collection, $repository->getComments());
+        $user->setComments($collection);
+        static::assertSame($collection, $user->getComments());
     }
 
     /**
@@ -92,10 +92,10 @@ class UserTest extends AbstractTestCase
     {
         $collection = new ArrayCollection();
 
-        $repository = new User();
-        static::assertInstanceOf(ArrayCollection::class, $repository->getReplies());
+        $user = new User();
+        static::assertInstanceOf(ArrayCollection::class, $user->getReplies());
 
-        $repository->setReplies($collection);
-        static::assertSame($collection, $repository->getReplies());
+        $user->setReplies($collection);
+        static::assertSame($collection, $user->getReplies());
     }
 }

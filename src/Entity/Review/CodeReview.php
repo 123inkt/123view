@@ -60,6 +60,7 @@ class CodeReview
     {
         $this->revisions = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
+        $this->comments  = new ArrayCollection();
     }
 
     public function setId(int $id): self

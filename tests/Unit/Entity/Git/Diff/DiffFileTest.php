@@ -189,8 +189,10 @@ class DiffFileTest extends AbstractTestCase
 
         $file = new DiffFile();
         $file->addBlock($block);
-
         static::assertSame(3, $file->getNrOfLinesAdded());
+
+        $file = new DiffFile();
+        $file->addBlock($block);
         static::assertSame(2, $file->getNrOfLinesRemoved());
     }
 }
