@@ -58,4 +58,24 @@ class GitCherryPickServiceTest extends AbstractTestCase
 
         $this->service->cherryPickRevisions([$revision]);
     }
+
+    /**
+     * @covers ::cherryPickAbort
+     * @throws RepositoryException
+     */
+    public function testCherryAbort(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl('https://url/');
+
+        $builder = $this->createMock(GitCherryPickCommandBuilder::class);
+        $builder->expects(self::once())->method('abort')->willReturnSelf();
+        $this->builderFactory->expects(self::once())->method('createCheryPick')->willReturn($builder);
+
+        $git = $this->createMock(GitRepository::class);
+        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+
+        $this->service->cherryPickAbort($repository);
+    }
 }
