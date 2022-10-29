@@ -17,7 +17,7 @@ class LineReference
 
     public static function fromString(string $reference): LineReference
     {
-        if (preg_match('/(.*):(\d+):(\d+):(\d+)/', $reference, $matches) !== 1) {
+        if (preg_match('/^(.*):(\d+):(\d+):(\d+)$/', $reference, $matches) !== 1) {
             throw new InvalidArgumentException('Invalid reference: ' . $reference);
         }
 
