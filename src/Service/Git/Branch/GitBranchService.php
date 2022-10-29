@@ -21,9 +21,6 @@ class GitBranchService implements LoggerAwareInterface
     ) {
     }
 
-    /**
-     * @throws RepositoryException
-     */
     public function tryDeleteBranch(Repository $repository, string $ref): bool
     {
         try {
