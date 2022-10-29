@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Git\Diff;
 
+use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
@@ -11,6 +13,20 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
  */
 class DiffFileTest extends AbstractTestCase
 {
+    /**
+     * @covers ::getBlocks
+     * @covers ::addBlock
+     */
+    public function testGetBlocks(): void
+    {
+        $file = new DiffFile();
+        static::assertCount(0, $file->getBlocks());
+
+        $block = new DiffBlock();
+        $file->addBlock($block);
+        static::assertSame([$block], $file->getBlocks());
+    }
+
     /**
      * @covers ::getFileMode
      */
@@ -152,5 +168,29 @@ class DiffFileTest extends AbstractTestCase
         $file->filePathBefore = 'different';
         $file->filePathAfter  = 'filename';
         static::assertTrue($file->isRename());
+    }
+
+    /**
+     * @covers ::getNrOfLinesAdded
+     * @covers ::getNrOfLinesRemoved
+     * @covers ::updateLinesChanged
+     */
+    public function testGetNrOfLinesAdded(): void
+    {
+        // 2 lines added, 1 changed, 1 removed, and 1 unchanged
+        $lineAddedA    = new DiffLine(DiffLine::STATE_ADDED, []);
+        $lineAddedB    = new DiffLine(DiffLine::STATE_ADDED, []);
+        $lineChanged   = new DiffLine(DiffLine::STATE_CHANGED, []);
+        $lineRemoved   = new DiffLine(DiffLine::STATE_REMOVED, []);
+        $lineUnchanged = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+
+        $block        = new DiffBlock();
+        $block->lines = [$lineAddedA, $lineAddedB, $lineChanged, $lineRemoved, $lineUnchanged];
+
+        $file = new DiffFile();
+        $file->addBlock($block);
+
+        static::assertSame(3, $file->getNrOfLinesAdded());
+        static::assertSame(2, $file->getNrOfLinesRemoved());
     }
 }

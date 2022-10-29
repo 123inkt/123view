@@ -68,4 +68,34 @@ class UserTest extends AbstractTestCase
         $repository->setReviewers($collection);
         static::assertSame($collection, $repository->getReviewers());
     }
+
+    /**
+     * @covers ::getComments
+     * @covers ::setComments
+     */
+    public function testComments(): void
+    {
+        $collection = new ArrayCollection();
+
+        $repository = new User();
+        static::assertInstanceOf(ArrayCollection::class, $repository->getComments());
+
+        $repository->setComments($collection);
+        static::assertSame($collection, $repository->getComments());
+    }
+
+    /**
+     * @covers ::getReplies
+     * @covers ::setReplies
+     */
+    public function testReplies(): void
+    {
+        $collection = new ArrayCollection();
+
+        $repository = new User();
+        static::assertInstanceOf(ArrayCollection::class, $repository->getReplies());
+
+        $repository->setReplies($collection);
+        static::assertSame($collection, $repository->getReplies());
+    }
 }
