@@ -1,0 +1,21 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
+
+use DR\GitCommitNotification\Entity\Review\CommentReply;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
+
+/**
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\CommentReply
+ */
+class CommentReplyTest extends AbstractTestCase
+{
+    /**
+     * @covers ::<public>
+     */
+    public function testAccessorPairs(): void
+    {
+        static::assertAccessorPairs(CommentReply::class);
+    }
+}
