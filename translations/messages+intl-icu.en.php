@@ -41,7 +41,7 @@ return [
     'Inactive'                                    => 'Inactive',
     'Notifications'                               => 'Notifications',
     'Name'                                        => 'Name',
-    'Add reviewer'                                => 'Add reviewer',
+    'add.reviewer'                                => 'Add reviewer',
     'once-per-hour'                               => 'Once per hour',
     'once-per-two-hours'                          => 'Once per two hours',
     'once-per-three-hours'                        => 'Once per three hours',

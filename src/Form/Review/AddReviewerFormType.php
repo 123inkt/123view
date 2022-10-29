@@ -45,7 +45,7 @@ class AddReviewerFormType extends AbstractType
         if (count($choices) > 0) {
             $builder->add('user', ChoiceType::class, [
                 'required'                  => false,
-                'placeholder'               => 'Add reviewer',
+                'placeholder'               => 'add.reviewer',
                 'label'                     => false,
                 'choice_translation_domain' => false,
                 'choice_label'              => static fn(?User $user) => (string)$user?->getName(),
