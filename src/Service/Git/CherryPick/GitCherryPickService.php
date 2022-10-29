@@ -25,6 +25,20 @@ class GitCherryPickService implements LoggerAwareInterface
 
     /**
      * @param Revision[] $revisions
+     */
+    public function tryCherryPickRevisions(array $revisions): bool
+    {
+        try {
+            $this->cherryPickRevisions($revisions);
+
+            return true;
+        } catch (RepositoryException|ProcessFailedException) {
+            return false;
+        }
+    }
+
+    /**
+     * @param Revision[] $revisions
      *
      * @throws RepositoryException
      */
@@ -45,17 +59,6 @@ class GitCherryPickService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         $this->logger?->info($output);
-    }
-
-    public function tryCherryPickAbort(Repository $repository): bool
-    {
-        try {
-            $this->cherryPickAbort($repository);
-
-            return true;
-        } catch (RepositoryException | ProcessFailedException) {
-            return false;
-        }
     }
 
     /**

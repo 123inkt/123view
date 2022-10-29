@@ -21,15 +21,18 @@ class GitRepository
      * Get the git commit log for the given repository.
      * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
      */
-    public function execute(GitCommandBuilderInterface $commandBuilder): string
+    public function execute(string|GitCommandBuilderInterface $commandBuilder): string
     {
-        $this->stopWatch?->start('git.' . $commandBuilder->command(), 'git');
+        $command = is_string($commandBuilder) ? $commandBuilder : implode(' ', $commandBuilder->build());
+        $action  = is_string($commandBuilder) ? 'manual' : $commandBuilder->command();
+
+        $this->stopWatch?->start('git.' . $action, 'git');
         try {
-            $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
+            $process = Process::fromShellCommandline($command);
             $process->setWorkingDirectory($this->repositoryPath);
             $process->run();
         } finally {
-            $this->stopWatch?->stop('git.' . $commandBuilder->command());
+            $this->stopWatch?->stop('git.' . $action);
         }
 
         // executes after the command finishes

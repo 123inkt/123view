@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git;
 
+use DR\GitCommitNotification\Service\Git\Add\GitAddCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilder;
@@ -15,6 +16,11 @@ class GitCommandBuilderFactory
 {
     public function __construct(private string $git)
     {
+    }
+
+    public function createAdd(): GitAddCommandBuilder
+    {
+        return new GitAddCommandBuilder($this->git);
     }
 
     public function createShow(): GitShowCommandBuilder
