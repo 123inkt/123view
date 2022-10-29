@@ -71,10 +71,12 @@ class DiffFileParser
                 $fileDiff->filePathAfter = null;
             }
 
-            if (preg_match('/^index (\w+)\.\.(\w+)/', $line, $matches) === 1) {
-                $fileDiff->hashStart = $matches[1];
-                $fileDiff->hashEnd   = $matches[2];
+            if (preg_match('/^index (\w+)\.\.(\w+)/', $line, $matches) !== 1) {
+                continue;
             }
+
+            $fileDiff->hashStart = $matches[1];
+            $fileDiff->hashEnd   = $matches[2];
         }
 
         return $fileDiff;

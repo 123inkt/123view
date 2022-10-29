@@ -32,7 +32,7 @@ class GitCherryPickService implements LoggerAwareInterface
             $this->cherryPickRevisions($revisions);
 
             return true;
-        } catch (RepositoryException|ProcessFailedException) {
+        } catch (RepositoryException | ProcessFailedException) {
             return false;
         }
     }
