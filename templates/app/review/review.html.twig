@@ -91,17 +91,6 @@
                 {% endfor %}
 
                 <h5 class="mt-2">{{ 'reviewers'|trans }}</h5>
-
-                {% if reviewer == null %}
-                    <form method="post"
-                          class="pb-2"
-                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\AddReviewerController', {id: review.id}) }}">
-                        <input type="hidden" name="user" value="{{ app.user.id }}"/>
-                        <button type="submit" class="btn btn-outline-success btn-sm d-block w-100 text-start">{{ 'review.add.me'|trans }}</button>
-                    </form>
-
-                {% endif %}
-
                 {% for reviewer in review.reviewers %}
                     <span class="reviewer-state">
                         {%- if reviewer.state == 'accepted' -%}
