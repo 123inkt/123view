@@ -2,6 +2,7 @@
 
 {% block page_content %}
     {% set review = reviewModel.review %}
+    {% set reviewer = reviewModel.getReviewer(app.user) %}
 
     <div class="review-grid-layout" data-controller="Review">
         <div class="review-grid-header">
@@ -9,8 +10,6 @@
                 <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
                 {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
             </h3>
-
-            {% set reviewer = reviewModel.getReviewer(app.user) %}
 
             {% if review.state == 'open' and (reviewer == null or reviewer.state == 'open') %}
                 <form method="POST"
@@ -92,6 +91,17 @@
                 {% endfor %}
 
                 <h5 class="mt-2">{{ 'reviewers'|trans }}</h5>
+
+                {% if reviewer == null %}
+                    <form method="post"
+                          class="pb-2"
+                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\AddReviewerController', {id: review.id}) }}">
+                        <input type="hidden" name="user" value="{{ app.user.id }}"/>
+                        <button type="submit" class="btn btn-outline-success btn-sm d-block w-100 text-start">{{ 'review.add.me'|trans }}</button>
+                    </form>
+
+                {% endif %}
+
                 {% for reviewer in review.reviewers %}
                     <span class="reviewer-state">
                         {%- if reviewer.state == 'accepted' -%}
@@ -105,7 +115,7 @@
 
                     <form method="POST"
                           class="d-inline-block"
-                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
                         <input type="hidden" name="_method" value="DELETE"/>
                         <button type="submit" class="btn-close reviewer-remove"></button>
                     </form><br>

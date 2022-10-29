@@ -54,9 +54,17 @@ class AddReviewerFormType extends AbstractType
                 'preferred_choices'         => [$this->user],
                 'multiple'                  => false,
                 'expanded'                  => false,
-                'attr'                      => ['onchange' => "document.getElementById('form-add-reviewer').submit()"]
+                'attr'                      => [
+                    'onchange' => "document.getElementById('form-add-reviewer').submit()",
+                    'class'    => 'form-select-sm'
+                ]
             ]);
         }
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 
     /**
