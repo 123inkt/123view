@@ -70,6 +70,11 @@ class DiffFileParser
             if (str_starts_with($line, 'deleted file mode')) {
                 $fileDiff->filePathAfter = null;
             }
+
+            if (preg_match('/^index (\w+)\.\.(\w+)/', $line, $matches) === 1) {
+                $fileDiff->hashStart = $matches[1];
+                $fileDiff->hashEnd   = $matches[2];
+            }
         }
 
         return $fileDiff;

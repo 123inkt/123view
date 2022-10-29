@@ -14,6 +14,9 @@ class DiffFile
     public ?string $filePathBefore = null;
     public ?string $filePathAfter  = null;
 
+    public ?string $hashStart = null;
+    public ?string $hashEnd   = null;
+
     /** @var DiffBlock[] */
     private array $blocks = [];
 

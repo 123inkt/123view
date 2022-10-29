@@ -18,10 +18,22 @@ class DiffFinder
             return null;
         }
 
+        $hashEnd = null;
+        if (preg_match('/^(.*):(\w+)$/', $filePath, $matches) === 1) {
+            $filePath = (string)$matches[1];
+            $hashEnd  = (string)$matches[2];
+        }
+
         foreach ($files as $file) {
-            if ($file->getFile()?->getPathname() === $filePath) {
-                return $file;
+            if ($hashEnd !== null && $file->hashEnd !== $hashEnd) {
+                continue;
             }
+
+            if ($file->getFile()?->getPathname() !== $filePath) {
+                continue;
+            }
+
+            return $file;
         }
 
         return null;

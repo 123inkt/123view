@@ -16,8 +16,12 @@
         <ul class="review-file-tree--files text-nowrap {% if treeDepth == 0 %}review-file-tree--files-root{% endif %}">
             {% for file in directory.files %}
                 <li class="review-file-tree--file {% if fileTreeModel.fileSelected(file) %}review-file-tree--selected{% endif %}">
+                    {%- set filePath = file.file.pathname -%}
+                    {%- if file.hashEnd != null -%}
+                        {%- set filePath = filePath ~ ':' ~ file.hashEnd -%}
+                    {%- endif -%}
 
-                    <a href="?filePath={{ file.file.pathname|e('url') }}"
+                    <a href="?filePath={{ filePath|e('url') }}"
                        class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate me-2">
                         {%- if file.added -%}
                             <span class="diff-file__file-change-state text-success">+</span>

@@ -38,8 +38,9 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
      */
     public function getDiffFiles(Repository $repository, array $revisions): array
     {
+        $max     = count($revisions) + 50;
         $batches = [];
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < $max; $i++) {
             if (count($revisions) === 1) {
                 $batches[] = $this->diffService->getDiffFromRevision(Arrays::first($revisions));
                 break;
@@ -72,7 +73,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
             try {
                 $this->cherryPickService->cherryPickRevisions([$revision]);
                 $pickable[] = $revision;
-            } catch (RepositoryException | ProcessFailedException) {
+            } catch (RepositoryException|ProcessFailedException) {
                 break;
             }
         }
