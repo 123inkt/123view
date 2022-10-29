@@ -103,6 +103,7 @@
 
 .diff-file__code-keyword {
   color: #000080;
+  font-weight: 600;
 }
 
 .diff-file__comment_form {

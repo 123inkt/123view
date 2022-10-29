@@ -15,10 +15,11 @@ class TypescriptHighlighter implements HighlighterInterface
         "(f(alse|inally|or|unction|rom))",
         "(i(f|mport|n|nstanceof))",
         "(n(ew|ull|umber))",
-        "(return)",
+        "(r(eturn|eadonly))",
         "(s(uper|witch|tring))",
         "(t(his|hrow|rue|ry|ypeof))",
         "(object)",
+        "(public)",
         "(v(ar|oid))",
         "(w(hile|ith))"
     ];
