@@ -37,6 +37,13 @@ class WebhookActivity
     #[ORM\ManyToOne(targetEntity: Webhook::class, cascade: ['persist'], inversedBy: 'activities')]
     private ?Webhook $webhook = null;
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
