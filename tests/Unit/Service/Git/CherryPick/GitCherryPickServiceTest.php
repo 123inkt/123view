@@ -33,8 +33,8 @@ class GitCherryPickServiceTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::tryCherryPickRevisions
      * @covers ::cherryPickRevisions
-     * @throws RepositoryException
      */
     public function testCherryPickRevisions(): void
     {
@@ -56,7 +56,25 @@ class GitCherryPickServiceTest extends AbstractTestCase
         $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
         $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
 
-        $this->service->cherryPickRevisions([$revision]);
+        static::assertTrue($this->service->tryCherryPickRevisions([$revision]));
+    }
+
+    /**
+     * @covers ::tryCherryPickRevisions
+     * @covers ::cherryPickRevisions
+     */
+    public function testCherryPickRevisionsShouldCaptureFailure(): void
+    {
+        $hash       = '123acbedf';
+        $repository = new Repository();
+        $repository->setUrl('https://url/');
+        $revision = new Revision();
+        $revision->setRepository($repository);
+        $revision->setCommitHash($hash);
+
+        $this->builderFactory->expects(self::once())->method('createCheryPick')->willThrowException(new RepositoryException());
+
+        static::assertFalse($this->service->tryCherryPickRevisions([$revision]));
     }
 
     /**
