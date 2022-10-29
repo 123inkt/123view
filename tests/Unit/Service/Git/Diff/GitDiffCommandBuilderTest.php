@@ -91,6 +91,14 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::command
+     */
+    public function testCommand(): void
+    {
+        static::assertSame('diff', $this->builder->command());
+    }
+
+    /**
      * @covers ::__toString
      */
     public function testToString(): void
