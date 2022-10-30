@@ -36,6 +36,6 @@ class ReplyMailController extends AbstractController
         /** @var CodeReview $review */
         $review = $comment->getReview();
 
-        return ['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, $reply, false)];
+        return ['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, $reply, null)];
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModelProvider\Mail;
 
+use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
@@ -22,7 +23,7 @@ class MailCommentViewModelProvider
     /**
      * @throws Throwable
      */
-    public function createCommentViewModel(CodeReview $review, Comment $comment, ?CommentReply $reply, bool $resolved): CommentViewModel
+    public function createCommentViewModel(CodeReview $review, Comment $comment, ?CommentReply $reply, ?User $resolvedBy): CommentViewModel
     {
         /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
@@ -36,9 +37,9 @@ class MailCommentViewModelProvider
         }
 
         // gather replies to show
-        $replies = $this->getReplies($comment, $reply, $resolved);
+        $replies = $this->getReplies($comment, $reply, $resolvedBy !== null);
 
-        return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? [], $resolved);
+        return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? [], $resolvedBy);
     }
 
     /**

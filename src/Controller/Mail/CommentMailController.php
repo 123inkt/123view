@@ -33,6 +33,6 @@ class CommentMailController extends AbstractController
         /** @var CodeReview $review */
         $review = $comment->getReview();
 
-        return ['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, null, false)];
+        return ['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, null, null)];
     }
 }
