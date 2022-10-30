@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\ViewModel\CommitsViewModel;
+use DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

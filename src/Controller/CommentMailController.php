@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller;
 
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\ViewModel\Mail\NewCommentViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,9 +18,8 @@ class CommentMailController extends AbstractController
     #[Entity('comment')]
     public function __invoke(Comment $comment): array
     {
-        return [
-            'review'  => $comment->getReview(),
-            'comment' => $comment
-        ];
+        $viewModel = new NewCommentViewModel($comment->getReview(), $comment);
+
+        return ['newCommentModel' => $viewModel];
     }
 }

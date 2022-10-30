@@ -8,10 +8,10 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\CommitsViewModel;
+use DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\CommitsViewModel
+ * @coversDefaultClass \DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel
  * @covers ::__construct
  */
 class CommitsViewModelTest extends AbstractTestCase

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel;
+namespace DR\GitCommitNotification\ViewModel\Mail;
 
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Git\Commit;
