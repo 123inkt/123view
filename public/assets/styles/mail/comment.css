@@ -11,6 +11,10 @@
   padding-bottom: 2px;
 }
 
+.comment__reply-truncated {
+  padding-left: 40px;
+}
+
 .comment__comment,
 .comment__reply {
   padding: 5px 5px 5px 20px;

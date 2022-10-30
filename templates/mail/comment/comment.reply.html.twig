@@ -1,0 +1,15 @@
+{#- reply: CommentReply -#}
+{%- apply inline_css(source('@styles/mail/comment.css')) -%}
+<div class="comment__reply">
+    <div class="comment__author_and_time">
+        <span class="comment__author">{{ reply.user.name }}</span>
+        <span class="comment__datetime" title="{{ reply.updateTimestamp|date }}">
+            {{ 'on'|trans }} {{ reply.updateTimestamp|date('M j, H:i') }}
+        </span>
+    </div>
+
+    <div class="comment__message">
+        {{ reply.message|markdown }}
+    </div>
+</div>
+{%- endapply -%}

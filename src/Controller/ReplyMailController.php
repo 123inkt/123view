@@ -5,18 +5,19 @@ namespace DR\GitCommitNotification\Controller;
 
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
-use DR\GitCommitNotification\ViewModel\Mail\NewCommentViewModel;
+use DR\GitCommitNotification\ViewModel\Mail\ReplyCommentViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
-class CommentMailController extends AbstractController
+class ReplyMailController extends AbstractController
 {
     public function __construct(
         private readonly ReviewDiffService $diffService,
@@ -27,12 +28,14 @@ class CommentMailController extends AbstractController
     /**
      * @throws Throwable
      */
-    #[Route('app/mail/comment/{id<\d+>}', name: self::class, methods: 'GET')]
-    #[Template('mail/new.comment.html.twig')]
+    #[Route('app/mail/reply/{id<\d+>}', name: self::class, methods: 'GET')]
+    #[Template('mail/new.reply.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Entity('comment')]
-    public function __invoke(Comment $comment): array
+    #[Entity('reply')]
+    public function __invoke(CommentReply $reply): array
     {
+        /** @var Comment $comment */
+        $comment = $reply->getComment();
         /** @var CodeReview $review */
         $review = $comment->getReview();
         /** @var LineReference $lineReference */
@@ -46,8 +49,16 @@ class CommentMailController extends AbstractController
             $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 3) ?? [];
         }
 
-        $viewModel = new NewCommentViewModel($review, $comment, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
+        $replies = [];
+        foreach ($comment->getReplies() as $reaction) {
+            $replies[] = $reaction;
+            if ($reaction === $reply) {
+                break;
+            }
+        }
 
-        return ['newCommentModel' => $viewModel];
+        $viewModel = new ReplyCommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
+
+        return ['replyCommentModel' => $viewModel];
     }
 }

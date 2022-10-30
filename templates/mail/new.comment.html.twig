@@ -24,22 +24,14 @@
     {%- set line_nr_length_before = 4 -%}
     {%- set line_nr_length_after = 4 -%}
     {%- if newCommentModel.file != null and newCommentModel.linesBefore|length > 0 -%}
-        <div class="diffBlock">
-            {%- for line in newCommentModel.linesBefore -%}
-                {%- include 'mail/commit/commit.block.line.html.twig' with {file: newCommentModel.file, line: line} -%}
-            {%- endfor -%}
-        </div>
+        {%- include 'mail/commit/commit.block.html.twig' with {file: newCommentModel.file, lines: newCommentModel.linesBefore} -%}
     {% endif %}
 
     {%- include 'mail/comment/comment.html.twig' -%}
 
     {%- if newCommentModel.file != null and newCommentModel.linesAfter|length > 0 -%}
-        <div class="diffBlock">
-            {%- for line in newCommentModel.linesAfter -%}
-                {%- include 'mail/commit/commit.block.line.html.twig' with {file: newCommentModel.file, line: line} -%}
-            {%- endfor -%}
-        </div>
-    {%- endif -%}
+        {%- include 'mail/commit/commit.block.html.twig' with {file: newCommentModel.file, lines: newCommentModel.linesAfter} -%}
+    {% endif %}
 
     </body>
     </html>

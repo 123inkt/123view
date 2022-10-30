@@ -24,7 +24,7 @@
             {%- endif -%}
 
             {%- for block in file.blocks -%}
-                {%- include 'mail/commit/commit.block.html.twig' -%}
+                {%- include 'mail/commit/commit.block.html.twig' with {file: file, lines: block.lines} -%}
 
                 {%- if file.modified -%}
                     {%- include 'mail/commit/commit.block.spacer.html.twig' -%}
