@@ -18,6 +18,7 @@ class CommentViewModel
      * @param DiffLine[]     $linesAfter
      */
     public function __construct(
+        public readonly string $headingTitle,
         public readonly CodeReview $review,
         public readonly Comment $comment,
         public readonly array $replies,

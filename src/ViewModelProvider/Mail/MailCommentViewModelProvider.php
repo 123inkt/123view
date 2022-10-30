@@ -36,10 +36,34 @@ class MailCommentViewModelProvider
             $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 4) ?? [];
         }
 
+        $headerTitle = $this->getHeaderTitle($reply, $resolvedBy);
+
         // gather replies to show
         $replies = $this->getReplies($comment, $reply, $resolvedBy !== null);
 
-        return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? [], $resolvedBy);
+        return new CommentViewModel(
+            $headerTitle,
+            $review,
+            $comment,
+            $replies,
+            $selectedFile,
+            $lineRange['before'] ?? [],
+            $lineRange['after'] ?? [],
+            $resolvedBy
+        );
+    }
+
+    private function getHeaderTitle(?CommentReply $reply, ?User $resolvedBy): string
+    {
+        if ($resolvedBy !== null) {
+            return 'mail.comment.was.resolved.on';
+        }
+
+        if ($reply !== null) {
+            return 'mail.new.reply.by.user.on';
+        }
+
+        return 'mail.new.comment.by.user.on';
     }
 
     /**
