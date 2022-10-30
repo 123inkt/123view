@@ -1,7 +1,8 @@
 .comment__comment-thread {
   background: #FFFEE0;
-  font-size: 0.9rem;
   border-bottom: 1px solid #e5e4c9;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
   line-height: 20px;
 }
 
@@ -17,17 +18,18 @@
 
 .comment__comment,
 .comment__reply {
-  padding: 5px 5px 5px 20px;
+  border: 5px solid #FFFEE0;
+  border-left-width: 20px;
 }
 
 .comment__reply {
-  padding-left: 40px;
+  border-left-width: 40px;
 }
 
 .comment__comment .comment__author,
 .comment__reply .comment__author {
-  font-weight: bold;
   font-size: 0.8rem;
+  font-weight: bold;
 }
 
 .comment__comment .comment__datetime,
@@ -50,9 +52,11 @@
 }
 
 .comment__marked-as-resolved {
+  border: 3px solid #FFFEE0;
+  border-left-width: 20px;
+  border-right-width: 0;
   font-size: 0.8rem;
   font-style: italic;
-  padding: 3px 0 3px 20px;
 }
 
 .comment__marked-as-resolved em {
