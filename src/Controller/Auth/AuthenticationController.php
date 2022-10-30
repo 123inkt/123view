@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdAuthController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -23,15 +24,20 @@ class AuthenticationController extends AbstractController
      */
     #[Route('/', self::class, methods: 'GET')]
     #[Template('authentication/single-sign-on.html.twig')]
-    public function __invoke(): array|Response
+    public function __invoke(Request $request): array|Response
     {
         if ($this->security->getUser() !== null) {
             return $this->redirectToRoute(ProjectsController::class);
         }
 
+        $params = [];
+        if ($request->query->has('next')) {
+            $params['next'] = $request->query->get('next', '');
+        }
+
         return [
             'page_title'   => $this->translator->trans('page.title.single.sign.on'),
-            'azure_ad_url' => $this->generateUrl(AzureAdAuthController::class)
+            'azure_ad_url' => $this->generateUrl(AzureAdAuthController::class, $params)
         ];
     }
 }

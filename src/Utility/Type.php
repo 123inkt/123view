@@ -25,6 +25,23 @@ class Type
     }
 
     /**
+     * Typecast value to array
+     * @template T
+     *
+     * @param T $value
+     *
+     * @return T&array
+     */
+    public static function isArray(mixed $value): array
+    {
+        if (is_array($value) === false) {
+            throw new RuntimeException('Expecting value to be an array');
+        }
+
+        return $value;
+    }
+
+    /**
      * Typecast value to not false
      * @template T
      *

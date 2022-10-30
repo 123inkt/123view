@@ -5,6 +5,8 @@ namespace DR\GitCommitNotification\Security\AzureAd;
 
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
+use DR\GitCommitNotification\Utility\Type;
+use JsonException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,11 +48,15 @@ class AzureAdAuthenticator extends AbstractAuthenticator
 
     /**
      * @inheritDoc
+     * @throws JsonException
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // redirect to app dashboard
-        $url = $this->urlGenerator->generate(ProjectsController::class);
+        $url = null;
+        if ($request->query->has('state')) {
+            $url = Type::isArray(json_decode($request->query->get('state'), true, 512, JSON_THROW_ON_ERROR))['next'] ?? null;
+        }
+        $url ??= $this->urlGenerator->generate(ProjectsController::class);
 
         return new RedirectResponse($url);
     }

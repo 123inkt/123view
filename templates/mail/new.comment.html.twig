@@ -9,10 +9,9 @@
     {%- set comment = newCommentModel.comment -%}
 
     {# mail title #}
-    {{- 'mail.new.comment.by.user.on'|trans({userName: comment.user.name}) -}}
-    <a href="{{ absolute_url(path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id})) }}">
-        CR-{{ review.projectId }} - {{ review.title }}
-    </a>
+    {{- 'mail.new.comment.by.user.on'|trans({userName: comment.user.name}) }}
+    <a href="{{ absolute_url(path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id})) }}"
+    >CR-{{ review.projectId }} - {{ review.title }}</a>
     <br><br>
 
     {%- if newCommentModel.file != null -%}

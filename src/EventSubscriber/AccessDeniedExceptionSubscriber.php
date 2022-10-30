@@ -28,10 +28,13 @@ class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->getRequest()->getSession()->getFlashBag()->add('error', $this->translator->trans('redirect.access.denied.session.expired'));
+        $request = $event->getRequest();
+        $request->getSession()->getFlashBag()->add('error', $this->translator->trans('redirect.access.denied.session.expired'));
+
+        $url = $this->urlGenerator->generate(AuthenticationController::class, ['next' => $request->getRequestUri()]);
 
         // redirect to frontend when access is denied
-        $event->setResponse(new RedirectResponse($this->urlGenerator->generate(AuthenticationController::class)));
+        $event->setResponse(new RedirectResponse($url));
     }
 
     /**
