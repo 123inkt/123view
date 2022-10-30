@@ -41,7 +41,7 @@ class MailService implements LoggerAwareInterface
     public function sendNewCommentMail(CodeReview $review, Comment $comment): void
     {
         $recipients = $this->recipientService->getUsersForReview($review);
-        $recipients = Arrays::remove($recipients, Type::notNull($comment->getUser()));
+        $recipients = Arrays::remove(array_unique($recipients), Type::notNull($comment->getUser()));
 
         $subject = $this->translator->trans(
             'mail.new.comment.subject',
@@ -51,7 +51,7 @@ class MailService implements LoggerAwareInterface
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
             ->subject($subject)
-            ->htmlTemplate('mail/comment/mail.comment.html.twig')
+            ->htmlTemplate('mail/mail.comment.html.twig')
             ->text('')
             ->context(['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment)]);
 
@@ -69,7 +69,7 @@ class MailService implements LoggerAwareInterface
     {
         $recipients = $this->recipientService->getUsersForReview($review);
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
-        $recipients = Arrays::remove($recipients, Type::notNull($reply->getUser()));
+        $recipients = Arrays::remove(array_unique($recipients), Type::notNull($reply->getUser()));
 
         $subject = $this->translator->trans(
             'mail.updated.comment.subject',
@@ -79,7 +79,7 @@ class MailService implements LoggerAwareInterface
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
             ->subject($subject)
-            ->htmlTemplate('mail/comment/mail.comment.html.twig')
+            ->htmlTemplate('mail/mail.comment.html.twig')
             ->text('')
             ->context(['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, $reply)]);
 
@@ -97,7 +97,7 @@ class MailService implements LoggerAwareInterface
     {
         $recipients = $this->recipientService->getUsersForReview($review);
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment));
-        $recipients = Arrays::remove($recipients, $resolvedBy);
+        $recipients = Arrays::remove(array_unique($recipients), $resolvedBy);
 
         $subject = $this->translator->trans(
             'mail.comment.resolved.subject',
@@ -107,7 +107,7 @@ class MailService implements LoggerAwareInterface
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
             ->subject($subject)
-            ->htmlTemplate('mail/comment/mail.comment.html.twig')
+            ->htmlTemplate('mail/mail.comment.html.twig')
             ->text('')
             ->context(['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, null, $resolvedBy)]);
 
