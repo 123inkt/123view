@@ -15,19 +15,15 @@ use Throwable;
 
 class MailCommentViewModelProvider
 {
-    public function __construct(
-        private readonly ReviewDiffService $diffService,
-        private readonly DiffFinder $diffFinder
-    ) {
+    public function __construct(private readonly ReviewDiffService $diffService, private readonly DiffFinder $diffFinder)
+    {
     }
 
     /**
      * @throws Throwable
      */
-    public function createCommentViewModel(Comment $comment): CommentViewModel
+    public function createCommentViewModel(CodeReview $review, Comment $comment, ?CommentReply $reply, bool $resolved): CommentViewModel
     {
-        /** @var CodeReview $review */
-        $review = $comment->getReview();
         /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
         $files         = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
@@ -36,40 +32,30 @@ class MailCommentViewModelProvider
         $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);
         $lineRange    = [];
         if ($selectedFile !== null) {
-            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 3) ?? [];
+            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 4) ?? [];
         }
 
-        return new CommentViewModel($review, $comment, [], $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
+        $replies = $this->getReplies($comment, $reply, $resolved);
+
+        return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? [], $resolved);
     }
 
     /**
-     * @throws Throwable
+     * @return CommentReply[]
      */
-    public function createReplyCommentViewModel(CommentReply $reply): CommentViewModel
+    private function getReplies(Comment $comment, ?CommentReply $reply, bool $resolved): array
     {
-        /** @var Comment $comment */
-        $comment = $reply->getComment();
-        /** @var CodeReview $review */
-        $review = $comment->getReview();
-        /** @var LineReference $lineReference */
-        $lineReference = $comment->getLineReference();
-        $files         = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
-
-        // find selected file
-        $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);
-        $lineRange    = [];
-        if ($selectedFile !== null) {
-            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 3) ?? [];
-        }
-
+        // gather replies
         $replies = [];
-        foreach ($comment->getReplies() as $reaction) {
-            $replies[] = $reaction;
-            if ($reaction === $reply) {
-                break;
+        if ($resolved || $reply !== null) {
+            foreach ($comment->getReplies() as $reaction) {
+                $replies[] = $reaction;
+                if ($reaction === $reply) {
+                    break;
+                }
             }
         }
 
-        return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
+        return $replies;
     }
 }

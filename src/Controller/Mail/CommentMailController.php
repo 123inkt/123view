@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\Mail;
 
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
 use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
@@ -29,6 +30,9 @@ class CommentMailController extends AbstractController
     #[Entity('comment')]
     public function __invoke(Comment $comment): array
     {
-        return ['commentModel' => $this->viewModelProvider->createCommentViewModel($comment)];
+        /** @var CodeReview $review */
+        $review = $comment->getReview();
+
+        return ['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, null, false)];
     }
 }

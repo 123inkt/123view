@@ -22,7 +22,8 @@ class CommentViewModel
         public readonly array $replies,
         public readonly ?DiffFile $file,
         public readonly array $linesBefore,
-        public readonly array $linesAfter
+        public readonly array $linesAfter,
+        public readonly bool $resolved
     ) {
     }
 }
