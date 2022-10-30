@@ -31,7 +31,7 @@ class MailService
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
             ->subject($this->subjectFormatter->format($subject, $rule, $commits))
-            ->htmlTemplate('mail/commits.html.twig')
+            ->htmlTemplate('mail/commit/commits.html.twig')
             ->text('')
             ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource', $config->externalLinks)]);
 

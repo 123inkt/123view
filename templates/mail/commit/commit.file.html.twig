@@ -20,14 +20,14 @@
     {%- if file.blocks -%}
         <div class="fileDiff">
             {%- if file.modified -%}
-                {%- include 'mail/commit.block.spacer.html.twig' -%}
+                {%- include 'mail/commit/commit.block.spacer.html.twig' -%}
             {%- endif -%}
 
             {%- for block in file.blocks -%}
-                {%- include 'mail/commit.block.html.twig' -%}
+                {%- include 'mail/commit/commit.block.html.twig' -%}
 
                 {%- if file.modified -%}
-                    {%- include 'mail/commit.block.spacer.html.twig' -%}
+                    {%- include 'mail/commit/commit.block.spacer.html.twig' -%}
                 {%- endif -%}
             {%- endfor -%}
         </div>
