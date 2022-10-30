@@ -1,0 +1,45 @@
+.comment__comment-thread {
+  background: #FFFEE0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #e5e4c9;
+}
+
+.comment__detached-comment {
+  color: #999999;
+  font-size: 0.8rem;
+  padding-bottom: 2px;
+}
+
+.comment__comment,
+.comment__reply {
+  padding: 5px 5px 5px 20px;
+}
+
+.comment__reply {
+  padding-left: 40px;
+}
+
+.comment__comment .comment__author,
+.comment__reply .comment__author {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.comment__comment .comment__datetime,
+.comment__reply .comment__datetime {
+  color: #999999;
+  font-size: 0.8rem;
+}
+
+.comment__comment-thread.comment__state_resolved,
+.comment__comment-thread.comment__state_resolved .comment__author,
+.comment__comment-thread.comment__state_resolved .comment__author,
+.comment__comment-thread.comment__state_resolved .comment__datetime,
+.comment__comment-thread.comment__state_resolved .comment__state *,
+.comment__comment-thread.comment__state_resolved .comment__message * {
+  color: #999999 !important;
+}
+
+.comment__comment-thread.comment__state_resolved .comment__message img {
+  filter: grayscale(1);
+}

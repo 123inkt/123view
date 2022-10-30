@@ -125,5 +125,6 @@ return [
     'revisions.added.to.review'                   => '{count} revision(s) added to review {review}',
     'revisions.skipped.to.add.to.review'          => '{count} revision(s) were not added to review {review}',
     'review.add.me'                               => 'Add me',
-    'mail.new.comment.subject'                    => '[New comments] {reviewId}: {reviewTitle}'
+    'mail.new.comment.subject'                    => '[New comments] {reviewId}: {reviewTitle}',
+    'mail.new.comment.by.user.on'                 => 'New comment by {userName} on'
 ];

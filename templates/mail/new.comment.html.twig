@@ -1,0 +1,20 @@
+{%- apply inline_css(source('@styles/upsource.css')) -%}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+    <body class="mailBody">
+
+    {# mail title #}
+    {{- 'mail.new.comment.by.user.on'|trans({userName: comment.user.name}) -}}
+    <a href="{{ absolute_url(path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id})) }}">
+        CR-{{ review.projectId }} - {{ review.title }}
+    </a>
+    <br><br>
+
+    {%- include 'mail/comment/comment.html.twig' -%}
+
+    </body>
+    </html>
+{%- endapply -%}
