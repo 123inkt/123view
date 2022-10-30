@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel;
+namespace DR\GitCommitNotification\Tests\Unit\ViewModel\Mail;
 
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
