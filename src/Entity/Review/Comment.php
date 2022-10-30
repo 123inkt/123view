@@ -15,6 +15,7 @@ use DR\GitCommitNotification\Repository\Review\CommentRepository;
 #[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
 class Comment
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -38,6 +39,9 @@ class Comment
 
     #[ORM\Column]
     private ?int $updateTimestamp = null;
+
+    #[ORM\Column(type: 'type_notification_status', nullable: true)]
+    private ?NotificationStatus $notificationStatus = null;
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -132,6 +136,18 @@ class Comment
     public function setUpdateTimestamp(?int $updateTimestamp): self
     {
         $this->updateTimestamp = $updateTimestamp;
+
+        return $this;
+    }
+
+    public function getNotificationStatus(): NotificationStatus
+    {
+        return $this->notificationStatus ??= new NotificationStatus();
+    }
+
+    public function setNotificationStatus(?NotificationStatus $notificationStatus): Comment
+    {
+        $this->notificationStatus = $notificationStatus;
 
         return $this;
     }
