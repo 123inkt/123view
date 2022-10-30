@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\CodeReview;
 
+use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Review\LineReference;
@@ -39,20 +40,53 @@ class DiffFinder
         return null;
     }
 
+    /**
+     * @return array{before: DiffLine[], after: DiffLine[]}|null
+     */
+    public function findLinesAround(DiffFile $file, LineReference $lineReference, int $margin): ?array
+    {
+        foreach ($file->getBlocks() as $block) {
+            $line = $this->fineLineInBlock($file, $block, $lineReference);
+            if ($line === null) {
+                continue;
+            }
+
+            $index = array_search($line, $block->lines, true);
+            if (is_int($index) === false) {
+                return null;
+            }
+
+            $start = max(0, $index - $margin + 1);
+            $lines = array_slice($block->lines, $start, $margin * 2);
+
+            return [
+                'before' => array_slice($lines, 0, $index - $start + 1),
+                'after'  => array_slice($lines, $index - $start + 1, $margin)
+            ];
+        }
+
+        return null;
+    }
+
     public function findLineInFile(DiffFile $file, LineReference $lineReference): ?DiffLine
     {
         foreach ($file->getBlocks() as $block) {
-            if ($file->isAdded()) {
-                $line = $this->findLineInNewFile($block->lines, $lineReference);
-            } else {
-                $line = $this->findLineInLines($block->lines, $lineReference);
-            }
+            $line = $this->fineLineInBlock($file, $block, $lineReference);
             if ($line !== null) {
                 return $line;
             }
         }
 
         return null;
+    }
+
+    public function fineLineInBlock(DiffFile $file, DiffBlock $block, LineReference $lineReference): ?DiffLine
+    {
+        if ($file->isAdded()) {
+            return $this->findLineInNewFile($block->lines, $lineReference);
+        }
+
+        return $this->findLineInLines($block->lines, $lineReference);
     }
 
     /**

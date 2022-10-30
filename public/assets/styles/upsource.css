@@ -1,3 +1,7 @@
+p {
+    margin: 0;
+}
+
 .mailBody {
     background: #FFFFFF;
     color: #444444;
@@ -47,6 +51,10 @@
 
 .revisionFile {
     padding-left: 20px;
+}
+
+.revisionFileTitle {
+    padding-bottom: 3px;
 }
 
 .fileChangeState {
