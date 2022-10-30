@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller;
+namespace DR\GitCommitNotification\ViewModelProvider\Mail;
 
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
@@ -10,14 +10,10 @@ use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 use DR\GitCommitNotification\Utility\Type;
-use DR\GitCommitNotification\ViewModel\Mail\ReplyCommentViewModel;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
 use Throwable;
 
-class ReplyMailController extends AbstractController
+class MailCommentViewModelProvider
 {
     public function __construct(
         private readonly ReviewDiffService $diffService,
@@ -28,11 +24,28 @@ class ReplyMailController extends AbstractController
     /**
      * @throws Throwable
      */
-    #[Route('app/mail/reply/{id<\d+>}', name: self::class, methods: 'GET')]
-    #[Template('mail/mail.comment.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Entity('reply')]
-    public function __invoke(CommentReply $reply): array
+    public function createCommentViewModel(Comment $comment): CommentViewModel
+    {
+        /** @var CodeReview $review */
+        $review = $comment->getReview();
+        /** @var LineReference $lineReference */
+        $lineReference = $comment->getLineReference();
+        $files         = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
+
+        // find selected file
+        $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);
+        $lineRange    = [];
+        if ($selectedFile !== null) {
+            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 3) ?? [];
+        }
+
+        return new CommentViewModel($review, $comment, [], $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function createReplyCommentViewModel(CommentReply $reply): CommentViewModel
     {
         /** @var Comment $comment */
         $comment = $reply->getComment();
@@ -57,8 +70,6 @@ class ReplyMailController extends AbstractController
             }
         }
 
-        $viewModel = new ReplyCommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
-
-        return ['commentModel' => $viewModel];
+        return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
     }
 }
