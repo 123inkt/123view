@@ -35,6 +35,7 @@ class MailCommentViewModelProvider
             $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 4) ?? [];
         }
 
+        // gather replies to show
         $replies = $this->getReplies($comment, $reply, $resolved);
 
         return new CommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? [], $resolved);
