@@ -29,7 +29,7 @@ class ReplyMailController extends AbstractController
      * @throws Throwable
      */
     #[Route('app/mail/reply/{id<\d+>}', name: self::class, methods: 'GET')]
-    #[Template('mail/new.reply.html.twig')]
+    #[Template('mail/mail.comment.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('reply')]
     public function __invoke(CommentReply $reply): array
@@ -59,6 +59,6 @@ class ReplyMailController extends AbstractController
 
         $viewModel = new ReplyCommentViewModel($review, $comment, $replies, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
 
-        return ['replyCommentModel' => $viewModel];
+        return ['commentModel' => $viewModel];
     }
 }

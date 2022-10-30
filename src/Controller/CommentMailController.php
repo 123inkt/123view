@@ -28,7 +28,7 @@ class CommentMailController extends AbstractController
      * @throws Throwable
      */
     #[Route('app/mail/comment/{id<\d+>}', name: self::class, methods: 'GET')]
-    #[Template('mail/new.comment.html.twig')]
+    #[Template('mail/mail.comment.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('comment')]
     public function __invoke(Comment $comment): array
@@ -48,6 +48,6 @@ class CommentMailController extends AbstractController
 
         $viewModel = new NewCommentViewModel($review, $comment, $selectedFile, $lineRange['before'] ?? [], $lineRange['after'] ?? []);
 
-        return ['newCommentModel' => $viewModel];
+        return ['commentModel' => $viewModel];
     }
 }
