@@ -23,16 +23,23 @@
         </div>
     </div>
 
-    {%- if replies is defined -%}
+    {#- replies -#}
+    {%- if replies is defined and replies != null -%}
         {% set maxReplies = 5 %}
 
         {%- if replies|length > maxReplies -%}
             <div class="comment__reply-truncated">...</div>
-        {% endif %}
+        {%- endif -%}
 
         {%- for reply in replies|slice(-maxReplies+1) -%}
             {%- include 'mail/comment/comment.reply.html.twig' with {reply: reply} -%}
         {%- endfor -%}
-    {% endif %}
+    {%- endif -%}
+
+    {#- marked as resolved -#}
+    {%- if resolvedBy is defined and resolvedBy != null -%}
+        <div class="comment__marked-as-resolved">{{ 'comment.mark.as.resolved'|trans({userName: resolvedBy.name})|raw }}</div>
+    {%- endif -%}
+
 </div>
 {%- endapply -%}

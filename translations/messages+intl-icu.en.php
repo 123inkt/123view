@@ -128,4 +128,5 @@ return [
     'mail.new.comment.subject'                    => '[New comments] {reviewId}: {reviewTitle}',
     'mail.new.comment.by.user.on'                 => 'New comment by {userName} on',
     'mail.new.reply.by.user.on'                   => 'New reply by {userName} on',
+    'comment.mark.as.resolved'                    => '<em>{userName}</em> marked comment as resolved.'
 ];

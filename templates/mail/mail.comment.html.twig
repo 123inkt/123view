@@ -27,7 +27,7 @@
         {%- include 'mail/commit/commit.block.html.twig' with {file: commentModel.file, lines: commentModel.linesBefore} -%}
     {% endif %}
 
-    {%- include 'mail/comment/comment.html.twig' with {comment: comment, replies: commentModel.replies} -%}
+    {%- include 'mail/comment/comment.html.twig' with {comment: comment, replies: commentModel.replies, resolvedBy: commentModel.resolvedBy} -%}
 
     {%- if commentModel.file != null and commentModel.linesAfter|length > 0 -%}
         {%- include 'mail/commit/commit.block.html.twig' with {file: commentModel.file, lines: commentModel.linesAfter} -%}
