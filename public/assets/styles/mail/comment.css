@@ -51,6 +51,12 @@
   filter: grayscale(1);
 }
 
+p {
+  margin: 0;
+  line-height: 16px;
+  border-bottom: 2px solid #FFFEE0;
+}
+
 .comment__marked-as-resolved {
   border: 3px solid #FFFEE0;
   border-left-width: 20px;
