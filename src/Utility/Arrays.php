@@ -23,4 +23,22 @@ class Arrays
 
         return $result;
     }
+
+    /**
+     * @template T
+     *
+     * @param T[] $items
+     * @param T   $item
+     *
+     * @return T[]
+     */
+    public static function remove(array $items, mixed $item): array
+    {
+        $index = array_search($item, $items, true);
+        if ($index !== false) {
+            unset($items[$index]);
+        }
+
+        return $items;
+    }
 }

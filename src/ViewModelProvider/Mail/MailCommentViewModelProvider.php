@@ -23,8 +23,12 @@ class MailCommentViewModelProvider
     /**
      * @throws Throwable
      */
-    public function createCommentViewModel(CodeReview $review, Comment $comment, ?CommentReply $reply, ?User $resolvedBy): CommentViewModel
-    {
+    public function createCommentViewModel(
+        CodeReview $review,
+        Comment $comment,
+        ?CommentReply $reply = null,
+        ?User $resolvedBy = null
+    ): CommentViewModel {
         /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
         $files         = $this->diffService->getDiffFiles($review->getRevisions()->toArray());

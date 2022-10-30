@@ -126,6 +126,8 @@ return [
     'revisions.skipped.to.add.to.review'          => '{count} revision(s) were not added to review {review}',
     'review.add.me'                               => 'Add me',
     'mail.new.comment.subject'                    => '[New comments] {reviewId}: {reviewTitle}',
+    'mail.updated.comment.subject'                => '[Updated discussion] {reviewId}: {reviewTitle}',
+    'mail.comment.resolved.subject'               => '[Resolved discussion] {reviewId}: {reviewTitle}',
     'mail.new.comment.by.user.on'                 => 'New comment by {userName} on',
     'mail.new.reply.by.user.on'                   => 'New reply by {userName} on',
     'mail.comment.was.resolved.on'                => 'Comment was resolved by {userName} on',
