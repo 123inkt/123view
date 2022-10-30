@@ -46,7 +46,6 @@ class MailCommentViewModelProvider
      */
     private function getReplies(Comment $comment, ?CommentReply $reply, bool $resolved): array
     {
-        // gather replies
         $replies = [];
         if ($resolved || $reply !== null) {
             foreach ($comment->getReplies() as $reaction) {
