@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Command\Revision;
 
-use DR\GitCommitNotification\Message\FetchRepositoryRevisionsMessage;
+use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

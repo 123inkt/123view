@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message;
+namespace DR\GitCommitNotification\Message\Review;
 
-class ReviewOpened implements AsyncMessageInterface, WebhookEventInterface
+use DR\GitCommitNotification\Message\AsyncMessageInterface;
+use DR\GitCommitNotification\Message\WebhookEventInterface;
+
+class ReviewResumed implements AsyncMessageInterface, WebhookEventInterface
 {
     public function __construct(public readonly int $reviewId)
     {
@@ -11,7 +14,7 @@ class ReviewOpened implements AsyncMessageInterface, WebhookEventInterface
 
     public function getName(): string
     {
-        return 'review-opened';
+        return 'review-resumed';
     }
 
     /**

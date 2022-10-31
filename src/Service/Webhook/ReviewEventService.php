@@ -8,14 +8,14 @@ use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\ReviewAccepted;
-use DR\GitCommitNotification\Message\ReviewClosed;
-use DR\GitCommitNotification\Message\ReviewerAdded;
-use DR\GitCommitNotification\Message\ReviewOpened;
-use DR\GitCommitNotification\Message\ReviewRejected;
-use DR\GitCommitNotification\Message\ReviewResumed;
-use DR\GitCommitNotification\Message\ReviewRevisionAdded;
-use DR\GitCommitNotification\Message\ReviewRevisionRemoved;
+use DR\GitCommitNotification\Message\Review\ReviewAccepted;
+use DR\GitCommitNotification\Message\Review\ReviewClosed;
+use DR\GitCommitNotification\Message\Review\ReviewOpened;
+use DR\GitCommitNotification\Message\Review\ReviewRejected;
+use DR\GitCommitNotification\Message\Review\ReviewResumed;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class ReviewEventService

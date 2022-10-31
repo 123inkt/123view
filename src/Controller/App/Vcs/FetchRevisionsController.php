@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Vcs;
 
-use DR\GitCommitNotification\Message\FetchRepositoryRevisionsMessage;
+use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;

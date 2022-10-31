@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Message;
+namespace DR\GitCommitNotification\Tests\Unit\Message\Revision;
 
-use DR\GitCommitNotification\Message\ReviewRevisionRemoved;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
+use DR\GitCommitNotification\Tests\Unit\Message\AbstractWebhookEventTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Message\ReviewRevisionRemoved
+ * @coversDefaultClass \DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved
  */
 class ReviewRevisionRemovedTest extends AbstractWebhookEventTestCase
 {

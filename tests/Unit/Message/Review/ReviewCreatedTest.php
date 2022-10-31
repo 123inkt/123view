@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Message;
+namespace DR\GitCommitNotification\Tests\Unit\Message\Review;
 
-use DR\GitCommitNotification\Message\ReviewCreated;
+use DR\GitCommitNotification\Message\Review\ReviewCreated;
+use DR\GitCommitNotification\Tests\Unit\Message\AbstractWebhookEventTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Message\ReviewCreated
+ * @coversDefaultClass \DR\GitCommitNotification\Message\Review\ReviewCreated
  */
 class ReviewCreatedTest extends AbstractWebhookEventTestCase
 {

@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Message;
+namespace DR\GitCommitNotification\Tests\Unit\Message\Reviewer;
 
-use DR\GitCommitNotification\Message\ReviewerAdded;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
+use DR\GitCommitNotification\Tests\Unit\Message\AbstractWebhookEventTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Message\ReviewerAdded
+ * @coversDefaultClass \DR\GitCommitNotification\Message\Reviewer\ReviewerAdded
  */
 class ReviewerAddedTest extends AbstractWebhookEventTestCase
 {

@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message;
+namespace DR\GitCommitNotification\Message\Comment;
+
+use DR\GitCommitNotification\Message\AsyncMessageInterface;
+use DR\GitCommitNotification\Message\WebhookEventInterface;
 
 class CommentAdded implements AsyncMessageInterface, WebhookEventInterface
 {

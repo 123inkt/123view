@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\FetchRepositoryRevisionsMessage;
+use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {

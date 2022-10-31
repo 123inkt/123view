@@ -5,8 +5,8 @@ namespace DR\GitCommitNotification\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Message\NewRevisionMessage;
+use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;

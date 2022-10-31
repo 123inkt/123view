@@ -1,12 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message;
+namespace DR\GitCommitNotification\Message\Revision;
+
+use DR\GitCommitNotification\Message\AsyncMessageInterface;
+use DR\GitCommitNotification\Message\WebhookEventInterface;
 
 /**
- * Message to notify consumers a revision was removed from a review.
+ * Message to notify consumers a new revision was added to the a review.
  */
-class ReviewRevisionRemoved implements AsyncMessageInterface, WebhookEventInterface
+class ReviewRevisionAdded implements AsyncMessageInterface, WebhookEventInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $revisionId)
     {
@@ -14,7 +17,7 @@ class ReviewRevisionRemoved implements AsyncMessageInterface, WebhookEventInterf
 
     public function getName(): string
     {
-        return 'review-revision-removed';
+        return 'review-revision-added';
     }
 
     /**

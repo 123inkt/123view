@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message;
+namespace DR\GitCommitNotification\Message\Reviewer;
 
-class ReviewerAdded implements AsyncMessageInterface, WebhookEventInterface
+use DR\GitCommitNotification\Message\AsyncMessageInterface;
+use DR\GitCommitNotification\Message\WebhookEventInterface;
+
+class ReviewerRemoved implements AsyncMessageInterface, WebhookEventInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $userId)
     {
@@ -11,7 +14,7 @@ class ReviewerAdded implements AsyncMessageInterface, WebhookEventInterface
 
     public function getName(): string
     {
-        return 'reviewer-added';
+        return 'reviewer-removed';
     }
 
     /**
