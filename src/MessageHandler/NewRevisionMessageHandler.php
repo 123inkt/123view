@@ -23,7 +23,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 use Throwable;
 
-#[AsMessageHandler]
+#[AsMessageHandler(fromTransport: 'async_messages')]
 class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

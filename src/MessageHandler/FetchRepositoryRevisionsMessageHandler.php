@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
-#[AsMessageHandler]
+#[AsMessageHandler(fromTransport: 'async_revisions')]
 class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

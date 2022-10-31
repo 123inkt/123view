@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Service\Webhook\WebhookNotifier;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(fromTransport: 'async_messages')]
 class WebhookEventMessageHandler
 {
     public function __construct(private readonly WebhookNotifier $webhookNotifier)
