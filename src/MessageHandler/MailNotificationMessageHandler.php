@@ -63,6 +63,25 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
     public function handleCommentReplyAdded(CommentReplyAdded $message): void
     {
         $this->logger?->info('MailNotificationMessageHandler: comment reply: ' . $message->commentReplyId);
+
+        $reply = $this->replyRepository->find($message->commentReplyId);
+        if ($reply === null) {
+            return;
+        }
+
+        // a notification was already send for this comment
+        if ($reply->getNotificationStatus()->hasStatus(NotificationStatus::STATUS_CREATED)) {
+            return;
+        }
+
+        $comment = Type::notNull($reply->getComment());
+        $review  = Type::notNull($comment->getReview());
+
+        $this->mailService->sendNewCommentReplyMail($review, $comment, $reply);
+
+        // update status and save
+        $reply->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
+        $this->replyRepository->save($reply);
     }
 
     /**

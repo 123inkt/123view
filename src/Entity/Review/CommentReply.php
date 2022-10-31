@@ -25,6 +25,9 @@ class CommentReply
     #[ORM\Column]
     private ?int $updateTimestamp = null;
 
+    #[ORM\Column(type: 'type_notification_status', nullable: true)]
+    private ?NotificationStatus $notificationStatus = null;
+
     #[ORM\ManyToOne(targetEntity: Comment::class, cascade: ['persist'], inversedBy: 'replies')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Comment $comment = null;
@@ -73,6 +76,18 @@ class CommentReply
     public function setUpdateTimestamp(?int $updateTimestamp): void
     {
         $this->updateTimestamp = $updateTimestamp;
+    }
+
+    public function getNotificationStatus(): NotificationStatus
+    {
+        return $this->notificationStatus ??= new NotificationStatus();
+    }
+
+    public function setNotificationStatus(?NotificationStatus $notificationStatus): self
+    {
+        $this->notificationStatus = $notificationStatus;
+
+        return $this;
     }
 
     public function getComment(): ?Comment
