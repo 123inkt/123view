@@ -8,16 +8,18 @@ use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
+use DR\GitCommitNotification\Message\Comment\CommentReplyAdded;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AddCommentReplyController extends AbstractController
 {
-    public function __construct(private readonly CommentReplyRepository $replyRepository)
+    public function __construct(private readonly CommentReplyRepository $replyRepository, private readonly MessageBusInterface $bus)
     {
     }
 
@@ -43,6 +45,8 @@ class AddCommentReplyController extends AbstractController
         $reply->setUpdateTimestamp(time());
 
         $this->replyRepository->save($reply, true);
+
+        $this->bus->dispatch(new CommentReplyAdded((int)$reply->getId()));
 
         return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()], ['action']);
     }
