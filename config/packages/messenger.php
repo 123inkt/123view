@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\MailNotificationInterface;
+use DR\GitCommitNotification\Message\Delay\DelayableMessage;
 use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
 use Symfony\Config\FrameworkConfig;
 
@@ -19,6 +19,6 @@ return static function (FrameworkConfig $framework): void {
 
     // https://symfony.com/doc/current/messenger.html#routing-messages-to-a-transport
     $messenger->routing(FetchRepositoryRevisionsMessage::class)->senders(['async_revisions']);
-    $messenger->routing(MailNotificationInterface::class)->senders(['async_messages', 'async_delay_mail']);
+    $messenger->routing(DelayableMessage::class)->senders(['async_delay_mail']);
     $messenger->routing(AsyncMessageInterface::class)->senders(['async_messages']);
 };
