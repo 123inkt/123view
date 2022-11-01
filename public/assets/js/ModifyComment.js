@@ -6,9 +6,16 @@ export default class Comment extends Controller {
         const textarea = this.role('comment-textarea');
         textarea.scrollIntoView({block: 'center'});
         textarea.focus();
+        this.commentResizeListener(textarea);
+        this.listen('input', 'comment-textarea', this.commentResizeListener);
         this.listen('keyup', 'comment-textarea', this.commentKeyListener.bind(this));
         this.listen('paste', 'comment-textarea', this.commentPasteListener.bind(this));
         this.listen('click', 'cancel-comment', this.cancelComment.bind(this));
+    }
+
+    commentResizeListener(target) {
+        target.style.height = "5px";
+        target.style.height = Math.max(84, (target.scrollHeight))+"px";
     }
 
     commentKeyListener(target, event) {
