@@ -13,7 +13,7 @@ class TypescriptHighlighter implements HighlighterInterface
         "(d(e(bugger|fault|lete|scribe)|o))",
         "(e(lse|num|x(port|tends)))",
         "(f(alse|inally|or|unction|rom))",
-        "(i(f|mport|n|nstanceof))",
+        "(i(f|mport|n|nstanceof|nterface))",
         "(n(ew|ull|umber))",
         "(r(eturn|eadonly))",
         "(s(uper|witch|tring))",
