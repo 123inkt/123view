@@ -13,7 +13,7 @@ return static function (FrameworkConfig $framework): void {
     // https://symfony.com/doc/current/messenger.html#transport-configuration
     $messenger->transport('async_messages')->dsn('%env(MESSENGER_TRANSPORT_DSN)%messages');
     $messenger->transport('async_revisions')->dsn('%env(MESSENGER_TRANSPORT_DSN)%revisions');
-    $messenger->transport('async_delay_mail')->dsn('%env(MESSENGER_TRANSPORT_DSN)%mail')->options(['delay' => 300]); // delay for 5 minutes
+    $messenger->transport('async_delay_mail')->dsn('%env(MESSENGER_TRANSPORT_DSN)%mail');
     $messenger->transport('failed')->dsn('doctrine://default?queue_name=failed');
     $messenger->transport('sync')->dsn('sync://');
 
