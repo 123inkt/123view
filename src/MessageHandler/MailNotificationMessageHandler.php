@@ -39,14 +39,14 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
     }
 
     /**
-     * Stage 1: any mail notification message should be resubmitted with a 60 second delay
+     * Stage 1: any mail notification message should be resubmitted with a 600 seconds delay
      * @throws Throwable
      */
     public function delayMessage(MailNotificationInterface $message): void
     {
-        $this->logger?->info('MailNotificationMessageHandler: delay message for 60 seconds: ' . get_class($message));
+        $this->logger?->info('MailNotificationMessageHandler: delay message for 600 seconds: ' . get_class($message));
 
-        $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp(60000)]));
+        $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp(600000)]));
     }
 
     /**
