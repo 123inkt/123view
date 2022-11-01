@@ -13,7 +13,7 @@ use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewRevisionViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
@@ -43,7 +43,7 @@ class ReviewViewModelProvider
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);
         if ($selectedFile === null && count($files) > 0) {
-            $selectedFile = Type::notFalse(reset($files));
+            $selectedFile = Assert::notFalse(reset($files));
         }
 
         $viewModel = new ReviewViewModel(

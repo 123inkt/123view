@@ -14,7 +14,7 @@ use DR\GitCommitNotification\Repository\Config\UserRepository;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Service\Mail\MailService;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -93,7 +93,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
             return;
         }
 
-        $this->mailService->sendNewCommentMail(Type::notNull($comment->getReview()), $comment);
+        $this->mailService->sendNewCommentMail(Assert::notNull($comment->getReview()), $comment);
 
         // update status and save
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
@@ -117,8 +117,8 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
             return;
         }
 
-        $comment = Type::notNull($reply->getComment());
-        $review  = Type::notNull($comment->getReview());
+        $comment = Assert::notNull($reply->getComment());
+        $review  = Assert::notNull($comment->getReview());
 
         $this->mailService->sendNewCommentReplyMail($review, $comment, $reply);
 
@@ -145,7 +145,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
             return;
         }
 
-        $this->mailService->sendCommentResolvedMail(Type::notNull($comment->getReview()), $comment, $user);
+        $this->mailService->sendCommentResolvedMail(Assert::notNull($comment->getReview()), $comment, $user);
 
         // update status and save
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_RESOLVED);

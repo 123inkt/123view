@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification;
 
+use DR\GitCommitNotification\Utility\Assert;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -14,6 +15,12 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
+
+    public function boot(): void
+    {
+        parent::boot();
+        date_default_timezone_set(Assert::isString($this->getContainer()->getParameter('timezone')));
+    }
 
     protected function configureContainer(ContainerConfigurator $container): void
     {

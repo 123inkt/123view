@@ -9,7 +9,7 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 
 class MailRecipientService
 {
@@ -24,7 +24,7 @@ class MailRecipientService
     {
         $users = $this->getUsersForRevisions($review->getRevisions()->toArray());
         foreach ($review->getReviewers() as $reviewer) {
-            $users[] = Type::notNull($reviewer->getUser());
+            $users[] = Assert::notNull($reviewer->getUser());
         }
 
         return array_unique($users);
@@ -37,7 +37,7 @@ class MailRecipientService
     {
         $subscribers = [];
         foreach ($comment->getReplies() as $reply) {
-            $subscribers[] = Type::notNull($reply->getUser());
+            $subscribers[] = Assert::notNull($reply->getUser());
 
             if ($reply === $commentReply) {
                 break;

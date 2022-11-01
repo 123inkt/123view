@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -32,7 +32,7 @@ class GitCherryPickService implements LoggerAwareInterface
             $this->cherryPickRevisions($revisions);
 
             return true;
-        } catch (RepositoryException | ProcessFailedException) {
+        } catch (RepositoryException|ProcessFailedException) {
             return false;
         }
     }
@@ -45,7 +45,7 @@ class GitCherryPickService implements LoggerAwareInterface
     public function cherryPickRevisions(array $revisions): void
     {
         /** @var Repository $repository */
-        $repository     = Type::notFalse(reset($revisions))->getRepository();
+        $repository     = Assert::notFalse(reset($revisions))->getRepository();
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
             ->strategy('recursive')

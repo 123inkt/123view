@@ -11,7 +11,7 @@ use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
 use DR\GitCommitNotification\Utility\Arrays;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
@@ -50,7 +50,7 @@ class ReviewDiffService implements LoggerAwareInterface
         $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
 
         // obtain the repository from the first revision
-        $repository = Type::notNull(Arrays::first($revisions)->getRepository());
+        $repository = Assert::notNull(Arrays::first($revisions)->getRepository());
 
         $key = sprintf('%s-%s', $repository->getId(), implode('-', $hashes));
 

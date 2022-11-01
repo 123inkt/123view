@@ -9,7 +9,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
 use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -42,7 +42,7 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
         }
 
         /** @var CodeReview|null $review */
-        $review = $this->reviewRepository->findOneByReferenceId((int)Type::notNull($revision->getRepository())->getId(), $referenceId);
+        $review = $this->reviewRepository->findOneByReferenceId((int)Assert::notNull($revision->getRepository())->getId(), $referenceId);
 
         // create new review, and generate project id
         if ($review === null) {

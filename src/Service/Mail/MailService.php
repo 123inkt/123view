@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Utility\Arrays;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel;
 use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use Psr\Log\LoggerAwareInterface;
@@ -41,7 +41,7 @@ class MailService implements LoggerAwareInterface
     public function sendNewCommentMail(CodeReview $review, Comment $comment): void
     {
         $recipients = $this->recipientService->getUsersForReview($review);
-        $recipients = Arrays::remove(array_unique($recipients), Type::notNull($comment->getUser()));
+        $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($comment->getUser()));
 
         $subject = $this->translator->trans(
             'mail.new.comment.subject',
@@ -69,7 +69,7 @@ class MailService implements LoggerAwareInterface
     {
         $recipients = $this->recipientService->getUsersForReview($review);
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
-        $recipients = Arrays::remove(array_unique($recipients), Type::notNull($reply->getUser()));
+        $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($reply->getUser()));
 
         $subject = $this->translator->trans(
             'mail.updated.comment.subject',

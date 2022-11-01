@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
 use Throwable;
 
@@ -37,7 +37,7 @@ class MailCommentViewModelProvider
         $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);
         $lineRange    = [];
         if ($selectedFile !== null) {
-            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Type::notNull($lineReference), 4) ?? [];
+            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Assert::notNull($lineReference), 4) ?? [];
         }
 
         $headerTitle = $this->getHeaderTitle($reply, $resolvedBy);

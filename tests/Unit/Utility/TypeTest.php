@@ -5,11 +5,11 @@ namespace DR\GitCommitNotification\Tests\Unit\Utility;
 
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use RuntimeException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Utility\Type
+ * @coversDefaultClass \DR\GitCommitNotification\Utility\Assert
  */
 class TypeTest extends AbstractTestCase
 {
@@ -20,7 +20,7 @@ class TypeTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be not null');
-        Type::notNull(null);
+        Assert::notNull(null);
     }
 
     /**
@@ -29,7 +29,7 @@ class TypeTest extends AbstractTestCase
     public function testNotNullSuccess(): void
     {
         $rule = new Rule();
-        static::assertSame($rule, Type::notNull($rule));
+        static::assertSame($rule, Assert::notNull($rule));
     }
 
     /**
@@ -39,7 +39,7 @@ class TypeTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be not false');
-        Type::notFalse(false);
+        Assert::notFalse(false);
     }
 
     /**
@@ -48,6 +48,6 @@ class TypeTest extends AbstractTestCase
     public function testNotFalseSuccess(): void
     {
         $rule = new Rule();
-        static::assertSame($rule, Type::notFalse($rule));
+        static::assertSame($rule, Assert::notFalse($rule));
     }
 }

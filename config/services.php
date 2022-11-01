@@ -30,8 +30,9 @@ use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
+return static function (ContainerConfigurator $container): void {
+    $container->parameters()->set('timezone', '%env(APP_TIMEZONE)%');
+    $services = $container->services();
 
     $services
         ->defaults()

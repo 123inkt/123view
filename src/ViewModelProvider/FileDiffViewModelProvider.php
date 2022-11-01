@@ -16,7 +16,7 @@ use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
 use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\AddCommentViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\EditCommentReplyViewModel;
@@ -62,7 +62,7 @@ class FileDiffViewModelProvider
     public function getAddCommentViewModel(CodeReview $review, DiffFile $file, AddCommentAction $action): AddCommentViewModel
     {
         $lineReference = $action->lineReference;
-        $line          = Type::notNull($this->diffFinder->findLineInFile($file, $lineReference));
+        $line          = Assert::notNull($this->diffFinder->findLineInFile($file, $lineReference));
 
         $form = $this->formFactory->create(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])->createView();
 
@@ -118,7 +118,7 @@ class FileDiffViewModelProvider
                 continue;
             }
 
-            $line = $this->diffFinder->findLineInFile($file, Type::notNull($comment->getLineReference()));
+            $line = $this->diffFinder->findLineInFile($file, Assert::notNull($comment->getLineReference()));
             if ($line !== null) {
                 $diffLines[spl_object_hash($line)] = $lineReference;
             } else {

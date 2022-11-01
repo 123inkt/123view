@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Revision;
 
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\AttachRevisionsViewModel;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -32,7 +32,7 @@ class AttachRevisionSelectionController
         $page        = $request->query->getInt('page', 1);
 
         $revisionsViewModel = $this->revisionViewModelProvider->getRevisionViewModel(
-            Type::notNull($review->getRepository()),
+            Assert::notNull($review->getRepository()),
             $page,
             $searchQuery,
             false

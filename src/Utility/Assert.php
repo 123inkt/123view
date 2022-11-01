@@ -5,10 +5,10 @@ namespace DR\GitCommitNotification\Utility;
 
 use RuntimeException;
 
-class Type
+class Assert
 {
     /**
-     * Typecast value to not null
+     * Assert value is not null
      * @template T
      *
      * @param T|null $value
@@ -25,7 +25,7 @@ class Type
     }
 
     /**
-     * Typecast value to array
+     * Assert value is array
      * @template T
      *
      * @param T $value
@@ -42,7 +42,19 @@ class Type
     }
 
     /**
-     * Typecast value to not false
+     * Assert value is a string
+     */
+    public static function isString(mixed $value): string
+    {
+        if (is_string($value) === false) {
+            throw new RuntimeException('Expecting value to be a string');
+        }
+
+        return $value;
+    }
+
+    /**
+     * Assert value is not false
      * @template T
      *
      * @param T|false $value

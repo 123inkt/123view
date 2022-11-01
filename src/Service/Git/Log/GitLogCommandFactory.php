@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
-use DR\GitCommitNotification\Utility\Type;
+use DR\GitCommitNotification\Utility\Assert;
 
 class GitLogCommandFactory
 {
@@ -29,7 +29,7 @@ class GitLogCommandFactory
             ->format($this->patternFactory->createPattern())
             ->ignoreCrAtEol()
             ->since($ruleConfig->period->getStartDate())
-            ->until(Type::notNull($ruleConfig->period->getEndDate()));
+            ->until(Assert::notNull($ruleConfig->period->getEndDate()));
 
         if ($options?->isExcludeMergeCommits() === true) {
             $builder->noMerges();
