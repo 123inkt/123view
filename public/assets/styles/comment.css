@@ -1,38 +1,38 @@
 .comment__comment-thread {
-  background: #FFFEE0;
-  font-size: 0.9rem;
-  border-bottom: 1px solid #e5e4c9;
+    background: #FFFEE0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e5e4c9;
 }
 
 .comment__detached-comment {
-  color: #999999;
-  font-size: 0.8rem;
-  padding-bottom: 2px;
+    color: #999999;
+    font-size: 0.8rem;
+    padding-bottom: 2px;
 }
 
 .comment__comment,
 .comment__reply {
-  padding: 5px 5px 5px 20px;
+    padding: 5px 5px 5px 20px;
 }
 
 .comment__reply {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
 .comment__edit-reply {
-  padding-left: 32px;
+    padding-left: 32px;
 }
 
 .comment__comment .comment__author,
 .comment__reply .comment__author {
-  font-weight: bold;
-  font-size: 0.8rem;
+    font-weight: bold;
+    font-size: 0.8rem;
 }
 
 .comment__comment .comment__datetime,
 .comment__reply .comment__datetime {
-  color: #999999;
-  font-size: 0.8rem;
+    color: #999999;
+    font-size: 0.8rem;
 }
 
 .comment__comment-thread.comment__state_resolved,
@@ -43,24 +43,32 @@
 .comment__comment-thread.comment__state_resolved .comment__state *,
 .comment__comment-thread.comment__state_resolved .comment__message *,
 .comment__comment-thread.comment__state_resolved .comment__toolbar * {
-  color: #999999 !important;
+    color: #999999 !important;
 }
 
 .comment__comment-thread.comment__state_resolved .comment__message img {
-  filter: grayscale(1);
+    filter: grayscale(1);
 }
 
 .comment__comment .comment__edit,
 .comment__reply .comment__edit {
-  display: none;
+    display: none;
 }
 
 .comment__comment:hover .comment__edit,
 .comment__reply:hover .comment__edit {
-  display: inline-block;
+    display: inline-block;
 }
 
 .comment__toolbar {
-  padding-left: 20px;
-  padding-bottom: 5px;
+    padding-left: 20px;
+    padding-bottom: 5px;
+}
+
+.comment__action-button {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
 }

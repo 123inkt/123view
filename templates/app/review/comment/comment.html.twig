@@ -17,7 +17,7 @@
             <span class="comment__edit">
                 {# edit comment #}
                 <a href="javascript:"
-                   class="ms-1 text-decoration-none"
+                   class="ms-1 text-decoration-none comment__action-button"
                    data-role="edit-comment"
                    data-comment-id="{{ comment.id }}"
                    title="{{ 'edit.comment'|trans }}">
@@ -30,7 +30,7 @@
                       action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Comment\\DeleteCommentController', {id: comment.id}) }}">
                     <input type="hidden" name="_method" value="DELETE" />
                     <a href="javascript:"
-                       class="ms-1 text-decoration-none"
+                       class="text-decoration-none comment__action-button"
                        data-role="delete-comment"
                        data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
                        title="{{ 'delete.comment'|trans }}">
@@ -85,7 +85,10 @@
     {# comment action buttons #}
     <div class="comment__toolbar">
         {% if not is_reply_on_comment and not is_edit_comment %}
-            <a href="javascript:" data-reply-to="{{ comment.id }}" data-role="reply-to-comment" title="{{ 'reply'|trans }}">
+            <a href="javascript:"
+               class="comment__action-button"
+               data-reply-to="{{ comment.id }}"
+               data-role="reply-to-comment" title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
         {% endif %}
