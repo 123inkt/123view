@@ -114,3 +114,8 @@
 .diff-file__comment_textarea {
   margin-bottom: 10px;
 }
+
+.diff-file__comment-mention {
+    top: -15px;
+    left: 4px;
+}
