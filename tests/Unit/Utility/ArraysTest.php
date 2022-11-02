@@ -30,4 +30,13 @@ class ArraysTest extends AbstractTestCase
     {
         static::assertSame('foo', Arrays::first(['foo', 'bar']));
     }
+
+    /**
+     * @covers ::mapAssoc
+     */
+    public function testMapAssoc(): void
+    {
+        static::assertSame([], Arrays::mapAssoc([], static fn() => []));
+        static::assertSame(['foo' => 'bar'], Arrays::mapAssoc([['foo', 'bar']], static fn($value) => [$value[0], $value[1]]));
+    }
 }

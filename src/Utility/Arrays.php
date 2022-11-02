@@ -45,6 +45,26 @@ class Arrays
 
     /**
      * @template T
+     * @template K of int|string
+     *
+     * @param T[]                              $items
+     * @param (callable(T): array{0: K, 1: T}) $callback
+     *
+     * @return array<K, T>
+     */
+    public static function mapAssoc(array $items, callable $callback): array
+    {
+        $result = [];
+        foreach ($items as $item) {
+            $keyValuePair             = $callback($item);
+            $result[$keyValuePair[0]] = $keyValuePair[1];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @template T
      *
      * @param T[] $items
      * @param T   $item
