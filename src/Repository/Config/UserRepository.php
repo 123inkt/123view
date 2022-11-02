@@ -29,4 +29,22 @@ class UserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return User[]
+     */
+    public function findBySearchQuery(string $searchQuery, int $limit): array
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.name LIKE :search or u.email LIKE :search')
+            ->setParameter('search', addcslashes($searchQuery, '%_') . '%')
+            ->orderBy('u.name', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        /** @var User[] $result */
+        $result = $query->getResult();
+
+        return $result;
+    }
 }
