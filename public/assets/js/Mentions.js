@@ -57,6 +57,11 @@ export default class Comment {
     /** @private */
     onInput() {
         if (this.dropdown.isVisible()) {
+            const mention = this.getMentionFromTextarea();
+            if (mention === null) {
+                this.dropdown.hide();
+                return;
+            }
             this.getSuggestions(this.getMentionFromTextarea(), (users) => this.dropdown.setUsers(users));
         }
     }
@@ -68,8 +73,9 @@ export default class Comment {
 
     /** @private */
     getMentionFromTextarea() {
-        const text = this.textarea.value.substring(0, this.textarea.selectionStart);
-        return text.substring(text.lastIndexOf('@') + 1);
+        const text           = this.textarea.value.substring(0, this.textarea.selectionStart);
+        const indexOfMention = text.lastIndexOf('@');
+        return indexOfMention === -1 ? null : text.substring(indexOfMention + 1);
     }
 
     /** @private */
