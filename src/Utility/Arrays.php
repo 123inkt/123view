@@ -27,6 +27,25 @@ class Arrays
     /**
      * @template T
      *
+     * @param T[]              $items
+     * @param callable(T):bool $callback
+     *
+     * @return T|null
+     */
+    public static function tryFind(array $items, callable $callback): mixed
+    {
+        foreach ($items as $item) {
+            if ($callback($item)) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @template T
+     *
      * @param T[] $items
      * @param T   $item
      *
