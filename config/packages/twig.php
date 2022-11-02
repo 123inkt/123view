@@ -10,4 +10,6 @@ return static function (TwigConfig $twig, ContainerConfigurator $configurator): 
         ->defaultPath('%kernel.project_dir%/templates')
         ->path('%kernel.project_dir%/public/assets/styles', 'styles')
         ->formThemes(['bootstrap_5_layout.html.twig']);
+
+    $twig->global('app_name')->value('%env(APP_NAME)%');
 };
