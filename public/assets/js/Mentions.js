@@ -15,6 +15,7 @@ export default class Comment {
     bind() {
         this.textarea.addEventListener('keydown', this.onKeyDown.bind(this));
         this.textarea.addEventListener('input', this.onInput.bind(this));
+        this.dropdown.addEventListener('click', this.onClick.bind(this));
     }
 
     /** @private */
@@ -67,6 +68,13 @@ export default class Comment {
     }
 
     /** @private */
+    onClick(event) {
+        this.dropdown.hide();
+        this.textarea.focus();
+        this.updateMentionInTextarea(this.dropdown.getSelectedUser(event.target));
+    }
+
+    /** @private */
     getSuggestions(searchQuery, callback) {
         axios.get('/app/user/mentions?search=' + encodeURI(searchQuery)).then(response => callback(response.data));
     }
@@ -90,7 +98,7 @@ export default class Comment {
         const textBeforeMention = textBeforeCaret.substring(0, text.lastIndexOf('@'));
 
         // update textarea content
-        this.textarea.value = textBeforeMention + replacement + textAfterCaret;
+        this.textarea.value = textBeforeMention + replacement + ' ' + textAfterCaret;
 
         // set cursor position
         this.textarea.selectionEnd = textBeforeMention.length + replacement.length;

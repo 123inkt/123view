@@ -9,7 +9,7 @@ export default class MentionsDropdown {
     }
 
     setUsers(users) {
-        this.users = users;
+        this.users    = users;
         this.selected = 0;
         this.update();
     }
@@ -39,8 +39,22 @@ export default class MentionsDropdown {
         this.update();
     }
 
-    getSelectedUser() {
-        return this.users[this.selected];
+    getSelectedUser(element) {
+        if (element === undefined) {
+            return this.users[this.selected];
+        }
+
+        const userId = parseInt(element.dataset.userId);
+        for (const user of this.users) {
+            if (user.id === userId) {
+                return user;
+            }
+        }
+        return undefined;
+    }
+
+    addEventListener(eventName, callback) {
+        this.dropdown.addEventListener(eventName, callback);
     }
 
     /** @private */
@@ -49,7 +63,7 @@ export default class MentionsDropdown {
         this.users.forEach((user, index) => {
             const selected = this.selected === index;
             html += `
-                <li><a class="dropdown-item ${selected ? 'active' : ''}" href="javascript:;" data-user-id="${user.id}">${user.name}</a></li>
+                <li><span class="dropdown-item ${selected ? 'active' : ''}" data-user-id="${user.id}">${user.name}</span></li>
             `;
         });
         this.dropdown.innerHTML = html;
