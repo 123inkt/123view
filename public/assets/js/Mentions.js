@@ -3,48 +3,90 @@ export default class Comment {
     dropdown;
     visible = false;
 
+    /**
+     * @param {HTMLElement} textarea
+     * @param {MentionsDropdown} dropdown
+     */
     constructor(textarea, dropdown) {
         this.textarea = textarea;
         this.dropdown = dropdown;
     }
 
     bind() {
-        this.textarea.addEventListener('keydown', this.mentionListener.bind(this));
+        this.textarea.addEventListener('keydown', this.onKeyDown.bind(this));
+        this.textarea.addEventListener('input', this.onInput.bind(this));
     }
 
     /** @private */
-    mentionListener(event) {
+    onKeyDown(event) {
+        // show dropdown
         if (event.key === '@') {
-            this.dropdown.style.display = 'block';
-            this.visible                = true;
-        }
-
-        if (this.visible === true) {
-            this.updateSuggestions(this.getMentionFromTextarea());
+            this.dropdown.show();
         }
 
         // hide dropdown
-        if (this.visible === true && event.key === 'Escape') {
+        if (this.dropdown.isVisible() && event.key === 'Escape') {
             event.preventDefault();
             event.stopPropagation();
-            this.dropdown.style.display = 'none';
-            this.dropdown.innerHTML     = '';
-            this.visible                = false;
+            this.dropdown.hide();
+        }
+
+        // select next suggestion
+        if (this.dropdown.isVisible() && event.key === 'ArrowDown') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.selectNext();
+        }
+
+        // select previous suggestion
+        if (this.dropdown.isVisible() && event.key === 'ArrowUp') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.selectPrev();
+        }
+
+        // select current user
+        if (this.dropdown.isVisible() && event.key === 'Enter') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.hide();
+            this.updateMentionInTextarea(this.dropdown.getSelectedUser());
         }
     }
 
     /** @private */
-    updateSuggestions(searchQuery) {
-        axios.get('/app/user/mentions?search=' + encodeURI(searchQuery))
-                .then(response => {
-                    this.dropdown.innerHTML = response.data
-                            .map(user => `<li><a class="dropdown-item" href="javascript:;" data-user-id="${user.id}">${user.name}</a></li>`)
-                            .join('');
-                });
+    onInput() {
+        if (this.dropdown.isVisible()) {
+            this.getSuggestions(this.getMentionFromTextarea(), (users) => this.dropdown.setUsers(users));
+        }
     }
 
+    /** @private */
+    getSuggestions(searchQuery, callback) {
+        axios.get('/app/user/mentions?search=' + encodeURI(searchQuery)).then(response => callback(response.data));
+    }
+
+    /** @private */
     getMentionFromTextarea() {
         const text = this.textarea.value.substring(0, this.textarea.selectionStart);
         return text.substring(text.lastIndexOf('@') + 1);
+    }
+
+    /** @private */
+    updateMentionInTextarea(user) {
+        if (user === undefined) {
+            return;
+        }
+        const replacement       = `@user:${user.id}[${user.name}]`;
+        const text              = this.textarea.value;
+        const textBeforeCaret   = text.substring(0, this.textarea.selectionStart);
+        const textAfterCaret    = text.substring(this.textarea.selectionStart);
+        const textBeforeMention = textBeforeCaret.substring(0, text.lastIndexOf('@'));
+
+        // update textarea content
+        this.textarea.value = textBeforeMention + replacement + textAfterCaret;
+
+        // set cursor position
+        this.textarea.selectionEnd = textBeforeMention.length + replacement.length;
     }
 }

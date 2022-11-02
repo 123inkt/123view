@@ -1,5 +1,6 @@
 import Controller from './Controller.js';
 import Mentions from './Mentions.js';
+import MentionsDropdown from './MentionsDropdown.js';
 
 export default class Comment extends Controller {
 
@@ -7,7 +8,7 @@ export default class Comment extends Controller {
         const textarea = this.role('comment-textarea');
         textarea.scrollIntoView({block: 'center'});
         textarea.focus();
-        new Mentions(textarea, this.role('mention-suggestions')).bind();
+        new Mentions(textarea, new MentionsDropdown(this.role('mention-suggestions'))).bind();
         this.commentResizeListener(textarea);
         this.listen('input', 'comment-textarea', this.commentResizeListener);
         this.listen('keyup', 'comment-textarea', this.commentKeyListener.bind(this));

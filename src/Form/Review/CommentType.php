@@ -12,7 +12,7 @@ class CommentType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['label' => false, 'constraints' => new Assert\Length(max: 2000)]);
+        $resolver->setDefaults(['label' => false, 'attr' => ['autocomplete' => 'off'], 'constraints' => new Assert\Length(max: 2000)]);
     }
 
     public function getParent(): string
