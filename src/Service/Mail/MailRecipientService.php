@@ -9,11 +9,12 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
+use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
 use DR\GitCommitNotification\Utility\Assert;
 
 class MailRecipientService
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(private readonly UserRepository $userRepository, private readonly CommentMentionService $mentionService)
     {
     }
 
@@ -33,11 +34,26 @@ class MailRecipientService
     /**
      * @return User[]
      */
+    public function getUserForComment(Comment $comment): array
+    {
+        return array_merge(
+            [Assert::notNull($comment->getUser())],
+            array_values($this->mentionService->getMentionedUsers((string)$comment->getMessage()))
+        );
+    }
+
+    /**
+     * @return User[]
+     */
     public function getUsersForReply(Comment $comment, ?CommentReply $commentReply = null): array
     {
         $subscribers = [];
         foreach ($comment->getReplies() as $reply) {
             $subscribers[] = Assert::notNull($reply->getUser());
+
+            foreach ($this->mentionService->getMentionedUsers((string)$reply->getMessage()) as $user) {
+                $subscribers[] = $user;
+            }
 
             if ($reply === $commentReply) {
                 break;

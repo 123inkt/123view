@@ -31,7 +31,7 @@ class MailService implements LoggerAwareInterface
         private MailerInterface $mailer,
         private MailSubjectFormatter $subjectFormatter,
         private MailRecipientService $recipientService,
-        private MailCommentViewModelProvider $viewModelProvider,
+        private MailCommentViewModelProvider $viewModelProvider
     ) {
     }
 
@@ -41,6 +41,7 @@ class MailService implements LoggerAwareInterface
     public function sendNewCommentMail(CodeReview $review, Comment $comment): void
     {
         $recipients = $this->recipientService->getUsersForReview($review);
+        $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($comment->getUser()));
 
         $subject = $this->translator->trans(
@@ -68,6 +69,7 @@ class MailService implements LoggerAwareInterface
     public function sendNewCommentReplyMail(CodeReview $review, Comment $comment, CommentReply $reply): void
     {
         $recipients = $this->recipientService->getUsersForReview($review);
+        $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
         $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($reply->getUser()));
 
@@ -96,6 +98,7 @@ class MailService implements LoggerAwareInterface
     public function sendCommentResolvedMail(CodeReview $review, Comment $comment, User $resolvedBy): void
     {
         $recipients = $this->recipientService->getUsersForReview($review);
+        $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment));
         $recipients = Arrays::remove(array_unique($recipients), $resolvedBy);
 
