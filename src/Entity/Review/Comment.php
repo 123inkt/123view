@@ -15,7 +15,6 @@ use DR\GitCommitNotification\Repository\Review\CommentRepository;
 #[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
 class Comment
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
