@@ -45,7 +45,7 @@ class ReviewController extends AbstractController
         $viewModel = $this->modelProvider->getViewModel($review, $filePath, $tab, $action);
 
         $selectedFile = $viewModel->getFileDiffViewModel()->getSelectedFile();
-        $this->fileSeenService->markAsSeen($review, $this->getUser(), $selectedFile?->getFile()?->getPathname());
+        $this->fileSeenService->markAsSeen($review, $this->getUser(), $selectedFile);
 
         return [
             'breadcrumbs' => $this->breadcrumbFactory->createForReview($review),
