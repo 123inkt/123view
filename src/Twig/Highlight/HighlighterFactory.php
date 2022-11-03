@@ -11,6 +11,7 @@ class HighlighterFactory
             PHPHighlighter::EXTENSION        => new PHPHighlighter(),
             TwigHighlighter::EXTENSION       => new TwigHighlighter(),
             TypescriptHighlighter::EXTENSION => new TypescriptHighlighter(),
+            XmlHighlighter::EXTENSION        => new XmlHighlighter(),
             default                          => null,
         };
     }
