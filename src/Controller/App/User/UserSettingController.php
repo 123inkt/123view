@@ -29,16 +29,14 @@ class UserSettingController extends AbstractController
     #[Entity('rule')]
     public function __invoke(Request $request): array
     {
-        $user    = $this->getUser();
-        $setting = $user->getSetting();
+        $user = $this->getUser();
 
-        $form = $this->createForm(UserSettingFormType::class, ['setting' => $setting]);
+        $form = $this->createForm(UserSettingFormType::class, ['setting' => $user->getSetting()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             return ['settingViewModel' => new UserSettingViewModel($form->createView())];
         }
 
-        $user->setSetting($setting);
         $this->userRepository->save($user, true);
 
         $this->addFlash('success', $this->translator->trans('mail.settings.save.successfully'));
