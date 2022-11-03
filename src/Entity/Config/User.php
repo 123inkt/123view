@@ -26,6 +26,9 @@ class User implements UserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $email = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private ?UserSetting $setting = null;
+
     /** @phpstan-var Collection<int, Rule> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $rules;
@@ -82,6 +85,18 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getSetting(): ?UserSetting
+    {
+        return $this->setting;
+    }
+
+    public function setSetting(?UserSetting $setting): self
+    {
+        $this->setting = $setting;
 
         return $this;
     }
