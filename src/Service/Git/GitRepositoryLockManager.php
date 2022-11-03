@@ -24,15 +24,15 @@ class GitRepositoryLockManager
      */
     public function start(Repository $repository, callable $callback): mixed
     {
-        $lockfile = sprintf('%s%s.%s.lock', $this->cacheDirectory, $repository->getId(), $repository->getName());
-        $fp       = Assert::notFalse(fopen($lockfile, "wb+"));
+        $lockfile   = sprintf('%s%s.%s.lock', $this->cacheDirectory, $repository->getId(), $repository->getName());
+        $fileHandle = Assert::notFalse(fopen($lockfile, "wb+"));
 
         try {
-            flock($fp, LOCK_EX);
+            flock($fileHandle, LOCK_EX);
 
             return $callback();
         } finally {
-            flock($fp, LOCK_UN);
+            flock($fileHandle, LOCK_UN);
         }
     }
 }

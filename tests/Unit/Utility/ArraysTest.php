@@ -36,7 +36,9 @@ class ArraysTest extends AbstractTestCase
      */
     public function testMapAssoc(): void
     {
-        static::assertSame([], Arrays::mapAssoc([], static fn() => []));
-        static::assertSame(['foo' => 'bar'], Arrays::mapAssoc([['foo', 'bar']], static fn($value) => [$value[0], $value[1]]));
+        $callback = static fn($value) => [(string)$value[0], $value[1]];
+
+        static::assertSame([], Arrays::mapAssoc([], $callback));
+        static::assertSame(['foo' => 'bar'], Arrays::mapAssoc([['foo', 'bar']], $callback));
     }
 }
