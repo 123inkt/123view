@@ -12,7 +12,7 @@ use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
 use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewRevisionViewModel;
@@ -25,7 +25,7 @@ class ReviewViewModelProvider
     public function __construct(
         private readonly ExternalLinkRepository $linkRepository,
         private readonly FileDiffViewModelProvider $fileDiffViewModelProvider,
-        private readonly ReviewDiffService $diffService,
+        private readonly ReviewDiffServiceInterface $diffService,
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
         private readonly DiffFinder $diffFinder
@@ -38,7 +38,7 @@ class ReviewViewModelProvider
     public function getViewModel(CodeReview $review, ?string $filePath, string $sidebarTab, ?AbstractReviewAction $reviewAction): ReviewViewModel
     {
         $revisions = $review->getRevisions()->toArray();
-        $files     = $this->diffService->getDiffFiles($revisions);
+        $files     = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions);
 
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);

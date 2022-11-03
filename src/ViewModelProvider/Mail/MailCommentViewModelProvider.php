@@ -9,14 +9,14 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
 use Throwable;
 
 class MailCommentViewModelProvider
 {
-    public function __construct(private readonly ReviewDiffService $diffService, private readonly DiffFinder $diffFinder)
+    public function __construct(private readonly ReviewDiffServiceInterface $diffService, private readonly DiffFinder $diffFinder)
     {
     }
 
@@ -31,7 +31,7 @@ class MailCommentViewModelProvider
     ): CommentViewModel {
         /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
-        $files         = $this->diffService->getDiffFiles($review->getRevisions()->toArray());
+        $files         = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
 
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);

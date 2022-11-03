@@ -14,7 +14,11 @@ use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
+use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffService;
+use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\GitCommitNotification\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
@@ -90,8 +94,9 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$config', ['html_input' => 'strip', 'allow_unsafe_links' => false]);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
 
-    // custom register GitRepositoryService with cache dir
+    // custom register cache dir
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
+    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)
@@ -106,7 +111,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
     //FIXME $services->set(OneByOneCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 20]);
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
-    $services->set(ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
+
+    $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
+    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
+    $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
 
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
 };
