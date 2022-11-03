@@ -19,30 +19,15 @@ use Throwable;
 
 class RuleProcessor
 {
-    private LoggerInterface          $logger;
-    private CommitBundler            $bundler;
-    private GitDiffService           $diffService;
-    private GitLogService            $gitLogService;
-    private CommitFilter             $filter;
-    private EventDispatcherInterface $dispatcher;
-    private MailService              $mailService;
-
     public function __construct(
-        LoggerInterface $logger,
-        GitLogService $gitLogService,
-        GitDiffService $diffService,
-        CommitFilter $filter,
-        CommitBundler $bundler,
-        EventDispatcherInterface $dispatcher,
-        MailService $mailService
+        private readonly LoggerInterface $logger,
+        private readonly GitLogService $gitLogService,
+        private readonly GitDiffService $diffService,
+        private readonly CommitFilter $filter,
+        private readonly CommitBundler $bundler,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly MailService $mailService
     ) {
-        $this->logger        = $logger;
-        $this->gitLogService = $gitLogService;
-        $this->diffService   = $diffService;
-        $this->filter        = $filter;
-        $this->bundler       = $bundler;
-        $this->dispatcher    = $dispatcher;
-        $this->mailService   = $mailService;
     }
 
     /**

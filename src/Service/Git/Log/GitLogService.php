@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -20,11 +21,12 @@ class GitLogService implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private CacheableGitRepositoryService $repositoryService,
-        private GitCommandBuilderFactory $commandBuilderFactory,
-        private GitLogCommandFactory $commandFactory,
-        private FormatPatternFactory $formatPatternFactory,
-        private GitLogParser $logParser
+        private readonly CacheableGitRepositoryService $repositoryService,
+        private readonly GitCommandBuilderFactory $commandBuilderFactory,
+        private readonly GitRepositoryLockManager $lockManager,
+        private readonly GitLogCommandFactory $commandFactory,
+        private readonly FormatPatternFactory $formatPatternFactory,
+        private readonly GitLogParser $logParser
     ) {
     }
 
@@ -38,16 +40,18 @@ class GitLogService implements LoggerAwareInterface
         $result = [];
 
         foreach ($rule->getRepositories() as $repositoryConfig) {
-            // clone or pull the repository for the given rule.
-            $repository = $this->repositoryService->getRepository((string)$repositoryConfig->getUrl());
+            $output = $this->lockManager->start($repositoryConfig, function () use ($ruleConfig, $repositoryConfig) {
+                // clone or pull the repository for the given rule.
+                $repository = $this->repositoryService->getRepository((string)$repositoryConfig->getUrl());
 
-            // create command
-            $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
+                // create command
+                $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
 
-            $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
+                $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
 
-            // execute `git log ...` command
-            $output = $repository->execute($commandBuilder);
+                // execute `git log ...` command
+                return $repository->execute($commandBuilder);
+            });
 
             // parse output
             $commits = $this->logParser->parse($repositoryConfig, $output);
