@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
+use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
 use DR\GitCommitNotification\Service\Revision\RevisionFactory;
 use Psr\Log\LoggerAwareInterface;
@@ -30,6 +31,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         private GitLogService $logService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
+        private GitRepositoryLockManager $lockManager,
         private ManagerRegistry $registry,
         private MessageBusInterface $bus
     ) {
@@ -61,8 +63,11 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         // find the last revision
         $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
 
-        // build git log command
-        $commits = $this->logService->getCommitsSince($repository, $latestRevision, self::MAX_COMMITS_PER_MESSAGE);
+        // get commits since last visit
+        $commits = $this->lockManager->start(
+            $repository,
+            fn() => $this->logService->getCommitsSince($repository, $latestRevision, self::MAX_COMMITS_PER_MESSAGE)
+        );
         if (count($commits) === 0) {
             return;
         }
