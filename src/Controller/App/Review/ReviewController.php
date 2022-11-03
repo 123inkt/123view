@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenService;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
@@ -22,7 +23,8 @@ class ReviewController extends AbstractController
     public function __construct(
         private readonly ReviewViewModelProvider $modelProvider,
         private readonly BreadcrumbFactory $breadcrumbFactory,
-        private readonly CodeReviewActionFactory $actionFactory
+        private readonly CodeReviewActionFactory $actionFactory,
+        private readonly FileSeenService $fileSeenService
     ) {
     }
 
@@ -40,9 +42,14 @@ class ReviewController extends AbstractController
         $tab      = $request->query->get('tab', ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
         $action   = $this->actionFactory->createFromRequest($request);
 
+        $viewModel = $this->modelProvider->getViewModel($review, $filePath, $tab, $action);
+
+        $selectedFile = $viewModel->getFileDiffViewModel()->getSelectedFile();
+        $this->fileSeenService->markAsSeen($review, $this->getUser(), $selectedFile?->getFile()?->getPathname());
+
         return [
             'breadcrumbs' => $this->breadcrumbFactory->createForReview($review),
-            'reviewModel' => $this->modelProvider->getViewModel($review, $filePath, $tab, $action)
+            'reviewModel' => $viewModel
         ];
     }
 }

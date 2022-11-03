@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
 
 #[ORM\Entity(repositoryClass: FileSeenStatusRepository::class)]
+#[ORM\UniqueConstraint('IDX_REVIEW_USER_FILEPATH', ['review_id', 'user_id', 'file_path'])]
 class FileSeenStatus
 {
     #[ORM\Id]
