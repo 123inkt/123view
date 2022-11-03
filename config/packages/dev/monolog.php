@@ -10,6 +10,13 @@ return static function (MonologConfig $monolog) {
         ->level('info')
         ->channels()->elements(["!event"]);
 
+    $monolog->handler('error')
+        ->type('stream')
+        ->path('%kernel.logs_dir%/error.%kernel.environment%.log')
+        ->level('error')
+        ->includeStacktraces(true)
+        ->channels()->elements(["!event"]);
+
     $monolog->handler('app')
         ->type('stream')
         ->path('%kernel.logs_dir%/app.%kernel.environment%.log')

@@ -15,6 +15,7 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
         ->level('error')
+        ->includeStacktraces(true)
         ->maxFiles(10);
 
     if ((string)env('ERROR_MAIL') !== '') {

@@ -38,19 +38,22 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         private readonly CommentReplyRepository $replyRepository,
         private readonly UserRepository $userRepository,
         private readonly CommentMentionService $mentionService,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
+        private readonly int $mailNotificationDelay
     ) {
     }
 
     /**
-     * Stage 1: any mail notification message should be resubmitted with a 600 seconds delay
+     * Stage 1: any mail notification message should be resubmitted with a xxx seconds delay
      * @throws Throwable
      */
     public function delayMessage(MailNotificationInterface $message): void
     {
-        $this->logger?->info('MailNotificationMessageHandler: delay message for 600 seconds: ' . get_class($message));
+        $this->logger?->info(
+            sprintf('MailNotificationMessageHandler: delay message for %d seconds: %s', $this->mailNotificationDelay / 1000, get_class($message))
+        );
 
-        $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp(600000)]));
+        $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp($this->mailNotificationDelay)]));
     }
 
     /**
@@ -127,11 +130,13 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         }
 
         $originalMentions = $this->mentionService->getMentionedUsers($message->originalComment);
-        $newMentions      = array_unique(array_diff($mentions, $originalMentions));
+        $newMentions      = array_unique(array_udiff($mentions, $originalMentions, static fn($userA, $userB) => (int)($userA === $userB)));
 
         if (count($newMentions) === 0) {
             return;
         }
+
+        $this->logger?->info('MailNotificationMessageHandler: sending new mentions to comment');
 
         $this->mailService->sendNewCommentMail(Assert::notNull($comment->getReview()), $comment, $newMentions);
     }
@@ -182,7 +187,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         }
 
         $originalMentions = $this->mentionService->getMentionedUsers($message->originalComment);
-        $newMentions      = array_unique(array_diff($mentions, $originalMentions));
+        $newMentions      = array_unique(array_udiff($mentions, $originalMentions, static fn($userA, $userB) => (int)($userA === $userB)));
 
         if (count($newMentions) === 0) {
             return;
@@ -190,6 +195,8 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
 
         $comment = Assert::notNull($reply->getComment());
         $review  = Assert::notNull($comment->getReview());
+
+        $this->logger?->info('MailNotificationMessageHandler: sending new mentions to comment reply');
 
         $this->mailService->sendNewCommentReplyMail($review, $comment, $reply, $newMentions);
     }
