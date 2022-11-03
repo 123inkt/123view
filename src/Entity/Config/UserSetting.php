@@ -23,6 +23,9 @@ class UserSetting
     #[ORM\Column]
     private bool $mailCommentReplied = true;
 
+    #[ORM\OneToOne(inversedBy: 'setting', targetEntity: User::class)]
+    private ?User $user = null;
+
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -33,6 +36,18 @@ class UserSetting
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): UserSetting
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function isMailCommentAdded(): bool

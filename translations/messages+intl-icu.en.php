@@ -132,4 +132,5 @@ return [
     'mail.new.reply.by.user.on'                   => 'New reply by {userName} on',
     'mail.comment.was.resolved.on'                => 'Comment was resolved by {userName} on',
     'comment.mark.as.resolved'                    => '<em>{userName}</em> marked comment as resolved.',
+    'mail.settings'                               => 'Mail settings'
 ];

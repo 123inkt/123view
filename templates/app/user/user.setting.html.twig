@@ -1,0 +1,7 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1>{{ 'mail.settings'|trans }}</h1>
+
+    {{ form(settingViewModel.form) }}
+{% endblock %}
