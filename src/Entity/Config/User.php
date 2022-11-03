@@ -89,9 +89,9 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSetting(): ?UserSetting
+    public function getSetting(): UserSetting
     {
-        return $this->setting;
+        return $this->setting ?? new UserSetting();
     }
 
     public function setSetting(?UserSetting $setting): self

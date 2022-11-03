@@ -63,7 +63,12 @@ class MailService implements LoggerAwareInterface
             ->text('')
             ->context(['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment)]);
 
+        /** @var User $recipient */
         foreach ($recipients as $recipient) {
+            if ($recipient->getSetting()->isMailCommentAdded() === false) {
+                continue;
+            }
+
             $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for comment %d.', $recipient->getEmail(), $comment->getId()));
         }
@@ -99,7 +104,12 @@ class MailService implements LoggerAwareInterface
             ->text('')
             ->context(['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, $reply)]);
 
+        /** @var User $recipient */
         foreach ($recipients as $recipient) {
+            if ($recipient->getSetting()->isMailCommentReplied() === false) {
+                continue;
+            }
+
             $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for comment %d.', $recipient->getEmail(), $reply->getId()));
         }
@@ -131,7 +141,12 @@ class MailService implements LoggerAwareInterface
             ->text('')
             ->context(['commentModel' => $this->viewModelProvider->createCommentViewModel($review, $comment, null, $resolvedBy)]);
 
+        /** @var User $recipient */
         foreach ($recipients as $recipient) {
+            if ($recipient->getSetting()->isMailCommentResolved() === false) {
+                continue;
+            }
+
             $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for resolved comment %d.', $recipient->getEmail(), $comment->getId()));
         }
