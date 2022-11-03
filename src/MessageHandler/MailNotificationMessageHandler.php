@@ -133,7 +133,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
             return;
         }
 
-        $this->mailService->sendNewCommentMail(Assert::notNull($comment->getReview()), $comment, array_values($newMentions));
+        $this->mailService->sendNewCommentMail(Assert::notNull($comment->getReview()), $comment, $newMentions);
     }
 
     /**
@@ -191,7 +191,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         $comment = Assert::notNull($reply->getComment());
         $review  = Assert::notNull($comment->getReview());
 
-        $this->mailService->sendNewCommentReplyMail($review, $comment, $reply, array_values($newMentions));
+        $this->mailService->sendNewCommentReplyMail($review, $comment, $reply, $newMentions);
     }
 
     /**
