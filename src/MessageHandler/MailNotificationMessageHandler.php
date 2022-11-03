@@ -7,12 +7,15 @@ use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\NotificationStatus;
 use DR\GitCommitNotification\Message\Comment\CommentAdded;
 use DR\GitCommitNotification\Message\Comment\CommentReplyAdded;
+use DR\GitCommitNotification\Message\Comment\CommentReplyUpdated;
 use DR\GitCommitNotification\Message\Comment\CommentResolved;
+use DR\GitCommitNotification\Message\Comment\CommentUpdated;
 use DR\GitCommitNotification\Message\Delay\DelayableMessage;
 use DR\GitCommitNotification\Message\MailNotificationInterface;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
 use DR\GitCommitNotification\Service\Mail\MailService;
 use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -34,6 +37,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         private readonly CommentRepository $commentRepository,
         private readonly CommentReplyRepository $replyRepository,
         private readonly UserRepository $userRepository,
+        private readonly CommentMentionService $mentionService,
         private readonly MessageBusInterface $bus
     ) {
     }
@@ -59,8 +63,12 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
 
         if ($message->message instanceof CommentAdded) {
             $this->handleCommentAdded($message->message);
+        } elseif ($message->message instanceof CommentUpdated) {
+            $this->handleCommentUpdated($message->message);
         } elseif ($message->message instanceof CommentReplyAdded) {
             $this->handleCommentReplyAdded($message->message);
+        } elseif ($message->message instanceof CommentReplyUpdated) {
+            $this->handleCommentReplyUpdated($message->message);
         } elseif ($message->message instanceof CommentResolved) {
             $this->handleCommentResolved($message->message);
         }
@@ -103,6 +111,34 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
     /**
      * @throws Throwable
      */
+    private function handleCommentUpdated(CommentUpdated $message): void
+    {
+        $this->logger?->info('MailNotificationMessageHandler: comment updated: ' . $message->commentId);
+
+        $comment = $this->commentRepository->find($message->commentId);
+        if ($comment === null) {
+            // comment was removed before we could send it
+            return;
+        }
+
+        $mentions = array_values($this->mentionService->getMentionedUsers((string)$comment->getMessage()));
+        if (count($mentions) === 0) {
+            return;
+        }
+
+        $originalMentions = $this->mentionService->getMentionedUsers($message->originalComment);
+        $newMentions      = array_unique(array_diff($mentions, $originalMentions));
+
+        if (count($newMentions) === 0) {
+            return;
+        }
+
+        $this->mailService->sendNewCommentMail(Assert::notNull($comment->getReview()), $comment, array_values($newMentions));
+    }
+
+    /**
+     * @throws Throwable
+     */
     private function handleCommentReplyAdded(CommentReplyAdded $message): void
     {
         $this->logger?->info('MailNotificationMessageHandler: comment reply: ' . $message->commentReplyId);
@@ -125,6 +161,37 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         // update status and save
         $reply->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
         $this->replyRepository->save($reply);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function handleCommentReplyUpdated(CommentReplyUpdated $message): void
+    {
+        $this->logger?->info('MailNotificationMessageHandler: comment reply updated: ' . $message->commentReplyId);
+
+        $reply = $this->replyRepository->find($message->commentReplyId);
+        if ($reply === null) {
+            // comment was removed before we could send it
+            return;
+        }
+
+        $mentions = array_values($this->mentionService->getMentionedUsers((string)$reply->getMessage()));
+        if (count($mentions) === 0) {
+            return;
+        }
+
+        $originalMentions = $this->mentionService->getMentionedUsers($message->originalComment);
+        $newMentions      = array_unique(array_diff($mentions, $originalMentions));
+
+        if (count($newMentions) === 0) {
+            return;
+        }
+
+        $comment = Assert::notNull($reply->getComment());
+        $review  = Assert::notNull($comment->getReview());
+
+        $this->mailService->sendNewCommentReplyMail($review, $comment, $reply, array_values($newMentions));
     }
 
     /**

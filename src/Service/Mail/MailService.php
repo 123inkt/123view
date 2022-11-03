@@ -36,13 +36,20 @@ class MailService implements LoggerAwareInterface
     }
 
     /**
+     * @param User[]|null $recipients
+     *
      * @throws Throwable
      */
-    public function sendNewCommentMail(CodeReview $review, Comment $comment): void
+    public function sendNewCommentMail(CodeReview $review, Comment $comment, ?array $recipients = null): void
     {
-        $recipients = $this->recipientService->getUsersForReview($review);
-        $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
+        if ($recipients === null) {
+            $recipients = $this->recipientService->getUsersForReview($review);
+            $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
+        }
         $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($comment->getUser()));
+        if (count($recipients) === 0) {
+            return;
+        }
 
         $subject = $this->translator->trans(
             'mail.new.comment.subject',
@@ -64,14 +71,21 @@ class MailService implements LoggerAwareInterface
     }
 
     /**
+     * @param User[]|null $recipients
+     *
      * @throws Throwable
      */
-    public function sendNewCommentReplyMail(CodeReview $review, Comment $comment, CommentReply $reply): void
+    public function sendNewCommentReplyMail(CodeReview $review, Comment $comment, CommentReply $reply, ?array $recipients = null): void
     {
-        $recipients = $this->recipientService->getUsersForReview($review);
-        $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
-        $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
+        if ($recipients === null) {
+            $recipients = $this->recipientService->getUsersForReview($review);
+            $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
+            $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
+        }
         $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($reply->getUser()));
+        if (count($recipients) === 0) {
+            return;
+        }
 
         $subject = $this->translator->trans(
             'mail.updated.comment.subject',
@@ -101,6 +115,9 @@ class MailService implements LoggerAwareInterface
         $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment));
         $recipients = Arrays::remove(array_unique($recipients), $resolvedBy);
+        if (count($recipients) === 0) {
+            return;
+        }
 
         $subject = $this->translator->trans(
             'mail.comment.resolved.subject',
