@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\User;
 
-use DR\GitCommitNotification\Entity\Config\UserSetting;
+use DR\GitCommitNotification\Controller\App\User\UserSettingController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,9 +20,9 @@ class UserSettingFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->setAction($this->urlGenerator->generate(UserSetting::class));
+        $builder->setAction($this->urlGenerator->generate(UserSettingController::class));
         $builder->setMethod('POST');
-        $builder->add('setting', UserSettingType::class);
+        $builder->add('setting', UserSettingType::class, ['label' => false]);
         $builder->add('save', SubmitType::class, ['label' => 'Save']);
     }
 }

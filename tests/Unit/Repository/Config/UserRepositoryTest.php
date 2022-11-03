@@ -22,7 +22,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::add
+     * @covers ::save
      */
     public function testAdd(): void
     {
@@ -30,7 +30,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
 
         $this->expectPersist($user);
         $this->expectFlush();
-        $this->repository->add($user, true);
+        $this->repository->save($user, true);
     }
 
     protected function getRepositoryEntityClassString(): string

@@ -1,7 +1,15 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h1>{{ 'mail.settings'|trans }}</h1>
+    <h2 class="mb-5">{{ 'mail.settings'|trans }}</h2>
+
+    {% if app.session.flashbag.peek('success')|length > 0 %}
+        <div class="alert alert-success mb-3">
+            {% for message in app.flashes('success') %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {{ form(settingViewModel.form) }}
 {% endblock %}

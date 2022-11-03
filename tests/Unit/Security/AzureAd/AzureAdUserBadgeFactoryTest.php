@@ -45,7 +45,7 @@ class AzureAdUserBadgeFactoryTest extends AbstractTestCase
     {
         $user = new User();
         $this->userRepository->expects(self::exactly(2))->method('findOneBy')->with(['email' => 'email'])->willReturn(null, $user);
-        $this->userRepository->expects(self::once())->method('add')->with(static::isInstanceOf(User::class), true);
+        $this->userRepository->expects(self::once())->method('save')->with(static::isInstanceOf(User::class), true);
 
         $badge = $this->factory->create('email', 'name');
         static::assertSame($user, $badge->getUser());

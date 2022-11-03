@@ -21,7 +21,7 @@ class AzureAdUserBadgeFactory
 
             // create user if not exists
             if ($user === null) {
-                $this->userRepository->add((new User())->setEmail($email)->setName($name), true);
+                $this->userRepository->save((new User())->setEmail($email)->setName($name), true);
                 $user = $this->userRepository->findOneBy(['email' => $email]);
             }
 
