@@ -132,7 +132,8 @@ return [
     'mail.new.reply.by.user.on'                   => 'New reply by {userName} on',
     'mail.comment.was.resolved.on'                => 'Comment was resolved by {userName} on',
     'comment.mark.as.resolved'                    => '<em>{userName}</em> marked comment as resolved.',
-    'mail.settings'                               => 'Mail notification settings',
+    'mail.settings'                               => 'Code review notification settings',
     'mail.settings.save.successfully'             => 'Settings successfully saved',
     'settings'                                    => 'Settings',
+    'commit.notification.rules'                   => 'Commit notification rules',
 ];

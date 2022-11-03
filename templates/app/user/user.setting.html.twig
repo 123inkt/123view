@@ -1,7 +1,7 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h2 class="mb-5">{{ 'mail.settings'|trans }}</h2>
+    <h1 class="mb-4 mt-2">{{ 'mail.settings'|trans }}</h1>
 
     {% if app.session.flashbag.peek('success')|length > 0 %}
         <div class="alert alert-success mb-3">

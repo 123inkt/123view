@@ -67,16 +67,14 @@
         </a>
 
     {% else %}
-        <div class="jumbotron mt-5">
-            <h1 class="display-4">{{ 'rules.welcome.banner'|trans }}</h1>
-            <p class="lead">{{ 'rules.welcome.description'|trans }}</p>
-            <hr class="my-4">
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController') }}">
-                    {{ 'rules.add.first.rule'|trans }}
-                </a>
-            </p>
-        </div>
+        <h1 class="mt-2">{{ 'commit.notification.rules'|trans }}</h1>
+        <p class="mb-3 lead">{{ 'rules.welcome.description'|trans }}</p>
+
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController') }}">
+                {{ 'rules.add.first.rule'|trans }}
+            </a>
+        </p>
     {% endif %}
 
 {% endblock %}
