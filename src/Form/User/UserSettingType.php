@@ -16,9 +16,9 @@ class UserSettingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('mailCommentAdded', CheckboxType::class, ['required' => false]);
-        $builder->add('mailCommentReplied', CheckboxType::class, ['required' => false]);
-        $builder->add('mailCommentResolved', CheckboxType::class, ['required' => false]);
+        $builder->add('mailCommentAdded', CheckboxType::class, ['required' => false, 'label' => 'form.label.mail.comment.added']);
+        $builder->add('mailCommentReplied', CheckboxType::class, ['required' => false, 'label' => 'form.label.mail.comment.replied']);
+        $builder->add('mailCommentResolved', CheckboxType::class, ['required' => false, 'label' => 'form.label.mail.comment.resolved']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

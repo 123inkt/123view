@@ -136,4 +136,7 @@ return [
     'mail.settings.save.successfully'             => 'Settings successfully saved',
     'settings'                                    => 'Settings',
     'commit.notification.rules'                   => 'Commit notification rules',
+    'form.label.mail.comment.added'               => 'Receive a notification when a comment is added to a review you are author or reviewer on',
+    'form.label.mail.comment.replied'             => 'Receive a notification when a reply is added to a comment thread you are participant of',
+    'form.label.mail.comment.resolved'            => 'Receive a notification when a comment thread is resolved you are participant of'
 ];
