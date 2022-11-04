@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\User;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Form\User\UserSettingFormType;
-use DR\GitCommitNotification\Repository\Config\UserRepository;
+use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\ViewModel\App\User\UserSettingViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\CodeReview\Comment;
 
 use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Config\UserRepository;
+use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Utility\Arrays;
 
 class CommentMentionService

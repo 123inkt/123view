@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Form\Review;
 use DR\GitCommitNotification\Controller\App\Review\Reviewer\AddReviewerController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Config\UserRepository;
+use DR\GitCommitNotification\Repository\User\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

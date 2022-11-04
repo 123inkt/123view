@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\User;
 
 use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Config\UserRepository;
+use DR\GitCommitNotification\Repository\User\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;

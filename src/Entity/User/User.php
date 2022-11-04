@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Repository\Config\UserRepository;
+use DR\GitCommitNotification\Repository\User\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]

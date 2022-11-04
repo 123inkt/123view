@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Repository\Config\UserSettingRepository;
+use DR\GitCommitNotification\Repository\User\UserSettingRepository;
 
 #[ORM\Entity(repositoryClass: UserSettingRepository::class)]
 class UserSetting
