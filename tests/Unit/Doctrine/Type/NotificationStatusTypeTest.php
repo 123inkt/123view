@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\ConversionException;
 use DR\GitCommitNotification\Doctrine\Type\NotificationStatusType;
 use DR\GitCommitNotification\Entity\Review\NotificationStatus;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use stdClass;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Doctrine\Type\NotificationStatusType
@@ -89,8 +90,31 @@ class NotificationStatusTypeTest extends AbstractTestCase
 
     /**
      * @covers ::convertToDatabaseValue
+     * @throws ConversionException
+     */
+    public function testConvertToDatabaseValueNullShouldReturnNull(): void
+    {
+        static::assertNull($this->statusType->convertToDatabaseValue(null, $this->createMock(AbstractPlatform::class)));
+    }
+
+    /**
+     * @covers ::convertToDatabaseValue
+     * @throws ConversionException
+     */
+    public function testConvertToDatabaseValueInvalidTypeShouldThrowException(): void
+    {
+        $this->expectException(ConversionException::class);
+        $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type type_notification_status.');
+        $this->statusType->convertToDatabaseValue(new stdClass(), $this->createMock(AbstractPlatform::class));
+    }
+
+    /**
+     * @covers ::convertToDatabaseValue
+     * @throws ConversionException
      */
     public function testConvertToDatabaseValue(): void
     {
+        static::assertNull($this->statusType->convertToDatabaseValue(new NotificationStatus(), $this->createMock(AbstractPlatform::class)));
+        static::assertSame(123, $this->statusType->convertToDatabaseValue(new NotificationStatus(123), $this->createMock(AbstractPlatform::class)));
     }
 }
