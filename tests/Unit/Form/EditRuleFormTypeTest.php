@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form;
 
-use DR\GitCommitNotification\Controller\App\RuleController;
+use DR\GitCommitNotification\Controller\App\Notification\RuleController;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Form\EditRuleFormType;
 use DR\GitCommitNotification\Form\Rule\RuleType;

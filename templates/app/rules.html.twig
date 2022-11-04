@@ -40,14 +40,14 @@
                     <td>{{ rule.ruleOptions.theme|trans }}</td>
 
                     <td class="rule-table-options">
-                        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController', {id: rule.id}) }}"
+                        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RuleController', {id: rule.id}) }}"
                            title="{{ 'rule.edit.title'|trans }}"
                            class="btn btn-success">
                             <i class="bi-pencil-square"></i>
                         </a>
 
                         <form method="POST" class="d-inline-block"
-                              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\DeleteRuleController', {id: rule.id}) }}"
+                              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\DeleteRuleController', {id: rule.id}) }}"
                               title="{{ 'rule.delete.title'|trans }}"
                               onsubmit="return confirm('{{ 'Are you sure you want to delete this rule?'|trans|e('js')|e('html') }}');">
                             <input type="hidden" name="_method" value="DELETE" />
@@ -61,7 +61,7 @@
             </tbody>
         </table>
 
-        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController') }}" class="btn btn-outline-primary">
+        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RuleController') }}" class="btn btn-outline-primary">
             <i class="bi-plus"></i>
             {{ 'rule.new'|trans }}
         </a>
@@ -71,7 +71,7 @@
         <p class="mb-3 lead">{{ 'rules.welcome.description'|trans }}</p>
 
         <p class="lead">
-            <a class="btn btn-primary btn-lg" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\RuleController') }}">
+            <a class="btn btn-primary btn-lg" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RuleController') }}">
                 {{ 'rules.add.first.rule'|trans }}
             </a>
         </p>
