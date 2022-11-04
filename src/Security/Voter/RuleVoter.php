@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Security\Voter;
 
 use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

@@ -5,8 +5,8 @@ namespace DR\GitCommitNotification\Controller\App\Review\Reviewer;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;

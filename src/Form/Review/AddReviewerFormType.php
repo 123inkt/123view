@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Form\Review;
 
 use DR\GitCommitNotification\Controller\App\Review\Reviewer\AddReviewerController;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\User;
 
-use DR\GitCommitNotification\Entity\Config\UserSetting;
+use DR\GitCommitNotification\Entity\User\UserSetting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

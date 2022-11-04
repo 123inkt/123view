@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
 
 class FileSeenStatusService

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
 use DR\GitCommitNotification\Entity\Config\RuleFactory;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**

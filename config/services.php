@@ -5,7 +5,7 @@ declare(strict_types=1);
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler;

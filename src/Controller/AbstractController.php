@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller;
 
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use League\Uri\Http;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

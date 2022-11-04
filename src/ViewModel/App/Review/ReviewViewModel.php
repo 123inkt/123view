@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Entity\User\User;
 use Symfony\Component\Form\FormView;
 
 class ReviewViewModel

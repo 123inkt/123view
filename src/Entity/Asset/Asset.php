@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\Asset;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Asset\AssetRepository;
 
 #[ORM\Entity(repositoryClass: AssetRepository::class)]

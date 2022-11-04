@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Config\UserRepository;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;

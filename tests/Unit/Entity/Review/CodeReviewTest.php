@@ -6,10 +6,10 @@ namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;

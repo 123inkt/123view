@@ -8,8 +8,8 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\User\User;
 
 /**
  * @extends ServiceEntityRepository<CodeReview>
@@ -84,7 +84,7 @@ class CodeReviewRepository extends ServiceEntityRepository
                 $query->andWhere('r.state = :state')->setParameter('state', $matches[1]);
                 $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
             }
-            
+
             if (preg_match('/author:(\w+)/', $searchQuery, $matches) === 1) {
                 // search for current user
                 if ($matches[1] === 'me') {

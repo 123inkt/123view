@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\Config;
 
 use DR\GitCommitNotification\Doctrine\Type\FilterType;
+use DR\GitCommitNotification\Entity\User\User;
 
 class RuleFactory
 {

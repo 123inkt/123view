@@ -6,9 +6,9 @@ namespace DR\GitCommitNotification\Service\Git\Review;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Entity\User\User;
 
 class CodeReviewerService
 {

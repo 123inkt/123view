@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests;
 
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\Helper\FormAssertion;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

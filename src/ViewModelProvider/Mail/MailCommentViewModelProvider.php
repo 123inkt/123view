@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModelProvider\Mail;
 
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\LineReference;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;

@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Entity\Review;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewerRepository::class)]

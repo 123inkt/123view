@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Notification;
 use DR\GitCommitNotification\Controller\App\Notification\DeleteRuleController;
 use DR\GitCommitNotification\Controller\App\Notification\RulesController;
 use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;

@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\Mail;
 
-use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
+use DR\GitCommitNotification\Entity\User\User;
 
 class CommentViewModel
 {

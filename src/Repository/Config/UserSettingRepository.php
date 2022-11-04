@@ -5,11 +5,10 @@ namespace DR\GitCommitNotification\Repository\Config;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Entity\Config\UserSetting;
+use DR\GitCommitNotification\Entity\User\UserSetting;
 
 /**
  * @extends ServiceEntityRepository<UserSetting>
- *
  * @method UserSetting|null find($id, $lockMode = null, $lockVersion = null)
  * @method UserSetting|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserSetting[]    findAll()

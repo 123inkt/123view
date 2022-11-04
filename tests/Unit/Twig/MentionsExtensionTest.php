@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Twig\MentionsExtension;

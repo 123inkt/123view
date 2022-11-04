@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Entity\Review;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]

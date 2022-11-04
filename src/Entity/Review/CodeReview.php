@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Config\User;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
