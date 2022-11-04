@@ -61,10 +61,10 @@
 
 .review-file-tree--file-link .diff-file__file-change-state {
     display: inline-block;
-    text-align: center;
-    width: 12px;
     line-height: 20px;
+    text-align: center;
     vertical-align: baseline;
+    width: 12px;
 }
 
 .review-file-tree--unseen .review-file-tree--file-link {
