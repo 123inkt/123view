@@ -67,6 +67,10 @@
     vertical-align: baseline;
 }
 
+.review-file-tree--unseen .review-file-tree--file-link {
+    font-weight: bold;
+}
+
 .review-grid-sidebar {
     padding-bottom: 50px;
     padding-right: 5px;

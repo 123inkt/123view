@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
 use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 
 class FileTreeViewModel
@@ -15,8 +16,17 @@ class FileTreeViewModel
      * @param DirectoryTreeNode<DiffFile> $fileTree
      * @param Collection<int, Comment>    $comments
      */
-    public function __construct(public readonly DirectoryTreeNode $fileTree, public readonly Collection $comments, private ?DiffFile $selectedFile)
+    public function __construct(
+        public readonly DirectoryTreeNode $fileTree,
+        public readonly Collection $comments,
+        private readonly FileSeenStatusCollection $fileSeenCollection,
+        private readonly ?DiffFile $selectedFile
+    ) {
+    }
+
+    public function isFileSeen(DiffFile $file)
     {
+        return $this->fileSeenCollection->isSeen($file->getFile()?->getPathname() ?? '');
     }
 
     public function isFileSelected(DiffFile $file): bool

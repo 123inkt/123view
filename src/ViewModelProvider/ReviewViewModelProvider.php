@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Form\Review\DetachRevisionsForm;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
@@ -26,6 +27,7 @@ class ReviewViewModelProvider
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
+        private readonly FileSeenStatusService $fileStatusService,
         private readonly DiffFinder $diffFinder
     ) {
     }
@@ -82,6 +84,7 @@ class ReviewViewModelProvider
                 ->flatten()
                 ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename())),
             $review->getComments(),
+            $this->fileStatusService->getFileSeenStatus($review),
             $selectedFile
         );
     }
