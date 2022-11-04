@@ -39,7 +39,7 @@ class NotificationStatusType extends Type
             return null;
         }
 
-        if (is_int($value) === false && (is_string($value) || is_numeric($value) === false)) {
+        if (is_int($value) === false && (is_string($value) === false || is_numeric($value) === false)) {
             throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'NotificationStatus']);
         }
 
