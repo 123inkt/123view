@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenService;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
@@ -24,7 +24,7 @@ class ReviewController extends AbstractController
         private readonly ReviewViewModelProvider $modelProvider,
         private readonly BreadcrumbFactory $breadcrumbFactory,
         private readonly CodeReviewActionFactory $actionFactory,
-        private readonly FileSeenService $fileSeenService
+        private readonly FileSeenStatusService $fileSeenService
     ) {
     }
 

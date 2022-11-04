@@ -12,15 +12,22 @@ export default class Review extends Controller {
     }
 
     toggleFileSeenStatus(target) {
-        const seenStatus = target.dataset.seenStatus;
-        const reviewId   = target.dataset.reviewId;
+        const parentFile = target.closest('[data-role=review-file-tree-file]');
 
-        if (seenStatus === '1') {
+        if (target.dataset.seenStatus === '1') {
             target.classList.remove('seen');
+            parentFile.classList.add('review-file-tree--unseen')
             target.dataset.seenStatus = '0';
         } else {
             target.classList.add('seen');
+            parentFile.classList.remove('review-file-tree--unseen')
             target.dataset.seenStatus = '1';
         }
+
+        axios.post(
+                `/app/reviews/${target.dataset.reviewId}/file-seen-status`,
+                {filePath: target.dataset.filePath, seen: target.dataset.seenStatus},
+                {headers: {'Content-Type': 'multipart/form-data'}}
+        );
     }
 }

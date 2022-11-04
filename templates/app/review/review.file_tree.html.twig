@@ -21,6 +21,7 @@
                     {%- if fileTreeModel.fileSelected(file) %} review-file-tree--selected
                     {%- elseif not isFileSeen %} review-file-tree--unseen{% endif -%}"
                     {%- if fileTreeModel.fileSelected(file) %} data-role="active-file"{% endif -%}
+                    data-role="review-file-tree-file"
                 >
                     {%- set filePath = file.file.pathname -%}
                     {%- if file.hashEnd != null -%}
@@ -61,7 +62,8 @@
                         {% endif %}
 
                         <span class="review-file-tree--file-seen-status {% if isFileSeen %}seen{% endif %}"
-                              data-review-id="fileTreeModel.review.id"
+                              data-review-id="{{ fileTreeModel.review.id }}"
+                              data-file-path="{{ file.file.pathname }}"
                               data-seen-status="{% if isFileSeen %}1{% else %}0{% endif %}"
                               data-role="file-seen-status"
                         ></span>
