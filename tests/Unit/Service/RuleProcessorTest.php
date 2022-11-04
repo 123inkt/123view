@@ -14,7 +14,6 @@ use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
-use DR\GitCommitNotification\Service\Mail\MailService;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,7 +31,6 @@ class RuleProcessorTest extends AbstractTestCase
     private CommitFilter&MockObject             $commitFilter;
     private CommitBundler&MockObject            $commitBundler;
     private EventDispatcherInterface&MockObject $dispatcher;
-    private MailService&MockObject              $mailService;
     private RuleProcessor                       $ruleProcessor;
 
     protected function setUp(): void
@@ -43,7 +41,6 @@ class RuleProcessorTest extends AbstractTestCase
         $this->commitFilter  = $this->createMock(CommitFilter::class);
         $this->commitBundler = $this->createMock(CommitBundler::class);
         $this->dispatcher    = $this->createMock(EventDispatcherInterface::class);
-        $this->mailService   = $this->createMock(MailService::class);
 
         $this->ruleProcessor = new RuleProcessor(
             $this->log,
@@ -51,8 +48,7 @@ class RuleProcessorTest extends AbstractTestCase
             $this->diffService,
             $this->commitFilter,
             $this->commitBundler,
-            $this->dispatcher,
-            $this->mailService
+            $this->dispatcher
         );
     }
 
@@ -72,9 +68,8 @@ class RuleProcessorTest extends AbstractTestCase
         $this->commitBundler->expects(static::once())->method('bundle')->with($commits)->willReturn($commits);
         $this->diffService->expects(static::once())->method('getBundledDiff')->with($rule, $commit);
         $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
-        $this->mailService->expects(static::once())->method('sendCommitsMail')->with($config, $commits);
 
-        $this->ruleProcessor->processRule($config);
+        static::assertSame($commits, $this->ruleProcessor->processRule($config));
     }
 
     /**
@@ -105,9 +100,8 @@ class RuleProcessorTest extends AbstractTestCase
             ->with($commits, static::callback(static fn($collection) => $collection->contains($includeFilter)))
             ->willReturn($commits);
         $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
-        $this->mailService->expects(static::once())->method('sendCommitsMail')->with($config, $commits);
 
-        $this->ruleProcessor->processRule($config);
+        static::assertSame($commits, $this->ruleProcessor->processRule($config));
     }
 
     /**
@@ -124,8 +118,7 @@ class RuleProcessorTest extends AbstractTestCase
         $this->commitBundler->expects(static::once())->method('bundle')->with([])->willReturn([]);
         $this->diffService->expects(static::never())->method('getBundledDiff');
         $this->dispatcher->expects(static::never())->method('dispatch');
-        $this->mailService->expects(static::never())->method('sendCommitsMail');
 
-        $this->ruleProcessor->processRule($config);
+        static::assertSame([], $this->ruleProcessor->processRule($config));
     }
 }

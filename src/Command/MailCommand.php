@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Service\Mail\MailService;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
@@ -24,8 +25,11 @@ class MailCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private RuleRepository $ruleRepository, private RuleProcessor $ruleProcessor)
-    {
+    public function __construct(
+        private readonly RuleRepository $ruleRepository,
+        private readonly RuleProcessor $ruleProcessor,
+        private readonly MailService $mailService
+    ) {
         parent::__construct();
     }
 
@@ -55,7 +59,15 @@ class MailCommand extends Command implements LoggerAwareInterface
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
             try {
-                $this->ruleProcessor->processRule(new RuleConfiguration($period, $rule));
+                $ruleConfig = new RuleConfiguration($period, $rule);
+                $commits    = $this->ruleProcessor->processRule($ruleConfig);
+                if (count($commits) === 0) {
+                    $this->logger?->info('Found 0 new commits, ending...');
+                    continue;
+                }
+
+                // send mail
+                $this->mailService->sendCommitsMail($ruleConfig, $commits);
             } catch (Throwable $exception) {
                 $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;

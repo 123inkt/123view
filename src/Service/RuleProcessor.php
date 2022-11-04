@@ -12,7 +12,6 @@ use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
-use DR\GitCommitNotification\Service\Mail\MailService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -26,14 +25,15 @@ class RuleProcessor
         private readonly CommitFilter $filter,
         private readonly CommitBundler $bundler,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly MailService $mailService
+
     ) {
     }
 
     /**
+     * @return Commit[]
      * @throws Throwable
      */
-    public function processRule(RuleConfiguration $ruleConfig): void
+    public function processRule(RuleConfiguration $ruleConfig): array
     {
         $this->logger->info(sprintf('Executing rule `%s`.', $ruleConfig->rule->getName()));
 
@@ -51,9 +51,7 @@ class RuleProcessor
         $commits = $this->filter($ruleConfig->rule, $commits);
 
         if (count($commits) === 0) {
-            $this->logger->info('Found 0 new commits, ending...');
-
-            return;
+            return [];
         }
 
         // notify event listeners that commits are ready to be mailed
@@ -61,8 +59,7 @@ class RuleProcessor
             $this->dispatcher->dispatch(new CommitEvent($commit));
         }
 
-        // send mail
-        $this->mailService->sendCommitsMail($ruleConfig, $commits);
+        return $commits;
     }
 
     /**
