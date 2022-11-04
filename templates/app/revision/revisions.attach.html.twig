@@ -48,7 +48,7 @@
                 <tr>
                     <td><input type="checkbox" class="form-check-input" name="revision[{{ revision.id }}]"></td>
                     <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
-                    <td class="fw-bold">{{ revision.title|external_links(revisionsModel.externalLinks) }}</td>
+                    <td class="fw-bold">{{ revision.title|external_links }}</td>
                     <td>{{ revision.authorName }}</td>
                     <td>{{ revision.createTimestamp|date('M j, H:i') }}</td>
                 </tr>

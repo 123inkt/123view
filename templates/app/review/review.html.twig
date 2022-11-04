@@ -8,7 +8,7 @@
         <div class="review-grid-header">
             <h3 class="mt-2">
                 <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
-                {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links(reviewModel.externalLinks) }}
+                {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
             </h3>
 
             {% if review.state == 'open' and (reviewer == null or reviewer.state == 'open') %}

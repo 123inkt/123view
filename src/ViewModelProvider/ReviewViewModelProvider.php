@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Form\Review\DetachRevisionsForm;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
@@ -23,7 +22,6 @@ use Throwable;
 class ReviewViewModelProvider
 {
     public function __construct(
-        private readonly ExternalLinkRepository $linkRepository,
         private readonly FileDiffViewModelProvider $fileDiffViewModelProvider,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly FormFactoryInterface $formFactory,
@@ -48,8 +46,7 @@ class ReviewViewModelProvider
 
         $viewModel = new ReviewViewModel(
             $review,
-            $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction),
-            $this->linkRepository->findAll()
+            $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction)
         );
 
         $viewModel->setSidebarTabMode($sidebarTab);

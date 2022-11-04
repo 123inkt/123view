@@ -4,14 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 
 class RevisionsViewModel
 {
     /**
-     * @param ExternalLink[]               $externalLinks
      * @param Paginator<Revision>          $revisions
      * @param PaginatorViewModel<Revision> $paginator
      */
@@ -19,7 +17,6 @@ class RevisionsViewModel
         private readonly Repository $repository,
         private readonly Paginator $revisions,
         private readonly PaginatorViewModel $paginator,
-        private readonly array $externalLinks,
         private readonly string $searchQuery
     ) {
     }
@@ -32,14 +29,6 @@ class RevisionsViewModel
     public function getRepository(): Repository
     {
         return $this->repository;
-    }
-
-    /**
-     * @return ExternalLink[]
-     */
-    public function getExternalLinks(): array
-    {
-        return $this->externalLinks;
     }
 
     /**

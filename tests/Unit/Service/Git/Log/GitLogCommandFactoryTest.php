@@ -50,7 +50,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $startDate = new DateTimeImmutable('2021-10-18 21:05:00');
         $endDate   = new DateTimeImmutable('2021-10-18 22:05:00');
         $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
-        $config    = new RuleConfiguration($period, [], $rule);
+        $config    = new RuleConfiguration($period, $rule);
 
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
@@ -87,7 +87,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $startDate = new DateTimeImmutable('2021-10-18 21:05:00');
         $endDate   = new DateTimeImmutable('2021-10-18 22:05:00');
         $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
-        $config    = new RuleConfiguration($period, [], $rule);
+        $config    = new RuleConfiguration($period, $rule);
 
         $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();

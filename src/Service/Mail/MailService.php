@@ -168,7 +168,7 @@ class MailService implements LoggerAwareInterface
             ->subject($this->subjectFormatter->format($subject, $rule, $commits))
             ->htmlTemplate('mail/commit/commits.html.twig')
             ->text('')
-            ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource', $config->externalLinks)]);
+            ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource')]);
 
         foreach ($rule->getRecipients() as $recipient) {
             $email->addTo(new Address((string)$recipient->getEmail(), $recipient->getName() ?? ''));

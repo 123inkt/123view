@@ -21,7 +21,7 @@ class RuleConfigurationTest extends AbstractTestCase
         $period = $this->createMock(DatePeriod::class);
         $rule   = new Rule();
 
-        $config = new RuleConfiguration($period, [], $rule);
+        $config = new RuleConfiguration($period, $rule);
         static::assertSame($period, $config->period);
         static::assertSame($rule, $config->rule);
     }

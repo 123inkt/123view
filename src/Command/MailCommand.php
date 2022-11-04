@@ -6,7 +6,6 @@ namespace DR\GitCommitNotification\Command;
 use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
@@ -25,11 +24,8 @@ class MailCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private RuleRepository $ruleRepository,
-        private ExternalLinkRepository $linkRepository,
-        private RuleProcessor $ruleProcessor
-    ) {
+    public function __construct(private RuleRepository $ruleRepository, private RuleProcessor $ruleProcessor)
+    {
         parent::__construct();
     }
 
@@ -53,16 +49,13 @@ class MailCommand extends Command implements LoggerAwareInterface
         // create date time object in seconds precisely 5 minutes earlier, and with the interval given by the frequency
         $period = Frequency::getPeriod(new DateTimeImmutable(date('Y-m-d H:i:00', strtotime("-5 minutes"))), $frequency);
 
-        // gather external links
-        $externalLinks = $this->linkRepository->findAll();
-
         // gather active rules
         $rules = $this->ruleRepository->getActiveRulesForFrequency(true, $frequency);
 
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
             try {
-                $this->ruleProcessor->processRule(new RuleConfiguration($period, $externalLinks, $rule));
+                $this->ruleProcessor->processRule(new RuleConfiguration($period, $rule));
             } catch (Throwable $exception) {
                 $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;

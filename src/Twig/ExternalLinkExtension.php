@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Twig;
 
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
-use LogicException;
+use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\GitCommitNotification\Utility\Assert;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -17,6 +18,13 @@ use Twig\TwigFilter;
  */
 class ExternalLinkExtension extends AbstractExtension
 {
+    /** @var ExternalLink[]|null */
+    private ?array $externalLinks = null;
+
+    public function __construct(private readonly ExternalLinkRepository $linkRepository)
+    {
+    }
+
     /**
      * @return TwigFilter[]
      */
@@ -27,34 +35,34 @@ class ExternalLinkExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param ExternalLink[] $links
-     */
-    public function injectExternalLinks(string $html, array $links): string
+    public function injectExternalLinks(string $html): string
     {
-        foreach ($links as $link) {
+        foreach ($this->getLinks() as $link) {
             $key = (string)$link->getPattern();
             $url = (string)$link->getUrl();
 
             $search = '/' . str_replace('\{\}', '([\w.-]+)', preg_quote($key, '/')) . '/';
-            $result = preg_replace_callback(
-                $search,
-                static function (array $matches) use ($url) {
-                    $url = htmlspecialchars(str_replace('{}', urlencode($matches[1]), $url), ENT_QUOTES);
+            $html   = Assert::notNull(
+                preg_replace_callback(
+                    $search,
+                    static function (array $matches) use ($url) {
+                        $url = htmlspecialchars(str_replace('{}', urlencode($matches[1]), $url), ENT_QUOTES);
 
-                    return sprintf('<a href="%s" class="external-link">%s</a>', $url, $matches[0]);
-                },
-                $html
+                        return sprintf('<a href="%s" class="external-link">%s</a>', $url, $matches[0]);
+                    },
+                    $html
+                )
             );
-
-            // @codeCoverageIgnoreStart
-            if ($result === null) {
-                throw new LogicException('Failed to replace external links with regex: ' . $search);
-            }
-            // @codeCoverageIgnoreEnd
-            $html = $result;
         }
 
         return $html;
+    }
+
+    /**
+     * @return ExternalLink[]
+     */
+    private function getLinks(): array
+    {
+        return $this->externalLinks ??= $this->linkRepository->findAll();
     }
 }

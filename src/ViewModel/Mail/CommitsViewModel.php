@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\ViewModel\Mail;
 
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 
@@ -12,31 +11,19 @@ class CommitsViewModel
     /** @var Commit[] */
     private array  $commits;
     private string $theme;
-    /** @var ExternalLink[] */
-    private array $externalLinks;
 
     /**
-     * @param Commit[]       $commits
-     * @param ExternalLink[] $externalLinks
+     * @param Commit[] $commits
      */
-    public function __construct(array $commits, string $theme, array $externalLinks)
+    public function __construct(array $commits, string $theme)
     {
-        $this->commits       = $commits;
-        $this->theme         = $theme;
-        $this->externalLinks = $externalLinks;
+        $this->commits = $commits;
+        $this->theme   = $theme;
     }
 
     public function getTheme(): string
     {
         return $this->theme;
-    }
-
-    /**
-     * @return ExternalLink[]
-     */
-    public function getExternalLinks(): array
-    {
-        return $this->externalLinks;
     }
 
     /**

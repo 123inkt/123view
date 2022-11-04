@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
@@ -19,17 +18,14 @@ use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 class ReviewViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::getExternalLinks
      * @covers ::getReview
      */
     public function testAccessorPairs(): void
     {
         $review   = new CodeReview();
         $diffFile = new FileDiffViewModel(null);
-        $links    = [new ExternalLink()];
 
-        $model = new ReviewViewModel($review, $diffFile, $links);
-        static::assertSame($links, $model->getExternalLinks());
+        $model = new ReviewViewModel($review, $diffFile);
         static::assertSame($review, $model->getReview());
         static::assertSame($diffFile, $model->getFileDiffViewModel());
     }
@@ -46,7 +42,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getRevisions()->add($revision);
 
-        $model = new ReviewViewModel($review, new FileDiffViewModel(null), []);
+        $model = new ReviewViewModel($review, new FileDiffViewModel(null));
 
         static::assertSame(['holmes@example.com' => 'Sherlock Holmes'], $model->getAuthors());
     }
@@ -65,7 +61,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getReviewers()->add($reviewer);
 
-        $model = new ReviewViewModel($review, new FileDiffViewModel(null), []);
+        $model = new ReviewViewModel($review, new FileDiffViewModel(null));
 
         static::assertNotNull($model->getReviewer($userA));
         static::assertNull($model->getReviewer($userB));

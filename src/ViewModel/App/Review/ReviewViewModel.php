@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\User;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
@@ -20,14 +19,8 @@ class ReviewViewModel
     private ?ReviewRevisionViewModel $revisionViewModel = null;
     private ?FormView                $addReviewerForm   = null;
 
-    /**
-     * @param ExternalLink[] $externalLinks
-     */
-    public function __construct(
-        private readonly CodeReview $review,
-        private readonly FileDiffViewModel $fileDiffViewModel,
-        private readonly array $externalLinks
-    ) {
+    public function __construct(private readonly CodeReview $review, private readonly FileDiffViewModel $fileDiffViewModel)
+    {
     }
 
     public function setSidebarTabMode(string $sidebarTabMode): void
@@ -114,13 +107,5 @@ class ReviewViewModel
     public function getReview(): CodeReview
     {
         return $this->review;
-    }
-
-    /**
-     * @return ExternalLink[]
-     */
-    public function getExternalLinks(): array
-    {
-        return $this->externalLinks;
     }
 }

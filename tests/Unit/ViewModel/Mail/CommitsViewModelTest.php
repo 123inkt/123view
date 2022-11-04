@@ -51,7 +51,7 @@ class CommitsViewModelTest extends AbstractTestCase
         $file = new DiffFile();
         $file->addBlock($block);
 
-        $model = new CommitsViewModel([], 'foobar', []);
+        $model = new CommitsViewModel([], 'foobar');
         static::assertSame(4, $model->getMaxLineNumberLength($file, true));
         static::assertSame(5, $model->getMaxLineNumberLength($file, false));
     }

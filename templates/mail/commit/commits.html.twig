@@ -28,7 +28,7 @@
             </code>
 
             {#- first line commit message -#}
-            <span class="subjectLine"> {{ commit.subjectLine|external_links(viewModel.externalLinks) }}</span>
+            <span class="subjectLine"> {{ commit.subjectLine|external_links }}</span>
 
             {%- if commit.integrationLinks|length > 0 -%}
                 {%- for link in commit.integrationLinks -%}

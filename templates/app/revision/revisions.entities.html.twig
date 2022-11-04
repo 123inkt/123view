@@ -1,5 +1,4 @@
 {#- revisions: Revision[] -#}
-{#- externalLinks: ExternalLink[] -#}
 
 <table class="table table-bordered table-hover rule-table">
     <thead>
@@ -16,7 +15,7 @@
     {%- for revision in revisions -%}
         <tr>
             <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
-            <td class="fw-bold">{{ revision.title|external_links(externalLinks) }}</td>
+            <td class="fw-bold">{{ revision.title|external_links }}</td>
             <td>{{ revision.authorName }}</td>
             <td>{{ revision.createTimestamp|date('M j, H:i') }}</td>
             <td>

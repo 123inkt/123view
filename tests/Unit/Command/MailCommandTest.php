@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Command;
 
 use DR\GitCommitNotification\Command\MailCommand;
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -23,20 +21,16 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class MailCommandTest extends AbstractTestCase
 {
-    private RuleProcessor&MockObject          $ruleProcessor;
-    private ExternalLinkRepository&MockObject $externalLinkRepository;
-    private RuleRepository&MockObject         $ruleRepository;
-    private MailCommand                       $command;
+    private RuleProcessor&MockObject  $ruleProcessor;
+    private RuleRepository&MockObject $ruleRepository;
+    private MailCommand               $command;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->ruleProcessor = $this->createMock(RuleProcessor::class);
-
-        $this->externalLinkRepository = $this->createMock(ExternalLinkRepository::class);
-        $this->ruleRepository         = $this->createMock(RuleRepository::class);
-
-        $this->command = new MailCommand($this->ruleRepository, $this->externalLinkRepository, $this->ruleProcessor);
+        $this->ruleProcessor  = $this->createMock(RuleProcessor::class);
+        $this->ruleRepository = $this->createMock(RuleRepository::class);
+        $this->command        = new MailCommand($this->ruleRepository, $this->ruleProcessor);
     }
 
     /**
@@ -72,16 +66,14 @@ class MailCommandTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setName('foobar');
-        $externalLink = new ExternalLink();
 
         // setup mocks
-        $this->externalLinkRepository->expects(self::once())->method('findAll')->willReturn([$externalLink]);
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
 
         $this->ruleProcessor
             ->expects(static::once())
             ->method('processRule')
-            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule && count($config->externalLinks) === 1));
+            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule));
 
         $commandTester = new CommandTester($this->command);
         $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
@@ -95,10 +87,8 @@ class MailCommandTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setName('foobar');
-        $externalLink = new ExternalLink();
 
         // setup mocks
-        $this->externalLinkRepository->expects(self::once())->method('findAll')->willReturn([$externalLink]);
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
         $this->ruleProcessor->expects(static::once())->method('processRule')->willThrowException(new Exception('error'));
 
