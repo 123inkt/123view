@@ -15,9 +15,11 @@
     {% if directory.files|length %}
         <ul class="review-file-tree--files text-nowrap {% if treeDepth == 0 %}review-file-tree--files-root{% endif %}">
             {% for file in directory.files %}
+                {% set isFileSeen = fileTreeModel.fileSeen(file) %}
+
                 <li class="review-file-tree--file
                     {%- if fileTreeModel.fileSelected(file) %} review-file-tree--selected
-                    {%- elseif not fileTreeModel.fileSeen(file) %} review-file-tree--unseen{% endif -%}"
+                    {%- elseif not isFileSeen %} review-file-tree--unseen{% endif -%}"
                     {%- if fileTreeModel.fileSelected(file) %} data-role="active-file"{% endif -%}
                 >
                     {%- set filePath = file.file.pathname -%}
@@ -57,6 +59,12 @@
                         {% if file.nrOfLinesRemoved > 0 %}
                             <span class="ps-1 bold text-danger">-{{ file.nrOfLinesRemoved }}</span>
                         {% endif %}
+
+                        <span class="review-file-tree--file-seen-status {% if isFileSeen %}seen{% endif %}"
+                              data-review-id="fileTreeModel.review.id"
+                              data-seen-status="{% if isFileSeen %}1{% else %}0{% endif %}"
+                              data-role="file-seen-status"
+                        ></span>
                     </span>
                 </li>
             {% endfor %}

@@ -71,6 +71,29 @@
     font-weight: 600;
 }
 
+.review-file-tree--file-seen-status {
+    border: 1px solid green;
+    border-radius: 7px;
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 14px;
+    line-height: 14px;
+    margin: 4px 2px 0 4px;
+    position: relative;
+    text-align: center;
+    width: 14px;
+}
+
+.review-file-tree--file-seen-status.seen::before {
+    color: green;
+    content: '✓';
+    font-size: 12px;
+    left: 1px;
+    position: absolute;
+    top: -1px;
+}
+
 .review-grid-sidebar {
     padding-bottom: 50px;
     padding-right: 5px;
