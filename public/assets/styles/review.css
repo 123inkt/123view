@@ -68,7 +68,7 @@
 }
 
 .review-file-tree--unseen .review-file-tree--file-link {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .review-grid-sidebar {
