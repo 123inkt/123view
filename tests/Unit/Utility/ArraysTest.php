@@ -9,7 +9,6 @@ use RuntimeException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Utility\Arrays
- * @covers ::__construct
  */
 class ArraysTest extends AbstractTestCase
 {

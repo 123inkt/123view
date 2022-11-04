@@ -31,10 +31,14 @@ class GitCherryPickCommandBuilderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::setPath
+     * @covers ::strategy
+     * @covers ::abort
+     * @covers ::noCommit
+     * @covers ::hashes
+     * @covers ::conflictResolution
      * @covers ::build
      */
-    public function testSetPath(): void
+    public function testBuildWithOptions(): void
     {
         static::assertSame(
             ['git', 'cherry-pick', '--strategy=strategy', '--abort', '--no-commit', 'hashes', '-X theirs'],
