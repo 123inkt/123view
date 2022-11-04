@@ -28,7 +28,7 @@ class NotificationRuleMailController
      * @throws Throwable
      */
     #[Route('app/mail/rule/{id<\d+>}', name: self::class, methods: 'GET', condition: "env('APP_ENV') === 'dev'")]
-    #[Template('mail/commit/commits.html.twig')]
+    #[Template('mail/mail.commits.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('rule')]
     public function __invoke(Request $request, Rule $rule): array

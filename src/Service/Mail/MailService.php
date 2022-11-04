@@ -166,7 +166,7 @@ class MailService implements LoggerAwareInterface
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())
             ->subject($this->subjectFormatter->format($subject, $rule, $commits))
-            ->htmlTemplate('mail/commit/commits.html.twig')
+            ->htmlTemplate('mail/mail.commits.html.twig')
             ->text('')
             ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource')]);
 
