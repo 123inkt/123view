@@ -11,6 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\ExternalLinkExtension
+ * @covers ::__construct
  */
 class ExternalLinkExtensionTest extends AbstractTestCase
 {
@@ -37,6 +38,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::getLinks
      * @covers ::injectExternalLinks
      */
     public function testInjectExternalLinks(): void
@@ -55,6 +57,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::getLinks
      * @covers ::injectExternalLinks
      */
     public function testInjectExternalLinksMultipleUrls(): void
@@ -77,6 +80,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::getLinks
      * @covers ::injectExternalLinks
      */
     public function testInjectExternalLinksMultipleOccurrences(): void
