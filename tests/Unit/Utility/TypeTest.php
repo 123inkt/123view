@@ -33,6 +33,43 @@ class TypeTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::isArray
+     */
+    public function testIsArrayFailure(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be an array');
+        Assert::isArray('foobar');
+    }
+
+    /**
+     * @covers ::isArray
+     */
+    public function testIsArray(): void
+    {
+        $rules = [new Rule()];
+        static::assertSame($rules, Assert::isArray($rules));
+    }
+
+    /**
+     * @covers ::isString
+     */
+    public function testIsStringFailure(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be a string');
+        Assert::isString(123);
+    }
+
+    /**
+     * @covers ::isString
+     */
+    public function testIsString(): void
+    {
+        static::assertSame('string', Assert::isString('string'));
+    }
+
+    /**
      * @covers ::notFalse
      */
     public function testNotFalseFailure(): void

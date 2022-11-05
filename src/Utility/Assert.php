@@ -26,7 +26,8 @@ class Assert
 
     /**
      * Assert value is array
-     * @template T
+     * @template       T
+     * @phpstan-assert array $value
      *
      * @param T $value
      *
