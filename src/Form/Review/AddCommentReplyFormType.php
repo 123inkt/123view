@@ -34,6 +34,6 @@ class AddCommentReplyFormType extends AbstractType
         $builder->setAction($this->urlGenerator->generate(AddCommentReplyController::class, ['id' => $comment->getId()]));
         $builder->setMethod('POST');
         $builder->add('message', CommentType::class, ['attr' => ['placeholder' => 'leave.a.reply']]);
-        $builder->add('save', SubmitType::class, ['label' => 'Reply']);
+        $builder->add('save', SubmitType::class, ['label' => 'reply']);
     }
 }

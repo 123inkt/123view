@@ -28,7 +28,6 @@ return [
     'click.to.resolve'                            => 'Click to resolve',
     'click.to.unresolve'                          => 'Click to mark as unresolved',
     'reply'                                       => 'Reply',
-    'Reply'                                       => 'Reply',
     'edit.comment'                                => 'Edit comment',
     'renamed.from'                                => 'renamed from',
     'delete.comment'                              => 'Delete comment',

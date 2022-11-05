@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\Comment\AddCommentController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Form\Review\AddCommentFormType;
+use DR\GitCommitNotification\Controller\App\Review\Comment\AddCommentReplyController;
+use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
 use DR\GitCommitNotification\Form\Review\CommentType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
@@ -18,19 +16,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Review\AddCommentFormType
+ * @coversDefaultClass \DR\GitCommitNotification\Form\Review\AddCommentReplyFormType
  * @covers ::__construct
  */
-class AddCommentFormTypeTest extends AbstractTestCase
+class AddCommentReplyFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
-    private AddCommentFormType               $type;
+    private AddCommentReplyFormType          $type;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->type         = new AddCommentFormType($this->urlGenerator);
+        $this->type         = new AddCommentReplyFormType($this->urlGenerator);
     }
 
     /**
@@ -43,10 +41,8 @@ class AddCommentFormTypeTest extends AbstractTestCase
 
         $this->type->configureOptions($resolver);
 
-        static::assertNull($introspector->getDefault('review'));
-        static::assertNull($introspector->getDefault('lineReference'));
-        static::assertSame(['null', LineReference::class], $introspector->getAllowedTypes('lineReference'));
-        static::assertSame([CodeReview::class], $introspector->getAllowedTypes('review'));
+        static::assertNull($introspector->getDefault('comment'));
+        static::assertSame([Comment::class], $introspector->getAllowedTypes('comment'));
     }
 
     /**
@@ -54,27 +50,25 @@ class AddCommentFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url    = 'https://commit-notification/comment/add';
-        $review = new CodeReview();
-        $review->setId(123);
-        $lineReference = new LineReference('path', 1, 2, 3);
+        $url     = 'https://commit-notification/comment/reply';
+        $comment = new Comment();
+        $comment->setId(123);
 
         $this->urlGenerator->expects(self::once())
             ->method('generate')
-            ->with(AddCommentController::class, ['id' => 123])
+            ->with(AddCommentReplyController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder->expects(self::once())->method('setAction')->with($url);
         $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(3))
+        $builder->expects(self::exactly(2))
             ->method('add')
             ->withConsecutive(
-                ['lineReference', HiddenType::class],
                 ['message', CommentType::class],
-                ['save', SubmitType::class, ['label' => 'add.comment']],
+                ['save', SubmitType::class, ['label' => 'reply']],
             )->willReturnSelf();
 
-        $this->type->buildForm($builder, ['review' => $review, 'lineReference' => $lineReference]);
+        $this->type->buildForm($builder, ['comment' => $comment]);
     }
 }
