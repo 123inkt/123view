@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Return type of call to static method DR\\\\GitCommitNotification\\\\Utility\\\\Assert\\:\\:isArray\\(\\) contains unresolvable type\\.$#"
+			count: 1
+			path: tests/Unit/Utility/TypeTest.php
