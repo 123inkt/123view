@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Form\Review\CommentType
- * @covers ::__construct
  */
 class CommentTypeTest extends AbstractTestCase
 {
