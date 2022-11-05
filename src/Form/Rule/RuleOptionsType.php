@@ -25,6 +25,7 @@ class RuleOptionsType extends AbstractType
             'frequency',
             ChoiceType::class,
             [
+                'label'   => 'frequency',
                 'choices' => [
                     Frequency::ONCE_PER_HOUR        => Frequency::ONCE_PER_HOUR,
                     Frequency::ONCE_PER_TWO_HOURS   => Frequency::ONCE_PER_TWO_HOURS,
@@ -39,7 +40,7 @@ class RuleOptionsType extends AbstractType
             'theme',
             ChoiceType::class,
             [
-                'label'                     => 'Mail theme',
+                'label'                     => 'mail.theme',
                 'choices'                   => [
                     'Upsource' => MailThemeType::UPSOURCE,
                     'Darcula'  => MailThemeType::DARCULA
@@ -54,6 +55,7 @@ class RuleOptionsType extends AbstractType
             'diffAlgorithm',
             ChoiceType::class,
             [
+                'label'                     => 'diff.algorithm',
                 'choices'                   => array_combine(DiffAlgorithmType::VALUES, DiffAlgorithmType::VALUES),
                 'preferred_choices'         => [DiffAlgorithmType::MYERS],
                 'choice_translation_domain' => false,
@@ -61,11 +63,11 @@ class RuleOptionsType extends AbstractType
                 'expanded'                  => false,
             ]
         );
-        $builder->add('ignoreSpaceAtEol', CheckboxType::class, ['required' => false]);
-        $builder->add('ignoreSpaceChange', CheckboxType::class, ['required' => false]);
-        $builder->add('ignoreAllSpace', CheckboxType::class, ['required' => false]);
-        $builder->add('ignoreBlankLines', CheckboxType::class, ['required' => false]);
-        $builder->add('excludeMergeCommits', CheckboxType::class, ['required' => false]);
+        $builder->add('ignoreSpaceAtEol', CheckboxType::class, ['label' => 'ignore.space.at.eol', 'required' => false]);
+        $builder->add('ignoreSpaceChange', CheckboxType::class, ['label' => 'ignore.space.change', 'required' => false]);
+        $builder->add('ignoreAllSpace', CheckboxType::class, ['label' => 'ignore.all.space', 'required' => false]);
+        $builder->add('ignoreBlankLines', CheckboxType::class, ['label' => 'ignore.blank.lines', 'required' => false]);
+        $builder->add('excludeMergeCommits', CheckboxType::class, ['label' => 'exclude.merge.commits', 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

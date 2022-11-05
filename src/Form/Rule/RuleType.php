@@ -25,13 +25,13 @@ class RuleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name', TextType::class, ['required' => true]);
-        $builder->add('active', CheckboxType::class, ['required' => false]);
+        $builder->add('name', TextType::class, ['label' => 'name', 'required' => true]);
+        $builder->add('active', CheckboxType::class, ['label' => 'active', 'required' => false]);
         $builder->add('ruleOptions', RuleOptionsType::class);
         if ($this->allowCustomRecipients) {
             $builder->add('recipients', RecipientCollectionType::class);
         }
-        $builder->add('repositories', RepositoryChoiceType::class);
+        $builder->add('repositories', RepositoryChoiceType::class, ['label' => 'repositories']);
         $builder->add('filters', InExclusionFilterType::class);
 
         $builder->get('repositories')->addModelTransformer(new CollectionToArrayTransformer());

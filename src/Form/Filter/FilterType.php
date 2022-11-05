@@ -31,7 +31,7 @@ class FilterType extends AbstractType
                 'expanded' => false
             ]
         );
-        $builder->add('pattern', TextType::class, ['attr' => ['maxlength' => 255, 'placeholder' => 'Pattern']]);
+        $builder->add('pattern', TextType::class, ['attr' => ['maxlength' => 255, 'placeholder' => 'pattern']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
