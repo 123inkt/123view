@@ -23,6 +23,25 @@ Add a secret, and fill in the `.env` options below:
 - `OAUTH_AZURE_AD_CLIENT_ID`: the `Application (client) ID` from azure ad
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: the secret `value` created in the step above.
 
+### Code review grouping pattern
+When revisions are gathered from a repository, they will be assigned to a review that matches the `CODE_REVIEW_MATCHING_PATTERN`. In certain
+situations, you have multiple matching groups within a single pattern, and you can specify which groups should be used as match.
+
+- `CODE_REVIEW_MATCHING_PATTERN`
+- `CODE_REVIEW_MATCHING_GROUPS`
+
+Example:
+```
+CODE_REVIEW_MATCHING_PATTERN='^(?:US#\d+\s(?<storyBugOrTask>[BT]#\d+))|(?<bug>B#\d+)'
+CODE_REVIEW_MATCHING_GROUPS='storyBugOrTask,bug'
+
+Commit message: US#456 T#123 my first task
+> matches: 'US#456', group 'storyBugOrTask'
+
+Commit message: B#789 my first bug
+> matches: 'B#789', group 'bug'
+```
+
 ## Extra options
 
 - `NGINX_VERSION`: controls the version of nginx.

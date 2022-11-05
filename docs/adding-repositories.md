@@ -1,10 +1,10 @@
 # Adding repositories
 
-Once docker has started, your project is available, but no repositories have been added yet. Follow the steps below to add a repository:
+Once docker has started your project is available, but no repositories have been added yet. Follow the steps below to add a repository:
 
 1) Start bash in your docker container:
 ```shell
-docker exec -ti php-fpm /bin/bash
+docker exec -ti commit-notification-php /bin/bash
 ```
 2) Add a repository
 ```shell
@@ -31,3 +31,6 @@ php bin/console git:repository:list
 ```shell
 php bin/console git:repository:remove 'my-repo'
 ```
+
+### Next
+- [Adding code reviews](indexing-repositories.md)

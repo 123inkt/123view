@@ -5,10 +5,18 @@
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
 
-# Git commit notification
-A symfony application to allow receiving commit notification for all commits in a certain time period.
+# Code review and commit notifications
+A symfony application to create code reviews for a specific set of revisions not tied to a branch and to allow receiving commit notification for all commits in a certain time period.
 
-**Features:**
+### Features
+
+**Code review:**
+- Code reviews per repository.
+- Join review, place comment or react to comment, accept and reject reviews.
+- Attach and detach revisions to and from a review.
+- Webhook to allow external projects be notified about review changes.
+
+**Commit notification:**
 - Receive one mail for all commits within a certain time period. Once per one, two, three, fours hours or daily or weekly.
 - Exclude (or include) certain commit messages, files, or authors.
 - Receive commits in a single mail for multiple repositories.
@@ -32,8 +40,8 @@ A symfony application to allow receiving commit notification for all commits in 
 
 ## Requirements
 
-- docker
-- docker-compose
+- docker >= 20.10
+- docker-compose >= 2.6.0
 
 Or
 
@@ -62,6 +70,7 @@ cd git-commit-notification
 ### Next
 - [Adding repositories](docs/adding-repositories.md)
 - [Adding external links](docs/adding-external-link.md)
+- [Add reviews](docs/indexing-repositories.md)
 
 ## The crontab (prod):
 
