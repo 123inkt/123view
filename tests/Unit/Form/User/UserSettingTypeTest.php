@@ -13,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Form\User\UserSettingType
- * @covers ::__construct
  */
 class UserSettingTypeTest extends AbstractTestCase
 {

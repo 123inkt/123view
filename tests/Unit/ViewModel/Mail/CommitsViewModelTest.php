@@ -21,7 +21,6 @@ class CommitsViewModelTest extends AbstractTestCase
     /**
      * @covers ::getTheme
      * @covers ::getCommits
-     * @covers ::getExternalLinks
      */
     public function testAccessorPairs(): void
     {
