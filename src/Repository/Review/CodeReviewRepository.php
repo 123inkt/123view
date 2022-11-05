@@ -67,6 +67,7 @@ class CodeReviewRepository extends ServiceEntityRepository
     public function getPaginatorForSearchQuery(User $user, int $repositoryId, int $page, string $searchQuery): Paginator
     {
         $query = $this->createQueryBuilder('r')
+            ->leftJoin('r.revisions', 'rv')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
             ->orderBy('r.id', 'DESC')
@@ -88,10 +89,10 @@ class CodeReviewRepository extends ServiceEntityRepository
             if (preg_match('/author:(\w+)/', $searchQuery, $matches) === 1) {
                 // search for current user
                 if ($matches[1] === 'me') {
-                    $query->innerJoin('r.revisions', 'rv', 'WITH', 'rv.authorEmail = :authorEmail');
+                    $query->andWhere('rv.authorEmail = :authorEmail');
                     $query->setParameter('authorEmail', (string)$user->getEmail());
                 } else {
-                    $query->innerJoin('r.revisions', 'rv', 'WITH', 'rv.authorEmail LIKE :searchAuthor OR rv.authorName LIKE :searchAuthor');
+                    $query->andWhere('rv.authorEmail LIKE :searchAuthor OR rv.authorName LIKE :searchAuthor');
                     $query->setParameter('searchAuthor', '%' . addcslashes($matches[1], '%_') . '%');
                 }
                 $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
