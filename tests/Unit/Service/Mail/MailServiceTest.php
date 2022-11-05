@@ -77,7 +77,7 @@ class MailServiceTest extends AbstractTestCase
             ->with(
                 static::callback(
                     static fn(TemplatedEmail $email) => count($email->getTo()) > 0
-                        && $email->getHtmlTemplate() === 'mail/commit/commits.html.twig'
+                        && $email->getHtmlTemplate() === 'mail/mail.commits.html.twig'
                         && $email->getSubject() === 'replaced-subject'
                         && $email->getTextBody() === ''
                         && count($email->getContext()) > 0
