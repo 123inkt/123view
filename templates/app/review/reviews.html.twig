@@ -37,7 +37,22 @@
         {%- for review in reviewsModel.reviews -%}
             <a class="list-group-item list-group-item-action"
                href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id}) }}">
+
+                <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+                    {{ review.state|trans }}
+                </span>
+
                 <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
+
+                {# authors #}
+                {% set authors = reviewsModel.authors(review.revisions) %}
+                {% if authors|length > 0 %}
+                    <span class="list-group-item__authors d-block text-secondary fs-">
+                        {% for author in authors %}
+                            <small class="list-group-item__author">{{ author }}{% if not loop.last %},{% endif %}</small>
+                        {% endfor %}
+                    </span>
+                {% endif %}
             </a>
         {%- endfor -%}
     </div>
