@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Form\User;
 
 use DR\GitCommitNotification\Controller\App\User\UserSettingController;
-use DR\GitCommitNotification\Entity\User\UserSetting;
 use DR\GitCommitNotification\Form\User\UserSettingFormType;
 use DR\GitCommitNotification\Form\User\UserSettingType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -34,8 +33,7 @@ class UserSettingFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url      = 'https://commit-notification/user/settings';
-        $settings = new UserSetting();
+        $url = 'https://commit-notification/user/settings';
 
         $this->urlGenerator->expects(self::once())
             ->method('generate')
@@ -52,6 +50,6 @@ class UserSettingFormTypeTest extends AbstractTestCase
                 ['save', SubmitType::class, ['label' => 'Save']],
             )->willReturnSelf();
 
-        $this->type->buildForm($builder, ['data' => ['setting' => $settings]]);
+        $this->type->buildForm($builder, []);
     }
 }
