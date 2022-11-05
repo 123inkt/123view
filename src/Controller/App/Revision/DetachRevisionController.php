@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Revision;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsForm;
+use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
@@ -33,7 +33,7 @@ class DetachRevisionController extends AbstractController
     {
         $revisions = $review->getRevisions()->toArray();
 
-        $form = $this->createForm(DetachRevisionsForm::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions]);
+        $form = $this->createForm(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             throw new BadRequestHttpException('Submitted invalid form');

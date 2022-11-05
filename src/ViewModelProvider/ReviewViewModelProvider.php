@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsForm;
+use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
@@ -70,7 +70,8 @@ class ReviewViewModelProvider
     {
         return new ReviewRevisionViewModel(
             $revisions,
-            $this->formFactory->create(DetachRevisionsForm::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])->createView()
+            $this->formFactory->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])->createView(
+            )
         );
     }
 
