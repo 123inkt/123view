@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Controller\App\Notification\RuleController;
 use DR\GitCommitNotification\Controller\App\Notification\RulesController;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\EditRuleFormType;
+use DR\GitCommitNotification\Form\Rule\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
