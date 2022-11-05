@@ -16,7 +16,7 @@
         <tr>
             <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
             <td class="fw-bold">{{ revision.title|external_links }}</td>
-            <td>{{ revision.authorName }}</td>
+            <td title="{{ revision.authorEmail }}">{{ revision.authorName }}</td>
             <td>{{ revision.createTimestamp|date('M j, H:i') }}</td>
             <td>
                 {% if revision.review != null %}
