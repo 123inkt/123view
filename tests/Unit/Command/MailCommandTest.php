@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Command\MailCommand;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Service\Mail\MailService;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
@@ -23,6 +24,7 @@ class MailCommandTest extends AbstractTestCase
 {
     private RuleProcessor&MockObject  $ruleProcessor;
     private RuleRepository&MockObject $ruleRepository;
+    private MailService&MockObject    $mailService;
     private MailCommand               $command;
 
     protected function setUp(): void
@@ -30,7 +32,8 @@ class MailCommandTest extends AbstractTestCase
         parent::setUp();
         $this->ruleProcessor  = $this->createMock(RuleProcessor::class);
         $this->ruleRepository = $this->createMock(RuleRepository::class);
-        $this->command        = new MailCommand($this->ruleRepository, $this->ruleProcessor);
+        $this->mailService    = $this->createMock(MailService::class);
+        $this->command        = new MailCommand($this->ruleRepository, $this->ruleProcessor, $this->mailService);
     }
 
     /**
@@ -62,7 +65,7 @@ class MailCommandTest extends AbstractTestCase
     /**
      * @covers ::execute
      */
-    public function testCommandSuccessful(): void
+    public function testCommandSuccessfulWithoutCommitsShouldNotMail(): void
     {
         $rule = new Rule();
         $rule->setName('foobar');
@@ -73,7 +76,38 @@ class MailCommandTest extends AbstractTestCase
         $this->ruleProcessor
             ->expects(static::once())
             ->method('processRule')
-            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule));
+            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule))
+            ->willReturn([]);
+
+        $this->mailService->expects(self::never())->method('sendCommitsMail');
+
+        $commandTester = new CommandTester($this->command);
+        $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
+        static::assertSame(Command::SUCCESS, $exitCode);
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testCommandSuccessfulWithCommits(): void
+    {
+        $rule = new Rule();
+        $rule->setName('foobar');
+        $commits = [$this->createCommit()];
+
+        // setup mocks
+        $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
+
+        $this->ruleProcessor
+            ->expects(static::once())
+            ->method('processRule')
+            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule))
+            ->willReturn($commits);
+
+        $this->mailService
+            ->expects(self::once())
+            ->method('sendCommitsMail')
+            ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule), $commits);
 
         $commandTester = new CommandTester($this->command);
         $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
