@@ -24,8 +24,7 @@ class RuleProcessor
         private readonly GitDiffService $diffService,
         private readonly CommitFilter $filter,
         private readonly CommitBundler $bundler,
-        private readonly EventDispatcherInterface $dispatcher,
-
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
