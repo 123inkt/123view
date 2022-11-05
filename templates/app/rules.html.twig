@@ -11,13 +11,13 @@
     {% endif %}
 
     {% if rulesModel.rules|length > 0 %}
-        <h1 class="mt-2">{{ 'Rules'|trans }}</h1>
+        <h1 class="mt-2">{{ 'rules'|trans }}</h1>
 
         <table class="table table-bordered table-hover rule-table">
             <thead>
             <tr>
-                <th scope="col">{{ 'Name'|trans }}</th>
-                <th scope="col">{{ 'Active'|trans }}</th>
+                <th scope="col">{{ 'name'|trans }}</th>
+                <th scope="col">{{ 'active'|trans }}</th>
                 <th scope="col">{{ 'Frequency'|trans }}</th>
                 <th scope="col">{{ 'Theme'|trans }}s</th>
                 <th scope="col">{{ 'Options'|trans }}</th>
@@ -29,9 +29,9 @@
                     <td>{{ rule.name }}</td>
                     <td>
                         {% if rule.active %}
-                            {{ 'Active'|trans }}
+                            {{ 'active'|trans }}
                         {% else %}
-                            {{ 'Inactive'|trans }}
+                            {{ 'inactive'|trans }}
                         {% endif %}
                     </td>
 

@@ -23,6 +23,6 @@ class UserSettingFormType extends AbstractType
         $builder->setAction($this->urlGenerator->generate(UserSettingController::class));
         $builder->setMethod('POST');
         $builder->add('setting', UserSettingType::class, ['label' => false]);
-        $builder->add('save', SubmitType::class, ['label' => 'Save']);
+        $builder->add('save', SubmitType::class, ['label' => 'save']);
     }
 }

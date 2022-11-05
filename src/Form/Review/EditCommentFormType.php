@@ -34,6 +34,6 @@ class EditCommentFormType extends AbstractType
         $builder->setAction($this->urlGenerator->generate(UpdateCommentController::class, ['id' => $comment->getId()]));
         $builder->setMethod('POST');
         $builder->add('message', CommentType::class);
-        $builder->add('save', SubmitType::class, ['label' => 'Save']);
+        $builder->add('save', SubmitType::class, ['label' => 'save']);
     }
 }

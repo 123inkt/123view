@@ -23,7 +23,7 @@
     <div class="mt-2 pb-3 clearfix">
         <button type="submit" class="btn btn-primary" form="attach-revision-form">{{ 'attach.to.review'|trans }} CR-{{ review.projectId }}</button>
         <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id}) }}"
-           class="btn btn-outline-secondary">{{ 'Cancel'|trans }}</a>
+           class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
     </div>
 
     {%- include 'app/revision/revisions.searchbar.html.twig' with {searchQuery: revisionsModel.searchQuery} -%}

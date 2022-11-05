@@ -66,7 +66,7 @@ class EditCommentFormTypeTest extends AbstractTestCase
             ->method('add')
             ->withConsecutive(
                 ['message', CommentType::class],
-                ['save', SubmitType::class, ['label' => 'Save']],
+                ['save', SubmitType::class, ['label' => 'save']],
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['comment' => $comment]);

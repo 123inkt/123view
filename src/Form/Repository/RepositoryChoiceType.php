@@ -21,6 +21,7 @@ class RepositoryChoiceType extends AbstractType
         $repositories = $this->repositoryRepository->findBy([], ['name' => 'ASC']);
         $resolver->setDefaults(
             [
+                'label'                     => 'repository',
                 'choices'                   => $repositories,
                 'choice_value'              => 'id',
                 'choice_label'              => static fn(?Repository $repository) => $repository?->getName() ?? '',

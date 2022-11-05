@@ -37,9 +37,9 @@
         {% include '/app/form_row.html.twig' with
             {
                 form: form.rule.ruleOptions.subject,
-                form_help: 'ruleOptions.subject.help'|trans
-                ~ ' <code>' ~ 'ruleOptions.subject.example'|trans ~ '</code>'
-                ~ '. ' ~ 'ruleOptions.subject.vars'|trans|raw
+                form_help: 'rule.options.subject.help'|trans
+                ~ ' <code>' ~ 'rule.options.subject.example'|trans ~ '</code>'
+                ~ '. ' ~ 'rule.options.subject.vars'|trans|raw
             } %}
 
         {# repositories #}
@@ -75,12 +75,12 @@
             </ul>
         </small>
 
-        {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'Include commits'|trans} %}
-        {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'Exclude commits'|trans} %}
+        {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'include.commits'|trans} %}
+        {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'exclude.commits'|trans} %}
 
         {# advanced #}
         <fieldset class="mb-4 row">
-            <legend>{{ 'Advanced'|trans }}</legend>
+            <legend>{{ 'advanced'|trans }}</legend>
 
             <small class="form-text" data-role="explanation">
                 Options passed to the <code>git diff</code> command. See the
@@ -108,7 +108,7 @@
             {{ form_widget(form.save, {attr: {style: 'width: 150px; max-width: 40%'}}) }}
 
             <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RulesController') }}" class="btn btn-outline-primary">
-                {{ 'Cancel'|trans }}
+                {{ 'cancel'|trans }}
             </a>
         </div>
 

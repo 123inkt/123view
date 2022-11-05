@@ -27,6 +27,6 @@ class EditRuleFormType extends AbstractType
         $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $data['rule']?->getId()]));
         $builder->setMethod('POST');
         $builder->add('rule', RuleType::class);
-        $builder->add('save', SubmitType::class, ['label' => 'Save']);
+        $builder->add('save', SubmitType::class, ['label' => 'save']);
     }
 }

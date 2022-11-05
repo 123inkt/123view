@@ -47,7 +47,7 @@ class UserSettingFormTypeTest extends AbstractTestCase
             ->method('add')
             ->withConsecutive(
                 ['setting', UserSettingType::class],
-                ['save', SubmitType::class, ['label' => 'Save']],
+                ['save', SubmitType::class, ['label' => 'save']],
             )->willReturnSelf();
 
         $this->type->buildForm($builder, []);

@@ -49,7 +49,7 @@ class EditRuleFormTypeTest extends AbstractTestCase
             ->method('add')
             ->withConsecutive(
                 ['rule', RuleType::class],
-                ['save', SubmitType::class, ['label' => 'Save']],
+                ['save', SubmitType::class, ['label' => 'save']],
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['data' => ['rule' => $rule]]);
