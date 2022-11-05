@@ -72,17 +72,9 @@ class AddReviewerFormType extends AbstractType
      */
     private function getUserChoices(CodeReview $review): array
     {
-        $builder = $this->userRepository->createQueryBuilder('u');
-
         // filter out users already on the review
         $userIds = array_map(static fn($reviewer) => (int)$reviewer->getUser()?->getId(), $review->getReviewers()->toArray());
-        if (count($userIds) > 0) {
-            $builder->where($builder->expr()->notIn('u.id', $userIds));
-        }
 
-        /** @var User[] $result */
-        $result = $builder->orderBy('u.name', 'ASC')->getQuery()->getResult();
-
-        return $result;
+        return $this->userRepository->findUsersWithExclusion($userIds);
     }
 }

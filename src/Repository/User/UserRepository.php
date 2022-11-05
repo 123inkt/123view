@@ -47,4 +47,22 @@ class UserRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    /**
+     * @param int[] $userIds
+     *
+     * @return User[]
+     */
+    public function findUsersWithExclusion(array $userIds): array
+    {
+        $builder = $this->createQueryBuilder('u');
+        if (count($userIds) > 0) {
+            $builder->where($builder->expr()->notIn('u.id', $userIds));
+        }
+
+        /** @var User[] $result */
+        $result = $builder->orderBy('u.name', 'ASC')->getQuery()->getResult();
+
+        return $result;
+    }
 }

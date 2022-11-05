@@ -36,7 +36,7 @@ trait TestTrait
 
     protected function createRepository(string $name, string $url): Repository
     {
-        $repository       = new Repository();
+        $repository = new Repository();
         $repository->setName($name);
         $repository->setUrl($url);
 
