@@ -16,7 +16,7 @@ class FileSeenStatus
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'string', length: 500)]
     private ?string $filePath = null;
 
     #[ORM\Column]
