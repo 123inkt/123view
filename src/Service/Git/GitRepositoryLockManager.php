@@ -5,12 +5,13 @@ namespace DR\GitCommitNotification\Service\Git;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Utility\Assert;
+use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepositoryLockManager
 {
     private string $cacheDirectory;
 
-    public function __construct(string $cacheDirectory)
+    public function __construct(string $cacheDirectory, private readonly Filesystem $filesystem)
     {
         $this->cacheDirectory = $cacheDirectory . '/git/';
     }
@@ -24,7 +25,11 @@ class GitRepositoryLockManager
      */
     public function start(Repository $repository, callable $callback): mixed
     {
-        $lockfile   = sprintf('%s%s.%s.lock', $this->cacheDirectory, $repository->getId(), $repository->getName());
+        $lockfile = sprintf('%s%s.%s.lock', $this->cacheDirectory, $repository->getId(), $repository->getName());
+        if (is_dir(dirname($lockfile)) === false) {
+            $this->filesystem->mkdir(dirname($lockfile));
+        }
+
         $fileHandle = Assert::notFalse(fopen($lockfile, "wb+"));
 
         try {
