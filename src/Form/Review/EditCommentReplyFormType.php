@@ -7,7 +7,6 @@ use DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentReplyCon
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,7 +33,7 @@ class EditCommentReplyFormType extends AbstractType
 
         $builder->setAction($this->urlGenerator->generate(UpdateCommentReplyController::class, ['id' => $reply->getId()]));
         $builder->setMethod('POST');
-        $builder->add('message', TextareaType::class);
+        $builder->add('message', CommentType::class);
         $builder->add('save', SubmitType::class, ['label' => 'Save']);
     }
 }
