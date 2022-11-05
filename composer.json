@@ -111,7 +111,7 @@
     },
     "scripts": {
         "check": ["@check:phpstan", "@check:phpmd", "@check:phpcs"],
-        "check:phpstan": "@php vendor/bin/phpstan analyse",
+        "check:phpstan": "@php -dxdebug.mode=off vendor/bin/phpstan analyse",
         "check:phpmd": "@php -derror_reporting=24575 vendor/bin/phpmd src,tests text phpmd.xml --suffixes=php",
         "check:phpcs": "@php vendor/bin/phpcs src tests",
         "fix": "@fix:phpcbf",
