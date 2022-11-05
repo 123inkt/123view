@@ -9,11 +9,14 @@ use DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectsController extends AbstractController
 {
-    public function __construct(private readonly RepositoryRepository $repositoryRepository)
-    {
+    public function __construct(
+        private readonly RepositoryRepository $repositoryRepository,
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     /**
@@ -26,6 +29,9 @@ class ProjectsController extends AbstractController
     {
         $repositories = $this->repositoryRepository->findBy(['active' => 1], ['name' => 'ASC']);
 
-        return ['projectsModel' => new ProjectsViewModel($repositories)];
+        return [
+            'page_title'    => $this->translator->trans('projects'),
+            'projectsModel' => new ProjectsViewModel($repositories)
+        ];
     }
 }

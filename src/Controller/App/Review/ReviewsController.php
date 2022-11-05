@@ -40,6 +40,7 @@ class ReviewsController extends AbstractController
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
         return [
+            'page_title'   => ucfirst($repository->getName()),
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
             'reviewsModel' => new ReviewsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery)
         ];

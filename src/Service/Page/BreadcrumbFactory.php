@@ -40,7 +40,7 @@ class BreadcrumbFactory
                 $this->urlGenerator->generate(ReviewsController::class, ['id' => $review->getRepository()?->getId()])
             ),
             new Breadcrumb(
-                'CR-' . $review->getId(),
+                'CR-' . $review->getProjectId(),
                 $this->urlGenerator->generate(ReviewController::class, ['id' => $review->getId()])
             )
         ];
