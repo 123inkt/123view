@@ -44,9 +44,9 @@ class AddCommentFormType extends AbstractType
             CommentType::class,
             [
                 'attr_translation_parameters' => ['line' => $lineReference->line + $lineReference->offset],
-                'attr' => ['placeholder' => 'leave.a.comment.on.line'],
+                'attr'                        => ['placeholder' => 'leave.a.comment.on.line'],
             ]
         );
-        $builder->add('save', SubmitType::class, ['label' => 'Add comment']);
+        $builder->add('save', SubmitType::class, ['label' => 'add.comment']);
     }
 }

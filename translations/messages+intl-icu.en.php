@@ -22,7 +22,7 @@ return [
     'closed'                                      => 'Closed',
     'on'                                          => 'on',
     'Save'                                        => 'Save',
-    'Add comment'                                 => 'Add comment',
+    'add.comment'                                 => 'Add comment',
     'resolved'                                    => 'Resolved',
     'resolve'                                     => 'Resolve',
     'click.to.resolve'                            => 'Click to resolve',
