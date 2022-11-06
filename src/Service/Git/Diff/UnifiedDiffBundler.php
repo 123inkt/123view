@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Service\Git\Diff;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLineCollection;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffLinePair;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
@@ -38,6 +39,7 @@ class UnifiedDiffBundler
         $collection = new DiffLineCollection($lines);
 
         foreach ($collection->getChangePairs() as $pairs) {
+            /** @var DiffLinePair $pair */
             foreach ($pairs as $pair) {
                 if ($this->isBundleable($this->comparator->compare($pair->removed, $pair->added)) !== false) {
                     continue;
