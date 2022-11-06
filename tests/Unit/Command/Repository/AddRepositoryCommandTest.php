@@ -73,12 +73,18 @@ class AddRepositoryCommandTest extends AbstractTestCase
      */
     public function testExecuteMinimalArguments(): void
     {
-        $repository = new Repository();
-        $repository->setUrl('http://my/foobar');
-        $repository->setName('foobar');
-
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'foobar'])->willReturn(null);
-        $this->repositoryRepository->expects(self::once())->method('save')->with($repository);
+        $this->repositoryRepository->expects(self::once())
+            ->method('save')
+            ->with(
+                static::callback(static function (Repository $repository) {
+                    static::assertSame('http://my/foobar', $repository->getUrl());
+                    static::assertSame('foobar', $repository->getName());
+                    static::assertSame('Foobar', $repository->getDisplayName());
+
+                    return true;
+                })
+            );
 
         $tester = new CommandTester($this->command);
         $tester->execute(['repository' => 'http://my/foobar']);
@@ -95,11 +101,21 @@ class AddRepositoryCommandTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setUrl('http://my/foobar');
         $repository->setName('name');
+        $repository->setDisplayName('Name');
         $repository->addRepositoryProperty(new RepositoryProperty('upsource-project-id', 'upsource'));
         $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'name'])->willReturn(null);
-        $this->repositoryRepository->expects(self::once())->method('save')->with($repository);
+        $this->repositoryRepository->expects(self::once())
+            ->method('save')
+            ->with(
+                static::callback(static function (Repository $actualRepository) use ($repository) {
+                    $actualRepository->setCreateTimestamp(null);
+                    static::assertEquals($repository, $actualRepository);
+
+                    return true;
+                })
+            );
 
         $tester = new CommandTester($this->command);
         $tester->execute(

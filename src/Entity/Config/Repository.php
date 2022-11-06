@@ -142,7 +142,7 @@ class Repository
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(int $createTimestamp): self
+    public function setCreateTimestamp(?int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
 

@@ -57,6 +57,7 @@ class AddRepositoryCommand extends Command
         }
 
         $repository->setName($name);
+        $repository->setDisplayName(ucfirst($name));
 
         // set upsource project id
         if ($validatedInput->getUpsourceId() !== null) {
