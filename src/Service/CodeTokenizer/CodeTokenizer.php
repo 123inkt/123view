@@ -5,10 +5,11 @@ namespace DR\GitCommitNotification\Service\CodeTokenizer;
 
 class CodeTokenizer
 {
-    public const TOKEN_CODE   = 1;
-    public const TOKEN_STRING = 2;
+    public const TOKEN_CODE    = 1;
+    public const TOKEN_STRING  = 2;
+    public const TOKEN_COMMENT = 3;
 
-    public function __construct(private readonly CodeStringTokenizer $stringTokenizer)
+    public function __construct(private readonly CodeStringTokenizer $stringTokenizer, private readonly CodeCommentTokenizer $commentTokenizer)
     {
     }
 
@@ -30,6 +31,12 @@ class CodeTokenizer
                     $currentToken = '';
                 }
                 $tokens[] = [self::TOKEN_STRING, $this->stringTokenizer->readString($reader)];
+            } elseif ($this->commentTokenizer->isCommentStart($reader)) {
+                if ($currentToken !== '') {
+                    $tokens[]     = [self::TOKEN_CODE, $currentToken];
+                    $currentToken = '';
+                }
+                $tokens[] = [self::TOKEN_COMMENT, $this->commentTokenizer->readComment($reader)];
             } else {
                 $currentToken .= $char;
             }

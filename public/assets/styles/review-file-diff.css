@@ -111,6 +111,10 @@
     font-weight: 600;
 }
 
+.diff-file__code-comment {
+    color: #808080;
+}
+
 .diff-file__comment_form {
   padding: 10px 10px 5px 10px;
   background: #FFFEE0;

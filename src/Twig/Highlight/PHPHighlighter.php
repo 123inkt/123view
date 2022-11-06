@@ -42,8 +42,8 @@ class PHPHighlighter implements HighlighterInterface
 
         foreach ($tokens as [$token, $value]) {
             if ($token === CodeTokenizer::TOKEN_CODE) {
-                $prefix = '<span class="diff-file__code-keyword">';
-                $suffix = '</span>';
+                $prefix   = '<span class="diff-file__code-keyword">';
+                $suffix   = '</span>';
                 $result[] = (string)preg_replace(
                     "/\b(" . implode("|", self::PATTERN) . ")\b/",
                     $prefix . '$0' . $suffix,
@@ -51,6 +51,8 @@ class PHPHighlighter implements HighlighterInterface
                 );
             } elseif ($token === CodeTokenizer::TOKEN_STRING) {
                 $result[] = '<span class="diff-file__code-string">' . htmlspecialchars($value, ENT_QUOTES) . '</span>';
+            } elseif ($token === CodeTokenizer::TOKEN_COMMENT) {
+                $result[] = '<span class="diff-file__code-comment">' . htmlspecialchars($value, ENT_QUOTES) . '</span>';
             }
         }
 

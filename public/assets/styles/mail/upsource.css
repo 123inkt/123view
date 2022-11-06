@@ -143,3 +143,7 @@ p {
     color: #008000;
     font-weight: 600;
 }
+
+.diff-file__code-comment {
+    color: #808080;
+}
