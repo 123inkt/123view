@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Entity\Webhook;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
 
 #[ORM\Entity(repositoryClass: WebhookRepository::class)]
@@ -31,6 +32,9 @@ class Webhook
     /** @var array<string, string> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $headers = [];
+
+    #[ORM\ManyToOne(targetEntity: Repository::class)]
+    private ?Repository $repository = null;
 
     /** @phpstan-var Collection<int, WebhookActivity> */
     #[ORM\OneToMany(mappedBy: 'webhook', targetEntity: WebhookActivity::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
@@ -115,6 +119,18 @@ class Webhook
     public function setHeaders(array $headers): self
     {
         $this->headers = $headers;
+
+        return $this;
+    }
+
+    public function getRepository(): ?Repository
+    {
+        return $this->repository;
+    }
+
+    public function setRepository(?Repository $repository): self
+    {
+        $this->repository = $repository;
 
         return $this;
     }
