@@ -26,6 +26,9 @@ class Repository
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    private ?string $displayName = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
 
     #[ORM\Column(type: 'smallint', options: ['default' => 900])]
@@ -86,6 +89,18 @@ class Repository
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(?string $displayName): self
+    {
+        $this->displayName = $displayName;
 
         return $this;
     }
