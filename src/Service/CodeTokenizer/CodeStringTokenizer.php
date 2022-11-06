@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 class CodeStringTokenizer
 {
-    private const ENCAPSULATE_CHAR = ['"', "'"];
+    public const  ENCAPSULATE_CHAR = ['"', "'"];
     private const ESCAPE_CHAR      = '\\';
 
     public function readString(StringReader $reader): string

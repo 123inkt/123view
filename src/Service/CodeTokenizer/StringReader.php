@@ -27,6 +27,13 @@ class StringReader
         return $this->string[$this->cursor] ?? null;
     }
 
+    public function prev(): ?string
+    {
+        --$this->cursor;
+
+        return $this->string[$this->cursor] ?? null;
+    }
+
     public function peek(): ?string
     {
         return $this->string[$this->cursor + 1] ?? null;

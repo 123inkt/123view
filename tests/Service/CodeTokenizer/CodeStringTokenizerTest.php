@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer
- * @covers ::__construct
  */
 class CodeStringTokenizerTest extends AbstractTestCase
 {
