@@ -15,7 +15,7 @@
     {% if directory.files|length %}
         <ul class="review-file-tree--files text-nowrap {% if treeDepth == 0 %}review-file-tree--files-root{% endif %}">
             {% for file in directory.files %}
-                {% set isFileSeen = fileTreeModel.fileSeen(file) %}
+                {% set isFileSeen = fileTreeModel.fileSeen(file) or fileTreeModel.fileSelected(file) %}
 
                 <li class="review-file-tree--file
                     {%- if fileTreeModel.fileSelected(file) %} review-file-tree--selected
