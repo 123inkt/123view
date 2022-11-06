@@ -22,7 +22,7 @@
     </span><span class="diffChangeState">{{ line_modifier|raw }}</span>
 
     {%- for change in line.changes -%}
-        {%- set code = change.code|highlight(file.extension, 'codeKeyword') -%}
+        {%- set code = change.code|highlight(file.extension, 'diff-file__code-keyword') -%}
 
         {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
             <span class="changeAdded">{{ code|raw }}</span>

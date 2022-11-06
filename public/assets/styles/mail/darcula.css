@@ -127,6 +127,6 @@ body {
     background: #5A5E5E;
 }
 
-.codeKeyword {
+.diff-file__code-keyword {
     color: #CC7832;
 }
