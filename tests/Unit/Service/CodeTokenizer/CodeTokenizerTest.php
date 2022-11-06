@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Service\CodeTokenizer;
+namespace DR\GitCommitNotification\Tests\Unit\Service\CodeTokenizer;
 
+use DR\GitCommitNotification\Service\CodeTokenizer\CodeCommentTokenizer;
 use DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer;
 use DR\GitCommitNotification\Service\CodeTokenizer\CodeTokenizer;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -18,7 +19,7 @@ class CodeTokenizerTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->tokenizer = new CodeTokenizer(new CodeStringTokenizer());
+        $this->tokenizer = new CodeTokenizer(new CodeStringTokenizer(), new CodeCommentTokenizer());
     }
 
     /**
