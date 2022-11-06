@@ -40,6 +40,7 @@ class AddRepositoryCommand extends Command
         $validatedInput = $this->inputValidator->validate($input, AddRepositoryInput::class);
 
         $repository = new Repository();
+        $repository->setCreateTimestamp(time());
         $repository->setUrl($validatedInput->getRepository());
 
         // determine name

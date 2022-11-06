@@ -34,6 +34,9 @@ class Repository
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $updateRevisionsTimestamp = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $createTimestamp = null;
+
     /** @phpstan-var Collection<int, RepositoryProperty> */
     #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $repositoryProperties;
@@ -117,6 +120,18 @@ class Repository
     public function setUpdateRevisionsTimestamp(int $updateRevisionsTimestamp): void
     {
         $this->updateRevisionsTimestamp = $updateRevisionsTimestamp;
+    }
+
+    public function getCreateTimestamp(): ?int
+    {
+        return $this->createTimestamp;
+    }
+
+    public function setCreateTimestamp(int $createTimestamp): self
+    {
+        $this->createTimestamp = $createTimestamp;
+
+        return $this;
     }
 
     public function getRepositoryProperty(string $name): ?string

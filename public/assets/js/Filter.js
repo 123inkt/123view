@@ -10,7 +10,6 @@ export default class Filter extends Controller {
     }
 
     addFilter() {
-        console.log(this.el);
         const list = this.role('filters');
         if (list.children.length >= 10) {
             return;
