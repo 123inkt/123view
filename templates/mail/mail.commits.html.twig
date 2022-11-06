@@ -7,6 +7,12 @@
     <body class="mailBody">
     {%- for commit in viewModel.commits -%}
         <div class="revisions">
+            {%- if commit.review != null -%}
+                <a class="subjectLine"
+                   href="{{ absolute_url(path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: commit.review.id})) }}"
+                >CR-{{ commit.review.projectId }}</a>
+            {%- endif %}
+
             New revision{% if commit.commitHashes|length > 1 %}s{% endif %} by {{ commit.author.name }} in branch
 
             {# branch name -#}
