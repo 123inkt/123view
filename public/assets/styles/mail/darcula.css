@@ -130,3 +130,8 @@ body {
 .diff-file__code-keyword {
     color: #CC7832;
 }
+
+.diff-file__code-string {
+    color: #697942;
+    font-weight: 600;
+}
