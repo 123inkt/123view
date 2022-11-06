@@ -38,7 +38,8 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
             $this->titleNormalizer,
             $this->reviewRepository,
             $this->reviewFactory,
-            $this->patternMatcher
+            $this->patternMatcher,
+            'sherlock@exampl.com'
         );
     }
 
