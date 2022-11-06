@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler;
-use DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
@@ -46,7 +45,8 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$upsourceApiUrl', '%env(UPSOURCE_API_URL)%')
-        ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%');
+        ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
+        ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%');
 
     // Register controllers
     $services->load('DR\GitCommitNotification\Controller\\', '../src/Controller/**/*Controller.php')->tag('controller.service_arguments');
@@ -118,5 +118,4 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
 
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
-    $services->set(NewRevisionMessageHandler::class)->arg('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%');
 };

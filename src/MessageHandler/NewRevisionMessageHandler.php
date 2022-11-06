@@ -28,18 +28,13 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
 {
     use LoggerAwareTrait;
 
-    /** @var string[] */
-    private array $excludeAuthors;
-
     public function __construct(
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
         private CodeReviewRevisionMatcher $reviewRevisionMatcher,
         private ManagerRegistry $registry,
-        private MessageBusInterface $bus,
-        string $codeReviewExcludeAuthors
+        private MessageBusInterface $bus
     ) {
-        $this->excludeAuthors = $codeReviewExcludeAuthors === '' ? [] : explode(',', $codeReviewExcludeAuthors);
     }
 
     private function dispatchAfter(AsyncMessageInterface $event): void
@@ -54,15 +49,9 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
     {
         $this->logger?->info("MessageHandler: revision: " . $message->revisionId);
         $revision = $this->revisionRepository->find($message->revisionId);
-        if ($revision === null) {
-            $this->logger?->notice('MessageHandler: unknown revision: ' . $message->revisionId);
 
-            return;
-        }
-
-        if (in_array($revision->getAuthorEmail(), $this->excludeAuthors, true)) {
-            $this->logger?->notice('MessageHandler: revision is excluded by author: ' . $revision->getAuthorEmail());
-
+        // check if we should match this revision
+        if ($this->reviewRevisionMatcher->isSupported($revision) === false || $revision === null) {
             return;
         }
 

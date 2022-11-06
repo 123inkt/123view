@@ -17,12 +17,43 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    /** @var string[] */
+    private array $excludeAuthors;
+
     public function __construct(
         private RevisionTitleNormalizer $titleNormalizer,
         private CodeReviewRepository $reviewRepository,
         private CodeReviewFactory $reviewFactory,
-        private RevisionPatternMatcher $patternMatcher
+        private RevisionPatternMatcher $patternMatcher,
+        string $codeReviewExcludeAuthors
     ) {
+        $this->excludeAuthors = $codeReviewExcludeAuthors === '' ? [] : explode(',', $codeReviewExcludeAuthors);
+    }
+
+    /**
+     * @phpstan-assert Revision $revision
+     */
+    public function isSupported(?Revision $revision): bool
+    {
+        if ($revision === null) {
+            $this->logger?->info('Matcher: revision not supported: revision is null');
+
+            return false;
+        }
+
+        if ($revision->getCreateTimestamp() < $revision->getRepository()?->getCreateTimestamp()) {
+            $this->logger?->info('Matcher: revision was created before the repository was added to the project: ' . $revision->getId());
+
+            return false;
+        }
+
+        if (in_array($revision->getAuthorEmail(), $this->excludeAuthors, true)) {
+            $this->logger?->notice('Matcher: revision is excluded by author: ' . $revision->getAuthorEmail());
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
