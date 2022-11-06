@@ -17,6 +17,11 @@ class ReviewCreated implements AsyncMessageInterface, WebhookEventInterface
         return 'review-created';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

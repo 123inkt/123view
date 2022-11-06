@@ -17,6 +17,11 @@ class ReviewClosed implements AsyncMessageInterface, WebhookEventInterface
         return 'review-closed';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

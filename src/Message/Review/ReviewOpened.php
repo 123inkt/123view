@@ -17,6 +17,11 @@ class ReviewOpened implements AsyncMessageInterface, WebhookEventInterface
         return 'review-opened';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

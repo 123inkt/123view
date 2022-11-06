@@ -17,6 +17,11 @@ class ReviewerAdded implements AsyncMessageInterface, WebhookEventInterface
         return 'reviewer-added';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

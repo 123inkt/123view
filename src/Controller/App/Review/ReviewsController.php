@@ -24,7 +24,7 @@ class ReviewsController extends AbstractController
     }
 
     /**
-     * @return array<string, object|Breadcrumb[]>
+     * @return array<string, string|object|Breadcrumb[]>
      */
     #[Route('app/projects/{id<\d+>}/reviews', name: self::class, methods: 'GET')]
     #[Template('app/review/reviews.html.twig')]
@@ -40,7 +40,7 @@ class ReviewsController extends AbstractController
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
         return [
-            'page_title'   => ucfirst($repository->getName()),
+            'page_title'   => ucfirst((string)$repository->getName()),
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
             'reviewsModel' => new ReviewsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery)
         ];

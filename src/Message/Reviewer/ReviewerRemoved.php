@@ -17,6 +17,11 @@ class ReviewerRemoved implements AsyncMessageInterface, WebhookEventInterface
         return 'reviewer-removed';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

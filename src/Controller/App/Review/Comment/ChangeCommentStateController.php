@@ -38,7 +38,7 @@ class ChangeCommentStateController extends AbstractController
         $this->commentRepository->save($comment, true);
 
         if ($currentState !== $state && $state === CommentStateType::RESOLVED) {
-            $this->bus->dispatch(new CommentResolved((int)$comment->getId(), (int)$this->getUser()->getId()));
+            $this->bus->dispatch(new CommentResolved((int)$comment->getReview()?->getId(), (int)$comment->getId(), (int)$this->getUser()->getId()));
         }
 
         return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()]);

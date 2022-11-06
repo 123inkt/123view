@@ -20,7 +20,7 @@ class ProjectsController extends AbstractController
     }
 
     /**
-     * @return array<string, ProjectsViewModel>
+     * @return array<string, string|ProjectsViewModel>
      */
     #[Route('app/projects', name: self::class, methods: 'GET')]
     #[Template('app/review/projects.html.twig')]

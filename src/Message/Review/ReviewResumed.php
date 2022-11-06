@@ -17,6 +17,11 @@ class ReviewResumed implements AsyncMessageInterface, WebhookEventInterface
         return 'review-resumed';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

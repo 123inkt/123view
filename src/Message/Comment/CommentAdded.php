@@ -9,13 +9,18 @@ use DR\GitCommitNotification\Message\WebhookEventInterface;
 
 class CommentAdded implements AsyncMessageInterface, WebhookEventInterface, MailNotificationInterface
 {
-    public function __construct(public readonly int $commentId)
+    public function __construct(public readonly int $reviewId, public readonly int $commentId)
     {
     }
 
     public function getName(): string
     {
         return 'comment-added';
+    }
+
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
     }
 
     /**

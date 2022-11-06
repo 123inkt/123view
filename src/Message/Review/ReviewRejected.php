@@ -17,6 +17,11 @@ class ReviewRejected implements AsyncMessageInterface, WebhookEventInterface
         return 'review-rejected';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */

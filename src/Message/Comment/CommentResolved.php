@@ -9,13 +9,18 @@ use DR\GitCommitNotification\Message\WebhookEventInterface;
 
 class CommentResolved implements AsyncMessageInterface, WebhookEventInterface, MailNotificationInterface
 {
-    public function __construct(public readonly int $commentId, public readonly int $resolveByUserId)
+    public function __construct(public readonly int $reviewId, public readonly int $commentId, public readonly int $resolveByUserId)
     {
     }
 
     public function getName(): string
     {
         return 'comment-resolved';
+    }
+
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
     }
 
     /**

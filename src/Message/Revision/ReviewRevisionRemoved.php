@@ -20,6 +20,11 @@ class ReviewRevisionRemoved implements AsyncMessageInterface, WebhookEventInterf
         return 'review-revision-removed';
     }
 
+    public function getReviewId(): int
+    {
+        return $this->reviewId;
+    }
+
     /**
      * @inheritDoc
      */
