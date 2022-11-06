@@ -120,7 +120,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getName
+     * @covers ::isEmpty
      */
     public function testIsEmpty(): void
     {
