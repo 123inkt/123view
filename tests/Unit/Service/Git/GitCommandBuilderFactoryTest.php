@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Service\Git;
+namespace DR\GitCommitNotification\Tests\Unit\Service\Git;
 
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
