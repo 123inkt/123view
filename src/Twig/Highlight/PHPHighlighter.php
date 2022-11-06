@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Twig\Highlight;
 
+use DR\GitCommitNotification\Service\CodeTokenizer\CodeTokenizer;
+
 class PHPHighlighter implements HighlighterInterface
 {
     public const EXTENSION = 'php';
@@ -25,10 +27,25 @@ class PHPHighlighter implements HighlighterInterface
         "(__halt_compiler|break|list|(x)?or|var|while)",
     ];
 
+    public function __construct(private readonly CodeTokenizer $tokenizer)
+    {
+    }
+
     public function highlight(string $input, string $prefix, string $suffix): string
     {
-        $pattern = "/\b(" . implode("|", self::PATTERN) . ")\b/";
+        $tokens = $this->tokenizer->tokenize($input);
+        $result = [];
 
-        return (string)preg_replace($pattern, $prefix . '$0' . $suffix, $input);
+        foreach ($tokens as [$token, $value]) {
+            if ($token === CodeTokenizer::TOKEN_CODE) {
+                $prefix   = '<span class="diff-file__code-keyword">';
+                $suffix   = '</span>';
+                $result[] = (string)preg_replace("/\b(" . implode("|", self::PATTERN) . ")\b/", $prefix . '$0' . $suffix, $input);
+            } elseif ($token === CodeTokenizer::TOKEN_STRING) {
+                $result[] = '<span class="diff-file__code-keyword">' . $value . '</span>';
+            }
+        }
+
+        return implode('', $result);
     }
 }
