@@ -10,7 +10,7 @@
             New revision{% if commit.commitHashes|length > 1 %}s{% endif %} by {{ commit.author.name }} in branch
 
             {# branch name -#}
-            <span class="remoteReference"> {{ commit.remoteRef }}</span> in repository
+            <span class="remoteReference"> {{ commit.remoteRef|default('master') }}</span> in repository
 
             {#- repository name -#}
             <span class="repositoryName"> {{ commit.repositoryName }}</span>.

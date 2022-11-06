@@ -131,4 +131,22 @@ class CodeReviewRepository extends ServiceEntityRepository
 
         return $review;
     }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneByCommitHash(int $repositoryId, string $commitHash): ?CodeReview
+    {
+        /** @var CodeReview|null $review */
+        $review = $this->createQueryBuilder('c')
+            ->innerJoin('c.revisions', 'r', 'WITH', 'r.commitHash = :commitHash')
+            ->where('c.repository = :repositoryId')
+            ->setParameter('commitHash', $commitHash)
+            ->setParameter('repositoryId', $repositoryId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+
+        return $review;
+    }
 }

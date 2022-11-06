@@ -6,11 +6,12 @@ namespace DR\GitCommitNotification\Entity\Git;
 use DateTime;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
 
 class Commit
 {
     public Repository $repository;
-    public string $parentHash;
+    public string     $parentHash;
     /** @var string[] */
     public array    $commitHashes;
     public Author   $author;
@@ -20,7 +21,8 @@ class Commit
     /** @var DiffFile[] */
     public array $files;
     /** @var IntegrationLink[] */
-    public array $integrationLinks = [];
+    public array       $integrationLinks = [];
+    public ?CodeReview $review           = null;
 
     /**
      * @param DiffFile[] $files
