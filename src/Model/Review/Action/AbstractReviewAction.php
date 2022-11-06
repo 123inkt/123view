@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Model\Review\Action;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class AbstractReviewAction
 {
     public const ACTION_ADD_COMMENT  = 'add-comment';

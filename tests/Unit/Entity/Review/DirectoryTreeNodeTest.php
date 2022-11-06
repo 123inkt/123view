@@ -120,6 +120,18 @@ class DirectoryTreeNodeTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::getName
+     */
+    public function testIsEmpty(): void
+    {
+        $nodeA = new DirectoryTreeNode('nodeA');
+        static::assertTrue($nodeA->isEmpty());
+
+        $nodeB = new DirectoryTreeNode('nodeB', [$nodeA]);
+        static::assertFalse($nodeB->isEmpty());
+    }
+
+    /**
      * @covers ::getFiles
      */
     public function testGetFiles(): void

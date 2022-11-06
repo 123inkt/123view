@@ -5,6 +5,9 @@ namespace DR\GitCommitNotification\Model\Review\Action;
 
 use DR\GitCommitNotification\Entity\Review\Comment;
 
+/**
+ * @codeCoverageIgnore
+ */
 class AddCommentReplyAction extends AbstractReviewAction
 {
     public function __construct(public readonly ?Comment $comment)
