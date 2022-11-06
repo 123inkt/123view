@@ -19,7 +19,7 @@ class TypescriptHighlighter implements HighlighterInterface
         "(s(uper|witch|tring))",
         "(t(his|hrow|rue|ry|ypeof|ype))",
         "(object)",
-        "(public)",
+        "(p(ublic|rotected|rivate))",
         "(v(ar|oid))",
         "(w(hile|ith))"
     ];
