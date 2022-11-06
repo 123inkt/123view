@@ -27,7 +27,7 @@ class PHPHighlighter implements HighlighterInterface
         "(__halt_compiler|break|list|(x)?or|var|while)",
     ];
 
-    public function __construct(private readonly CodeTokenizer $tokenizer)
+    public function __construct(private readonly HighlightPattern $pattern, private readonly CodeTokenizer $tokenizer)
     {
     }
 
@@ -37,22 +37,18 @@ class PHPHighlighter implements HighlighterInterface
             return $input;
         }
 
-        $tokens = $this->tokenizer->tokenize($input);
         $result = [];
-
-        foreach ($tokens as [$token, $value]) {
+        foreach ($this->tokenizer->tokenize($input) as [$token, $value]) {
             if ($token === CodeTokenizer::TOKEN_CODE) {
-                $prefix   = '<span class="diff-file__code-keyword">';
-                $suffix   = '</span>';
-                $result[] = (string)preg_replace(
+                $result[] = preg_replace_callback(
                     "/\b(" . implode("|", self::PATTERN) . ")\b/",
-                    $prefix . '$0' . $suffix,
+                    fn($matches) => sprintf($this->pattern->keyword, $matches[0]),
                     htmlspecialchars($value, ENT_QUOTES)
                 );
             } elseif ($token === CodeTokenizer::TOKEN_STRING) {
-                $result[] = '<span class="diff-file__code-string">' . htmlspecialchars($value, ENT_QUOTES) . '</span>';
+                $result[] = sprintf($this->pattern->string, htmlspecialchars($value, ENT_QUOTES));
             } elseif ($token === CodeTokenizer::TOKEN_COMMENT) {
-                $result[] = '<span class="diff-file__code-comment">' . htmlspecialchars($value, ENT_QUOTES) . '</span>';
+                $result[] = sprintf($this->pattern->comment, htmlspecialchars($value, ENT_QUOTES));
             }
         }
 

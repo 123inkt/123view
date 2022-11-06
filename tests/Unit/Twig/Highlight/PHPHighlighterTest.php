@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Twig\Highlight;
 
+use DR\GitCommitNotification\Service\CodeTokenizer\CodeCommentTokenizer;
 use DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer;
 use DR\GitCommitNotification\Service\CodeTokenizer\CodeTokenizer;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\GitCommitNotification\Twig\Highlight\HighlightPattern;
 use DR\GitCommitNotification\Twig\Highlight\PHPHighlighter;
 
 /**
@@ -18,7 +20,9 @@ class PHPHighlighterTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->highlighter = new PHPHighlighter(new CodeTokenizer(new CodeStringTokenizer()));
+        $pattern           = new HighlightPattern('[[%s]]', '((%s))', '{{%s}}');
+        $tokenizer         = new CodeTokenizer(new CodeStringTokenizer(), new CodeCommentTokenizer());
+        $this->highlighter = new PHPHighlighter($pattern, $tokenizer);
     }
 
     /**
@@ -73,6 +77,17 @@ class PHPHighlighterTest extends AbstractTestCase
         $code = 'foo "bar"';
 
         $result = $this->highlighter->highlight($code, "{{", "}}");
-        static::assertSame('foo <span class="diff-file__code-string">"bar"</span>', $result);
+        static::assertSame('foo ((&quot;bar&quot;))', $result);
+    }
+
+    /**
+     * @covers ::highlight
+     */
+    public function testHighlightComment(): void
+    {
+        $code = 'foo // comment';
+
+        $result = $this->highlighter->highlight($code, "{{", "}}");
+        static::assertSame('foo [[// comment]]', $result);
     }
 }
