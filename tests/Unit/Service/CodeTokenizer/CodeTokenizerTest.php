@@ -28,7 +28,13 @@ class CodeTokenizerTest extends AbstractTestCase
     public function testTokenize(): void
     {
         static::assertSame([[CodeTokenizer::TOKEN_CODE, 'foobar']], $this->tokenizer->tokenize('foobar'));
+    }
 
+    /**
+     * @covers ::tokenize
+     */
+    public function testTokenizeWithString(): void
+    {
         static::assertSame(
             [[CodeTokenizer::TOKEN_CODE, 'foo'], [CodeTokenizer::TOKEN_STRING, '"bar"']],
             $this->tokenizer->tokenize('foo"bar"')
@@ -37,6 +43,17 @@ class CodeTokenizerTest extends AbstractTestCase
         static::assertSame(
             [[CodeTokenizer::TOKEN_CODE, 'foo'], [CodeTokenizer::TOKEN_STRING, '"bar"'], [CodeTokenizer::TOKEN_CODE, 'foo']],
             $this->tokenizer->tokenize('foo"bar"foo')
+        );
+    }
+
+    /**
+     * @covers ::tokenize
+     */
+    public function testTokenizeWithComment(): void
+    {
+        static::assertSame(
+            [[CodeTokenizer::TOKEN_CODE, 'foo '], [CodeTokenizer::TOKEN_COMMENT, '// bar']],
+            $this->tokenizer->tokenize('foo // bar')
         );
     }
 }
