@@ -11,7 +11,7 @@ export default class Controller {
 
     listen(eventName, targetName, callback) {
         this.el.addEventListener(eventName, (event) => {
-            const element = event.target.closest('[data-role="' + targetName + '"]');
+            const element = event.target.closest('[data-role~="' + targetName + '"]');
             if (element !== null) {
                 callback(element, event);
             }
@@ -30,7 +30,7 @@ export default class Controller {
     }
 
     role(role) {
-        const element = this.el.querySelector('[data-role="' + role + '"]');
+        const element = this.el.querySelector('[data-role~="' + role + '"]');
         if (element === null) {
             throw new Error('Unable to find role: ' + role);
         }
@@ -38,6 +38,6 @@ export default class Controller {
     }
 
     roles(role) {
-        return this.el.querySelectorAll('[data-role="' + role + '"]').values();
+        return this.el.querySelectorAll('[data-role~="' + role + '"]').values();
     }
 }

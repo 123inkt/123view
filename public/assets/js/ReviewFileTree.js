@@ -12,7 +12,7 @@ export default class Review extends Controller {
     }
 
     toggleFileSeenStatus(target) {
-        const parentFile = target.closest('[data-role=review-file-tree-file]');
+        const parentFile = target.closest('[data-role~=review-file-tree-file]');
 
         if (target.dataset.seenStatus === '1') {
             target.classList.remove('seen');

@@ -20,8 +20,7 @@
                 <li class="review-file-tree--file
                     {%- if fileTreeModel.fileSelected(file) %} review-file-tree--selected
                     {%- elseif not isFileSeen %} review-file-tree--unseen{% endif -%}"
-                    {%- if fileTreeModel.fileSelected(file) %} data-role="active-file"{% endif -%}
-                    data-role="review-file-tree-file"
+                    data-role="review-file-tree-file {%- if fileTreeModel.fileSelected(file) %} active-file{% endif %}"
                 >
                     {%- set filePath = file.file.pathname -%}
                     {%- if file.hashEnd != null -%}
