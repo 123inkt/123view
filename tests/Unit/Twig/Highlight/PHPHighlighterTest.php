@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Twig\Highlight;
 
+use DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer;
+use DR\GitCommitNotification\Service\CodeTokenizer\CodeTokenizer;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Twig\Highlight\PHPHighlighter;
 
@@ -11,6 +13,14 @@ use DR\GitCommitNotification\Twig\Highlight\PHPHighlighter;
  */
 class PHPHighlighterTest extends AbstractTestCase
 {
+    private PHPHighlighter $highlighter;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->highlighter = new PHPHighlighter(new CodeTokenizer(new CodeStringTokenizer()));
+    }
+
     /**
      * @covers ::highlight
      */
@@ -18,8 +28,7 @@ class PHPHighlighterTest extends AbstractTestCase
     {
         $code = 'function test(bool $value = true) {';
 
-        $highlighter = new PHPHighlighter();
-        $result      = $highlighter->highlight($code, "{{", "}}");
+        $result = $this->highlighter->highlight($code, "{{", "}}");
         static::assertSame('{{function}} test({{bool}} $value = {{true}}) {', $result);
     }
 
@@ -30,8 +39,7 @@ class PHPHighlighterTest extends AbstractTestCase
     {
         $code = 'true false bool float int array callable string null';
 
-        $highlighter = new PHPHighlighter();
-        $result      = $highlighter->highlight($code, "{{", "}}");
+        $result = $this->highlighter->highlight($code, "{{", "}}");
         static::assertSame('{{true}} {{false}} {{bool}} {{float}} {{int}} {{array}} {{callable}} {{string}} {{null}}', $result);
     }
 
@@ -42,8 +50,7 @@ class PHPHighlighterTest extends AbstractTestCase
     {
         $code = 'continue break return switch for throw';
 
-        $highlighter = new PHPHighlighter();
-        $result      = $highlighter->highlight($code, "{{", "}}");
+        $result = $this->highlighter->highlight($code, "{{", "}}");
         static::assertSame('{{continue}} {{break}} {{return}} {{switch}} {{for}} {{throw}}', $result);
     }
 
@@ -54,8 +61,18 @@ class PHPHighlighterTest extends AbstractTestCase
     {
         $code = 'abstract class interface final extends instanceof implements';
 
-        $highlighter = new PHPHighlighter();
-        $result      = $highlighter->highlight($code, "{{", "}}");
+        $result = $this->highlighter->highlight($code, "{{", "}}");
         static::assertSame('{{abstract}} {{class}} {{interface}} {{final}} {{extends}} {{instanceof}} {{implements}}', $result);
+    }
+
+    /**
+     * @covers ::highlight
+     */
+    public function testHighlightString(): void
+    {
+        $code = 'foo "bar"';
+
+        $result = $this->highlighter->highlight($code, "{{", "}}");
+        static::assertSame('foo <span class="diff-file__code-string">"bar"</span>', $result);
     }
 }

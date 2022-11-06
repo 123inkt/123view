@@ -138,3 +138,8 @@ p {
 .diff-file__code-keyword {
     color: #000080;
 }
+
+.diff-file__code-string {
+    color: #008000;
+    font-weight: 600;
+}

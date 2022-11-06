@@ -38,6 +38,6 @@ class CodeHighlightExtension extends AbstractExtension
         $prefix = sprintf('<%s class="%s">', $htmlTag, $className);
         $suffix = sprintf('</%s>', $htmlTag);
 
-        return $highlighter->highlight(htmlspecialchars($input, ENT_QUOTES), $prefix, $suffix);
+        return $highlighter->highlight($input, $prefix, $suffix);
     }
 }

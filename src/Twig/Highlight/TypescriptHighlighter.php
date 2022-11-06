@@ -28,6 +28,6 @@ class TypescriptHighlighter implements HighlighterInterface
     {
         $pattern = "/\b(" . implode("|", self::PATTERN) . ")\b/";
 
-        return (string)preg_replace($pattern, $prefix . '$0' . $suffix, $input);
+        return (string)preg_replace($pattern, $prefix . '$0' . $suffix, htmlspecialchars($input, ENT_QUOTES));
     }
 }

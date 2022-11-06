@@ -33,16 +33,24 @@ class PHPHighlighter implements HighlighterInterface
 
     public function highlight(string $input, string $prefix, string $suffix): string
     {
+        if ($input === '') {
+            return $input;
+        }
+
         $tokens = $this->tokenizer->tokenize($input);
         $result = [];
 
         foreach ($tokens as [$token, $value]) {
             if ($token === CodeTokenizer::TOKEN_CODE) {
-                $prefix   = '<span class="diff-file__code-keyword">';
-                $suffix   = '</span>';
-                $result[] = (string)preg_replace("/\b(" . implode("|", self::PATTERN) . ")\b/", $prefix . '$0' . $suffix, $input);
+                $prefix = '<span class="diff-file__code-keyword">';
+                $suffix = '</span>';
+                $result[] = (string)preg_replace(
+                    "/\b(" . implode("|", self::PATTERN) . ")\b/",
+                    $prefix . '$0' . $suffix,
+                    htmlspecialchars($value, ENT_QUOTES)
+                );
             } elseif ($token === CodeTokenizer::TOKEN_STRING) {
-                $result[] = '<span class="diff-file__code-keyword">' . $value . '</span>';
+                $result[] = '<span class="diff-file__code-string">' . htmlspecialchars($value, ENT_QUOTES) . '</span>';
             }
         }
 

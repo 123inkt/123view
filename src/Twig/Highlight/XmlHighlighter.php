@@ -9,6 +9,6 @@ class XmlHighlighter implements HighlighterInterface
 
     public function highlight(string $input, string $prefix, string $suffix): string
     {
-        return (string)preg_replace('/([\w-]+)=/', $prefix . '$1' . $suffix . '=', $input);
+        return (string)preg_replace('/([\w-]+)=/', $prefix . '$1' . $suffix . '=', htmlspecialchars($input, ENT_QUOTES));
     }
 }
