@@ -2,7 +2,7 @@
 set -e
 
 # wait for mysql
-sleep 20
+sleep 30
 
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader
