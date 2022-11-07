@@ -48,7 +48,7 @@ services:
         image: bitnami/rabbitmq:latest
 
     mail:
-        container_name: mail
+        container_name: ${MAIL_CONTAINER:-mail}
         image: bytemark/smtp
 
 
