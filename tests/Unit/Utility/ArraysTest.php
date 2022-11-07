@@ -69,4 +69,40 @@ class ArraysTest extends AbstractTestCase
         static::assertSame([0 => $objA], Arrays::remove($array, $objB));
         static::assertSame($array, Arrays::remove($array, 'foobar'));
     }
+
+    /**
+     * @covers ::unique
+     */
+    public function testUnique(): void
+    {
+        $objA = new stdClass();
+        $objB = new stdClass();
+
+        static::assertSame(['foobar'], Arrays::unique(['foobar', 'foobar']));
+        static::assertSame(['foo', 'bar'], Arrays::unique(['foo', 'bar']));
+        static::assertSame([1], Arrays::unique([1, 1]));
+        static::assertSame([1, '1'], Arrays::unique([1, '1']));
+        static::assertSame([$objA, $objB], Arrays::unique([$objA, $objB]));
+        static::assertSame([$objA], Arrays::unique([$objA, $objA]));
+    }
+
+    /**
+     * @covers ::diff
+     */
+    public function testDiff(): void
+    {
+        $objA = new stdClass();
+        $objB = new stdClass();
+
+        static::assertSame(['foo'], Arrays::diff(['foo'], ['bar']));
+        static::assertSame(['foo'], Arrays::diff(['foo', 'bar'], ['bar']));
+        static::assertSame([], Arrays::diff(['foo', 'bar'], ['foo', 'bar']));
+        static::assertSame([], Arrays::diff(['foo', 'bar'], ['bar', 'foo']));
+
+        static::assertSame([$objA], Arrays::diff([$objA], [$objB]));
+        static::assertSame([], Arrays::diff([$objA], [$objA]));
+        static::assertSame([1 => $objB], Arrays::diff([$objA, $objB], [$objA]));
+        static::assertSame([], Arrays::diff([$objA, $objB], [$objA, $objB]));
+        static::assertSame([], Arrays::diff([$objA, $objB], [$objB, $objA]));
+    }
 }

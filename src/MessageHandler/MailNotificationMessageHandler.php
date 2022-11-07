@@ -17,6 +17,7 @@ use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
 use DR\GitCommitNotification\Service\Mail\MailService;
+use DR\GitCommitNotification\Utility\Arrays;
 use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -130,7 +131,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         }
 
         $originalMentions = $this->mentionService->getMentionedUsers($message->originalComment);
-        $newMentions      = array_unique(array_udiff($mentions, $originalMentions, static fn($userA, $userB) => (int)($userA === $userB)));
+        $newMentions      = Arrays::unique(Arrays::diff($mentions, $originalMentions));
 
         if (count($newMentions) === 0) {
             return;
@@ -187,7 +188,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
         }
 
         $originalMentions = $this->mentionService->getMentionedUsers($message->originalComment);
-        $newMentions      = array_unique(array_udiff($mentions, $originalMentions, static fn($userA, $userB) => (int)($userA === $userB)));
+        $newMentions      = Arrays::unique(Arrays::diff($mentions, $originalMentions));
 
         if (count($newMentions) === 0) {
             return;

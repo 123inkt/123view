@@ -80,4 +80,46 @@ class Arrays
 
         return $items;
     }
+
+    /**
+     * @template T
+     *
+     * @param T[] $items
+     *
+     * @return T[]
+     */
+    public static function unique(array $items): array
+    {
+        $result = [];
+        foreach ($items as $key => $item) {
+            if (in_array($item, $result, true) === false) {
+                $result[$key] = $item;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @template T
+     * @template K
+     *
+     * @param T[] $itemsA
+     * @param K[] $itemsB
+     *
+     * @return T[]
+     */
+    public static function diff(array $itemsA, array $itemsB): array
+    {
+        return array_udiff(
+            $itemsA,
+            $itemsB,
+            static function ($itemA, $itemB) {
+                $keyA = is_object($itemA) ? spl_object_hash($itemA) : (string)$itemA;
+                $keyB = is_object($itemB) ? spl_object_hash($itemB) : (string)$itemB;
+
+                return strcmp($keyA, $keyB);
+            }
+        );
+    }
 }

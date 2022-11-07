@@ -46,7 +46,7 @@ class MailService implements LoggerAwareInterface
             $recipients = $this->recipientService->getUsersForReview($review);
             $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         }
-        $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($comment->getUser()));
+        $recipients = Arrays::remove(Arrays::unique($recipients), Assert::notNull($comment->getUser()));
         if (count($recipients) === 0) {
             return;
         }
@@ -87,7 +87,7 @@ class MailService implements LoggerAwareInterface
             $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
             $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
         }
-        $recipients = Arrays::remove(array_unique($recipients), Assert::notNull($reply->getUser()));
+        $recipients = Arrays::remove(Arrays::unique($recipients), Assert::notNull($reply->getUser()));
         if (count($recipients) === 0) {
             return;
         }
@@ -124,7 +124,7 @@ class MailService implements LoggerAwareInterface
         $recipients = $this->recipientService->getUsersForReview($review);
         $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment));
-        $recipients = Arrays::remove(array_unique($recipients), $resolvedBy);
+        $recipients = Arrays::remove(Arrays::unique($recipients), $resolvedBy);
         if (count($recipients) === 0) {
             return;
         }
