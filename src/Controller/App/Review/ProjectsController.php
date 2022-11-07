@@ -13,10 +13,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectsController extends AbstractController
 {
-    public function __construct(
-        private readonly RepositoryRepository $repositoryRepository,
-        private readonly TranslatorInterface $translator
-    ) {
+    public function __construct(private readonly RepositoryRepository $repositoryRepository, private readonly TranslatorInterface $translator)
+    {
     }
 
     /**
