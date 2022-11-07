@@ -58,10 +58,7 @@ if [ "$mode" == 'prod' ]; then
 
     DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.production.yml build
     docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
-
-    echo ""
-    echo "  Run 'docker-compose logs --tail=2 --follow' to follow the logs"
-    echo ""
+    docker-compose logs --tail=2 --follow
 
     exit 0;
 
