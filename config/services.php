@@ -24,14 +24,17 @@ use DR\GitCommitNotification\Service\Git\Review\Strategy\HesitantCherryPickStrat
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
+use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
 use DR\GitCommitNotification\Twig\Highlight\HighlighterFactory;
 use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 use League\CommonMark\MarkdownConverter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\Security\Core\Security;
 use TheNetworg\OAuth2\Client\Provider\Azure;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
@@ -118,4 +121,5 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
 
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
+    $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 };
