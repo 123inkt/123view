@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
+use DR\GitCommitNotification\Utility\Arrays;
 use DR\GitCommitNotification\Utility\Assert;
 
 class MailRecipientService
@@ -28,7 +29,7 @@ class MailRecipientService
             $users[] = Assert::notNull($reviewer->getUser());
         }
 
-        return array_unique($users);
+        return Arrays::unique($users);
     }
 
     /**
