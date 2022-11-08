@@ -39,8 +39,63 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
             $this->reviewRepository,
             $this->reviewFactory,
             $this->patternMatcher,
-            'sherlock@exampl.com'
+            'sherlock@example.com'
         );
+    }
+
+    /**
+     * @covers ::isSupported
+     */
+    public function testIsSupportedNullIsNot(): void
+    {
+        static::assertFalse($this->matcher->isSupported(null));
+    }
+
+    /**
+     * @covers ::isSupported
+     */
+    public function testIsSupportedRepositoryTimestampShouldBeGreaterThanRevisionTimestamp(): void
+    {
+        $repository = new Repository();
+        $repository->setCreateTimestamp(20000);
+
+        $revision = new Revision();
+        $revision->setCreateTimestamp(10000);
+        $revision->setRepository($repository);
+
+        static::assertFalse($this->matcher->isSupported($revision));
+    }
+
+    /**
+     * @covers ::isSupported
+     */
+    public function testIsSupportedAuthorShouldBeExcluded(): void
+    {
+        $repository = new Repository();
+        $repository->setCreateTimestamp(10000);
+
+        $revision = new Revision();
+        $revision->setCreateTimestamp(20000);
+        $revision->setRepository($repository);
+        $revision->setAuthorEmail('sherlock@example.com');
+
+        static::assertFalse($this->matcher->isSupported($revision));
+    }
+
+    /**
+     * @covers ::isSupported
+     */
+    public function testIsSupported(): void
+    {
+        $repository = new Repository();
+        $repository->setCreateTimestamp(10000);
+
+        $revision = new Revision();
+        $revision->setCreateTimestamp(20000);
+        $revision->setRepository($repository);
+        $revision->setAuthorEmail('holmes@example.com');
+
+        static::assertTrue($this->matcher->isSupported($revision));
     }
 
     /**
