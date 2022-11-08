@@ -18,6 +18,6 @@ class ReviewClosedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(new ReviewClosed(5), 'review-closed', ['reviewId' => 5]);
+        static::assertWebhookEvent(new ReviewClosed(5), 'review-closed', 5, ['reviewId' => 5]);
     }
 }

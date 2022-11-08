@@ -18,6 +18,6 @@ class ReviewCreatedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(new ReviewCreated(5), 'review-created', ['reviewId' => 5]);
+        static::assertWebhookEvent(new ReviewCreated(5), 'review-created', 5, ['reviewId' => 5]);
     }
 }

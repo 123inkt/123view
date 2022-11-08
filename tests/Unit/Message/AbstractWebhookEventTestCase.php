@@ -11,9 +11,10 @@ abstract class AbstractWebhookEventTestCase extends AbstractTestCase
     /**
      * @param array<string, int|string|bool|float|null> $payload
      */
-    protected static function assertWebhookEvent(WebhookEventInterface $event, string $name, array $payload): void
+    protected static function assertWebhookEvent(WebhookEventInterface $event, string $name, int $reviewId, array $payload): void
     {
         static::assertSame($name, $event->getName());
+        static::assertSame($reviewId, $event->getReviewId());
         static::assertSame($payload, $event->getPayload());
     }
 }
