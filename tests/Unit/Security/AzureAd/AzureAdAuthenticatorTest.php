@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Security\AzureAd\LoginSuccess;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use JsonException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -93,6 +94,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
 
     /**
      * @covers ::onAuthenticationSuccess
+     * @throws JsonException
      */
     public function testOnAuthenticationSuccess(): void
     {
@@ -100,6 +102,22 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $this->urlGenerator->expects(self::once())->method('generate')->with(ProjectsController::class)->willReturn($url);
 
         $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken(), 'main');
+        $expect = new RedirectResponse($url);
+
+        static::assertEquals($expect, $result);
+    }
+
+    /**
+     * @covers ::onAuthenticationSuccess
+     * @throws JsonException
+     */
+    public function testOnAuthenticationSuccessWithNextUrl(): void
+    {
+        $request = new Request(['state' => '{"next":"https://foo/bar/"}']);
+        $url     = 'https://foo/bar/';
+        $this->urlGenerator->expects(self::never())->method('generate');
+
+        $result = $this->authenticator->onAuthenticationSuccess($request, new TestBrowserToken(), 'main');
         $expect = new RedirectResponse($url);
 
         static::assertEquals($expect, $result);
