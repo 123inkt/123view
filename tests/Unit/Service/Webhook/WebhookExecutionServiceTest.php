@@ -33,6 +33,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
 
     /**
      * @covers ::execute
+     * @covers ::tryExecute
      */
     public function testExecuteSuccessfulWithoutRetry(): void
     {
