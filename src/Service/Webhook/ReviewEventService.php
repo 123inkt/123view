@@ -78,7 +78,7 @@ class ReviewEventService
     /**
      * @param Revision[] $detachedRevisions
      */
-    public function detachRevisions(CodeReview $review, array $detachedRevisions): void
+    public function revisionsDetached(CodeReview $review, array $detachedRevisions): void
     {
         foreach ($detachedRevisions as $revision) {
             $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId()));
