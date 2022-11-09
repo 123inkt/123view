@@ -28,6 +28,14 @@ class PHPHighlighterTest extends AbstractTestCase
     /**
      * @covers ::highlight
      */
+    public function testHighlightSkipEmptyString(): void
+    {
+        static::assertSame('', $this->highlighter->highlight('', "{{", "}}"));
+    }
+
+    /**
+     * @covers ::highlight
+     */
     public function testHighlightFunction(): void
     {
         $code = 'function test(bool $value = true) {';
