@@ -7,6 +7,7 @@ use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\LineReference;
+use DR\GitCommitNotification\Entity\Review\NotificationStatus;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
@@ -22,6 +23,23 @@ class CommentTest extends AbstractTestCase
     {
         $config = (new ConstraintConfig())->setExcludedMethods(['setReplies', 'setLineReference']);
         static::assertAccessorPairs(Comment::class, $config);
+    }
+
+    /**
+     * @covers ::setNotificationStatus
+     * @covers ::getNotificationStatus
+     */
+    public function testNotificationStatus(): void
+    {
+        $comment = new Comment();
+
+        $statusA = $comment->getNotificationStatus();
+        $statusB = $comment->getNotificationStatus();
+        static::assertSame($statusA, $statusB);
+
+        $statusC = new NotificationStatus();
+        $comment->setNotificationStatus($statusC);
+        static::assertSame($statusC, $comment->getNotificationStatus());
     }
 
     /**
