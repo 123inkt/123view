@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
+use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Review\LineReference;
@@ -96,8 +97,39 @@ class DiffFinderTest extends AbstractTestCase
     /**
      * @covers ::findLineInBlock
      */
-    public function testFineLineInBlock(): void
+    public function testFineLineInBlockForNewFile(): void
     {
+        $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
+        $line->lineNumberAfter = 100;
+
+        $block        = new DiffBlock();
+        $block->lines = [99 => $line];
+
+        $file                = new DiffFile();
+        $file->filePathAfter = '/path/to/file/foobar.txt';
+
+        static::assertNull($this->finder->findLineInBlock($file, $block, new LineReference('', 99, 0, 99)));
+        static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
+    }
+
+    /**
+     * @covers ::findLineInBlock
+     */
+    public function testFineLineInBlockForLines(): void
+    {
+        $line                   = new DiffLine(DiffLine::STATE_ADDED, []);
+        $line->lineNumberBefore = 100;
+        $line->lineNumberAfter  = 100;
+
+        $block        = new DiffBlock();
+        $block->lines = [99 => $line];
+
+        $file                 = new DiffFile();
+        $file->filePathBefore = '/path/to/file/foobar.txt';
+        $file->filePathAfter  = '/path/to/file/foobar.txt';
+
+        static::assertNull($this->finder->findLineInBlock($file, $block, new LineReference('', 99, 0, 99)));
+        static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
     }
 
     /**
