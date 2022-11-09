@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Review\LineReference;
+use DR\GitCommitNotification\Utility\Assert;
 
 class DiffFinder
 {
@@ -51,10 +52,7 @@ class DiffFinder
                 continue;
             }
 
-            $index = array_search($line, $block->lines, true);
-            if (is_int($index) === false) {
-                return null;
-            }
+            $index = Assert::isInt(array_search($line, $block->lines, true));
 
             $start = max(0, $index - $margin + 1);
             $lines = array_slice($block->lines, $start, $margin * 2);

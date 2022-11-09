@@ -43,6 +43,18 @@ class Assert
     }
 
     /**
+     * Assert value is int
+     */
+    public static function isInt(mixed $value): int
+    {
+        if (is_int($value) === false) {
+            throw new RuntimeException('Expecting value to be an int');
+        }
+
+        return $value;
+    }
+
+    /**
      * Assert value is a string
      */
     public static function isString(mixed $value): string

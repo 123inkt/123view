@@ -56,6 +56,49 @@ class DiffFinderTest extends AbstractTestCase
      */
     public function testFindLinesAround(): void
     {
+        $lineA                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineA->lineNumberBefore = 100;
+        $lineA->lineNumberAfter  = 100;
+
+        $lineB                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineB->lineNumberBefore = 101;
+        $lineB->lineNumberAfter  = 101;
+
+        $lineC                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineC->lineNumberBefore = 102;
+        $lineC->lineNumberAfter  = 102;
+
+        $lineD                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineD->lineNumberBefore = 103;
+        $lineD->lineNumberAfter  = 103;
+
+        $block        = new DiffBlock();
+        $block->lines = [$lineA, $lineB, $lineC, $lineD];
+
+        $file                 = new DiffFile();
+        $file->filePathBefore = '/path/to/file/foobar.txt';
+        $file->filePathAfter  = '/path/to/file/foobar.txt';
+        $file->addBlock($block);
+
+        // match line 100 => expect before: 100, after: 101
+        static::assertSame(
+            ['before' => [$lineA], 'after' => [$lineB]],
+            $this->finder->findLinesAround($file, new LineReference('', 100, 0, 100), 1)
+        );
+
+        // match line 101 => expect before:  101, after: 102
+        static::assertSame(
+            ['before' => [$lineB], 'after' => [$lineC]],
+            $this->finder->findLinesAround($file, new LineReference('', 101, 0, 101), 1)
+        );
+
+        // match line 101 => expect before:  101, after: 102, margin 2
+        static::assertSame(
+            ['before' => [$lineA, $lineB], 'after' => [$lineC, $lineD]],
+            $this->finder->findLinesAround($file, new LineReference('', 101, 0, 101), 2)
+        );
+
+        static::assertNull($this->finder->findLinesAround($file, new LineReference('', 105, 0, 105), 1));
     }
 
     /**
