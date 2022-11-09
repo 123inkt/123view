@@ -15,7 +15,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\CodeReviewerService
- * @covers ::__construct
  */
 class CodeReviewerServiceTest extends AbstractTestCase
 {
