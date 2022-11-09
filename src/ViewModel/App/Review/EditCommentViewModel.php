@@ -6,6 +6,9 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use Symfony\Component\Form\FormView;
 
+/**
+ * @codeCoverageIgnore
+ */
 class EditCommentViewModel
 {
     public function __construct(public readonly FormView $form, public readonly Comment $comment)
