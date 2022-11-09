@@ -19,6 +19,6 @@ class CommentResolvedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(new CommentResolved(5, 6, 7), 'comment-resolved', 5, ['reviewId' => 5]);
+        static::assertWebhookEvent(new CommentResolved(5, 6, 7), 'comment-resolved', 5, ['comment-id' => 6, 'resolved-by-user-id' => 7]);
     }
 }
