@@ -29,6 +29,7 @@ class GitResetCommandBuilderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::hard
      * @covers ::build
      */
     public function testBuild(): void
@@ -37,6 +38,7 @@ class GitResetCommandBuilderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::hard
      * @covers ::__toString
      */
     public function testToString(): void
