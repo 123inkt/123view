@@ -6,9 +6,11 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
@@ -29,24 +31,26 @@ use PHPUnit\Framework\MockObject\MockObject;
 class GitLogServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
+    private GitCommandBuilderFactory&MockObject      $commandBuilderFactory;
     private GitLogCommandFactory&MockObject          $commandFactory;
+    private FormatPatternFactory&MockObject          $patternFactory;
     private GitLogParser&MockObject                  $logParser;
     private GitLogService                            $logFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
-        $commandBuilderFactory   = $this->createMock(GitCommandBuilderFactory::class);
-        $this->commandFactory    = $this->createMock(GitLogCommandFactory::class);
-        $patternFactory          = $this->createMock(FormatPatternFactory::class);
-        $this->logParser         = $this->createMock(GitLogParser::class);
-        $this->logFactory        = new GitLogService(
+        $this->repositoryService     = $this->createMock(CacheableGitRepositoryService::class);
+        $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
+        $this->commandFactory        = $this->createMock(GitLogCommandFactory::class);
+        $this->patternFactory        = $this->createMock(FormatPatternFactory::class);
+        $this->logParser             = $this->createMock(GitLogParser::class);
+        $this->logFactory            = new GitLogService(
             $this->repositoryService,
-            $commandBuilderFactory,
+            $this->commandBuilderFactory,
             new MockGitRepositoryLockManager(),
             $this->commandFactory,
-            $patternFactory,
+            $this->patternFactory,
             $this->logParser
         );
     }
@@ -77,5 +81,38 @@ class GitLogServiceTest extends AbstractTestCase
         // execute test
         $actual = $this->logFactory->getCommits($config);
         static::assertSame(array_reverse($commits), $actual);
+    }
+
+    /**
+     * @covers ::getCommitsSince
+     * @throws Exception
+     */
+    public function testGetCommitsSince(): void
+    {
+        $limit      = 5;
+        $commits    = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
+        $repository = new Repository();
+        $repository->setUrl('https://example.com');
+
+        $revision = new Revision();
+        $revision->setCreateTimestamp(12345678);
+
+        $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
+        $gitRepository = $this->createMock(GitRepository::class);
+
+        $this->commandBuilderFactory->expects(self::once())->method('createLog')->willReturn($logBuilder);
+        $this->patternFactory->expects(self::once())->method('createPattern')->willReturn('pattern');
+        $logBuilder->expects(self::once())->method('noMerges')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('remotes')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('reverse')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('dateOrder')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('format')->with('pattern')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('since')->willReturnSelf();
+
+        $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn('output');
+        $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($gitRepository);
+        $this->logParser->expects(static::once())->method('parse')->with($repository, 'output', $limit)->willReturn($commits);
+
+        $this->logFactory->getCommitsSince($repository, $revision, $limit);
     }
 }
