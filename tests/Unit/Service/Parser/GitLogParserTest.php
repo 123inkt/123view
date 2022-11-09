@@ -113,6 +113,29 @@ class GitLogParserTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::parse
+     * @throws Exception
+     */
+    public function testParseMultiCommitWithLimit(): void
+    {
+        // commit
+        $commitLog = FormatPatternFactory::COMMIT_DELIMITER;
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitA-part%d', 8));
+        $commitLog .= FormatPatternFactory::COMMIT_DELIMITER;
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitB-part%d', 8));
+
+        $commit = $this->createCommit();
+
+        // prepare mocks
+        $this->diffParser->expects(static::once())->method('parse')->with('commitA-part8')->willReturn([]);
+        $this->hydrator->expects(static::once())->method('hydrate')->willReturn($commit);
+
+        // test it
+        $commits = $this->parser->parse(new Repository(), $commitLog, 1);
+        static::assertSame([$commit], $commits);
+    }
+
+    /**
      * @return string[]
      */
     private static function generateData(string $format, int $count): array
