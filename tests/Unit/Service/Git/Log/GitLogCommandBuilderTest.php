@@ -79,6 +79,10 @@ class GitLogCommandBuilderTest extends AbstractTestCase
      * @covers ::since
      * @covers ::until
      * @covers ::noMerges
+     * @covers ::reverse
+     * @covers ::dateOrder
+     * @covers ::maxCount
+     * @covers ::hashRange
      * @covers ::build
      * @throws Exception
      */
@@ -94,6 +98,10 @@ class GitLogCommandBuilderTest extends AbstractTestCase
             ->since(new DateTimeImmutable('2021-10-18 21:05:00', new DateTimeZone('Europe/Amsterdam')))
             ->until(new DateTimeImmutable('2021-10-18 22:05:00', new DateTimeZone('Europe/Amsterdam')))
             ->noMerges()
+            ->reverse()
+            ->dateOrder()
+            ->maxCount(5)
+            ->hashRange('fromHash', 'toHash')
             ->build();
 
         static::assertSame(
@@ -109,6 +117,10 @@ class GitLogCommandBuilderTest extends AbstractTestCase
                     '--since="2021-10-18T21:05:00+02:00"',
                     '--until="2021-10-18T22:05:00+02:00"',
                     '--no-merges',
+                    '--reverse',
+                    '--date-order',
+                    '--max-count=5',
+                    'fromHash..toHash'
                 ]
             ),
             $actual
