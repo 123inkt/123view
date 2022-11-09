@@ -14,6 +14,7 @@ class ReviewerRemovedTest extends AbstractWebhookEventTestCase
     /**
      * @covers ::__construct
      * @covers ::getName
+     * @covers ::getReviewId
      * @covers ::getPayload
      */
     public function testAccessors(): void
