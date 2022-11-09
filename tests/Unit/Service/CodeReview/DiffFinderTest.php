@@ -92,6 +92,18 @@ class DiffFinderTest extends AbstractTestCase
      */
     public function testFindLineInFile(): void
     {
+        $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
+        $line->lineNumberAfter = 100;
+
+        $block        = new DiffBlock();
+        $block->lines = [99 => $line];
+
+        $file = new DiffFile();
+        $file->addBlock($block);
+        $file->filePathAfter = '/path/to/file/foobar.txt';
+
+        static::assertNull($this->finder->findLineInFile($file, new LineReference('', 99, 0, 99)));
+        static::assertSame($line, $this->finder->findLineInFile($file, new LineReference('', 100, 0, 100)));
     }
 
     /**
