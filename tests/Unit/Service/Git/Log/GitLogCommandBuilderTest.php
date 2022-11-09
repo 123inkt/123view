@@ -128,6 +128,14 @@ class GitLogCommandBuilderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::command
+     */
+    public function testCommand(): void
+    {
+        static::assertSame('log', $this->builder->command());
+    }
+
+    /**
      * @covers ::__toString
      */
     public function testToString(): void
