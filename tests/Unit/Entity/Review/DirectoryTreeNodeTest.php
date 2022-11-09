@@ -90,9 +90,32 @@ class DirectoryTreeNodeTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::sort
+     */
+    public function testSort(): void
+    {
+        $objA           = new stdClass();
+        $objA->fileName = 'example.txt';
+        $objB           = new stdClass();
+        $objB->fileName = 'example.json';
+
+        $node = new DirectoryTreeNode('');
+        $node->addNode(['foo', 'example.txt'], $objA);
+        $node->addNode(['foo', 'example.json'], $objB);
+
+        $node->sort(static fn(stdClass $left, stdClass $right) => strcmp($left->fileName, $right->fileName));
+
+        $expected = new DirectoryTreeNode('');
+        $expected->addNode(['foo', 'example.json'], $objB);
+        $expected->addNode(['foo', 'example.txt'], $objA);
+
+        static::assertEquals($expected, $node);
+    }
+
+    /**
      * @covers ::addNode
      */
-    public function addNodeEmptyPathIsDisallowed(): void
+    public function testAddNodeEmptyPathIsDisallowed(): void
     {
         $this->expectException(LogicException::class);
         (new DirectoryTreeNode(''))->addNode([], new stdClass());
