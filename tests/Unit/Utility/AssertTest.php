@@ -11,7 +11,7 @@ use RuntimeException;
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Utility\Assert
  */
-class TypeTest extends AbstractTestCase
+class AssertTest extends AbstractTestCase
 {
     /**
      * @covers ::notNull
@@ -49,6 +49,24 @@ class TypeTest extends AbstractTestCase
     {
         $rules = [new Rule()];
         static::assertSame($rules, Assert::isArray($rules));
+    }
+
+    /**
+     * @covers ::isArray
+     */
+    public function testIsInt(): void
+    {
+        static::assertSame(5, Assert::isInt(5));
+    }
+
+    /**
+     * @covers ::isString
+     */
+    public function testIsIntFailure(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be an int');
+        Assert::isInt('string');
     }
 
     /**
