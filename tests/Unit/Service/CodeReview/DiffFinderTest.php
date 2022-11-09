@@ -81,6 +81,7 @@ class DiffFinderTest extends AbstractTestCase
 
         static::assertSame($lineA, $this->finder->findLineInLines($lines, new LineReference('', 100, 0, 100)));
         static::assertSame($lineB, $this->finder->findLineInLines($lines, new LineReference('', 100, 1, 101)));
+        static::assertSame($lineA, $this->finder->findLineInLines($lines, new LineReference('', 100, 4, 100)));
         static::assertSame($lineC, $this->finder->findLineInLines($lines, new LineReference('', 101, 1, 102)));
         static::assertNull($this->finder->findLineInLines($lines, new LineReference('', 103, 0, 103)));
     }
