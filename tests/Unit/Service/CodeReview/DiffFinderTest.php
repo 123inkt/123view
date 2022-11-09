@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
@@ -60,6 +62,27 @@ class DiffFinderTest extends AbstractTestCase
      */
     public function testFindLineInLines(): void
     {
+        $lineA                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineA->lineNumberBefore = 100;
+        $lineA->lineNumberAfter  = 100;
+
+        $lineB                  = new DiffLine(DiffLine::STATE_ADDED, []);
+        $lineB->lineNumberAfter = 101;
+
+        $lineC                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineC->lineNumberBefore = 101;
+        $lineC->lineNumberAfter  = 102;
+
+        $lineD                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineD->lineNumberBefore = 102;
+        $lineD->lineNumberAfter  = 103;
+
+        $lines = [$lineA, $lineB, $lineC, $lineD];
+
+        static::assertSame($lineA, $this->finder->findLineInLines($lines, new LineReference('', 100, 0, 100)));
+        static::assertSame($lineB, $this->finder->findLineInLines($lines, new LineReference('', 100, 1, 101)));
+        static::assertSame($lineC, $this->finder->findLineInLines($lines, new LineReference('', 101, 1, 102)));
+        static::assertNull($this->finder->findLineInLines($lines, new LineReference('', 103, 0, 103)));
     }
 
     /**
@@ -70,7 +93,7 @@ class DiffFinderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fineLineInBlock
+     * @covers ::findLineInBlock
      */
     public function testFineLineInBlock(): void
     {

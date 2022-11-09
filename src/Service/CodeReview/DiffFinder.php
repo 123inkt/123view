@@ -46,7 +46,7 @@ class DiffFinder
     public function findLinesAround(DiffFile $file, LineReference $lineReference, int $margin): ?array
     {
         foreach ($file->getBlocks() as $block) {
-            $line = $this->fineLineInBlock($file, $block, $lineReference);
+            $line = $this->findLineInBlock($file, $block, $lineReference);
             if ($line === null) {
                 continue;
             }
@@ -71,7 +71,7 @@ class DiffFinder
     public function findLineInFile(DiffFile $file, LineReference $lineReference): ?DiffLine
     {
         foreach ($file->getBlocks() as $block) {
-            $line = $this->fineLineInBlock($file, $block, $lineReference);
+            $line = $this->findLineInBlock($file, $block, $lineReference);
             if ($line !== null) {
                 return $line;
             }
@@ -80,7 +80,7 @@ class DiffFinder
         return null;
     }
 
-    public function fineLineInBlock(DiffFile $file, DiffBlock $block, LineReference $lineReference): ?DiffLine
+    public function findLineInBlock(DiffFile $file, DiffBlock $block, LineReference $lineReference): ?DiffLine
     {
         if ($file->isAdded()) {
             return $this->findLineInNewFile($block->lines, $lineReference);
