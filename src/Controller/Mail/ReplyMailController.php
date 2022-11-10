@@ -15,6 +15,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ReplyMailController extends AbstractController
 {
     public function __construct(private readonly MailCommentViewModelProvider $viewModelProvider)

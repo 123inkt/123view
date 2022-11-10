@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ */
 class NotificationRuleMailController
 {
     public function __construct(private readonly RuleProcessor $ruleProcessor)
