@@ -55,7 +55,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param array<string, string> $options
+     * @param array<string, string|object> $options
      */
     public function expectCreateForm(string $type, mixed $data = null, array $options = []): FormAssertion
     {
@@ -96,6 +96,26 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         $this->container->set('router', $router);
 
         return $router->expects(self::once())->method('generate')->with($route, $parameters, $referenceType);
+    }
+
+    /**
+     * @param array<string, string> $parameters
+     */
+    public function expectRedirect(string $route, array $parameters = [], string $redirectTo = 'redirect'): void
+    {
+        if ($this->container->has('request_stack') === false) {
+            $requestStack = new RequestStack();
+            $this->container->set('request_stack', $requestStack);
+        } else {
+            $requestStack = $this->container->get('request_stack');
+        }
+
+        if ($requestStack->getCurrentRequest() === null) {
+            $request = new Request();
+            $requestStack->push($request);
+        }
+
+        $this->expectGenerateUrl($route, $parameters)->willReturn($redirectTo);
     }
 
     /**

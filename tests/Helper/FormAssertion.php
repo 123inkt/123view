@@ -39,6 +39,13 @@ class FormAssertion
         return $this;
     }
 
+    public function getDataWillReturn(mixed $data): self
+    {
+        $this->form->expects(atLeastOnce())->method('getData')->willReturn($data);
+
+        return $this;
+    }
+
     public function createViewWillReturn(FormView $formView): void
     {
         $this->form->expects(atLeastOnce())->method('createView')->willReturn($formView);
