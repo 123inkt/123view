@@ -48,9 +48,11 @@ class WebhookExecutionService implements LoggerAwareInterface
     private function tryExecute(Webhook $webhook, WebhookActivity $activity, WebhookEventInterface $event): void
     {
         $client = $this->httpClient;
+        // @codeCoverageIgnoreStart
         if ($webhook->getRetries() > 0) {
             $client = new RetryableHttpClient($this->httpClient, maxRetries: $webhook->getRetries(), logger: $this->logger);
         }
+        // @codeCoverageIgnoreEnd
 
         // setup request body
         $requestBody = ['name' => $event->getName(), 'payload' => $event->getPayload()];

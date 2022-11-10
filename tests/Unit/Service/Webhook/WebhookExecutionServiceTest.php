@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
 use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -69,5 +70,29 @@ class WebhookExecutionServiceTest extends AbstractTestCase
             ->willReturn($response);
 
         $this->service->execute($webhook, $event);
+    }
+
+    /**
+     * @covers ::execute
+     * @covers ::tryExecute
+     */
+    public function testExecuteFailure(): void
+    {
+        $event = $this->createMock(WebhookEventInterface::class);
+        $event->method('getName')->willReturn('name');
+        $event->method('getPayload')->willReturn(['payload']);
+
+        $webhook = new Webhook();
+        $webhook->setUrl('url');
+        $webhook->setRetries(0);
+        $webhook->setHeaders(['headers' => 'headers']);
+        $webhook->setVerifySsl(true);
+
+        $this->httpClient->expects(self::once())
+            ->method('request')
+            ->willThrowException($this->createMock(TransportExceptionInterface::class));
+
+        $activity = $this->service->execute($webhook, $event);
+        static::assertSame(500, $activity->getStatusCode());
     }
 }
