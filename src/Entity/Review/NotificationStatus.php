@@ -36,7 +36,7 @@ class NotificationStatus
      */
     public function removeStatus(int $flag): self
     {
-        $this->status |= $flag;
+        $this->status ^= $flag;
 
         return $this;
     }
