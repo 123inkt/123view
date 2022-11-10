@@ -5,8 +5,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
     <body class="mailBody">
+        <div class="revisions">
+            New revision(s) by {{ viewModel.authors|join(', ') }}.<br><br>
+        </div>
+
     {%- for commit in viewModel.commits -%}
         <div class="revisions">
+            {%- if commit.review != null -%}
+                <a class="subjectLine"
+                   href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: commit.review.id}) }}"
+                >CR-{{ commit.review.projectId }}</a>
+            {%- endif %}
+
             New revision{% if commit.commitHashes|length > 1 %}s{% endif %} by {{ commit.author.name }} in branch
 
             {# branch name -#}
@@ -14,12 +24,6 @@
 
             {#- repository name -#}
             <span class="repositoryName"> {{ commit.repositoryName }}</span>.
-
-            {%- if commit.review != null -%}
-                <a class="subjectLine"
-                   href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: commit.review.id}) }}"
-                >CR-{{ commit.review.projectId }}</a>
-            {%- endif -%}
 
             {#- commit hashes, show max 5 -#}
             <code class="commitHash">

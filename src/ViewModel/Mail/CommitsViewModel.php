@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\ViewModel\Mail;
 
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Utility\Arrays;
 
 class CommitsViewModel
 {
@@ -24,6 +25,19 @@ class CommitsViewModel
     public function getTheme(): string
     {
         return $this->theme;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAuthors(): array
+    {
+        $authors = [];
+        foreach ($this->commits as $commit) {
+            $authors[] = $commit->author->name;
+        }
+
+        return Arrays::unique($authors);
     }
 
     /**
