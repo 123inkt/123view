@@ -12,9 +12,6 @@ use DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel;
  */
 class ProjectsViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getRepositories
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(ProjectsViewModel::class);
