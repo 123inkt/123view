@@ -35,6 +35,8 @@ return static function (MonologConfig $monolog) {
             ->level('error')
             ->formatter('monolog.formatter.html')
             ->contentType('text/html');
+
+        $monolog->handler('main')->excludedHttpCode()->code(403)->code(404);
     }
 
     $monolog->handler('console')
