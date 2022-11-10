@@ -7,6 +7,7 @@ use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Entity\User\UserSetting;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
@@ -52,6 +53,18 @@ class UserTest extends AbstractTestCase
         $user->setEmail('email');
         static::assertSame('email', $user->getUserIdentifier());
         static::assertSame(['ROLE_USER'], $user->getRoles());
+    }
+
+    /**
+     * @covers ::setSetting
+     * @covers ::getSetting
+     */
+    public function testGetSetting(): void
+    {
+        $setting = new UserSetting();
+        $user    = new User();
+        $user->setSetting($setting);
+        static::assertSame($setting, $user->getSetting());
     }
 
     /**
