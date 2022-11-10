@@ -52,7 +52,7 @@ class AssertTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::isArray
+     * @covers ::isInt
      */
     public function testIsInt(): void
     {
