@@ -12,6 +12,7 @@ use DR\GitCommitNotification\Twig\Highlight\PHPHighlighter;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\Highlight\PHPHighlighter
+ * @covers ::__construct
  */
 class PHPHighlighterTest extends AbstractTestCase
 {
