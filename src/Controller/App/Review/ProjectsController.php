@@ -25,11 +25,12 @@ class ProjectsController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function __invoke(): array
     {
-        $repositories = $this->repositoryRepository->findBy(['active' => 1], ['name' => 'ASC']);
+        $favorites    = $this->repositoryRepository->findBy(['active' => 1, 'favorite' => 1], ['name' => 'ASC']);
+        $repositories = $this->repositoryRepository->findBy(['active' => 1, 'favorite' => 0], ['name' => 'ASC']);
 
         return [
             'page_title'    => $this->translator->trans('projects'),
-            'projectsModel' => new ProjectsViewModel($repositories)
+            'projectsModel' => new ProjectsViewModel($favorites, $repositories)
         ];
     }
 }

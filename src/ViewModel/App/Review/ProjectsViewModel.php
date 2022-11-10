@@ -8,17 +8,10 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 class ProjectsViewModel
 {
     /**
+     * @param Repository[] $favoriteRepositories
      * @param Repository[] $repositories
      */
-    public function __construct(private readonly array $repositories)
+    public function __construct(public readonly array $favoriteRepositories, public readonly array $repositories)
     {
-    }
-
-    /**
-     * @return Repository[]
-     */
-    public function getRepositories(): array
-    {
-        return $this->repositories;
     }
 }

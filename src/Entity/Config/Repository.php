@@ -31,6 +31,9 @@ class Repository
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
 
+    #[ORM\Column]
+    private bool $favorite = false;
+
     #[ORM\Column(type: 'smallint', options: ['default' => 900])]
     private ?int $updateRevisionsInterval = 900;
 
@@ -113,6 +116,18 @@ class Repository
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function isFavorite(): bool
+    {
+        return $this->favorite;
+    }
+
+    public function setFavorite(bool $favorite): Repository
+    {
+        $this->favorite = $favorite;
 
         return $this;
     }
