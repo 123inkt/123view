@@ -16,21 +16,11 @@ class ReviewsViewModel
      * @param PaginatorViewModel<CodeReview> $paginator
      */
     public function __construct(
-        private readonly Repository $repository,
+        public readonly Repository $repository,
         private readonly Paginator $reviews,
-        private readonly PaginatorViewModel $paginator,
-        private readonly string $searchQuery
+        public readonly PaginatorViewModel $paginator,
+        public readonly string $searchQuery
     ) {
-    }
-
-    public function getRepository(): Repository
-    {
-        return $this->repository;
-    }
-
-    public function getSearchQuery(): string
-    {
-        return $this->searchQuery;
     }
 
     /**
@@ -54,13 +44,5 @@ class ReviewsViewModel
         }
 
         return array_unique($authors);
-    }
-
-    /**
-     * @return PaginatorViewModel<CodeReview>
-     */
-    public function getPaginator(): PaginatorViewModel
-    {
-        return $this->paginator;
     }
 }

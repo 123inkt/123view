@@ -19,9 +19,6 @@ class ReviewsViewModelTest extends AbstractTestCase
 {
     /**
      * @covers ::getReviews
-     * @covers ::getRepository
-     * @covers ::getPaginator
-     * @covers ::getSearchQuery
      */
     public function testAccessorPairs(): void
     {
@@ -35,8 +32,5 @@ class ReviewsViewModelTest extends AbstractTestCase
         $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery);
 
         static::assertSame($reviews, $viewModel->getReviews());
-        static::assertSame($repository, $viewModel->getRepository());
-        static::assertSame($paginatorVm, $viewModel->getPaginator());
-        static::assertSame('foobar', $viewModel->getSearchQuery());
     }
 }
