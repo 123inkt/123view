@@ -49,11 +49,7 @@ class FileSeenStatusService
 
     public function getFileSeenStatus(CodeReview $review): FileSeenStatusCollection
     {
-        if ($this->user === null) {
-            return new FileSeenStatusCollection();
-        }
-
-        $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => (int)$this->user->getId()]);
+        $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => (int)$this->user?->getId()]);
 
         return new FileSeenStatusCollection($files);
     }
