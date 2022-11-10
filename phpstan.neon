@@ -7,3 +7,5 @@ parameters:
   paths:
     - src
     - tests
+  exclude:
+    - config
