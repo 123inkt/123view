@@ -32,6 +32,15 @@ class ArraysTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::firstOrNull
+     */
+    public function testFirstOrNull(): void
+    {
+        static::assertSame('foo', Arrays::firstOrNull(['foo', 'bar']));
+        static::assertNull(Arrays::firstOrNull([]));
+    }
+
+    /**
      * @covers ::mapAssoc
      */
     public function testMapAssoc(): void

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Model\Review;
 
+use DR\GitCommitNotification\Utility\Arrays;
 use LogicException;
 
 /**
@@ -48,6 +49,25 @@ class DirectoryTreeNode
     public function getDirectories(): array
     {
         return $this->directories;
+    }
+
+    /**
+     * @return T|null
+     */
+    public function getFirstFileInTree(): ?object
+    {
+        if (count($this->directories) === 0) {
+            return Arrays::firstOrNull($this->files);
+        }
+
+        foreach ($this->directories as $directory) {
+            $result = $directory->getFirstFileInTree();
+            if ($result !== null) {
+                return $result;
+            }
+        }
+
+        return null;
     }
 
     /**

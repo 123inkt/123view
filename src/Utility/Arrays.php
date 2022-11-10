@@ -27,6 +27,20 @@ class Arrays
     /**
      * @template T
      *
+     * @param T[] $items
+     *
+     * @return T
+     */
+    public static function firstOrNull(array $items): mixed
+    {
+        $result = reset($items);
+
+        return $result === false ? null : $result;
+    }
+
+    /**
+     * @template T
+     *
      * @param T[]              $items
      * @param callable(T):bool $callback
      *
