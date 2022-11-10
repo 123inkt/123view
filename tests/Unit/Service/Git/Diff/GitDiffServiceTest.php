@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff;
 
+use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
+use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
@@ -84,5 +88,56 @@ class GitDiffServiceTest extends AbstractTestCase
         $this->repositoryService->expects(static::never())->method('getRepository');
 
         $this->diffService->getBundledDiff($rule, $commit);
+    }
+
+    /**
+     * @covers ::getDiffFromRevision
+     * @throws Exception
+     */
+    public function testGetDiffFromRevision(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl('http://foobar.com');
+        $revision = new Revision();
+        $revision->setRepository($repository);
+        $revision->setCommitHash('commit-hash');
+
+        $builder = $this->createMock(GitShowCommandBuilder::class);
+        $builder->expects(self::once())
+            ->method('startPoint')
+            ->with('commit-hash')
+            ->willReturnSelf();
+        $this->commandBuilderFactory->expects(self::once())->method('createShow')->willReturn($builder);
+
+        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('foobar');
+        $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
+        $this->parser->expects(self::once())->method('parse')->with('foobar');
+
+        $this->diffService->getDiffFromRevision($revision);
+    }
+
+    /**
+     * @covers ::getBundledDiffFromRevisions
+     * @throws Exception
+     */
+    public function testGetBundledDiffFromRevisions(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl('http://foobar.com');
+
+        $builder = $this->createMock(GitDiffCommandBuilder::class);
+        $builder->expects(self::once())->method('hash')->with('HEAD')->willReturnSelf();
+        $builder->expects(self::once())->method('diffAlgorithm')->with(DiffAlgorithmType::MYERS)->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreCrAtEol')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $this->commandBuilderFactory->expects(self::once())->method('createDiff')->willReturn($builder);
+
+        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('foobar');
+        $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
+        $this->parser->expects(self::once())->method('parse')->with('foobar');
+
+        $this->diffService->getBundledDiffFromRevisions($repository);
     }
 }
