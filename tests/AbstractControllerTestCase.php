@@ -101,7 +101,15 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
     /**
      * @param array<string, string> $parameters
      */
-    public function expectRedirect(string $route, array $parameters = [], string $redirectTo = 'redirect'): void
+    public function expectRedirectToRoute(string $route, array $parameters = []): InvocationMocker
+    {
+        return $this->expectGenerateUrl($route, $parameters);
+    }
+
+    /**
+     * @param array<string, string> $parameters
+     */
+    public function expectRefererRedirect(string $route, array $parameters = [], string $redirectTo = 'redirect'): void
     {
         if ($this->container->has('request_stack') === false) {
             $requestStack = new RequestStack();

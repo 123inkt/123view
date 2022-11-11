@@ -55,7 +55,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
-        $this->expectRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(RedirectResponse::class, $response);
@@ -96,7 +96,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
                 }),
                 true
             );
-        $this->expectRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
 
         $this->bus->expects(self::once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
 
