@@ -33,6 +33,8 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
         $review = $this->reviewRepository->find($event->getReviewId());
         if ($review === null) {
             $this->logger?->info('DiffFileCacheMessageHandler: no review available for id: {review}', ['review' => $event->getReviewId()]);
+
+            return;
         }
 
         $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());

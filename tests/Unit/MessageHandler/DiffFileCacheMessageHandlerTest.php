@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
 
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
@@ -11,6 +14,7 @@ use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Throwable;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\DiffFileCacheMessageHandler
@@ -32,9 +36,35 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
 
     /**
      * @covers ::handleEvent
+     * @throws Throwable
+     */
+    public function testHandleEventMissingReview(): void
+    {
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->diffService->expects(self::never())->method('getDiffFiles');
+
+        $this->messageHandler->handleEvent(new ReviewCreated(123));
+    }
+
+    /**
+     * @covers ::handleEvent
+     * @throws Throwable
      */
     public function testHandleEvent(): void
     {
+        $revision   = new Revision();
+        $repository = new Repository();
+        $repository->setId(456);
+
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setRepository($repository);
+        $review->getRevisions()->add($revision);
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision]);
+
+        $this->messageHandler->handleEvent(new ReviewCreated(123));
     }
 
     /**
