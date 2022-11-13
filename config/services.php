@@ -56,14 +56,15 @@ return static function (ContainerConfigurator $container): void {
 
     // auto-wire commands, services and twig-extensions
     $services->load('DR\GitCommitNotification\Command\\', __DIR__ . '/../src/Command');
-    $services->load('DR\GitCommitNotification\Form\\', __DIR__ . '/../src/Form');
     $services->load('DR\GitCommitNotification\EventSubscriber\\', __DIR__ . '/../src/EventSubscriber');
+    $services->load('DR\GitCommitNotification\Form\\', __DIR__ . '/../src/Form');
     $services->load('DR\GitCommitNotification\Service\\', __DIR__ . '/../src/Service')
         ->exclude('../src/Service/Parser/{DiffParser.php,DiffFileParser.php}');
     $services->load('DR\GitCommitNotification\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
     $services->load('DR\GitCommitNotification\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\GitCommitNotification\MessageHandler\\', __DIR__ . '/../src/MessageHandler');
     $services->load('DR\GitCommitNotification\Repository\\', __DIR__ . '/../src/Repository');
+    $services->load('DR\GitCommitNotification\Request\\', __DIR__ . '/../src/Request');
     $services->load('DR\GitCommitNotification\Security\Voter\\', __DIR__ . '/../src/Security/Voter');
     $services->load('DR\GitCommitNotification\ViewModelProvider\\', __DIR__ . '/../src/ViewModelProvider');
 
