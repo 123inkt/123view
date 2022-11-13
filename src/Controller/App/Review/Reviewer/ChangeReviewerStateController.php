@@ -6,15 +6,13 @@ namespace DR\GitCommitNotification\Controller\App\Review\Reviewer;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Request\Review\ChangeReviewerStateRequest;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ChangeReviewerStateController extends AbstractController
@@ -29,13 +27,9 @@ class ChangeReviewerStateController extends AbstractController
     #[Route('app/reviews/{id<\d+>}/reviewer/state', name: self::class, methods: 'POST')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): RedirectResponse
+    public function __invoke(ChangeReviewerStateRequest $request, CodeReview $review): RedirectResponse
     {
-        $state = $request->request->get('state');
-        if (in_array($state, CodeReviewerStateType::VALUES, true) === false) {
-            throw new BadRequestHttpException('Invalid state value: ' . $state);
-        }
-
+        $state         = $request->getState();
         $reviewState   = (string)$review->getState();
         $reviewerState = $review->getReviewersState();
         $reviewerAdded = false;
