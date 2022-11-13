@@ -41,6 +41,7 @@ class AddCommentControllerTest extends AbstractControllerTestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::refererRedirect
      */
     public function testInvokeFormNotSubmitted(): void
     {
@@ -60,6 +61,7 @@ class AddCommentControllerTest extends AbstractControllerTestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::refererRedirect
      */
     public function testInvokeFormSubmitted(): void
     {

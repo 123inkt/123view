@@ -11,9 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @codeCoverageIgnore
- */
 abstract class AbstractController extends SymfonyAbstractController
 {
     /**
@@ -48,9 +45,12 @@ abstract class AbstractController extends SymfonyAbstractController
     public function getUser(): User
     {
         $user = parent::getUser();
+        // @codeCoverageIgnoreStart
         if ($user === null || $user instanceof User === false) {
             throw new AccessDeniedException('Access denied');
         }
+
+        // @codeCoverageIgnoreEnd
 
         return $user;
     }

@@ -60,6 +60,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::refererRedirect
      */
     public function testInvokeIsSubmittedWithoutChanges(): void
     {

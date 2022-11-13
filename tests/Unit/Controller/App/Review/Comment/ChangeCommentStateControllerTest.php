@@ -39,6 +39,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::getUser
      */
     public function testInvoke(): void
     {
