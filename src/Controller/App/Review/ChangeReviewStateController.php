@@ -4,15 +4,13 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Request\Review\ChangeReviewStateRequest;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ChangeReviewStateController extends AbstractController
@@ -24,15 +22,10 @@ class ChangeReviewStateController extends AbstractController
     #[Route('app/reviews/{id<\d+>}/state', name: self::class, methods: 'POST')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): RedirectResponse
+    public function __invoke(ChangeReviewStateRequest $request, CodeReview $review): RedirectResponse
     {
-        $state = $request->request->get('state');
-        if (in_array($state, [CodeReviewStateType::OPEN, CodeReviewStateType::CLOSED], true) === false) {
-            throw new BadRequestHttpException('Invalid state value: ' . $state);
-        }
-
         $reviewState = $review->getState();
-        $this->reviewRepository->save($review->setState($state), true);
+        $this->reviewRepository->save($review->setState($request->getState()), true);
 
         $this->eventService->reviewStateChanged($review, (string)$reviewState);
 

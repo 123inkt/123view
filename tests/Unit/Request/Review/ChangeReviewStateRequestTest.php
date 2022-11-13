@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request\Comment;
+namespace DR\GitCommitNotification\Tests\Unit\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
+use DR\GitCommitNotification\Request\Review\ChangeReviewStateRequest;
 use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
 
 /**
- * @extends AbstractRequestTestCase<ChangeCommentStateRequest>
- * @coversDefaultClass \DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest
+ * @extends AbstractRequestTestCase<ChangeReviewStateRequest>
+ * @coversDefaultClass \DR\GitCommitNotification\Request\Review\ChangeReviewStateRequest
  */
-class ChangeCommentStateRequestTest extends AbstractRequestTestCase
+class ChangeReviewStateRequestTest extends AbstractRequestTestCase
 {
     /**
      * @covers ::getState
@@ -32,7 +32,7 @@ class ChangeCommentStateRequestTest extends AbstractRequestTestCase
     {
         $expected = new ValidationRules(
             [
-                'request' => ['state' => 'required|string|in:' . implode(',', CommentStateType::VALUES)]
+                'request' => ['state' => 'required|string|in:' . implode(',', CodeReviewStateType::VALUES)]
             ]
         );
         $this->expectGetValidationRules($expected);
@@ -42,6 +42,6 @@ class ChangeCommentStateRequestTest extends AbstractRequestTestCase
 
     protected static function getClassToTest(): string
     {
-        return ChangeCommentStateRequest::class;
+        return ChangeReviewStateRequest::class;
     }
 }
