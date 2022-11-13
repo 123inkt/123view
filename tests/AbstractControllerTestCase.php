@@ -35,7 +35,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         $this->controller->setContainer($this->container);
     }
 
-    public function expectUser(?User $user): void
+    public function expectGetUser(?User $user): void
     {
         $token = $this->createMock(TokenInterface::class);
         $token->expects(self::atLeastOnce())->method('getUser')->willReturn($user);

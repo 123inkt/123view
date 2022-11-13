@@ -21,7 +21,7 @@ class RulesControllerTest extends AbstractControllerTestCase
     public function testInvokeWithoutUser(): void
     {
         // invoke controller
-        $this->expectUser(null);
+        $this->expectGetUser(null);
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Access denied');
         ($this->controller)();
@@ -36,7 +36,7 @@ class RulesControllerTest extends AbstractControllerTestCase
         $user = new User();
         $user->addRule($rule);
 
-        $this->expectUser($user);
+        $this->expectGetUser($user);
 
         // invoke controller
         $result = ($this->controller)();

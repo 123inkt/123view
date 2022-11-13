@@ -44,7 +44,7 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         $paginator  = $this->createMock(Paginator::class);
         $breadcrumb = new Breadcrumb('label', 'url');
 
-        $this->expectUser($user);
+        $this->expectGetUser($user);
         $this->reviewRepository->expects(self::once())
             ->method('getPaginatorForSearchQuery')
             ->with($user, 123, 5, 'search')

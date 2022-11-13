@@ -11,6 +11,12 @@ use DR\GitCommitNotification\Repository\Asset\AssetRepository;
 class Asset
 {
     public const MAX_DATA_SIZE = 2097152;
+    public const ALLOWED_MIMES = [
+        'image/png',
+        'image/gif',
+        'image/jpeg',
+        'image/jpg'
+    ];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
