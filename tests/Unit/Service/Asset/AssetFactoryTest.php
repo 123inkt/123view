@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Asset\AssetFactory
- * @covers ::__construct
  */
 class AssetFactoryTest extends AbstractTestCase
 {
