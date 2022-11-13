@@ -83,7 +83,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param array<string, string> $parameters
+     * @param array<string, int|string> $parameters
      *
      * @return InvocationMocker<RouterInterface>
      */
@@ -100,6 +100,8 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
 
     /**
      * @param array<string, string> $parameters
+     *
+     * @return InvocationMocker<RouterInterface>
      */
     public function expectRedirectToRoute(string $route, array $parameters = []): InvocationMocker
     {
@@ -107,7 +109,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param array<string, string> $parameters
+     * @param array<string, int|string> $parameters
      */
     public function expectRefererRedirect(string $route, array $parameters = [], string $redirectTo = 'redirect'): void
     {
@@ -115,6 +117,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
             $requestStack = new RequestStack();
             $this->container->set('request_stack', $requestStack);
         } else {
+            /** @var RequestStack $requestStack */
             $requestStack = $this->container->get('request_stack');
         }
 

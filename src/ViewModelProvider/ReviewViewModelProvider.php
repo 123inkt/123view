@@ -79,6 +79,9 @@ class ReviewViewModelProvider
         );
     }
 
+    /**
+     * @param DirectoryTreeNode<DiffFile> $treeNode
+     */
     public function getFileTreeViewModel(CodeReview $review, DirectoryTreeNode $treeNode, ?DiffFile $selectedFile): FileTreeViewModel
     {
         return new FileTreeViewModel(

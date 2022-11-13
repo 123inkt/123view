@@ -29,7 +29,7 @@ class Arrays
      *
      * @param T[] $items
      *
-     * @return T
+     * @return T|null
      */
     public static function firstOrNull(array $items): mixed
     {

@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Asset;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Service\Asset\AssetFactory;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\GitCommitNotification\Utility\Assert;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Asset\AssetFactory
@@ -30,7 +31,7 @@ class AssetFactoryTest extends AbstractTestCase
 
         static::assertSame($user, $asset->getUser());
         static::assertSame('mime-type', $asset->getMimeType());
-        static::assertSame('data', stream_get_contents($asset->getData()));
+        static::assertSame('data', stream_get_contents(Assert::notNull($asset->getData())));
         static::assertEqualsWithDelta(time(), $asset->getCreateTimestamp(), 10);
     }
 }
