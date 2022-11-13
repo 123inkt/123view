@@ -9,11 +9,10 @@ use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Message\Comment\CommentResolved;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,13 +25,10 @@ class ChangeCommentStateController extends AbstractController
     #[Route('app/comments/{id<\d+>}/state', name: self::class, methods: 'POST')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('comment')]
-    public function __invoke(Request $request, Comment $comment): RedirectResponse
+    public function __invoke(ChangeCommentStateRequest $request, Comment $comment): RedirectResponse
     {
         $currentState = $comment->getState();
-        $state        = $request->request->get('state');
-        if (in_array($state, CommentStateType::VALUES, true) === false) {
-            throw new BadRequestHttpException('Invalid state value: ' . $state);
-        }
+        $state        = $request->getState();
 
         $comment->setState($state);
         $this->commentRepository->save($comment, true);
