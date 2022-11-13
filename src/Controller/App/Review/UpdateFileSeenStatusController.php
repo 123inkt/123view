@@ -5,12 +5,12 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Request\Review\FileSeenStatusRequest;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
@@ -29,10 +29,10 @@ class UpdateFileSeenStatusController extends AbstractController
     #[Route('app/reviews/{id<\d+>}/file-seen-status', name: self::class, methods: 'POST')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): Response
+    public function __invoke(FileSeenStatusRequest $request, CodeReview $review): Response
     {
-        $filePath   = $request->request->get('filePath');
-        $seenStatus = (bool)$request->request->getInt('seen');
+        $filePath   = $request->getFilePath();
+        $seenStatus = $request->getSeenStatus();
         $files      = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
 
         // find filepath in files
