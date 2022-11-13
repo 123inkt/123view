@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Asset\GetAssetController
- * @covers ::__construct
  */
 class GetAssetControllerTest extends AbstractTestCase
 {
