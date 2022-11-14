@@ -7,7 +7,7 @@
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     grid-template-columns: 400px auto;
-    grid-template-rows: 90px auto;
+    grid-template-rows: auto 1fr;
     height: calc(100vh - 56px);
 }
 
@@ -23,6 +23,10 @@
 }
 .review-grid-layout .review-grid-header .review-heading {
     height: 36px;
+}
+
+.review--description {
+    font-size: .8rem;
 }
 
 .review-file-tree--directories {
