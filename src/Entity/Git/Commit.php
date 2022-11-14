@@ -65,6 +65,14 @@ class Commit
         return explode("\n", $this->subject)[0] ?? '';
     }
 
+    /**
+     * Get the commit message excluding the first line
+     */
+    public function getCommitMessage(): string
+    {
+        return trim(implode("\n", array_slice(explode("\n", $this->subject), 1)));
+    }
+
     public function getRemoteRef(): ?string
     {
         if ($this->refs === null) {

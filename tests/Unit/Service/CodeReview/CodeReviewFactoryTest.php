@@ -34,12 +34,14 @@ class CodeReviewFactoryTest extends AbstractTestCase
         $repository = new Repository();
         $revision   = new Revision();
         $revision->setTitle('foobar');
+        $revision->setDescription('description');
         $revision->setRepository($repository);
 
         $this->titleNormalizer->expects(self::once())->method('normalize')->with('foobar')->willReturn('foobar');
 
         $review = $this->factory->createFromRevision($revision, 'referenceId');
         static::assertSame('foobar', $review->getTitle());
+        static::assertSame('description', $review->getDescription());
         static::assertSame($repository, $review->getRepository());
         static::assertSame('referenceId', $review->getReferenceId());
     }

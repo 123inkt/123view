@@ -24,7 +24,7 @@ class CommitTest extends AbstractTestCase
         $this->date = new DateTime();
         $refs       = 'refs/remotes/origin/foobar';
         $files      = [new DiffFile()];
-        $subject    = "line1\nline2";
+        $subject    = "line1\nline2\nline3\n\n";
         $repository = $this->createRepository('example', 'http://example.com/my/repository.git');
 
         $this->commit = new Commit($repository, 'parent-hash', 'commit-hash', $author, $this->date, $subject, $refs, $files);
@@ -70,5 +70,13 @@ class CommitTest extends AbstractTestCase
     public function testGetSubjectLine(): void
     {
         static::assertSame('line1', $this->commit->getSubjectLine());
+    }
+
+    /**
+     * @covers ::getCommitMessage
+     */
+    public function testGetCommitMessage(): void
+    {
+        static::assertSame("line2\nline3", $this->commit->getCommitMessage());
     }
 }

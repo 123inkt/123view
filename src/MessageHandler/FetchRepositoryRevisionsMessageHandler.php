@@ -94,7 +94,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
 
             foreach ($commitChunk as $commit) {
                 foreach ($this->revisionFactory->createFromCommit($commit) as $revision) {
-                    // validate revision doesn't already exist in the db, git history doesn't always honor sequential
+                    // validate revision doesn't already exist in the db, git history doesn't always honor sequential order
                     if ($this->revisionRepository->exists($repository, $revision)) {
                         continue;
                     }

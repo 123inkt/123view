@@ -24,6 +24,9 @@ class Revision
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $authorEmail = null;
 
     #[ORM\Column(length: 255)]
@@ -71,6 +74,18 @@ class Revision
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

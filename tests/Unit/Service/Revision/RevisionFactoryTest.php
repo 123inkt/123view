@@ -23,7 +23,7 @@ class RevisionFactoryTest extends AbstractTestCase
         $date       = new DateTime();
         $repository = new Repository();
         $author     = new Author('Sherlock', 'holmes@example.com');
-        $commit     = new Commit($repository, 'parent', 'commit', $author, $date, 'subject', null, []);
+        $commit     = new Commit($repository, 'parent', 'commit', $author, $date, "subject\nmessage", null, []);
 
         $factory   = new RevisionFactory();
         $revisions = $factory->createFromCommit($commit);
@@ -36,6 +36,7 @@ class RevisionFactoryTest extends AbstractTestCase
         static::assertSame('Sherlock', $revision->getAuthorName());
         static::assertSame('holmes@example.com', $revision->getAuthorEmail());
         static::assertSame('subject', $revision->getTitle());
+        static::assertSame('message', $revision->getDescription());
         static::assertSame($date->getTimestamp(), $revision->getCreateTimestamp());
     }
 }
