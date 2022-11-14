@@ -38,7 +38,7 @@ class CommitTest extends AbstractTestCase
         static::assertSame(['commit-hash'], $this->commit->commitHashes);
         static::assertSame('name', $this->commit->author->name);
         static::assertSame($this->date, $this->commit->date);
-        static::assertSame("line1\nline2", $this->commit->subject);
+        static::assertSame("line1\nline2\nline3\n\n", $this->commit->subject);
         static::assertNotEmpty($this->commit->files);
     }
 

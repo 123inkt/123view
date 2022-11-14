@@ -26,8 +26,8 @@ class ReviewViewModelTest extends AbstractTestCase
         $diffFile = new FileDiffViewModel(null);
 
         $model = new ReviewViewModel($review, $diffFile);
-        static::assertSame($review, $model->getReview());
-        static::assertSame($diffFile, $model->getFileDiffViewModel());
+        static::assertSame($review, $model->review);
+        static::assertSame($diffFile, $model->fileDiffViewModel);
     }
 
     /**
