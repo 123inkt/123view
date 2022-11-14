@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Log\GitLogService;
 use DR\GitCommitNotification\Service\Revision\RevisionFactory;
 use Psr\Log\LoggerAwareInterface;
@@ -29,6 +30,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private GitLogService $logService,
+        private GitRepositoryService $gitRepositoryService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private GitRepositoryLockManager $lockManager,
@@ -66,7 +68,13 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         // get commits since last visit
         $commits = $this->lockManager->start(
             $repository,
-            fn() => $this->logService->getCommitsSince($repository, $latestRevision, self::MAX_COMMITS_PER_MESSAGE)
+            function () use ($repository, $latestRevision): array {
+                // fetch new revisions from vcs
+                $this->gitRepositoryService->getRepository((string)$repository->getUrl());
+
+                // find all revisions since latest revision
+                return $this->logService->getCommitsSince($repository, $latestRevision, self::MAX_COMMITS_PER_MESSAGE);
+            }
         );
         if (count($commits) === 0) {
             return;

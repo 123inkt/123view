@@ -21,6 +21,9 @@
 .review-grid-layout .review-grid-code {
     overflow-y: auto;
 }
+.review-grid-layout .review-grid-header .review-heading {
+    height: 36px;
+}
 
 .review-file-tree--directories {
     color: #999999;

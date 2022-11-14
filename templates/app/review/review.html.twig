@@ -6,7 +6,7 @@
 
     <div class="review-grid-layout" data-controller="Review">
         <div class="review-grid-header">
-            <h3 class="mt-2">
+            <h3 class="mt-2 overflow-hidden review-heading" title="{{ review.title }}">
                 <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
                 {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
             </h3>

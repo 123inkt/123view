@@ -15,6 +15,7 @@ use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffService;
@@ -101,6 +102,7 @@ return static function (ContainerConfigurator $container): void {
 
     // custom register cache dir
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
+    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
     $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
 
     // custom register with matching pattern
