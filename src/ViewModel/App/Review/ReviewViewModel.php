@@ -14,13 +14,26 @@ class ReviewViewModel
     public const SIDEBAR_TAB_OVERVIEW  = 'overview';
     public const SIDEBAR_TAB_REVISIONS = 'revisions';
 
-    private string                   $sidebarTabMode    = self::SIDEBAR_TAB_OVERVIEW;
-    private ?FileTreeViewModel       $fileTreeModel     = null;
-    private ?ReviewRevisionViewModel $revisionViewModel = null;
-    private ?FormView                $addReviewerForm   = null;
+    private string                   $sidebarTabMode     = self::SIDEBAR_TAB_OVERVIEW;
+    private ?FileTreeViewModel       $fileTreeModel      = null;
+    private ?ReviewRevisionViewModel $revisionViewModel  = null;
+    private ?FormView                $addReviewerForm    = null;
+    private bool                     $descriptionVisible = true;
 
-    public function __construct(private readonly CodeReview $review, private readonly FileDiffViewModel $fileDiffViewModel)
+    public function __construct(public readonly CodeReview $review, public readonly FileDiffViewModel $fileDiffViewModel)
     {
+    }
+
+    public function isDescriptionVisible(): bool
+    {
+        return $this->descriptionVisible;
+    }
+
+    public function setDescriptionVisible(bool $descriptionVisible): self
+    {
+        $this->descriptionVisible = $descriptionVisible;
+
+        return $this;
     }
 
     public function setSidebarTabMode(string $sidebarTabMode): void
@@ -63,11 +76,6 @@ class ReviewViewModel
         return $this->fileTreeModel;
     }
 
-    public function getFileDiffViewModel(): FileDiffViewModel
-    {
-        return $this->fileDiffViewModel;
-    }
-
     public function getOpenComments(): int
     {
         $count = 0;
@@ -102,10 +110,5 @@ class ReviewViewModel
         }
 
         return null;
-    }
-
-    public function getReview(): CodeReview
-    {
-        return $this->review;
     }
 }

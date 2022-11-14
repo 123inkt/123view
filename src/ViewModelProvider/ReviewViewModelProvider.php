@@ -54,6 +54,7 @@ class ReviewViewModelProvider
             $review,
             $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction)
         );
+        $viewModel->setDescriptionVisible($filePath === null);
 
         $viewModel->setSidebarTabMode($sidebarTab);
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_OVERVIEW) {

@@ -11,7 +11,7 @@
                 {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
             </h3>
 
-            {% if review.description|length > 0 %}
+            {% if reviewModel.descriptionVisible and review.description|length > 0 %}
                 <div class="mb-2 me-2 bg-primary bg-opacity-10 rounded-2 p-2 review--description">
                     {{- review.description|markdown -}}
                 </div>

@@ -44,8 +44,7 @@ class ReviewController extends AbstractController
 
         $viewModel = $this->modelProvider->getViewModel($review, $filePath, $tab, $action);
 
-        $selectedFile = $viewModel->getFileDiffViewModel()->getSelectedFile();
-        $this->fileSeenService->markAsSeen($review, $this->getUser(), $selectedFile);
+        $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->fileDiffViewModel->getSelectedFile());
 
         return [
             'page_title'  => 'CR-' . $review->getProjectId() . ' - ' . ucfirst((string)$review->getRepository()?->getDisplayName()),
