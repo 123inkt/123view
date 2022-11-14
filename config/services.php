@@ -101,9 +101,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
 
     // custom register cache dir
-    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
-    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
-    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.cache_dir%");
+    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
+    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
+    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)
