@@ -11,6 +11,12 @@
                 {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
             </h3>
 
+            {% if review.description|length > 0 %}
+                <div class="bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2">
+                    {{ review.description|markdown }}
+                </div>
+            {% endif %}
+
             {% if review.state == 'open' and (reviewer == null or reviewer.state == 'open') %}
                 <form method="POST"
                       class="d-inline-block"
