@@ -45,12 +45,9 @@ abstract class AbstractController extends SymfonyAbstractController
     public function getUser(): User
     {
         $user = parent::getUser();
-        // @codeCoverageIgnoreStart
         if ($user === null || $user instanceof User === false) {
             throw new AccessDeniedException('Access denied');
         }
-
-        // @codeCoverageIgnoreEnd
 
         return $user;
     }

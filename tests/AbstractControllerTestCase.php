@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests;
 
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\Helper\FormAssertion;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
