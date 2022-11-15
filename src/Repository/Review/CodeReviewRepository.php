@@ -86,7 +86,7 @@ class CodeReviewRepository extends ServiceEntityRepository
                 $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
             }
 
-            if (preg_match('/author:(\w+)/', $searchQuery, $matches) === 1) {
+            if (preg_match('/author:(\S+)/', $searchQuery, $matches) === 1) {
                 // search for current user
                 if ($matches[1] === 'me') {
                     $query->andWhere('rv.authorEmail = :authorEmail');

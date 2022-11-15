@@ -32,7 +32,7 @@ class ReviewsController extends AbstractController
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
     {
-        $searchQuery = trim($request->query->get('search', 'state:open'));
+        $searchQuery = trim($request->query->get('search', 'state:open '));
         $page        = $request->query->getInt('page', 1);
         $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), (int)$repository->getId(), $page, $searchQuery);
 
