@@ -46,7 +46,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getTab
+     * @covers ::getAction
      */
     public function testGetAction(): void
     {
