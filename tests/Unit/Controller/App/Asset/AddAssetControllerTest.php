@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Asset;
 
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Asset\AddAssetController;
 use DR\GitCommitNotification\Controller\App\Asset\GetAssetController;
 use DR\GitCommitNotification\Entity\Asset\Asset;
@@ -12,7 +13,6 @@ use DR\GitCommitNotification\Request\Asset\AddAssetRequest;
 use DR\GitCommitNotification\Service\Asset\AssetFactory;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Asset\AddAssetController

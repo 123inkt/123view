@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Revision;
 
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Revision\RevisionsController;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
@@ -11,7 +12,6 @@ use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use DR\GitCommitNotification\ViewModel\App\Review\RevisionsViewModel;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

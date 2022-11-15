@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Reviewer;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Controller\App\Review\Reviewer\ChangeReviewerStateController;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
@@ -17,7 +18,6 @@ use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\Reviewer\ChangeReviewerStateController

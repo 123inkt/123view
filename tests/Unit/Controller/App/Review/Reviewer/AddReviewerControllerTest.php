@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Reviewer;
 
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Controller\App\Review\Reviewer\AddReviewerController;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
@@ -15,7 +16,6 @@ use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
