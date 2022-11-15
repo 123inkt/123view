@@ -33,7 +33,13 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
         $stack->push($this->request);
         $this->validator         = $this->createMock(ValidatorInterface::class);
         $this->constraintFactory = $this->createMock(RequestConstraintFactory::class);
-        $this->validatedRequest  = new (static::getClassToTest())($stack, $this->validator, $this->constraintFactory);
+
+        $arguments   = $this->getConstructorArguments();
+        $arguments[] = $stack;
+        $arguments[] = $this->validator;
+        $arguments[] = $this->constraintFactory;
+
+        $this->validatedRequest = new (static::getClassToTest())(...$arguments);
     }
 
     protected function expectGetValidationRules(?ValidationRules $rules): void
@@ -57,4 +63,12 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
      * @return class-string<T>
      */
     abstract protected static function getClassToTest(): string;
+
+    /**
+     * @return array<int|string|object>
+     */
+    protected function getConstructorArguments(): array
+    {
+        return [];
+    }
 }
