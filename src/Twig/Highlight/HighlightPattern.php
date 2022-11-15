@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Twig\Highlight;
 
+/**
+ * @codeCoverageIgnore
+ */
 class HighlightPattern
 {
     public const COMMENT = '<span class="diff-file__code-comment">%s</span>';

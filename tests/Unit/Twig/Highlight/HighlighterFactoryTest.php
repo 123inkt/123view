@@ -13,6 +13,7 @@ use DR\GitCommitNotification\Twig\Highlight\XmlHighlighter;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\Highlight\HighlighterFactory
+ * @covers ::__construct
  */
 class HighlighterFactoryTest extends AbstractTestCase
 {
