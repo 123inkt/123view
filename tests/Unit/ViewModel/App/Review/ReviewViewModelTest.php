@@ -13,12 +13,11 @@ use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel
- * @covers ::__construct
  */
 class ReviewViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::getReview
+     * @covers ::__construct
      */
     public function testAccessorPairs(): void
     {

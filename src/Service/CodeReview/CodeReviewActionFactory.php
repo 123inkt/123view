@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CodeReviewActionFactory
 {
+    private const ACTION_ADD_COMMENT  = 'add-comment';
+    private const ACTION_ADD_REPLY    = 'add-reply';
+    private const ACTION_EDIT_COMMENT = 'edit-comment';
+    private const ACTION_EDIT_REPLY   = 'edit-reply';
+
     public function __construct(private readonly CommentRepository $commentRepository, private readonly CommentReplyRepository $replyRepository)
     {
     }
@@ -28,11 +33,11 @@ class CodeReviewActionFactory
         $value  = (string)$matches[2];
 
         return match ($action) {
-            'add-comment'  => new AddCommentAction(LineReference::fromString($request->query->get('filePath') . ':' . $value)),
-            'add-reply'    => new AddCommentReplyAction($this->commentRepository->find((int)$value)),
-            'edit-comment' => new EditCommentAction($this->commentRepository->find((int)$value)),
-            'edit-reply'   => new EditCommentReplyAction($this->replyRepository->find((int)$value)),
-            default        => null,
+            self::ACTION_ADD_COMMENT  => new AddCommentAction(LineReference::fromString($request->query->get('filePath') . ':' . $value)),
+            self::ACTION_ADD_REPLY    => new AddCommentReplyAction($this->commentRepository->find((int)$value)),
+            self::ACTION_EDIT_COMMENT => new EditCommentAction($this->commentRepository->find((int)$value)),
+            self::ACTION_EDIT_REPLY   => new EditCommentReplyAction($this->replyRepository->find((int)$value)),
+            default                   => null,
         };
     }
 }
