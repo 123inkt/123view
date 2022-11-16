@@ -13,13 +13,8 @@ class FileDiffViewModel
     private ?ReplyCommentViewModel     $replyCommentForm     = null;
     private ?EditCommentReplyViewModel $editReplyCommentForm = null;
 
-    public function __construct(private readonly ?DiffFile $selectedFile)
+    public function __construct(public readonly ?DiffFile $selectedFile)
     {
-    }
-
-    public function getSelectedFile(): ?DiffFile
-    {
-        return $this->selectedFile;
     }
 
     public function setAddCommentForm(AddCommentViewModel $addCommentForm): self

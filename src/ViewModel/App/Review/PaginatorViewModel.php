@@ -7,19 +7,15 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @template T
+ * @codeCoverageIgnore
  */
 class PaginatorViewModel
 {
     /**
      * @param Paginator<T> $paginator
      */
-    public function __construct(private readonly Paginator $paginator, private readonly int $page)
+    public function __construct(private readonly Paginator $paginator, public readonly int $page)
     {
-    }
-
-    public function getPage(): int
-    {
-        return $this->page;
     }
 
     /**

@@ -5,6 +5,9 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ProjectsViewModel
 {
     /**
