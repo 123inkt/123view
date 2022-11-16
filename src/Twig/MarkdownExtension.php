@@ -23,8 +23,9 @@ class MarkdownExtension extends AbstractExtension
 
     public function convert(string $string): string
     {
-        $string = str_replace("\n", "\\\n", trim($string));
+        $result = $this->converter->convert($string)->getContent();
 
-        return $this->converter->convert($string)->getContent();
+        // breakdown single newlines in a newline for markdown aswell.
+        return preg_replace("/([^>])\n/", "\$1<br>\n", $result);
     }
 }
