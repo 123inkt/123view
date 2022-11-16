@@ -14,21 +14,11 @@ class RevisionsViewModel
      * @param PaginatorViewModel<Revision> $paginator
      */
     public function __construct(
-        private readonly Repository $repository,
+        public readonly Repository $repository,
         private readonly Paginator $revisions,
-        private readonly PaginatorViewModel $paginator,
-        private readonly string $searchQuery
+        public readonly PaginatorViewModel $paginator,
+        public readonly string $searchQuery
     ) {
-    }
-
-    public function getSearchQuery(): string
-    {
-        return $this->searchQuery;
-    }
-
-    public function getRepository(): Repository
-    {
-        return $this->repository;
     }
 
     /**
@@ -37,13 +27,5 @@ class RevisionsViewModel
     public function getRevisions(): array
     {
         return iterator_to_array($this->revisions);
-    }
-
-    /**
-     * @return PaginatorViewModel<Revision>
-     */
-    public function getPaginator(): PaginatorViewModel
-    {
-        return $this->paginator;
     }
 }
