@@ -14,10 +14,12 @@ use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\GitCommitNotification\Service\Git\Show\GitShowService;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewRevisionViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
+use Highlight\Highlighter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 
@@ -29,7 +31,8 @@ class ReviewViewModelProvider
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
         private readonly FileSeenStatusService $fileStatusService,
-        private readonly DiffFinder $diffFinder
+        private readonly DiffFinder $diffFinder,
+        private readonly GitShowService $showService
     ) {
     }
 
@@ -55,6 +58,15 @@ class ReviewViewModelProvider
             $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction)
         );
         $viewModel->setDescriptionVisible($filePath === null);
+
+        $filePath = $selectedFile?->filePathAfter ?? $selectedFile?->filePathBefore ?? null;
+        $revision = $review->getRevisions()->last();
+        if ($filePath !== null && $revision instanceof Revision) {
+            $output    = $this->showService->getFileAtRevision($revision, $filePath);
+            $highlight = new Highlighter();
+            $output    = $highlight->highlight('typescript', $output)->value;
+            $viewModel->setHighlightedFile($output);
+        }
 
         $viewModel->setSidebarTabMode($sidebarTab);
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_OVERVIEW) {

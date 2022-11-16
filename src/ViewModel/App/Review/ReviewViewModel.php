@@ -19,9 +19,22 @@ class ReviewViewModel
     private ?ReviewRevisionViewModel $revisionViewModel  = null;
     private ?FormView                $addReviewerForm    = null;
     private bool                     $descriptionVisible = true;
+    private ?string                  $highlightedFile    = null;
 
     public function __construct(public readonly CodeReview $review, public readonly FileDiffViewModel $fileDiffViewModel)
     {
+    }
+
+    public function getHighlightedFile(): ?string
+    {
+        return $this->highlightedFile;
+    }
+
+    public function setHighlightedFile(?string $highlightedFile): ReviewViewModel
+    {
+        $this->highlightedFile = $highlightedFile;
+
+        return $this;
     }
 
     public function isDescriptionVisible(): bool

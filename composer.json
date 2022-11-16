@@ -42,6 +42,7 @@
         "doctrine/orm": "^2.12",
         "league/commonmark": "^2.3",
         "league/uri": "^6.8",
+        "scrivo/highlight.php": "v9.18.1.9",
         "sensio/framework-extra-bundle": "^6.2.0",
         "symfony/amqp-messenger": "6.1.*",
         "symfony/asset": "^6.1",
