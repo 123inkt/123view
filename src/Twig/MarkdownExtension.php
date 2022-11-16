@@ -26,6 +26,6 @@ class MarkdownExtension extends AbstractExtension
         $result = $this->converter->convert($string)->getContent();
 
         // breakdown single newlines in a newline for markdown aswell.
-        return preg_replace("/([^>])\n/", "\$1<br>\n", $result);
+        return (string)preg_replace("/([^>])\n/", "\$1<br>\n", $result);
     }
 }
