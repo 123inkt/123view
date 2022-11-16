@@ -28,6 +28,7 @@ use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
 use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
 use DR\GitCommitNotification\Twig\Highlight\HighlighterFactory;
 use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
+use Highlight\Highlighter;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 use League\CommonMark\MarkdownConverter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -96,6 +97,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(HighlighterFactory::class);
+    $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, GithubFlavoredMarkdownConverter::class)
         ->arg('$config', ['html_input' => 'strip', 'allow_unsafe_links' => false]);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
