@@ -16,7 +16,7 @@ use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Service\Mail\MailService;
+use DR\GitCommitNotification\Service\Mail\CommentMailService;
 use DR\GitCommitNotification\Utility\Arrays;
 use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -34,7 +34,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly MailService $mailService,
+        private readonly CommentMailService $mailService,
         private readonly CommentRepository $commentRepository,
         private readonly CommentReplyRepository $replyRepository,
         private readonly UserRepository $userRepository,

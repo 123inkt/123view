@@ -7,7 +7,7 @@ use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Service\Mail\MailService;
+use DR\GitCommitNotification\Service\Mail\CommitMailService;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Strings;
 use InvalidArgumentException;
@@ -28,7 +28,7 @@ class MailCommand extends Command implements LoggerAwareInterface
     public function __construct(
         private readonly RuleRepository $ruleRepository,
         private readonly RuleProcessor $ruleProcessor,
-        private readonly MailService $mailService
+        private readonly CommitMailService $mailService
     ) {
         parent::__construct();
     }

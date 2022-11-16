@@ -7,7 +7,7 @@ use DR\GitCommitNotification\Command\MailCommand;
 use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Service\Mail\MailService;
+use DR\GitCommitNotification\Service\Mail\CommitMailService;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
@@ -23,16 +23,16 @@ use Symfony\Component\Console\Tester\CommandTester;
 class MailCommandTest extends AbstractTestCase
 {
     private RuleProcessor&MockObject  $ruleProcessor;
-    private RuleRepository&MockObject $ruleRepository;
-    private MailService&MockObject    $mailService;
-    private MailCommand               $command;
+    private RuleRepository&MockObject    $ruleRepository;
+    private CommitMailService&MockObject $mailService;
+    private MailCommand                  $command;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->ruleProcessor  = $this->createMock(RuleProcessor::class);
         $this->ruleRepository = $this->createMock(RuleRepository::class);
-        $this->mailService    = $this->createMock(MailService::class);
+        $this->mailService    = $this->createMock(CommitMailService::class);
         $this->command        = new MailCommand($this->ruleRepository, $this->ruleProcessor, $this->mailService);
     }
 
