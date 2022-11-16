@@ -116,7 +116,6 @@ return static function (ContainerConfigurator $container): void {
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
-    //FIXME $services->set(OneByOneCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 20]);
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
 
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
