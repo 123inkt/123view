@@ -11,16 +11,8 @@ class ReviewRevisionViewModel
     /**
      * @param Revision[] $revisions
      */
-    public function __construct(private array $revisions, private FormView $detachRevisionForm)
+    public function __construct(public readonly array $revisions, public readonly FormView $detachRevisionForm)
     {
-    }
-
-    /**
-     * @return Revision[]
-     */
-    public function getRevisions(): array
-    {
-        return $this->revisions;
     }
 
     public function getRevision(string $revisionId): ?Revision
@@ -32,10 +24,5 @@ class ReviewRevisionViewModel
         }
 
         return null;
-    }
-
-    public function getDetachRevisionForm(): ?FormView
-    {
-        return $this->detachRevisionForm;
     }
 }
