@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 
 class LockableReviewDiffService implements ReviewDiffServiceInterface
 {
@@ -15,8 +16,8 @@ class LockableReviewDiffService implements ReviewDiffServiceInterface
     /**
      * @inheritDoc
      */
-    public function getDiffFiles(Repository $repository, array $revisions): array
+    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
     {
-        return $this->lockManager->start($repository, fn() => $this->diffService->getDiffFiles($repository, $revisions));
+        return $this->lockManager->start($repository, fn() => $this->diffService->getDiffFiles($repository, $revisions, $options));
     }
 }

@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
 use DR\GitCommitNotification\Utility\Arrays;
 use Psr\Log\LoggerAwareInterface;
@@ -28,7 +29,7 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
     /**
      * @inheritDoc
      */
-    public function getDiffFiles(Repository $repository, array $revisions): array
+    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
     {
         if (count($revisions) === 0) {
             return $revisions;
@@ -42,7 +43,7 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
         /** @var ReviewDiffStrategyInterface $strategy */
         foreach ($this->reviewDiffStrategies as $strategy) {
             try {
-                return $strategy->getDiffFiles($repository, $revisions);
+                return $strategy->getDiffFiles($repository, $revisions, $options);
             } catch (Throwable $exception) {
                 $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
                 continue;

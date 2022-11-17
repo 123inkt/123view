@@ -76,13 +76,13 @@ class GitDiffService implements LoggerAwareInterface
      * @return DiffFile[]
      * @throws RepositoryException|ParseException
      */
-    public function getBundledDiffFromRevisions(Repository $repository): array
+    public function getBundledDiffFromRevisions(Repository $repository, int $unifiedDiffLines = 10): array
     {
         // create git diff HEAD command
         $commandBuilder = $this->builderFactory->createDiff()
             ->hash('HEAD')
             ->diffAlgorithm(DiffAlgorithmType::MYERS)
-            ->unified(10)
+            ->unified($unifiedDiffLines)
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol();
 

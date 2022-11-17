@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review\ReviewDiffServi
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -53,10 +54,14 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
+        $options  = new FileDiffOptions(20);
 
-        $this->cache->expects(self::once())->method('get')->with('123-hash')->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->cache->expects(self::once())
+            ->method('get')
+            ->with('diff-files:123-hash-udl:20')
+            ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revision]));
+        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revision], $options));
     }
 }

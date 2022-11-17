@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\GitRepositoryResetManager;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Utility\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -28,18 +29,18 @@ class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
     /**
      * @inheritDoc
      */
-    public function getDiffFiles(Repository $repository, array $revisions): array
+    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
     {
         // create branch
         $branchName = $this->checkoutService->checkoutRevision(Arrays::first($revisions));
 
-        return $this->resetManager->start($repository, $branchName, function () use ($repository, $revisions) {
+        return $this->resetManager->start($repository, $branchName, function () use ($repository, $revisions, $options) {
             try {
                 // cherry-pick revisions
                 $this->cherryPickService->cherryPickRevisions($revisions);
 
                 // get the diff
-                return $this->diffService->getBundledDiffFromRevisions($repository);
+                return $this->diffService->getBundledDiffFromRevisions($repository, $options?->unifiedDiffLines ?? 10);
             } catch (RepositoryException|ProcessFailedException $exception) {
                 $this->cherryPickService->cherryPickAbort($repository);
 

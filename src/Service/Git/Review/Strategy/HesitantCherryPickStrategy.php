@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Utility\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -36,7 +37,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
     /**
      * @inheritDoc
      */
-    public function getDiffFiles(Repository $repository, array $revisions): array
+    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
     {
         $max     = count($revisions) + 50;
         $batches = [];
@@ -47,7 +48,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
             }
 
             $pickableRevisions = $this->tryCherryPick($repository, $revisions);
-            $batches[]         = $this->basicCherryPickStrategy->getDiffFiles($repository, $pickableRevisions);
+            $batches[]         = $this->basicCherryPickStrategy->getDiffFiles($repository, $pickableRevisions, $options);
             $revisions         = array_slice($revisions, count($pickableRevisions));
 
             if (count($revisions) === 0) {
@@ -73,7 +74,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
             try {
                 $this->cherryPickService->cherryPickRevisions([$revision]);
                 $pickable[] = $revision;
-            } catch (RepositoryException | ProcessFailedException) {
+            } catch (RepositoryException|ProcessFailedException) {
                 break;
             }
         }
