@@ -13,6 +13,7 @@ class HtmlLineSplitterTest extends AbstractTestCase
 {
     /**
      * @covers ::split
+     * @covers ::splitLines
      */
     public function testSplitStringWithoutNewline(): void
     {
@@ -23,6 +24,7 @@ class HtmlLineSplitterTest extends AbstractTestCase
 
     /**
      * @covers ::split
+     * @covers ::splitLines
      */
     public function testSplitStringWithSingleNewLine(): void
     {
@@ -33,6 +35,7 @@ class HtmlLineSplitterTest extends AbstractTestCase
 
     /**
      * @covers ::split
+     * @covers ::splitLines
      */
     public function testSplitStringWithNestedTags(): void
     {
@@ -46,6 +49,7 @@ class HtmlLineSplitterTest extends AbstractTestCase
 
     /**
      * @covers ::split
+     * @covers ::splitLines
      */
     public function testSplitStringWithMultipleNewlines(): void
     {

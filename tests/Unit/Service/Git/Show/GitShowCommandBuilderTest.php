@@ -30,6 +30,7 @@ class GitShowCommandBuilderTest extends AbstractTestCase
 
     /**
      * @covers ::startPoint
+     * @covers ::file
      * @covers ::build
      */
     public function testBuild(): void
@@ -39,6 +40,7 @@ class GitShowCommandBuilderTest extends AbstractTestCase
 
     /**
      * @covers ::startPoint
+     * @covers ::file
      * @covers ::__toString
      */
     public function testToString(): void
