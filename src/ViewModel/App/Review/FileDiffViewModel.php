@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
 
 class FileDiffViewModel
 {
@@ -12,6 +13,7 @@ class FileDiffViewModel
     private ?EditCommentViewModel      $editCommentForm      = null;
     private ?ReplyCommentViewModel     $replyCommentForm     = null;
     private ?EditCommentReplyViewModel $editReplyCommentForm = null;
+    private ?HighlightedFile           $highlightedFile      = null;
 
     public function __construct(public readonly ?DiffFile $selectedFile)
     {
@@ -67,6 +69,16 @@ class FileDiffViewModel
     public function setEditReplyCommentForm(?EditCommentReplyViewModel $editReplyCommentForm): void
     {
         $this->editReplyCommentForm = $editReplyCommentForm;
+    }
+
+    public function getHighlightedFile(): ?HighlightedFile
+    {
+        return $this->highlightedFile;
+    }
+
+    public function setHighlightedFile(?HighlightedFile $highlightedFile): void
+    {
+        $this->highlightedFile = $highlightedFile;
     }
 
     /**

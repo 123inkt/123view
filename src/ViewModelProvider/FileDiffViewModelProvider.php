@@ -15,6 +15,7 @@ use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
 use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
 use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\AddCommentViewModel;
@@ -24,6 +25,7 @@ use DR\GitCommitNotification\ViewModel\App\Review\EditCommentViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReplyCommentViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
+use Throwable;
 
 /**
  * @suppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -33,16 +35,26 @@ class FileDiffViewModelProvider
     public function __construct(
         private readonly CommentRepository $commentRepository,
         private readonly FormFactoryInterface $formFactory,
-        private readonly DiffFinder $diffFinder
+        private readonly DiffFinder $diffFinder,
+        private readonly CacheableHighlightedFileService $highlightedFileService
     ) {
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getFileDiffViewModel(CodeReview $review, ?DiffFile $selectedFile, ?AbstractReviewAction $reviewAction): FileDiffViewModel
     {
         $viewModel = new FileDiffViewModel($selectedFile);
 
         if ($selectedFile !== null) {
             $viewModel->setCommentsViewModel($this->getCommentsViewModel($review, $selectedFile));
+
+            $highlightedFile = $this->highlightedFileService->getHighlightedFile(
+                Assert::notFalse($review->getRevisions()->last()),
+                $selectedFile->getPathname()
+            );
+            $viewModel->setHighlightedFile($highlightedFile);
         }
 
         // setup action forms

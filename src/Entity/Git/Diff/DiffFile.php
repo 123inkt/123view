@@ -106,6 +106,11 @@ class DiffFile
         return '';
     }
 
+    public function getPathname(): string
+    {
+        return $this->filePathAfter ?? $this->filePathBefore ?? '';
+    }
+
     public function getDirname(): string
     {
         if ($this->filePathAfter !== null) {
