@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -21,8 +22,11 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly ReviewDiffServiceInterface $diffService)
-    {
+    public function __construct(
+        private readonly CodeReviewRepository $reviewRepository,
+        private readonly ReviewDiffServiceInterface $diffService,
+        private readonly CacheableHighlightedFileService $fileService,
+    ) {
     }
 
     /**
@@ -37,8 +41,19 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
             return;
         }
 
-        $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
+        $revisions = $review->getRevisions();
+        if (count($revisions) === 0) {
+            return;
+        }
+
+        $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray());
         $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);
+
+        $revision = Assert::notFalse($revisions->last());
+        foreach ($files as $file) {
+            $this->fileService->getHighlightedFile($revision, $file->getPathname());
+            $this->logger?->info('DiffFileCacheMessageHandler: file highlight cache warmed up for {file}', ['file' => $file->getPathname()]);
+        }
     }
 
     /**
