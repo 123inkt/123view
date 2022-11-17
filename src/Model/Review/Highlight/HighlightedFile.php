@@ -14,6 +14,6 @@ class HighlightedFile
 
     public function getLine(int $lineNumber): ?string
     {
-        return $this->lines[$lineNumber] ?? null;
+        return $this->lines[$lineNumber - 1] ?? null;
     }
 }
