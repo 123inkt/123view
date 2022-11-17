@@ -34,7 +34,7 @@ class GitShowCommandBuilderTest extends AbstractTestCase
      */
     public function testBuild(): void
     {
-        static::assertSame(['git', 'show', 'foobar'], $this->builder->startPoint('foobar')->build());
+        static::assertSame(['git', 'show', 'foobar', 'hash:file'], $this->builder->startPoint('foobar')->file('hash', 'file')->build());
     }
 
     /**
@@ -43,6 +43,6 @@ class GitShowCommandBuilderTest extends AbstractTestCase
      */
     public function testToString(): void
     {
-        static::assertSame('git show foobar', (string)$this->builder->startPoint('foobar'));
+        static::assertSame('git show foobar hash:file', (string)$this->builder->startPoint('foobar')->file('hash', 'file'));
     }
 }
