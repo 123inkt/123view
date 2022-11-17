@@ -30,8 +30,6 @@ class GitShowService implements LoggerAwareInterface
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
-
-        return $output;
+        return $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
     }
 }
