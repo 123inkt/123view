@@ -76,6 +76,13 @@ class GitDiffCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function unified(int $numberOfLines): self
+    {
+        $this->arguments['unified'] = '--unified=' . $numberOfLines;
+
+        return $this;
+    }
+
     public function command(): string
     {
         return 'diff';

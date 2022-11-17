@@ -69,6 +69,7 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
     /**
      * @covers ::hashes
      * @covers ::hash
+     * @covers ::unified
      * @covers ::diffAlgorithm
      */
     public function testBuildOptions(): void
@@ -76,6 +77,7 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
         $actual = $this->builder
             ->hashes('start', 'end')
             ->hash('hash')
+            ->unified(5)
             ->diffAlgorithm("foobar")
             ->build();
 
@@ -86,6 +88,7 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
                     'start',
                     'end',
                     'hash',
+                    '--unified=5',
                     '--diff-algorithm="foobar"'
                 ]
             ),

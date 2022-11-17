@@ -128,6 +128,7 @@ class GitDiffServiceTest extends AbstractTestCase
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);
         $builder->expects(self::once())->method('hash')->with('HEAD')->willReturnSelf();
+        $builder->expects(self::once())->method('unified')->with(10)->willReturnSelf();
         $builder->expects(self::once())->method('diffAlgorithm')->with(DiffAlgorithmType::MYERS)->willReturnSelf();
         $builder->expects(self::once())->method('ignoreCrAtEol')->willReturnSelf();
         $builder->expects(self::once())->method('ignoreSpaceAtEol')->willReturnSelf();

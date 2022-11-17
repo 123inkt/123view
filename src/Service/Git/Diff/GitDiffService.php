@@ -82,6 +82,7 @@ class GitDiffService implements LoggerAwareInterface
         $commandBuilder = $this->builderFactory->createDiff()
             ->hash('HEAD')
             ->diffAlgorithm(DiffAlgorithmType::MYERS)
+            ->unified(10)
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol();
 
