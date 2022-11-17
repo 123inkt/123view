@@ -55,6 +55,9 @@ class UnifiedDiffBundler
 
             // all pairs are bundleable, bundle now
             foreach ($pairs as $pair) {
+                // copy line number from added to removed
+                $pair->removed->lineNumberAfter = $pair->added->lineNumberAfter;
+
                 // merge changes into first line, and remove the second line
                 $pair->removed->state   = DiffLine::STATE_CHANGED;
                 $pair->removed->changes = $this->changeBundler->bundle(DiffChangeCollection::merge($pair->removed->changes, $pair->added->changes));

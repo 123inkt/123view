@@ -23,7 +23,7 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
     /**
      * @throws Exception|InvalidArgumentException
      */
-    public function getHighlightedFile(Revision $revision, string $filePath): ?HighlightedFile
+    public function getHighlightedFile(Revision $revision, string $filePath): HighlightedFile
     {
         $key = hash(
             'sha256',

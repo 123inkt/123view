@@ -46,7 +46,7 @@
             <span class="diff-file__diff-change-state">{{ line_modifier|raw }}</span>
 
             {#- code changes -#}
-            {%- if line.changes|length == 1 and line.state != 2 and fileDiffViewModel.highlightedFile != null -%}
+            {%- if line.changes|length == 1 and line.state != 2 -%}
                 {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
             {%- else -%}
                 {%- for change in line.changes -%}

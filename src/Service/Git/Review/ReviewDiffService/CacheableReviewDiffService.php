@@ -26,7 +26,7 @@ class CacheableReviewDiffService implements ReviewDiffServiceInterface
         // gather hashes
         $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
 
-        $key = sprintf('diff-files:%s-%s-%s', $repository->getId(), implode('-', $hashes), $options);
+        $key = sprintf('diff-files-%s-%s-%s', $repository->getId(), implode('-', $hashes), $options);
 
         return $this->revisionCache->get($key, fn() => $this->diffService->getDiffFiles($repository, $revisions, $options));
     }

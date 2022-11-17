@@ -22,16 +22,17 @@ class HighlightedFileService
     /**
      * @throws Exception
      */
-    public function getHighlightedFile(Revision $revision, string $filePath): ?HighlightedFile
+    public function getHighlightedFile(Revision $revision, string $filePath): HighlightedFile
     {
-        $extension    = pathinfo($filePath, PATHINFO_EXTENSION);
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $data      = $this->showService->getFileAtRevision($revision, $filePath);
+
         $languageName = $this->translator->translate($extension);
         if ($languageName === null) {
-            return null;
+            $lines = explode("\n", htmlspecialchars($data, ENT_QUOTES));
+        } else {
+            $lines = $this->splitter->split($this->highlighter->highlight($languageName, $data)->value);
         }
-
-        $data  = $this->showService->getFileAtRevision($revision, $filePath);
-        $lines = $this->splitter->split($this->highlighter->highlight($languageName, $data)->value);
 
         return new HighlightedFile($filePath, $lines);
     }

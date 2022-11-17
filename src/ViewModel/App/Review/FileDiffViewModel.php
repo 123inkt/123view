@@ -76,7 +76,7 @@ class FileDiffViewModel
         return $this->highlightedFile;
     }
 
-    public function setHighlightedFile(?HighlightedFile $highlightedFile): void
+    public function setHighlightedFile(HighlightedFile $highlightedFile): void
     {
         $this->highlightedFile = $highlightedFile;
     }
