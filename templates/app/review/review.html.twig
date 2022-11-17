@@ -131,10 +131,7 @@
 
         <div class="review-grid-code">
             {% if  reviewModel.fileDiffViewModel.selectedFile != null %}
-
-                <pre><code>{{- reviewModel.highlightedFile|raw -}}</code></pre>
-
-                {#                {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %} #}
+                {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
             {% endif %}
         </div>
     </div>

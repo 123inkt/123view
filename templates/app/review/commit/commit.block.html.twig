@@ -46,15 +46,17 @@
             <span class="diff-file__diff-change-state">{{ line_modifier|raw }}</span>
 
             {#- code changes -#}
-            {%- for change in line.changes -%}
-                {%- set code = change.code|highlight(file.extension, 'diff-file__code-keyword') -%}
-
-                {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
-                    <span class="diff-file__change-added">{{ code|raw }}</span>
-                {%- elseif change.type == 2 and (line.state != 2 or line.changes|length > 1) -%}
-                    <span class="diff-file__change-removed">{{ code|raw }}</span>
-                {%- else %}{{ code|raw }}{% endif -%}
-            {%- endfor -%}
+            {%- if line.changes|length == 1 and line.state != 2 and fileDiffViewModel.highlightedFile != null -%}
+                {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
+            {%- else -%}
+                {%- for change in line.changes -%}
+                    {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
+                        <span class="diff-file__change-added">{{ change.code|raw }}</span>
+                    {%- elseif change.type == 2 and (line.state != 2 or line.changes|length > 1) -%}
+                        <span class="diff-file__change-removed">{{ change.code|raw }}</span>
+                    {%- else %}{{ change.code|raw }}{% endif -%}
+                {%- endfor -%}
+            {%- endif -%}
         </div>
 
         {#- comments -#}
