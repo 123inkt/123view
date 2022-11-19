@@ -41,6 +41,15 @@ class UrlQueryExtensionTest extends AbstractTestCase
     /**
      * @covers ::getUrlQuery
      */
+    public function testGetUrlWithoutRequest(): void
+    {
+        $extension = new UrlQueryExtension(new RequestStack());
+        static::assertSame('?foo=bar', $extension->getUrlQuery(['foo' => 'bar']));
+    }
+
+    /**
+     * @covers ::getUrlQuery
+     */
     public function testGetUrlQueryReplaceParams(): void
     {
         $request   = new Request(['foo' => 'bar']);

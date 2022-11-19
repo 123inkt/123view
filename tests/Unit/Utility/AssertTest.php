@@ -60,7 +60,7 @@ class AssertTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::isString
+     * @covers ::isInt
      */
     public function testIsIntFailure(): void
     {
