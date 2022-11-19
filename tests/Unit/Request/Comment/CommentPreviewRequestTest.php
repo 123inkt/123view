@@ -11,12 +11,11 @@ use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
 /**
  * @extends AbstractRequestTestCase<CommentPreviewRequest>
  * @coversDefaultClass \DR\GitCommitNotification\Request\Comment\CommentPreviewRequest
- * @covers ::__construct
  */
 class CommentPreviewRequestTest extends AbstractRequestTestCase
 {
     /**
-     * @covers ::getState
+     * @covers ::getMessage
      */
     public function testGetState(): void
     {
