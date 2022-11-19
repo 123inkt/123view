@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Twig;
 
-use League\CommonMark\MarkdownConverter;
+use DR\GitCommitNotification\Service\Markdown\MarkdownService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class MarkdownExtension extends AbstractExtension
 {
-    public function __construct(private readonly MarkdownConverter $converter)
+    public function __construct(private readonly MarkdownService $markdownService)
     {
     }
 
@@ -23,9 +23,6 @@ class MarkdownExtension extends AbstractExtension
 
     public function convert(string $string): string
     {
-        $result = $this->converter->convert($string)->getContent();
-
-        // breakdown single newlines in a newline for markdown aswell.
-        return (string)preg_replace("/([^>])\n/", "\$1<br>\n", $result);
+        return $this->markdownService->convert($string);
     }
 }

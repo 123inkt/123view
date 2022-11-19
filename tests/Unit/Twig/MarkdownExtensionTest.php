@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Twig;
 
+use DR\GitCommitNotification\Service\Markdown\MarkdownService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Twig\MarkdownExtension;
-use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Output\RenderedContentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -15,14 +14,14 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class MarkdownExtensionTest extends AbstractTestCase
 {
-    private MarkdownConverter&MockObject $converter;
-    private MarkdownExtension            $extension;
+    private MarkdownService&MockObject $markdownService;
+    private MarkdownExtension          $extension;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->converter = $this->createMock(MarkdownConverter::class);
-        $this->extension = new MarkdownExtension($this->converter);
+        $this->markdownService = $this->createMock(MarkdownService::class);
+        $this->extension       = new MarkdownExtension($this->markdownService);
     }
 
     /**
@@ -34,30 +33,41 @@ class MarkdownExtensionTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider dataProvider
      * @covers ::convert
      */
-    public function testConvert(string $markdown, string $expected): void
+    public function testConvert(): void
     {
         $string = 'string';
 
-        $content = $this->createMock(RenderedContentInterface::class);
-        $content->expects(self::once())->method('getContent')->willReturn($markdown);
+        $this->markdownService->expects(self::once())->method('convert')->with($string)->willReturn("markdown: " . $string);
 
-        $this->converter->expects(self::once())->method('convert')->with($string)->willReturn($content);
-
-        static::assertSame($expected, $this->extension->convert($string));
+        static::assertSame("markdown: string", $this->extension->convert($string));
     }
 
-    /**
-     * @return array<string[]>
-     */
-    public function dataProvider(): array
-    {
-        return [
-            ["foo\nbar", "foo<br>\nbar"],
-            ["<span>foo bar</span>", '<span>foo bar</span>'],
-            ["<span>foo</span>\nbar", "<span>foo</span>\nbar"],
-        ];
-    }
+    ///**
+    // * @covers ::convert
+    // */
+    //public function testConvert(): void
+    //{
+    //    $string = 'string';
+    //
+    //    $content = $this->createMock(RenderedContentInterface::class);
+    //    $content->expects(self::once())->method('getContent')->willReturn($markdown);
+    //
+    //    $this->markdownService->expects(self::once())->method('convert')->with($string)->willReturn($content);
+    //
+    //    static::assertSame($expected, $this->extension->convert($string));
+    //}
+    //
+    ///**
+    // * @return array<string[]>
+    // */
+    //public function dataProvider(): array
+    //{
+    //    return [
+    //        ["foo\nbar", "foo<br>\nbar"],
+    //        ["<span>foo bar</span>", '<span>foo bar</span>'],
+    //        ["<span>foo</span>\nbar", "<span>foo</span>\nbar"],
+    //    ];
+    //}
 }
