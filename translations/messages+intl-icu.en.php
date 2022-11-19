@@ -29,6 +29,8 @@ return [
     'closed'                                      => 'Closed',
     'closed.reviews'                              => 'Closed reviews',
     'comment.mark.as.resolved'                    => '<em>{userName}</em> marked comment as resolved.',
+    'comment.markdown.examples'                   => '**Bold** # Heading > Quote [link text](URL) `<code>`',
+    'comment.save.quick.key'                      => 'Ctrl+Enter to save',
     'commit.notification.rules'                   => 'Commit notification rules',
     'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'confirm.delete.reply'                        => 'Are you sure you want to delete this comment?',

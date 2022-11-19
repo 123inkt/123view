@@ -6,7 +6,17 @@
         <ul class="dropdown-menu" data-role="mention-suggestions"></ul>
     </div>
 
-    {{- form_widget(form.save) -}}
-    <button type="button" class="ms-2 btn btn-outline-secondary" data-role="cancel-comment">{{ 'cancel'|trans }}</button>
+    <div data-role="markdown-preview" class="mb-2">
+        {{ form.message.vars.value|markdown }}
+    </div>
+
+    <div class="clearfix">
+        {{- form_widget(form.save, {attr: {title: 'comment.save.quick.key'|trans}}) -}}
+        <button type="button" class="ms-2 btn btn-outline-secondary" data-role="cancel-comment">{{ 'cancel'|trans }}</button>
+
+        <span class="float-end text-secondary">
+            {{ 'comment.markdown.examples'|trans }}
+        </span>
+    </div>
     {{- form_end(form) -}}
 </div>
