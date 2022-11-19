@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
+use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Request\Comment\CommentPreviewRequest;
 use DR\GitCommitNotification\Service\Markdown\MarkdownService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CommentPreviewController
+class CommentPreviewController extends AbstractController
 {
     public function __construct(private readonly MarkdownService $markdownService)
     {
