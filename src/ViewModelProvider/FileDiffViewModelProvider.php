@@ -22,7 +22,7 @@ class FileDiffViewModelProvider
 {
     public function __construct(
         private readonly CommentViewModelProvider $commentModelProvider,
-        private readonly CacheableHighlightedFileService $highlightedFileService
+        private readonly CacheableHighlightedFileService $hfService
     ) {
     }
 
@@ -32,21 +32,21 @@ class FileDiffViewModelProvider
     public function getFileDiffViewModel(CodeReview $review, ?DiffFile $selectedFile, ?AbstractReviewAction $reviewAction): FileDiffViewModel
     {
         $viewModel = new FileDiffViewModel($selectedFile);
+        if ($selectedFile === null) {
+            return $viewModel;
+        }
 
-        if ($selectedFile !== null) {
-            $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));
+        // gather comments view model
+        $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));
 
-            if ($selectedFile->isDeleted() === false) {
-                $highlightedFile = $this->highlightedFileService->getHighlightedFile(
-                    Assert::notFalse($review->getRevisions()->last()),
-                    $selectedFile->getPathname()
-                );
-                $viewModel->setHighlightedFile($highlightedFile);
-            }
+        // create highlighted file
+        if ($selectedFile->isDeleted() === false) {
+            $highlightedFile = $this->hfService->getHighlightedFile(Assert::notFalse($review->getRevisions()->last()), $selectedFile->getPathname());
+            $viewModel->setHighlightedFile($highlightedFile);
         }
 
         // setup action forms
-        if ($selectedFile !== null && $reviewAction instanceof AddCommentAction) {
+        if ($reviewAction instanceof AddCommentAction) {
             $viewModel->setAddCommentForm($this->commentModelProvider->getAddCommentViewModel($review, $selectedFile, $reviewAction));
         } elseif ($reviewAction instanceof EditCommentAction) {
             $viewModel->setEditCommentForm($this->commentModelProvider->getEditCommentViewModel($reviewAction));
