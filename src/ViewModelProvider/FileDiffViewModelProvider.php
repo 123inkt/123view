@@ -50,11 +50,13 @@ class FileDiffViewModelProvider
         if ($selectedFile !== null) {
             $viewModel->setCommentsViewModel($this->getCommentsViewModel($review, $selectedFile));
 
-            $highlightedFile = $this->highlightedFileService->getHighlightedFile(
-                Assert::notFalse($review->getRevisions()->last()),
-                $selectedFile->getPathname()
-            );
-            $viewModel->setHighlightedFile($highlightedFile);
+            if ($selectedFile->isDeleted() === false) {
+                $highlightedFile = $this->highlightedFileService->getHighlightedFile(
+                    Assert::notFalse($review->getRevisions()->last()),
+                    $selectedFile->getPathname()
+                );
+                $viewModel->setHighlightedFile($highlightedFile);
+            }
         }
 
         // setup action forms

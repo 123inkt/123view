@@ -51,6 +51,10 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
 
         $revision = Assert::notFalse($revisions->last());
         foreach ($files as $file) {
+            if ($file->isDeleted()) {
+                continue;
+            }
+
             $this->fileService->getHighlightedFile($revision, $file->getPathname());
             $this->logger?->info('DiffFileCacheMessageHandler: file highlight cache warmed up for {file}', ['file' => $file->getPathname()]);
         }
