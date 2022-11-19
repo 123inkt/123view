@@ -90,6 +90,31 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::handleEvent
+     * @throws Throwable
+     */
+    public function testHandleEventShouldSkipHighlightingForDeletedFile(): void
+    {
+        $revision   = new Revision();
+        $repository = new Repository();
+        $repository->setId(456);
+
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setRepository($repository);
+        $review->getRevisions()->add($revision);
+
+        $file                 = new DiffFile();
+        $file->filePathBefore = 'file-path-before';
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
+        $this->fileService->expects(self::never())->method('getHighlightedFile');
+
+        $this->messageHandler->handleEvent(new ReviewCreated(123));
+    }
+
+    /**
      * @covers ::getHandledMessages
      */
     public function testGetHandledMessages(): void
