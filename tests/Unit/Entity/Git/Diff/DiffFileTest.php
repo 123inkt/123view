@@ -210,4 +210,31 @@ class DiffFileTest extends AbstractTestCase
         $file->addBlock($block);
         static::assertSame(2, $file->getNrOfLinesRemoved());
     }
+
+    /**
+     * @covers ::getMaxLineNumberLength
+     */
+    public function testGetMaxLineNumberLength(): void
+    {
+        $lineA                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineA->lineNumberBefore = 100;
+        $lineA->lineNumberAfter  = 200;
+
+        $lineB                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineB->lineNumberBefore = 1000;
+        $lineB->lineNumberAfter  = null;
+
+        $lineC                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineC->lineNumberBefore = null;
+        $lineC->lineNumberAfter  = 20000;
+
+        $block        = new DiffBlock();
+        $block->lines = [$lineA, $lineB, $lineC];
+
+        $file = new DiffFile();
+        $file->addBlock($block);
+
+        static::assertSame(4, $file->getMaxLineNumberLength(true));
+        static::assertSame(5, $file->getMaxLineNumberLength(false));
+    }
 }

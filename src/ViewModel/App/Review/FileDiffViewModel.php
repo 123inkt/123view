@@ -80,27 +80,4 @@ class FileDiffViewModel
     {
         $this->highlightedFile = $highlightedFile;
     }
-
-    /**
-     * For the given block of changes, determine the maximum string length of the line numbers.
-     *
-     * @param bool $before if true, take the `before` line numbers, `after` otherwise.
-     */
-    public function getMaxLineNumberLength(?DiffFile $file, bool $before): int
-    {
-        if ($file === null) {
-            return 0;
-        }
-
-        $length = 0;
-
-        foreach ($file->getBlocks() as $block) {
-            foreach ($block->lines as $line) {
-                $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
-                $length     = max($length, strlen($lineNumber));
-            }
-        }
-
-        return $length;
-    }
 }

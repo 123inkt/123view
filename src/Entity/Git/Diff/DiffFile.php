@@ -142,6 +142,25 @@ class DiffFile
         return $this->linesRemoved ?? 0;
     }
 
+    /**
+     * For the given block of changes, determine the maximum string length of the line numbers.
+     *
+     * @param bool $before if true, take the `before` line numbers, `after` otherwise.
+     */
+    public function getMaxLineNumberLength(bool $before): int
+    {
+        $length = 0;
+
+        foreach ($this->getBlocks() as $block) {
+            foreach ($block->lines as $line) {
+                $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
+                $length     = max($length, strlen($lineNumber));
+            }
+        }
+
+        return $length;
+    }
+
     private function updateLinesChanged(): void
     {
         $this->linesAdded   = 0;

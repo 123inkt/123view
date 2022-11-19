@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\Mail;
 
 use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Utility\Arrays;
 
 class CommitsViewModel
@@ -46,24 +45,5 @@ class CommitsViewModel
     public function getCommits(): array
     {
         return $this->commits;
-    }
-
-    /**
-     * For the given block of changes, determine the maximum string length of the line numbers.
-     *
-     * @param bool $before if true, take the `before` line numbers, `after` otherwise.
-     */
-    public function getMaxLineNumberLength(DiffFile $file, bool $before): int
-    {
-        $length = 0;
-
-        foreach ($file->getBlocks() as $block) {
-            foreach ($block->lines as $line) {
-                $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
-                $length     = max($length, strlen($lineNumber));
-            }
-        }
-
-        return $length;
     }
 }

@@ -49,9 +49,6 @@
         <br>
 
         {%- for file in commit.files -%}
-            {%- set line_nr_length_before = viewModel.getMaxLineNumberLength(file, true) -%}
-            {%- set line_nr_length_after = viewModel.getMaxLineNumberLength(file, false) -%}
-
             {% include 'mail/commit/commit.file.html.twig' %}
         {%- endfor -%}
 

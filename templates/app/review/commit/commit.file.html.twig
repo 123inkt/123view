@@ -1,5 +1,5 @@
-{%- set lineNrLengthBefore   = fileDiffViewModel.maxLineNumberLength(fileDiffViewModel.selectedFile, true) -%}
-{%- set lineNrLengthAfter    = fileDiffViewModel.maxLineNumberLength(fileDiffViewModel.selectedFile, false) -%}
+{%- set lineNrLengthBefore   = fileDiffViewModel.selectedFile.maxLineNumberLength(true) -%}
+{%- set lineNrLengthAfter    = fileDiffViewModel.selectedFile.maxLineNumberLength(false) -%}
 {%- set addCommentForm       = fileDiffViewModel.addCommentForm -%}
 {%- set editCommentForm      = fileDiffViewModel.editCommentForm -%}
 {%- set replyCommentForm     = fileDiffViewModel.replyCommentForm -%}
