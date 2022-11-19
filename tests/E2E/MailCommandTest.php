@@ -77,7 +77,7 @@ class MailCommandTest extends AbstractKernelTestCase
 
         // assert 1 mail was send
         $messageEvents = $this->messageCollector->getMessageEvents();
-        static::assertCount(1, $messageEvents);
+        static::assertCount(2, $messageEvents);
 
         // assert it was TemplateEmail
         $message = $messageEvents[0]->getMessage();
