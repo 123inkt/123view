@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 
+use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -17,16 +19,31 @@ use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 class ReviewViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::__construct
+     * @covers ::<public>
      */
     public function testAccessorPairs(): void
     {
-        $review   = new CodeReview();
-        $diffFile = new FileDiffViewModel(null);
+        static::assertAccessorPairs(ReviewViewModel::class);
+    }
 
-        $model = new ReviewViewModel($review, $diffFile);
-        static::assertSame($review, $model->review);
-        static::assertSame($diffFile, $model->fileDiffViewModel);
+    /**
+     * @covers ::getOpenComments
+     */
+    public function testGetOpenComments(): void
+    {
+        $commentA = new Comment();
+        $commentA->setState(CommentStateType::OPEN);
+        $commentB = new Comment();
+        $commentB->setState(CommentStateType::OPEN);
+        $commentC = new Comment();
+        $commentC->setState(CommentStateType::RESOLVED);
+        $review = new CodeReview();
+        $review->getComments()->add($commentA);
+        $review->getComments()->add($commentB);
+        $review->getComments()->add($commentC);
+
+        $model = new ReviewViewModel($review, new FileDiffViewModel(null));
+        static::assertSame(2, $model->getOpenComments());
     }
 
     /**
