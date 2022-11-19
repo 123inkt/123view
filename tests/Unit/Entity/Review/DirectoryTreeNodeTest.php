@@ -174,6 +174,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $objA = new stdClass();
         $objB = new stdClass();
 
+        /** @var DirectoryTreeNode<stdClass> $node */
         $node = new DirectoryTreeNode('');
         static::assertNull($node->getFirstFileInTree());
 
@@ -190,6 +191,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
      */
     public function testGetFirstFileInTreeEmptyDirectories(): void
     {
+        /** @var DirectoryTreeNode<stdClass> $node */
         $node = new DirectoryTreeNode('foo', [new DirectoryTreeNode('bar')]);
         static::assertNull($node->getFirstFileInTree());
     }
