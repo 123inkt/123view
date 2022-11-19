@@ -15,10 +15,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class RevisionViewModelProvider
 {
-    public function __construct(
-        private readonly RevisionRepository $revisionRepository,
-        private readonly FormFactoryInterface $formFactory,
-    ) {
+    public function __construct(private readonly RevisionRepository $revisionRepository, private readonly FormFactoryInterface $formFactory)
+    {
     }
 
     public function getRevisionsViewModel(Repository $repository, int $page, string $searchQuery, ?bool $attached = null): RevisionsViewModel
@@ -38,8 +36,9 @@ class RevisionViewModelProvider
     {
         return new ReviewRevisionViewModel(
             $revisions,
-            $this->formFactory->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])->createView(
-            )
+            $this->formFactory
+                ->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
+                ->createView()
         );
     }
 }
