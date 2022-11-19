@@ -109,7 +109,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
 
         $this->reviewDiffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->treeGenerator->expects(self::once())->method('generate')->with([$file])->willReturn($tree);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], $filePath)->willReturn($file);
+        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], $filePath)->willReturn(null);
         $this->fileDiffProvider->expects(self::once())->method('getFileDiffViewModel')->with($review, $file, $action);
         $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
 
