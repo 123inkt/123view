@@ -37,6 +37,7 @@ class FileTreeViewModelProviderTest extends AbstractTestCase
         $comment = new Comment();
         $review  = new CodeReview();
         $review->getComments()->add($comment);
+        /** @var DirectoryTreeNode<DiffFile> $treeNode */
         $treeNode         = new DirectoryTreeNode('foobar');
         $file             = new DiffFile();
         $statusCollection = new FileSeenStatusCollection();
