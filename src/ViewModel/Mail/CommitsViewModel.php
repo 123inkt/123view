@@ -8,22 +8,11 @@ use DR\GitCommitNotification\Utility\Arrays;
 
 class CommitsViewModel
 {
-    /** @var Commit[] */
-    private array  $commits;
-    private string $theme;
-
     /**
      * @param Commit[] $commits
      */
-    public function __construct(array $commits, string $theme)
+    public function __construct(public readonly array $commits, public readonly string $theme)
     {
-        $this->commits = $commits;
-        $this->theme   = $theme;
-    }
-
-    public function getTheme(): string
-    {
-        return $this->theme;
     }
 
     /**
@@ -37,13 +26,5 @@ class CommitsViewModel
         }
 
         return Arrays::unique($authors);
-    }
-
-    /**
-     * @return Commit[]
-     */
-    public function getCommits(): array
-    {
-        return $this->commits;
     }
 }

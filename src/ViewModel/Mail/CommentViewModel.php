@@ -10,6 +10,9 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\User\User;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CommentViewModel
 {
     /**
