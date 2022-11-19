@@ -36,7 +36,7 @@ class RevisionsController extends AbstractController
 
         return [
             'breadcrumbs'    => $this->breadcrumbFactory->createForReviews($repository),
-            'revisionsModel' => $this->revisionViewModelProvider->getRevisionViewModel($repository, $page, $searchQuery)
+            'revisionsModel' => $this->revisionViewModelProvider->getRevisionsViewModel($repository, $page, $searchQuery)
         ];
     }
 }

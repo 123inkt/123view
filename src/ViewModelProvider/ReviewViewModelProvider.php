@@ -5,18 +5,12 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewRevisionViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
@@ -28,7 +22,8 @@ class ReviewViewModelProvider
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly FormFactoryInterface $formFactory,
         private readonly FileTreeGenerator $treeGenerator,
-        private readonly FileSeenStatusService $fileStatusService,
+        private readonly FileTreeViewModelProvider $fileTreeModelProvider,
+        private readonly RevisionViewModelProvider $revisionModelProvider,
         private readonly DiffFinder $diffFinder
     ) {
     }
@@ -59,38 +54,12 @@ class ReviewViewModelProvider
         $viewModel->setSidebarTabMode($sidebarTab);
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_OVERVIEW) {
             $viewModel->setAddReviewerForm($this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView());
-            $viewModel->setFileTreeModel($this->getFileTreeViewModel($review, $fileTree, $selectedFile));
+            $viewModel->setFileTreeModel($this->fileTreeModelProvider->getFileTreeViewModel($review, $fileTree, $selectedFile));
         }
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_REVISIONS) {
-            $viewModel->setRevisionViewModel($this->getRevisionViewModel($review, $revisions));
+            $viewModel->setRevisionViewModel($this->revisionModelProvider->getRevisionViewModel($review, $revisions));
         }
 
         return $viewModel;
-    }
-
-    /**
-     * @param Revision[] $revisions
-     */
-    public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
-    {
-        return new ReviewRevisionViewModel(
-            $revisions,
-            $this->formFactory->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])->createView(
-            )
-        );
-    }
-
-    /**
-     * @param DirectoryTreeNode<DiffFile> $treeNode
-     */
-    public function getFileTreeViewModel(CodeReview $review, DirectoryTreeNode $treeNode, ?DiffFile $selectedFile): FileTreeViewModel
-    {
-        return new FileTreeViewModel(
-            $review,
-            $treeNode,
-            $review->getComments(),
-            $this->fileStatusService->getFileSeenStatus($review),
-            $selectedFile
-        );
     }
 }

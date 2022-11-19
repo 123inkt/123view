@@ -42,7 +42,7 @@ class RevisionsControllerTest extends AbstractControllerTestCase
 
         $this->breadcrumbFactory->expects(self::once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
         $this->viewModelProvider->expects(self::once())
-            ->method('getRevisionViewModel')
+            ->method('getRevisionsViewModel')
             ->with($repository, 10, 'search')
             ->willReturn($viewModel);
 

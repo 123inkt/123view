@@ -41,7 +41,7 @@ class AttachRevisionSelectionControllerTest extends AbstractTestCase
         $viewModel = $this->createMock(RevisionsViewModel::class);
 
         $this->viewModelProvider->expects(self::once())
-            ->method('getRevisionViewModel')
+            ->method('getRevisionsViewModel')
             ->with($repository, 123, 'search', false)
             ->willReturn($viewModel);
 

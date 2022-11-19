@@ -31,7 +31,7 @@ class AttachRevisionSelectionController
         $searchQuery = trim($request->query->get('search', ''));
         $page        = $request->query->getInt('page', 1);
 
-        $revisionsViewModel = $this->revisionViewModelProvider->getRevisionViewModel(
+        $revisionsViewModel = $this->revisionViewModelProvider->getRevisionsViewModel(
             Assert::notNull($review->getRepository()),
             $page,
             $searchQuery,
