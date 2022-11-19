@@ -46,15 +46,13 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $revision = new Revision();
         $filePath = '/path/to/file';
 
-        $result        = new stdClass();
-        $result->value = 'highlighted-data';
-
+        $this->showService->expects(self::once())->method('getFileAtRevision')->with($revision, $filePath)->willReturn("highlighted\ndata");
         $this->translator->expects(self::once())->method('translate')->with('')->willReturn(null);
-        $this->showService->expects(self::never())->method('getFileAtRevision');
+
         $this->highlighter->expects(self::never())->method('highlight');
         $this->splitter->expects(self::never())->method('split');
 
-        static::assertNull($this->service->getHighlightedFile($revision, $filePath));
+        static::assertSame(["highlighted", "data"], $this->service->getHighlightedFile($revision, $filePath)->lines);
     }
 
     /**

@@ -165,4 +165,32 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $node = new DirectoryTreeNode('foo', [], [$objA, $objB]);
         static::assertSame([$objA, $objB], $node->getFiles());
     }
+
+    /**
+     * @covers ::getFirstFileInTree
+     */
+    public function testGetFirstFileInTree(): void
+    {
+        $objA = new stdClass();
+        $objB = new stdClass();
+
+        $node = new DirectoryTreeNode('');
+        static::assertNull($node->getFirstFileInTree());
+
+        $node->addNode(['foo', 'example.json'], $objA);
+        $node->addNode(['foo', 'bar', 'example.txt'], $objB);
+        $node->flatten();
+
+        static::assertSame($objB, $node->getFirstFileInTree());
+    }
+
+    /**
+     * When there are no files in the tree, should return null
+     * @covers ::getFirstFileInTree
+     */
+    public function testGetFirstFileInTreeEmptyDirectories(): void
+    {
+        $node = new DirectoryTreeNode('foo', [new DirectoryTreeNode('bar')]);
+        static::assertNull($node->getFirstFileInTree());
+    }
 }
