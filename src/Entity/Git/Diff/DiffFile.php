@@ -150,11 +150,9 @@ class DiffFile
     public function getMaxLineNumberLength(bool $before): int
     {
         $length = 0;
-
-        foreach ($this->getBlocks() as $block) {
+        foreach ($this->blocks as $block) {
             foreach ($block->lines as $line) {
-                $lineNumber = (string)($before ? $line->lineNumberBefore : $line->lineNumberAfter);
-                $length     = max($length, strlen($lineNumber));
+                $length = max($length, strlen((string)($before ? $line->lineNumberBefore : $line->lineNumberAfter)));
             }
         }
 
