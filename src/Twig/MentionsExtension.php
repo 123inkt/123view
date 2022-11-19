@@ -23,11 +23,6 @@ class MentionsExtension extends AbstractExtension
 
     public function convert(string $string): string
     {
-        foreach ($this->mentionService->getMentionedUsers($string) as $match => $user) {
-            $markdown = sprintf('[@%s](mailto:%s)', $user->getName(), $user->getEmail());
-            $string   = str_replace($match, $markdown, $string);
-        }
-
-        return $string;
+        return $this->mentionService->replaceMentionedUsers($string, $this->mentionService->getMentionedUsers($string));
     }
 }

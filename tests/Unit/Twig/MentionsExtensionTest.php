@@ -44,8 +44,11 @@ class MentionsExtensionTest extends AbstractTestCase
         $user->setEmail('sherlock@example.com');
 
         $this->mentionService->expects(self::once())->method('getMentionedUsers')->willReturn(['@user:123[Frank Dekker]' => $user]);
+        $this->mentionService->expects(self::once())->method('replaceMentionedUsers')
+            ->with('message', ['@user:123[Frank Dekker]' => $user])
+            ->willReturn('message');
 
-        $actual = $this->extension->convert('foobar @user:123[Frank Dekker] foobar @user:456[unknown] foobar');
-        static::assertSame('foobar [@Sherlock Holmes](mailto:sherlock@example.com) foobar @user:456[unknown] foobar', $actual);
+        $actual = $this->extension->convert('message');
+        static::assertSame('message', $actual);
     }
 }

@@ -58,4 +58,21 @@ class CommentMentionServiceTest extends AbstractTestCase
 
         static::assertSame([], $this->mentionService->getMentionedUsers('foobar @user:123[Sherlock holmes] foobar'));
     }
+
+    /**
+     * @covers ::replaceMentionedUsers
+     */
+    public function testReplaceMentionedUsers(): void
+    {
+        $user = new User();
+        $user->setId(123);
+        $user->setName('Sherlock Holmes');
+        $user->setEmail('sherlock@example.com');
+
+        $actual = $this->mentionService->replaceMentionedUsers(
+            'foobar @user:123[Sherlock Holmes] foobar @user:456[unknown] foobar',
+            ['@user:123[Sherlock Holmes]' => $user]
+        );
+        static::assertSame('foobar [@Sherlock Holmes](mailto:sherlock@example.com) foobar @user:456[unknown] foobar', $actual);
+    }
 }

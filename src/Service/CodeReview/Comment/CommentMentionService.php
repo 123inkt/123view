@@ -44,4 +44,17 @@ class CommentMentionService
 
         return $mentions;
     }
+
+    /**
+     * @param array<string, User> $users
+     */
+    public function replaceMentionedUsers(string $message, array $users): string
+    {
+        foreach ($users as $match => $user) {
+            $mention = sprintf('[@%s](mailto:%s)', $user->getName(), $user->getEmail());
+            $message = str_replace($match, $mention, $message);
+        }
+
+        return $message;
+    }
 }

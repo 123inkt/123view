@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Request\Comment\CommentPreviewRequest;
+use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
 use DR\GitCommitNotification\Service\Markdown\MarkdownService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommentPreviewController extends AbstractController
 {
-    public function __construct(private readonly MarkdownService $markdownService)
+    public function __construct(private readonly CommentMentionService $mentionService, private readonly MarkdownService $markdownService)
     {
     }
 
@@ -21,7 +22,11 @@ class CommentPreviewController extends AbstractController
 
     public function __invoke(CommentPreviewRequest $request): Response
     {
-        return (new Response($this->markdownService->convert($request->getMessage()), 200, ['Content-Type' => 'text/html']))
+        $message = $request->getMessage();
+        $message = $this->mentionService->replaceMentionedUsers($message, $this->mentionService->getMentionedUsers($message));
+        $message = $this->markdownService->convert($message);
+
+        return (new Response($message, 200, ['Content-Type' => 'text/html']))
             ->setMaxAge(86400)
             ->setPublic();
     }
