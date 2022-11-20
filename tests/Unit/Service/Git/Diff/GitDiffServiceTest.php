@@ -14,6 +14,7 @@ use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -103,10 +104,8 @@ class GitDiffServiceTest extends AbstractTestCase
         $revision->setCommitHash('commit-hash');
 
         $builder = $this->createMock(GitShowCommandBuilder::class);
-        $builder->expects(self::once())
-            ->method('startPoint')
-            ->with('commit-hash')
-            ->willReturnSelf();
+        $builder->expects(self::once())->method('startPoint')->with('commit-hash')->willReturnSelf();
+        $builder->expects(self::once())->method('unified')->with(5)->willReturnSelf();
         $this->commandBuilderFactory->expects(self::once())->method('createShow')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
@@ -114,7 +113,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
         $this->parser->expects(self::once())->method('parse')->with('foobar');
 
-        $this->diffService->getDiffFromRevision($revision);
+        $this->diffService->getDiffFromRevision($revision, new FileDiffOptions(5));
     }
 
     /**

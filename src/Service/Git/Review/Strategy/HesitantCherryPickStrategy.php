@@ -43,7 +43,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
         $batches = [];
         for ($i = 0; $i < $max; $i++) {
             if (count($revisions) === 1) {
-                $batches[] = $this->diffService->getDiffFromRevision(Arrays::first($revisions));
+                $batches[] = $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
                 break;
             }
 

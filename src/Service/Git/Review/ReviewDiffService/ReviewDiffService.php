@@ -37,7 +37,7 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
 
         if (count($revisions) === 1) {
             // get the diff for the single revision
-            return $this->diffService->getDiffFromRevision(Arrays::first($revisions));
+            return $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
         }
 
         /** @var ReviewDiffStrategyInterface $strategy */

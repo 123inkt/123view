@@ -30,21 +30,26 @@ class GitShowCommandBuilderTest extends AbstractTestCase
 
     /**
      * @covers ::startPoint
+     * @covers ::unified
      * @covers ::file
      * @covers ::build
      */
     public function testBuild(): void
     {
-        static::assertSame(['git', 'show', 'foobar', 'hash:file'], $this->builder->startPoint('foobar')->file('hash', 'file')->build());
+        static::assertSame(
+            ['git', 'show', 'foobar', '--unified=5', 'hash:file'],
+            $this->builder->startPoint('foobar')->unified(5)->file('hash', 'file')->build()
+        );
     }
 
     /**
      * @covers ::startPoint
+     * @covers ::unified
      * @covers ::file
      * @covers ::__toString
      */
     public function testToString(): void
     {
-        static::assertSame('git show foobar hash:file', (string)$this->builder->startPoint('foobar')->file('hash', 'file'));
+        static::assertSame('git show foobar --unified=5 hash:file', (string)$this->builder->startPoint('foobar')->unified(5)->file('hash', 'file'));
     }
 }

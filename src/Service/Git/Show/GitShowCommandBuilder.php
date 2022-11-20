@@ -23,6 +23,13 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function unified(int $numberOfLines): self
+    {
+        $this->arguments['unified'] = '--unified=' . $numberOfLines;
+
+        return $this;
+    }
+
     public function file(string $hash, string $filePath): self
     {
         $this->arguments['file'] = sprintf('%s:%s', $hash, $filePath);

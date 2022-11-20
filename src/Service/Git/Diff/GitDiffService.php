@@ -13,6 +13,7 @@ use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -58,11 +59,14 @@ class GitDiffService implements LoggerAwareInterface
      * @return DiffFile[]
      * @throws RepositoryException|ParseException
      */
-    public function getDiffFromRevision(Revision $revision): array
+    public function getDiffFromRevision(Revision $revision, ?FileDiffOptions $options = null): array
     {
         /** @var Repository $repository */
         $repository     = $revision->getRepository();
-        $commandBuilder = $this->builderFactory->createShow()->startPoint((string)$revision->getCommitHash());
+        $commandBuilder = $this->builderFactory
+            ->createShow()
+            ->unified($options?->unifiedDiffLines ?? 10)
+            ->startPoint((string)$revision->getCommitHash());
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
