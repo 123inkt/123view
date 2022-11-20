@@ -10,6 +10,7 @@ use Traversable;
  * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler
  * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentUpdatedMailNotificationHandler
  * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
+ * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotificationHandler
  */
 class MailNotificationHandlerProvider
 {
