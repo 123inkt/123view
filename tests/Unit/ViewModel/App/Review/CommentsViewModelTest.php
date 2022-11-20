@@ -20,8 +20,8 @@ class CommentsViewModelTest extends AbstractTestCase
     public function testGetDetachedComments(): void
     {
         $comment   = new Comment();
-        $viewModel = new CommentsViewModel([], [$comment], []);
-        static::assertSame([$comment], $viewModel->getDetachedComments());
+        $viewModel = new CommentsViewModel([], [$comment]);
+        static::assertSame([$comment], $viewModel->detachedComments);
     }
 
     /**
@@ -32,13 +32,10 @@ class CommentsViewModelTest extends AbstractTestCase
         $lineA = new DiffLine(DiffLine::STATE_UNCHANGED, []);
         $lineB = new DiffLine(DiffLine::STATE_CHANGED, []);
 
-        $lineReference = 'foobar:1:2:3';
-
         $comment  = new Comment();
-        $comments = [$lineReference => [$comment]];
-        $lines    = [spl_object_hash($lineA) => $lineReference];
+        $comments = [spl_object_hash($lineA) => [$comment]];
 
-        $viewModel = new CommentsViewModel($comments, [], $lines);
+        $viewModel = new CommentsViewModel($comments, []);
         static::assertSame([$comment], $viewModel->getComments($lineA));
         static::assertSame([], $viewModel->getComments($lineB));
     }

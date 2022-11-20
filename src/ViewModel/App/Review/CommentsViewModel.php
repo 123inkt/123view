@@ -11,18 +11,9 @@ class CommentsViewModel
     /**
      * @param array<string, Comment[]> $comments
      * @param Comment[]                $detachedComments
-     * @param array<string, string>    $diffLines
      */
-    public function __construct(private readonly array $comments, private readonly array $detachedComments, private readonly array $diffLines)
+    public function __construct(private readonly array $comments, public readonly array $detachedComments)
     {
-    }
-
-    /**
-     * @return Comment[]
-     */
-    public function getDetachedComments(): array
-    {
-        return $this->detachedComments;
     }
 
     /**
@@ -30,8 +21,6 @@ class CommentsViewModel
      */
     public function getComments(DiffLine $line): array
     {
-        $lineReference = $this->diffLines[spl_object_hash($line)] ?? '';
-
-        return $this->comments[$lineReference] ?? [];
+        return $this->comments[spl_object_hash($line)] ?? [];
     }
 }

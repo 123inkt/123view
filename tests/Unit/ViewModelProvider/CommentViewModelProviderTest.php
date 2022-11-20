@@ -165,6 +165,6 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
         $viewModel = $this->provider->getCommentsViewModel($review, $file);
         static::assertSame([$commentA], $viewModel->getComments($line));
-        static::assertSame([$commentB], $viewModel->getDetachedComments());
+        static::assertSame([$commentB], $viewModel->detachedComments);
     }
 }

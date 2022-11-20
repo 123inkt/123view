@@ -77,26 +77,22 @@ class CommentViewModelProvider
 
     public function getCommentsViewModel(CodeReview $review, DiffFile $file): CommentsViewModel
     {
-        $comments = $this->commentRepository->findByReview($review, (string)($file->filePathBefore ?? $file->filePathAfter));
-
-        $diffLines        = [];
+        $comments         = $this->commentRepository->findByReview($review, (string)($file->filePathBefore ?? $file->filePathAfter));
         $detachedComments = [];
         $groupedComments  = [];
 
-        // 1) group all comments by line reference
-        // 2) if line reference cant be found within the file => add to detached comments
+        // 1) fine the DiffLine for the given LineReference
+        // 2) if line exists, assign to grouped comments
+        // 3) if not, add to detached comments
         foreach ($comments as $comment) {
-            $lineReference                     = (string)$comment->getLineReference();
-            $groupedComments[$lineReference][] = $comment;
-
             $line = $this->diffFinder->findLineInFile($file, Assert::notNull($comment->getLineReference()));
             if ($line !== null) {
-                $diffLines[spl_object_hash($line)] = $lineReference;
+                $groupedComments[spl_object_hash($line)][] = $comment;
             } else {
                 $detachedComments[] = $comment;
             }
         }
 
-        return new CommentsViewModel($groupedComments, $detachedComments, $diffLines);
+        return new CommentsViewModel($groupedComments, $detachedComments);
     }
 }
