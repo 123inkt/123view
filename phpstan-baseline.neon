@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method DR\\\\GitCommitNotification\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Router/ReviewRouter.php
+
+		-
+			message: "#^Method DR\\\\GitCommitNotification\\\\Router\\\\ReviewRouter\\:\\:match\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Router/ReviewRouter.php
+
+		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with null will always evaluate to true\\.$#"
 			count: 1
 			path: tests/Unit/Utility/ArraysTest.php

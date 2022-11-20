@@ -14,8 +14,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 abstract class AbstractController extends SymfonyAbstractController
 {
     /**
-     * @param array<string, (int|string|null)> $parameters
-     * @param string[]                         $filter
+     * @param array<string, (int|string|object|null)> $parameters
+     * @param string[]                                $filter
      */
     public function refererRedirect(string $route, array $parameters = [], array $filter = []): RedirectResponse
     {
