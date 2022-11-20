@@ -19,6 +19,7 @@ use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\ReviewController
@@ -71,6 +72,21 @@ class ReviewControllerTest extends AbstractControllerTestCase
         static::assertSame('CR-123 - Repository', $data['page_title']);
         static::assertSame([$breadcrumb], $data['breadcrumbs']);
         static::assertSame($viewModel, $data['reviewModel']);
+    }
+
+    /**
+     * @covers ::redirectReviewRoute
+     */
+    public function testRedirectReviewRoute(): void
+    {
+        $request = new Request(['foo' => 'bar']);
+        $review  = new CodeReview();
+
+        $this->expectRedirectToRoute(ReviewController::class, ['review' => $review, 'foo' => 'bar'])->willReturn('url');
+
+        /** @var ReviewController $controller */
+        $controller = $this->controller;
+        $controller->redirectReviewRoute($request, $review);
     }
 
     public function getController(): AbstractController

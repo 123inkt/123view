@@ -27,9 +27,6 @@ class ReviewController extends AbstractController
     ) {
     }
 
-    /**
-     * @throws Throwable
-     */
     #[Route('app/reviews/{id<\d+>}', name: self::class . 'deprecated', methods: 'GET')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review')]

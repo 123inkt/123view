@@ -99,7 +99,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param array<string, string> $parameters
+     * @param array<string, int|string|object|null> $parameters
      *
      * @return InvocationMocker<RouterInterface>
      */
