@@ -66,7 +66,7 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $this->expectAddFlash('success', 'message');
 
         // expect redirect
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 456]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
     }
@@ -96,7 +96,7 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $this->expectAddFlash('warning', 'message');
 
         // expect redirect
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 456]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
     }

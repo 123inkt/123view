@@ -29,6 +29,6 @@ class ChangeReviewStateController extends AbstractController
 
         $this->eventService->reviewStateChanged($review, (string)$reviewState);
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
+        return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
 }

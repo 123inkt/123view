@@ -109,7 +109,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param array<string, int|string> $parameters
+     * @param array<string, int|string|object> $parameters
      */
     public function expectRefererRedirect(string $route, array $parameters = [], string $redirectTo = 'redirect'): void
     {

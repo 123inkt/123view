@@ -46,7 +46,7 @@ class BreadcrumbFactoryTest extends AbstractTestCase
         $this->urlGenerator->expects(self::exactly(2))->method('generate')
             ->withConsecutive(
                 [ReviewsController::class, ['id' => 123]],
-                [ReviewController::class, ['id' => 789]]
+                [ReviewController::class, ['review' => $review]]
             )
             ->willReturn('urlA', 'urlB');
 

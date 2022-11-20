@@ -31,7 +31,7 @@ class AddCommentReplyController extends AbstractController
         $form = $this->createForm(AddCommentReplyFormType::class, null, ['comment' => $comment]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()]);
+            return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()]);
         }
 
         /** @var array{message: string} $data */
@@ -48,6 +48,6 @@ class AddCommentReplyController extends AbstractController
 
         $this->bus->dispatch(new CommentReplyAdded((int)$comment->getReview()?->getId(), (int)$reply->getId()));
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()], ['action']);
+        return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action']);
     }
 }

@@ -56,7 +56,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $reply);
     }
@@ -84,7 +84,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $this->replyRepository->expects(self::once())->method('save')->with($reply, true);
         $this->bus->expects(self::never())->method('dispatch');
 
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $reply);
 
@@ -127,7 +127,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
                 true
             );
         $this->bus->expects(self::once())->method('dispatch')->with(new CommentReplyUpdated(123, 789, 'message'))->willReturn($this->envelope);
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $reply);
 

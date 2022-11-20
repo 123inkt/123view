@@ -48,7 +48,7 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
         $this->expectCreateForm(AddReviewerFormType::class, null, ['review' => $review])
             ->handleRequest($request)
             ->isValidWillReturn(false);
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
     }
@@ -66,7 +66,7 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isValidWillReturn(true)
             ->getDataWillReturn(['user' => null]);
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
     }
@@ -93,7 +93,7 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
         $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, true);
         $this->eventService->expects(self::once())->method('reviewerStateChanged')->with($review, CodeReviewerStateType::OPEN);
 
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
     }

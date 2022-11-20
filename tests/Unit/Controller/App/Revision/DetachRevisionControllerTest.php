@@ -83,7 +83,7 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
         $this->eventService->expects(self::once())->method('revisionsDetached')->with($review, [$revisionA]);
 
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 456]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
 

@@ -62,7 +62,7 @@ class RemoveReviewerControllerTest extends AbstractControllerTestCase
         $this->eventService->expects(self::once())->method('reviewerStateChanged')->with($review, CodeReviewerStateType::ACCEPTED);
         $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED);
 
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($review, $reviewerB);
 

@@ -36,14 +36,14 @@ class AddReviewerController extends AbstractController
         $form = $this->createForm(AddReviewerFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);
         if ($form->isValid() === false) {
-            return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
+            return $this->refererRedirect(ReviewController::class, ['review' => $review]);
         }
 
         /** @var array<string, User|null> $data */
         $data = $form->getData();
         $user = $data['user'] ?? null;
         if ($user instanceof User === false) {
-            return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
+            return $this->refererRedirect(ReviewController::class, ['review' => $review]);
         }
 
         $reviewer = $this->reviewerService->addReviewer($review, $user);
@@ -52,6 +52,6 @@ class AddReviewerController extends AbstractController
         $this->eventService->reviewerAdded($review, $reviewer, true);
         $this->eventService->reviewerStateChanged($review, $reviewerState);
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
+        return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
 }

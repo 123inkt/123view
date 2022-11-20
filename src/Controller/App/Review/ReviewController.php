@@ -25,14 +25,28 @@ class ReviewController extends AbstractController
     ) {
     }
 
+    ///**
+    // * @throws Throwable
+    // */
+    //#[Route('app/reviews/{id<\d+>}', name: self::class . 'deprecated', methods: 'GET')]
+    //#[IsGranted('IS_AUTHENTICATED_FULLY')]
+    //#[Entity('review')]
+    //public function redirectReviewRoute(Request $request, CodeReview $review): RedirectResponse
+    //{
+    //    return $this->redirectToRoute(
+    //        self::class,
+    //        ['repository' => $review->getRepository()?->getName(), 'reviewId' => $review->getProjectId()] + $request->query->all()
+    //    );
+    //}
+
     /**
      * @return array<string, string|object|Breadcrumb[]>
      * @throws Throwable
      */
-    #[Route('app/reviews/{id<\d+>}', name: self::class, methods: 'GET')]
+    #[Route('app/{repositoryName<[a-z0-9_-]+>}/review/CR-{reviewId<\d+>}', name: self::class, methods: 'GET')]
     #[Template('app/review/review.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Entity('review')]
+    #[Entity('review', expr: 'repository.findByUrl(repositoryName, reviewId)')]
     public function __invoke(ReviewRequest $request, CodeReview $review): array
     {
         $viewModel = $this->modelProvider->getViewModel($review, $request->getFilePath(), $request->getTab(), $request->getAction());

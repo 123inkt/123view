@@ -34,7 +34,7 @@ class UpdateCommentReplyController extends AbstractController
         $form = $this->createForm(EditCommentReplyFormType::class, $reply, ['reply' => $reply]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return $this->refererRedirect(ReviewController::class, ['id' => $reply->getComment()?->getReview()?->getId()]);
+            return $this->refererRedirect(ReviewController::class, ['review' => $reply->getComment()?->getReview()]);
         }
 
         $reply->setUpdateTimestamp(time());
@@ -44,6 +44,6 @@ class UpdateCommentReplyController extends AbstractController
             $this->bus->dispatch(new CommentReplyUpdated((int)$reply->getComment()?->getReview()?->getId(), (int)$reply->getId(), $originalComment));
         }
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $reply->getComment()?->getReview()?->getId()], ['action']);
+        return $this->refererRedirect(ReviewController::class, ['review' => $reply->getComment()?->getReview()], ['action']);
     }
 }

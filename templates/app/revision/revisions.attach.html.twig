@@ -22,7 +22,7 @@
 
     <div class="mt-2 pb-3 clearfix">
         <button type="submit" class="btn btn-primary" form="attach-revision-form">{{ 'attach.to.review'|trans }} CR-{{ review.projectId }}</button>
-        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {id: review.id}) }}"
+        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review}) }}"
            class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
     </div>
 
@@ -30,7 +30,7 @@
 
     <form id="attach-revision-form"
             method="post"
-          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
+          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\AttachRevisionController', {id: review}) }}"
     >
         <table class="table table-bordered table-hover rule-table">
             <thead>

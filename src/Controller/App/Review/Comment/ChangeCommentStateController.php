@@ -37,6 +37,6 @@ class ChangeCommentStateController extends AbstractController
             $this->bus->dispatch(new CommentResolved((int)$comment->getReview()?->getId(), (int)$comment->getId(), (int)$this->getUser()->getId()));
         }
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $comment->getReview()?->getId()]);
+        return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()]);
     }
 }

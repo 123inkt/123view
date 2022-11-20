@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Repository\Review;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
@@ -41,6 +42,25 @@ class CodeReviewRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findByUrl(string $repositoryName, int $reviewProjectId): ?CodeReview
+    {
+        $query = $this->createQueryBuilder('c')
+            ->innerJoin('c.repository', 'r', Join::WITH, 'r.name = :repositoryName')
+            ->where('c.projectId = :reviewProjectId')
+            ->setParameter('repositoryName', $repositoryName)
+            ->setParameter('reviewProjectId', $reviewProjectId)
+            ->setMaxResults(1)
+            ->getQuery();
+
+        /** @var CodeReview|null $review */
+        $review = $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+
+        return $review;
     }
 
     /**

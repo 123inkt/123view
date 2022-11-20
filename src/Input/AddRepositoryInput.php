@@ -49,7 +49,7 @@ class AddRepositoryInput extends AbstractValidatedInput
     {
         return (new ValidationRules())
             ->addArgumentConstraint('repository', 'required|filled|string')
-            ->addOptionConstraint('name', 'filled|string')
+            ->addOptionConstraint('name', 'filled|string|alpha_dash')
             ->addOptionConstraint('upsource', 'filled|string')
             ->addOptionConstraint('gitlab', 'int|min:1');
     }

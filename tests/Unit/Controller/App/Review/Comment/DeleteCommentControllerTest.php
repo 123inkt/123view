@@ -41,7 +41,7 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
 
         $this->expectedDenyAccessUnlessGranted(CommentVoter::DELETE, $comment);
         $this->commentRepository->expects(self::once())->method('remove')->with($comment, true);
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 456]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         static::assertInstanceOf(RedirectResponse::class, ($this->controller)($comment));
     }

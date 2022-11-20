@@ -15,6 +15,7 @@ use DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotification
 use DR\GitCommitNotification\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler;
+use DR\GitCommitNotification\Router\ReviewRouter;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
@@ -127,6 +128,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
+    $services->set(ReviewRouter::class)->decorate('router')->args([service('.inner')]);
 
     // Mail Notification Message handlers
     $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler');

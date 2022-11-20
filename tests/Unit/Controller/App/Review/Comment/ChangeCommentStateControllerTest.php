@@ -59,7 +59,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
         $this->bus->expects(self::once())->method('dispatch')->with(new CommentResolved(123, 456, 789))->willReturn($this->envelope);
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $comment);
     }
@@ -81,7 +81,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
         $this->bus->expects(self::never())->method('dispatch');
-        $this->expectRefererRedirect(ReviewController::class, ['id' => 123]);
+        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $comment);
     }

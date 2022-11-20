@@ -65,6 +65,6 @@ class AttachRevisionController extends AbstractController
             );
         }
 
-        return $this->refererRedirect(ReviewController::class, ['id' => $review->getId()]);
+        return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
 }
