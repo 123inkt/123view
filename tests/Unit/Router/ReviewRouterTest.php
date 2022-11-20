@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
@@ -97,6 +98,22 @@ class ReviewRouterTest extends AbstractTestCase
             ->willReturn('url');
 
         $actualUrl = $this->reviewRouter->generate(ReviewController::class, ['review' => $review]);
+        static::assertSame('url', $actualUrl);
+    }
+
+    /**
+     * @covers ::generate
+     */
+    public function testGenerateReviewController(): void
+    {
+        $params        = ['foo' => 'bar'];
+        $referenceType = UrlGeneratorInterface::RELATIVE_PATH;
+
+        $this->router->expects(self::once())->method('generate')
+            ->with('route', $params, $referenceType)
+            ->willReturn('url');
+
+        $actualUrl = $this->reviewRouter->generate('route', $params, $referenceType);
         static::assertSame('url', $actualUrl);
     }
 
