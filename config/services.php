@@ -8,6 +8,12 @@ use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
+use DR\GitCommitNotification\MessageHandler\Mail\CommentAddedMailNotificationHandler;
+use DR\GitCommitNotification\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
+use DR\GitCommitNotification\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
+use DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
+use DR\GitCommitNotification\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
+use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
@@ -117,11 +123,19 @@ return static function (ContainerConfigurator $container): void {
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
-
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
+
     $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
 
+    // Mail Notification Message handlers
+    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler');
+    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
+    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler');
+    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
+    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
+    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
+
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 };

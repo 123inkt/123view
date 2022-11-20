@@ -9,10 +9,8 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    // make these service public to allow mocking in E2E test
-    $services->set(RuleRepository::class)->public();
-    $services->set(ExternalLinkRepository::class)->public();
-
-    // custom register GitRepositoryService with cache dir
-    $services->set(CacheableGitRepositoryService::class)->public();
+    // make these services public to allow mocking in E2E/Integration test
+    $services->get(RuleRepository::class)->public();
+    $services->get(ExternalLinkRepository::class)->public();
+    $services->get(CacheableGitRepositoryService::class)->public();
 };

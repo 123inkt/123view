@@ -86,13 +86,6 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleDelayedMessage
-     */
-    public function testHandleDelayedMessage(): void
-    {
-    }
-
-    /**
      * @covers ::getHandledMessages
      */
     public function testGetHandledMessages(): void
@@ -108,4 +101,10 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @covers ::handleDelayedMessage
+     */
+    public function testHandleCommentAdded(): void
+    {
+    }
 }
