@@ -33,9 +33,8 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
      */
     public function delayMessage(MailNotificationInterface $message): void
     {
-        $this->logger?->info(
-            sprintf('MailNotificationMessageHandler: delay message for %d seconds: %s', $this->mailNotificationDelay / 1000, get_class($message))
-        );
+        $logMessage = 'MailNotificationMessageHandler: delay message for {delay} seconds: {class}';
+        $this->logger?->info($logMessage, ['delay' => $this->mailNotificationDelay / 1000, 'class' => get_class($message)]);
 
         $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp($this->mailNotificationDelay)]));
     }
