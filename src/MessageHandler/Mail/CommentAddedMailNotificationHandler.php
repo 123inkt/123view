@@ -44,7 +44,7 @@ class CommentAddedMailNotificationHandler implements MailNotificationHandlerInte
 
         // update status and save
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
-        $this->commentRepository->save($comment);
+        $this->commentRepository->save($comment, true);
     }
 
     public static function accepts(): string
