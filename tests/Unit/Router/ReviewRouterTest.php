@@ -10,6 +10,8 @@ use DR\GitCommitNotification\Router\ReviewRouter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -28,7 +30,7 @@ class ReviewRouterTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->router       = $this->createMock(RouterInterface::class);
+        $this->router       = $this->createMock(Router::class);
         $this->reviewRouter = new ReviewRouter($this->router);
     }
 
@@ -126,5 +128,26 @@ class ReviewRouterTest extends AbstractTestCase
         $result   = ['foo' => 'bar'];
         $this->router->expects(self::once())->method('match')->with($pathinfo)->willReturn($result);
         static::assertSame($result, $this->reviewRouter->match($pathinfo));
+    }
+
+    /**
+     * @covers ::matchRequest
+     */
+    public function testMatchRequest(): void
+    {
+        $request = new Request();
+        $result  = ['foo' => 'bar'];
+        $this->router->expects(self::once())->method('matchRequest')->with($request)->willReturn($result);
+        static::assertSame($result, $this->reviewRouter->matchRequest($request));
+    }
+
+    /**
+     * @covers ::warmUp
+     */
+    public function testWarmUp(): void
+    {
+        $result = ['foo' => 'bar'];
+        $this->router->expects(self::once())->method('warmUp')->with('cache-dir')->willReturn($result);
+        static::assertSame($result, $this->reviewRouter->warmUp('cache-dir'));
     }
 }

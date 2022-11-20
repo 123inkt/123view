@@ -5,14 +5,17 @@ namespace DR\GitCommitNotification\Router;
 
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 
-class ReviewRouter implements RouterInterface
+class ReviewRouter implements RouterInterface, WarmableInterface, RequestMatcherInterface
 {
-    public function __construct(private readonly RouterInterface $router)
+    public function __construct(private readonly RouterInterface&WarmableInterface&RequestMatcherInterface $router)
     {
     }
 
@@ -56,5 +59,21 @@ class ReviewRouter implements RouterInterface
     public function match(string $pathinfo): array
     {
         return $this->router->match($pathinfo);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function matchRequest(Request $request): array
+    {
+        return $this->router->matchRequest($request);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function warmUp(string $cacheDir): array
+    {
+        return $this->router->warmUp($cacheDir);
     }
 }
