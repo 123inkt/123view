@@ -42,7 +42,7 @@ class ReviewController extends AbstractController
      * @return array<string, string|object|Breadcrumb[]>
      * @throws Throwable
      */
-    #[Route('app/{repositoryName<[a-z0-9_-]+>}/review/cr-{reviewId<\d+>}', name: self::class, methods: 'GET')]
+    #[Route('app/{repositoryName<[\w-]+>}/review/cr-{reviewId<\d+>}', name: self::class, methods: 'GET')]
     #[Template('app/review/review.html.twig')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Entity('review', expr: 'repository.findByUrl(repositoryName, reviewId)')]
