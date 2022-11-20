@@ -15,7 +15,7 @@ use DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel;
 class CommentsViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::getDetachedComments
+     * @covers ::__construct
      */
     public function testGetDetachedComments(): void
     {
