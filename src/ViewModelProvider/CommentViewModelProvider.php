@@ -82,14 +82,12 @@ class CommentViewModelProvider
         $diffLines        = [];
         $detachedComments = [];
         $groupedComments  = [];
-        foreach ($comments as $comment) {
-            $lineReference = (string)$comment->getLineReference();
 
+        // 1) group all comments by line reference
+        // 2) if line reference cant be found within the file => add to detached comments
+        foreach ($comments as $comment) {
+            $lineReference                     = (string)$comment->getLineReference();
             $groupedComments[$lineReference][] = $comment;
-            if (isset($diffLines[$lineReference]) !== false) {
-                $detachedComments[] = $comment;
-                continue;
-            }
 
             $line = $this->diffFinder->findLineInFile($file, Assert::notNull($comment->getLineReference()));
             if ($line !== null) {
