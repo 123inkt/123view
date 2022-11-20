@@ -6,12 +6,9 @@ namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
 use DR\GitCommitNotification\Message\Comment\CommentAdded;
 use DR\GitCommitNotification\Message\Delay\DelayableMessage;
 use DR\GitCommitNotification\Message\MailNotificationInterface;
+use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerInterface;
+use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Service\Mail\CommentMailService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
@@ -26,34 +23,18 @@ use Throwable;
  */
 class MailNotificationMessageHandlerTest extends AbstractTestCase
 {
-    private CommentMailService&MockObject     $mailService;
-    private CommentRepository&MockObject      $commentRepository;
-    private CommentReplyRepository&MockObject $replyRepository;
-    private UserRepository&MockObject         $userRepository;
-    private CommentMentionService&MockObject  $mentionService;
-    private MessageBusInterface&MockObject    $bus;
-    private Envelope                          $envelope;
-    private MailNotificationMessageHandler    $handler;
+    private MailNotificationHandlerProvider&MockObject $handlerProvider;
+    private MessageBusInterface&MockObject             $bus;
+    private Envelope                                   $envelope;
+    private MailNotificationMessageHandler             $handler;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope          = new Envelope(new stdClass(), []);
-        $this->mailService       = $this->createMock(CommentMailService::class);
-        $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->replyRepository   = $this->createMock(CommentReplyRepository::class);
-        $this->userRepository    = $this->createMock(UserRepository::class);
-        $this->mentionService    = $this->createMock(CommentMentionService::class);
-        $this->bus               = $this->createMock(MessageBusInterface::class);
-        $this->handler           = new MailNotificationMessageHandler(
-            $this->mailService,
-            $this->commentRepository,
-            $this->replyRepository,
-            $this->userRepository,
-            $this->mentionService,
-            $this->bus,
-            1000
-        );
+        $this->envelope        = new Envelope(new stdClass(), []);
+        $this->handlerProvider = $this->createMock(MailNotificationHandlerProvider::class);
+        $this->bus             = $this->createMock(MessageBusInterface::class);
+        $this->handler         = new MailNotificationMessageHandler($this->handlerProvider, $this->bus, 1000);
     }
 
     /**
@@ -103,8 +84,27 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
 
     /**
      * @covers ::handleDelayedMessage
+     * @throws Throwable
      */
-    public function testHandleCommentAdded(): void
+    public function testHandleDelayedMessageUnknownHandlerShouldSkip(): void
     {
+        $this->handlerProvider->expects(self::once())->method('getHandler')->with(stdClass::class)->willReturn(null);
+
+        $this->handler->handleDelayedMessage(new DelayableMessage(new stdClass()));
+    }
+
+    /**
+     * @covers ::handleDelayedMessage
+     * @throws Throwable
+     */
+    public function testHandleDelayedMessage(): void
+    {
+        $commentAdded        = new CommentAdded(1, 2);
+        $notificationHandler = $this->createMock(MailNotificationHandlerInterface::class);
+
+        $this->handlerProvider->expects(self::once())->method('getHandler')->with(CommentAdded::class)->willReturn($notificationHandler);
+        $notificationHandler->expects(self::once())->method('handle')->with($commentAdded);
+
+        $this->handler->handleDelayedMessage(new DelayableMessage($commentAdded));
     }
 }
