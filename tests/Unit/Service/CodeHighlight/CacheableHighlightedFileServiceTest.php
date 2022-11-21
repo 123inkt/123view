@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeHighlight;
 
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
 use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\GitCommitNotification\Service\CodeHighlight\HighlightedFileService;
@@ -32,23 +32,23 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromRevision
+     * @covers ::fromDiffFile
      * @throws InvalidArgumentException
      */
     public function testGetHighlightedFile(): void
     {
-        $repository = new Repository();
+        $diffFile                = new DiffFile();
+        $diffFile->filePathAfter = 'filePath';
+        $diffFile->hashStart     = 'start';
+        $diffFile->hashEnd       = 'end';
+        $repository              = new Repository();
         $repository->setId(123);
-        $revision = new Revision();
-        $revision->setRepository($repository);
-        $revision->setCommitHash('hash');
-        $filePath = 'filePath';
-        $hash     = hash('sha256', 'highlight:123-hash-filePath');
-        $file     = new HighlightedFile($filePath, []);
+        $hash = hash('sha256', 'highlight:fromDiffFile:123-filePath-startend');
+        $file = new HighlightedFile($diffFile->filePathAfter, []);
 
         $this->cache->expects(self::once())->method('get')->with($hash)->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->fileService->expects(self::once())->method('fromRevision')->with($revision, $filePath)->willReturn($file);
+        $this->fileService->expects(self::once())->method('fromDiffFile')->with($diffFile)->willReturn($file);
 
-        static::assertSame($file, $this->service->fromRevision($revision, $filePath));
+        static::assertSame($file, $this->service->fromDiffFile($repository, $diffFile));
     }
 }

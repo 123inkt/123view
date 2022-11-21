@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Git\Diff;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -183,6 +184,21 @@ class DiffFileTest extends AbstractTestCase
         $file->filePathBefore = 'different';
         $file->filePathAfter  = 'filename';
         static::assertTrue($file->isRename());
+    }
+
+    /**
+     * @covers ::getLines
+     */
+    public function testGetLines(): void
+    {
+        $lineA        = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'line 1')]);
+        $lineB        = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line 2')]);
+        $block        = new DiffBlock();
+        $block->lines = [$lineA, $lineB];
+        $file         = new DiffFile();
+        $file->addBlock($block);
+
+        static::assertSame(['line 2'], $file->getLines());
     }
 
     /**

@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Diff\DiffBlock
- * @covers ::__construct
  */
 class DiffBlockTest extends AbstractTestCase
 {
