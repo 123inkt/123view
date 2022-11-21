@@ -1,109 +1,113 @@
 .diff-file__file-change-state {
-  display: inline-block;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 5px;
-  margin-right: 3px;
-  vertical-align: middle;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 5px;
+    margin-right: 3px;
+    vertical-align: middle;
 }
 
 .diff-file__directory-name {
-  color: #999999;
-  font-size: 12px
+    color: #999999;
+    font-size: 12px
 }
 
 .diff-file__file-rename {
-  color: #999999;
-  font-size: 12px;
-  font-style: italic;
+    color: #999999;
+    font-size: 12px;
+    font-style: italic;
 }
 
 .diff-file__file-diff {
-  border: 1px solid #E9E9E9;
-  border-radius: 2px;
-  margin-bottom: 16px;
-  overflow: auto;
+    border: 1px solid #E9E9E9;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: auto;
 }
 
 .diff-file__block-spacer {
-  background-color: #F8F8F8;
-  color: #CCC;
-  padding-left: 4px;
+    background-color: #F8F8F8;
+    color: #CCC;
+    padding-left: 4px;
 }
 
 .diff-file__diff-block {
-  margin: 0;
+    margin: 0;
 }
 
 .diff-file__diff-line {
-  cursor: default;
-  color: #0C0C0D;
-  font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
-  font-size: 13px;
-  line-height: 20px;
-  white-space: pre;
+    cursor: default;
+    color: #0C0C0D;
+    font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+    font-size: 13px;
+    line-height: 20px;
+    white-space: pre;
+}
+
+.diff-file__diff-line-hidden {
+    display: none;
 }
 
 .diff-file__line-gutter {
-  border-right: 1px solid #CCC;
-  color: rgba(0, 0, 0, 0.3);
-  display: inline-block;
-  position: relative;
+    border-right: 1px solid #CCC;
+    color: rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    position: relative;
 }
 
 .diff-file__add-comment {
-  background: #FFFEE0;
-  bottom: 0;
-  color: #FF008C;
-  display: none;
-  left: 0;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: 0;
-  cursor: pointer;
+    background: #FFFEE0;
+    bottom: 0;
+    color: #FF008C;
+    display: none;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    cursor: pointer;
 }
 
 .diff-file__line-numbers {
-  margin-right: 2px;
-  padding: 0 4px;
+    margin-right: 2px;
+    padding: 0 4px;
 }
 
 .diff-file__diff-change-state {
-  margin: 0 5px;
+    margin: 0 5px;
 }
 
 .diff-file__line-change-added {
-  background: #EAFFEA;
+    background: #EAFFEA;
 }
 
 .diff-file__line-change-removed {
-  background: #FFECEC;
+    background: #FFECEC;
 }
 
 .diff-file__line-change-changed {
-  background: #EAF0FE;
+    background: #EAF0FE;
 }
 
 .diff-file__diff-line:hover {
-  background: #FFFEE0;
+    background: #FFFEE0;
 }
 
 .diff-file__diff-line:hover .diff-file__add-comment {
-  display: block;
+    display: block;
 }
 
 .diff-file__change-added {
-  background-color: #A6F3A6;
+    background-color: #A6F3A6;
 }
 
 .diff-file__change-removed {
-  background-color: #F8CBCB;
+    background-color: #F8CBCB;
 }
 
 .diff-file__code-keyword {
-  color: #000080;
-  font-weight: 600;
+    color: #000080;
+    font-weight: 600;
 }
 
 .diff-file__code-string {
@@ -116,12 +120,12 @@
 }
 
 .diff-file__comment_form {
-  padding: 10px 10px 5px 10px;
-  background: #FFFEE0;
+    padding: 10px 10px 5px 10px;
+    background: #FFFEE0;
 }
 
 .diff-file__comment_textarea {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .diff-file__comment-mention {

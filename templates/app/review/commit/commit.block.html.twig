@@ -1,8 +1,10 @@
-<div class="diff-file__diff-block">
-    {%- set line_number = 1 %}
-    {%- set line_offset = 0 -%}
+{%- set prev_line_visible = null -%}
 
-    {%- for line in block.lines -%}
+<div class="diff-file__diff-block">
+    {%- set line_number  = 1 -%}
+    {%- set line_offset  = 0 -%}
+
+    {%- for line_index, line in block.lines -%}
         {#- determine line_number and line_number offset -#}
         {%- if line.lineNumberBefore == null -%}
             {%- set line_offset = line_offset + 1 -%}
@@ -25,7 +27,14 @@
             {%- set line_style = 'diff-file__line-change-changed' -%}
         {%- endif -%}
 
-        <div class="diff-file__diff-line {{ line_style }}">
+        {%- set line_visible = block.isLineVisible(line_index, 8) ? '' : 'diff-file__diff-line-hidden' -%}
+
+        {%- if prev_line_visible != null and line_visible != prev_line_visible -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig'-%}
+        {%- endif -%}
+        {%- set prev_line_visible = line_visible -%}
+
+        <div class="diff-file__diff-line {{ line_style }} {{ line_visible }}">
             {#- gutter -#}
             <span class="diff-file__line-gutter"
                   data-role="line-add-comment"

@@ -30,16 +30,8 @@
         {%- endfor -%}
 
         <div class="diff-file__file-diff">
-            {%- if file.modified -%}
-                {%- include 'app/review/commit/commit.block.spacer.html.twig' -%}
-            {%- endif -%}
-
             {%- for block in file.blocks -%}
                 {%- include 'app/review/commit/commit.block.html.twig' -%}
-
-                {%- if file.modified -%}
-                    {%- include 'app/review/commit/commit.block.spacer.html.twig' -%}
-                {%- endif -%}
             {%- endfor -%}
         </div>
     {% else %}
