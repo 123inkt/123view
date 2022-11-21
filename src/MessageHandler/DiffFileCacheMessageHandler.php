@@ -55,8 +55,15 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
                 continue;
             }
 
-            $this->fileService->getHighlightedFile($revision, $file->getPathname());
-            $this->logger?->info('DiffFileCacheMessageHandler: file highlight cache warmed up for {file}', ['file' => $file->getPathname()]);
+            try {
+                $this->fileService->getHighlightedFile($revision, $file->getPathname());
+                $this->logger?->info('DiffFileCacheMessageHandler: file highlight cache warmed up for {file}', ['file' => $file->getPathname()]);
+            } catch (Throwable $e) {
+                $this->logger?->notice(
+                    'DiffFileCacheMessageHandler: failed to highlight: {file}',
+                    ['file' => $file->getPathname(), 'exception' => $e]
+                );
+            }
         }
     }
 
