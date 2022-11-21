@@ -27,14 +27,14 @@
             {%- set line_style = 'diff-file__line-change-changed' -%}
         {%- endif -%}
 
-        {%- set line_visible = block.isLineVisible(line_index, 8) ? '' : 'diff-file__diff-line-hidden' -%}
+        {%- set line_visible = block.isLineVisible(line_index, 8) -%}
 
-        {%- if prev_line_visible != null and line_visible != prev_line_visible -%}
+        {%- if prev_line_visible is not null and line_visible != prev_line_visible -%}
             {%- include 'app/review/commit/commit.block.spacer.html.twig'-%}
         {%- endif -%}
         {%- set prev_line_visible = line_visible -%}
 
-        <div class="diff-file__diff-line {{ line_style }} {{ line_visible }}">
+        <div class="diff-file__diff-line {{ line_style }}{{ line_visible ? '' : ' diff-file__diff-line-hidden' }}">
             {#- gutter -#}
             <span class="diff-file__line-gutter"
                   data-role="line-add-comment"
