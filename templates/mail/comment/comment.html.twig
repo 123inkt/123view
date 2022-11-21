@@ -13,8 +13,8 @@
 
             <div class="comment__author_and_time">
                 <span class="comment__author">{{ comment.user.name }}</span>
-                <span class="comment__datetime" title="{{ comment.updateTimestamp|date }}">
-                    {{- ' ' ~ 'on'|trans }} {{ comment.updateTimestamp|date('M j, H:i') -}}
+                <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
+                    {{- ' ' ~ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') -}}
                 </span>
             </div>
 

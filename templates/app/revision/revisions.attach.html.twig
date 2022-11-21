@@ -50,7 +50,7 @@
                     <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
                     <td class="fw-bold">{{ revision.title|external_links }}</td>
                     <td>{{ revision.authorName }}</td>
-                    <td>{{ revision.createTimestamp|date('M j, H:i') }}</td>
+                    <td>{{ revision.createTimestamp|format_datetime('short', 'short') }}</td>
                 </tr>
             {%- endfor -%}
             <tbody>

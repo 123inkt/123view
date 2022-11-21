@@ -15,7 +15,7 @@
             <div class="review-revision--title-author">
                 <div class="text-primary">{{ revision.title }}</div>
                 <div class="text-secondary review-revision--author-time" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
-                    {{ revision.authorName }} - {{ revision.createTimestamp|date('M j, H:i') }}
+                    {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
                 </div>
             </div>
             <small class="text-muted review-revision--commit-hash" title="{{ revision.commitHash }}">

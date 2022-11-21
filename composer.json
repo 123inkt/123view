@@ -71,6 +71,8 @@
         "symfony/yaml": "^6.1",
         "thenetworg/oauth2-azure": "^2.0",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
+        "twig/extra-bundle": "^3.4",
+        "twig/intl-extra": "^3.4",
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
@@ -100,6 +102,11 @@
     },
     "replace": {
         "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-intl-icu": "*",
+        "symfony/polyfill-intl-grapheme": "*",
+        "symfony/polyfill-intl-messageformatter": "*",
+        "symfony/polyfill-intl-normalizer": "*",
+        "symfony/polyfill-intl-idn": "*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php72": "*",

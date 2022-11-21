@@ -17,7 +17,7 @@
             <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
             <td class="fw-bold text-nowrap overflow-hidden" style="max-width: 600px">{{ revision.title|external_links }}</td>
             <td title="{{ revision.authorEmail }}">{{ revision.authorName }}</td>
-            <td>{{ revision.createTimestamp|date('M j, H:i') }}</td>
+            <td>{{ revision.createTimestamp|format_datetime('short', 'short') }}</td>
             <td>
                 {% if revision.review != null %}
                     <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: revision.review}) }}">

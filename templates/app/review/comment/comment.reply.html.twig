@@ -1,8 +1,8 @@
 <div class="comment__reply">
     <div class="comment__author_and_time">
         <span class="comment__author">{{ reply.user.name }}</span>
-        <span class="comment__datetime" title="{{ reply.updateTimestamp|date }}">
-            {{ 'on'|trans }} {{ reply.updateTimestamp|date('M j, H:i') }}
+        <span class="comment__datetime" title="{{ reply.updateTimestamp|format_datetime('full', 'full') }}">
+            {{ 'on'|trans }} {{ reply.updateTimestamp|format_datetime('short', 'short') }}
         </span>
         <span class="comment__edit">
             <a href="javascript:"
