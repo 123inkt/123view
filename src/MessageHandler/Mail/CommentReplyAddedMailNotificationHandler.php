@@ -46,7 +46,7 @@ class CommentReplyAddedMailNotificationHandler implements MailNotificationHandle
 
         // update status and save
         $reply->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
-        $this->replyRepository->save($reply);
+        $this->replyRepository->save($reply, true);
     }
 
     public static function accepts(): string
