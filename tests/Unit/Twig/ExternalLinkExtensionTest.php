@@ -47,7 +47,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $link = new ExternalLink();
         $link->setPattern('JB{}');
         $link->setUrl('https://mycompany.com/jira/{}');
-        $expect = 'A commit message for <a href="https://mycompany.com/jira/1234" class="external-link">JB1234</a> ticket.';
+        $expect = 'A commit message for <a href="https://mycompany.com/jira/1234" class="external-link" target="_blank">JB1234</a> ticket.';
 
         $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$link]);
 
@@ -69,8 +69,8 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $linkB = new ExternalLink();
         $linkB->setPattern('T#{}');
         $linkB->setUrl('https://mycompany.com/jira/{}');
-        $expect = 'F#123 <a href="https://mycompany.com/jira/456" class="external-link">US#456</a> ';
-        $expect .= '<a href="https://mycompany.com/jira/789" class="external-link">T#789</a> A random task';
+        $expect = 'F#123 <a href="https://mycompany.com/jira/456" class="external-link" target="_blank">US#456</a> ';
+        $expect .= '<a href="https://mycompany.com/jira/789" class="external-link" target="_blank">T#789</a> A random task';
 
         $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$linkA, $linkB]);
 
@@ -89,8 +89,8 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $link = new ExternalLink();
         $link->setPattern('JB{}');
         $link->setUrl('https://mycompany.com/jira/{}');
-        $expect = 'A commit message for <a href="https://mycompany.com/jira/1234" class="external-link">JB1234</a> and ';
-        $expect .= '<a href="https://mycompany.com/jira/4567" class="external-link">JB4567</a> ticket.';
+        $expect = 'A commit message for <a href="https://mycompany.com/jira/1234" class="external-link" target="_blank">JB1234</a> and ';
+        $expect .= '<a href="https://mycompany.com/jira/4567" class="external-link" target="_blank">JB4567</a> ticket.';
 
         $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$link]);
 

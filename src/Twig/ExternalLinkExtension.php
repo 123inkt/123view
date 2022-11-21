@@ -48,7 +48,7 @@ class ExternalLinkExtension extends AbstractExtension
                     static function (array $matches) use ($url) {
                         $url = htmlspecialchars(str_replace('{}', urlencode($matches[1]), $url), ENT_QUOTES);
 
-                        return sprintf('<a href="%s" class="external-link">%s</a>', $url, $matches[0]);
+                        return sprintf('<a href="%s" class="external-link" target="_blank">%s</a>', $url, $matches[0]);
                     },
                     $html
                 )
