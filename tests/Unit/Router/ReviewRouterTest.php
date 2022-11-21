@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Router\ReviewRouter
@@ -24,8 +23,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class ReviewRouterTest extends AbstractTestCase
 {
-    private RouterInterface&MockObject $router;
-    private ReviewRouter               $reviewRouter;
+    private Router&MockObject $router;
+    private ReviewRouter      $reviewRouter;
 
     public function setUp(): void
     {
