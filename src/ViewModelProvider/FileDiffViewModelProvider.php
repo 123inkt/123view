@@ -41,7 +41,7 @@ class FileDiffViewModelProvider
 
         // create highlighted file
         if ($selectedFile->isDeleted() === false) {
-            $highlightedFile = $this->hfService->getHighlightedFile(Assert::notFalse($review->getRevisions()->last()), $selectedFile->getPathname());
+            $highlightedFile = $this->hfService->fromDiffFile(Assert::notNull($review->getRepository()), $selectedFile);
             $viewModel->setHighlightedFile($highlightedFile);
         }
 

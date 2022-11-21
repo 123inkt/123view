@@ -32,7 +32,7 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getHighlightedFile
+     * @covers ::fromRevision
      * @throws InvalidArgumentException
      */
     public function testGetHighlightedFile(): void
@@ -47,8 +47,8 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
         $file     = new HighlightedFile($filePath, []);
 
         $this->cache->expects(self::once())->method('get')->with($hash)->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->fileService->expects(self::once())->method('getHighlightedFile')->with($revision, $filePath)->willReturn($file);
+        $this->fileService->expects(self::once())->method('fromRevision')->with($revision, $filePath)->willReturn($file);
 
-        static::assertSame($file, $this->service->getHighlightedFile($revision, $filePath));
+        static::assertSame($file, $this->service->fromRevision($revision, $filePath));
     }
 }

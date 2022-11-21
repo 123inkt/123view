@@ -143,6 +143,24 @@ class DiffFile
     }
 
     /**
+     * @return string[]
+     */
+    public function getLines(): array
+    {
+        $lines = [];
+        foreach ($this->blocks as $block) {
+            foreach ($block->lines as $line) {
+                if ($line->state === DiffLine::STATE_REMOVED) {
+                    continue;
+                }
+                $lines[] = $line->getLine([DiffChange::REMOVED]);
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
      * For the given block of changes, determine the maximum string length of the line numbers.
      *
      * @param bool $before if true, take the `before` line numbers, `after` otherwise.

@@ -24,11 +24,16 @@ class DiffLine
         $this->changes = new DiffChangeCollection($changes);
     }
 
-    public function getLine(): string
+    /**
+     * @param int[] $exclude
+     */
+    public function getLine(?array $exclude = null): string
     {
         $result = [];
         foreach ($this->changes->toArray() as $change) {
-            $result[] = $change->code;
+            if ($exclude === null || in_array($change->type, $exclude, true) === false) {
+                $result[] = $change->code;
+            }
         }
 
         return implode('', $result);

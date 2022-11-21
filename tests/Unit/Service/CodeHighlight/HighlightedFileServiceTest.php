@@ -38,7 +38,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getHighlightedFile
+     * @covers ::fromRevision
      * @throws Exception
      */
     public function testGetHighlightedFileUnknownLanguage(): void
@@ -52,11 +52,11 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $this->highlighter->expects(self::never())->method('highlight');
         $this->splitter->expects(self::never())->method('split');
 
-        static::assertSame(["highlighted", "data"], $this->service->getHighlightedFile($revision, $filePath)->lines);
+        static::assertSame(["highlighted", "data"], $this->service->fromRevision($revision, $filePath)->lines);
     }
 
     /**
-     * @covers ::getHighlightedFile
+     * @covers ::fromRevision
      * @throws Exception
      */
     public function testGetHighlightedFile(): void
@@ -72,7 +72,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $this->highlighter->expects(self::once())->method('highlight')->with('xml', 'file-data')->willReturn($result);
         $this->splitter->expects(self::once())->method('split')->with('highlighted-data')->willReturn(['highlighted', 'data']);
 
-        $actual   = $this->service->getHighlightedFile($revision, $filePath);
+        $actual   = $this->service->fromRevision($revision, $filePath);
         $expected = new HighlightedFile($filePath, ['highlighted', 'data']);
         static::assertEquals($expected, $actual);
     }

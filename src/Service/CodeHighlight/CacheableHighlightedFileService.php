@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\CodeHighlight;
 
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
 use DR\GitCommitNotification\Utility\Assert;
@@ -23,13 +25,29 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
     /**
      * @throws Exception|InvalidArgumentException
      */
-    public function getHighlightedFile(Revision $revision, string $filePath): HighlightedFile
+    public function fromDiffFile(Repository $repository, DiffFile $diffFile): HighlightedFile
+    {
+        $filePath = $diffFile->getPathname();
+        $hashes   = $diffFile->hashStart . $diffFile->hashEnd;
+
+        $key = hash(
+            'sha256',
+            sprintf('highlight:fromDiffFile:%d-%s-%s', Assert::notNull($repository->getId()), $filePath, $hashes)
+        );
+
+        return $this->revisionCache->get($key, fn() => $this->fileService->fromDiffFile($diffFile));
+    }
+
+    /**
+     * @throws Exception|InvalidArgumentException
+     */
+    public function fromRevision(Revision $revision, string $filePath): HighlightedFile
     {
         $key = hash(
             'sha256',
-            sprintf('highlight:%d-%s-%s', Assert::notNull($revision->getRepository())->getId(), $revision->getCommitHash(), $filePath)
+            sprintf('highlight:fromRevision:%d-%s-%s', Assert::notNull($revision->getRepository())->getId(), $revision->getCommitHash(), $filePath)
         );
 
-        return $this->revisionCache->get($key, fn() => $this->fileService->getHighlightedFile($revision, $filePath));
+        return $this->revisionCache->get($key, fn() => $this->fileService->fromRevision($revision, $filePath));
     }
 }

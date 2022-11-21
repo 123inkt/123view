@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -46,17 +47,16 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
             return;
         }
 
-        $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray());
+        $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray(), new FileDiffOptions(9999999));
         $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);
 
-        $revision = Assert::notFalse($revisions->last());
         foreach ($files as $file) {
             if ($file->isDeleted()) {
                 continue;
             }
 
             try {
-                $this->fileService->getHighlightedFile($revision, $file->getPathname());
+                $this->fileService->fromDiffFile(Assert::notNull($review->getRepository()), $file);
                 $this->logger?->info('DiffFileCacheMessageHandler: file highlight cache warmed up for {file}', ['file' => $file->getPathname()]);
             } catch (Throwable $e) {
                 $this->logger?->notice(

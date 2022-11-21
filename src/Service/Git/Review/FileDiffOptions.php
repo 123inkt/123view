@@ -11,6 +11,6 @@ class FileDiffOptions
 
     public function __toString(): string
     {
-        return sprintf('udl:%s', $this->unifiedDiffLines);
+        return sprintf('udl-%s', $this->unifiedDiffLines);
     }
 }

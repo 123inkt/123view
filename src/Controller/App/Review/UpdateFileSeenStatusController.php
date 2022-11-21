@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Request\Review\FileSeenStatusRequest;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -33,7 +34,11 @@ class UpdateFileSeenStatusController extends AbstractController
     {
         $filePath   = $request->getFilePath();
         $seenStatus = $request->getSeenStatus();
-        $files      = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
+        $files      = $this->diffService->getDiffFiles(
+            Assert::notNull($review->getRepository()),
+            $review->getRevisions()->toArray(),
+            new FileDiffOptions(9999999)
+        );
 
         // find filepath in files
         foreach ($files as $diffFile) {

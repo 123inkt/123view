@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
 use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
+use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
@@ -34,7 +35,7 @@ class ReviewViewModelProvider
     public function getViewModel(CodeReview $review, ?string $filePath, string $sidebarTab, ?AbstractReviewAction $reviewAction): ReviewViewModel
     {
         $revisions = $review->getRevisions()->toArray();
-        $files     = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions);
+        $files     = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(9999999));
         $fileTree  = $this->treeGenerator->generate($files)
             ->flatten()
             ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename()));

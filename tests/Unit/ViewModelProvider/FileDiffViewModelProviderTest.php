@@ -69,7 +69,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $highlightedFile = new HighlightedFile('filepath', []);
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::once())->method('getHighlightedFile')->with($revision, 'filepath')->willReturn($highlightedFile);
+        $this->highlightedFileService->expects(self::once())->method('fromRevision')->with($revision, 'filepath')->willReturn($highlightedFile);
         $this->commentModelProvider->expects(self::once())->method('getAddCommentViewModel')->with($review, $file, $action);
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action);
@@ -91,7 +91,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $highlightedFile = new HighlightedFile('filepath', []);
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::once())->method('getHighlightedFile')->with($revision, 'filepath')->willReturn($highlightedFile);
+        $this->highlightedFileService->expects(self::once())->method('fromRevision')->with($revision, 'filepath')->willReturn($highlightedFile);
         $this->commentModelProvider->expects(self::once())->method('getEditCommentViewModel')->with($action);
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action);
@@ -113,7 +113,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $highlightedFile = new HighlightedFile('filepath', []);
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::once())->method('getHighlightedFile')->with($revision, 'filepath')->willReturn($highlightedFile);
+        $this->highlightedFileService->expects(self::once())->method('fromRevision')->with($revision, 'filepath')->willReturn($highlightedFile);
         $this->commentModelProvider->expects(self::once())->method('getReplyCommentViewModel')->with($action);
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action);
@@ -135,7 +135,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $highlightedFile = new HighlightedFile('filepath', []);
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::once())->method('getHighlightedFile')->with($revision, 'filepath')->willReturn($highlightedFile);
+        $this->highlightedFileService->expects(self::once())->method('fromRevision')->with($revision, 'filepath')->willReturn($highlightedFile);
         $this->commentModelProvider->expects(self::once())->method('getEditCommentReplyViewModel')->with($action);
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action);
@@ -155,7 +155,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $review->getRevisions()->add($revision);
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::never())->method('getHighlightedFile');
+        $this->highlightedFileService->expects(self::never())->method('fromRevision');
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null);
         static::assertNull($viewModel->getHighlightedFile());
