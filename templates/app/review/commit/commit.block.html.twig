@@ -29,7 +29,7 @@
 
         {%- set line_visible = block.isLineVisible(line_index, 8) -%}
 
-        {%- if prev_line_visible is not null and line_visible != prev_line_visible -%}
+        {%- if prev_line_visible is not null and line_visible is same as (true) and prev_line_visible is same as (false) -%}
             {%- include 'app/review/commit/commit.block.spacer.html.twig'-%}
         {%- endif -%}
         {%- set prev_line_visible = line_visible -%}
@@ -74,6 +74,11 @@
         {%- endfor -%}
         {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
             {%- include 'app/review/comment/comment.modify.html.twig' with {form: addCommentForm.form} -%}
+        {%- endif -%}
+
+        {#- last line, and not eof -#}
+        {%- if loop.last and line_visible is same as (false) -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig'-%}
         {%- endif -%}
 
     {%- endfor -%}
