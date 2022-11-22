@@ -22,12 +22,10 @@ if [ "$mode" != 'prod' ] && [ "$mode" != 'dev' ]; then
     exit 1;
 fi
 
-if [ "$mode" == 'dev' ]; then
-    if [ "$REBUILD" == 'yes' ]; then
-        echo "[REBUILD]: yes"
-    else
-        echo "[REBUILD]: no.  Use '-b' flag to force docker image rebuild."
-    fi
+if [ "$REBUILD" == 'yes' ]; then
+    echo "[REBUILD]: yes"
+else
+    echo "[REBUILD]: no.  Use '-b' flag to force docker image rebuild."
 fi
 
 ##
@@ -60,7 +58,9 @@ if [ "$mode" == 'prod' ]; then
     cp ${SSL_CERTIFICATE}     ./docker/nginx/ssl/production/production.crt
     cp ${SSL_CERTIFICATE_KEY} ./docker/nginx/ssl/production/production.key
 
-    DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+    if [ "$REBUILD" == 'yes' ]; then
+        DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+    fi
     docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
     docker-compose logs --tail=2 --follow
 
