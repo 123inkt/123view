@@ -49,7 +49,7 @@ class CommentResolvedMailNotificationHandler implements MailNotificationHandlerI
 
         // update status and save
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_RESOLVED);
-        $this->commentRepository->save($comment);
+        $this->commentRepository->save($comment, true);
     }
 
     public static function accepts(): string
