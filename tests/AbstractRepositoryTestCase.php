@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Tests;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Tests\Helper\QueryBuilderAssertion;
@@ -65,6 +66,8 @@ abstract class AbstractRepositoryTestCase extends AbstractTestCase
         $builderAssertion = new QueryBuilderAssertion($this, $queryBuilder);
         $builderAssertion->select($alias);
         $builderAssertion->from($this->getRepositoryEntityClassString(), $alias, $indexBy);
+
+        $queryBuilder->method('expr')->willReturn(new Expr());
 
         $this->objectManager->expects(once())->method('createQueryBuilder')->willReturn($queryBuilder);
 

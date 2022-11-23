@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Helper;
 
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,7 +33,7 @@ class QueryBuilderAssertion
         return $this;
     }
 
-    public function where(string $string): self
+    public function where(string|Expr|Func $string): self
     {
         $this->queryBuilder->expects(atLeastOnce())->method('where')->with($string)->willReturnSelf();
 
@@ -47,6 +50,20 @@ class QueryBuilderAssertion
     public function setParameter(string $key, mixed $value): self
     {
         $this->queryBuilder->expects(atLeastOnce())->method('setParameter')->with($key, $value)->willReturnSelf();
+
+        return $this;
+    }
+
+    public function orderBy(string|OrderBy $sort, ?string $order = null): self
+    {
+        $this->queryBuilder->expects(atLeastOnce())->method('orderBy')->with($sort, $order)->willReturnSelf();
+
+        return $this;
+    }
+
+    public function setMaxResults(?int $maxResults): self
+    {
+        $this->queryBuilder->expects(atLeastOnce())->method('setMaxResults')->with($maxResults)->willReturnSelf();
 
         return $this;
     }
