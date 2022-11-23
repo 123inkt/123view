@@ -6,8 +6,11 @@ namespace DR\GitCommitNotification\Tests;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Tests\Helper\QueryBuilderAssertion;
 use PHPUnit\Framework\MockObject\MockObject;
+use function PHPUnit\Framework\once;
 
 abstract class AbstractRepositoryTestCase extends AbstractTestCase
 {
@@ -53,6 +56,19 @@ abstract class AbstractRepositoryTestCase extends AbstractTestCase
     final protected function expectFlush(): void
     {
         $this->objectManager->expects(self::once())->method('flush');
+    }
+
+    final protected function expectCreateQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilderAssertion
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+
+        $builderAssertion = new QueryBuilderAssertion($this, $queryBuilder);
+        $builderAssertion->select($alias);
+        $builderAssertion->from($this->getRepositoryEntityClassString(), $alias, $indexBy);
+
+        $this->objectManager->expects(once())->method('createQueryBuilder')->willReturn($queryBuilder);
+
+        return $builderAssertion;
     }
 
     /**

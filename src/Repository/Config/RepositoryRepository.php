@@ -48,10 +48,9 @@ class RepositoryRepository extends ServiceEntityRepository
         $qb
             ->where('r.active = 1')
             ->andWhere(
-                $qb->expr()->orX(
-                    'r.updateRevisionsTimestamp + r.updateRevisionsInterval < :currentTime',
-                    'r.updateRevisionsTimestamp IS NULL'
-                )
+                'r.updateRevisionsTimestamp + r.updateRevisionsInterval < :currentTime' .
+                ' OR ' .
+                'r.updateRevisionsTimestamp IS NULL'
             )
             ->setParameter('currentTime', time());
 

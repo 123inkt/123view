@@ -45,6 +45,24 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
         $this->repository->remove($repository, true);
     }
 
+    /**
+     * @covers ::findByUpdateRevisions
+     */
+    public function testFindByUpdateRevisions(): void
+    {
+        $repository = new Repository();
+
+        $this->expectCreateQueryBuilder('r')
+            ->where('r.active = 1')
+            ->andWhere(
+                'r.updateRevisionsTimestamp + r.updateRevisionsInterval < :currentTime' .
+                ' OR ' .
+                'r.updateRevisionsTimestamp IS NULL'
+            )->setParameter('currentTime', static::callback(static fn($time) => time() - $time <= 10))
+            ->getResult([$repository]);
+        static::assertSame([$repository], $this->repository->findByUpdateRevisions());
+    }
+
     protected function getRepositoryEntityClassString(): string
     {
         return Repository::class;
