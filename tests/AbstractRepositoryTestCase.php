@@ -3,84 +3,75 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Tests\Helper\QueryBuilderAssertion;
-use PHPUnit\Framework\MockObject\MockObject;
-use function PHPUnit\Framework\once;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ObjectManager;
+use Exception;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-abstract class AbstractRepositoryTestCase extends AbstractTestCase
+abstract class AbstractRepositoryTestCase extends KernelTestCase
 {
-    /** @var MockObject&EntityManager */
-    protected MockObject $objectManager;
-    /** @var ManagerRegistry&MockObject */
-    protected ManagerRegistry $registry;
+    protected ?AbstractDatabaseTool $databaseTool;
+    protected ?ObjectManager        $entityManager;
+    protected KernelBrowser         $client;
 
+    /**
+     * @see https://latteandcode.medium.com/symfony-improving-your-tests-with-doctrinefixturesbundle-1a37b704ac05
+     * @throws Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManager = $this->createMock(EntityManager::class);
-        $this->objectManager->method('getClassMetadata')->willReturn(new ClassMetadata($this->getRepositoryEntityClassString()));
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->registry->method('getManagerForClass')->willReturn($this->objectManager);
+        self::bootKernel(['environment' => 'test', 'debug' => 'false']);
+        $this->databaseTool  = self::getService(DatabaseToolCollection::class)->get();
+        $doctrine            = self::getService(Registry::class, 'doctrine');
+        $this->entityManager = $doctrine->getManager();
+
+        /** @var Connection $connection */
+        $connection = $doctrine->getConnection();
+        $connection->beginTransaction();
+
+        $fixtures = $this->getFixtures();
+        if (count($fixtures) > 0) {
+            $this->databaseTool->loadFixtures($fixtures);
+        }
     }
 
     /**
-     * @template T of ServiceEntityRepository
-     * @phpstan-param class-string<T> $classString
-     * @phpstan-return T
+     * @throws Exception
      */
-    final protected function getRepository(string $classString): ServiceEntityRepository
+    protected function tearDown(): void
     {
-        return new $classString($this->registry);
-    }
-
-    final protected function expectWrapInTransaction(): void
-    {
-        $this->objectManager->expects(self::once())->method('wrapInTransaction')->willReturnCallback(fn($callable) => $callable());
-    }
-
-    final protected function expectPersist(object $object): void
-    {
-        $this->objectManager->expects(self::once())->method('persist')->with($object);
-    }
-
-    final protected function expectRemove(object $object): void
-    {
-        $this->objectManager->expects(self::once())->method('remove')->with($object);
-    }
-
-    final protected function neverExpectFlush(): void
-    {
-        $this->objectManager->expects(self::never())->method('flush');
-    }
-
-    final protected function expectFlush(): void
-    {
-        $this->objectManager->expects(self::once())->method('flush');
-    }
-
-    final protected function expectCreateQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilderAssertion
-    {
-        $queryBuilder = $this->createMock(QueryBuilder::class);
-
-        $builderAssertion = new QueryBuilderAssertion($this, $queryBuilder);
-        $builderAssertion->select($alias);
-        $builderAssertion->from($this->getRepositoryEntityClassString(), $alias, $indexBy);
-
-        $queryBuilder->method('expr')->willReturn(new Expr());
-
-        $this->objectManager->expects(once())->method('createQueryBuilder')->willReturn($queryBuilder);
-
-        return $builderAssertion;
+        // this call will shutdown the kernel and close any open connections. Ensuring the rollback of any transactions.
+        parent::tearDown();
+        $this->databaseTool = null;
+        if ($this->entityManager !== null) {
+            $this->entityManager->close();
+        }
+        $this->entityManager = null;
     }
 
     /**
-     * @return class-string
+     * @template T of object
+     *
+     * @param class-string<T> $serviceId
+     *
+     * @return T
+     * @throws Exception
      */
-    abstract protected function getRepositoryEntityClassString(): string;
+    protected static function getService(string $serviceId, ?string $alias = null): object
+    {
+        /** @var T $service */
+        $service = self::getContainer()->get($alias ?? $serviceId);
+
+        return $service;
+    }
+
+    /**
+     * @return class-string[]
+     */
+    abstract protected function getFixtures(): array;
 }

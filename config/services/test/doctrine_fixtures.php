@@ -10,6 +10,6 @@ return static function (ContainerConfigurator $configurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->load('DR\\GitCommitNotification\\Tests\\', '../../../tests/DataFixtures/*')
+    $services->load('DR\\GitCommitNotification\\Tests\\DataFixtures\\', '../../../tests/DataFixtures/*')
         ->tag('doctrine.fixture.orm');
 };

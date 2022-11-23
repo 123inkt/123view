@@ -5,4 +5,4 @@ use DG\BypassFinals;
 use Symfony\Component\Dotenv\Dotenv;
 
 BypassFinals::enable();
-(new Dotenv())->bootEnv(dirname(__DIR__) . '/.env.test');
+(new Dotenv())->load(dirname(__DIR__) . '/.env.test', dirname(__DIR__) . '/.env.test.local');
