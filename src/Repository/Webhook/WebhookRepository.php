@@ -16,6 +16,9 @@ use DR\GitCommitNotification\Entity\Webhook\Webhook;
  */
 class WebhookRepository extends ServiceEntityRepository
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Webhook::class);
