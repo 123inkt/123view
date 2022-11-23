@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Config;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\Config\ExternalLink;
 
 /**
  * @extends ServiceEntityRepository<ExternalLink>
- *
  * @method ExternalLink|null find($id, $lockMode = null, $lockVersion = null)
  * @method ExternalLink|null findOneBy(array $criteria, array $orderBy = null)
  * @method ExternalLink[]    findAll()
@@ -17,26 +16,11 @@ use DR\GitCommitNotification\Entity\Config\ExternalLink;
  */
 class ExternalLinkRepository extends ServiceEntityRepository
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ExternalLink::class);
-    }
-
-    public function save(ExternalLink $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(ExternalLink $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 }

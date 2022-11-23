@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Review;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
 
 /**
@@ -21,7 +21,10 @@ class FileSeenStatusRepository extends ServiceEntityRepository
         parent::__construct($registry, FileSeenStatus::class);
     }
 
-    public function save(FileSeenStatus $entity, bool $flush = false): void
+    /**
+     * @inheritDoc
+     */
+    public function save(object $entity, bool $flush = false): void
     {
         $em = $this->getEntityManager();
         $em->wrapInTransaction(function () use ($entity, $flush): void {
@@ -35,19 +38,7 @@ class FileSeenStatusRepository extends ServiceEntityRepository
             if ($entityExists !== null) {
                 return;
             }
-            $this->getEntityManager()->persist($entity);
-            if ($flush) {
-                $this->getEntityManager()->flush();
-            }
+            parent::save($entity, $flush);
         });
-    }
-
-    public function remove(FileSeenStatus $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 }

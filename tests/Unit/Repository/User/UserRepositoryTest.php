@@ -40,6 +40,9 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
         static::assertCount(0, $repository->findUsersWithExclusion([(int)$user->getId()]));
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function getFixtures(): array
     {
         return [UserFixtures::class];

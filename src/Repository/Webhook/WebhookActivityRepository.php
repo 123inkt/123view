@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Webhook;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
 
 /**
@@ -16,26 +16,11 @@ use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
  */
 class WebhookActivityRepository extends ServiceEntityRepository
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, WebhookActivity::class);
-    }
-
-    public function save(WebhookActivity $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(WebhookActivity $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 }

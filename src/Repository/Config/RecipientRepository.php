@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Config;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\Config\Recipient;
 
 /**
  * @extends ServiceEntityRepository<Recipient>
- *
  * @method Recipient|null find($id, $lockMode = null, $lockVersion = null)
  * @method Recipient|null findOneBy(array $criteria, array $orderBy = null)
  * @method Recipient[]    findAll()
@@ -17,6 +16,9 @@ use DR\GitCommitNotification\Entity\Config\Recipient;
  */
 class RecipientRepository extends ServiceEntityRepository
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipient::class);
