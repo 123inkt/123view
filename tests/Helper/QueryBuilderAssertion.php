@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Helper;
 
+use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\Expr\Composite;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -33,16 +33,35 @@ class QueryBuilderAssertion
         return $this;
     }
 
-    public function where(string|Expr|Func $string): self
+    public function leftJoin(
+        string $join,
+        string $alias,
+        ?string $conditionType = null,
+        string|Comparison|Composite|null $condition = null,
+        ?string $indexBy = null
+    ): self {
+        $this->queryBuilder->expects(atLeastOnce())->method('leftJoin')->with($join, $alias, $conditionType, $condition, $indexBy)->willReturnSelf();
+
+        return $this;
+    }
+
+    public function where(mixed $string): self
     {
         $this->queryBuilder->expects(atLeastOnce())->method('where')->with($string)->willReturnSelf();
 
         return $this;
     }
 
-    public function andWhere(string $string): self
+    public function andWhere(mixed $string): self
     {
         $this->queryBuilder->expects(atLeastOnce())->method('andWhere')->with($string)->willReturnSelf();
+
+        return $this;
+    }
+
+    public function andWhereConsecutive(mixed ...$args): self
+    {
+        $this->queryBuilder->expects(atLeastOnce())->method('andWhere')->withConsecutive(...$args)->willReturnSelf();
 
         return $this;
     }
@@ -54,9 +73,23 @@ class QueryBuilderAssertion
         return $this;
     }
 
+    public function setParameterConsecutive(mixed ...$args): self
+    {
+        $this->queryBuilder->expects(atLeastOnce())->method('setParameter')->withConsecutive(...$args)->willReturnSelf();
+
+        return $this;
+    }
+
     public function orderBy(string|OrderBy $sort, ?string $order = null): self
     {
         $this->queryBuilder->expects(atLeastOnce())->method('orderBy')->with($sort, $order)->willReturnSelf();
+
+        return $this;
+    }
+
+    public function setFirstResult(?int $firstResult): self
+    {
+        $this->queryBuilder->expects(atLeastOnce())->method('setFirstResult')->with($firstResult)->willReturnSelf();
 
         return $this;
     }
