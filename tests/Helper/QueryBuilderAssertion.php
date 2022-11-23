@@ -51,9 +51,8 @@ class QueryBuilderAssertion
         return $this;
     }
 
-    public function getResult(array $values): self
+    public function getResult(mixed $values): self
     {
-        /** @var Query&MockObject $query */
         $query = (new MockBuilder($this->testCase, Query::class))
             ->disableOriginalConstructor()
             ->disableOriginalClone()
