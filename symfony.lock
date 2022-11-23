@@ -58,6 +58,18 @@
             "./src/Repository/.gitignore"
         ]
     },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "1f5514cfa15b947298df4d771e694e578d4c204d"
+        },
+        "files": [
+            "./src/DataFixtures/AppFixtures.php"
+        ]
+    },
     "doctrine/doctrine-migrations-bundle": {
         "version": "3.2",
         "recipe": {
@@ -118,6 +130,9 @@
     },
     "league/oauth2-client": {
         "version": "2.6.1"
+    },
+    "liip/test-fixtures-bundle": {
+        "version": "2.4.1"
     },
     "mikey179/vfsstream": {
         "version": "v1.6.9"

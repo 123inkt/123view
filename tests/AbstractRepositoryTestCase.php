@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -15,7 +15,7 @@ use function PHPUnit\Framework\once;
 
 abstract class AbstractRepositoryTestCase extends AbstractTestCase
 {
-    /** @var MockObject&EntityManagerInterface */
+    /** @var MockObject&EntityManager */
     protected MockObject $objectManager;
     /** @var ManagerRegistry&MockObject */
     protected ManagerRegistry $registry;
@@ -23,7 +23,7 @@ abstract class AbstractRepositoryTestCase extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManager = $this->createMock(EntityManagerInterface::class);
+        $this->objectManager = $this->createMock(EntityManager::class);
         $this->objectManager->method('getClassMetadata')->willReturn(new ClassMetadata($this->getRepositoryEntityClassString()));
         $this->registry = $this->createMock(ManagerRegistry::class);
         $this->registry->method('getManagerForClass')->willReturn($this->objectManager);
@@ -37,6 +37,11 @@ abstract class AbstractRepositoryTestCase extends AbstractTestCase
     final protected function getRepository(string $classString): ServiceEntityRepository
     {
         return new $classString($this->registry);
+    }
+
+    final protected function expectWrapInTransaction(): void
+    {
+        $this->objectManager->expects(self::once())->method('wrapInTransaction')->willReturnCallback(fn($callable) => $callable());
     }
 
     final protected function expectPersist(object $object): void
