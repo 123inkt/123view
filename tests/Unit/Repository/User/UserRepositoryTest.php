@@ -22,13 +22,22 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     {
         $repository = self::getService(UserRepository::class);
         $users      = $repository->findBySearchQuery('Sherlock', 10);
+        static::assertCount(1, $users);
     }
 
     /**
      * @covers ::findUsersWithExclusion
+     * @throws Exception
      */
     public function testFindUsersWithExclusion(): void
     {
+        $repository = self::getService(UserRepository::class);
+
+        $user = $repository->findOneBy(['email' => 'sherlock@example.com']);
+        static::assertNotNull($user);
+
+        static::assertCount(1, $repository->findUsersWithExclusion([]));
+        static::assertCount(0, $repository->findUsersWithExclusion([(int)$user->getId()]));
     }
 
     protected function getFixtures(): array
