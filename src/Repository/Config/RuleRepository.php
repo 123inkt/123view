@@ -22,7 +22,7 @@ class RuleRepository extends ServiceEntityRepository
         parent::__construct($registry, Rule::class);
     }
 
-    public function add(Rule $entity, bool $flush = false): void
+    public function save(Rule $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 

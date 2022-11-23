@@ -42,7 +42,7 @@ class AddExternalLinkCommand extends Command
         $externalLink->setUrl($validatedInput->getUrl());
 
         // persist
-        $this->linkRepository->add($externalLink, true);
+        $this->linkRepository->save($externalLink, true);
 
         $output->writeln(sprintf('<info>Successfully added external link: `%s`-`%s</info>', $externalLink->getPattern(), $externalLink->getUrl()));
 

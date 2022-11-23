@@ -22,7 +22,7 @@ class ExternalLinkRepository extends ServiceEntityRepository
         parent::__construct($registry, ExternalLink::class);
     }
 
-    public function add(ExternalLink $entity, bool $flush = false): void
+    public function save(ExternalLink $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 

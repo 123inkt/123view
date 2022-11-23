@@ -77,7 +77,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isValidWillReturn(true);
 
         $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::once())->method('add')->with($rule, true);
+        $this->ruleRepository->expects(self::once())->method('save')->with($rule, true);
         $this->translator->expects(self::once())->method('trans')->willReturn('added');
         $this->expectAddFlash('success', 'added');
         $this->expectGenerateUrl(RulesController::class)->willReturn('redirect');
@@ -103,7 +103,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->createViewWillReturn($formView);
 
         $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::never())->method('add');
+        $this->ruleRepository->expects(self::never())->method('save');
 
         $response = ($this->controller)($request, $rule);
         static::assertIsArray($response);

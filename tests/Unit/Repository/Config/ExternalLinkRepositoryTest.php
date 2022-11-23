@@ -22,7 +22,7 @@ class ExternalLinkRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::add
+     * @covers ::save
      */
     public function testAdd(): void
     {
@@ -30,7 +30,7 @@ class ExternalLinkRepositoryTest extends AbstractRepositoryTestCase
 
         $this->expectPersist($link);
         $this->expectFlush();
-        $this->repository->add($link, true);
+        $this->repository->save($link, true);
     }
 
     /**

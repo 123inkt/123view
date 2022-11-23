@@ -48,7 +48,7 @@ class RuleController extends AbstractController
             return ['editRuleModel' => (new EditRuleViewModel())->setForm($form->createView())];
         }
 
-        $this->ruleRepository->add($rule, true);
+        $this->ruleRepository->save($rule, true);
 
         $this->addFlash('success', $this->translator->trans('rule.successful.saved'));
 

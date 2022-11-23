@@ -40,7 +40,7 @@ class AddExternalLinkCommandTest extends AbstractTestCase
     {
         $this->linkRepository
             ->expects(self::once())
-            ->method('add')
+            ->method('save')
             ->with((new ExternalLink())->setPattern('pattern')->setUrl('https://url/'));
 
         $tester = new CommandTester($this->command);
