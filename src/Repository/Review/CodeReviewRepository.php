@@ -68,52 +68,12 @@ class CodeReviewRepository extends ServiceEntityRepository
      */
     public function getPaginatorForSearchQuery(User $user, int $repositoryId, int $page, string $searchQuery): Paginator
     {
-        $query = $this->createQueryBuilder('r')
-            ->select('r', 'rv')
-            ->leftJoin('r.revisions', 'rv')
-            ->where('r.repository = :repositoryId')
-            ->setParameter('repositoryId', $repositoryId)
-            ->orderBy('r.id', 'DESC')
-            ->setFirstResult(max(0, $page - 1) * 50)
-            ->setMaxResults(50);
+        $queryBuilder = (new CodeReviewQueryBuilder('r', $this->getEntityManager()))
+            ->prepare($repositoryId)
+            ->paginate($page, 50)
+            ->search($user, $searchQuery);
 
-        // TODO refactor to search query factory
-        if ($searchQuery !== '') {
-            if (preg_match('/id:(\d+)/', $searchQuery, $matches) === 1) {
-                $query->andWhere('r.projectId = :id')->setParameter('id', $matches[1]);
-                $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
-            }
-
-            if (preg_match('/state:(\w+)/', $searchQuery, $matches) === 1) {
-                $query->andWhere('r.state = :state')->setParameter('state', $matches[1]);
-                $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
-            }
-
-            if (preg_match('/author:(\S+)/', $searchQuery, $matches) === 1) {
-                // search for current user
-                if ($matches[1] === 'me') {
-                    $query->andWhere('rv.authorEmail = :authorEmail');
-                    $query->setParameter('authorEmail', (string)$user->getEmail());
-                } else {
-                    $query->andWhere('rv.authorEmail LIKE :searchAuthor OR rv.authorName LIKE :searchAuthor');
-                    $query->setParameter('searchAuthor', '%' . addcslashes($matches[1], '%_') . '%');
-                }
-                $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
-            }
-
-            if ($searchQuery !== '') {
-                if (preg_match('/^\d+$/', $searchQuery) === 1) {
-                    $query->andWhere('r.title LIKE :title OR r.projectId = :projectId')
-                        ->setParameter('projectId', $searchQuery)
-                        ->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
-                } else {
-                    $query->andWhere('r.title LIKE :title')
-                        ->setParameter('title', '%' . addcslashes($searchQuery, "%_") . '%');
-                }
-            }
-        }
-
-        return new Paginator($query->getQuery(), false);
+        return new Paginator($queryBuilder->getQuery(), false);
     }
 
     /**

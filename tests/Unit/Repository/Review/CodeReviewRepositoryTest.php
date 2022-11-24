@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
 
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
@@ -84,9 +85,38 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 
     /**
      * @covers ::getPaginatorForSearchQuery
+     * @covers \DR\GitCommitNotification\Repository\Review\CodeReviewQueryBuilder
+     * @throws Exception
      */
     public function testGetPaginatorForSearchQuery(): void
     {
+        $user = new User();
+        $user->setEmail('sherlock@example.com');
+        $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $repositoryId = (int)$repository->getId();
+
+        $revisionRepository = static::getService(RevisionRepository::class);
+        $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
+        $review             = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
+
+        $revision->setReview($review);
+        $revisionRepository->save($revision, true);
+
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, ''));
+
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'id:' . $review->getProjectId()));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'id:0'));
+
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'state:closed'));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'state:open'));
+
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'author:me'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'author:sherlock'));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'author:watson'));
+
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'title'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, (string)$review->getProjectId()));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'foobar'));
     }
 
     /**

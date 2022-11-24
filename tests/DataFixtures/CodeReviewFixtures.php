@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Tests\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Utility\Assert;
@@ -22,6 +23,7 @@ class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
         $review = new CodeReview();
         $review->setId(self::REVIEW_ID);
         $review->setProjectId(self::PROJECT_ID);
+        $review->setState(CodeReviewStateType::CLOSED);
         $review->setTitle('title');
         $review->setReferenceId('reference');
         $review->setDescription('description');
