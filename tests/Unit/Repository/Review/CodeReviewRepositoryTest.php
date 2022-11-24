@@ -5,8 +5,10 @@ namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
 
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
 use DR\GitCommitNotification\Tests\DataFixtures\CodeReviewFixtures;
+use DR\GitCommitNotification\Tests\DataFixtures\RevisionFixtures;
 use DR\GitCommitNotification\Tests\DataFixtures\UserFixtures;
 use DR\GitCommitNotification\Utility\Assert;
 use Exception;
@@ -51,9 +53,20 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 
     /**
      * @covers ::findOneByCommitHash
+     * @throws Exception
      */
     public function testFindOneByCommitHash(): void
     {
+        $revisionRepository = static::getService(RevisionRepository::class);
+
+        $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $revision   = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
+        $review     = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
+
+        $revision->setReview($review);
+        $revisionRepository->save($revision, true);
+
+        static::assertNotNull($this->repository->findOneByCommitHash((int)$repository->getId(), RevisionFixtures::COMMIT_HASH));
     }
 
     /**
@@ -75,6 +88,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
      */
     protected function getFixtures(): array
     {
-        return [UserFixtures::class, CodeReviewFixtures::class];
+        return [UserFixtures::class, CodeReviewFixtures::class, RevisionFixtures::class];
     }
 }

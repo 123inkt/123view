@@ -12,6 +12,8 @@ use DR\GitCommitNotification\Utility\Assert;
 
 class RevisionFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const COMMIT_HASH = 'abcdefghijklmnopqrstuvwxyz';
+
     /**
      * @return string[]
      */
@@ -30,7 +32,7 @@ class RevisionFixtures extends Fixture implements DependentFixtureInterface
         $revision->setDescription('description');
         $revision->setAuthorName('Sherlock Holmes');
         $revision->setAuthorEmail('sherlock@example.com');
-        $revision->setCommitHash('abcdefghijklmnopqrstuvwxyz');
+        $revision->setCommitHash(self::COMMIT_HASH);
         $revision->setCreateTimestamp(12345678);
 
         $manager->persist($revision);
