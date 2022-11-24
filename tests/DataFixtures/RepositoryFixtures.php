@@ -24,5 +24,4 @@ class RepositoryFixtures extends Fixture
         $manager->persist($repository);
         $manager->flush();
     }
-
 }

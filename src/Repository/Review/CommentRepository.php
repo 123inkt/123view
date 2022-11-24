@@ -17,9 +17,6 @@ use DR\GitCommitNotification\Entity\Review\Comment;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    /**
-     * @codeCoverageIgnore
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);

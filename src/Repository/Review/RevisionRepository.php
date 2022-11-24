@@ -28,6 +28,9 @@ class RevisionRepository extends ServiceEntityRepository
         return $this->findOneBy(['repository' => $repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function flush(): void
     {
         $this->getEntityManager()->flush();

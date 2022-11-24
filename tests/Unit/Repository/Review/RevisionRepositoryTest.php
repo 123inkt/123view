@@ -18,13 +18,6 @@ use Exception;
 class RevisionRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::flush
-     */
-    public function testFlush(): void
-    {
-    }
-
-    /**
      * @covers ::exists
      * @throws Exception
      */
