@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Exception;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 abstract class AbstractRepositoryTestCase extends KernelTestCase
 {
     protected ?AbstractDatabaseTool $databaseTool;
-    protected ?ObjectManager        $entityManager;
+    protected ?EntityManager        $entityManager;
     protected KernelBrowser         $client;
 
     /**
@@ -26,9 +26,11 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
     {
         parent::setUp();
         self::bootKernel(['environment' => 'test', 'debug' => 'false']);
-        $this->databaseTool  = self::getService(DatabaseToolCollection::class)->get();
-        $doctrine            = self::getService(Registry::class, 'doctrine');
-        $this->entityManager = $doctrine->getManager();
+        $this->databaseTool = self::getService(DatabaseToolCollection::class)->get();
+        $doctrine           = self::getService(Registry::class, 'doctrine');
+        $entityManager      = $doctrine->getManager();
+        assert($entityManager instanceof EntityManager);
+        $this->entityManager = $entityManager;
 
         /** @var Connection $connection */
         $connection = $doctrine->getConnection();

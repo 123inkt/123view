@@ -15,7 +15,7 @@ class RevisionFixtures extends Fixture implements DependentFixtureInterface
     public const COMMIT_HASH = 'abcdefghijklmnopqrstuvwxyz';
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getDependencies(): array
     {

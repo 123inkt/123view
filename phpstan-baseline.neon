@@ -16,11 +16,6 @@ parameters:
 			path: src/Router/ReviewRouter.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<Doctrine\\\\ORM\\\\Query\\>\\:\\:getMock\\(\\) contains unresolvable type\\.$#"
-			count: 1
-			path: tests/Helper/QueryBuilderAssertion.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with null will always evaluate to true\\.$#"
 			count: 1
 			path: tests/Unit/Utility/ArraysTest.php
