@@ -42,6 +42,7 @@ class RevisionRepository extends ServiceEntityRepository
     public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery, ?bool $attached): Paginator
     {
         $query = $this->createQueryBuilder('r')
+            ->select('r', 'c')
             ->leftJoin('r.review', 'c')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
