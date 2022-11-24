@@ -46,7 +46,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         $this->container->set('security.token_storage', $storage);
     }
 
-    public function expectedDenyAccessUnlessGranted(string $attribute, mixed $subject, bool $granted = true): void
+    public function expectDenyAccessUnlessGranted(string $attribute, mixed $subject, bool $granted = true): void
     {
         $checker = $this->createMock(AuthorizationCheckerInterface::class);
         $checker->expects(self::atLeastOnce())->method('isGranted')->with($attribute, $subject)->willReturn($granted);

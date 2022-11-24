@@ -47,7 +47,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $userB = new User();
         $rule  = (new Rule())->setUser($userB);
 
-        $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule, false);
+        $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule, false);
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Access Denied');
         ($this->controller)(new Request(), $rule);
@@ -76,7 +76,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isSubmittedWillReturn(true);
         $form->isValidWillReturn(true);
 
-        $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
+        $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleRepository->expects(self::once())->method('save')->with($rule, true);
         $this->translator->expects(self::once())->method('trans')->willReturn('added');
         $this->expectAddFlash('success', 'added');
@@ -102,7 +102,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isSubmittedWillReturn(false);
         $form->createViewWillReturn($formView);
 
-        $this->expectedDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
+        $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleRepository->expects(self::never())->method('save');
 
         $response = ($this->controller)($request, $rule);

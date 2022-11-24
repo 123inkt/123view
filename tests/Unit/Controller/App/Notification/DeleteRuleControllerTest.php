@@ -42,7 +42,7 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
         $userB = new User();
         $rule  = (new Rule())->setUser($userB);
 
-        $this->expectedDenyAccessUnlessGranted(RuleVoter::DELETE, $rule, false);
+        $this->expectDenyAccessUnlessGranted(RuleVoter::DELETE, $rule, false);
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Access Denied.');
         ($this->controller)($rule);
@@ -55,7 +55,7 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
     {
         $rule = (new Rule())->setUser($this->user);
 
-        $this->expectedDenyAccessUnlessGranted(RuleVoter::DELETE, $rule);
+        $this->expectDenyAccessUnlessGranted(RuleVoter::DELETE, $rule);
         $this->ruleRepository->expects(self::once())->method('remove')->with($rule, true);
         $this->translator->expects(self::once())->method('trans')->willReturn('removed');
         $this->expectAddFlash('success', 'removed');

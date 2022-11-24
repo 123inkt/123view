@@ -48,7 +48,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $comment = new Comment();
         $comment->setReview($review);
 
-        $this->expectedDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
+        $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
         $this->expectCreateForm(EditCommentFormType::class, $comment, ['comment' => $comment])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
@@ -71,7 +71,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $comment->setMessage('message');
         $comment->setReview($review);
 
-        $this->expectedDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
+        $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
         $this->expectCreateForm(EditCommentFormType::class, $comment, ['comment' => $comment])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
@@ -100,7 +100,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $comment->setMessage('message');
         $comment->setReview($review);
 
-        $this->expectedDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
+        $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
         $this->expectCreateForm(EditCommentFormType::class, $comment, ['comment' => $comment])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
