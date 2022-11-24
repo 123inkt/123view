@@ -12,7 +12,8 @@ use DR\GitCommitNotification\Utility\Assert;
 
 class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const REVIEW_ID = 1504;
+    public const REVIEW_ID  = 1504;
+    public const PROJECT_ID = 7327;
 
     public function load(ObjectManager $manager): void
     {
@@ -20,7 +21,7 @@ class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
 
         $review = new CodeReview();
         $review->setId(self::REVIEW_ID);
-        $review->setProjectId(5);
+        $review->setProjectId(self::PROJECT_ID);
         $review->setTitle('title');
         $review->setReferenceId('reference');
         $review->setDescription('description');
