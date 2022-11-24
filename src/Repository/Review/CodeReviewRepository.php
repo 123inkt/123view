@@ -69,6 +69,7 @@ class CodeReviewRepository extends ServiceEntityRepository
     public function getPaginatorForSearchQuery(User $user, int $repositoryId, int $page, string $searchQuery): Paginator
     {
         $query = $this->createQueryBuilder('r')
+            ->select('r', 'rv')
             ->leftJoin('r.revisions', 'rv')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
