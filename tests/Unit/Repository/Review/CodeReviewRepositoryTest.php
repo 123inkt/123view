@@ -39,6 +39,17 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @covers ::findOneByReferenceId
+     * @throws Exception
+     */
+    public function testFindOneByReferenceId(): void
+    {
+        $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+
+        static::assertNotNull($this->repository->findOneByReferenceId((int)$repository->getId(), 'reference'));
+    }
+
+    /**
      * @covers ::findOneByCommitHash
      */
     public function testFindOneByCommitHash(): void
@@ -60,12 +71,8 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findOneByReferenceId
+     * @inheritDoc
      */
-    public function testFindOneByReferenceId(): void
-    {
-    }
-
     protected function getFixtures(): array
     {
         return [UserFixtures::class, CodeReviewFixtures::class];
