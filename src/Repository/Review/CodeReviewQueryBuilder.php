@@ -25,6 +25,7 @@ class CodeReviewQueryBuilder
             ->leftJoin('r.revisions', 'rv')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
+            ->groupBy('r.id')
             ->orderBy('r.id', 'DESC');
 
         return $this;
