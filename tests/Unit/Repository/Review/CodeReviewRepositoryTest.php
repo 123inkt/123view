@@ -78,6 +78,8 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
 
         static::assertNotNull($this->repository->findByUrl((string)$repository->getName(), CodeReviewFixtures::PROJECT_ID));
+        static::assertNull($this->repository->findByUrl('foobar', CodeReviewFixtures::PROJECT_ID));
+        static::assertNull($this->repository->findByUrl((string)$repository->getName(), -1));
     }
 
     /**
