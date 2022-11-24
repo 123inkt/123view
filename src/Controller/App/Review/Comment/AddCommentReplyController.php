@@ -48,6 +48,6 @@ class AddCommentReplyController extends AbstractController
 
         $this->bus->dispatch(new CommentReplyAdded((int)$comment->getReview()?->getId(), (int)$reply->getId()));
 
-        return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action']);
+        return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action'], 'focus:reply:' . $reply->getId());
     }
 }

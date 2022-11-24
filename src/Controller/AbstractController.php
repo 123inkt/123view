@@ -17,7 +17,7 @@ abstract class AbstractController extends SymfonyAbstractController
      * @param array<string, (int|string|object|null)> $parameters
      * @param string[]                                $filter
      */
-    public function refererRedirect(string $route, array $parameters = [], array $filter = []): RedirectResponse
+    public function refererRedirect(string $route, array $parameters = [], array $filter = [], ?string $anchor = null): RedirectResponse
     {
         /** @var RequestStack $stack */
         $stack = $this->container->get('request_stack');
@@ -39,7 +39,10 @@ abstract class AbstractController extends SymfonyAbstractController
             $referer = (string)$uri->withQuery(http_build_query($queryParams));
         }
 
-        return $this->redirect($referer ?? $this->generateUrl($route, $parameters));
+        $url = $referer ?? $this->generateUrl($route, $parameters);
+        $url .= $anchor !== null ? "#" . $anchor : '';
+
+        return $this->redirect($url);
     }
 
     public function getUser(): User

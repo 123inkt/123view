@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Security\Voter\CommentVoter;
+use DR\GitCommitNotification\Utility\Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,8 @@ class DeleteCommentController extends AbstractController
 
         $this->commentRepository->remove($comment, true);
 
-        return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action']);
+        $anchor = 'focus:line:' . Assert::notNull($comment->getLineReference())->lineAfter;
+
+        return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action'], $anchor);
     }
 }

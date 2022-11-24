@@ -28,6 +28,8 @@ class DeleteCommentReplyController extends AbstractController
 
         $this->replyRepository->remove($reply, true);
 
-        return $this->refererRedirect(ReviewController::class, ['review' => $reply->getComment()?->getReview()], ['action']);
+        $anchor = 'focus:comment:' . $reply->getComment()?->getId();
+
+        return $this->refererRedirect(ReviewController::class, ['review' => $reply->getComment()?->getReview()], ['action'], $anchor);
     }
 }

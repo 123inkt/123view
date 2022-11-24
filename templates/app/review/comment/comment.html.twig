@@ -1,4 +1,4 @@
-<div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}">
+<div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}" data-comment="{{ comment.id }}">
     <div class="comment__comment">
         {# detached comments #}
         {% if detached is defined and detached %}

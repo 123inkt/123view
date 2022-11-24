@@ -129,7 +129,7 @@
             {% endif %}
         </div>
 
-        <div class="review-grid-code">
+        <div class="review-grid-code" data-controller="ScrollPositioner">
             {% if  reviewModel.fileDiffViewModel.selectedFile != null %}
                 {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
             {% endif %}

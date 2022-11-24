@@ -43,7 +43,7 @@
 
         {%- set prev_line_visible = line_visible -%}
 
-        <div class="diff-file__diff-line {{ line_style }}{{ line_visible ? '' : ' diff-file__diff-line-hidden' }}">
+        <div class="diff-file__diff-line {{ line_style }}{{ line_visible ? '' : ' diff-file__diff-line-hidden' }}" data-line="{{ line.lineNumberAfter }}">
             {#- gutter -#}
             <span class="diff-file__line-gutter"
                   data-role="line-add-comment"
