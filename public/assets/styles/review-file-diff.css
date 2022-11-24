@@ -27,8 +27,40 @@
 
 .diff-file__block-spacer {
     background-color: #F8F8F8;
-    color: #CCC;
+    color: #aaa;
+    cursor: pointer;
+    height: 24px;
     padding-left: 4px;
+}
+
+.diff-file__block-spacer:hover {
+    background-color: #e8e8e8;
+    color: #666;
+}
+
+.diff-file__block-spacer-line-nr {
+    font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+    font-size: 13px;
+    line-height: 20px;
+    margin-right: 2px;
+    white-space: pre;
+}
+
+.diff-file__line-expander {
+    margin-left: 2px;
+    margin-right: 8px;
+}
+
+.diff-file__line-expander .indicator {
+    display: block;
+    font-size: 9px;
+    height: 10px;
+    width: 10px;
+}
+
+.diff-file_line-expander-lines {
+    font-size: 0.8rem;
+    line-height: 24px;
 }
 
 .diff-file__diff-block {
@@ -36,8 +68,8 @@
 }
 
 .diff-file__diff-line {
-    cursor: default;
     color: #0C0C0D;
+    cursor: default;
     font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
     font-size: 13px;
     line-height: 20px;
@@ -59,13 +91,13 @@
     background: #FFFEE0;
     bottom: 0;
     color: #FF008C;
+    cursor: pointer;
     display: none;
     left: 0;
     position: absolute;
     right: 0;
     text-align: center;
     top: 0;
-    cursor: pointer;
 }
 
 .diff-file__line-numbers {
@@ -120,8 +152,8 @@
 }
 
 .diff-file__comment_form {
-    padding: 10px 10px 5px 10px;
     background: #FFFEE0;
+    padding: 10px 10px 5px 10px;
 }
 
 .diff-file__comment_textarea {
@@ -129,6 +161,6 @@
 }
 
 .diff-file__comment-mention {
-    top: -15px;
     left: 4px;
+    top: -15px;
 }

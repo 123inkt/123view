@@ -38,6 +38,7 @@ return [
     'delete.comment'                              => 'Delete comment',
     'detach.revisions'                            => 'Detach selected',
     'diff.algorithm'                              => 'Diff algorithm',
+    'diff.lines.hidden'                           => '{lines} lines hidden',
     'diff.whitespace.options'                     => 'Diff whitespace options',
     'discussion.points.to.modified.code'          => 'Discussion is pointing towards a modified code fragment. Comment was originally at line {line}.',
     'edit.comment'                                => 'Edit comment',
