@@ -16,6 +16,20 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 class RevisionFactoryTest extends AbstractTestCase
 {
     /**
+     * @covers ::createFromCommits
+     */
+    public function testCreateFromCommits(): void
+    {
+        $date       = new DateTime();
+        $repository = new Repository();
+        $author     = new Author('Sherlock', 'holmes@example.com');
+        $commit     = new Commit($repository, 'parent', 'commit', $author, $date, "subject\nmessage", null, []);
+
+        $factory = new RevisionFactory();
+        static::assertCount(1, $factory->createFromCommits([$commit]));
+    }
+
+    /**
      * @covers ::createFromCommit
      */
     public function testCreateFromCommit(): void
