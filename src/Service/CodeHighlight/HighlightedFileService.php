@@ -30,6 +30,8 @@ class HighlightedFileService
 
         if ($languageName !== null && count($lines) > 0 && count($lines) < self::MAX_LINE_COUNT) {
             $lines = $this->splitter->split($this->highlighter->highlight($languageName, implode("\n", $lines))->value);
+        } else {
+            $lines = array_map(static fn($line) => htmlspecialchars($line, ENT_QUOTES), $lines);
         }
 
         return new HighlightedFile($diffFile->getPathname(), $lines);
