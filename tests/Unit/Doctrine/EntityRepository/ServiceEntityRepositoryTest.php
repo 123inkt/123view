@@ -19,7 +19,8 @@ use stdClass;
 class ServiceEntityRepositoryTest extends AbstractTestCase
 {
     private ObjectManager&MockObject $objectManager;
-    private ServiceEntityRepository  $repository;
+    /** @var ServiceEntityRepository<stdClass> */
+    private ServiceEntityRepository $repository;
 
     public function setUp(): void
     {

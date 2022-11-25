@@ -74,7 +74,7 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
     {
         $message    = new FetchRepositoryRevisionsMessage(123);
         $repository = new Repository();
-        $repository->setid(456);
+        $repository->setId(456);
         $revision = new Revision();
 
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
