@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -21,7 +22,8 @@ class GitLogService implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly CacheableGitRepositoryService $repositoryService,
+        private readonly CacheableGitRepositoryService $cachedRepositoryService,
+        private readonly GitRepositoryService $gitRepositoryService,
         private readonly GitCommandBuilderFactory $commandBuilderFactory,
         private readonly GitRepositoryLockManager $lockManager,
         private readonly GitLogCommandFactory $commandFactory,
@@ -42,7 +44,7 @@ class GitLogService implements LoggerAwareInterface
         foreach ($rule->getRepositories() as $repositoryConfig) {
             $output = $this->lockManager->start($repositoryConfig, function () use ($ruleConfig, $repositoryConfig) {
                 // clone or pull the repository for the given rule.
-                $repository = $this->repositoryService->getRepository((string)$repositoryConfig->getUrl());
+                $repository = $this->cachedRepositoryService->getRepository((string)$repositoryConfig->getUrl());
 
                 // create command
                 $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
@@ -82,8 +84,8 @@ class GitLogService implements LoggerAwareInterface
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
 
-        // get output
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        // get repository data without cache and execute command
+        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
 
         // get commits
         return $this->logParser->parse($repository, $output, $limit);

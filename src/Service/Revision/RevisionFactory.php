@@ -9,6 +9,21 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 class RevisionFactory
 {
     /**
+     * @param Commit[] $commits
+     *
+     * @return Revision[]
+     */
+    public function createFromCommits(array $commits): array
+    {
+        $revisions = [];
+        foreach ($commits as $commit) {
+            $revisions[] = $this->createFromCommit($commit);
+        }
+
+        return array_merge(...$revisions);
+    }
+
+    /**
      * @return Revision[]
      */
     public function createFromCommit(Commit $commit): array

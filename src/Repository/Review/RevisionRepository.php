@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use Throwable;
 
 /**
  * @extends ServiceEntityRepository<Revision>
@@ -18,22 +19,36 @@ use DR\GitCommitNotification\Entity\Review\Revision;
  */
 class RevisionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
         parent::__construct($registry, Revision::class);
     }
 
-    public function exists(Repository $repository, Revision $revision): bool
-    {
-        return $this->findOneBy(['repository' => $repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
-    }
-
     /**
-     * @codeCoverageIgnore
+     * @param Revision[] $revisions
+     *
+     * @throws Throwable
      */
-    public function flush(): void
+    public function saveAll(Repository $repository, array $revisions): void
     {
-        $this->getEntityManager()->flush();
+        $em = $this->getEntityManager();
+
+        $em->wrapInTransaction(function () use ($repository, $revisions): void {
+            foreach ($revisions as $revision) {
+                $entityExists = $this->findOneBy(['repository' => (int)$repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
+                if ($entityExists) {
+                    continue;
+                }
+                parent::save($revision);
+            }
+        });
+
+        try {
+            $em->flush();
+        } catch (Throwable $exception) {
+            $this->registry->resetManager();
+            throw $exception;
+        }
     }
 
     /**

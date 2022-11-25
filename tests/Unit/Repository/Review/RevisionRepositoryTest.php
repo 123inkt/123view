@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
 use DR\GitCommitNotification\Tests\DataFixtures\RevisionFixtures;
@@ -17,24 +15,6 @@ use Exception;
  */
 class RevisionRepositoryTest extends AbstractRepositoryTestCase
 {
-    /**
-     * @covers ::exists
-     * @throws Exception
-     */
-    public function testExists(): void
-    {
-        $revisionRepository = self::getService(RevisionRepository::class);
-
-        $repository = new Repository();
-        $repository->setId(123);
-        $revision = new Revision();
-        $revision->setCommitHash('foobar');
-        static::assertFalse($revisionRepository->exists($repository, $revision));
-
-        $revision = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
-        static::assertTrue($revisionRepository->exists(Assert::notNull($revision->getRepository()), $revision));
-    }
-
     /**
      * @covers ::getPaginatorForSearchQuery
      * @throws Exception
