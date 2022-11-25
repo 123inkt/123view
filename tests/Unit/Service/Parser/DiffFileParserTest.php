@@ -137,6 +137,34 @@ class DiffFileParserTest extends AbstractTestCase
      * @covers ::readFileInfo
      * @throws ParseException
      */
+    public function testParseChangesWhereAllOriginalLinesWereRemoved(): void
+    {
+        // prepare data
+        $contents = "index fb42e28..db43761 100644\n";
+        $contents .= "--- a/test-change-file.xml\n";
+        $contents .= "+++ b/test-change-file.xml\n";
+        $contents .= "@@ -29 +29,8 @@\n";
+
+        $file                 = new DiffFile();
+        $file->filePathBefore = "before";
+        $file->filePathAfter  = "after";
+        $block                = new DiffBlock();
+
+        // prepare mocks
+        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+
+        $result = $this->parser->parse($contents, $file);
+        static::assertSame('before', $result->filePathBefore);
+        static::assertSame('after', $result->filePathAfter);
+        static::assertSame([$block], $result->getBlocks());
+    }
+
+    /**
+     * @covers ::parse
+     * @covers ::tryParse
+     * @covers ::readFileInfo
+     * @throws ParseException
+     */
     public function testParseMultiBlockChanges(): void
     {
         // prepare data

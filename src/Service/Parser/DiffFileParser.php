@@ -11,7 +11,7 @@ use Throwable;
 
 class DiffFileParser
 {
-    private const PATTERN = '/^@@ -(\d+),\d+ \\+(\d+),\d+ @@.*$/m';
+    private const PATTERN = '/^@@ -(\d+)(?:,\d+)? \\+(\d+),\d+ @@.*$/m';
 
     private UnifiedBlockParser $blockParser;
 
