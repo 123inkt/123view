@@ -76,7 +76,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $result        = new stdClass();
         $result->value = 'highlighted-data';
 
-        $this->translator->expects(self::once())->method('translate')->with('xml')->willReturn('xml');
+        $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
 
         $this->highlighter->expects(self::once())->method('highlight')->with('xml', 'file-data')->willReturn($result);
         $this->splitter->expects(self::once())->method('split')->with('highlighted-data')->willReturn(['highlighted', 'data']);

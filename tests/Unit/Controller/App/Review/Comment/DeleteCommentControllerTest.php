@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\App\Review\Comment\DeleteCommentControll
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Security\Voter\CommentVoter;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
@@ -33,10 +34,11 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $comment = new Comment();
-        $comment->setId(123);
         $review = new CodeReview();
         $review->setId(456);
+        $comment = new Comment();
+        $comment->setId(123);
+        $comment->setLineReference(new LineReference('file', 1, 2, 3));
         $comment->setReview($review);
 
         $this->expectDenyAccessUnlessGranted(CommentVoter::DELETE, $comment);
