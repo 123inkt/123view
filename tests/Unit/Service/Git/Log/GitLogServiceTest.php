@@ -14,6 +14,7 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Git\GitRepository;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory;
@@ -30,7 +31,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitLogServiceTest extends AbstractTestCase
 {
-    private CacheableGitRepositoryService&MockObject $repositoryService;
+    private CacheableGitRepositoryService&MockObject $cacheRepositoryService;
+    private GitRepositoryService&MockObject          $repositoryService;
     private GitCommandBuilderFactory&MockObject      $commandBuilderFactory;
     private GitLogCommandFactory&MockObject          $commandFactory;
     private FormatPatternFactory&MockObject          $patternFactory;
@@ -40,12 +42,14 @@ class GitLogServiceTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repositoryService     = $this->createMock(CacheableGitRepositoryService::class);
-        $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
-        $this->commandFactory        = $this->createMock(GitLogCommandFactory::class);
-        $this->patternFactory        = $this->createMock(FormatPatternFactory::class);
-        $this->logParser             = $this->createMock(GitLogParser::class);
-        $this->logFactory            = new GitLogService(
+        $this->cacheRepositoryService = $this->createMock(CacheableGitRepositoryService::class);
+        $this->repositoryService      = $this->createMock(GitRepositoryService::class);
+        $this->commandBuilderFactory  = $this->createMock(GitCommandBuilderFactory::class);
+        $this->commandFactory         = $this->createMock(GitLogCommandFactory::class);
+        $this->patternFactory         = $this->createMock(FormatPatternFactory::class);
+        $this->logParser              = $this->createMock(GitLogParser::class);
+        $this->logFactory             = new GitLogService(
+            $this->cacheRepositoryService,
             $this->repositoryService,
             $this->commandBuilderFactory,
             new MockGitRepositoryLockManager(),
@@ -73,7 +77,7 @@ class GitLogServiceTest extends AbstractTestCase
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
 
         // setup mocks
-        $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($repository);
+        $this->cacheRepositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($repository);
         $this->commandFactory->expects(static::once())->method('fromRule')->with($config)->willReturn($commandBuilder);
         $repository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects(static::once())->method('parse')->with($repositoryConfig, 'output')->willReturn($commits);
