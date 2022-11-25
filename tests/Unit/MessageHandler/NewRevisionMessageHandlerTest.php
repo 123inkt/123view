@@ -20,6 +20,7 @@ use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -148,5 +149,26 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 
         // expect reviewer state to be opened again
         static::assertSame(CodeReviewerStateType::OPEN, $reviewer->getState());
+    }
+
+    /**
+     * @covers ::__invoke
+     * @covers ::dispatchAfter
+     * @throws Throwable
+     */
+    public function testInvokeShouldResetRegistryManagerOnException(): void
+    {
+        $message  = new NewRevisionMessage(123);
+        $revision = new Revision();
+        $review   = new CodeReview();
+
+        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
+        $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
+        $this->reviewRepository->expects(self::once())->method('save')->with($review, true)->willThrowException(new RuntimeException());
+        $this->registry->expects(self::once())->method('resetManager');
+
+        $this->expectException(RuntimeException::class);
+        ($this->messageHandler)($message);
     }
 }
