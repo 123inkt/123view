@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
 
+use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
+use DR\GitCommitNotification\Tests\DataFixtures\RepositoryFixtures;
 use DR\GitCommitNotification\Tests\DataFixtures\RevisionFixtures;
 use DR\GitCommitNotification\Utility\Assert;
 use Exception;
+use Throwable;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Repository\Review\RevisionRepository
@@ -15,6 +19,31 @@ use Exception;
  */
 class RevisionRepositoryTest extends AbstractRepositoryTestCase
 {
+    /**
+     * @covers ::saveAll
+     * @throws Exception
+     * @throws Throwable
+     */
+    public function testSaveAll(): void
+    {
+        $repository         = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $revisionRepository = self::getService(RevisionRepository::class);
+
+        $revision = new Revision();
+        $revision->setCommitHash('hash');
+        $revision->setTitle('title');
+        $revision->setDescription('description');
+        $revision->setAuthorEmail('sherlock@example.com');
+        $revision->setAuthorName('Sherlock Holmes');
+        $revision->setCreateTimestamp(time());
+        $revision->setRepository($repository);
+
+        $revisionRepository->saveAll($repository, [$revision]);
+        $revisionRepository->saveAll($repository, [$revision]);
+
+        static::assertNotNull($revision->getId());
+    }
+
     /**
      * @covers ::getPaginatorForSearchQuery
      * @throws Exception
@@ -61,6 +90,6 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
      */
     protected function getFixtures(): array
     {
-        return [RevisionFixtures::class];
+        return [RevisionFixtures::class, RepositoryFixtures::class];
     }
 }
