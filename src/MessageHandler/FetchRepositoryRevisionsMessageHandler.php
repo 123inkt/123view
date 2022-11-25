@@ -30,7 +30,8 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         private LockableGitLogService $logService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
-        private MessageBusInterface $bus
+        private MessageBusInterface $bus,
+        private ?int $maxCommitsPerMessage = self::MAX_COMMITS_PER_MESSAGE
     ) {
     }
 
@@ -75,17 +76,11 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         /** @var Commit[] $commitChunk */
         foreach (array_chunk($commits, 50) as $commitChunk) {
             $revisions = $this->revisionFactory->createFromCommits($commitChunk);
-
-            try {
-                $this->revisionRepository->saveAll($repository, $revisions);
-                $this->dispatchRevisions($revisions);
-            } catch (Throwable $exception) {
-                $this->logger?->error('review persist failure: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
-                throw $exception;
-            }
+            $this->revisionRepository->saveAll($repository, $revisions);
+            $this->dispatchRevisions($revisions);
         }
 
-        if (count($commits) === self::MAX_COMMITS_PER_MESSAGE) {
+        if (count($commits) === $this->maxCommitsPerMessage) {
             $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
         }
     }
