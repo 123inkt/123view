@@ -14,7 +14,7 @@ class HighlightedFileService
     private const MAX_LINE_COUNT = 3000;
 
     public function __construct(
-        private readonly ExtensionToLanguageTranslator $translator,
+        private readonly FilenameToLanguageTranslator $translator,
         private readonly Highlighter $highlighter,
         private readonly HighlightHtmlLineSplitter $splitter
     ) {
@@ -25,7 +25,7 @@ class HighlightedFileService
      */
     public function fromDiffFile(DiffFile $diffFile): HighlightedFile
     {
-        $languageName = $this->translator->translate(pathinfo($diffFile->getPathname(), PATHINFO_EXTENSION));
+        $languageName = $this->translator->translate($diffFile->getPathname());
         $lines        = $diffFile->getLines();
 
         if ($languageName !== null && count($lines) > 0 && count($lines) < self::MAX_LINE_COUNT) {

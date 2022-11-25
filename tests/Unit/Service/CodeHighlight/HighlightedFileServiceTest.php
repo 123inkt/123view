@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
-use DR\GitCommitNotification\Service\CodeHighlight\ExtensionToLanguageTranslator;
+use DR\GitCommitNotification\Service\CodeHighlight\FilenameToLanguageTranslator;
 use DR\GitCommitNotification\Service\CodeHighlight\HighlightedFileService;
 use DR\GitCommitNotification\Service\CodeHighlight\HighlightHtmlLineSplitter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -24,15 +24,15 @@ use stdClass;
  */
 class HighlightedFileServiceTest extends AbstractTestCase
 {
-    private ExtensionToLanguageTranslator&MockObject $translator;
-    private Highlighter&MockObject                   $highlighter;
-    private HighlightHtmlLineSplitter&MockObject     $splitter;
-    private HighlightedFileService                   $service;
+    private FilenameToLanguageTranslator&MockObject $translator;
+    private Highlighter&MockObject                  $highlighter;
+    private HighlightHtmlLineSplitter&MockObject    $splitter;
+    private HighlightedFileService                  $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->translator  = $this->createMock(ExtensionToLanguageTranslator::class);
+        $this->translator  = $this->createMock(FilenameToLanguageTranslator::class);
         $this->highlighter = $this->createMock(Highlighter::class);
         $this->splitter    = $this->createMock(HighlightHtmlLineSplitter::class);
         $this->service     = new HighlightedFileService($this->translator, $this->highlighter, $this->splitter);
