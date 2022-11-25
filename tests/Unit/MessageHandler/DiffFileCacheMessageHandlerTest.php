@@ -16,6 +16,8 @@ use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileServi
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -36,6 +38,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->diffService      = $this->createMock(ReviewDiffServiceInterface::class);
         $this->fileService      = $this->createMock(CacheableHighlightedFileService::class);
         $this->messageHandler   = new DiffFileCacheMessageHandler($this->reviewRepository, $this->diffService, $this->fileService);
+        $this->messageHandler->setLogger($this->createMock(LoggerInterface::class));
     }
 
     /**
@@ -85,6 +88,31 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->fileService->expects(self::once())->method('fromDiffFile')->with($repository, $file);
+
+        $this->messageHandler->handleEvent(new ReviewCreated(123));
+    }
+
+    /**
+     * @covers ::handleEvent
+     * @throws Throwable
+     */
+    public function testHandleEventShouldContinueOnFailure(): void
+    {
+        $revision   = new Revision();
+        $repository = new Repository();
+        $repository->setId(456);
+
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setRepository($repository);
+        $review->getRevisions()->add($revision);
+
+        $file                = new DiffFile();
+        $file->filePathAfter = 'file-path-after';
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
+        $this->fileService->expects(self::once())->method('fromDiffFile')->willThrowException(new RuntimeException());
 
         $this->messageHandler->handleEvent(new ReviewCreated(123));
     }
