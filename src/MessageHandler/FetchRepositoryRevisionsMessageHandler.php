@@ -71,12 +71,9 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
             ['commits' => count($commits), 'date' => $latestRevision?->getCreateTimestamp()]
         );
 
-        // chunk it
-        /** @var Commit[][] $commitChunks */
-        $commitChunks = array_chunk($commits, 50);
-
-        // save
-        foreach ($commitChunks as $commitChunk) {
+        // chunk and save it
+        /** @var Commit[] $commitChunk */
+        foreach (array_chunk($commits, 50) as $commitChunk) {
             $revisions = $this->revisionFactory->createFromCommits($commitChunk);
 
             try {
