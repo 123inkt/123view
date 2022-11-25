@@ -7,14 +7,14 @@ class FilenameToLanguageTranslator
 {
     public function translate(string $filename): ?string
     {
-        if (strcasecmp($filename, 'Dockerfile') === 0) {
+        if (strcasecmp(basename($filename), 'Dockerfile') === 0) {
             return 'dockerfile';
         }
 
-        $filename  = (string)preg_replace('/\.(example|dist|local)$/', '', $filename);
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        // remove .example, .dist and .local extensions
+        $filename = (string)preg_replace('/\.(example|dist|local)$/', '', $filename);
 
-        return match (strtolower($extension)) {
+        return match (strtolower(pathinfo($filename, PATHINFO_EXTENSION))) {
             "css"           => "css",
             "env", "ini"    => "ini",
             "js"            => "javascript",
