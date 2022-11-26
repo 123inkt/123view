@@ -39,7 +39,8 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
         $arguments[] = $this->validator;
         $arguments[] = $this->constraintFactory;
 
-        $this->validatedRequest = new (static::getClassToTest())(...$arguments);
+        $className              = static::getClassToTest();
+        $this->validatedRequest = new ($className)(...$arguments);
     }
 
     protected function expectGetValidationRules(?ValidationRules $rules): void
