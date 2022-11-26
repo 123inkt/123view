@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Helper;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
 use Symfony\Component\Filesystem\Filesystem;
 

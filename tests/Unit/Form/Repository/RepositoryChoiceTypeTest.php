@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form\Repository;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Form\Repository\RepositoryChoiceType;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Tests\AbstractTestCase;

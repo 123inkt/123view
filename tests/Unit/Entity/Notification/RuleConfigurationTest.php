@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Notification;
 
 use DatePeriod;
-use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\RuleConfiguration
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Notification\RuleConfiguration
  */
 class RuleConfigurationTest extends AbstractTestCase
 {

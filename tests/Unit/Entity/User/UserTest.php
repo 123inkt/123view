@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Entity\User;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Entity\User\UserSetting;
 use DR\GitCommitNotification\Tests\AbstractTestCase;

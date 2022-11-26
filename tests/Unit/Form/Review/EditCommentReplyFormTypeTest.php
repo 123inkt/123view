@@ -50,7 +50,7 @@ class EditCommentReplyFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url   = 'https://commit-notification/comment-reply/update';
+        $url   = 'https://123view/comment-reply/update';
         $reply = new CommentReply();
         $reply->setId(123);
 

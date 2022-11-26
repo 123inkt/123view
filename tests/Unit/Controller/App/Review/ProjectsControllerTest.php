@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

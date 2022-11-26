@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Utility;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Utility\Assert;
 use RuntimeException;

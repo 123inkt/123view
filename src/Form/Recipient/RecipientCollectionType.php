@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\Recipient;
 
-use DR\GitCommitNotification\Entity\Config\Recipient;
+use DR\GitCommitNotification\Entity\Notification\Recipient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

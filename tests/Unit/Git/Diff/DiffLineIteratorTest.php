@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Git\Diff;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Git\Diff\DiffLineIterator;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 

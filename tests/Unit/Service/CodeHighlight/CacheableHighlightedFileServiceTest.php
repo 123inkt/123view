@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeHighlight;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
 use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\GitCommitNotification\Service\CodeHighlight\HighlightedFileService;

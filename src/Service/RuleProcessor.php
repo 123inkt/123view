@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service;
 
-use DR\GitCommitNotification\Entity\Config\Filter;
-use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Notification\Filter;
+use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;

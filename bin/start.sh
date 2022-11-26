@@ -36,8 +36,8 @@ docker-compose down
 ##
 # setup network
 #
-docker network rm commit-notification-network || true
-docker network create --driver bridge commit-notification-network || true
+docker network rm 123view-network || true
+docker network create --driver bridge 123view-network || true
 
 ##
 # remove cache directory

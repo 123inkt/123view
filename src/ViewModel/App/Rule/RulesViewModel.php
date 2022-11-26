@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\ViewModel\App\Rule;
 
 use Countable;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 use IteratorAggregate;
 
 class RulesViewModel

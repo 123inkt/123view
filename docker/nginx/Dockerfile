@@ -32,8 +32,8 @@ FROM base as prod
 
 # setup https with production certificates
 COPY ./docker/nginx/ssl/production/dhparam.pem    /etc/ssl/certs/dhparam.pem
-COPY ./docker/nginx/ssl/production/production.crt /etc/ssl/certs/commit-notification-cert.crt
-COPY ./docker/nginx/ssl/production/production.key /etc/ssl/private/commit-notification-cert.key
+COPY ./docker/nginx/ssl/production/production.crt /etc/ssl/certs/123view-cert.crt
+COPY ./docker/nginx/ssl/production/production.key /etc/ssl/private/123view-cert.key
 
 ENTRYPOINT ["/run/entrypoint.sh"]
 
@@ -44,7 +44,7 @@ FROM base as dev
 
 # setup https with self-signed cert
 COPY ./docker/nginx/ssl/dhparam.pem /etc/ssl/certs/dhparam.pem
-COPY ./docker/nginx/ssl/development/nginx-selfsigned.crt /etc/ssl/certs/commit-notification-cert.crt
-COPY ./docker/nginx/ssl/development/nginx-selfsigned.key /etc/ssl/private/commit-notification-cert.key
+COPY ./docker/nginx/ssl/development/nginx-selfsigned.crt /etc/ssl/certs/123view-cert.crt
+COPY ./docker/nginx/ssl/development/nginx-selfsigned.key /etc/ssl/private/123view-cert.key
 
 ENTRYPOINT ["/run/entrypoint.sh"]

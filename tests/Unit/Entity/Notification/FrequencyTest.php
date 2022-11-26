@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Notification;
 
 use DateTimeImmutable;
-use DR\GitCommitNotification\Entity\Config\Frequency;
+use DR\GitCommitNotification\Entity\Notification\Frequency;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\Frequency
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Notification\Frequency
  */
 class FrequencyTest extends AbstractTestCase
 {

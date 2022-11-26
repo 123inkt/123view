@@ -1,6 +1,11 @@
-# GitHub Action for Symfony with MySQL
 name: Testing Symfony with MySQL
-on: [ push, pull_request ]
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
 jobs:
     test:
         name: Symfony (PHP 8.1)
@@ -49,10 +54,19 @@ jobs:
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
-            -   name: Run test suite
+            -   name: Run E2E and integration test suite
+                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite e2e,integration
+
+            -   name: Run unit test suite
                 run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
+
+            -   name: Upload coverage to codecov
+                uses: codecov/codecov-action@v3
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
+                    files: ./.coverage/coverage.xml
 
             -   name: Check coverage
                 run: test ! -f ./.coverage/coverage.xml || php vendor/bin/phpfci inspect ./.coverage/coverage.xml ./.coverage/phpfci.xml --exit-code-on-failure

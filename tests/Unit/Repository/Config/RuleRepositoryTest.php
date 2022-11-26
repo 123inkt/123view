@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
 
-use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\RuleOptions;
+use DR\GitCommitNotification\Entity\Notification\Frequency;
+use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\GitCommitNotification\Entity\Notification\RuleOptions;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;

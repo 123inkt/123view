@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form\Recipient;
 
-use DR\GitCommitNotification\Entity\Config\Recipient;
+use DR\GitCommitNotification\Entity\Notification\Recipient;
 use DR\GitCommitNotification\Form\Recipient\RecipientType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

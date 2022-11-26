@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewsController;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;

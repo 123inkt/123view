@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Repository\Config;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
-use DR\GitCommitNotification\Entity\Config\Recipient;
+use DR\GitCommitNotification\Entity\Notification\Recipient;
 
 /**
  * @extends ServiceEntityRepository<Recipient>

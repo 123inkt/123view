@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\Review;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]

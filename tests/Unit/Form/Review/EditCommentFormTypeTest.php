@@ -50,7 +50,7 @@ class EditCommentFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url     = 'https://commit-notification/comment/update';
+        $url     = 'https://123view/comment/update';
         $comment = new Comment();
         $comment->setId(123);
 

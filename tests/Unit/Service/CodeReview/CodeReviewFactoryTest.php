@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewFactory;
 use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;

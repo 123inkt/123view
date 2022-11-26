@@ -1,9 +1,9 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
 [![Symfony Version](https://img.shields.io/badge/symfony-6.1-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-4BC51D)](https://php.net/)
-[![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
-[![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
+[![codecov](https://codecov.io/gh/123inkt/123view/branch/master/graph/badge.svg)](https://app.codecov.io/gh/123inkt/123view)
+[![Build Status](https://github.com/123inkt/123view/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
+[![Build Status](https://github.com/123inkt/123view/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
 
 # Code review and commit notifications
 A symfony application to create code reviews for a specific set of revisions not tied to a branch and to allow receiving commit notification for all commits in a certain time period.
@@ -54,8 +54,8 @@ Or
 
 1) clone repository
 ```shell
-git clone https://github.com/123inkt/git-commit-notification.git git-commit-notification
-cd git-commit-notification
+git clone https://github.com/123inkt/123view.git 123view
+cd 123view
 ```
 2) create `.env.dev.local` or `.env.prod.local`. See `.env` [configuration](docs/configuration.md) for how to configure the options.
 

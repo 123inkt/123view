@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Service\Page;
 
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewsController;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

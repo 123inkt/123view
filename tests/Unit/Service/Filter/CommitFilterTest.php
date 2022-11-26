@@ -5,9 +5,9 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Doctrine\Type\FilterType;
-use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Notification\Filter;
 use DR\GitCommitNotification\Service\Filter\CommitFilter;
 use DR\GitCommitNotification\Service\Filter\DefinitionFileMatcher;
 use DR\GitCommitNotification\Service\Filter\DefinitionSubjectMatcher;

@@ -76,7 +76,6 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "dg/bypass-finals": "^1.4",
         "digitalrevolution/accessorpair-constraint": "^2.1",
         "digitalrevolution/phpunit-file-coverage-inspection": "^1.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",

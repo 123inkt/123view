@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Revision;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Controller\App\Revision\AttachRevisionController;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;

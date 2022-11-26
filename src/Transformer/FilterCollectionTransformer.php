@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Transformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use DR\GitCommitNotification\Entity\Config\Filter;
+use DR\GitCommitNotification\Entity\Notification\Filter;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

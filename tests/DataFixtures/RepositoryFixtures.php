@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 
 class RepositoryFixtures extends Fixture
 {

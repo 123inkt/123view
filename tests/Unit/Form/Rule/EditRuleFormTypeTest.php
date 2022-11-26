@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Form\Rule;
 
 use DR\GitCommitNotification\Controller\App\Notification\RuleController;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Form\Rule\EditRuleFormType;
 use DR\GitCommitNotification\Form\Rule\RuleType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -34,7 +34,7 @@ class EditRuleFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url  = 'https://commit-notification/add/rule';
+        $url  = 'https://123view/add/rule';
         $rule = (new Rule())->setId(123);
 
         $this->urlGenerator->expects(self::once())

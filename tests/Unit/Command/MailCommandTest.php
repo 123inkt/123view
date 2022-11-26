@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Command;
 
 use DR\GitCommitNotification\Command\MailCommand;
-use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
+use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Service\Mail\CommitMailService;
 use DR\GitCommitNotification\Service\RuleProcessor;

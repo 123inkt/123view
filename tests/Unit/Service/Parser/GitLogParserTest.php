@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Service\CommitHydrator;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Parser\DiffParser;

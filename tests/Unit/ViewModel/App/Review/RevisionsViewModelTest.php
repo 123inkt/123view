@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 
 use ArrayIterator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;

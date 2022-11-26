@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Notification;
 
-use DR\GitCommitNotification\Entity\Config\RuleFactory;
+use DR\GitCommitNotification\Entity\Notification\RuleFactory;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\RuleFactory
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Notification\RuleFactory
  */
 class RuleFactoryTest extends AbstractTestCase
 {
