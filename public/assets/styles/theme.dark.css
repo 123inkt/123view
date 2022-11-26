@@ -20,9 +20,9 @@
     --review-diff-add-comment-bg-color: #282719;
     --review-diff-add-comment-fg-color: #FF008C;
     --review-diff-line-added-bg-color: #2A352F;
-    --review-diff-line-removed-bg-color: #373737;
+    --review-diff-line-removed-bg-color: #321C1F;
     --review-diff-line-changed-bg-color: #303C47;
     --review-diff-line-hover-bg-color: #282719;
     --review-diff-change-added-bg-color: #294436;
-    --review-diff-change-removed-bg-color: #484A4A;
+    --review-diff-change-removed-bg-color: #472527;
 }
