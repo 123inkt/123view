@@ -1,7 +1,7 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
 [![Symfony Version](https://img.shields.io/badge/symfony-6.1-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-4BC51D)](https://php.net/)
+[![codecov](https://codecov.io/gh/codecov/uploader/branch/master/graph/badge.svg?token=YHSPPVEDPJ)](https://codecov.io/gh/codecov/uploader)
 [![Build Status](https://github.com/123inkt/123view/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
 [![Build Status](https://github.com/123inkt/123view/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
 
