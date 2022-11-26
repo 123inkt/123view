@@ -5,14 +5,14 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Parser\Unified;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use LogicException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser
  */
-class UnifiedLineParserTest extends AbstractTest
+class UnifiedLineParserTest extends AbstractTestCase
 {
     /**
      * @covers ::parse

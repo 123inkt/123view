@@ -5,13 +5,13 @@ namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
 
 use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\Frequency
  */
-class FrequencyTest extends AbstractTest
+class FrequencyTest extends AbstractTestCase
 {
     /**
      * @covers ::isValid
@@ -34,7 +34,10 @@ class FrequencyTest extends AbstractTest
     public function testGetPeriod(string $frequency, DateTimeImmutable $expectedStartTime): void
     {
         $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');
-        static::assertEquals([$expectedStartTime, $currentTime], Frequency::getPeriod($currentTime, $frequency));
+        $period      = Frequency::getPeriod($currentTime, $frequency);
+
+        static::assertEquals($expectedStartTime, $period->getStartDate());
+        static::assertEquals($currentTime, $period->getEndDate());
     }
 
     /**

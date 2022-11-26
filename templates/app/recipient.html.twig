@@ -1,0 +1,13 @@
+<div class="row pb-2" data-role="recipient">
+    <div class="col-6">
+        {{ form_widget(recipient.email) }}
+        {{ form_errors(recipient.email) }}
+    </div>
+    <div class="col-5">
+        {{ form_widget(recipient.name) }}
+        {{ form_errors(recipient.name) }}
+    </div>
+    <div class="col">
+        <a href="javascript:" data-role="deleteRecipient" class="btn btn-outline-danger">&times;</a>
+    </div>
+</div>

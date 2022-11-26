@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
 use DR\GitCommitNotification\Twig\InlineCssExtension;
 
@@ -11,7 +11,7 @@ use DR\GitCommitNotification\Twig\InlineCssExtension;
  * @coversDefaultClass \DR\GitCommitNotification\Twig\InlineCssExtension
  * @covers ::__construct
  */
-class InlineCssExtensionTest extends AbstractTest
+class InlineCssExtensionTest extends AbstractTestCase
 {
     /**
      * @covers ::getFilters

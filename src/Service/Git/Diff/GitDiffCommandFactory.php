@@ -3,39 +3,39 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Diff;
 
+use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
 use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 
 class GitDiffCommandFactory
 {
-    private GitDiffCommandBuilder $builder;
-
-    public function __construct(GitDiffCommandBuilder $builder)
+    public function __construct(private readonly GitCommandBuilderFactory $builderFactory)
     {
-        $this->builder = $builder;
     }
 
     public function diffHashes(Rule $rule, string $fromHash, string $toHash): GitCommandBuilderInterface
     {
-        $this->builder
-            ->start()
-            ->hashes($fromHash, $toHash)
-            ->diffAlgorithm($rule->diffAlgorithm)
+        $options = $rule->getRuleOptions();
+
+        $builder = $this->builderFactory->createDiff();
+        $builder->hashes($fromHash, $toHash)
+            ->diffAlgorithm($options?->getDiffAlgorithm() ?? DiffAlgorithmType::MYERS)
             ->ignoreCrAtEol();
 
-        if ($rule->ignoreSpaceAtEol) {
-            $this->builder->ignoreSpaceAtEol();
+        if ($options?->isIgnoreSpaceAtEol() === true) {
+            $builder->ignoreSpaceAtEol();
         }
-        if ($rule->ignoreSpaceChange) {
-            $this->builder->ignoreSpaceChange();
+        if ($options?->isIgnoreSpaceChange() === true) {
+            $builder->ignoreSpaceChange();
         }
-        if ($rule->ignoreAllSpace) {
-            $this->builder->ignoreAllSpace();
+        if ($options?->isIgnoreAllSpace() === true) {
+            $builder->ignoreAllSpace();
         }
-        if ($rule->ignoreBlankLines) {
-            $this->builder->ignoreBlankLines();
+        if ($options?->isIgnoreBlankLines() === true) {
+            $builder->ignoreBlankLines();
         }
 
-        return $this->builder;
+        return $builder;
     }
 }

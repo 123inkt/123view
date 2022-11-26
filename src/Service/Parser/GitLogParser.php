@@ -32,7 +32,7 @@ class GitLogParser
      * @return Commit[]
      * @throws Exception
      */
-    public function parse(Repository $repository, string $commitLog): array
+    public function parse(Repository $repository, string $commitLog, ?int $limit = null): array
     {
         $result         = [];
         $pattern        = array_merge([], FormatPatternFactory::PATTERN, [FormatPattern::PATCH]);
@@ -63,6 +63,10 @@ class GitLogParser
                 $logCommit->refs = $previousCommit->refs;
             }
             $previousCommit = $logCommit;
+
+            if ($limit !== null && count($result) === $limit) {
+                break;
+            }
         }
 
         return $result;

@@ -10,12 +10,12 @@ use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
 use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversNothing
  */
-class UnifiedBlockParserTest extends AbstractTest
+class UnifiedBlockParserTest extends AbstractTestCase
 {
     private UnifiedBlockParser $parser;
 

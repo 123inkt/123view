@@ -6,13 +6,13 @@ namespace DR\GitCommitNotification\Tests\Unit\Service;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Git\FormatPattern;
 use DR\GitCommitNotification\Service\CommitHydrator;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\CommitHydrator
  */
-class CommitHydratorTest extends AbstractTest
+class CommitHydratorTest extends AbstractTestCase
 {
     private const DATA       = [
         FormatPattern::AUTHOR_NAME         => 'Sherlock Holmes',
@@ -43,7 +43,7 @@ class CommitHydratorTest extends AbstractTest
         $files  = [new DiffFile()];
         $commit = $this->hydrator->hydrate($this->createRepository('repository', self::REPOSITORY), self::DATA, $files);
 
-        static::assertSame(self::REPOSITORY, $commit->repository->url);
+        static::assertSame(self::REPOSITORY, $commit->repository->getUrl());
         static::assertSame([self::DATA[FormatPattern::COMMIT_HASH]], $commit->commitHashes);
         static::assertSame(self::DATA[FormatPattern::AUTHOR_NAME], $commit->author->name);
         static::assertSame(self::DATA[FormatPattern::AUTHOR_EMAIL], $commit->author->email);

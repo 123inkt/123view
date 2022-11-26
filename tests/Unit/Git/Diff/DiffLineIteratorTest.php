@@ -11,13 +11,13 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Git\Diff\DiffLineIterator;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Git\Diff\DiffLineIterator
  * @covers ::__construct
  */
-class DiffLineIteratorTest extends AbstractTest
+class DiffLineIteratorTest extends AbstractTestCase
 {
     /**
      * @covers ::getIterator
@@ -32,7 +32,7 @@ class DiffLineIteratorTest extends AbstractTest
         $block->lines = [$lineA, $lineB];
 
         $file         = new DiffFile();
-        $file->blocks = [$block];
+        $file->addBlock($block);
 
         $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), new DateTime(), 'subject', 'refs', [$file]);
 

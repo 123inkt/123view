@@ -5,6 +5,8 @@ namespace DR\GitCommitNotification\Service\Git;
 
 interface GitCommandBuilderInterface
 {
+    public function command(): string;
+
     /**
      * @return string[]
      */

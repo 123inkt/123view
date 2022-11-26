@@ -31,7 +31,7 @@ class DiffLineIterator implements IteratorAggregate
     {
         foreach ($this->commits as $commit) {
             foreach ($commit->files as $diffFile) {
-                foreach ($diffFile->blocks as $diffBlock) {
+                foreach ($diffFile->getBlocks() as $diffBlock) {
                     foreach ($diffBlock->lines as $diffLine) {
                         yield $diffLine;
                     }

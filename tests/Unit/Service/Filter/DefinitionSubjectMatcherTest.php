@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Filter;
 
-use DR\GitCommitNotification\Entity\Config\Definition;
+use Doctrine\Common\Collections\ArrayCollection;
+use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Service\Filter\DefinitionSubjectMatcher;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use RuntimeException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Filter\DefinitionSubjectMatcher
  */
-class DefinitionSubjectMatcherTest extends AbstractTest
+class DefinitionSubjectMatcherTest extends AbstractTestCase
 {
     /**
      * @covers ::matches
@@ -20,12 +21,12 @@ class DefinitionSubjectMatcherTest extends AbstractTest
     {
         $commit = $this->createCommit();
 
-        $definition = new Definition();
-        $definition->addSubject("/^BadRegex");
+        $filter = new Filter();
+        $filter->setPattern("/^BadRegex");
 
         $matcher = new DefinitionSubjectMatcher();
         $this->expectException(RuntimeException::class);
-        $matcher->matches($commit, $definition);
+        $matcher->matches($commit, new ArrayCollection([$filter]));
     }
 
     /**
@@ -36,11 +37,11 @@ class DefinitionSubjectMatcherTest extends AbstractTest
         $commit          = $this->createCommit();
         $commit->subject = "Foobar";
 
-        $definition = new Definition();
-        $definition->addSubject("/^Foo/");
+        $filter = new Filter();
+        $filter->setPattern("/^Foo/");
 
         $matcher = new DefinitionSubjectMatcher();
-        static::assertTrue($matcher->matches($commit, $definition));
+        static::assertTrue($matcher->matches($commit, new ArrayCollection([$filter])));
     }
 
     /**
@@ -51,10 +52,10 @@ class DefinitionSubjectMatcherTest extends AbstractTest
         $commit          = $this->createCommit();
         $commit->subject = "Barfoo";
 
-        $definition = new Definition();
-        $definition->addSubject("/^Foo/");
+        $filter = new Filter();
+        $filter->setPattern("/^Foo/");
 
         $matcher = new DefinitionSubjectMatcher();
-        static::assertFalse($matcher->matches($commit, $definition));
+        static::assertFalse($matcher->matches($commit, new ArrayCollection([$filter])));
     }
 }

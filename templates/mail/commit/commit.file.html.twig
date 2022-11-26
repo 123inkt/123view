@@ -1,0 +1,40 @@
+{%- set line_nr_length_before = file.getMaxLineNumberLength(true) -%}
+{%- set line_nr_length_after  = file.getMaxLineNumberLength(false) -%}
+
+<div class="revisionFile">
+    <div>
+        <span class="fileChangeState">
+            {%- if file.added -%}
+                +
+            {%- elseif file.deleted -%}
+                -
+            {%- elseif file.modified -%}
+                *
+            {%- endif -%}
+        </span>
+        <span class="fileName">{{ file.filename }}</span>
+        <span class="directoryName">{{ file.dirname }}</span>
+    </div>
+
+    {%- if file.rename -%}
+        <div class="fileRename">renamed from {{ file.filePathBefore }}</div>
+    {%- endif -%}
+
+    {%- if file.blocks -%}
+        <div class="fileDiff">
+            {%- if file.modified -%}
+                {%- include 'mail/commit/commit.block.spacer.html.twig' -%}
+            {%- endif -%}
+
+            {%- for block in file.blocks -%}
+                {%- include 'mail/commit/commit.block.html.twig' with {file: file, lines: block.lines} -%}
+
+                {%- if file.modified -%}
+                    {%- include 'mail/commit/commit.block.spacer.html.twig' -%}
+                {%- endif -%}
+            {%- endfor -%}
+        </div>
+    {% else %}
+        <br><br>
+    {%- endif -%}
+</div>

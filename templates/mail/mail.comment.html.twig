@@ -1,0 +1,38 @@
+{%- apply inline_css(source('@styles/mail/upsource.css')) -%}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+    <body class="mailBody">
+    {%- set review = commentModel.review -%}
+    {%- set comment = commentModel.comment -%}
+
+    {# mail title #}
+    {{- commentModel.headingTitle|trans({userName: comment.user.name}) }}
+    <a class="subjectLine" href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review}) }}"
+    >CR-{{ review.projectId }} - {{ review.title }}</a>
+    <br><br>
+
+    {%- if commentModel.file != null -%}
+        <div class="revisionFileTitle">
+            <span class="fileName">{{ commentModel.file.filename }}</span>
+            <span class="directoryName">{{ commentModel.file.dirname }}</span>
+        </div>
+    {%- endif -%}
+
+    {%- set line_nr_length_before = 4 -%}
+    {%- set line_nr_length_after = 4 -%}
+    {%- if commentModel.file != null and commentModel.linesBefore|length > 0 -%}
+        {%- include 'mail/commit/commit.block.html.twig' with {file: commentModel.file, lines: commentModel.linesBefore} -%}
+    {%- endif -%}
+
+    {%- include 'mail/comment/comment.html.twig' with {comment: comment, replies: commentModel.replies, resolvedBy: commentModel.resolvedBy} -%}
+
+    {%- if commentModel.file != null and commentModel.linesAfter|length > 0 -%}
+        {%- include 'mail/commit/commit.block.html.twig' with {file: commentModel.file, lines: commentModel.linesAfter} -%}
+    {%- endif -%}
+
+    </body>
+    </html>
+{%- endapply -%}

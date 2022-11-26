@@ -1,0 +1,24 @@
+{% if paginatorModel.lastPage > 1 %}
+    <nav class="mt-3 mb-3">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="{{ url_query_params({page: 1}) }}">
+                    <span>&laquo;</span>
+                </a>
+            </li>
+
+            {% set firstPage = max(1, paginatorModel.page - 10) %}
+            {% set lastPage = min(paginatorModel.lastPage, paginatorModel.page + 10) %}
+            {% for i in range(firstPage, lastPage) %}
+                <li class="page-item  {{ paginatorModel.page == i ? 'active' : '' }}">
+                    <a class="page-link" href="{{ url_query_params({page: i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_query_params({page: paginatorModel.lastPage}) }}">
+                    <span>&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}

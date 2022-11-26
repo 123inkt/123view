@@ -1,0 +1,136 @@
+.review-container {
+    padding: 0 0 0 10px;
+}
+
+.review-grid-layout {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    grid-template-columns: 400px auto;
+    grid-template-rows: auto 1fr;
+    height: calc(100vh - 56px);
+}
+
+/* Review detail page */
+.review-grid-layout .review-grid-header {
+    grid-column-end: 3;
+    grid-column-start: 1;
+}
+
+.review-grid-layout .review-grid-sidebar,
+.review-grid-layout .review-grid-code {
+    overflow-y: auto;
+}
+.review-grid-layout .review-grid-header .review-heading {
+    height: 36px;
+}
+
+.review--description {
+    font-size: .8rem;
+}
+
+.review-file-tree--directories {
+    color: #999999;
+    font-size: 0.9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+
+.review-file-tree--directories-root > .review-file-tree--directories {
+    padding: 0;
+}
+
+.review-file-tree--files {
+    color: #000000;
+    font-size: 0.9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 16px;
+}
+
+.review-file-tree--files-root {
+    padding-left: 0;
+}
+
+.review-file-tree--file {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.review-file-tree--file.review-file-tree--selected {
+    background: rgba(13, 110, 253, 0.07);
+}
+
+.review-file-tree--file-link:hover .review-file-tree--file-name {
+    text-decoration: underline;
+}
+
+.review-file-tree--file-link .diff-file__file-change-state {
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: baseline;
+    width: 12px;
+}
+
+.review-file-tree--unseen .review-file-tree--file-link {
+    font-weight: 600;
+}
+
+.review-file-tree--file-seen-status {
+    border: 1px solid green;
+    border-radius: 7px;
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 14px;
+    line-height: 14px;
+    margin: 4px 2px 0 4px;
+    position: relative;
+    text-align: center;
+    width: 14px;
+}
+
+.review-file-tree--file-seen-status.seen::before {
+    color: green;
+    content: '✓';
+    font-size: 12px;
+    left: 1px;
+    position: absolute;
+    top: -1px;
+}
+
+.review-grid-sidebar {
+    padding-bottom: 50px;
+    padding-right: 5px;
+}
+
+.review-grid-sidebar .reviewer-state {
+    display: block;
+    float: left;
+    margin-right: 3px;
+}
+
+.review-grid-sidebar .reviewer-name {
+    display: block;
+    float: left;
+}
+
+.review-grid-sidebar .reviewer-remove {
+    display: block;
+    float: left;
+    font-size: 0.5rem;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    width: 24px;
+}
+
+.review-grid-sidebar #add_reviewer_form_user {
+    font-size: 0.8rem;
+}
+
+.review-grid-sidebar #add_reviewer_form_user option[value=""] {
+    color: #999;
+}

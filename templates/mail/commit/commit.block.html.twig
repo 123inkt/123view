@@ -1,0 +1,7 @@
+{#- lines: DiffLine[] -#}
+{#- file: DiffFile -#}
+<div class="diffBlock">
+    {%- for line in lines -%}
+        {%- include 'mail/commit/commit.block.line.html.twig' with {file: file, line: line} -%}
+    {%- endfor %}
+</div>

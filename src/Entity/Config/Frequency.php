@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\Config;
 
 use DateInterval;
+use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
-use DateTimeInterface;
 use InvalidArgumentException;
 
 class Frequency
@@ -32,10 +32,7 @@ class Frequency
         return in_array($frequency, $valid, true);
     }
 
-    /**
-     * @return array{DateTimeInterface, DateTimeInterface}
-     */
-    public static function getPeriod(DateTimeImmutable $currentTime, string $frequency): array
+    public static function getPeriod(DateTimeImmutable $currentTime, string $frequency): DatePeriod
     {
         $interval = match ($frequency) {
             self::ONCE_PER_HOUR => new DateInterval("PT1H"),
@@ -47,6 +44,6 @@ class Frequency
             default => throw new InvalidArgumentException('Invalid frequency: ' . $frequency),
         };
 
-        return [DateTime::createFromImmutable($currentTime)->sub($interval), $currentTime];
+        return new DatePeriod(DateTime::createFromImmutable($currentTime)->sub($interval), $interval, $currentTime);
     }
 }

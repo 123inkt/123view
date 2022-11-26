@@ -13,8 +13,9 @@ return static function (MonologConfig $monolog) {
 
     $monolog->handler('error')
         ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.log')
+        ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
         ->level('error')
+        ->includeStacktraces(true)
         ->maxFiles(10);
 
     if ((string)env('ERROR_MAIL') !== '') {
@@ -34,9 +35,11 @@ return static function (MonologConfig $monolog) {
             ->level('error')
             ->formatter('monolog.formatter.html')
             ->contentType('text/html');
+
+        $monolog->handler('main')->excludedHttpCode()->code(403)->code(404);
     }
 
     $monolog->handler('console')
         ->type('console')
-        ->level('debug');
+        ->level('info');
 };

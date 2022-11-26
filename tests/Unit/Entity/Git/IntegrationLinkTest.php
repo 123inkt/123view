@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Git;
 
 use DR\GitCommitNotification\Entity\Git\IntegrationLink;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\IntegrationLink
  * @covers ::__construct
  */
-class IntegrationLinkTest extends AbstractTest
+class IntegrationLinkTest extends AbstractTestCase
 {
     /**
      * @covers ::__construct

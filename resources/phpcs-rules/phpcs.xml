@@ -16,7 +16,6 @@
     <rule ref="PSR12.Functions.NullableTypeDeclaration"/>
     <rule ref="PSR12.Functions.ReturnTypeDeclaration"/>
     <rule ref="PSR12.Properties.ConstantVisibility"/>
-    <rule ref="PSR12.Operators.OperatorSpacing"/>
 
     <rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
     <rule ref="Generic.Files.LineLength">

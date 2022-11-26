@@ -7,12 +7,12 @@ use DateTime;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Commit
  */
-class CommitTest extends AbstractTest
+class CommitTest extends AbstractTestCase
 {
     private Commit   $commit;
     private DateTime $date;
@@ -24,7 +24,7 @@ class CommitTest extends AbstractTest
         $this->date = new DateTime();
         $refs       = 'refs/remotes/origin/foobar';
         $files      = [new DiffFile()];
-        $subject    = "line1\nline2";
+        $subject    = "line1\nline2\nline3\n\n";
         $repository = $this->createRepository('example', 'http://example.com/my/repository.git');
 
         $this->commit = new Commit($repository, 'parent-hash', 'commit-hash', $author, $this->date, $subject, $refs, $files);
@@ -38,7 +38,7 @@ class CommitTest extends AbstractTest
         static::assertSame(['commit-hash'], $this->commit->commitHashes);
         static::assertSame('name', $this->commit->author->name);
         static::assertSame($this->date, $this->commit->date);
-        static::assertSame("line1\nline2", $this->commit->subject);
+        static::assertSame("line1\nline2\nline3\n\n", $this->commit->subject);
         static::assertNotEmpty($this->commit->files);
     }
 
@@ -70,5 +70,13 @@ class CommitTest extends AbstractTest
     public function testGetSubjectLine(): void
     {
         static::assertSame('line1', $this->commit->getSubjectLine());
+    }
+
+    /**
+     * @covers ::getCommitMessage
+     */
+    public function testGetCommitMessage(): void
+    {
+        static::assertSame("line2\nline3", $this->commit->getCommitMessage());
     }
 }

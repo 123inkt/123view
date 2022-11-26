@@ -1,0 +1,31 @@
+{#- line: DiffLine -#}
+{#- file: DiffFile -#}
+
+{%- set line_modifier = '&nbsp;' -%}
+{%- set line_style = '' -%}
+
+{%- if line.state == 1 -%}
+    {%- set line_modifier = '+' %}
+    {%- set line_style = 'lineChangeAdded' -%}
+{%- elseif line.state == 2 -%}
+    {%- set line_modifier = '-' %}
+    {%- set line_style = 'lineChangeRemoved' %}
+{%- elseif line.state == 3 -%}
+    {%- set line_modifier = '*' %}
+    {%- set line_style = 'lineChangeChanged' -%}
+{%- endif -%}
+
+<div class="diffLine {{ line_style }}"><span class="diffLineNumber">
+        {{- line.lineNumberBefore|strpad(line_nr_length_before) -}}
+        &nbsp;
+        {{- line.lineNumberAfter|strpad(line_nr_length_after) -}}
+    </span><span class="diffChangeState">{{ line_modifier|raw }}</span>
+
+    {%- for change in line.changes -%}
+        {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
+            <span class="changeAdded">{{ change.code }}</span>
+        {%- elseif change.type == 2 and (line.state != 2 or line.changes|length > 1) -%}
+            <span class="changeRemoved">{{ change.code }}</span>
+        {%- else %}{{ change.code }}{% endif -%}
+    {%- endfor -%}
+</div>

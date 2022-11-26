@@ -6,12 +6,12 @@ namespace DR\GitCommitNotification\Tests\Unit\Git\Diff;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
 use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Git\Diff\DiffChangeBundler
  */
-class DiffChangeBundlerTest extends AbstractTest
+class DiffChangeBundlerTest extends AbstractTestCase
 {
     private DiffChangeBundler $bundler;
 

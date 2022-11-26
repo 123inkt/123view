@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Tests;
 
 use DateTime;
 use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Config\RepositoryReference;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Entity\Git\Commit;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
@@ -37,19 +36,11 @@ trait TestTrait
 
     protected function createRepository(string $name, string $url): Repository
     {
-        $repository       = new Repository();
-        $repository->name = $name;
-        $repository->url  = $url;
+        $repository = new Repository();
+        $repository->setName($name);
+        $repository->setUrl($url);
 
         return $repository;
-    }
-
-    protected function createRepositoryReference(string $name): RepositoryReference
-    {
-        $reference       = new RepositoryReference();
-        $reference->name = $name;
-
-        return $reference;
     }
 
     protected function getFileContents(string $relativeFilePath): string
@@ -57,6 +48,11 @@ trait TestTrait
         $path = $this->getDataDir() . $relativeFilePath;
 
         return (string)file_get_contents($path);
+    }
+
+    protected function loadFixture(string $fixture): mixed
+    {
+        return require $this->getDataDir() . '/Fixtures/' . $fixture;
     }
 
     private function getDataDir(): string

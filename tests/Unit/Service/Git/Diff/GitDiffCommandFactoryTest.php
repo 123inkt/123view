@@ -4,26 +4,29 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff;
 
 use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Config\RuleOptions;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory
  * @covers ::__construct
  */
-class GitDiffCommandFactoryTest extends AbstractTest
+class GitDiffCommandFactoryTest extends AbstractTestCase
 {
-    /** @var GitDiffCommandBuilder|MockObject */
-    private GitDiffCommandBuilder $commandBuilder;
-    private GitDiffCommandFactory $factory;
+    private GitDiffCommandBuilder&MockObject $commandBuilder;
+    private GitDiffCommandFactory            $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitDiffCommandBuilder::class);
-        $this->factory        = new GitDiffCommandFactory($this->commandBuilder);
+        $factory              = $this->createMock(GitCommandBuilderFactory::class);
+        $factory->method('createDiff')->willReturn($this->commandBuilder);
+        $this->factory = new GitDiffCommandFactory($factory);
     }
 
     /**
@@ -31,13 +34,15 @@ class GitDiffCommandFactoryTest extends AbstractTest
      */
     public function testDiffHashesMinimalOptions(): void
     {
-        $rule                      = new Rule();
-        $rule->ignoreSpaceAtEol    = false;
-        $rule->excludeMergeCommits = false;
+        $rule = new Rule();
+        $rule->setRuleOptions(
+            (new RuleOptions())
+                ->setIgnoreSpaceAtEol(false)
+                ->setExcludeMergeCommits(false)
+        );
 
-        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
 
         $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
@@ -53,14 +58,16 @@ class GitDiffCommandFactoryTest extends AbstractTest
      */
     public function testFromRuleWithAllOptions(): void
     {
-        $rule                    = new Rule();
-        $rule->ignoreAllSpace    = true;
-        $rule->ignoreSpaceChange = true;
-        $rule->ignoreBlankLines  = true;
+        $rule = new Rule();
+        $rule->setRuleOptions(
+            (new RuleOptions())
+                ->setIgnoreAllSpace(true)
+                ->setIgnoreSpaceChange(true)
+                ->setIgnoreBlankLines(true)
+        );
 
-        $this->commandBuilder->expects(static::once())->method('start')->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->diffAlgorithm)->willReturnSelf();
+        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
 
         $this->commandBuilder->expects(static::once())->method('ignoreSpaceAtEol')->willReturnSelf();

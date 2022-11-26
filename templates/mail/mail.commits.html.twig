@@ -1,0 +1,58 @@
+{%- apply inline_css(source('@styles/mail/' ~ viewModel.theme ~ '.css')) -%}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+    <body class="mailBody">
+        <div class="revisions">
+            New revision(s) by {{ viewModel.authors|join(', ') }}.<br><br>
+        </div>
+
+    {%- for commit in viewModel.commits -%}
+        <div class="revisions">
+            {%- if commit.review != null -%}
+                <a class="subjectLine"
+                   href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: commit.review}) }}"
+                >CR-{{ commit.review.projectId }}</a>
+            {%- endif %}
+
+            New revision{% if commit.commitHashes|length > 1 %}s{% endif %} by {{ commit.author.name }} in branch
+
+            {# branch name -#}
+            <span class="remoteReference"> {{ commit.remoteRef|default('master') }}</span> in repository
+
+            {#- repository name -#}
+            <span class="repositoryName"> {{ commit.repositoryName }}</span>.
+
+            {#- commit hashes, show max 5 -#}
+            <code class="commitHash">
+                {% set max_hashes = 5 %}
+                {%- for commitHash in commit.commitHashes -%}
+                    {%- if loop.index < max_hashes -%}
+                        {%- if not loop.first %}, {% endif -%}
+                        {{- commitHash[:8] -}}
+                    {%- endif %}
+                    {%- if loop.index == max_hashes -%}, ...{%- endif -%}
+                {%- endfor -%}
+            </code>
+
+            {#- first line commit message -#}
+            <span class="subjectLine"> {{ commit.subjectLine|external_links }}</span>
+
+            {%- if commit.integrationLinks|length > 0 -%}
+                {%- for link in commit.integrationLinks -%}
+                    &nbsp;<a class="integration-link" href="{{ link.url }}"><img src="{{ link.image }}" width="16" height="16" title="{{ link.text }}"/></a>
+                {%- endfor -%}
+            {%- endif -%}
+        </div>
+        <br>
+
+        {%- for file in commit.files -%}
+            {% include 'mail/commit/commit.file.html.twig' %}
+        {%- endfor -%}
+
+    {%- endfor -%}
+    </body>
+    </html>
+{%- endapply -%}

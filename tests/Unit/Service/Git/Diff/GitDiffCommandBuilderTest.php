@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff;
 
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder
  * @covers ::__construct
  */
-class GitDiffCommandBuilderTest extends AbstractTest
+class GitDiffCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = [
         'git',
@@ -30,11 +30,10 @@ class GitDiffCommandBuilderTest extends AbstractTest
      */
     public function testBuildDefaults(): void
     {
-        static::assertSame(self::DEFAULTS, $this->builder->start()->build());
+        static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
     /**
-     * @covers ::start
      * @covers ::ignoreSpaceChange
      * @covers ::ignoreBlankLines
      * @covers ::ignoreAllSpace
@@ -45,7 +44,6 @@ class GitDiffCommandBuilderTest extends AbstractTest
     public function testBuildSpace(): void
     {
         $actual = $this->builder
-            ->start()
             ->ignoreSpaceChange()
             ->ignoreBlankLines()
             ->ignoreAllSpace()
@@ -69,15 +67,17 @@ class GitDiffCommandBuilderTest extends AbstractTest
     }
 
     /**
-     * @covers ::start
      * @covers ::hashes
+     * @covers ::hash
+     * @covers ::unified
      * @covers ::diffAlgorithm
      */
     public function testBuildOptions(): void
     {
         $actual = $this->builder
-            ->start()
             ->hashes('start', 'end')
+            ->hash('hash')
+            ->unified(5)
             ->diffAlgorithm("foobar")
             ->build();
 
@@ -87,6 +87,8 @@ class GitDiffCommandBuilderTest extends AbstractTest
                 [
                     'start',
                     'end',
+                    'hash',
+                    '--unified=5',
                     '--diff-algorithm="foobar"'
                 ]
             ),
@@ -95,10 +97,18 @@ class GitDiffCommandBuilderTest extends AbstractTest
     }
 
     /**
+     * @covers ::command
+     */
+    public function testCommand(): void
+    {
+        static::assertSame('diff', $this->builder->command());
+    }
+
+    /**
      * @covers ::__toString
      */
     public function testToString(): void
     {
-        static::assertSame('git diff', (string)$this->builder->start());
+        static::assertSame('git diff', (string)$this->builder);
     }
 }

@@ -1,0 +1,62 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set review = attachRevisionsModel.review %}
+    {% set revisionsModel = attachRevisionsModel.revisionsViewModel %}
+
+    {% if app.session.flashbag.peek('success')|length > 0 %}
+        <div class="alert alert-success mt-2">
+            {% for message in app.flashes('success') %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if app.session.flashbag.peek('warning')|length > 0 %}
+        <div class="alert alert-warning mt-2">
+            {% for message in app.flashes('warning') %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="mt-2 pb-3 clearfix">
+        <button type="submit" class="btn btn-primary" form="attach-revision-form">{{ 'attach.to.review'|trans }} CR-{{ review.projectId }}</button>
+        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review}) }}"
+           class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
+    </div>
+
+    {%- include 'app/revision/revisions.searchbar.html.twig' with {searchQuery: revisionsModel.searchQuery} -%}
+
+    <form id="attach-revision-form"
+            method="post"
+          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
+    >
+        <table class="table table-bordered table-hover rule-table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">{{ 'hash'|trans }}</th>
+                <th scope="col">{{ 'title'|trans }}</th>
+                <th scope="col">{{ 'author'|trans }}</th>
+                <th scope="col">{{ 'at'|trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {%- for revision in revisionsModel.revisions -%}
+                <tr>
+                    <td><input type="checkbox" class="form-check-input" name="revision[{{ revision.id }}]"></td>
+                    <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
+                    <td class="fw-bold">{{ revision.title|external_links }}</td>
+                    <td>{{ revision.authorName }}</td>
+                    <td>{{ revision.createTimestamp|format_datetime('short', 'short') }}</td>
+                </tr>
+            {%- endfor -%}
+            <tbody>
+        </table>
+    </form>
+
+    {%- include 'app/paginator/paginator.html.twig' with {paginatorModel: revisionsModel.paginator} -%}
+
+{% endblock %}

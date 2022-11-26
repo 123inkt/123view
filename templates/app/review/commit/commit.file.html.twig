@@ -1,0 +1,40 @@
+{%- set lineNrLengthBefore   = fileDiffViewModel.selectedFile.maxLineNumberLength(true) -%}
+{%- set lineNrLengthAfter    = fileDiffViewModel.selectedFile.maxLineNumberLength(false) -%}
+{%- set addCommentForm       = fileDiffViewModel.addCommentForm -%}
+{%- set editCommentForm      = fileDiffViewModel.editCommentForm -%}
+{%- set replyCommentForm     = fileDiffViewModel.replyCommentForm -%}
+{%- set editReplyCommentForm = fileDiffViewModel.editReplyCommentForm -%}
+{%- set commentsViewModel    = fileDiffViewModel.commentsViewModel -%}
+{%- set file                 = fileDiffViewModel.selectedFile -%}
+
+<div class="revision-file" data-role="revision-file" data-file="{{ file.filePathBefore ?? file.filePathAfter }}">
+    <div>
+        {%- if file.added -%}
+            <span class="diff-file__file-change-state text-success">+</span>
+        {%- elseif file.deleted -%}
+            <span class="diff-file__file-change-state text-danger">-</span>
+        {%- elseif file.modified -%}
+            <span class="diff-file__file-change-state text-primary">*</span>
+        {%- endif -%}
+        <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
+        <span class="diff-file__directory-name">{{ file.dirname }}</span>
+    </div>
+
+    {%- if file.rename -%}
+        <div class="diff-file__file-rename">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
+    {%- endif -%}
+
+    {%- if file.blocks -%}
+        {%- for detachedComment in commentsViewModel.detachedComments -%}
+            {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
+        {%- endfor -%}
+
+        <div class="diff-file__file-diff">
+            {%- for block in file.blocks -%}
+                {%- include 'app/review/commit/commit.block.html.twig' -%}
+            {%- endfor -%}
+        </div>
+    {% else %}
+        <br><br>
+    {%- endif -%}
+</div>

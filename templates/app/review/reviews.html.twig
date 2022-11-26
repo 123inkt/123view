@@ -1,0 +1,67 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+    <div class="mt-2 pb-2 clearfix">
+        <h2 class="float-start pe-3 mb-0">{{ reviewsModel.repository.displayName }}</h2>
+
+        <ul class="nav nav-pills float-start">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:">{{ 'reviews'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
+                    {{ 'revisions'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <form method="get">
+        <div class="input-group">
+            <input type="search"
+                   name="search"
+                   value="{{ reviewsModel.searchQuery }}"
+                   class="form-control"
+                   data-controller="SearchField"
+                   placeholder="{{ 'search.review'|trans }}"/>
+            {% if reviewsModel.searchQuery != '' %}
+                <a href="?search=" class="btn btn-secondary">&times;</a>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="quick-links form-text d-block mb-3">
+        <span>{{ 'review.search.hint'|trans|raw }}</span>
+        <a href="?search=state%3Aclosed" class="ms-1 form-text d-inline-block float-end">{{ 'closed.reviews'|trans }}</a>
+        <a href="?search=state%3Aopen" class="ms-1 form-text d-inline-block float-end">{{ 'open.reviews'|trans }}</a>
+        <a href="?search=" class="ms-1 form-text d-inline-block float-end">{{ 'all.reviews'|trans }}</a>
+    </div>
+
+    <div class="list-group">
+        {%- for review in reviewsModel.reviews -%}
+            <a class="list-group-item list-group-item-action"
+               href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review}) }}">
+
+                <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+                    {{ review.state|trans }}
+                </span>
+
+                <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
+
+                {# authors #}
+                {% set authors = reviewsModel.authors(review.revisions) %}
+                {% if authors|length > 0 %}
+                    <span class="list-group-item__authors d-block text-secondary fs-">
+                        {% for author in authors %}
+                            <small class="list-group-item__author">{{ author }}{% if not loop.last %},{% endif %}</small>
+                        {% endfor %}
+                    </span>
+                {% endif %}
+            </a>
+        {%- endfor -%}
+    </div>
+
+    {% include 'app/paginator/paginator.html.twig' with {paginatorModel: reviewsModel.paginator} %}
+{% endblock %}

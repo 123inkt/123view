@@ -1,0 +1,17 @@
+<fieldset class="pb-4" data-controller="Filter" data-filter-count="{{ filters|length }}">
+    <legend>{{ title }}</legend>
+
+    <div data-role="filters">
+        {% for filter in filters %}
+            {% include '/app/filter.html.twig' %}
+        {% endfor %}
+    </div>
+
+    <template data-role="filter-template">
+        {% include '/app/filter.html.twig' with {filter: filters.vars.prototype} %}
+    </template>
+
+    <a href="javascript:" data-role="addFilter" class="btn btn-outline-primary">
+        {{ 'add.filter'|trans }}
+    </a>
+</fieldset>

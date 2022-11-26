@@ -52,16 +52,18 @@ class UpsourceIntegration implements EventSubscriberInterface
      */
     private function tryAddLink(Commit $commit): void
     {
-        $projectId = $commit->repository->upsourceProjectId;
+        $projectId = $commit->repository->getRepositoryProperty('upsource-project-id');
         if ($projectId === null) {
-            $this->log->debug('UpsourceIntegration: no projectId specified for repository: ' . $commit->repository->name);
+            $this->log->debug('UpsourceIntegration: no projectId specified for repository: ' . $commit->repository->getName());
 
             return;
         }
 
         $reviewId = $this->api->getReviewId($projectId, $commit->getSubjectLine());
         if ($reviewId === null) {
-            $this->log->debug(sprintf('UpsourceIntegration: no review found for `%s` in %s', $commit->getSubjectLine(), $commit->repository->name));
+            $this->log->debug(
+                sprintf('UpsourceIntegration: no review found for `%s` in %s', $commit->getSubjectLine(), $commit->repository->getName())
+            );
 
             return;
         }
@@ -73,6 +75,6 @@ class UpsourceIntegration implements EventSubscriberInterface
 
     private function getIcon(): string
     {
-        return Icon::getBase64(dirname(__DIR__, 3) . '/assets/images/upsource.png');
+        return Icon::getBase64(dirname(__DIR__, 3) . '/public/assets/images/upsource.png');
     }
 }

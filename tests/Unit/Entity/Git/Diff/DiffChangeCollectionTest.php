@@ -5,14 +5,14 @@ namespace DR\GitCommitNotification\Tests\Unit\Entity\Git\Diff;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use LogicException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection
  * @covers ::__construct
  */
-class DiffChangeCollectionTest extends AbstractTest
+class DiffChangeCollectionTest extends AbstractTestCase
 {
     /**
      * @covers ::addIfNotEmpty

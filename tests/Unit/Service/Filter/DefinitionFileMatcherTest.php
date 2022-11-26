@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Filter;
 
-use DR\GitCommitNotification\Entity\Config\Definition;
+use Doctrine\Common\Collections\ArrayCollection;
+use DR\GitCommitNotification\Entity\Config\Filter;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Service\Filter\DefinitionFileMatcher;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use RuntimeException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Filter\DefinitionFileMatcher
  */
-class DefinitionFileMatcherTest extends AbstractTest
+class DefinitionFileMatcherTest extends AbstractTestCase
 {
     /**
      * @covers ::matches
@@ -20,10 +21,10 @@ class DefinitionFileMatcherTest extends AbstractTest
     public function testMatchesEmptyDiffFileShouldNotMatch(): void
     {
         $file       = new DiffFile();
-        $definition = new Definition();
+        $filter = new Filter();
 
         $matcher = new DefinitionFileMatcher();
-        static::assertFalse($matcher->matches($file, $definition));
+        static::assertFalse($matcher->matches($file, new ArrayCollection([$filter])));
     }
 
     /**
@@ -34,11 +35,11 @@ class DefinitionFileMatcherTest extends AbstractTest
         $file                = new DiffFile();
         $file->filePathAfter = '/path/to/file.txt';
 
-        $definition = new Definition();
-        $definition->addFile('#file\\.txt$#');
+        $filter = new Filter();
+        $filter->setPattern('#file\\.txt$#');
 
         $matcher = new DefinitionFileMatcher();
-        static::assertTrue($matcher->matches($file, $definition));
+        static::assertTrue($matcher->matches($file, new ArrayCollection([$filter])));
     }
 
     /**
@@ -49,11 +50,11 @@ class DefinitionFileMatcherTest extends AbstractTest
         $file                = new DiffFile();
         $file->filePathAfter = '/path/to/foobar.txt';
 
-        $definition = new Definition();
-        $definition->addFile('#file\\.txt$#');
+        $filter = new Filter();
+        $filter->setPattern('#file\\.txt$#');
 
         $matcher = new DefinitionFileMatcher();
-        static::assertFalse($matcher->matches($file, $definition));
+        static::assertFalse($matcher->matches($file, new ArrayCollection([$filter])));
     }
 
     /**
@@ -64,12 +65,12 @@ class DefinitionFileMatcherTest extends AbstractTest
         $file                = new DiffFile();
         $file->filePathAfter = '/path/to/foobar.txt';
 
-        $definition = new Definition();
-        $definition->addFile('#invalid');
+        $filter = new Filter();
+        $filter->setPattern('#invalid');
 
         $matcher = new DefinitionFileMatcher();
 
         $this->expectException(RuntimeException::class);
-        $matcher->matches($file, $definition);
+        $matcher->matches($file, new ArrayCollection([$filter]));
     }
 }

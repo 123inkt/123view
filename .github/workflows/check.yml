@@ -1,27 +1,50 @@
 name: Check
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
 
 jobs:
-  quality:
-    name: Quality checks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.0
-          coverage: none
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
-      - name: run checks
-        run: composer check
-      - name: check twig
-        run: php bin/console lint:twig templates
-      - name: check container
-        run: php bin/console lint:container
+    quality:
+        name: Quality checks
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.1
+                    coverage: none
+
+            -   name: Get composer cache directory
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            -   name: Cache composer dependencies
+                uses: actions/cache@v3
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: ${{ runner.os }}-composer-
+
+            -   name: Install Composer dependencies
+                run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+            -   name: Run PHPStan checks
+                run: composer run check:phpstan -- --no-progress
+
+            -   name: Run PHP Codesniffer checks
+                run: composer run check:phpcs -- -q
+
+            -   name: Run PHP MessDetector checks
+                run: composer run check:phpmd
+
+            -   name: Run twig lint
+                run: php bin/console lint:twig templates
+
+            -   name: Run container lint
+                run: php bin/console lint:container

@@ -1,0 +1,33 @@
+## overrides for development
+
+version: '3'
+
+services:
+    nginx:
+        build:
+            target: dev
+
+    php-fpm:
+        build:
+            target: dev
+        environment:
+            XDEBUG_MODE: debug
+            XDEBUG_CONFIG: client_host=host.docker.internal discover_client_host=true start_with_request=trigger
+            PHP_IDE_CONFIG: serverName=localhost
+            DATABASE_URL: mysql://${DB_USER:-dev}:${DB_PASS:-123inkt}@mysql:3306/${DB_NAME:-commit-notification}?serverVersion=8.0&charset=utf8mb4
+            APP_ENV: dev
+
+    mysql:
+        environment:
+            MYSQL_USER: ${DB_USER:-dev}
+            MYSQL_PASSWORD: ${DB_PASS:-123inkt}
+            MYSQL_DATABASE: ${DB_NAME:-commit-notification}
+            MYSQL_ROOT_PASSWORD: ${DB_PASS:-123inkt}
+
+    rabbitmq:
+        environment:
+            RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
+            RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
+        ports:
+            - ${RABBITMQ_CLIENT_PORT:-5672}:5672
+            - ${RABBITMQ_API_PORT:-15672}:15672

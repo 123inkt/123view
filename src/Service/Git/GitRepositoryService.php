@@ -8,24 +8,31 @@ use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\Helpers;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Git\GitRepository;
-use Psr\Log\LoggerInterface;
+use DR\GitCommitNotification\Utility\CircuitBreaker;
+use League\Uri\Http;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Stopwatch\Stopwatch;
+use Throwable;
 
 /**
  * Service to clone or pull the repository from the given url.
  */
-class GitRepositoryService
+class GitRepositoryService implements LoggerAwareInterface
 {
-    private Git             $git;
-    private Filesystem      $filesystem;
-    private LoggerInterface $log;
-    private string          $cacheDirectory;
+    use LoggerAwareTrait;
 
-    public function __construct(LoggerInterface $log, Git $git, Filesystem $filesystem, string $cacheDirectory)
-    {
-        $this->log            = $log;
-        $this->git            = $git;
-        $this->filesystem     = $filesystem;
+    private string         $cacheDirectory;
+    private CircuitBreaker $circuitBreaker;
+
+    public function __construct(
+        private readonly Git $git,
+        private readonly Filesystem $filesystem,
+        private readonly ?Stopwatch $stopwatch,
+        string $cacheDirectory
+    ) {
+        $this->circuitBreaker = new CircuitBreaker(5, 5000);
         $this->cacheDirectory = $cacheDirectory . '/git/';
     }
 
@@ -35,7 +42,7 @@ class GitRepositoryService
     public function getRepository(string $repositoryUrl): GitRepository
     {
         try {
-            return $this->tryGetRepository($repositoryUrl);
+            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repositoryUrl));
         } catch (GitException $exception) {
             $message = $exception->getMessage() . ': ';
             if ($exception->getRunnerResult() !== null) {
@@ -43,6 +50,8 @@ class GitRepositoryService
             }
 
             throw new RepositoryException($message, $exception->getCode(), $exception);
+        } catch (Throwable $exception) {
+            throw new RepositoryException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -59,19 +68,23 @@ class GitRepositoryService
 
         if ($this->filesystem->exists($repositoryDir . '.git')) {
             // is existing repository
-            $this->log->info(sprintf('git: open repository `%s`', $repositoryDir));
+            $this->stopwatch?->start('repository.open', 'git');
+            $this->logger?->info(sprintf('git: open repository `%s`', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
             $repository = $this->git->open($repositoryDir);
+            $this->stopwatch?->stop('repository.open');
         } else {
             // is new repository
-            $this->log->info(sprintf('git: init repository `%s`.', $repositoryDir));
-            $repository = $this->git->init($repositoryDir);
-            $this->log->info(sprintf('git: add origin: `%s`.', $repositoryUrl));
-            $repository->addRemote('origin', $repositoryUrl);
+            $this->stopwatch?->start('repository.clone', 'git');
+            $this->logger?->info(sprintf('git: clone repository `%s`.', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
+            $repository = $this->git->cloneRepository($repositoryUrl, $repositoryDir);
+            $this->stopwatch?->stop('repository.clone');
         }
 
-        $this->log->info(sprintf('git: fetch --all (%s)', $repositoryUrl));
+        $this->stopwatch?->start('repository.fetch', 'git');
+        $this->logger?->info(sprintf('git: fetch --all (%s)', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
         $repository->fetch(null, ['--all']);
+        $this->stopwatch?->stop('repository.fetch');
 
-        return new GitRepository($repositoryDir);
+        return new GitRepository($this->stopwatch, $repositoryDir);
     }
 }

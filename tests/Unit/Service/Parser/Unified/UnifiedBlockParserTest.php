@@ -9,13 +9,13 @@ use DR\GitCommitNotification\Git\LineReader;
 use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser
  * @covers ::__construct
  */
-class UnifiedBlockParserTest extends AbstractTest
+class UnifiedBlockParserTest extends AbstractTestCase
 {
     private UnifiedBlockParser $parser;
 

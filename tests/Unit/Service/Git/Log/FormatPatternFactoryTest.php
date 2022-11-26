@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory
  */
-class FormatPatternFactoryTest extends AbstractTest
+class FormatPatternFactoryTest extends AbstractTestCase
 {
     /**
      * @covers ::createPattern

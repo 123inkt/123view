@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Git;
 
 use DR\GitCommitNotification\Git\LineReader;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Git\LineReader
  * @covers ::__construct
  */
-class LineReaderTest extends AbstractTest
+class LineReaderTest extends AbstractTestCase
 {
     /**
      * @covers ::__toString

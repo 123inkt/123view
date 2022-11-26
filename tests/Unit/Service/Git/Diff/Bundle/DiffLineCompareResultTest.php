@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff\Bundle;
 
 use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult
  * @covers ::__construct
  */
-class DiffLineCompareResultTest extends AbstractTest
+class DiffLineCompareResultTest extends AbstractTestCase
 {
     /**
      * @covers ::isAdditionsOnly

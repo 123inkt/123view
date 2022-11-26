@@ -1,0 +1,79 @@
+{% macro recursiveFileTree(fileTreeModel, directory, treeDepth) %}
+    {% import _self as self %}
+
+    {% if directory.directories|length %}
+        <ul class="review-file-tree--directories text-nowrap">
+            {% for subdirectory in directory.directories %}
+                <li class="review-file-tree--directory">
+                    <i class="bi bi-folder-fill icon-directory"></i> {{ subdirectory.name }}
+                    {{ self.recursiveFileTree(fileTreeModel, subdirectory, treeDepth + 1) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if directory.files|length %}
+        <ul class="review-file-tree--files text-nowrap {% if treeDepth == 0 %}review-file-tree--files-root{% endif %}">
+            {% for file in directory.files %}
+                {% set isFileSeen = fileTreeModel.fileSeen(file) or fileTreeModel.fileSelected(file) %}
+
+                <li class="review-file-tree--file
+                    {%- if fileTreeModel.fileSelected(file) %} review-file-tree--selected
+                    {%- elseif not isFileSeen %} review-file-tree--unseen{% endif -%}"
+                    data-role="review-file-tree-file {%- if fileTreeModel.fileSelected(file) %} active-file{% endif %}"
+                >
+                    {%- set filePath = file.file.pathname -%}
+                    {%- if file.hashEnd != null -%}
+                        {%- set filePath = filePath ~ ':' ~ file.hashEnd -%}
+                    {%- endif -%}
+
+                    <a href="?filePath={{ filePath|e('url') }}"
+                       class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate me-2">
+                        {%- if file.added -%}
+                            <span class="diff-file__file-change-state text-success">+</span>
+                        {%- elseif file.deleted -%}
+                            <span class="diff-file__file-change-state text-danger">-</span>
+                        {%- elseif file.modified -%}
+                            <span class="diff-file__file-change-state text-primary">*</span>
+                        {%- endif -%}
+
+                        <i class="bi bi-file-earmark-code-fill text-dark"></i>
+
+                        <span class="review-file-tree--file-name">{{ file.filename }}</span>
+                    </a>
+
+                    <span class="review-file-tree--file-status float-end text-nowrap">
+                        {% set commentStatus = fileTreeModel.getCommentsForFile(file) %}
+                        {% if commentStatus.total > 0 %}
+                            <span>
+                                {%- if commentStatus.unresolved > 0 -%}
+                                    <span class="fw-bold text-danger">{{ commentStatus.unresolved }}</span>/
+                                {%- endif -%}
+                                <span class="fw-bold">{{- commentStatus.total -}}</span>
+                            </span>
+                        {% endif %}
+
+                        {% if file.nrOfLinesAdded > 0 %}
+                            <span class="ps-1 bold text-success">+{{ file.nrOfLinesAdded }}</span>
+                        {% endif %}
+                        {% if file.nrOfLinesRemoved > 0 %}
+                            <span class="ps-1 bold text-danger">-{{ file.nrOfLinesRemoved }}</span>
+                        {% endif %}
+
+                        <span class="review-file-tree--file-seen-status {% if isFileSeen %}seen{% endif %}"
+                              data-review-id="{{ fileTreeModel.review.id }}"
+                              data-file-path="{{ file.file.pathname }}"
+                              data-seen-status="{% if isFileSeen %}1{% else %}0{% endif %}"
+                              data-role="file-seen-status"
+                        ></span>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+{% from _self import recursiveFileTree %}
+
+<div class="review-file-tree--directories-root" data-controller="ReviewFileTree">
+    {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}
+</div>

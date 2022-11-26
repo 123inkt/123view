@@ -11,12 +11,12 @@ use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversNothing
  */
-class DiffFileParserTest extends AbstractTest
+class DiffFileParserTest extends AbstractTestCase
 {
     private DiffFileParser $parser;
 
@@ -39,10 +39,10 @@ class DiffFileParserTest extends AbstractTest
 
         // expect 2 blocks
         $fileDiff = $this->parser->parse($contents, $fileDiff);
-        static::assertCount(2, $fileDiff->blocks);
+        static::assertCount(2, $fileDiff->getBlocks());
 
         // expect each block have 3 lines
-        [$blockA, $blockB] = $fileDiff->blocks;
+        [$blockA, $blockB] = $fileDiff->getBlocks();
         static::assertCount(3, $blockA->lines);
         static::assertCount(3, $blockB->lines);
 

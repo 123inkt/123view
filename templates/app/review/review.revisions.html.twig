@@ -1,0 +1,42 @@
+{# review:            CodeReview #}
+{# revisionViewModel: ReviewRevisionViewModel #}
+
+{% set detachRevisionForm = revisionViewModel.detachRevisionForm %}
+<div class="review-revision mt-3">
+    <h5>{{ 'revisions'|trans }}</h5>
+
+    {{ form_start(detachRevisionForm) }}
+    {%- for revision in revisionViewModel.revisions -%}
+
+        <div class="review-revision--grid">
+            <div class="review-revision--selection">
+                {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
+            </div>
+            <div class="review-revision--title-author">
+                <div class="text-primary">{{ revision.title }}</div>
+                <div class="text-secondary review-revision--author-time" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
+                    {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
+                </div>
+            </div>
+            <small class="text-muted review-revision--commit-hash" title="{{ revision.commitHash }}">
+                {{- revision.commitHash|slice(0, 7) }}
+            </small>
+        </div>
+    {% else %}
+        <em>{{ 'review.no.revisions'|trans }}</em>
+
+    {%- endfor -%}
+
+    <div class="pt-3 ">
+        <div class="float-start">
+            <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\AttachRevisionSelectionController', {id: review.id}) }}"
+               class="btn btn-outline-success">{{ 'add.revisions'|trans }}</a>
+        </div>
+
+        <div class="float-start ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
+            {{ form_widget(detachRevisionForm.detach, {attr: {class: 'btn-outline-danger btn'}}) }}
+        </div>
+    </div>
+
+    {{ form_end(detachRevisionForm) }}
+</div>

@@ -6,11 +6,12 @@ namespace DR\GitCommitNotification\Entity\Git;
 use DateTime;
 use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
+use DR\GitCommitNotification\Entity\Review\CodeReview;
 
 class Commit
 {
     public Repository $repository;
-    public string $parentHash;
+    public string     $parentHash;
     /** @var string[] */
     public array    $commitHashes;
     public Author   $author;
@@ -20,7 +21,8 @@ class Commit
     /** @var DiffFile[] */
     public array $files;
     /** @var IntegrationLink[] */
-    public array $integrationLinks = [];
+    public array       $integrationLinks = [];
+    public ?CodeReview $review           = null;
 
     /**
      * @param DiffFile[] $files
@@ -50,7 +52,7 @@ class Commit
      */
     public function getRepositoryName(): string
     {
-        $repository = (string)preg_replace('/\.git$/', '', $this->repository->url);
+        $repository = (string)preg_replace('/\.git$/', '', (string)$this->repository->getUrl());
 
         return basename($repository);
     }
@@ -61,6 +63,14 @@ class Commit
     public function getSubjectLine(): string
     {
         return explode("\n", $this->subject)[0] ?? '';
+    }
+
+    /**
+     * Get the commit message excluding the first line
+     */
+    public function getCommitMessage(): string
+    {
+        return trim(implode("\n", array_slice(explode("\n", $this->subject), 1)));
     }
 
     public function getRemoteRef(): ?string

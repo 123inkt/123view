@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+    nginx:
+        container_name: ${NGINX_CONTAINER:-nginx}
+        build:
+            args:
+                VERSION: $NGINX_VERSION
+            context: .
+            dockerfile: ./docker/nginx/Dockerfile
+        ports:
+            - ${NGINX_PORT:-8080}:80
+            - ${NGINX_SSL_PORT:-8443}:443
+        volumes:
+            - ./public:/app/public
+        depends_on:
+            - php-fpm
+
+    php-fpm:
+        container_name: ${PHP_CONTAINER:-php-fpm}
+        build:
+            args:
+                VERSION: $PHP_VERSION
+            context: .
+            dockerfile: ./docker/php-fpm/Dockerfile
+        depends_on:
+            - mysql
+            - rabbitmq
+            - mail
+        volumes:
+            - .:/app:rw
+
+    mysql:
+        container_name: ${MYSQL_CONTAINER:-mysql}
+        build:
+            args:
+                VERSION: $MYSQL_VERSION
+            context: ./docker/mysql
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
+        volumes:
+            - ./docker/db/data:/var/lib/mysql
+        ports:
+            - ${MYSQL_PORT:-3306}:3306
+
+    rabbitmq:
+        container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
+        image: bitnami/rabbitmq:latest
+
+    mail:
+        container_name: ${MAIL_CONTAINER:-mail}
+        image: bytemark/smtp
+
+
+networks:
+    default:
+        name: commit-notification-network

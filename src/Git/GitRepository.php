@@ -6,28 +6,34 @@ namespace DR\GitCommitNotification\Git;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @codeCoverageIgnore
  */
 class GitRepository
 {
-    private string $repositoryPath;
-
-    public function __construct(string $repositoryPath)
+    public function __construct(private readonly ?StopWatch $stopWatch, private readonly string $repositoryPath)
     {
-        $this->repositoryPath = $repositoryPath;
     }
 
     /**
      * Get the git commit log for the given repository.
      * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
      */
-    public function execute(GitCommandBuilderInterface $commandBuilder): string
+    public function execute(string|GitCommandBuilderInterface $commandBuilder): string
     {
-        $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
-        $process->setWorkingDirectory($this->repositoryPath);
-        $process->run();
+        $command = is_string($commandBuilder) ? $commandBuilder : implode(' ', $commandBuilder->build());
+        $action  = is_string($commandBuilder) ? 'manual' : $commandBuilder->command();
+
+        $this->stopWatch?->start('git.' . $action, 'git');
+        try {
+            $process = Process::fromShellCommandline($command);
+            $process->setWorkingDirectory($this->repositoryPath);
+            $process->run();
+        } finally {
+            $this->stopWatch?->stop('git.' . $action);
+        }
 
         // executes after the command finishes
         if ($process->isSuccessful() === false) {

@@ -1,0 +1,166 @@
+.diff-file__file-change-state {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 5px;
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.diff-file__directory-name {
+    color: #999999;
+    font-size: 12px
+}
+
+.diff-file__file-rename {
+    color: #999999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.diff-file__file-diff {
+    border: 1px solid #E9E9E9;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: auto;
+}
+
+.diff-file__block-spacer {
+    background-color: #F8F8F8;
+    color: #aaa;
+    cursor: pointer;
+    height: 24px;
+    padding-left: 4px;
+}
+
+.diff-file__block-spacer:hover {
+    background-color: #e8e8e8;
+    color: #666;
+}
+
+.diff-file__block-spacer-line-nr {
+    font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+    font-size: 13px;
+    line-height: 20px;
+    margin-right: 2px;
+    white-space: pre;
+}
+
+.diff-file__line-expander {
+    margin-left: 2px;
+    margin-right: 8px;
+}
+
+.diff-file__line-expander .indicator {
+    display: block;
+    font-size: 9px;
+    height: 10px;
+    width: 10px;
+}
+
+.diff-file_line-expander-lines {
+    font-size: 0.8rem;
+    line-height: 24px;
+}
+
+.diff-file__diff-block {
+    margin: 0;
+}
+
+.diff-file__diff-line {
+    color: #0C0C0D;
+    cursor: default;
+    font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+    font-size: 13px;
+    line-height: 20px;
+    white-space: pre;
+}
+
+.diff-file__diff-line-hidden {
+    display: none;
+}
+
+.diff-file__line-gutter {
+    border-right: 1px solid #CCC;
+    color: rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    position: relative;
+}
+
+.diff-file__add-comment {
+    background: #FFFEE0;
+    bottom: 0;
+    color: #FF008C;
+    cursor: pointer;
+    display: none;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+
+.diff-file__line-numbers {
+    margin-right: 2px;
+    padding: 0 4px;
+}
+
+.diff-file__diff-change-state {
+    margin: 0 5px;
+}
+
+.diff-file__line-change-added {
+    background: #EAFFEA;
+}
+
+.diff-file__line-change-removed {
+    background: #FFECEC;
+}
+
+.diff-file__line-change-changed {
+    background: #EAF0FE;
+}
+
+.diff-file__diff-line:hover {
+    background: #FFFEE0;
+}
+
+.diff-file__diff-line:hover .diff-file__add-comment {
+    display: block;
+}
+
+.diff-file__change-added {
+    background-color: #A6F3A6;
+}
+
+.diff-file__change-removed {
+    background-color: #F8CBCB;
+}
+
+.diff-file__code-keyword {
+    color: #000080;
+    font-weight: 600;
+}
+
+.diff-file__code-string {
+    color: #008000;
+    font-weight: 600;
+}
+
+.diff-file__code-comment {
+    color: #808080;
+}
+
+.diff-file__comment_form {
+    background: #FFFEE0;
+    padding: 10px 10px 5px 10px;
+}
+
+.diff-file__comment_textarea {
+    margin-bottom: 5px;
+}
+
+.diff-file__comment-mention {
+    left: 4px;
+    top: -15px;
+}

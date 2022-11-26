@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Twig\StrPadExtension;
 use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\StrPadExtension
  */
-class StrPadExtensionTest extends AbstractTest
+class StrPadExtensionTest extends AbstractTestCase
 {
     /**
      * @covers ::getFilters

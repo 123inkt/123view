@@ -50,14 +50,14 @@ class GitlabIntegration implements EventSubscriberInterface
      */
     private function tryAddLink(Commit $commit): void
     {
-        $projectId = $commit->repository->gitlabProjectId;
+        $projectId = $commit->repository->getRepositoryProperty('gitlab-project-id');
         $remoteRef = $commit->getRemoteRef();
 
-        if ($projectId === null || $remoteRef === null) {
+        if ($projectId === null || $remoteRef === null || is_numeric($projectId) === false) {
             return;
         }
 
-        $url = $this->api->getMergeRequestUrl($projectId, $remoteRef) ?? $this->api->getBranchUrl($projectId, $remoteRef);
+        $url = $this->api->getMergeRequestUrl((int)$projectId, $remoteRef) ?? $this->api->getBranchUrl((int)$projectId, $remoteRef);
         if ($url === null) {
             return;
         }
@@ -67,6 +67,6 @@ class GitlabIntegration implements EventSubscriberInterface
 
     private function getIcon(): string
     {
-        return Icon::getBase64(dirname(__DIR__, 3) . '/assets/images/gitlab.png');
+        return Icon::getBase64(dirname(__DIR__, 3) . '/public/assets/images/gitlab.png');
     }
 }

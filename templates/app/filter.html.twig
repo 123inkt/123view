@@ -1,0 +1,12 @@
+<div class="row pb-2" data-role="filter">
+    <div class="col-3">
+        {{ form_widget(filter.type) }}
+    </div>
+    <div class="col-8">
+        {{ form_widget(filter.pattern) }}
+        {{ form_errors(filter.pattern) }}
+    </div>
+    <div class="col">
+        <a href="javascript:" data-role="deleteFilter" class="btn btn-outline-danger">&times;</a>
+    </div>
+</div>

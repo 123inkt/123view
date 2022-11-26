@@ -7,18 +7,17 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\DiffParser
  * @covers ::__construct
  */
-class DiffParserTest extends AbstractTest
+class DiffParserTest extends AbstractTestCase
 {
-    private DiffParser $parser;
-    /** @var DiffFileParser|MockObject */
-    private DiffFileParser $fileParser;
+    private DiffParser                $parser;
+    private DiffFileParser&MockObject $fileParser;
 
     protected function setUp(): void
     {
@@ -86,7 +85,6 @@ class DiffParserTest extends AbstractTest
         $input .= "foobar A\n";
         $input .= "diff --git a/example.git b/example.git\n";
         $input .= "foobar B\n";
-
 
         $fileA = new DiffFile();
         $fileB = new DiffFile();

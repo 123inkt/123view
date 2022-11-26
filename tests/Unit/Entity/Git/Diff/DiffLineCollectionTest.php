@@ -6,13 +6,13 @@ namespace DR\GitCommitNotification\Tests\Unit\Entity\Git\Diff;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLineCollection;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLinePair;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Diff\DiffLineCollection
  * @covers ::__construct
  */
-class DiffLineCollectionTest extends AbstractTest
+class DiffLineCollectionTest extends AbstractTestCase
 {
     /**
      * @covers ::remove

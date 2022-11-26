@@ -5,13 +5,13 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Commit;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Service\Git\Commit\CommitCombiner;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Commit\CommitCombiner
  */
-class CommitCombinerTest extends AbstractTest
+class CommitCombinerTest extends AbstractTestCase
 {
     private CommitCombiner $combiner;
 

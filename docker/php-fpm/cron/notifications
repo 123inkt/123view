@@ -1,0 +1,9 @@
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/app
+0 */1 * * *     www-data     php bin/console mail --frequency=once-per-hour          2>&1
+0 */2 * * *     www-data     php bin/console mail --frequency=once-per-two-hours     2>&1
+0 */3 * * *     www-data     php bin/console mail --frequency=once-per-three-hours   2>&1
+0 */4 * * *     www-data     php bin/console mail --frequency=once-per-four-hours    2>&1
+0 0 * * *       www-data     php bin/console mail --frequency=once-per-day           2>&1
+0 0 * * 1       www-data     php bin/console mail --frequency=once-per-week          2>&1
+*/5 * * * *     www-data     php bin/console revisions:fetch                         2>&1

@@ -1,14 +1,22 @@
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF)](https://php.net/)
-[![Symfony Version](https://img.shields.io/badge/symfony-6.0-4BC51D)](https://symfony.com/releases)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
+[![Symfony Version](https://img.shields.io/badge/symfony-6.1-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-4BC51D)](https://php.net/)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
 [![Build Status](https://github.com/123inkt/git-commit-notification/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/git-commit-notification/actions)
 
-# Git commit notification
-A symfony application to allow receiving commit notification for all commits in a certain time period.
+# Code review and commit notifications
+A symfony application to create code reviews for a specific set of revisions not tied to a branch and to allow receiving commit notification for all commits in a certain time period.
 
-**Features:**
+### Features
+
+**Code review:**
+- Code reviews per repository.
+- Join review, place comment or react to comment, accept and reject reviews.
+- Attach and detach revisions to and from a review.
+- Webhook to allow external projects be notified about review changes.
+
+**Commit notification:**
 - Receive one mail for all commits within a certain time period. Once per one, two, three, fours hours or daily or weekly.
 - Exclude (or include) certain commit messages, files, or authors.
 - Receive commits in a single mail for multiple repositories.
@@ -25,56 +33,56 @@ A symfony application to allow receiving commit notification for all commits in 
 <img src="docs/images/upsource.png" alt="Upsource" title="Upsource" width="400">
 <img src="docs/images/darcula.png" alt="Darcula" title="Darcula" width="400">
 
+**UI**
+
+<img src="docs/images/login.png" alt="Login screen" title="Login screen" width="400">
+<img src="docs/images/add-rule.png" alt="Add rule" title="Add rule" width="400">
+
 ## Requirements
 
-- recent version of `git`
-- php version >= 8.0
+- docker >= 20.10
+- docker-compose >= 2.6.0
+
+Or
+
+- nginx
+- php8.1+
+- mysql
+- git latest version
 
 ## Quick start
 
+1) clone repository
 ```shell
 git clone https://github.com/123inkt/git-commit-notification.git git-commit-notification
 cd git-commit-notification
-composer install --optimize-autoloader --classmap-authoritative --no-dev --no-progress
-composer dump-env prod
 ```
-Check `.env` for mailer settings, update (if necessary)
-```dotenv
-MAILER_DSN=native://default
-MAILER_SENDER='Sherlock Holmes <sherlock@example.com>'
+2) create `.env.dev.local` or `.env.prod.local`. See `.env` [configuration](docs/configuration.md) for how to configure the options.
+
+3) Start
+```shell
+./bin/start.sh
 ```
+4) choose `prod` or `dev` based on your environment. The project will be available on your host on:
+   - dev: `https://<domain>:8443/`
+   - prod: `https://<domain>/`
 
-Create config in the root of the project:
+### Next
+- [Adding repositories](docs/adding-repositories.md)
+- [Adding external links](docs/adding-external-link.md)
+- [Add reviews](docs/indexing-repositories.md)
 
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="config.xsd">
-    <repositories>
-        <repository name="example" url="https://username:password@github.com/example.git"/>
-    </repositories>
+## The crontab (prod):
 
-    <rule>
-        <name>Example repository once per hour</name>
-        <repositories>
-            <repository name="example"/>
-        </repositories>
-        <recipients>
-            <recipient email="sherlock@example.com" name="Sherlock Holmes"/>
-        </recipients>
-    </rule>
-</configuration>
-```
-See [configuration](docs/configuration.md) for more configuration options.
-
-### Add to crontab:
+When starting docker in production mode, the crontab will be configured. For manual setup, configure the crontab as below:
 
 ```shell
-0 */1 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
-0 */2 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
-0 */3 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
-0 */4 * * *   /usr/bin/php /path/to/bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
-0 0 * * *     /usr/bin/php /path/to/bin/console mail --frequency=once-per-day          > /dev/null 2>&1
-0 0 * * 1     /usr/bin/php /path/to/bin/console mail --frequency=once-per-week         > /dev/null 2>&1
+0 */1 * * * php bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
+0 */2 * * * php bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
+0 */3 * * * php bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
+0 */4 * * * php bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
+0 0 * * *   php bin/console mail --frequency=once-per-day          > /dev/null 2>&1
+0 0 * * 1   php bin/console mail --frequency=once-per-week         > /dev/null 2>&1
 ```
 
 See [command line options](docs/command-line.md) for more information about the console commands.
@@ -85,18 +93,6 @@ See [command line options](docs/command-line.md) for more information about the 
 2) Will bundle commits when author, branch and subject are identical.
 3) For a set of commits, fetches the bundled changes between the first commit and the last
 4) Send a notification mail in the desired formatting
-
-## Troubleshooting
-
-I'm not getting mails:
-- In `.env` verify MAILER_DSN is set correctly. See https://symfony.com/doc/current/mailer.html#using-built-in-transports
-- Run command with `-vvv` for verbose output. Verify your rules are configured correctly.
-- send a test mail `php bin/console test:mail sherlock@example.com`
-- Check the mail log for additional error messages. Depending on your system check:
-  - /var/log/maillog
-  - /var/log/mail.log
-  - /var/adm/maillog
-  - /var/adm/syslog/mail.log
 
 ## About us
 

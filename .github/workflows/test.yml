@@ -1,28 +1,58 @@
-name: Test
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+# GitHub Action for Symfony with MySQL
+name: Testing Symfony with MySQL
+on: [ push, pull_request ]
 jobs:
-  test:
-    name: PHP ${{ matrix.php-versions }} Test ${{ matrix.composer-flags }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: ['8.0']
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          coverage: none
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-      - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --no-suggest --prefer-stable
-      - name: Run test suite
-        run: composer test
+    test:
+        name: Symfony (PHP 8.1)
+        runs-on: ubuntu-latest
+
+        # Docs: https://docs.github.com/en/actions/using-containerized-services
+        services:
+            mysql:
+                image: mysql:latest
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_ROOT_PASSWORD: symfony
+                    MYSQL_DATABASE: symfony
+                ports:
+                    - 3306/tcp
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            # Docs: https://github.com/shivammathur/setup-php
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.1
+                    extensions: mbstring, xml, ctype, iconv, intl, mysql
+                    coverage: pcov
+
+            -   name: Get composer cache directory
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            -   name: Cache composer dependencies
+                uses: actions/cache@v3
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: ${{ runner.os }}-composer-
+
+            -   name: Install Composer dependencies
+                run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+            -   name: Run Migration
+                run: |
+                    php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+                env:
+                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
+
+            -   name: Run test suite
+                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml
+                env:
+                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
+
+            -   name: Check coverage
+                run: test ! -f ./.coverage/coverage.xml || php vendor/bin/phpfci inspect ./.coverage/coverage.xml ./.coverage/phpfci.xml --exit-code-on-failure

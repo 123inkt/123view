@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\ExternalTool\Gitlab;
 
 use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabApi;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -15,7 +15,7 @@ use Throwable;
  * @coversDefaultClass \DR\GitCommitNotification\ExternalTool\Gitlab\GitlabApi
  * @covers ::__construct
  */
-class GitlabApiTest extends AbstractTest
+class GitlabApiTest extends AbstractTestCase
 {
     /** @var MockObject|HttpClientInterface */
     private HttpClientInterface $client;

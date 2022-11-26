@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Command;
 
 use DR\GitCommitNotification\Utility\Strings;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Throwable;
 
+#[AsCommand('test:mail', "Send a test mail to the given mail address")]
 class TestMailCommand extends Command
 {
     private MailerInterface $mailer;
@@ -25,9 +27,7 @@ class TestMailCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName("test:mail")
-            ->setDescription("Send a test mail to the given mail address")
-            ->addArgument('address', InputArgument::REQUIRED, 'The test e-mail address');
+        $this->addArgument('address', InputArgument::REQUIRED, 'The test e-mail address');
     }
 
     /**
@@ -40,7 +40,7 @@ class TestMailCommand extends Command
 
         $email = (new Email())
             ->addTo(new Address($address))
-            ->subject('[GitCommitMail] test mail')
+            ->subject('[Commit Notification] test mail')
             ->text('Git log test mail');
 
         $this->mailer->send($email);

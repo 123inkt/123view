@@ -1,0 +1,11 @@
+{#- searchQuery: string -#}
+
+<form method="get" class="pb-3">
+    <div class="input-group">
+        <input type="search" name="search" value="{{ searchQuery }}" class="form-control" data-controller="SearchField" placeholder="{{ 'search.revisions'|trans }}"/>
+
+        {%- if searchQuery != '' -%}
+            <a href="{{ url_query_params({search: ''}) }}" class="btn btn-secondary">&times;</a>
+        {%- endif -%}
+    </div>
+</form>

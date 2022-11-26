@@ -7,13 +7,13 @@ use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Author;
 use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
 use DR\GitCommitNotification\Service\Git\Commit\CommitCombiner;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Commit\CommitBundler
  * @covers ::__construct
  */
-class CommitBundlerTest extends AbstractTest
+class CommitBundlerTest extends AbstractTestCase
 {
     private CommitBundler $bundler;
 

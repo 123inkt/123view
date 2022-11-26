@@ -1,0 +1,99 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\GitCommitNotification\Tests\Unit\Service\Git\CherryPick;
+
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Exception\RepositoryException;
+use DR\GitCommitNotification\Git\GitRepository;
+use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilder;
+use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+
+/**
+ * @coversDefaultClass \DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService
+ * @covers ::__construct
+ */
+class GitCherryPickServiceTest extends AbstractTestCase
+{
+    private CacheableGitRepositoryService&MockObject $repositoryService;
+    private GitCommandBuilderFactory&MockObject      $builderFactory;
+    private GitCherryPickService                     $service;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
+        $this->builderFactory    = $this->createMock(GitCommandBuilderFactory::class);
+        $this->service           = new GitCherryPickService($this->repositoryService, $this->builderFactory);
+    }
+
+    /**
+     * @covers ::tryCherryPickRevisions
+     * @covers ::cherryPickRevisions
+     */
+    public function testCherryPickRevisions(): void
+    {
+        $hash       = '123acbedf';
+        $repository = new Repository();
+        $repository->setUrl('https://url/');
+        $revision = new Revision();
+        $revision->setRepository($repository);
+        $revision->setCommitHash($hash);
+
+        $builder = $this->createMock(GitCherryPickCommandBuilder::class);
+        $builder->expects(self::once())->method('strategy')->with('recursive')->willReturnSelf();
+        $builder->expects(self::once())->method('conflictResolution')->with('theirs')->willReturnSelf();
+        $builder->expects(self::once())->method('noCommit')->willReturnSelf();
+        $builder->expects(self::once())->method('hashes')->with([$hash])->willReturnSelf();
+        $this->builderFactory->expects(self::once())->method('createCheryPick')->willReturn($builder);
+
+        $git = $this->createMock(GitRepository::class);
+        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+
+        static::assertTrue($this->service->tryCherryPickRevisions([$revision]));
+    }
+
+    /**
+     * @covers ::tryCherryPickRevisions
+     * @covers ::cherryPickRevisions
+     */
+    public function testCherryPickRevisionsShouldCaptureFailure(): void
+    {
+        $hash       = '123acbedf';
+        $repository = new Repository();
+        $repository->setUrl('https://url/');
+        $revision = new Revision();
+        $revision->setRepository($repository);
+        $revision->setCommitHash($hash);
+
+        $this->builderFactory->expects(self::once())->method('createCheryPick')->willThrowException(new RepositoryException());
+
+        static::assertFalse($this->service->tryCherryPickRevisions([$revision]));
+    }
+
+    /**
+     * @covers ::cherryPickAbort
+     * @throws RepositoryException
+     */
+    public function testCherryAbort(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl('https://url/');
+
+        $builder = $this->createMock(GitCherryPickCommandBuilder::class);
+        $builder->expects(self::once())->method('abort')->willReturnSelf();
+        $this->builderFactory->expects(self::once())->method('createCheryPick')->willReturn($builder);
+
+        $git = $this->createMock(GitRepository::class);
+        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+
+        $this->service->cherryPickAbort($repository);
+    }
+}

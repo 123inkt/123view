@@ -1,0 +1,137 @@
+body {
+    background: #232525;
+    color: #FFC66D;
+    font: 16px 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 16px;
+}
+
+.revisions {
+    padding-bottom: 10px;
+}
+
+.remoteReference {
+    background-color: #1F77B4;
+    border-radius: 3px;
+    color: #FFFFFF;
+    display: inline-block;
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+    margin: 0 2px;
+    padding: 0 2px;
+}
+
+.repositoryName {
+    font-weight: bold;
+}
+
+.commitHash {
+    color: #999;
+    font-family: Menlo, 'Bitstream Vera Sans Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;
+    font-size: 14px;
+}
+
+.subjectLine {
+    color: #CC7832;
+}
+
+.subjectLine .external-link {
+    color: #CC7832;
+    text-decoration: underline;
+}
+
+.integration-link {
+    background: none;
+    text-decoration: none;
+}
+
+.revisionFile {
+    padding-left: 20px;
+}
+
+.fileChangeState {
+    color: #6D97C2;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.fileName {
+    color: #CC7832;
+    font-weight: bold;
+}
+
+.directoryName {
+    color: #999999;
+    font-size: 12px;
+}
+
+.fileRename {
+    color: #999999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.fileDiff {
+    border: 1px solid #555555;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: auto;
+}
+
+.blockSpacer {
+    background-color: #212121;
+    color: #666;
+    padding-left: 4px;
+}
+
+.diffBlock {
+    color: #bababa;
+    font-family: Menlo, 'Bitstream Vera Sans Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;
+    font-size: 12px;
+    margin: 0;
+}
+
+.diffLine {
+    white-space: pre;
+}
+
+.diffLineNumber {
+    border-right: 1px solid #555555;
+    color: #606366;
+    display: inline-block;
+    margin-right: 2px;
+    padding: 0 4px;
+}
+
+.diffChangeState {
+    margin: 0 4px 0 2px;
+}
+
+.lineChangeAdded {
+    background: #294436;
+}
+
+.lineChangeRemoved {
+    background: #484A4A;
+}
+
+.lineChangeChanged {
+    background: #303C47;
+}
+
+.changeAdded {
+    background: #335240;
+}
+
+.changeRemoved {
+    background: #5A5E5E;
+}
+
+.diff-file__code-keyword {
+    color: #CC7832;
+}
+
+.diff-file__code-string {
+    color: #697942;
+    font-weight: 600;
+}

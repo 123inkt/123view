@@ -1,0 +1,40 @@
+<div class="comment__reply" data-reply="{{ reply.id }}">
+    <div class="comment__author_and_time">
+        <span class="comment__author">{{ reply.user.name }}</span>
+        <span class="comment__datetime" title="{{ reply.updateTimestamp|format_datetime('full', 'full') }}">
+            {{ 'on'|trans }} {{ reply.updateTimestamp|format_datetime('short', 'short') }}
+        </span>
+        <span class="comment__edit">
+            <a href="javascript:"
+               class="ms-1 text-decoration-none"
+               data-role="edit-reply"
+               data-reply-id="{{ reply.id }}"
+               title="{{ 'edit.comment'|trans }}">
+                <i class="bi bi-pencil-fill"></i>
+            </a>
+            {# delete comment #}
+            <form method="post"
+                  class="d-inline"
+                  action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Comment\\DeleteCommentReplyController', {id: reply.id}) }}">
+                <input type="hidden" name="_method" value="DELETE" />
+                <a href="javascript:"
+                   class="ms-1 text-decoration-none"
+                   data-role="delete-reply"
+                   data-confirm-message="{{ 'confirm.delete.reply'|trans }}"
+                   title="{{ 'delete.comment'|trans }}">
+                    <i class="bi bi-trash-fill text-danger"></i>
+                </a>
+            </form>
+        </span>
+    </div>
+
+    <div class="comment__message">
+        {{ reply.message|mentions|markdown }}
+    </div>
+</div>
+
+<div class="comment__edit-reply">
+    {% if editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: editReplyCommentForm.form} %}
+    {% endif %}
+</div>

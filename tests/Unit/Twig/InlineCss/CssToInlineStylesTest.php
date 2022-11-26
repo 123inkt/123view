@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Twig\InlineCss;
 
 use DOMDocument;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
 use Yep\Reflection\ReflectionClass;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles
  */
-class CssToInlineStylesTest extends AbstractTest
+class CssToInlineStylesTest extends AbstractTestCase
 {
     /**
      * @covers ::createDomDocumentFromHtml

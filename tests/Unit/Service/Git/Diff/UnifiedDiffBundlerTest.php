@@ -9,13 +9,13 @@ use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
 use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
 use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler
  * @covers ::__construct
  */
-class UnifiedDiffBundlerTest extends AbstractTest
+class UnifiedDiffBundlerTest extends AbstractTestCase
 {
     private UnifiedDiffBundler $bundler;
 

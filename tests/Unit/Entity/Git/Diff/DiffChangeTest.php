@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Git\Diff;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Diff\DiffChange
  */
-class DiffChangeTest extends AbstractTest
+class DiffChangeTest extends AbstractTestCase
 {
     /**
      * @covers ::__construct

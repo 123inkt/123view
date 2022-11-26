@@ -7,12 +7,12 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
 use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator
  */
-class DiffLineComparatorTest extends AbstractTest
+class DiffLineComparatorTest extends AbstractTestCase
 {
     /**
      * @covers ::compare

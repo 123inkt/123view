@@ -7,21 +7,19 @@ use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitRepository;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService
  */
-class CacheableGitRepositoryServiceTest extends AbstractTest
+class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {
     private const CACHE_DIRECTORY = "/cache/directory";
 
-    /** @var MockObject|Filesystem */
-    private Filesystem $filesystem;
-    /** @var Git|MockObject */
-    private Git                           $git;
+    private Filesystem&MockObject         $filesystem;
+    private Git&MockObject                $git;
     private CacheableGitRepositoryService $service;
 
     protected function setUp(): void
@@ -29,7 +27,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTest
         parent::setUp();
         $this->git        = $this->createMock(Git::class);
         $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new CacheableGitRepositoryService($this->log, $this->git, $this->filesystem, self::CACHE_DIRECTORY);
+        $this->service    = new CacheableGitRepositoryService($this->git, $this->filesystem, null, self::CACHE_DIRECTORY);
     }
 
     /**
@@ -43,7 +41,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTest
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('init')->willReturn($repository);
+        $this->git->expects(static::once())->method('cloneRepository')->willReturn($repository);
 
         // first call should invoke parent method
         $firstRepository = $this->service->getRepository($url);

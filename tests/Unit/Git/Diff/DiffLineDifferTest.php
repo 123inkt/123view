@@ -6,13 +6,13 @@ namespace DR\GitCommitNotification\Tests\Unit\Git\Diff;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Git\Diff\DiffLineDiffer
  */
-class DiffLineDifferTest extends AbstractTest
+class DiffLineDifferTest extends AbstractTestCase
 {
     private DiffLineDiffer $differ;
 

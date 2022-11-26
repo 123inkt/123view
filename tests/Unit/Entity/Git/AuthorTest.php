@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Git;
 
 use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Author
  */
-class AuthorTest extends AbstractTest
+class AuthorTest extends AbstractTestCase
 {
     /**
      * @covers ::__construct

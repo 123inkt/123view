@@ -7,8 +7,21 @@ return static function (MonologConfig $monolog) {
     $monolog->handler('main')
         ->type('stream')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
+        ->level('info')
+        ->channels()->elements(["!event"]);
+
+    $monolog->handler('error')
+        ->type('stream')
+        ->path('%kernel.logs_dir%/error.%kernel.environment%.log')
+        ->level('error')
+        ->includeStacktraces(true)
+        ->channels()->elements(["!event"]);
+
+    $monolog->handler('app')
+        ->type('stream')
+        ->path('%kernel.logs_dir%/app.%kernel.environment%.log')
         ->level('debug')
-        ->channel('!event');
+        ->channels()->elements(["app"]);
 
     $monolog->handler('console')
         ->type('console')

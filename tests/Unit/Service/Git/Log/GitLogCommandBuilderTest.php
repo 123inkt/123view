@@ -6,14 +6,14 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
 use DateTimeImmutable;
 use DateTimeZone;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder
  * @covers ::__construct
  */
-class GitLogCommandBuilderTest extends AbstractTest
+class GitLogCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = [
         'git',
@@ -33,11 +33,10 @@ class GitLogCommandBuilderTest extends AbstractTest
      */
     public function testBuildDefaults(): void
     {
-        static::assertSame(self::DEFAULTS, $this->builder->start()->build());
+        static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
     /**
-     * @covers ::start
      * @covers ::ignoreSpaceChange
      * @covers ::ignoreBlankLines
      * @covers ::ignoreAllSpace
@@ -48,7 +47,6 @@ class GitLogCommandBuilderTest extends AbstractTest
     public function testBuildSpace(): void
     {
         $actual = $this->builder
-            ->start()
             ->ignoreSpaceChange()
             ->ignoreBlankLines()
             ->ignoreAllSpace()
@@ -72,7 +70,6 @@ class GitLogCommandBuilderTest extends AbstractTest
     }
 
     /**
-     * @covers ::start
      * @covers ::remotes
      * @covers ::topoOrder
      * @covers ::patch
@@ -82,13 +79,16 @@ class GitLogCommandBuilderTest extends AbstractTest
      * @covers ::since
      * @covers ::until
      * @covers ::noMerges
+     * @covers ::reverse
+     * @covers ::dateOrder
+     * @covers ::maxCount
+     * @covers ::hashRange
      * @covers ::build
      * @throws Exception
      */
     public function testBuildFormatting(): void
     {
         $actual = $this->builder
-            ->start()
             ->remotes()
             ->topoOrder()
             ->patch()
@@ -98,6 +98,10 @@ class GitLogCommandBuilderTest extends AbstractTest
             ->since(new DateTimeImmutable('2021-10-18 21:05:00', new DateTimeZone('Europe/Amsterdam')))
             ->until(new DateTimeImmutable('2021-10-18 22:05:00', new DateTimeZone('Europe/Amsterdam')))
             ->noMerges()
+            ->reverse()
+            ->dateOrder()
+            ->maxCount(5)
+            ->hashRange('fromHash', 'toHash')
             ->build();
 
         static::assertSame(
@@ -113,6 +117,10 @@ class GitLogCommandBuilderTest extends AbstractTest
                     '--since="2021-10-18T21:05:00+02:00"',
                     '--until="2021-10-18T22:05:00+02:00"',
                     '--no-merges',
+                    '--reverse',
+                    '--date-order',
+                    '--max-count=5',
+                    'fromHash..toHash'
                 ]
             ),
             $actual
@@ -120,10 +128,18 @@ class GitLogCommandBuilderTest extends AbstractTest
     }
 
     /**
+     * @covers ::command
+     */
+    public function testCommand(): void
+    {
+        static::assertSame('log', $this->builder->command());
+    }
+
+    /**
      * @covers ::__toString
      */
     public function testToString(): void
     {
-        static::assertSame('git log', (string)$this->builder->start());
+        static::assertSame('git log', (string)$this->builder);
     }
 }

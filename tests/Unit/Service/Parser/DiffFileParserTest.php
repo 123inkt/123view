@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Exception\ParseException;
 use DR\GitCommitNotification\Service\Parser\DiffFileParser;
 use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -16,11 +16,10 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\DiffFileParser
  * @covers ::__construct
  */
-class DiffFileParserTest extends AbstractTest
+class DiffFileParserTest extends AbstractTestCase
 {
-    /** @var UnifiedBlockParser|MockObject */
-    private UnifiedBlockParser $blockParser;
-    private DiffFileParser     $parser;
+    private UnifiedBlockParser&MockObject $blockParser;
+    private DiffFileParser                $parser;
 
     protected function setUp(): void
     {
@@ -72,7 +71,7 @@ class DiffFileParserTest extends AbstractTest
         $result = $this->parser->parse($contents, $file);
         static::assertNull($result->filePathBefore);
         static::assertSame('after', $result->filePathAfter);
-        static::assertSame([$block], $result->blocks);
+        static::assertSame([$block], $result->getBlocks());
     }
 
     /**
@@ -101,7 +100,7 @@ class DiffFileParserTest extends AbstractTest
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
         static::assertNull($result->filePathAfter);
-        static::assertSame([$block], $result->blocks);
+        static::assertSame([$block], $result->getBlocks());
     }
 
     /**
@@ -129,7 +128,35 @@ class DiffFileParserTest extends AbstractTest
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
         static::assertSame('after', $result->filePathAfter);
-        static::assertSame([$block], $result->blocks);
+        static::assertSame([$block], $result->getBlocks());
+    }
+
+    /**
+     * @covers ::parse
+     * @covers ::tryParse
+     * @covers ::readFileInfo
+     * @throws ParseException
+     */
+    public function testParseChangesWhereAllOriginalLinesWereRemoved(): void
+    {
+        // prepare data
+        $contents = "index fb42e28..db43761 100644\n";
+        $contents .= "--- a/test-change-file.xml\n";
+        $contents .= "+++ b/test-change-file.xml\n";
+        $contents .= "@@ -29 +29,8 @@\n";
+
+        $file                 = new DiffFile();
+        $file->filePathBefore = "before";
+        $file->filePathAfter  = "after";
+        $block                = new DiffBlock();
+
+        // prepare mocks
+        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+
+        $result = $this->parser->parse($contents, $file);
+        static::assertSame('before', $result->filePathBefore);
+        static::assertSame('after', $result->filePathAfter);
+        static::assertSame([$block], $result->getBlocks());
     }
 
     /**
@@ -163,6 +190,6 @@ class DiffFileParserTest extends AbstractTest
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
         static::assertSame('after', $result->filePathAfter);
-        static::assertSame([$blockA, $blockB], $result->blocks);
+        static::assertSame([$blockA, $blockB], $result->getBlocks());
     }
 }

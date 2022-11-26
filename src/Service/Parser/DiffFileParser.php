@@ -11,7 +11,7 @@ use Throwable;
 
 class DiffFileParser
 {
-    private const PATTERN = '/^@@ -(\d+),\d+ \\+(\d+),\d+ @@.*$/m';
+    private const PATTERN = '/^@@ -(\d+)(?:,\d+)? \\+(\d+),\d+ @@.*$/m';
 
     private UnifiedBlockParser $blockParser;
 
@@ -53,7 +53,7 @@ class DiffFileParser
                 $lineNumberBefore = (int)$matches[1][$index - 1];
                 $lineNumberAfter  = (int)$matches[2][$index - 1];
 
-                $fileDiff->blocks[] = $this->blockParser->parse($lineNumberBefore, $lineNumberAfter, $lines);
+                $fileDiff->addBlock($this->blockParser->parse($lineNumberBefore, $lineNumberAfter, $lines));
             }
         }
 
@@ -70,6 +70,13 @@ class DiffFileParser
             if (str_starts_with($line, 'deleted file mode')) {
                 $fileDiff->filePathAfter = null;
             }
+
+            if (preg_match('/^index (\w+)\.\.(\w+)/', $line, $matches) !== 1) {
+                continue;
+            }
+
+            $fileDiff->hashStart = $matches[1];
+            $fileDiff->hashEnd   = $matches[2];
         }
 
         return $fileDiff;

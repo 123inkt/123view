@@ -9,7 +9,7 @@ use DR\GitCommitNotification\Service\CommitHydrator;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
 use DR\GitCommitNotification\Service\Parser\DiffParser;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -17,15 +17,12 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\GitLogParser
  * @covers ::__construct
  */
-class GitLogParserTest extends AbstractTest
+class GitLogParserTest extends AbstractTestCase
 {
-    private GitLogParser $parser;
-    /** @var DiffParser|MockObject */
-    private DiffParser $diffParser;
-    /** @var CommitHydrator|MockObject */
-    private CommitHydrator $hydrator;
-    /** @var FormatPatternFactory|MockObject */
-    private FormatPatternFactory $patternFactory;
+    private GitLogParser                    $parser;
+    private DiffParser&MockObject           $diffParser;
+    private CommitHydrator&MockObject       $hydrator;
+    private FormatPatternFactory&MockObject $patternFactory;
 
     protected function setUp(): void
     {
@@ -113,6 +110,29 @@ class GitLogParserTest extends AbstractTest
         $commits = $this->parser->parse($repository, $commitLog);
         static::assertSame([$commitA, $commitB], $commits);
         static::assertSame("remote/refs", $commitB->refs);
+    }
+
+    /**
+     * @covers ::parse
+     * @throws Exception
+     */
+    public function testParseMultiCommitWithLimit(): void
+    {
+        // commit
+        $commitLog = FormatPatternFactory::COMMIT_DELIMITER;
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitA-part%d', 8));
+        $commitLog .= FormatPatternFactory::COMMIT_DELIMITER;
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitB-part%d', 8));
+
+        $commit = $this->createCommit();
+
+        // prepare mocks
+        $this->diffParser->expects(static::once())->method('parse')->with('commitA-part8')->willReturn([]);
+        $this->hydrator->expects(static::once())->method('hydrate')->willReturn($commit);
+
+        // test it
+        $commits = $this->parser->parse(new Repository(), $commitLog, 1);
+        static::assertSame([$commit], $commits);
     }
 
     /**

@@ -5,6 +5,7 @@
 !/.idea/fileTemplates
 
 /config.xml
+/docker/db
 
 ###> symfony/framework-bundle ###
 /.env.local

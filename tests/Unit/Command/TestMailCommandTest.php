@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Command;
 
 use DR\GitCommitNotification\Command\TestMailCommand;
-use DR\GitCommitNotification\Tests\AbstractTest;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -14,10 +14,9 @@ use Symfony\Component\Mailer\MailerInterface;
  * @coversDefaultClass \DR\GitCommitNotification\Command\TestMailCommand
  * @covers ::__construct
  */
-class TestMailCommandTest extends AbstractTest
+class TestMailCommandTest extends AbstractTestCase
 {
-    /** @var MailerInterface|MockObject */
-    private MailerInterface $mailer;
+    private MailerInterface&MockObject $mailer;
     private TestMailCommand $command;
 
     protected function setUp(): void

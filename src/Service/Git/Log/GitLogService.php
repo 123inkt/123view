@@ -3,53 +3,57 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Git\Log;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DateTime;
+use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Config\RuleConfiguration;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\GitCommitNotification\Service\Git\GitRepositoryService;
 use DR\GitCommitNotification\Service\Parser\GitLogParser;
 use Exception;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class GitLogService
+class GitLogService implements LoggerAwareInterface
 {
-    private CacheableGitRepositoryService $repositoryService;
-    private GitLogCommandFactory          $commandFactory;
-    private GitLogParser                  $logParser;
-    private LoggerInterface               $log;
+    use LoggerAwareTrait;
 
     public function __construct(
-        LoggerInterface $log,
-        CacheableGitRepositoryService $repositoryService,
-        GitLogCommandFactory $commandFactory,
-        GitLogParser $logParser
+        private readonly CacheableGitRepositoryService $cachedRepositoryService,
+        private readonly GitRepositoryService $gitRepositoryService,
+        private readonly GitCommandBuilderFactory $commandBuilderFactory,
+        private readonly GitRepositoryLockManager $lockManager,
+        private readonly GitLogCommandFactory $commandFactory,
+        private readonly FormatPatternFactory $formatPatternFactory,
+        private readonly GitLogParser $logParser
     ) {
-        $this->log               = $log;
-        $this->repositoryService = $repositoryService;
-        $this->commandFactory    = $commandFactory;
-        $this->logParser         = $logParser;
     }
 
     /**
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommits(Rule $rule): array
+    public function getCommits(RuleConfiguration $ruleConfig): array
     {
+        $rule   = $ruleConfig->rule;
         $result = [];
 
-        foreach ($rule->repositories->getRepositories() as $repositoryReference) {
-            $repositoryConfig = $rule->config->repositories->getByReference($repositoryReference);
+        foreach ($rule->getRepositories() as $repositoryConfig) {
+            $output = $this->lockManager->start($repositoryConfig, function () use ($ruleConfig, $repositoryConfig) {
+                // clone or pull the repository for the given rule.
+                $repository = $this->cachedRepositoryService->getRepository((string)$repositoryConfig->getUrl());
 
-            // clone or pull the repository for the given rule.
-            $repository = $this->repositoryService->getRepository($repositoryConfig->url);
+                // create command
+                $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
 
-            // create command
-            $commandBuilder = $this->commandFactory->fromRule($rule);
+                $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
 
-            $this->log->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryReference->name));
-
-            // execute `git log ...` command
-            $output = $repository->execute($commandBuilder);
+                // execute `git log ...` command
+                return $repository->execute($commandBuilder);
+            });
 
             // parse output
             $commits = $this->logParser->parse($repositoryConfig, $output);
@@ -60,5 +64,30 @@ class GitLogService
 
         // merge everything together
         return count($result) === 0 ? [] : array_merge(...$result);
+    }
+
+    /**
+     * @return Commit[]
+     * @throws Exception
+     */
+    public function getCommitsSince(Repository $repository, ?Revision $revision = null, ?int $limit = null): array
+    {
+        $command = $this->commandBuilderFactory->createLog();
+        $command->noMerges()
+            ->remotes()
+            ->reverse()
+            ->dateOrder()
+            ->format($this->formatPatternFactory->createPattern());
+        if ($revision !== null) {
+            $command->since((new DateTime())->setTimestamp((int)$revision->getCreateTimestamp()));
+        }
+
+        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
+
+        // get repository data without cache and execute command
+        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+
+        // get commits
+        return $this->logParser->parse($repository, $output, $limit);
     }
 }

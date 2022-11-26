@@ -1,0 +1,80 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+    {% if app.session.flashbag.peek('success')|length > 0 %}
+        <div class="alert alert-success mt-2">
+            {% for message in app.flashes('success') %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if rulesModel.rules|length > 0 %}
+        <h1 class="mt-2">{{ 'rules'|trans }}</h1>
+
+        <table class="table table-bordered table-hover rule-table">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'name'|trans }}</th>
+                <th scope="col">{{ 'active'|trans }}</th>
+                <th scope="col">{{ 'frequency'|trans }}</th>
+                <th scope="col">{{ 'theme'|trans }}s</th>
+                <th scope="col">{{ 'options'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rule in rulesModel.rules %}
+                <tr>
+                    <td>{{ rule.name }}</td>
+                    <td>
+                        {% if rule.active %}
+                            {{ 'active'|trans }}
+                        {% else %}
+                            {{ 'inactive'|trans }}
+                        {% endif %}
+                    </td>
+
+                    <td>{{ rule.ruleOptions.frequency|trans }}</td>
+
+                    <td>{{ rule.ruleOptions.theme|trans }}</td>
+
+                    <td class="rule-table-options">
+                        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RuleController', {id: rule.id}) }}"
+                           title="{{ 'rule.edit.title'|trans }}"
+                           class="btn btn-success">
+                            <i class="bi-pencil-square"></i>
+                        </a>
+
+                        <form method="POST" class="d-inline-block"
+                              action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\DeleteRuleController', {id: rule.id}) }}"
+                              title="{{ 'rule.delete.title'|trans }}"
+                              onsubmit="return confirm('{{ 'Are you sure you want to delete this rule?'|trans|e('js')|e('html') }}');">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RuleController') }}" class="btn btn-outline-primary">
+            <i class="bi-plus"></i>
+            {{ 'rule.new'|trans }}
+        </a>
+
+    {% else %}
+        <h1 class="mt-2">{{ 'commit.notification.rules'|trans }}</h1>
+        <p class="mb-3 lead">{{ 'rules.welcome.description'|trans }}</p>
+
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RuleController') }}">
+                {{ 'rules.add.first.rule'|trans }}
+            </a>
+        </p>
+    {% endif %}
+
+{% endblock %}

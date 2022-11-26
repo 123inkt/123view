@@ -11,21 +11,18 @@ use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
  */
 class GitLogCommandBuilder implements GitCommandBuilderInterface
 {
-    private string $git;
-
     /** @var array<string, string> */
     private array $arguments = [];
 
     public function __construct(string $git)
     {
-        $this->git = $git;
+        $this->arguments['app']     = $git;
+        $this->arguments['command'] = 'log';
     }
 
-    public function start(): self
+    public function hashRange(string $fromHash, string $toHash): self
     {
-        $this->arguments            = [];
-        $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'log';
+        $this->arguments['hash-range'] = sprintf('%s..%s', $fromHash, $toHash);
 
         return $this;
     }
@@ -51,9 +48,23 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function reverse(): self
+    {
+        $this->arguments['reverse'] = '--reverse';
+
+        return $this;
+    }
+
     public function noMerges(): self
     {
         $this->arguments['no-merges'] = '--no-merges';
+
+        return $this;
+    }
+
+    public function maxCount(int $max): self
+    {
+        $this->arguments['max-count'] = '--max-count=' . $max;
 
         return $this;
     }
@@ -75,6 +86,13 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
     public function decorate(string $decorate = 'full'): self
     {
         $this->arguments['decorate'] = sprintf('--decorate="%s"', $decorate);
+
+        return $this;
+    }
+
+    public function dateOrder(): self
+    {
+        $this->arguments['date-order'] = '--date-order';
 
         return $this;
     }
@@ -126,6 +144,11 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
         $this->arguments['diff-algorithm'] = sprintf('--diff-algorithm="%s"', $algorithm);
 
         return $this;
+    }
+
+    public function command(): string
+    {
+        return 'log';
     }
 
     /**
