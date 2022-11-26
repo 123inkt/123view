@@ -2,7 +2,7 @@
 name: Testing Symfony with MySQL
 on: [ push, pull_request ]
 jobs:
-    symfony:
+    test:
         name: Symfony (PHP 8.1)
         runs-on: ubuntu-latest
 
