@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
 
+use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
@@ -11,6 +12,7 @@ use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
 use DR\GitCommitNotification\Tests\DataFixtures\CodeReviewFixtures;
 use DR\GitCommitNotification\Tests\DataFixtures\RevisionFixtures;
 use DR\GitCommitNotification\Tests\DataFixtures\UserFixtures;
+use DR\GitCommitNotification\Utility\Arrays;
 use DR\GitCommitNotification\Utility\Assert;
 use Exception;
 
@@ -67,7 +69,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revision->setReview($review);
         $revisionRepository->save($revision, true);
 
-        static::assertNotNull($this->repository->findOneByCommitHash((int)$repository->getId(), RevisionFixtures::COMMIT_HASH));
+        static::assertNotNull($this->repository->findOneByCommitHash((int)$repository->getId(), RevisionFixtures::COMMIT_HASH_A));
     }
 
     /**
@@ -117,6 +119,36 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'title'));
         static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, (string)$review->getProjectId()));
         static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'foobar'));
+    }
+
+    /**
+     * @covers ::getPaginatorForSearchQuery
+     * @covers \DR\GitCommitNotification\Repository\Review\CodeReviewQueryBuilder
+     * @throws Exception
+     */
+    public function testGetPaginatorForSearchQueryOneReviewTwoRevisions(): void
+    {
+        $user = new User();
+        $user->setEmail('sherlock@example.com');
+        $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $repositoryId = (int)$repository->getId();
+
+        $revisionRepository = static::getService(RevisionRepository::class);
+        $revisionA          = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
+        $revisionB          = Assert::notNull($revisionRepository->findOneBy(['title' => 'book']));
+        $review             = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
+
+        $revisionA->setReview($review);
+        $revisionB->setReview($review);
+        $revisionRepository->save($revisionA, true);
+        $revisionRepository->save($revisionB, true);
+
+        $result = iterator_to_array($this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, ''));
+        static::assertCount(1, $result);
+
+        /** @var CodeReview $review */
+        $review = Arrays::first($result);
+        static::assertCount(2, $review->getRevisions());
     }
 
     /**

@@ -73,7 +73,7 @@ class CodeReviewRepository extends ServiceEntityRepository
             ->paginate($page, 50)
             ->search($user, $searchQuery);
 
-        return new Paginator($queryBuilder->getQuery(), false);
+        return new Paginator($queryBuilder->getQuery(), true);
     }
 
     /**
