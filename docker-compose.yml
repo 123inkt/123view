@@ -54,4 +54,4 @@ services:
 
 networks:
     default:
-        name: 123view
+        name: 123view-network
