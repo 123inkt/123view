@@ -62,7 +62,7 @@ jobs:
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
-            -   name: Setup codecov
+            -   name: Upload coverage to codecov
                 uses: codecov/codecov-action@v3
                 with:
                     token: ${{ secrets.CODECOV_TOKEN }}
