@@ -8,34 +8,34 @@
 }
 
 .diff-file__directory-name {
-    color: #999999;
+    color: var(--review-diff-directory-name-color);
     font-size: 12px
 }
 
 .diff-file__file-rename {
-    color: #999999;
+    color: var(--review-diff-file-name-color);
     font-size: 12px;
     font-style: italic;
 }
 
 .diff-file__file-diff {
-    border: 1px solid #E9E9E9;
+    border: 1px solid var(--review-diff-border-color);
     border-radius: 2px;
     margin-bottom: 16px;
     overflow: auto;
 }
 
 .diff-file__block-spacer {
-    background-color: #F8F8F8;
-    color: #aaa;
+    background-color: var(--review-diff-spacer-bg-color);
+    color: var(--review-diff-spacer-fg-color);
     cursor: pointer;
     height: 24px;
     padding-left: 4px;
 }
 
 .diff-file__block-spacer:hover {
-    background-color: #e8e8e8;
-    color: #666;
+    background-color: var(--review-diff-spacer-hover-bg-color);
+    color: var(--review-diff-spacer-hover-fg-color);
 }
 
 .diff-file__block-spacer-line-nr {
@@ -68,7 +68,7 @@
 }
 
 .diff-file__diff-line {
-    color: #0C0C0D;
+    color: var(--review-diff-line-fg-color);
     cursor: default;
     font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
     font-size: 13px;
@@ -81,16 +81,16 @@
 }
 
 .diff-file__line-gutter {
-    border-right: 1px solid #CCC;
-    color: rgba(0, 0, 0, 0.3);
+    border-right: 1px solid var(--review-diff-gutter-border-color);
+    color: var(--review-diff-gutter-fg-color);
     display: inline-block;
     position: relative;
 }
 
 .diff-file__add-comment {
-    background: #FFFEE0;
+    background: var(--review-diff-add-comment-bg-color);
     bottom: 0;
-    color: #FF008C;
+    color: var(--review-diff-add-comment-fg-color);
     cursor: pointer;
     display: none;
     left: 0;
@@ -110,19 +110,19 @@
 }
 
 .diff-file__line-change-added {
-    background: #EAFFEA;
+    background: var(--review-diff-line-added-bg-color);
 }
 
 .diff-file__line-change-removed {
-    background: #FFECEC;
+    background: var(--review-diff-line-removed-bg-color);
 }
 
 .diff-file__line-change-changed {
-    background: #EAF0FE;
+    background: var(--review-diff-line-changed-bg-color);
 }
 
 .diff-file__diff-line:hover {
-    background: #FFFEE0;
+    background: var(--review-diff-line-hover-bg-color);
 }
 
 .diff-file__diff-line:hover .diff-file__add-comment {
@@ -130,29 +130,15 @@
 }
 
 .diff-file__change-added {
-    background-color: #A6F3A6;
+    background-color: var(--review-diff-change-added-bg-color);
 }
 
 .diff-file__change-removed {
-    background-color: #F8CBCB;
-}
-
-.diff-file__code-keyword {
-    color: #000080;
-    font-weight: 600;
-}
-
-.diff-file__code-string {
-    color: #008000;
-    font-weight: 600;
-}
-
-.diff-file__code-comment {
-    color: #808080;
+    background-color: var(--review-diff-change-removed-bg-color);
 }
 
 .diff-file__comment_form {
-    background: #FFFEE0;
+    background: var(--comment-background-color);
     padding: 10px 10px 5px 10px;
 }
 
