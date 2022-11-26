@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Config;
+namespace DR\GitCommitNotification\Tests\Unit\Entity\Repository;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Config\RepositoryProperty;
+use DR\GitCommitNotification\Entity\Repository\Repository;
+use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Config\Repository
+ * @coversDefaultClass \DR\GitCommitNotification\Entity\Repository\Repository
  */
 class RepositoryTest extends AbstractTestCase
 {

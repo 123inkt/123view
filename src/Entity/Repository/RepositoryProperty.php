@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Config;
+namespace DR\GitCommitNotification\Entity\Repository;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\GitCommitNotification\Repository\Config\RepositoryPropertyRepository;

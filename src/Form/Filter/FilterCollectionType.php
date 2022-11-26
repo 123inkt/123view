@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\Filter;
 
-use DR\GitCommitNotification\Entity\Config\Filter;
+use DR\GitCommitNotification\Entity\Notification\Filter;
 use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

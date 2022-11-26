@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Form\Rule;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Form\Filter\InExclusionFilterType;
 use DR\GitCommitNotification\Form\Recipient\RecipientCollectionType;
 use DR\GitCommitNotification\Form\Repository\RepositoryChoiceType;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Security\Voter;
 
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;

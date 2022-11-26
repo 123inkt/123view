@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\EventSubscriber;
 
 use Doctrine\ORM\NonUniqueResultException;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\EventSubscriber\AddReviewToCommitSubscriber;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;

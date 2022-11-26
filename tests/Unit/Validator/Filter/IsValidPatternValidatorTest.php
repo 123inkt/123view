@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Validator\Filter;
 
 use DR\GitCommitNotification\Doctrine\Type\FilterType as EntityFilterType;
-use DR\GitCommitNotification\Entity\Config\Filter;
+use DR\GitCommitNotification\Entity\Notification\Filter;
 use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
 use DR\GitCommitNotification\Validator\Filter\IsValidPatternValidator;
 use RuntimeException;

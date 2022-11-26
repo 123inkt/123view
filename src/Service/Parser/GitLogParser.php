@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Git\FormatPattern;
 use DR\GitCommitNotification\Service\CommitHydrator;
 use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;

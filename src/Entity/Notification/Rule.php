@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Config;
+namespace DR\GitCommitNotification\Entity\Notification;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use Symfony\Component\Validator\Constraints as Assert;

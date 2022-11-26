@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Entity\Webhook;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\Config\Repository;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
 
 #[ORM\Entity(repositoryClass: WebhookRepository::class)]

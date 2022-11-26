@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Command\Repository;
 
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Config\RepositoryProperty;
+use DR\GitCommitNotification\Entity\Repository\Repository;
+use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
 use DR\GitCommitNotification\Input\AddRepositoryInput;
 use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
 use Exception;

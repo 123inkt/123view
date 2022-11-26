@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Config\Repository;
-use DR\GitCommitNotification\Entity\Config\Rule;
 use DR\GitCommitNotification\Entity\Git\Author;
+use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Service\Mail\MailSubjectFormatter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 

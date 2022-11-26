@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form\Filter;
 
-use DR\GitCommitNotification\Entity\Config\Filter;
+use DR\GitCommitNotification\Entity\Notification\Filter;
 use DR\GitCommitNotification\Form\Filter\FilterType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

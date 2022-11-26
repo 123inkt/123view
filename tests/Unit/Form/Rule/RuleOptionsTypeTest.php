@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Form\Rule;
 
-use DR\GitCommitNotification\Entity\Config\RuleOptions;
+use DR\GitCommitNotification\Entity\Notification\RuleOptions;
 use DR\GitCommitNotification\Form\Rule\RuleOptionsType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

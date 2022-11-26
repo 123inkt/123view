@@ -5,8 +5,8 @@ namespace DR\GitCommitNotification\Repository\Config;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
-use DR\GitCommitNotification\Entity\Config\Frequency;
-use DR\GitCommitNotification\Entity\Config\Rule;
+use DR\GitCommitNotification\Entity\Notification\Frequency;
+use DR\GitCommitNotification\Entity\Notification\Rule;
 
 /**
  * @extends ServiceEntityRepository<Rule>

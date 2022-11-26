@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\ExternalTool\Gitlab;
 
-use DR\GitCommitNotification\Entity\Config\RepositoryProperty;
 use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
 use DR\GitCommitNotification\Event\CommitEvent;
 use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabApi;
 use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabIntegration;

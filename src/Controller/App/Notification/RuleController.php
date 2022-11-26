@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Notification;
 
 use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\Config\Rule;
-use DR\GitCommitNotification\Entity\Config\RuleFactory;
+use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\GitCommitNotification\Entity\Notification\RuleFactory;
 use DR\GitCommitNotification\Form\Rule\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;

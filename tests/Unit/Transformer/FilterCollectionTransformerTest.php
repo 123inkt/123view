@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Transformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Config\Filter;
+use DR\GitCommitNotification\Entity\Notification\Filter;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\Transformer\FilterCollectionTransformer;
 
