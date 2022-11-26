@@ -54,7 +54,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url    = 'https://commit-notification/comment/add';
+        $url    = 'https://123view/comment/add';
         $review = new CodeReview();
         $review->setId(123);
         $lineReference = new LineReference('path', 1, 2, 3);

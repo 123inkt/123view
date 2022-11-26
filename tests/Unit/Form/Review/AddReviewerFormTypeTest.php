@@ -58,7 +58,7 @@ class AddReviewerFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url = 'https://commit-notification/reviewer/add';
+        $url = 'https://123view/reviewer/add';
 
         $user = new User();
         $user->setId(789);

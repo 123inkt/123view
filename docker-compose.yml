@@ -54,4 +54,4 @@ services:
 
 networks:
     default:
-        name: commit-notification-network
+        name: 123view

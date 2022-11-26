@@ -33,7 +33,7 @@ class UserSettingFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url = 'https://commit-notification/user/settings';
+        $url = 'https://123view/user/settings';
 
         $this->urlGenerator->expects(self::once())
             ->method('generate')

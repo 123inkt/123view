@@ -52,7 +52,7 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url      = 'https://commit-notification/detach/revision';
+        $url      = 'https://123view/detach/revision';
         $revision = new Revision();
         $revision->setId(456);
 

@@ -4,7 +4,7 @@ Once docker has started your project is available, but no repositories have been
 
 1) Start bash in your docker container:
 ```shell
-docker exec -ti commit-notification-php /bin/bash
+docker exec -ti 123view-php /bin/bash
 ```
 2) Add a repository
 ```shell

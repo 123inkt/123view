@@ -8,7 +8,7 @@ For `development`-mode you can trigger this in two ways.
 
 Run the cli command manually:
 ```shell
-docker exec -ti commit-notification-php /bin/bash
+docker exec -ti 123view-php /bin/bash
 php bin/console revisions:fetch
 ```
 This will fetch all revisions since the last time the revisions were fetched and create reviews for them.
