@@ -14,15 +14,15 @@
     --review-diff-spacer-fg-color: #AAAAAA;
     --review-diff-spacer-hover-bg-color: #E8E8E8;
     --review-diff-spacer-hover-fg-color: #666666;
-    --review-diff-line-fg-color: #0C0C0D;
+    --review-diff-line-fg-color: #F2F2F2;
     --review-diff-gutter-border-color: #CCCCCC;
     --review-diff-gutter-fg-color: rgba(0, 0, 0, 0.3);
     --review-diff-add-comment-bg-color: #FFFEE0;
     --review-diff-add-comment-fg-color: #FF008C;
-    --review-diff-line-added-bg-color: #EAFFEA;
+    --review-diff-line-added-bg-color: #172D20;
     --review-diff-line-removed-bg-color: #321C1F;
-    --review-diff-line-changed-bg-color: #EAF0FE;
-    --review-diff-line-hover-bg-color: #FFFEE0;
+    --review-diff-line-changed-bg-color: #2B2C2E;
+    --review-diff-line-hover-bg-color: #282719;
     --review-diff-change-added-bg-color: #254532;
     --review-diff-change-removed-bg-color: #472527;
 }
