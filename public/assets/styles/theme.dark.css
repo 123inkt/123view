@@ -2,11 +2,13 @@
     --comment-secondary-color: #999999;
     --comment-background-color: #191919;
     --comment-border-color: #555555;
+
     --review-add-reviewer-placeholder-color: #999999;
     --review-file-tree-directory-color: #999999;
     --review-file-tree-file-color: #000000;
     --review-file-tree-file-selected-bg-color: rgba(13, 110, 253, 0.07);
     --review-file-tree-status-color: #008000;
+
     --review-diff-directory-name-color: #999999;
     --review-diff-file-name-color: #999999;
     --review-diff-border-color: #555555;
