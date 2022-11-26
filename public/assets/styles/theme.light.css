@@ -1,0 +1,28 @@
+:root {
+    --comment-secondary-color: #999999;
+    --comment-background-color: #FFFEE0;
+    --comment-border-color: #E5E4C9;
+    --review-add-reviewer-placeholder-color: #999999;
+    --review-file-tree-directory-color: #999999;
+    --review-file-tree-file-color: #000000;
+    --review-file-tree-file-selected-bg-color: rgba(13, 110, 253, 0.07);
+    --review-file-tree-status-color: #008000;
+    --review-diff-directory-name-color: #999999;
+    --review-diff-file-name-color: #999999;
+    --review-diff-border-color: #E9E9E9;
+    --review-diff-spacer-bg-color: #F8F8F8;
+    --review-diff-spacer-fg-color: #AAAAAA;
+    --review-diff-spacer-hover-bg-color: #E8E8E8;
+    --review-diff-spacer-hover-fg-color: #666666;
+    --review-diff-line-fg-color: #0C0C0D;
+    --review-diff-gutter-border-color: #CCCCCC;
+    --review-diff-gutter-fg-color: rgba(0, 0, 0, 0.3);
+    --review-diff-add-comment-bg-color: #FFFEE0;
+    --review-diff-add-comment-fg-color: #FF008C;
+    --review-diff-line-added-bg-color: #EAFFEA;
+    --review-diff-line-removed-bg-color: #FFECEC;
+    --review-diff-line-changed-bg-color: #EAF0FE;
+    --review-diff-line-hover-bg-color: #FFFEE0;
+    --review-diff-change-added-bg-color: #A6F3A6;
+    --review-diff-change-removed-bg-color: #F8CBCB;
+}

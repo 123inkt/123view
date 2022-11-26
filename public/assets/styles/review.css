@@ -30,7 +30,7 @@
 }
 
 .review-file-tree--directories {
-    color: #999999;
+    color: var(--review-file-tree-directory-color);
     font-size: 0.9rem;
     list-style: none;
     margin: 0;
@@ -42,7 +42,7 @@
 }
 
 .review-file-tree--files {
-    color: #000000;
+    color: var(--review-file-tree-file-color);
     font-size: 0.9rem;
     list-style: none;
     margin: 0;
@@ -59,7 +59,7 @@
 }
 
 .review-file-tree--file.review-file-tree--selected {
-    background: rgba(13, 110, 253, 0.07);
+    background: var(--review-file-tree-file-selected-bg-color);
 }
 
 .review-file-tree--file-link:hover .review-file-tree--file-name {
@@ -79,7 +79,7 @@
 }
 
 .review-file-tree--file-seen-status {
-    border: 1px solid green;
+    border: 1px solid var(--review-file-tree-status-color);
     border-radius: 7px;
     cursor: pointer;
     display: block;
@@ -93,7 +93,7 @@
 }
 
 .review-file-tree--file-seen-status.seen::before {
-    color: green;
+    color: var(--review-file-tree-status-color);
     content: '✓';
     font-size: 12px;
     left: 1px;
@@ -132,5 +132,5 @@
 }
 
 .review-grid-sidebar #add_reviewer_form_user option[value=""] {
-    color: #999;
+    color: var(--review-add-reviewer-placeholder-color);
 }

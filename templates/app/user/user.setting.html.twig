@@ -1,7 +1,7 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h1 class="mb-4 mt-2">{{ 'mail.settings'|trans }}</h1>
+    <h1 class="mb-4 mt-2">{{ 'user.settings'|trans }}</h1>
 
     {% if app.session.flashbag.peek('success')|length > 0 %}
         <div class="alert alert-success mb-3">
@@ -11,5 +11,14 @@
         </div>
     {% endif %}
 
-    {{ form(settingViewModel.form) }}
+    {{ form_start(settingViewModel.form) }}
+
+    <h3 class="mb-4 mt-2">{{ 'user.color.theme'|trans }}</h3>
+
+    {{ form_widget(settingViewModel.form.setting.colorTheme) }}
+
+    <h3 class="mb-4 mt-4">{{ 'mail.settings'|trans }}</h3>
+
+    {{ form_rest(settingViewModel.form) }}
+    {{ form_end(settingViewModel.form) }}
 {% endblock %}

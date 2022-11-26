@@ -1,11 +1,11 @@
 .comment__comment-thread {
-    background: #FFFEE0;
+    background: var(--comment-background-color);
     font-size: 0.9rem;
-    border-bottom: 1px solid #e5e4c9;
+    border-bottom: 1px solid var(--comment-border-color);
 }
 
 .comment__detached-comment {
-    color: #999999;
+    color: var(--comment-secondary-color);
     font-size: 0.8rem;
     padding-bottom: 2px;
 }
@@ -31,7 +31,7 @@
 
 .comment__comment .comment__datetime,
 .comment__reply .comment__datetime {
-    color: #999999;
+    color: var(--comment-secondary-color);
     font-size: 0.8rem;
 }
 
@@ -43,7 +43,7 @@
 .comment__comment-thread.comment__state_resolved .comment__state *,
 .comment__comment-thread.comment__state_resolved .comment__message *,
 .comment__comment-thread.comment__state_resolved .comment__toolbar * {
-    color: #999999 !important;
+    color: var(--comment-secondary-color) !important;
 }
 
 .comment__comment-thread.comment__state_resolved .comment__message img {
