@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Entity\User\UserSetting;
 use DR\GitCommitNotification\Form\User\UserSettingType;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,9 +24,10 @@ class UserSettingTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(3))
+        $builder->expects(self::exactly(4))
             ->method('add')
             ->withConsecutive(
+                ['colorTheme', ChoiceType::class],
                 ['mailCommentAdded', CheckboxType::class],
                 ['mailCommentReplied', CheckboxType::class],
                 ['mailCommentResolved', CheckboxType::class],
