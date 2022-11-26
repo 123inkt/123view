@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Doctrine\Type\ColorThemeType;
 use DR\GitCommitNotification\Repository\User\UserSettingRepository;
 
 #[ORM\Entity(repositoryClass: UserSettingRepository::class)]
@@ -13,6 +14,9 @@ class UserSetting
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: ColorThemeType::TYPE, options: ['default' => ColorThemeType::THEME_AUTO])]
+    private string $colorTheme = ColorThemeType::THEME_AUTO;
 
     #[ORM\Column]
     private bool $mailCommentAdded = true;
@@ -43,9 +47,21 @@ class UserSetting
         return $this->user;
     }
 
-    public function setUser(?User $user): UserSetting
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getColorTheme(): string
+    {
+        return $this->colorTheme;
+    }
+
+    public function setColorTheme(string $colorTheme): self
+    {
+        $this->colorTheme = $colorTheme;
 
         return $this;
     }
@@ -55,7 +71,7 @@ class UserSetting
         return $this->mailCommentAdded;
     }
 
-    public function setMailCommentAdded(bool $mailCommentAdded): UserSetting
+    public function setMailCommentAdded(bool $mailCommentAdded): self
     {
         $this->mailCommentAdded = $mailCommentAdded;
 
@@ -67,7 +83,7 @@ class UserSetting
         return $this->mailCommentResolved;
     }
 
-    public function setMailCommentResolved(bool $mailCommentResolved): UserSetting
+    public function setMailCommentResolved(bool $mailCommentResolved): self
     {
         $this->mailCommentResolved = $mailCommentResolved;
 
@@ -79,7 +95,7 @@ class UserSetting
         return $this->mailCommentReplied;
     }
 
-    public function setMailCommentReplied(bool $mailCommentReplied): UserSetting
+    public function setMailCommentReplied(bool $mailCommentReplied): self
     {
         $this->mailCommentReplied = $mailCommentReplied;
 

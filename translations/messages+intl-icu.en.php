@@ -76,7 +76,7 @@ return [
     'mail.new.comment.by.user.on'                 => 'New comment by {userName} on',
     'mail.new.comment.subject'                    => '[New comments] {reviewId}: {reviewTitle}',
     'mail.new.reply.by.user.on'                   => 'New reply by {userName} on',
-    'mail.settings'                               => 'Code review notification settings',
+    'mail.settings'                               => 'Notification settings',
     'mail.settings.save.successfully'             => 'Settings successfully saved',
     'mail.subject'                                => 'Mail subject',
     'mail.theme'                                  => 'Mail theme',
@@ -140,4 +140,9 @@ return [
     'theme'                                       => 'Theme',
     'title'                                       => 'Title',
     'upsource'                                    => 'Upsource',
+    'user.settings'                               => 'Settings',
+    'user.color.theme'                            => 'Color theme',
+    'user.theme.auto.detect'                      => 'Auto-detect',
+    'user.theme.light'                            => 'Light mode',
+    'user.theme.dark'                             => 'Dark mode'
 ];
