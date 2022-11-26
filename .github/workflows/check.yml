@@ -40,12 +40,6 @@ jobs:
             -   name: Run PHP Codesniffer checks
                 run: composer run check:phpcs -- -q
 
-            -   name: check phpmd diagnostic
-                run: composer info phpmd/phpmd
-
-            -   name: check php version
-                run: php -v
-
             -   name: Run PHP MessDetector checks
                 run: composer run check:phpmd
 
