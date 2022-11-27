@@ -43,31 +43,4 @@ class MarkdownExtensionTest extends AbstractTestCase
 
         static::assertSame("markdown: string", $this->extension->convert($string));
     }
-
-    ///**
-    // * @covers ::convert
-    // */
-    //public function testConvert(): void
-    //{
-    //    $string = 'string';
-    //
-    //    $content = $this->createMock(RenderedContentInterface::class);
-    //    $content->expects(self::once())->method('getContent')->willReturn($markdown);
-    //
-    //    $this->markdownService->expects(self::once())->method('convert')->with($string)->willReturn($content);
-    //
-    //    static::assertSame($expected, $this->extension->convert($string));
-    //}
-    //
-    ///**
-    // * @return array<string[]>
-    // */
-    //public function dataProvider(): array
-    //{
-    //    return [
-    //        ["foo\nbar", "foo<br>\nbar"],
-    //        ["<span>foo bar</span>", '<span>foo bar</span>'],
-    //        ["<span>foo</span>\nbar", "<span>foo</span>\nbar"],
-    //    ];
-    //}
 }
