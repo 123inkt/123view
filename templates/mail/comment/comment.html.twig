@@ -1,45 +1,53 @@
 {#- comment: Comment -#}
 {#- replies: CommentReply[]|null #}
+{%- apply spaceless -%}
 {%- apply inline_css(source('@styles/mail/comment.css')) -%}
-    <div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}">
-        <div class="comment__comment">
-            {#- detached comments -#}
-            {%- if detached is defined and detached -%}
-                <div class="comment__detached-comment">
-                    <i class="bi bi-link"></i>
-                    {{- 'discussion.points.to.modified.code'|trans({line: comment.lineReference.lineAfter}) -}}
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="comment__comment-table">
+        <tr>
+            <td>
+                <div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}">
+                    <div class="comment__comment">
+                        {#- detached comments -#}
+                        {%- if detached is defined and detached -%}
+                            <div class="comment__detached-comment">
+                                <i class="bi bi-link"></i>
+                                {{- 'discussion.points.to.modified.code'|trans({line: comment.lineReference.lineAfter}) -}}
+                            </div>
+                        {%- endif -%}
+
+                        <div class="comment__author_and_time">
+                            <span class="comment__author">{{ comment.user.name }}</span>
+                            <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
+                                {{- ' ' ~ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') -}}
+                            </span>
+                        </div>
+
+                        <div class="comment__message">
+                            {{- comment.message|markdown|html_mail -}}
+                        </div>
+                    </div>
+
+                    {#- replies -#}
+                    {%- if replies is defined and replies != null -%}
+                        {% set maxReplies = 5 %}
+
+                        {%- if replies|length > maxReplies -%}
+                            <div class="comment__reply-truncated">...</div>
+                        {%- endif -%}
+
+                        {%- for reply in replies|slice(-maxReplies+1) -%}
+                            {%- include 'mail/comment/comment.reply.html.twig' with {reply: reply} -%}
+                        {%- endfor -%}
+                    {%- endif -%}
+
+                    {#- marked as resolved -#}
+                    {%- if resolvedBy is defined and resolvedBy != null -%}
+                        <div class="comment__marked-as-resolved">{{ 'comment.mark.as.resolved'|trans({userName: resolvedBy.name})|raw }}</div>
+                    {%- endif -%}
+
                 </div>
-            {%- endif -%}
-
-            <div class="comment__author_and_time">
-                <span class="comment__author">{{ comment.user.name }}</span>
-                <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
-                    {{- ' ' ~ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') -}}
-                </span>
-            </div>
-
-            <div class="comment__message">
-                {{- comment.message|markdown|html_mail -}}
-            </div>
-        </div>
-
-        {#- replies -#}
-        {%- if replies is defined and replies != null -%}
-            {% set maxReplies = 5 %}
-
-            {%- if replies|length > maxReplies -%}
-                <div class="comment__reply-truncated">...</div>
-            {%- endif -%}
-
-            {%- for reply in replies|slice(-maxReplies+1) -%}
-                {%- include 'mail/comment/comment.reply.html.twig' with {reply: reply} -%}
-            {%- endfor -%}
-        {%- endif -%}
-
-        {#- marked as resolved -#}
-        {%- if resolvedBy is defined and resolvedBy != null -%}
-            <div class="comment__marked-as-resolved">{{ 'comment.mark.as.resolved'|trans({userName: resolvedBy.name})|raw }}</div>
-        {%- endif -%}
-
-    </div>
+            </td>
+        </tr>
+    </table>
+{%- endapply -%}
 {%- endapply -%}
