@@ -1,6 +1,5 @@
 {#- comment: Comment -#}
 {#- replies: CommentReply[]|null #}
-{%- apply spaceless -%}
 {%- apply inline_css(source('@styles/mail/comment.css')) -%}
     <table cellspacing="0" cellpadding="0" border="0" width="100%" class="comment__comment-table">
         <tr>
@@ -49,5 +48,4 @@
             </td>
         </tr>
     </table>
-{%- endapply -%}
 {%- endapply -%}
