@@ -1,41 +1,53 @@
+.comment__comment-table {
+    background-color: #FFFEE0;
+}
+
 .comment__comment-thread {
-  background: #FFFEE0;
-  border-bottom: 1px solid #e5e4c9;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 13px;
-  line-height: 20px;
+    border-bottom: 1px solid #e5e4c9;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 20px;
 }
 
 .comment__detached-comment {
-  color: #999999;
-  font-size: 0.8rem;
-  padding-bottom: 2px;
+    color: #999999;
+    font-size: 0.8rem;
+    padding-bottom: 2px;
 }
 
 .comment__reply-truncated {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
 .comment__comment,
 .comment__reply {
-  border: 5px solid #FFFEE0;
-  border-left-width: 20px;
+    border: 5px solid #FFFEE0;
+    border-left-width: 20px;
 }
 
 .comment__reply {
-  border-left-width: 40px;
+    margin-left: 30px;
 }
 
 .comment__comment .comment__author,
 .comment__reply .comment__author {
-  font-size: 0.8rem;
-  font-weight: bold;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
 .comment__comment .comment__datetime,
 .comment__reply .comment__datetime {
-  color: #999999;
-  font-size: 0.8rem;
+    color: #999999;
+    font-size: 0.8rem;
+}
+
+.comment__reply-bar {
+    padding: 0 0 5px 5px;
+}
+
+.comment__reply-link {
+    color: #0F5B99;
+    font-size: 12px;
 }
 
 .comment__comment-thread.comment__state_resolved,
@@ -44,27 +56,43 @@
 .comment__comment-thread.comment__state_resolved .comment__datetime,
 .comment__comment-thread.comment__state_resolved .comment__state *,
 .comment__comment-thread.comment__state_resolved .comment__message * {
-  color: #999999 !important;
+    color: #999999 !important;
 }
 
 .comment__comment-thread.comment__state_resolved .comment__message img {
-  filter: grayscale(1);
+    filter: grayscale(1);
+}
+
+blockquote {
+    margin: 0 0 0 0;
+    padding-left: 5px;
+    border-left: 2px solid #cccccc;
+}
+
+code {
+    color: #D63384;
+    font-size: 13px;
 }
 
 p {
-  margin: 0;
-  line-height: 16px;
-  border-bottom: 2px solid #FFFEE0;
+    margin: 0;
+    line-height: 16px;
+    border-bottom: 2px solid #FFFEE0;
+}
+
+ul {
+    margin: 0;
+    padding-left: 15px;
 }
 
 .comment__marked-as-resolved {
-  border: 3px solid #FFFEE0;
-  border-left-width: 20px;
-  border-right-width: 0;
-  font-size: 0.8rem;
-  font-style: italic;
+    border: 3px solid #FFFEE0;
+    border-left-width: 20px;
+    border-right-width: 0;
+    font-size: 0.8rem;
+    font-style: italic;
 }
 
 .comment__marked-as-resolved em {
-  font-weight: bold;
+    font-weight: bold;
 }

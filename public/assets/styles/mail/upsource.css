@@ -147,3 +147,8 @@ p {
 .diff-file__code-comment {
     color: #808080;
 }
+
+.comment-mail__subscription {
+    font-size: 11px;
+    color: #999999;
+}

@@ -61,7 +61,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
         $this->diffFinder->expects(self::once())
             ->method('findLinesAround')
-            ->with($file, $reference, 4)
+            ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
 
         $viewModel = $this->provider->createCommentViewModel($review, $comment);
@@ -101,7 +101,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
         $this->diffFinder->expects(self::once())
             ->method('findLinesAround')
-            ->with($file, $reference, 4)
+            ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
 
         $viewModel = $this->provider->createCommentViewModel($review, $comment, $reply);
@@ -142,7 +142,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
         $this->diffFinder->expects(self::once())
             ->method('findLinesAround')
-            ->with($file, $reference, 4)
+            ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
 
         $viewModel = $this->provider->createCommentViewModel($review, $comment, $reply, $user);

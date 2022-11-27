@@ -10,7 +10,9 @@
 
     {# mail title #}
     {{- commentModel.headingTitle|trans({userName: comment.user.name}) }}
-    <a class="subjectLine" href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review}) }}"
+    <a class="subjectLine" href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController',
+        {review, filePath: comment.lineReference.filePath}
+    )}}"
     >CR-{{ review.projectId }} - {{ review.title }}</a>
     <br><br>
 
@@ -32,6 +34,14 @@
     {%- if commentModel.file != null and commentModel.linesAfter|length > 0 -%}
         {%- include 'mail/commit/commit.block.html.twig' with {file: commentModel.file, lines: commentModel.linesAfter} -%}
     {%- endif -%}
+
+    <br><br>
+    <div class="comment-mail__subscription">
+        {{ 'mail.unsubscribe.footer'|trans({app_name: app_name}) }}
+        <a href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\User\\UserSettingController')}}">
+            {{- 'mail.configure.settings'|trans -}}
+        </a>
+    </div>
 
     </body>
     </html>

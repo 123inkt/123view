@@ -37,7 +37,7 @@ class MailCommentViewModelProvider
         $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);
         $lineRange    = [];
         if ($selectedFile !== null) {
-            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Assert::notNull($lineReference), 4) ?? [];
+            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Assert::notNull($lineReference), 6) ?? [];
         }
 
         $headerTitle = $this->getHeaderTitle($reply, $resolvedBy);
