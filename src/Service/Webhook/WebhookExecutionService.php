@@ -72,7 +72,7 @@ class WebhookExecutionService implements LoggerAwareInterface
         $response = $client->request('POST', (string)$webhook->getUrl(), $options);
 
         $activity->setStatusCode($response->getStatusCode());
-        $activity->setResponseHeaders($response->getHeaders());
-        $activity->setResponse($response->getContent());
+        $activity->setResponseHeaders($response->getHeaders(false));
+        $activity->setResponse($response->getContent(false));
     }
 }
