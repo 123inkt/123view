@@ -44,6 +44,15 @@
                         <div class="comment__marked-as-resolved">{{ 'comment.mark.as.resolved'|trans({userName: resolvedBy.name})|raw }}</div>
                     {%- endif -%}
 
+                    <div class="comment__reply-bar">
+                    <a class="comment__reply-link"
+                       href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController',
+                           {review, filePath: comment.lineReference.filePath, action: 'add-reply:' ~ comment.id}
+                       )}}">
+                        {{- 'reply.to.this.comment'|trans -}}
+                    </a>
+                    </div>
+
                 </div>
             </td>
         </tr>

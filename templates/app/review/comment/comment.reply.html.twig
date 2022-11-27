@@ -4,7 +4,9 @@
         <span class="comment__datetime" title="{{ reply.updateTimestamp|format_datetime('full', 'full') }}">
             {{ 'on'|trans }} {{ reply.updateTimestamp|format_datetime('short', 'short') }}
         </span>
+        {% if reply.user == app.user %}
         <span class="comment__edit">
+            {# edit comment #}
             <a href="javascript:"
                class="ms-1 text-decoration-none"
                data-role="edit-reply"
@@ -26,6 +28,7 @@
                 </a>
             </form>
         </span>
+        {% endif %}
     </div>
 
     <div class="comment__message">

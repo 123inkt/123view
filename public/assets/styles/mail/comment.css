@@ -41,6 +41,15 @@
     font-size: 0.8rem;
 }
 
+.comment__reply-bar {
+    padding: 0 0 5px 5px;
+}
+
+.comment__reply-link {
+    color: #0F5B99;
+    font-size: 12px;
+}
+
 .comment__comment-thread.comment__state_resolved,
 .comment__comment-thread.comment__state_resolved .comment__author,
 .comment__comment-thread.comment__state_resolved .comment__author,
