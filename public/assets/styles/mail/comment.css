@@ -23,7 +23,7 @@
 }
 
 .comment__reply {
-    border-left-width: 40px;
+    margin-left: 30px;
 }
 
 .comment__comment .comment__author,
@@ -51,8 +51,20 @@
     filter: grayscale(1);
 }
 
+.comment__message {
+    background: #FFFEE0;
+}
+
+blockquote {
+    margin: 0 0 0 0;
+    padding-left: 5px;
+    background: #FFFEE0;
+    border-left: 2px solid #cccccc;
+}
+
 code {
     color: #D63384;
+    font-size: 13px;
 }
 
 p {
