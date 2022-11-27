@@ -50,8 +50,8 @@ class WebhookExecutionServiceTest extends AbstractTestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(200);
-        $response->method('getHeaders')->willReturn(['response' => 'headers']);
-        $response->method('getContent')->willReturn('content');
+        $response->method('getHeaders')->with(false)->willReturn(['response' => 'headers']);
+        $response->method('getContent')->with(false)->willReturn('content');
 
         $this->activityRepository->expects(self::once())->method('save')->with(self::isInstanceOf(WebhookActivity::class), true);
         $this->httpClient->expects(self::once())
