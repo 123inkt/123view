@@ -8,7 +8,6 @@ use DR\GitCommitNotification\Twig\HtmlMailExtension;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\HtmlMailExtension
- * @covers ::__construct
  */
 class HtmlMailExtensionTest extends AbstractTestCase
 {

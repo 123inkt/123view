@@ -10,6 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Twig\MarkdownExtension
+ * @covers ::__construct
  */
 class MarkdownExtensionTest extends AbstractTestCase
 {
