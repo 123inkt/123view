@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Controller\Auth;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\User\UserAccountSuspendedController;
 use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
 use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdAuthController;
 use DR\GitCommitNotification\Security\Role\Roles;
@@ -30,10 +29,6 @@ class AuthenticationController extends AbstractController
     public function __invoke(Request $request): array|Response
     {
         if ($this->security->getUser() !== null) {
-            if (in_array(Roles::ROLE_BANNED, $this->security->getUser()->getRoles())) {
-                return $this->redirectToRoute(UserAccountSuspendedController::class);
-            }
-
             if (in_array(Roles::ROLE_USER, $this->security->getUser()->getRoles()) === false) {
                 return $this->redirectToRoute(UserApprovalPendingController::class);
             }

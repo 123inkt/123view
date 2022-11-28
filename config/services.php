@@ -19,6 +19,7 @@ use DR\GitCommitNotification\Router\ReviewRouter;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
+use DR\GitCommitNotification\Security\UserChecker;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
 use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
@@ -79,6 +80,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(Filesystem::class);
     $services->set(InputValidator::class);
     $services->set(LoginService::class);
+    $services->set(UserChecker::class);
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
 
     // Register AzureAd provider, for SSO

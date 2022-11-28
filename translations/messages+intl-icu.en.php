@@ -157,5 +157,5 @@ return [
     'user.id'                                     => 'Id',
     'user.role'                                   => 'Role',
     'user.profile.saved.successful'               => 'User profile successfully changed.',
-    'user.account.suspended'                      => 'Your {app_name} account has been suspended.'
+    'user.account.suspended'                      => 'Your account has been suspended'
 ];
