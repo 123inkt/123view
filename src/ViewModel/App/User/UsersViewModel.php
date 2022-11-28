@@ -9,11 +9,12 @@ use Symfony\Component\Form\FormView;
 class UsersViewModel
 {
     /**
-     * @param User[] $users
+     * @param User[]     $users
+     * @param FormView[] $forms
      *
      * @codeCoverageIgnore
      */
-    public function __construct(public readonly array $users, public readonly FormView $form)
+    public function __construct(public readonly array $users, public readonly array $forms)
     {
     }
 }

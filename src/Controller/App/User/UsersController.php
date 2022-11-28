@@ -5,10 +5,8 @@ namespace DR\GitCommitNotification\Controller\App\User;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\User\UserProfileType;
-use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\ViewModel\App\User\UsersViewModel;
+use DR\GitCommitNotification\ViewModelProvider\UserViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UsersController extends AbstractController
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(private readonly UserViewModelProvider $viewModelProvider)
     {
     }
 
@@ -28,11 +26,6 @@ class UsersController extends AbstractController
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(Request $request): array
     {
-        $viewModel = new UsersViewModel(
-            $this->userRepository->findBy([], ['name' => 'ASC']),
-            $this->createForm(UserProfileType::class)->createView()
-        );
-
-        return ['usersViewModel' => $viewModel];
+        return ['usersViewModel' => $this->viewModelProvider->getUsersViewModel()];
     }
 }

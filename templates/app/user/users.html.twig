@@ -8,12 +8,11 @@
     {% if app.session.flashbag.peek('success')|length > 0 %}
         <div class="alert alert-success mb-3">
             {% for message in app.flashes('success') %}
-                <div>{{ message }}</div>
+                <div>{{ message|trans }}</div>
             {% endfor %}
         </div>
     {% endif %}
 
-    {{ form_start(usersViewModel.form) }}
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -29,17 +28,9 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td>
-                    <select class="form-control" data-role="user-profile" data-user-id="{{ user.id }}">
-                        {%- for key,name in profileChoices -%}
-                            <option value="{{ key }}">{{ name|trans }}</option>
-                        {%- endfor -%}
-                    </select>
-                </td>
+                <td>{{ form(usersViewModel.forms[user.id]) }}</td>
             </tr>
         {%- endfor -%}
         <tbody>
     </table>
-    {{ form_rest(usersViewModel.form) }}
-    {{ form_end(usersViewModel.form) }}
 {% endblock %}
