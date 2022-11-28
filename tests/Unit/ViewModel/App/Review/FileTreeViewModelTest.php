@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
 
+use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
@@ -22,7 +23,9 @@ class FileTreeViewModelTest extends AbstractTestCase
 {
     private FileSeenStatusCollection&MockObject $statusCollection;
     private DiffFile                            $selectedFile;
-    private FileTreeViewModel                   $viewModel;
+    /** @var DirectoryTreeNode<DiffFile>&MockObject */
+    private MockObject&DirectoryTreeNode $directoryNode;
+    private FileTreeViewModel            $viewModel;
     /** @var ArrayCollection<int, Comment> */
     private ArrayCollection $commentCollection;
 
@@ -31,14 +34,32 @@ class FileTreeViewModelTest extends AbstractTestCase
         parent::setUp();
         $this->statusCollection  = $this->createMock(FileSeenStatusCollection::class);
         $this->selectedFile      = new DiffFile();
+        $this->directoryNode     = $this->createMock(DirectoryTreeNode::class);
         $this->commentCollection = new ArrayCollection();
         $this->viewModel         = new FileTreeViewModel(
             new CodeReview(),
-            new DirectoryTreeNode('root'),
+            $this->directoryNode,
             $this->commentCollection,
             $this->statusCollection,
             $this->selectedFile
         );
+    }
+
+    /**
+     * @covers ::getChangeSummary
+     */
+    public function testGetChangeSummary(): void
+    {
+        $fileA = $this->createMock(DiffFile::class);
+        $fileA->expects(self::once())->method('getNrOfLinesAdded')->willReturn(1);
+        $fileA->expects(self::once())->method('getNrOfLinesRemoved')->willReturn(2);
+        $fileB = $this->createMock(DiffFile::class);
+        $fileB->expects(self::once())->method('getNrOfLinesAdded')->willReturn(3);
+        $fileB->expects(self::once())->method('getNrOfLinesRemoved')->willReturn(4);
+
+        $this->directoryNode->expects(self::once())->method('getFileIterator')->willReturn(new ArrayIterator([$fileA, $fileB]));
+
+        static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
     }
 
     /**

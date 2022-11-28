@@ -119,7 +119,16 @@
 
                 {{ form(reviewModel.addReviewerForm) }}
 
-                <h5 class="mt-2">{{ 'files'|trans }}</h5>
+                <div class="clearfix mt-2">
+                    {% set summary = reviewModel.fileTreeModel.changeSummary %}
+
+                    <h5 class="float-start">{{ 'files'|trans }} ({{ summary.files }})</h5>
+
+                    <div class="float-start mt-1 ms-2">
+                        <span class="text-success">+{{ summary.added }}</span>
+                        <span class="text-danger">-{{ summary.removed }}</span>
+                    </div>
+                </div>
                 {% if not reviewModel.fileTreeModel.fileTree.empty %}
                     {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
                 {% else %}

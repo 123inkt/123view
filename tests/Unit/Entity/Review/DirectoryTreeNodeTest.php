@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
 
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use LogicException;
@@ -194,5 +195,20 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         /** @var DirectoryTreeNode<stdClass> $node */
         $node = new DirectoryTreeNode('foo', [new DirectoryTreeNode('bar')]);
         static::assertNull($node->getFirstFileInTree());
+    }
+
+    /**
+     * @covers ::getFileIterator
+     */
+    public function testGetFileIterator(): void
+    {
+        $fileA = new DiffFile();
+        $fileB = new DiffFile();
+
+        $node = new DirectoryTreeNode('foo');
+        $node->addNode(['path', 'to', 'file.txt'], $fileA);
+        $node->addNode(['path', 'to', 'second', 'file.txt'], $fileB);
+
+        static::assertSame([$fileB, $fileA], iterator_to_array($node->getFileIterator()));
     }
 }
