@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Model\Review;
 
 use DR\GitCommitNotification\Utility\Arrays;
-use Generator;
+use Iterator;
 use LogicException;
 
 /**
@@ -146,9 +146,9 @@ class DirectoryTreeNode
     }
 
     /**
-     * @return Generator<T>
+     * @return Iterator<T>
      */
-    public function getFileIterator(): Generator
+    public function getFileIterator(): Iterator
     {
         foreach ($this->directories as $directory) {
             foreach ($directory->getFileIterator() as $file) {
