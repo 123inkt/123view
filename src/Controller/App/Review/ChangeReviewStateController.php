@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Request\Review\ChangeReviewStateRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,7 +21,7 @@ class ChangeReviewStateController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}/state', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review')]
     public function __invoke(ChangeReviewStateRequest $request, CodeReview $review): RedirectResponse
     {

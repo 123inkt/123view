@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
 use DR\GitCommitNotification\Message\Comment\CommentReplyAdded;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,7 @@ class AddCommentReplyController extends AbstractController
     }
 
     #[Route('app/comments/{id<\d+>}/add-reply', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('comment')]
     public function __invoke(Request $request, Comment $comment): Response
     {

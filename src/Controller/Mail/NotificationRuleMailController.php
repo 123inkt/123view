@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use DR\GitCommitNotification\Entity\Notification\Frequency;
 use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\RuleProcessor;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel;
@@ -32,7 +33,7 @@ class NotificationRuleMailController
      */
     #[Route('app/mail/rule/{id<\d+>}', name: self::class, methods: 'GET', condition: "env('APP_ENV') === 'dev'")]
     #[Template('mail/mail.commits.html.twig')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('rule')]
     public function __invoke(Request $request, Rule $rule): array
     {

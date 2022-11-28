@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Request\Review\ChangeReviewerStateRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -25,7 +26,7 @@ class ChangeReviewerStateController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}/reviewer/state', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review')]
     public function __invoke(ChangeReviewerStateRequest $request, CodeReview $review): RedirectResponse
     {

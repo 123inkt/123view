@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Message\Comment\CommentResolved;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +24,7 @@ class ChangeCommentStateController extends AbstractController
     }
 
     #[Route('app/comments/{id<\d+>}/state', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('comment')]
     public function __invoke(ChangeCommentStateRequest $request, Comment $comment): RedirectResponse
     {

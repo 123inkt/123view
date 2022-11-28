@@ -45,14 +45,12 @@ class UserTest extends AbstractTestCase
 
     /**
      * @covers ::getUserIdentifier
-     * @covers ::getRoles
      */
     public function testGetUserIdentifier(): void
     {
         $user = new User();
         $user->setEmail('email');
         static::assertSame('email', $user->getUserIdentifier());
-        static::assertSame(['ROLE_USER'], $user->getRoles());
     }
 
     /**

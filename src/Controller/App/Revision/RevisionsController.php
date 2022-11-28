@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Revision;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -27,7 +28,7 @@ class RevisionsController extends AbstractController
      */
     #[Route('app/projects/{id<\d+>}/revisions', name: self::class, methods: 'GET')]
     #[Template('app/revision/revisions.html.twig')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
     {

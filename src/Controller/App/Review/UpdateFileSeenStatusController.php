@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Review;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Request\Review\FileSeenStatusRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
@@ -28,7 +29,7 @@ class UpdateFileSeenStatusController extends AbstractController
      * @throws Throwable
      */
     #[Route('app/reviews/{id<\d+>}/file-seen-status', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review')]
     public function __invoke(FileSeenStatusRequest $request, CodeReview $review): Response
     {

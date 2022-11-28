@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,7 +21,7 @@ class DeleteCommentReplyController extends AbstractController
     }
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'DELETE')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('reply')]
     public function __invoke(CommentReply $reply): Response
     {

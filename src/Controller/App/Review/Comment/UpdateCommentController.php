@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Form\Review\EditCommentFormType;
 use DR\GitCommitNotification\Message\Comment\CommentUpdated;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Security\Voter\CommentVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,7 +25,7 @@ class UpdateCommentController extends AbstractController
     }
 
     #[Route('app/comments/{id<\d+>}', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('comment')]
     public function __invoke(Request $request, Comment $comment): Response
     {

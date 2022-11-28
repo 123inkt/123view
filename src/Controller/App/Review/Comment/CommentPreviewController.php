@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Request\Comment\CommentPreviewRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
 use DR\GitCommitNotification\Service\Markdown\MarkdownService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -18,8 +19,7 @@ class CommentPreviewController extends AbstractController
     }
 
     #[Route('app/reviews/comment/markdown', name: self::class, methods: 'GET')]
-    #[IsGranted('ROLE_USER')]
-
+    #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(CommentPreviewRequest $request): Response
     {
         $message = $request->getMessage();

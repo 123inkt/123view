@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Form\Review\AddCommentFormType;
 use DR\GitCommitNotification\Message\Comment\CommentAdded;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class AddCommentController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}/add-comment', name: self::class, methods: 'POST')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): Response
     {
