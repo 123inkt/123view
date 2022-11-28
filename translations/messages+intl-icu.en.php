@@ -148,4 +148,5 @@ return [
     'user.theme.auto.detect'                      => 'Auto-detect',
     'user.theme.dark'                             => 'Dark mode',
     'user.theme.light'                            => 'Light mode',
+    'user.approval.welcome.text'                  => 'Welcome to {app_name}. Your account must be approved by an administrator before you can continue.'
 ];

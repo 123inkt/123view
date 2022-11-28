@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Security\AzureAd;
 
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
+use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Utility\Assert;
 use JsonException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,6 +54,10 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        if (in_array(Roles::ROLE_USER, $token->getRoleNames()) === false) {
+            return new RedirectResponse($this->urlGenerator->generate(UserApprovalPendingController::class));
+        }
+
         $url = null;
         if ($request->query->has('state')) {
             $url = Assert::isArray(json_decode($request->query->get('state'), true, 512, JSON_THROW_ON_ERROR))['next'] ?? null;

@@ -5,7 +5,9 @@ namespace DR\GitCommitNotification\Controller\Auth;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
+use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
 use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdAuthController;
+use DR\GitCommitNotification\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,10 @@ class AuthenticationController extends AbstractController
     public function __invoke(Request $request): array|Response
     {
         if ($this->security->getUser() !== null) {
+            if (in_array(Roles::ROLE_USER, $this->security->getUser()->getRoles()) === false) {
+                return $this->redirectToRoute(UserApprovalPendingController::class);
+            }
+
             return $this->redirectToRoute(ProjectsController::class);
         }
 
