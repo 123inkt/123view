@@ -59,6 +59,6 @@ class SpaceSeparatedStringValueTypeTest extends AbstractTestCase
      */
     public function testConvertToPHPValue(): void
     {
-        static::assertSame(['foo', 'bar'], $this->type->convertToPHPValue([' foo bar'], $this->platform));
+        static::assertSame(['foo', 'bar'], array_values($this->type->convertToPHPValue(' foo bar', $this->platform)));
     }
 }
