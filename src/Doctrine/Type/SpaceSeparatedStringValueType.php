@@ -29,8 +29,9 @@ class SpaceSeparatedStringValueType extends Type
 
     /**
      * @inheritDoc
+     * @return string[]
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         return array_filter(explode(" ", Assert::isString($value)), static fn($val) => $val !== '');
     }
