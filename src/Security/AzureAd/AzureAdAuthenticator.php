@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Security\AzureAd;
 
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
+use DR\GitCommitNotification\Controller\App\User\UserAccountSuspendedController;
 use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Security\Role\Roles;
@@ -54,6 +55,10 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        if (in_array(Roles::ROLE_BANNED, $token->getRoleNames())) {
+            return new RedirectResponse($this->urlGenerator->generate(UserAccountSuspendedController::class));
+        }
+
         if (in_array(Roles::ROLE_USER, $token->getRoleNames()) === false) {
             return new RedirectResponse($this->urlGenerator->generate(UserApprovalPendingController::class));
         }
