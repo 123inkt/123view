@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\App\User;
 
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\User\UserRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +19,7 @@ class UserMentionSuggestController
     }
 
     #[Route('/app/user/mentions', self::class, methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('rule')]
     public function __invoke(Request $request): JsonResponse
     {

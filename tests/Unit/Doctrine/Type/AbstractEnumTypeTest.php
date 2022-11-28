@@ -61,12 +61,4 @@ class AbstractEnumTypeTest extends AbstractTestCase
     {
         static::assertSame('type', $this->enumType->getName());
     }
-
-    /**
-     * @covers ::requiresSQLCommentHint
-     */
-    public function testRequiresSQLCommentHint(): void
-    {
-        static::assertTrue($this->enumType->requiresSQLCommentHint($this->createMock(AbstractPlatform::class)));
-    }
 }

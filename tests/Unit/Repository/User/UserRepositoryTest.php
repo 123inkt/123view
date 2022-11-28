@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Repository\User;
 
 use DR\GitCommitNotification\Repository\User\UserRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
 use DR\GitCommitNotification\Tests\DataFixtures\UserFixtures;
+use DR\GitCommitNotification\Utility\Assert;
 use Exception;
 
 /**
@@ -38,6 +40,25 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
 
         static::assertCount(1, $repository->findUsersWithExclusion([]));
         static::assertCount(0, $repository->findUsersWithExclusion([(int)$user->getId()]));
+    }
+
+    /**
+     * @covers ::getNewUserCount
+     * @throws Exception
+     */
+    public function testGetNewUserCount(): void
+    {
+        $repository = self::getService(UserRepository::class);
+        $user       = Assert::notNull($repository->findOneBy(['email' => 'sherlock@example.com']));
+
+        // find one new user
+        static::assertSame(1, $repository->getNewUserCount());
+
+        // mark user as not new
+        $user->setRoles([Roles::ROLE_USER]);
+        $repository->save($user, true);
+
+        static::assertSame(0, $repository->getNewUserCount());
     }
 
     /**

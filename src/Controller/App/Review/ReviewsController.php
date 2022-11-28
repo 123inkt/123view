@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
@@ -28,7 +29,7 @@ class ReviewsController extends AbstractController
      */
     #[Route('app/projects/{id<\d+>}/reviews', name: self::class, methods: 'GET')]
     #[Template('app/review/reviews.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
     {

@@ -6,8 +6,8 @@ namespace DR\GitCommitNotification\Controller\App\User;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Form\User\UserSettingFormType;
 use DR\GitCommitNotification\Repository\User\UserRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\ViewModel\App\User\UserSettingViewModel;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +25,7 @@ class UserSettingController extends AbstractController
      */
     #[Route('/app/user/settings', self::class, methods: ['GET', 'POST'])]
     #[Template('app/user/user.setting.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Entity('rule')]
+    #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array
     {
         $user = $this->getUser();

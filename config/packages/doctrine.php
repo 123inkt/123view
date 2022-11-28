@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Doctrine\Type\FilterType;
 use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
 use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
 use DR\GitCommitNotification\Doctrine\Type\NotificationStatusType;
+use DR\GitCommitNotification\Doctrine\Type\SpaceSeparatedStringValueType;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -25,15 +26,16 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     'enum' => 'string'
                 ],
                 'types'          => [
-                    FrequencyType::TYPE          => FrequencyType::class,
-                    DiffAlgorithmType::TYPE      => DiffAlgorithmType::class,
-                    MailThemeType::TYPE          => MailThemeType::class,
-                    FilterType::TYPE             => FilterType::class,
-                    CodeReviewStateType::TYPE    => CodeReviewStateType::class,
-                    CodeReviewerStateType::TYPE  => CodeReviewerStateType::class,
-                    CommentStateType::TYPE       => CommentStateType::class,
-                    NotificationStatusType::TYPE => NotificationStatusType::class,
-                    ColorThemeType::TYPE         => ColorThemeType::class,
+                    FrequencyType::TYPE                 => FrequencyType::class,
+                    DiffAlgorithmType::TYPE             => DiffAlgorithmType::class,
+                    MailThemeType::TYPE                 => MailThemeType::class,
+                    FilterType::TYPE                    => FilterType::class,
+                    CodeReviewStateType::TYPE           => CodeReviewStateType::class,
+                    CodeReviewerStateType::TYPE         => CodeReviewerStateType::class,
+                    CommentStateType::TYPE              => CommentStateType::class,
+                    NotificationStatusType::TYPE        => NotificationStatusType::class,
+                    ColorThemeType::TYPE                => ColorThemeType::class,
+                    SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class
                 ]
             ]
         ]

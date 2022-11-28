@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Security\Voter\CommentVoter;
 use DR\GitCommitNotification\Utility\Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -21,7 +22,7 @@ class DeleteCommentController extends AbstractController
     }
 
     #[Route('app/comments/{id<\d+>}', name: self::class, methods: 'DELETE')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('comment')]
     public function __invoke(Comment $comment): Response
     {

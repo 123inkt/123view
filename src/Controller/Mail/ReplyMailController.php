@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Controller\Mail;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
 use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
@@ -29,7 +30,7 @@ class ReplyMailController extends AbstractController
      */
     #[Route('app/mail/reply/{id<\d+>}', name: self::class, methods: 'GET', condition: "env('APP_ENV') === 'dev'")]
     #[Template('mail/mail.comment.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('reply')]
     public function __invoke(CommentReply $reply): array
     {

@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
 use DR\GitCommitNotification\Message\Comment\CommentReplyUpdated;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,7 +25,7 @@ class UpdateCommentReplyController extends AbstractController
     }
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('reply')]
     public function __invoke(Request $request, CommentReply $reply): Response
     {

@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Request\Review\ReviewRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
@@ -28,7 +29,7 @@ class ReviewController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}', name: self::class . 'deprecated', methods: 'GET')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review')]
     public function redirectReviewRoute(Request $request, CodeReview $review): RedirectResponse
     {
@@ -41,7 +42,7 @@ class ReviewController extends AbstractController
      */
     #[Route('app/{repositoryName<[\w-]+>}/review/cr-{reviewId<\d+>}', name: self::class, methods: 'GET')]
     #[Template('app/review/review.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review', expr: 'repository.findByUrl(repositoryName, reviewId)')]
     public function __invoke(ReviewRequest $request, CodeReview $review): array
     {

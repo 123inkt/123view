@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Notification;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,7 +21,7 @@ class DeleteRuleController extends AbstractController
     }
 
     #[Route('/app/rules/rule/delete/{id<\d+>}', self::class, methods: ['DELETE'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('rule')]
     public function __invoke(Rule $rule): RedirectResponse
     {

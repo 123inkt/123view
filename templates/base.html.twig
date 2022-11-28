@@ -5,8 +5,8 @@
     <title>
         {%- if page_title is defined -%}{{ page_title }} - {% endif -%}{{- app_name -}}
     </title>
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/"/>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {#- bootstrap stylesheet -#}
@@ -49,7 +49,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">{{ app_name }}</a>
 
-                {% if app.user %}
+                {% if is_granted('ROLE_USER') %}
                     <div class="collapse navbar-collapse">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
@@ -71,6 +71,23 @@
 
                         <div class="navbar-nav d-flex">
                             <ul class="navbar-nav">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           aria-label="{{ 'users'|trans }}"
+                                           title="{{ 'users'|trans }}"
+                                           href="{{ path('DR\\GitCommitNotification\\Controller\\App\\User\\UsersController') }}">
+                                            {{- 'users'|trans -}}
+
+                                            {% set new_user_count = new_user_count() %}
+                                            {% if new_user_count > 0 %}
+                                            <span class="ms-1 badge rounded-pill bg-success"
+                                                  title="{{ 'users.new.user.waiting.for.approval'|trans({count: new_user_count}) }}"
+                                            >+{{ new_user_count }}</span>
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% endif %}
                                 <li class="nav-item">
                                     <a class="nav-link"
                                        aria-label="{{ 'settings'|trans }}"

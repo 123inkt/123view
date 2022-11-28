@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\GitCommitNotification\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Comment;
@@ -26,6 +27,10 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $email = null;
+
+    /** @var string[]|null */
+    #[ORM\Column(type: SpaceSeparatedStringValueType::TYPE, length: 500)]
+    private ?array $roles = null;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private ?UserSetting $setting = null;
@@ -141,12 +146,22 @@ class User implements UserInterface
     }
 
     /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
      * @return string[]
      * @see UserInterface
      */
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->roles ?? [];
     }
 
     /**

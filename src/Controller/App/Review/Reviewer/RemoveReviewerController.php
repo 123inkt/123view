@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,7 +24,7 @@ class RemoveReviewerController extends AbstractController
     }
 
     #[Route('app/reviews/{reviewId<\d+>}/reviewer/{reviewerId<\d+>}', name: self::class, methods: 'DELETE')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review', expr: 'repository.find(reviewId)')]
     #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
     public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse

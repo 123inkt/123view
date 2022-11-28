@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Entity\Notification\Rule;
 use DR\GitCommitNotification\Entity\Notification\RuleFactory;
 use DR\GitCommitNotification\Form\Rule\EditRuleFormType;
 use DR\GitCommitNotification\Repository\Config\RuleRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Security\Voter\RuleVoter;
 use DR\GitCommitNotification\ViewModel\App\Rule\EditRuleViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -30,7 +31,7 @@ class RuleController extends AbstractController
      */
     #[Route('/app/rules/rule/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/edit_rule.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('rule')]
     public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
     {

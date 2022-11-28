@@ -5,9 +5,11 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\Auth;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
+use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdAuthController;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -54,11 +56,28 @@ class AuthenticationControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeShouldRedirectUser(): void
     {
-        $user    = new User();
+        $user = new User();
+        $user->setRoles([Roles::ROLE_USER]);
         $request = new Request();
 
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('redirect-url');
-        $this->security->expects(self::once())->method('getUser')->willReturn($user);
+        $this->security->expects(self::exactly(2))->method('getUser')->willReturn($user);
+        $this->translator->expects(self::never())->method('trans');
+
+        $result = ($this->controller)($request);
+        static::assertInstanceOf(RedirectResponse::class, $result);
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeShouldRedirectNewUser(): void
+    {
+        $user    = new User();
+        $request = new Request();
+
+        $this->expectRedirectToRoute(UserApprovalPendingController::class)->willReturn('redirect-url');
+        $this->security->expects(self::exactly(2))->method('getUser')->willReturn($user);
         $this->translator->expects(self::never())->method('trans');
 
         $result = ($this->controller)($request);

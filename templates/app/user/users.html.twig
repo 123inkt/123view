@@ -1,0 +1,41 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set profileChoices = constant('DR\\GitCommitNotification\\Security\\Role\\Roles::PROFILE_NAMES') %}
+
+    <h1 class="mb-4 mt-2">{{ 'users'|trans }}</h1>
+
+    {% if app.session.flashbag.peek('success')|length > 0 %}
+        <div class="alert alert-success mb-3">
+            {% for message in app.flashes('success') %}
+                <div>{{ message|trans }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'user.id'|trans }}</th>
+            <th scope="col">{{ 'name'|trans }}</th>
+            <th scope="col">{{ 'email'|trans }}</th>
+            <th scope="col">{{ 'user.role'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%- for user in usersViewModel.users -%}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% set form = usersViewModel.forms[user.id] %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form.roles) }}
+                    {{ form_end(form) }}
+                </td>
+            </tr>
+        {%- endfor -%}
+        <tbody>
+    </table>
+{% endblock %}

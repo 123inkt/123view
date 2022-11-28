@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -29,7 +30,7 @@ class AttachRevisionController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}/attach-revisions', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {

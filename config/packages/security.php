@@ -6,6 +6,7 @@ use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Controller\Auth\LogoutController;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
+use DR\GitCommitNotification\Security\UserChecker;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security): void {
@@ -23,6 +24,7 @@ return static function (SecurityConfig $security): void {
     $security->firewall('main')
         ->lazy(true)
         ->provider('app_user_provider')
+        ->userChecker(UserChecker::class)
         ->customAuthenticators([AzureAdAuthenticator::class]);
 
     $security->firewall('main')

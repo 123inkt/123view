@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Asset;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Repository\Asset\AssetRepository;
 use DR\GitCommitNotification\Request\Asset\AddAssetRequest;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Asset\AssetFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +19,7 @@ class AddAssetController extends AbstractController
     }
 
     #[Route('app/assets', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(AddAssetRequest $request): JsonResponse
     {
         // create entity
