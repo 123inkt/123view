@@ -27,7 +27,7 @@ class RevisionsController extends AbstractController
      */
     #[Route('app/projects/{id<\d+>}/revisions', name: self::class, methods: 'GET')]
     #[Template('app/revision/revisions.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
     {

@@ -24,7 +24,7 @@ class AttachRevisionSelectionController
      */
     #[Route('app/reviews/{id<\d+>}/attach-revisions', name: self::class, methods: 'GET')]
     #[Template('app/revision/revisions.attach.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): array
     {

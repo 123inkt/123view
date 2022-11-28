@@ -28,7 +28,7 @@ class ReviewController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}', name: self::class . 'deprecated', methods: 'GET')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review')]
     public function redirectReviewRoute(Request $request, CodeReview $review): RedirectResponse
     {
@@ -41,7 +41,7 @@ class ReviewController extends AbstractController
      */
     #[Route('app/{repositoryName<[\w-]+>}/review/cr-{reviewId<\d+>}', name: self::class, methods: 'GET')]
     #[Template('app/review/review.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review', expr: 'repository.findByUrl(repositoryName, reviewId)')]
     public function __invoke(ReviewRequest $request, CodeReview $review): array
     {

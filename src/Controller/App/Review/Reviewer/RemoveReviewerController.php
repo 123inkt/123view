@@ -23,7 +23,7 @@ class RemoveReviewerController extends AbstractController
     }
 
     #[Route('app/reviews/{reviewId<\d+>}/reviewer/{reviewerId<\d+>}', name: self::class, methods: 'DELETE')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review', expr: 'repository.find(reviewId)')]
     #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
     public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse

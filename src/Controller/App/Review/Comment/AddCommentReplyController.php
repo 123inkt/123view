@@ -24,7 +24,7 @@ class AddCommentReplyController extends AbstractController
     }
 
     #[Route('app/comments/{id<\d+>}/add-reply', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('comment')]
     public function __invoke(Request $request, Comment $comment): Response
     {

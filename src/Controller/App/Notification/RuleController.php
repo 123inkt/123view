@@ -30,7 +30,7 @@ class RuleController extends AbstractController
      */
     #[Route('/app/rules/rule/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/edit_rule.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('rule')]
     public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
     {

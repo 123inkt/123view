@@ -29,7 +29,7 @@ class ReplyMailController extends AbstractController
      */
     #[Route('app/mail/reply/{id<\d+>}', name: self::class, methods: 'GET', condition: "env('APP_ENV') === 'dev'")]
     #[Template('mail/mail.comment.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('reply')]
     public function __invoke(CommentReply $reply): array
     {

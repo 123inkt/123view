@@ -28,7 +28,7 @@ class UpdateFileSeenStatusController extends AbstractController
      * @throws Throwable
      */
     #[Route('app/reviews/{id<\d+>}/file-seen-status', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review')]
     public function __invoke(FileSeenStatusRequest $request, CodeReview $review): Response
     {

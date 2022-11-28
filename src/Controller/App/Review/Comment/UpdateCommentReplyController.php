@@ -24,7 +24,7 @@ class UpdateCommentReplyController extends AbstractController
     }
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('reply')]
     public function __invoke(Request $request, CommentReply $reply): Response
     {

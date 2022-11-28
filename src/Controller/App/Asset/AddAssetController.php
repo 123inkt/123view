@@ -18,7 +18,7 @@ class AddAssetController extends AbstractController
     }
 
     #[Route('app/assets', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     public function __invoke(AddAssetRequest $request): JsonResponse
     {
         // create entity

@@ -25,7 +25,7 @@ class UserSettingController extends AbstractController
      */
     #[Route('/app/user/settings', self::class, methods: ['GET', 'POST'])]
     #[Template('app/user/user.setting.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('rule')]
     public function __invoke(Request $request): array
     {

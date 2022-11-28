@@ -20,7 +20,7 @@ class DeleteCommentReplyController extends AbstractController
     }
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'DELETE')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('reply')]
     public function __invoke(CommentReply $reply): Response
     {

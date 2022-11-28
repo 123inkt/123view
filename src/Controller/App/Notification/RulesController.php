@@ -16,7 +16,7 @@ class RulesController extends AbstractController
      */
     #[Route('app/rules', name: self::class, methods: 'GET')]
     #[Template('app/rules.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     public function __invoke(): array
     {
         return ['rulesModel' => new RulesViewModel($this->getUser()->getRules())];

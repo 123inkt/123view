@@ -28,7 +28,7 @@ class ReviewsController extends AbstractController
      */
     #[Route('app/projects/{id<\d+>}/reviews', name: self::class, methods: 'GET')]
     #[Template('app/review/reviews.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('repository')]
     public function __invoke(Request $request, Repository $repository): array
     {

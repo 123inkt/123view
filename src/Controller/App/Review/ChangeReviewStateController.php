@@ -20,7 +20,7 @@ class ChangeReviewStateController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}/state', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review')]
     public function __invoke(ChangeReviewStateRequest $request, CodeReview $review): RedirectResponse
     {

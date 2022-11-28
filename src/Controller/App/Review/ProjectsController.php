@@ -22,7 +22,7 @@ class ProjectsController extends AbstractController
      */
     #[Route('app/projects', name: self::class, methods: 'GET')]
     #[Template('app/review/projects.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     public function __invoke(): array
     {
         $favorites    = $this->repositoryRepository->findBy(['active' => 1, 'favorite' => 1], ['name' => 'ASC']);

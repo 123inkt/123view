@@ -21,7 +21,7 @@ class DeleteCommentController extends AbstractController
     }
 
     #[Route('app/comments/{id<\d+>}', name: self::class, methods: 'DELETE')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('comment')]
     public function __invoke(Comment $comment): Response
     {

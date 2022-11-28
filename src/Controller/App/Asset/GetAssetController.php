@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GetAssetController
 {
     #[Route('app/assets/{id<\d+>}', name: self::class, methods: 'GET')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('asset')]
     public function __invoke(Asset $asset): Response
     {

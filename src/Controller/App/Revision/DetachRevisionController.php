@@ -27,7 +27,7 @@ class DetachRevisionController extends AbstractController
     }
 
     #[Route('app/reviews/{id<\d+>}/revisions', name: self::class, methods: 'POST')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('review')]
     public function __invoke(Request $request, CodeReview $review): RedirectResponse
     {

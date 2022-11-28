@@ -18,7 +18,7 @@ class UserMentionSuggestController
     }
 
     #[Route('/app/user/mentions', self::class, methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('rule')]
     public function __invoke(Request $request): JsonResponse
     {

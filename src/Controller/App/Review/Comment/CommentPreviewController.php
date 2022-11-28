@@ -18,7 +18,7 @@ class CommentPreviewController extends AbstractController
     }
 
     #[Route('app/reviews/comment/markdown', name: self::class, methods: 'GET')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
 
     public function __invoke(CommentPreviewRequest $request): Response
     {

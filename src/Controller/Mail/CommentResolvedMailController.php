@@ -29,7 +29,7 @@ class CommentResolvedMailController extends AbstractController
      */
     #[Route('app/mail/comment-resolved/{id<\d+>}', name: self::class, methods: 'GET', condition: "env('APP_ENV') === 'dev'")]
     #[Template('mail/mail.comment.html.twig')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_USER')]
     #[Entity('comment')]
     public function __invoke(Comment $comment): array
     {
