@@ -26,8 +26,8 @@ class UserExtension extends AbstractExtension
     /**
      * @throws NonUniqueResultException|NoResultException
      */
-    public function getUserCount(): string
+    public function getUserCount(): int
     {
-        return (string)$this->userRepository->getNewUserCount();
+        return $this->userRepository->getNewUserCount();
     }
 }
