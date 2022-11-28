@@ -23,8 +23,9 @@ class FileTreeViewModelTest extends AbstractTestCase
 {
     private FileSeenStatusCollection&MockObject $statusCollection;
     private DiffFile                            $selectedFile;
-    private MockObject&DirectoryTreeNode        $directoryNode;
-    private FileTreeViewModel                   $viewModel;
+    /** @var DirectoryTreeNode<DiffFile>&MockObject */
+    private MockObject&DirectoryTreeNode $directoryNode;
+    private FileTreeViewModel            $viewModel;
     /** @var ArrayCollection<int, Comment> */
     private ArrayCollection $commentCollection;
 
