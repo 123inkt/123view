@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
 
 use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
+use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
 use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
 use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
 use DR\GitCommitNotification\Security\AzureAd\LoginService;
 use DR\GitCommitNotification\Security\AzureAd\LoginSuccess;
+use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use JsonException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -96,12 +98,27 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
      * @covers ::onAuthenticationSuccess
      * @throws JsonException
      */
+    public function testOnAuthenticationSuccessForNewUser(): void
+    {
+        $url = '/my/test/url';
+        $this->urlGenerator->expects(self::once())->method('generate')->with(UserApprovalPendingController::class)->willReturn($url);
+
+        $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken(), 'main');
+        $expect = new RedirectResponse($url);
+
+        static::assertEquals($expect, $result);
+    }
+
+    /**
+     * @covers ::onAuthenticationSuccess
+     * @throws JsonException
+     */
     public function testOnAuthenticationSuccess(): void
     {
         $url = '/my/test/url';
         $this->urlGenerator->expects(self::once())->method('generate')->with(ProjectsController::class)->willReturn($url);
 
-        $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken(), 'main');
+        $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken([Roles::ROLE_USER]), 'main');
         $expect = new RedirectResponse($url);
 
         static::assertEquals($expect, $result);
@@ -117,7 +134,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $url     = 'https://foo/bar/';
         $this->urlGenerator->expects(self::never())->method('generate');
 
-        $result = $this->authenticator->onAuthenticationSuccess($request, new TestBrowserToken(), 'main');
+        $result = $this->authenticator->onAuthenticationSuccess($request, new TestBrowserToken([Roles::ROLE_USER]), 'main');
         $expect = new RedirectResponse($url);
 
         static::assertEquals($expect, $result);
