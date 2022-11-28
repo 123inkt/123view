@@ -28,7 +28,12 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ form(usersViewModel.forms[user.id]) }}</td>
+                <td>
+                    {% set form = usersViewModel.forms[user.id] %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form.roles) }}
+                    {{ form_end(form) }}
+                </td>
             </tr>
         {%- endfor -%}
         <tbody>
