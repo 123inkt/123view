@@ -28,7 +28,7 @@ class UserProfileFormType extends AbstractType
         $user = $options['user'];
 
         $builder->setAction($this->urlGenerator->generate(ChangeUserProfileController::class, ['id' => $user->getId()]));
-        $builder->setMethod('post');
+        $builder->setMethod('POST');
         $builder->add(
             'roles',
             ChoiceType::class,

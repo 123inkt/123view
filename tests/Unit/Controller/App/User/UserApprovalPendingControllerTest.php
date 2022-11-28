@@ -8,7 +8,6 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController
- * @covers ::__construct
  */
 class UserApprovalPendingControllerTest extends AbstractTestCase
 {

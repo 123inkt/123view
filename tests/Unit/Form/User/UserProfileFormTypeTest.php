@@ -1,0 +1,71 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\GitCommitNotification\Tests\Unit\Form\User;
+
+use DR\GitCommitNotification\Controller\App\User\ChangeUserProfileController;
+use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Form\User\UserProfileFormType;
+use DR\GitCommitNotification\Tests\AbstractTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+/**
+ * @coversDefaultClass \DR\GitCommitNotification\Form\User\UserProfileFormType
+ * @covers ::__construct
+ */
+class UserProfileFormTypeTest extends AbstractTestCase
+{
+    private UrlGeneratorInterface&MockObject $urlGenerator;
+    private UserProfileFormType              $type;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $this->type         = new UserProfileFormType($this->urlGenerator);
+    }
+
+    /**
+     * @covers ::buildForm
+     */
+    public function testBuildForm(): void
+    {
+        $url  = 'https://123view/user/profile';
+        $user = new User();
+        $user->setId(123);
+
+        $this->urlGenerator->expects(self::once())
+            ->method('generate')
+            ->with(ChangeUserProfileController::class, ['id' => 123])
+            ->willReturn($url);
+
+        $builder = $this->createMock(FormBuilderInterface::class);
+        $builder->expects(self::once())->method('setAction')->with($url);
+        $builder->expects(self::once())->method('setMethod')->with('POST');
+        $builder->expects(self::once())
+            ->method('add')
+            ->with('roles', ChoiceType::class)
+            ->willReturnSelf();
+
+        $this->type->buildForm($builder, ['user' => $user]);
+    }
+
+    /**
+     * @covers ::configureOptions
+     */
+    public function testConfigureOptions(): void
+    {
+        $resolver     = new OptionsResolver();
+        $introspector = new OptionsResolverIntrospector($resolver);
+
+        $this->type->configureOptions($resolver);
+
+        static::assertSame(User::class, $introspector->getDefault('data_class'));
+        static::assertSame([User::class], $introspector->getAllowedTypes('user'));
+    }
+}
