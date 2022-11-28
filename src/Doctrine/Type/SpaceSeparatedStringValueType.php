@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use DR\GitCommitNotification\Utility\Assert;
 
 class SpaceSeparatedStringValueType extends Type
 {
@@ -23,7 +24,7 @@ class SpaceSeparatedStringValueType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-        return implode(" ", $value);
+        return implode(" ", Assert::isArray($value));
     }
 
     /**
@@ -31,7 +32,7 @@ class SpaceSeparatedStringValueType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return array_filter(explode(" ", $value), static fn($val) => $val !== '');
+        return array_filter(explode(" ", Assert::isString($value)), static fn($val) => $val !== '');
     }
 
     public function getName(): string

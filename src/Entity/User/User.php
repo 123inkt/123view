@@ -161,7 +161,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        return $this->roles;
+        return $this->roles ?? [];
     }
 
     /**

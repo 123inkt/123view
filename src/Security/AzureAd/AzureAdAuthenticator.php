@@ -54,7 +54,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if (in_array(Roles::ROLE_USER, $token->getRoleNames()) === false) {
+        if (in_array(Roles::ROLE_USER, $token->getRoleNames(), true) === false) {
             return new RedirectResponse($this->urlGenerator->generate(UserApprovalPendingController::class));
         }
 

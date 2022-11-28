@@ -29,7 +29,7 @@ class AuthenticationController extends AbstractController
     public function __invoke(Request $request): array|Response
     {
         if ($this->security->getUser() !== null) {
-            if (in_array(Roles::ROLE_USER, $this->security->getUser()->getRoles()) === false) {
+            if (in_array(Roles::ROLE_USER, $this->security->getUser()->getRoles(), true) === false) {
                 return $this->redirectToRoute(UserApprovalPendingController::class);
             }
 

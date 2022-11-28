@@ -17,7 +17,7 @@ class UserChecker implements UserCheckerInterface
 
     public function checkPreAuth(UserInterface $user): void
     {
-        if (in_array(Roles::ROLE_BANNED, $user->getRoles())) {
+        if (in_array(Roles::ROLE_BANNED, $user->getRoles(), true)) {
             throw new CustomUserMessageAuthenticationException($this->translator->trans('user.account.suspended'));
         }
     }
