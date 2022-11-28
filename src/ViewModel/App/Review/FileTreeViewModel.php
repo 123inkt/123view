@@ -26,6 +26,22 @@ class FileTreeViewModel
     ) {
     }
 
+    /**
+     * @return array{files: int, added: int, removed: int}
+     */
+    public function getChangeSummary(): array
+    {
+        $summary = ['files' => 0, 'added' => 0, 'removed' => 0];
+        /** @var DiffFile $file */
+        foreach ($this->fileTree->getFileIterator() as $file) {
+            ++$summary['files'];
+            $summary['added']   += $file->getNrOfLinesAdded();
+            $summary['removed'] += $file->getNrOfLinesRemoved();
+        }
+
+        return $summary;
+    }
+
     public function isFileSeen(DiffFile $file): bool
     {
         return $this->fileSeenCollection->isSeen($file->getFile()?->getPathname() ?? '');
