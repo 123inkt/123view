@@ -8,6 +8,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Utility\Assert;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -28,11 +29,13 @@ class UserRepository extends ServiceEntityRepository
      */
     public function getNewUserCount(): int
     {
-        return (int)$this->createQueryBuilder('u')
-            ->select('count(u.id)')
-            ->where('u.roles=\'\'')
-            ->getQuery()
-            ->getSingleScalarResult();
+        return Assert::isInt(
+            $this->createQueryBuilder('u')
+                ->select('count(u.id)')
+                ->where('u.roles=\'\'')
+                ->getQuery()
+                ->getSingleScalarResult()
+        );
     }
 
     /**
