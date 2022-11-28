@@ -49,7 +49,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">{{ app_name }}</a>
 
-                {% if app.user %}
+                {% if is_granted('ROLE_USER') %}
                     <div class="collapse navbar-collapse">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
