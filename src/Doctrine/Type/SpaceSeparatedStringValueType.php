@@ -31,7 +31,7 @@ class SpaceSeparatedStringValueType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return explode(" ", $value);
+        return array_filter(explode(" ", $value), static fn($val) => $val !== '');
     }
 
     public function getName(): string
