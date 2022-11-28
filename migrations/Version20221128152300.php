@@ -21,6 +21,7 @@ final class Version20221128152300 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE user ADD roles VARCHAR(500) NOT NULL');
+        $this->addSql("UPDATE user SET roles='ROLE_USER'");
     }
 
     public function down(Schema $schema): void
