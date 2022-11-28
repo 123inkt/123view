@@ -73,6 +73,15 @@
                             <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link"
+                                       aria-label="{{ 'users'|trans }}"
+                                       title="{{ 'users'|trans }}"
+                                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\User\\UsersController') }}">
+                                        {{- 'users'|trans -}}
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
                                        aria-label="{{ 'settings'|trans }}"
                                        title="{{ 'settings'|trans }}"
                                        href="{{ path('DR\\GitCommitNotification\\Controller\\App\\User\\UserSettingController') }}">

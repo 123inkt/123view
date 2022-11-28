@@ -148,5 +148,13 @@ return [
     'user.theme.auto.detect'                      => 'Auto-detect',
     'user.theme.dark'                             => 'Dark mode',
     'user.theme.light'                            => 'Light mode',
-    'user.approval.welcome.text'                  => 'Welcome to {app_name}. Your account must be approved by an administrator before you can continue.'
+    'user.approval.welcome.text'                  => 'Welcome to {app_name}. Your account must be approved by an administrator before you can continue.',
+    'users'                                       => 'Users',
+    'user.access.new'                             => 'New',
+    'user.access.user'                            => 'User',
+    'user.access.admin'                           => 'Admin',
+    'user.access.banned'                          => 'Banned',
+    'user.id'                                     => 'Id',
+    'user.role'                                   => 'Role',
+    'user.profile.saved.successful'               => 'User profile successfully changed.'
 ];

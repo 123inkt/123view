@@ -1,0 +1,45 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set profileChoices = constant('DR\\GitCommitNotification\\Security\\Role\\Roles::PROFILE_NAMES') %}
+
+    <h1 class="mb-4 mt-2">{{ 'users'|trans }}</h1>
+
+    {% if app.session.flashbag.peek('success')|length > 0 %}
+        <div class="alert alert-success mb-3">
+            {% for message in app.flashes('success') %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {{ form_start(usersViewModel.form) }}
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'user.id'|trans }}</th>
+            <th scope="col">{{ 'name'|trans }}</th>
+            <th scope="col">{{ 'email'|trans }}</th>
+            <th scope="col">{{ 'user.role'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%- for user in usersViewModel.users -%}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <select class="form-control" data-role="user-profile" data-user-id="{{ user.id }}">
+                        {%- for key,name in profileChoices -%}
+                            <option value="{{ key }}">{{ name|trans }}</option>
+                        {%- endfor -%}
+                    </select>
+                </td>
+            </tr>
+        {%- endfor -%}
+        <tbody>
+    </table>
+    {{ form_rest(usersViewModel.form) }}
+    {{ form_end(usersViewModel.form) }}
+{% endblock %}
