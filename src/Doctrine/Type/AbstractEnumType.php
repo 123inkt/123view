@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 abstract class AbstractEnumType extends Type
 {
-    public const TYPE   = '';
+    public const    TYPE   = '';
     protected const VALUES = [];
 
     /**
@@ -40,13 +40,5 @@ abstract class AbstractEnumType extends Type
     public function getName(): string
     {
         return static::TYPE;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
     }
 }

@@ -39,12 +39,4 @@ class SpaceSeparatedStringValueType extends Type
     {
         return static::TYPE;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return false;
-    }
 }
