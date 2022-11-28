@@ -158,4 +158,5 @@ return [
     'user.theme.dark'                             => 'Dark mode',
     'user.theme.light'                            => 'Light mode',
     'users'                                       => 'Users',
+    'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval'
 ];

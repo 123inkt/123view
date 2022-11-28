@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\User;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\User\User;
@@ -19,6 +21,18 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    /**
+     * @throws NoResultException|NonUniqueResultException
+     */
+    public function getNewUserCount(): int
+    {
+        return (int)$this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->where('u.roles=\'\'')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
