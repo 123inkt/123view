@@ -63,11 +63,11 @@ class DiffFileParser
     private function readFileInfo(DiffFile $fileDiff, LineReader $lines): DiffFile
     {
         for ($line = $lines->current(); $line !== null; $line = $lines->next()) {
-            if (preg_match('/^old mode (\d+)$/', $line, $matches)) {
+            if (preg_match('/^old mode (\d+)$/', $line, $matches) === 1) {
                 $fileDiff->fileModeBefore = $matches[1];
             }
 
-            if (preg_match('/^new mode (\d+)$/', $line, $matches)) {
+            if (preg_match('/^new mode (\d+)$/', $line, $matches) === 1) {
                 $fileDiff->fileModeAfter = $matches[1];
             }
 
