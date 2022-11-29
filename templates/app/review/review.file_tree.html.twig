@@ -29,7 +29,9 @@
 
                     <a href="?filePath={{ filePath|e('url') }}"
                        class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate me-2">
-                        {%- if file.added -%}
+                        {%- if file.rename -%}
+                            <span class="diff-file__file-change-state text-primary">↗</span>
+                        {%- elseif file.added -%}
                             <span class="diff-file__file-change-state text-success">+</span>
                         {%- elseif file.deleted -%}
                             <span class="diff-file__file-change-state text-danger">-</span>

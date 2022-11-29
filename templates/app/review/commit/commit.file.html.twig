@@ -9,7 +9,9 @@
 
 <div class="revision-file" data-role="revision-file" data-file="{{ file.filePathBefore ?? file.filePathAfter }}">
     <div>
-        {%- if file.added -%}
+        {%- if file.rename -%}
+            <span class="diff-file__file-change-state text-primary">↗</span>
+        {%- elseif file.added -%}
             <span class="diff-file__file-change-state text-success">+</span>
         {%- elseif file.deleted -%}
             <span class="diff-file__file-change-state text-danger">-</span>
