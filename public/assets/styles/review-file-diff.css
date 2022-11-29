@@ -12,9 +12,9 @@
     font-size: 12px
 }
 
-.diff-file__file-rename {
+.diff-file__file-mode-change {
     color: var(--review-diff-file-name-color);
-    font-size: 12px;
+    font-size: 13px;
     font-style: italic;
 }
 

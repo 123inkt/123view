@@ -11,7 +11,7 @@ use Throwable;
 
 class DiffFileParser
 {
-    private const PATTERN = '/^@@ -(\d+)(?:,\d+)? \\+(\d+),\d+ @@.*$/m';
+    private const PATTERN = '/^@@ -(\d+)(?:,\d+)? \\+(\d+)(?:,\d+)? @@.*$/m';
 
     private UnifiedBlockParser $blockParser;
 
@@ -63,6 +63,14 @@ class DiffFileParser
     private function readFileInfo(DiffFile $fileDiff, LineReader $lines): DiffFile
     {
         for ($line = $lines->current(); $line !== null; $line = $lines->next()) {
+            if (preg_match('/^old mode (\d+)$/', $line, $matches)) {
+                $fileDiff->fileModeBefore = $matches[1];
+            }
+
+            if (preg_match('/^new mode (\d+)$/', $line, $matches)) {
+                $fileDiff->fileModeAfter = $matches[1];
+            }
+
             if (str_starts_with($line, 'new file mode')) {
                 $fileDiff->filePathBefore = null;
             }

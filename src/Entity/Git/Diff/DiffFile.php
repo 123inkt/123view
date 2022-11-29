@@ -11,6 +11,9 @@ class DiffFile
     public const FILE_DELETED  = 'file.deleted';
     public const FILE_MODIFIED = 'file.modified';
 
+    public ?string $fileModeBefore = null;
+    public ?string $fileModeAfter  = null;
+
     public ?string $filePathBefore = null;
     public ?string $filePathAfter  = null;
 
