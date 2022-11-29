@@ -7,7 +7,7 @@
 {%- set commentsViewModel    = fileDiffViewModel.commentsViewModel -%}
 {%- set file                 = fileDiffViewModel.selectedFile -%}
 
-<div class="revision-file" data-role="revision-file" data-file="{{ file.filePathBefore ?? file.filePathAfter }}">
+<div class="revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
     <div>
         {%- if file.added -%}
             <span class="diff-file__file-change-state text-success">+</span>

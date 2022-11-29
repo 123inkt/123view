@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\ViewModelProvider;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\LineReference;
 use DR\GitCommitNotification\Form\Review\AddCommentFormType;
 use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
 use DR\GitCommitNotification\Form\Review\EditCommentFormType;
@@ -36,6 +37,14 @@ class CommentViewModelProvider
     {
         $lineReference = $action->lineReference;
         $line          = Assert::notNull($this->diffFinder->findLineInFile($file, $lineReference));
+
+        // update lineReference with the diff file original file
+        $lineReference = new LineReference(
+            (string)($file->filePathBefore ?? $file->filePathAfter),
+            $lineReference->line,
+            $lineReference->offset,
+            $lineReference->lineAfter
+        );
 
         $form = $this->formFactory->create(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])->createView();
 
