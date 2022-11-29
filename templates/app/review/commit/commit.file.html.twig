@@ -23,7 +23,11 @@
     </div>
 
     {%- if file.rename -%}
-        <div class="diff-file__file-rename">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
+        <div class="diff-file__file-mode-change">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
+    {%- endif -%}
+
+    {%- if file.fileModeBefore is not same as (null) and file.fileModeBefore != file.fileModeAfter -%}
+        <div class="diff-file__file-mode-change">{{ 'file.mode.changed'|trans }} {{ file.fileModeBefore }} &gt; {{ file.fileModeAfter }}</div>
     {%- endif -%}
 
     {%- if file.blocks -%}

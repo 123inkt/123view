@@ -45,6 +45,7 @@ return [
     'email'                                       => 'Email',
     'exclude.commits'                             => 'Exclude commits',
     'exclude.merge.commits'                       => 'Exclude merge commits',
+    'file.mode.changed'                           => 'file mode changed from',
     'files'                                       => 'Files',
     'filter.type.author'                          => 'Author',
     'filter.type.file'                            => 'File (regex)',
@@ -158,5 +159,5 @@ return [
     'user.theme.dark'                             => 'Dark mode',
     'user.theme.light'                            => 'Light mode',
     'users'                                       => 'Users',
-    'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval'
+    'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
 ];
