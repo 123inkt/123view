@@ -49,16 +49,18 @@ class CommentViewModelProviderTest extends AbstractTestCase
      */
     public function testGetAddCommentViewModel(): void
     {
-        $reference = new LineReference();
-        $file      = new DiffFile();
-        $line      = new DiffLine(0, []);
-        $review    = new CodeReview();
-        $action    = new AddCommentAction($reference);
+        $reference            = new LineReference('filePath', 1, 2, 3);
+        $file                 = new DiffFile();
+        $file->filePathBefore = 'filePathBefore';
+        $file->filePathAfter  = 'filePathAfter';
+        $line                 = new DiffLine(0, []);
+        $review               = new CodeReview();
+        $action               = new AddCommentAction($reference);
 
         $this->diffFinder->expects(self::once())->method('findLineInFile')->with($file, $reference)->willReturn($line);
         $this->formFactory->expects(self::once())
             ->method('create')
-            ->with(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $reference]);
+            ->with(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => new LineReference('filePathBefore', 1, 2, 3)]);
 
         $viewModel = $this->provider->getAddCommentViewModel($review, $file, $action);
         static::assertSame($line, $viewModel->diffLine);
