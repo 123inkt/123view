@@ -4,21 +4,7 @@
     {% set review = attachRevisionsModel.review %}
     {% set revisionsModel = attachRevisionsModel.revisionsViewModel %}
 
-    {% if app.session.flashbag.peek('success')|length > 0 %}
-        <div class="alert alert-success mt-2">
-            {% for message in app.flashes('success') %}
-                <div>{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if app.session.flashbag.peek('warning')|length > 0 %}
-        <div class="alert alert-warning mt-2">
-            {% for message in app.flashes('warning') %}
-                <div>{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    {% include 'app/flash/flashes.html.twig' %}
 
     <div class="mt-2 pb-3 clearfix">
         <button type="submit" class="btn btn-primary" form="attach-revision-form">{{ 'attach.to.review'|trans }} CR-{{ review.projectId }}</button>

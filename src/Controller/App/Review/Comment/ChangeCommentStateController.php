@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\Comment;
@@ -26,8 +27,14 @@ class ChangeCommentStateController extends AbstractController
     #[Route('app/comments/{id<\d+>}/state', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
     #[Entity('comment')]
-    public function __invoke(ChangeCommentStateRequest $request, Comment $comment): RedirectResponse
+    public function __invoke(ChangeCommentStateRequest $request, ?Comment $comment): RedirectResponse
     {
+        if ($comment === null) {
+            $this->addFlash('warning', 'comment.was.deleted.meanwhile');
+
+            return $this->refererRedirect(ProjectsController::class, filter: ['action']);
+        }
+
         $currentState = $comment->getState();
         $state        = $request->getState();
 

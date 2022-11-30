@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
@@ -27,8 +28,14 @@ class UpdateCommentReplyController extends AbstractController
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
     #[Entity('reply')]
-    public function __invoke(Request $request, CommentReply $reply): Response
+    public function __invoke(Request $request, ?CommentReply $reply): Response
     {
+        if ($reply === null) {
+            $this->addFlash('warning', 'comment.was.deleted.meanwhile');
+
+            return $this->refererRedirect(ProjectsController::class, filter: ['action']);
+        }
+
         $originalComment = (string)$reply->getMessage();
         $this->denyAccessUnlessGranted(CommentReplyVoter::EDIT, $reply);
 

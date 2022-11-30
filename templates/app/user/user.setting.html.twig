@@ -3,13 +3,7 @@
 {% block page_content %}
     <h1 class="mb-4 mt-2">{{ 'user.settings'|trans }}</h1>
 
-    {% if app.session.flashbag.peek('success')|length > 0 %}
-        <div class="alert alert-success mb-3">
-            {% for message in app.flashes('success') %}
-                <div>{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    {% include 'app/flash/flashes.html.twig' %}
 
     {{ form_start(settingViewModel.form) }}
 

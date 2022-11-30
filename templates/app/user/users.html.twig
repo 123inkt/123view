@@ -5,13 +5,7 @@
 
     <h1 class="mb-4 mt-2">{{ 'users'|trans }}</h1>
 
-    {% if app.session.flashbag.peek('success')|length > 0 %}
-        <div class="alert alert-success mb-3">
-            {% for message in app.flashes('success') %}
-                <div>{{ message|trans }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    {% include 'app/flash/flashes.html.twig' %}
 
     <table class="table table-bordered table-hover">
         <thead>
