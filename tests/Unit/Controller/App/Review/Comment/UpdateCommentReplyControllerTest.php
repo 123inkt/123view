@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentReplyController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
@@ -16,6 +17,7 @@ use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -36,6 +38,18 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $this->replyRepository = $this->createMock(CommentReplyRepository::class);
         $this->bus             = $this->createMock(MessageBusInterface::class);
         parent::setUp();
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeCommentMissing(): void
+    {
+        $this->expectAddFlash('warning', 'comment.was.deleted.meanwhile');
+        $this->expectRefererRedirect(ProjectsController::class);
+
+        $response = ($this->controller)(new Request(), null);
+        static::assertInstanceOf(RedirectResponse::class, $response);
     }
 
     /**

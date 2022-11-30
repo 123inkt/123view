@@ -12,11 +12,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserSettingController extends AbstractController
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly UserRepository $userRepository)
     {
     }
 
@@ -38,7 +37,7 @@ class UserSettingController extends AbstractController
 
         $this->userRepository->save($user, true);
 
-        $this->addFlash('success', $this->translator->trans('mail.settings.save.successfully'));
+        $this->addFlash('success', 'mail.settings.save.successfully');
 
         return ['settingViewModel' => new UserSettingViewModel($form->createView())];
     }

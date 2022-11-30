@@ -14,7 +14,6 @@ use DR\GitCommitNotification\ViewModel\App\User\UserSettingViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\User\UserSettingController
@@ -22,13 +21,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class UserSettingControllerTest extends AbstractControllerTestCase
 {
-    private UserRepository&MockObject      $userRepository;
-    private TranslatorInterface&MockObject $translator;
+    private UserRepository&MockObject $userRepository;
 
     public function setUp(): void
     {
         $this->userRepository = $this->createMock(UserRepository::class);
-        $this->translator     = $this->createMock(TranslatorInterface::class);
         parent::setUp();
     }
 
@@ -74,8 +71,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
             ->createViewWillReturn($formView);
 
         $this->userRepository->expects(self::once())->method('save')->with($user, true);
-        $this->translator->expects(self::once())->method('trans')->with('mail.settings.save.successfully')->willReturn('message');
-        $this->expectAddFlash('success', 'message');
+        $this->expectAddFlash('success', 'mail.settings.save.successfully');
 
         $result = ($this->controller)($request);
         static::assertEquals(['settingViewModel' => new UserSettingViewModel($formView)], $result);
@@ -83,6 +79,6 @@ class UserSettingControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UserSettingController($this->userRepository, $this->translator);
+        return new UserSettingController($this->userRepository);
     }
 }

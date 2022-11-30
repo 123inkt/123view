@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\Comment\AddCommentReplyController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
@@ -37,6 +38,18 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $this->commentRepository = $this->createMock(CommentReplyRepository::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeCommentMissing(): void
+    {
+        $this->expectAddFlash('warning', 'comment.was.deleted.meanwhile');
+        $this->expectRefererRedirect(ProjectsController::class);
+
+        $response = ($this->controller)(new Request(), null);
+        static::assertInstanceOf(RedirectResponse::class, $response);
     }
 
     /**

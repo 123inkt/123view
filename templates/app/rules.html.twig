@@ -2,13 +2,7 @@
 
 {% block page_content %}
 
-    {% if app.session.flashbag.peek('success')|length > 0 %}
-        <div class="alert alert-success mt-2">
-            {% for message in app.flashes('success') %}
-                <div>{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    {% include 'app/flash/flashes.html.twig' %}
 
     {% if rulesModel.rules|length > 0 %}
         <h1 class="mt-2">{{ 'rules'|trans }}</h1>

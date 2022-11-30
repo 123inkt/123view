@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
@@ -23,8 +24,12 @@ class DeleteCommentReplyController extends AbstractController
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'DELETE')]
     #[IsGranted(Roles::ROLE_USER)]
     #[Entity('reply')]
-    public function __invoke(CommentReply $reply): Response
+    public function __invoke(?CommentReply $reply): Response
     {
+        if ($reply === null) {
+            return $this->refererRedirect(ProjectsController::class, filter: ['action']);
+        }
+
         $this->denyAccessUnlessGranted(CommentReplyVoter::DELETE, $reply);
 
         $this->replyRepository->remove($reply, true);

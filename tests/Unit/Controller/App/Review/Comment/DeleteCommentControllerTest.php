@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\Comment\DeleteCommentController;
+use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
@@ -27,6 +28,17 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
     {
         $this->commentRepository = $this->createMock(CommentRepository::class);
         parent::setUp();
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeCommentMissing(): void
+    {
+        $this->expectRefererRedirect(ProjectsController::class);
+
+        $response = ($this->controller)(null);
+        static::assertInstanceOf(RedirectResponse::class, $response);
     }
 
     /**
