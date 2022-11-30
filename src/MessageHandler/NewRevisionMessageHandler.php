@@ -11,6 +11,7 @@ use DR\GitCommitNotification\Message\Review\ReviewCreated;
 use DR\GitCommitNotification\Message\Review\ReviewOpened;
 use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
+use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
@@ -31,6 +32,7 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
     public function __construct(
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
+        private CodeReviewerRepository $reviewerRepository,
         private CodeReviewRevisionMatcher $reviewRevisionMatcher,
         private ManagerRegistry $registry,
         private MessageBusInterface $bus
@@ -64,6 +66,7 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
         }
 
         $reviewCreated = $review->getId() === null;
+        $revision->setReview($review);
         $review->addRevision($revision);
 
         foreach ($review->getReviewers() as $reviewer) {
@@ -77,7 +80,11 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
         }
 
         try {
+            $this->revisionRepository->save($revision, true);
             $this->reviewRepository->save($review, true);
+            foreach ($review->getReviewers() as $reviewer) {
+                $this->reviewerRepository->save($reviewer, true);
+            }
         } catch (Throwable $exception) {
             $this->logger?->error('review persist failure: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
             $this->registry->resetManager();

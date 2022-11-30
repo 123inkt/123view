@@ -14,6 +14,7 @@ use DR\GitCommitNotification\Message\Review\ReviewOpened;
 use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler;
+use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
@@ -34,6 +35,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
     private CodeReviewRepository&MockObject      $reviewRepository;
+    private CodeReviewerRepository&MockObject    $reviewerRepository;
     private CodeReviewRevisionMatcher&MockObject $reviewRevisionMatcher;
     private ManagerRegistry&MockObject           $registry;
     private MessageBusInterface&MockObject       $bus;
@@ -46,12 +48,14 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->envelope              = new Envelope(new stdClass(), []);
         $this->revisionRepository    = $this->createMock(RevisionRepository::class);
         $this->reviewRepository      = $this->createMock(CodeReviewRepository::class);
+        $this->reviewerRepository    = $this->createMock(CodeReviewerRepository::class);
         $this->reviewRevisionMatcher = $this->createMock(CodeReviewRevisionMatcher::class);
         $this->registry              = $this->createMock(ManagerRegistry::class);
         $this->bus                   = $this->createMock(MessageBusInterface::class);
         $this->messageHandler        = new NewRevisionMessageHandler(
             $this->revisionRepository,
             $this->reviewRepository,
+            $this->reviewerRepository,
             $this->reviewRevisionMatcher,
             $this->registry,
             $this->bus
@@ -136,7 +140,9 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
         $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
+        $this->revisionRepository->expects(self::once())->method('save')->with($revision, true);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
+        $this->reviewerRepository->expects(self::once())->method('save')->with($reviewer, true);
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
             ->withConsecutive(

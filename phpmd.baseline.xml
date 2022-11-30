@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Entity/Repository/Repository.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/MessageHandler/NewRevisionMessageHandler.php" method="__invoke"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/MessageHandler/NewRevisionMessageHandler.php" method="__invoke"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Filter/CommitFilter.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="tests/Unit/MessageHandler/NewRevisionMessageHandlerTest.php"/>
 </phpmd-baseline>
