@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Notification\RuleController
@@ -27,14 +26,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RuleControllerTest extends AbstractControllerTestCase
 {
-    private RuleRepository&MockObject      $ruleRepository;
-    private TranslatorInterface&MockObject $translator;
-    private User                           $user;
+    private RuleRepository&MockObject $ruleRepository;
+    private User                      $user;
 
     protected function setUp(): void
     {
         $this->ruleRepository = $this->createMock(RuleRepository::class);
-        $this->translator     = $this->createMock(TranslatorInterface::class);
         $this->user           = new User();
         parent::setUp();
     }
@@ -78,8 +75,7 @@ class RuleControllerTest extends AbstractControllerTestCase
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleRepository->expects(self::once())->method('save')->with($rule, true);
-        $this->translator->expects(self::once())->method('trans')->willReturn('added');
-        $this->expectAddFlash('success', 'added');
+        $this->expectAddFlash('success', 'rule.successful.saved');
         $this->expectGenerateUrl(RulesController::class)->willReturn('redirect');
 
         $response = ($this->controller)($request, $rule);
@@ -113,6 +109,6 @@ class RuleControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new RuleController($this->ruleRepository, $this->translator);
+        return new RuleController($this->ruleRepository);
     }
 }
