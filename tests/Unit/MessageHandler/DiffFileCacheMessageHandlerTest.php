@@ -12,8 +12,8 @@ use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\MessageHandler\DiffFileCacheMessageHandler;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
 use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,21 +30,21 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     private CodeReviewRepository&MockObject            $reviewRepository;
     private ReviewDiffServiceInterface&MockObject      $diffService;
     private CacheableHighlightedFileService&MockObject $fileService;
-    private FileSeenStatusRepository&MockObject        $seenStatusRepository;
+    private FileSeenStatusService&MockObject           $seenStatusService;
     private DiffFileCacheMessageHandler                $messageHandler;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->reviewRepository     = $this->createMock(CodeReviewRepository::class);
-        $this->diffService          = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->fileService          = $this->createMock(CacheableHighlightedFileService::class);
-        $this->seenStatusRepository = $this->createMock(FileSeenStatusRepository::class);
-        $this->messageHandler       = new DiffFileCacheMessageHandler(
+        $this->reviewRepository  = $this->createMock(CodeReviewRepository::class);
+        $this->diffService       = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->fileService       = $this->createMock(CacheableHighlightedFileService::class);
+        $this->seenStatusService = $this->createMock(FileSeenStatusService::class);
+        $this->messageHandler    = new DiffFileCacheMessageHandler(
             $this->reviewRepository,
             $this->diffService,
             $this->fileService,
-            $this->seenStatusRepository
+            $this->seenStatusService
         );
         $this->messageHandler->setLogger($this->createMock(LoggerInterface::class));
     }
@@ -94,7 +94,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $file->filePathAfter = 'file-path-after';
 
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->seenStatusRepository->expects(self::once())->method('markAsUnseen')->with([$file]);
+        $this->seenStatusService->expects(self::once())->method('markAllAsUnseen')->with($review, [$file]);
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->fileService->expects(self::once())->method('fromDiffFile')->with($repository, $file);
 

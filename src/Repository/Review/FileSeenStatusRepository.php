@@ -5,7 +5,6 @@ namespace DR\GitCommitNotification\Repository\Review;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
 
 /**
@@ -41,12 +40,5 @@ class FileSeenStatusRepository extends ServiceEntityRepository
             }
             parent::save($entity, $flush);
         });
-    }
-
-    /**
-     * @param DiffFile[] $files
-     */
-    public function markAsUnseen(array $files): void
-    {
     }
 }

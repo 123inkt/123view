@@ -8,8 +8,8 @@ use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
 use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
@@ -28,7 +28,7 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
         private readonly CodeReviewRepository $reviewRepository,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly CacheableHighlightedFileService $fileService,
-        private readonly FileSeenStatusRepository $seenStatusRepository
+        private readonly FileSeenStatusService $seenStatusService
     ) {
     }
 
@@ -54,7 +54,7 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
         $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);
 
         // mark all files as unseen
-        $this->seenStatusRepository->markAsUnseen($files);
+        $this->seenStatusService->markAllAsUnseen($review, $files);
 
         foreach ($files as $file) {
             if ($file->isDeleted()) {
