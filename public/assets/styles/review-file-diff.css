@@ -1,3 +1,8 @@
+.diff-file__file-revision {
+    min-width: 100%;
+    width: max-content
+}
+
 .diff-file__file-change-state {
     display: inline-block;
     font-size: 16px;
@@ -22,7 +27,6 @@
     border: 1px solid var(--review-diff-border-color);
     border-radius: 2px;
     margin-bottom: 16px;
-    overflow: auto;
 }
 
 .diff-file__block-spacer {
