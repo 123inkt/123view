@@ -9,7 +9,6 @@ use DR\GitCommitNotification\Controller\App\Revision\AttachRevisionController;
 use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
@@ -24,16 +23,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AttachRevisionControllerTest extends AbstractControllerTestCase
 {
-    private RevisionRepository&MockObject   $revisionRepository;
-    private CodeReviewRepository&MockObject $reviewRepository;
-    private CodeReviewService&MockObject    $reviewService;
-    private ReviewEventService&MockObject   $eventService;
-    private TranslatorInterface&MockObject  $translator;
+    private RevisionRepository&MockObject  $revisionRepository;
+    private CodeReviewService&MockObject   $reviewService;
+    private ReviewEventService&MockObject  $eventService;
+    private TranslatorInterface&MockObject $translator;
 
     public function setUp(): void
     {
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $this->reviewRepository   = $this->createMock(CodeReviewRepository::class);
         $this->reviewService      = $this->createMock(CodeReviewService::class);
         $this->eventService       = $this->createMock(ReviewEventService::class);
         $this->translator         = $this->createMock(TranslatorInterface::class);
@@ -57,8 +54,7 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $this->revisionRepository->expects(self::once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
 
         // expect revision to be attached, saved and dispatched
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision], true);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
+        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
         $this->eventService->expects(self::once())->method('revisionsAdded')->with($review, [$revision]);
 
         // expect flash message
@@ -88,7 +84,6 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $this->revisionRepository->expects(self::once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
 
         $this->reviewService->expects(self::never())->method('addRevisions');
-        $this->reviewRepository->expects(self::never())->method('save');
         $this->eventService->expects(self::never())->method('revisionsAdded');
 
         // expect flash message
@@ -105,7 +100,6 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
     {
         return new AttachRevisionController(
             $this->revisionRepository,
-            $this->reviewRepository,
             $this->reviewService,
             $this->eventService,
             $this->translator

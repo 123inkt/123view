@@ -6,7 +6,6 @@ namespace DR\GitCommitNotification\Controller\App\Revision;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
@@ -22,7 +21,6 @@ class AttachRevisionController extends AbstractController
 {
     public function __construct(
         private readonly RevisionRepository $revisionRepository,
-        private readonly CodeReviewRepository $reviewRepository,
         private readonly CodeReviewService $reviewService,
         private readonly ReviewEventService $eventService,
         private readonly TranslatorInterface $translator
@@ -46,8 +44,7 @@ class AttachRevisionController extends AbstractController
         }
 
         if (count($attach) > 0) {
-            $this->reviewService->addRevisions($review, $attach, true);
-            $this->reviewRepository->save($review, true);
+            $this->reviewService->addRevisions($review, $attach);
             $this->eventService->revisionsAdded($review, $revisions);
 
             $this->addFlash(

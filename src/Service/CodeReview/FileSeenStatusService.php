@@ -47,6 +47,26 @@ class FileSeenStatusService
         $this->statusRepository->remove($seenStatus, true);
     }
 
+    /**
+     * @param DiffFile[] $files
+     */
+    public function markAllAsUnseen(CodeReview $review, array $files): void
+    {
+        $filePaths = [];
+        foreach ($files as $file) {
+            $filePaths[] = $file->filePathBefore;
+            $filePaths[] = $file->filePathAfter;
+        }
+        $filePaths = array_filter(array_unique($filePaths), static fn($path) => $path !== null && $path !== '');
+
+        $statusFiles = $this->statusRepository->findBy(['review' => $review->getId(), 'filePath' => $filePaths]);
+
+        $lastItem = end($statusFiles);
+        foreach ($statusFiles as $statusFile) {
+            $this->statusRepository->remove($statusFile, $statusFile === $lastItem);
+        }
+    }
+
     public function getFileSeenStatus(CodeReview $review): FileSeenStatusCollection
     {
         $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => (int)$this->user?->getId()]);

@@ -4,17 +4,15 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
 use DR\GitCommitNotification\Message\Review\ReviewOpened;
 use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -31,8 +29,7 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
 
     public function __construct(
         private RevisionRepository $revisionRepository,
-        private CodeReviewRepository $reviewRepository,
-        private CodeReviewerRepository $reviewerRepository,
+        private CodeReviewService $reviewService,
         private CodeReviewRevisionMatcher $reviewRevisionMatcher,
         private ManagerRegistry $registry,
         private MessageBusInterface $bus
@@ -66,25 +63,10 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
         }
 
         $reviewCreated = $review->getId() === null;
-        $revision->setReview($review);
-        $review->addRevision($revision);
-
-        foreach ($review->getReviewers() as $reviewer) {
-            $reviewer->setState(CodeReviewerStateType::OPEN);
-        }
-
-        $reviewOpened = false;
-        if ($review->getState() === CodeReviewStateType::CLOSED) {
-            $review->setState(CodeReviewStateType::OPEN);
-            $reviewOpened = true;
-        }
+        $reviewState   = $review->getState();
 
         try {
-            $this->revisionRepository->save($revision, true);
-            $this->reviewRepository->save($review, true);
-            foreach ($review->getReviewers() as $reviewer) {
-                $this->reviewerRepository->save($reviewer, true);
-            }
+            $this->reviewService->addRevisions($review, [$revision]);
         } catch (Throwable $exception) {
             $this->logger?->error('review persist failure: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
             $this->registry->resetManager();
@@ -93,11 +75,11 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
 
         $this->logger?->info('MessageHandler: add revision ' . $revision->getCommitHash() . ' to review ' . $revision->getTitle());
 
-        // dispatch event
+        // dispatch events
         if ($reviewCreated) {
             $this->dispatchAfter(new ReviewCreated((int)$review->getId()));
         }
-        if ($reviewOpened) {
+        if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
             $this->dispatchAfter(new ReviewOpened((int)$review->getId()));
         }
         $this->dispatchAfter(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId()));

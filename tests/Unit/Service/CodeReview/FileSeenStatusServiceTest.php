@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
+use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
 use DR\GitCommitNotification\Entity\User\User;
@@ -110,6 +111,33 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->willReturn($status);
         $this->statusRepository->expects(self::once())->method('remove')->with($status);
         $this->service->markAsUnseen($review, $user, $filepath);
+    }
+
+    /**
+     * @covers ::markAllAsUnseen
+     */
+    public function testMarkAllAsUnseen(): void
+    {
+        $review = new CodeReview();
+        $review->setId(123);
+
+        $fileA                 = new DiffFile();
+        $fileA->filePathBefore = 'filePathBefore';
+        $fileA->filePathAfter  = 'filePathAfter';
+        $fileB                 = new DiffFile();
+        $fileB->filePathBefore = 'filePathBefore';
+        $fileB->filePathAfter  = null;
+
+        $statusA = new FileSeenStatus();
+        $statusB = new FileSeenStatus();
+
+        $this->statusRepository->expects(self::once())
+            ->method('findBy')
+            ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
+            ->willReturn([$statusA, $statusB]);
+        $this->statusRepository->expects(self::exactly(2))->method('remove')->withConsecutive([$statusA, false], [$statusB, true]);
+
+        $this->service->markAllAsUnseen($review, [$fileA, $fileB]);
     }
 
     /**
