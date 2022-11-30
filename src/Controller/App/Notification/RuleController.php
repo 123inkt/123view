@@ -18,11 +18,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RuleController extends AbstractController
 {
-    public function __construct(private RuleRepository $ruleRepository, private TranslatorInterface $translator)
+    public function __construct(private RuleRepository $ruleRepository)
     {
     }
 
@@ -51,7 +50,7 @@ class RuleController extends AbstractController
 
         $this->ruleRepository->save($rule, true);
 
-        $this->addFlash('success', $this->translator->trans('rule.successful.saved'));
+        $this->addFlash('success', 'rule.successful.saved');
 
         return $this->redirectToRoute(RulesController::class);
     }
