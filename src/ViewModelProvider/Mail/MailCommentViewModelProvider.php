@@ -12,12 +12,16 @@ use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\GitCommitNotification\Utility\Assert;
 use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 class MailCommentViewModelProvider
 {
-    public function __construct(private readonly ReviewDiffServiceInterface $diffService, private readonly DiffFinder $diffFinder)
-    {
+    public function __construct(
+        private readonly ReviewDiffServiceInterface $diffService,
+        private readonly DiffFinder $diffFinder,
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     /**
@@ -40,7 +44,7 @@ class MailCommentViewModelProvider
             $lineRange = $this->diffFinder->findLinesAround($selectedFile, Assert::notNull($lineReference), 6) ?? [];
         }
 
-        $headerTitle = $this->getHeaderTitle($reply, $resolvedBy);
+        $headerTitle = $this->getHeaderTitle($comment, $reply, $resolvedBy);
 
         // gather replies to show
         $replies = $this->getReplies($comment, $reply, $resolvedBy !== null);
@@ -57,17 +61,17 @@ class MailCommentViewModelProvider
         );
     }
 
-    private function getHeaderTitle(?CommentReply $reply, ?User $resolvedBy): string
+    private function getHeaderTitle(Comment $comment, ?CommentReply $reply, ?User $resolvedBy): string
     {
         if ($resolvedBy !== null) {
-            return 'mail.comment.was.resolved.on';
+            return $this->translator->trans('mail.comment.was.resolved.on', ['userName' => $resolvedBy->getName()]);
         }
 
         if ($reply !== null) {
-            return 'mail.new.reply.by.user.on';
+            return $this->translator->trans('mail.new.reply.by.user.on', ['userName' => $reply->getUser()?->getName()]);
         }
 
-        return 'mail.new.comment.by.user.on';
+        return $this->translator->trans('mail.new.comment.by.user.on', ['userName' => $comment->getUser()?->getName()]);
     }
 
     /**

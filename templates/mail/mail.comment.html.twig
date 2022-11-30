@@ -9,7 +9,7 @@
     {%- set comment = commentModel.comment -%}
 
     {# mail title #}
-    {{- commentModel.headingTitle|trans({userName: comment.user.name}) }}
+    {{- commentModel.headingTitle -}}
     <a class="subjectLine" href="{{ app_absolute_url ~ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController',
         {review, filePath: comment.lineReference.filePath}
     )}}"

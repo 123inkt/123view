@@ -17,6 +17,7 @@ use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServ
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 /**
@@ -34,7 +35,9 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         parent::setUp();
         $this->diffService = $this->createMock(ReviewDiffServiceInterface::class);
         $this->diffFinder  = $this->createMock(DiffFinder::class);
-        $this->provider    = new MailCommentViewModelProvider($this->diffService, $this->diffFinder);
+        $translator        = $this->createMock(TranslatorInterface::class);
+        $translator->method('trans')->willReturnArgument(0);
+        $this->provider = new MailCommentViewModelProvider($this->diffService, $this->diffFinder, $translator);
     }
 
     /**
