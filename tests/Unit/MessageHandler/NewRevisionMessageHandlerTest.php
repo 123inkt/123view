@@ -14,7 +14,6 @@ use DR\GitCommitNotification\Message\Review\ReviewOpened;
 use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler;
-use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
@@ -35,7 +34,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
     private CodeReviewService&MockObject         $reviewService;
-    private CodeReviewerRepository&MockObject    $reviewerRepository;
     private CodeReviewRevisionMatcher&MockObject $reviewRevisionMatcher;
     private ManagerRegistry&MockObject           $registry;
     private MessageBusInterface&MockObject       $bus;
@@ -48,7 +46,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->envelope              = new Envelope(new stdClass(), []);
         $this->revisionRepository    = $this->createMock(RevisionRepository::class);
         $this->reviewService         = $this->createMock(CodeReviewService::class);
-        $this->reviewerRepository    = $this->createMock(CodeReviewerRepository::class);
         $this->reviewRevisionMatcher = $this->createMock(CodeReviewRevisionMatcher::class);
         $this->registry              = $this->createMock(ManagerRegistry::class);
         $this->bus                   = $this->createMock(MessageBusInterface::class);
