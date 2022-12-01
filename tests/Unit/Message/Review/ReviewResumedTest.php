@@ -19,6 +19,6 @@ class ReviewResumedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(new ReviewResumed(5), 'review-resumed', 5, ['reviewId' => 5]);
+        static::assertWebhookEvent(new ReviewResumed(5, 7), 'review-resumed', 5, ['reviewId' => 5, 'userId' => 7]);
     }
 }

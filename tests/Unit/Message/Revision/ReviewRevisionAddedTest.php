@@ -19,6 +19,11 @@ class ReviewRevisionAddedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(new ReviewRevisionAdded(5, 6), 'review-revision-added', 5, ['reviewId' => 5, 'revisionId' => 6]);
+        static::assertWebhookEvent(
+            new ReviewRevisionAdded(5, 6, 7),
+            'review-revision-added',
+            5,
+            ['reviewId' => 5, 'revisionId' => 6, 'userId' => 7]
+        );
     }
 }
