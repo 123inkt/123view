@@ -10,6 +10,8 @@ use DR\GitCommitNotification\Message\Review\ReviewClosed;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
 use DR\GitCommitNotification\Message\Review\ReviewOpened;
 use DR\GitCommitNotification\Message\Review\ReviewRejected;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
@@ -72,6 +74,25 @@ class CodeReviewActivityProvider
         $activity->setReview($review);
         $activity->setUser($user);
         $activity->setCreateTimestamp(time());
+        $activity->setEventName($event->getName());
+
+        return $activity;
+    }
+
+    public function fromReviewerEvent(ReviewerAdded|ReviewerRemoved $event): ?CodeReviewActivity
+    {
+        $review = $this->reviewRepository->find($event->reviewId);
+        $user   = $this->userRepository->find($event->userId);
+        $byUser = $this->userRepository->find($event->byUserId);
+        if ($review === null || $user === null) {
+            return null;
+        }
+
+        $activity = new CodeReviewActivity();
+        $activity->setReview($review);
+        $activity->setUser($byUser ?? $user);
+        $activity->setCreateTimestamp(time());
+        $activity->setData(['userId' => $user->getId(), 'byUserId' => $event->byUserId]);
         $activity->setEventName($event->getName());
 
         return $activity;
