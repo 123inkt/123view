@@ -68,20 +68,20 @@ class ReviewEventService
     /**
      * @param Revision[] $revisions
      */
-    public function revisionsAdded(CodeReview $review, array $revisions): void
+    public function revisionsAdded(CodeReview $review, array $revisions, ?int $byUserId): void
     {
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId()));
+            $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $byUserId));
         }
     }
 
     /**
      * @param Revision[] $detachedRevisions
      */
-    public function revisionsDetached(CodeReview $review, array $detachedRevisions): void
+    public function revisionsDetached(CodeReview $review, array $detachedRevisions, ?int $byUserId): void
     {
         foreach ($detachedRevisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId()));
+            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), $byUserId));
         }
     }
 }

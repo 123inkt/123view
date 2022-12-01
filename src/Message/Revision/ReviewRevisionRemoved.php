@@ -11,7 +11,7 @@ use DR\GitCommitNotification\Message\WebhookEventInterface;
  */
 class ReviewRevisionRemoved implements AsyncMessageInterface, WebhookEventInterface
 {
-    public function __construct(public readonly int $reviewId, public readonly int $revisionId)
+    public function __construct(public readonly int $reviewId, public readonly int $revisionId, public readonly ?int $byUserId)
     {
     }
 
@@ -30,6 +30,6 @@ class ReviewRevisionRemoved implements AsyncMessageInterface, WebhookEventInterf
      */
     public function getPayload(): array
     {
-        return ['reviewId' => $this->reviewId, 'revisionId' => $this->revisionId];
+        return ['reviewId' => $this->reviewId, 'revisionId' => $this->revisionId, 'userId' => $this->byUserId];
     }
 }

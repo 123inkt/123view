@@ -12,6 +12,7 @@ use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewActivityRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityProvider;
@@ -41,8 +42,8 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
             $activity = $this->activityProvider->fromReviewCreated($evt);
         } elseif ($evt instanceof ReviewAccepted || $evt instanceof ReviewRejected || $evt instanceof ReviewOpened || $evt instanceof ReviewClosed) {
             $activity = $this->activityProvider->fromReviewEvent($evt);
-        } elseif ($evt instanceof ReviewRevisionAdded) {
-            $activity = $this->activityProvider->fromReviewRevisionAdded($evt);
+        } elseif ($evt instanceof ReviewRevisionAdded || $evt instanceof ReviewRevisionRemoved) {
+            $activity = $this->activityProvider->fromReviewRevisionEvent($evt);
         } elseif ($evt instanceof ReviewerAdded || $evt instanceof ReviewerRemoved) {
             $activity = $this->activityProvider->fromReviewerEvent($evt);
         } elseif ($evt instanceof CommentAdded) {

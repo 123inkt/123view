@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Message\WebhookEventInterface;
 
 class ReviewOpened implements AsyncMessageInterface, WebhookEventInterface
 {
-    public function __construct(public readonly int $reviewId, public readonly int $byUserId)
+    public function __construct(public readonly int $reviewId, public readonly ?int $byUserId)
     {
     }
 

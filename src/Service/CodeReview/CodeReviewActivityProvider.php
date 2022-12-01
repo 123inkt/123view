@@ -13,6 +13,7 @@ use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
@@ -45,16 +46,18 @@ class CodeReviewActivityProvider
         return $activity;
     }
 
-    public function fromReviewRevisionAdded(ReviewRevisionAdded $event): ?CodeReviewActivity
+    public function fromReviewRevisionEvent(ReviewRevisionAdded|ReviewRevisionRemoved $event): ?CodeReviewActivity
     {
         $review   = $this->reviewRepository->find($event->reviewId);
         $revision = $this->revisionRepository->find($event->revisionId);
+        $user     = $event->byUserId === null ? null : $this->userRepository->find($event->byUserId);
         if ($review === null || $revision === null) {
             return null;
         }
 
         $activity = new CodeReviewActivity();
         $activity->setReview($review);
+        $activity->setUser($user);
         $activity->setCreateTimestamp(time());
         $activity->setData(['revisionId' => $revision->getId(), 'commit-hash' => $revision->getCommitHash()]);
         $activity->setEventName($event->getName());
@@ -65,8 +68,8 @@ class CodeReviewActivityProvider
     public function fromReviewEvent(ReviewAccepted|ReviewRejected|ReviewOpened|ReviewClosed $event): ?CodeReviewActivity
     {
         $review = $this->reviewRepository->find($event->getReviewId());
-        $user   = $this->userRepository->find($event->byUserId);
-        if ($review === null || $user === null) {
+        $user   = $event->byUserId === null ? null : $this->userRepository->find($event->byUserId);
+        if ($review === null) {
             return null;
         }
 
