@@ -51,7 +51,7 @@ class AddReviewerController extends AbstractController
         $this->codeReviewRepository->save($review, true);
 
         $this->eventService->reviewerAdded($review, $reviewer, true);
-        $this->eventService->reviewerStateChanged($review, $reviewerState);
+        $this->eventService->reviewerStateChanged($review, $reviewerState, (int)$this->getUser()->getId());
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }

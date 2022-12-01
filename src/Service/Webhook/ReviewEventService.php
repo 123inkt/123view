@@ -37,7 +37,7 @@ class ReviewEventService
         $this->bus->dispatch(new ReviewerRemoved((int)$review->getId(), (int)$reviewer->getUser()?->getId()));
     }
 
-    public function reviewerStateChanged(CodeReview $review, string $previousReviewerState): void
+    public function reviewerStateChanged(CodeReview $review, string $previousReviewerState, int $byUserId): void
     {
         $reviewerState = $review->getReviewersState();
         if ($reviewerState === $previousReviewerState) {
@@ -45,23 +45,23 @@ class ReviewEventService
         }
 
         if ($reviewerState === CodeReviewerStateType::REJECTED) {
-            $this->bus->dispatch(new ReviewRejected((int)$review->getId()));
+            $this->bus->dispatch(new ReviewRejected((int)$review->getId(), $byUserId));
         } elseif ($reviewerState === CodeReviewerStateType::ACCEPTED) {
-            $this->bus->dispatch(new ReviewAccepted((int)$review->getId()));
+            $this->bus->dispatch(new ReviewAccepted((int)$review->getId(), $byUserId));
         } elseif ($reviewerState === CodeReviewerStateType::OPEN) {
-            $this->bus->dispatch(new ReviewResumed((int)$review->getId()));
+            $this->bus->dispatch(new ReviewResumed((int)$review->getId(), $byUserId));
         }
     }
 
-    public function reviewStateChanged(CodeReview $review, string $reviewState): void
+    public function reviewStateChanged(CodeReview $review, string $reviewState, int $byUserId): void
     {
         if ($review->getState() === $reviewState) {
             return;
         }
         if ($review->getState() === CodeReviewStateType::OPEN) {
-            $this->bus->dispatch(new ReviewOpened((int)$review->getId()));
+            $this->bus->dispatch(new ReviewOpened((int)$review->getId(), $byUserId));
         } elseif ($review->getState() === CodeReviewStateType::CLOSED) {
-            $this->bus->dispatch(new ReviewClosed((int)$review->getId()));
+            $this->bus->dispatch(new ReviewClosed((int)$review->getId(), $byUserId));
         }
     }
 

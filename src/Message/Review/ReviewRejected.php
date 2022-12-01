@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Message\WebhookEventInterface;
 
 class ReviewRejected implements AsyncMessageInterface, WebhookEventInterface
 {
-    public function __construct(public readonly int $reviewId)
+    public function __construct(public readonly int $reviewId, public readonly int $byUserId)
     {
     }
 
@@ -27,6 +27,6 @@ class ReviewRejected implements AsyncMessageInterface, WebhookEventInterface
      */
     public function getPayload(): array
     {
-        return ['reviewId' => $this->reviewId];
+        return ['reviewId' => $this->reviewId, 'userId' => $this->byUserId];
     }
 }

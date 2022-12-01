@@ -52,8 +52,8 @@ class ChangeReviewerStateController extends AbstractController
 
         // dispatch events
         $this->eventService->reviewerAdded($review, $userReviewer, $reviewerAdded);
-        $this->eventService->reviewerStateChanged($review, $reviewerState);
-        $this->eventService->reviewStateChanged($review, $reviewState);
+        $this->eventService->reviewerStateChanged($review, $reviewerState, (int)$this->getUser()->getId());
+        $this->eventService->reviewStateChanged($review, $reviewState, (int)$this->getUser()->getId());
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }

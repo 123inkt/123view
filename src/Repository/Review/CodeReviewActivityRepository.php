@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Repository\Review;
 
+use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
 
@@ -15,4 +16,11 @@ use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
  */
 class CodeReviewActivityRepository extends ServiceEntityRepository
 {
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, CodeReviewActivity::class);
+    }
 }
