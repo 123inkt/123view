@@ -84,8 +84,8 @@ class GitLogService implements LoggerAwareInterface
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
 
-        // get repository data without cache and execute command
-        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        // get repository data without cache, fetch new revisions and execute command
+        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl(), true)->execute($command);
 
         // get commits
         return $this->logParser->parse($repository, $output, $limit);

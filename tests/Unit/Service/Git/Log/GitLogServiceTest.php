@@ -114,7 +114,7 @@ class GitLogServiceTest extends AbstractTestCase
         $logBuilder->expects(self::once())->method('since')->willReturnSelf();
 
         $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($gitRepository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com', true)->willReturn($gitRepository);
         $this->logParser->expects(static::once())->method('parse')->with($repository, 'output', $limit)->willReturn($commits);
 
         $this->logFactory->getCommitsSince($repository, $revision, $limit);
