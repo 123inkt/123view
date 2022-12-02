@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Message\Revision;
 
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
-use DR\GitCommitNotification\Tests\Unit\Message\AbstractWebhookEventTestCase;
+use DR\GitCommitNotification\Tests\Unit\Message\AbstractMessageEventTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved
  */
-class ReviewRevisionRemovedTest extends AbstractWebhookEventTestCase
+class ReviewRevisionRemovedTest extends AbstractMessageEventTestCase
 {
     /**
      * @covers ::__construct
@@ -19,7 +19,7 @@ class ReviewRevisionRemovedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(
+        static::assertCodeReviewEvent(
             new ReviewRevisionRemoved(5, 6, 7),
             'review-revision-removed',
             5,

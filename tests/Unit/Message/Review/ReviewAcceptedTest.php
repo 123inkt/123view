@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Message\Review;
 
 use DR\GitCommitNotification\Message\Review\ReviewAccepted;
-use DR\GitCommitNotification\Tests\Unit\Message\AbstractWebhookEventTestCase;
+use DR\GitCommitNotification\Tests\Unit\Message\AbstractMessageEventTestCase;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\Message\Review\ReviewAccepted
  */
-class ReviewAcceptedTest extends AbstractWebhookEventTestCase
+class ReviewAcceptedTest extends AbstractMessageEventTestCase
 {
     /**
      * @covers ::__construct
@@ -19,6 +19,6 @@ class ReviewAcceptedTest extends AbstractWebhookEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertWebhookEvent(new ReviewAccepted(5, 7), 'review-accepted', 5, ['reviewId' => 5, 'userId' => 7]);
+        static::assertCodeReviewEvent(new ReviewAccepted(5, 7), 'review-accepted', 5, ['reviewId' => 5, 'userId' => 7]);
     }
 }
