@@ -26,7 +26,7 @@ class CodeReviewActivity
     #[ORM\Column]
     private ?string $eventName = null;
 
-    /** @var array<string, mixed> */
+    /** @var array<string, int|float|string|array|null> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $data = [];
 
@@ -82,7 +82,7 @@ class CodeReviewActivity
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, int|float|string|array|null>
      */
     public function getData(): array
     {
@@ -90,7 +90,7 @@ class CodeReviewActivity
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<string, int|float|string|array|null> $data
      */
     public function setData(array $data): self
     {

@@ -85,17 +85,16 @@ class CodeReviewActivityProvider
     public function fromReviewerEvent(ReviewerAdded|ReviewerRemoved $event): ?CodeReviewActivity
     {
         $review = $this->reviewRepository->find($event->reviewId);
-        $user   = $this->userRepository->find($event->userId);
-        $byUser = $this->userRepository->find($event->byUserId);
+        $user   = $this->userRepository->find($event->byUserId);
         if ($review === null || $user === null) {
             return null;
         }
 
         $activity = new CodeReviewActivity();
         $activity->setReview($review);
-        $activity->setUser($byUser ?? $user);
+        $activity->setUser($user);
         $activity->setCreateTimestamp(time());
-        $activity->setData(['userId' => $user->getId(), 'byUserId' => $event->byUserId]);
+        $activity->setData($event->userId !== $event->byUserId ? ['userId' => $event->userId] : []);
         $activity->setEventName($event->getName());
 
         return $activity;
