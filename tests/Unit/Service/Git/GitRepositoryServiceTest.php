@@ -51,7 +51,27 @@ class GitRepositoryServiceTest extends AbstractTestCase
 
         $repository->expects(static::once())->method('fetch')->with(null, ['--all']);
 
-        $this->service->getRepository($url);
+        $this->service->getRepository($url, true);
+    }
+
+    /**
+     * @covers ::getRepository
+     * @covers ::tryGetRepository
+     * @throws RepositoryException
+     */
+    public function testGetRepositoryWithoutCacheAndFetch(): void
+    {
+        $url        = 'http://my.repository.com';
+        $repository = $this->createMock(GitRepository::class);
+
+        // setup mocks
+        $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
+        $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
+        $this->git->expects(static::once())->method('cloneRepository')->willReturn($repository);
+
+        $repository->expects(static::never())->method('fetch');
+
+        $this->service->getRepository($url, false);
     }
 
     /**
@@ -71,7 +91,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
 
         $repository->expects(static::once())->method('fetch')->with(null, ['--all']);
 
-        $this->service->getRepository($url);
+        $this->service->getRepository($url, true);
     }
 
     /**
