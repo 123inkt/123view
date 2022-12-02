@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Message;
 use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Message\Comment\CommentEventInterface;
 use DR\GitCommitNotification\Message\Comment\CommentReplyEventInterface;
+use DR\GitCommitNotification\Message\UserAwareInterface;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 
 abstract class AbstractMessageEventTestCase extends AbstractTestCase
@@ -18,6 +19,11 @@ abstract class AbstractMessageEventTestCase extends AbstractTestCase
         static::assertSame($name, $event->getName());
         static::assertSame($reviewId, $event->getReviewId());
         static::assertSame($payload, $event->getPayload());
+    }
+
+    protected static function assertUserAware(UserAwareInterface $event, ?int $userId): void
+    {
+        static::assertSame($userId, $event->getUserId());
     }
 
     protected static function assertCommentEvent(CommentEventInterface $event, int $commentId): void

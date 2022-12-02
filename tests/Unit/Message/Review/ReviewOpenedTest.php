@@ -15,10 +15,12 @@ class ReviewOpenedTest extends AbstractMessageEventTestCase
      * @covers ::__construct
      * @covers ::getName
      * @covers ::getReviewId
+     * @covers ::getUserId
      * @covers ::getPayload
      */
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(new ReviewOpened(5, 7), 'review-opened', 5, ['reviewId' => 5, 'userId' => 7]);
+        static::assertUserAware(new ReviewOpened(5, 7), 7);
     }
 }
