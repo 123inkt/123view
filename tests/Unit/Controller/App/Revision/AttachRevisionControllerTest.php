@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Controller\App\Revision\AttachRevisionController;
 use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
@@ -51,11 +52,15 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $revision->setRepository($repository);
         $revision->setId(123);
 
+        $user = new User();
+        $user->setId(456);
+
+        $this->expectGetUser($user);
         $this->revisionRepository->expects(self::once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
 
         // expect revision to be attached, saved and dispatched
         $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->eventService->expects(self::once())->method('revisionsAdded')->with($review, [$revision]);
+        $this->eventService->expects(self::once())->method('revisionsAdded')->with($review, [$revision], 456);
 
         // expect flash message
         $this->translator->expects(self::once())->method('trans')->with('revisions.added.to.review')->willReturn('message');

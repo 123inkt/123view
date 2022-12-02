@@ -14,6 +14,7 @@ use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -54,13 +55,17 @@ class RemoveReviewerControllerTest extends AbstractControllerTestCase
         $review->getReviewers()->add($reviewerA);
         $review->getReviewers()->add($reviewerB);
 
+        $user = new User();
+        $user->setId(456);
+
+        $this->expectGetUser($user);
         $this->objectManager->expects(self::once())->method('remove')->with($reviewerB);
         $this->objectManager->expects(self::once())->method('persist')->with($review);
         $this->objectManager->expects(self::once())->method('flush');
 
-        $this->eventService->expects(self::once())->method('reviewerRemoved')->with($review, $reviewerB);
-        $this->eventService->expects(self::once())->method('reviewerStateChanged')->with($review, CodeReviewerStateType::ACCEPTED);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED);
+        $this->eventService->expects(self::once())->method('reviewerRemoved')->with($review, $reviewerB, 456);
+        $this->eventService->expects(self::once())->method('reviewerStateChanged')->with($review, CodeReviewerStateType::ACCEPTED, 456);
+        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED, 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
