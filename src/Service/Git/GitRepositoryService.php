@@ -39,10 +39,10 @@ class GitRepositoryService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
-    public function getRepository(string $repositoryUrl): GitRepository
+    public function getRepository(string $repositoryUrl, bool $fetch = false): GitRepository
     {
         try {
-            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repositoryUrl));
+            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repositoryUrl, $fetch));
         } catch (GitException $exception) {
             $message = $exception->getMessage() . ': ';
             if ($exception->getRunnerResult() !== null) {
@@ -58,7 +58,7 @@ class GitRepositoryService implements LoggerAwareInterface
     /**
      * @throws GitException
      */
-    private function tryGetRepository(string $repositoryUrl): GitRepository
+    private function tryGetRepository(string $repositoryUrl, bool $fetch): GitRepository
     {
         // create cache directory
         $this->filesystem->mkdir($this->cacheDirectory);
@@ -80,10 +80,12 @@ class GitRepositoryService implements LoggerAwareInterface
             $this->stopwatch?->stop('repository.clone');
         }
 
-        $this->stopwatch?->start('repository.fetch', 'git');
-        $this->logger?->info(sprintf('git: fetch --all (%s)', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
-        $repository->fetch(null, ['--all']);
-        $this->stopwatch?->stop('repository.fetch');
+        if ($fetch) {
+            $this->stopwatch?->start('repository.fetch', 'git');
+            $this->logger?->info(sprintf('git: fetch --all (%s)', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
+            $repository->fetch(null, ['--all']);
+            $this->stopwatch?->stop('repository.fetch');
+        }
 
         return new GitRepository($this->stopwatch, $repositoryDir);
     }
