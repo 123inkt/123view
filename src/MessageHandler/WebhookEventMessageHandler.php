@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\MessageHandler;
 
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Service\Webhook\WebhookNotifier;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -14,7 +14,7 @@ class WebhookEventMessageHandler
     {
     }
 
-    public function __invoke(WebhookEventInterface $event): void
+    public function __invoke(CodeReviewAwareInterface $event): void
     {
         $this->webhookNotifier->notify($event);
     }

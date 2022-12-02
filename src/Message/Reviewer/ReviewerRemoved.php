@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Message\Reviewer;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 
-class ReviewerRemoved implements AsyncMessageInterface, WebhookEventInterface
+class ReviewerRemoved implements AsyncMessageInterface, CodeReviewAwareInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $userId, public readonly int $byUserId)
     {

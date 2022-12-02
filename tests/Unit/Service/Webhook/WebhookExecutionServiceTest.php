@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Webhook;
 
 use DR\GitCommitNotification\Entity\Webhook\Webhook;
 use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
 use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -38,7 +38,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
      */
     public function testExecuteSuccessfulWithoutRetry(): void
     {
-        $event = $this->createMock(WebhookEventInterface::class);
+        $event = $this->createMock(CodeReviewAwareInterface::class);
         $event->method('getName')->willReturn('name');
         $event->method('getPayload')->willReturn(['payload']);
 
@@ -78,7 +78,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
      */
     public function testExecuteFailure(): void
     {
-        $event = $this->createMock(WebhookEventInterface::class);
+        $event = $this->createMock(CodeReviewAwareInterface::class);
         $event->method('getName')->willReturn('name');
         $event->method('getPayload')->willReturn(['payload']);
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Message\Review;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 
-class ReviewCreated implements AsyncMessageInterface, WebhookEventInterface
+class ReviewCreated implements AsyncMessageInterface, CodeReviewAwareInterface
 {
     public function __construct(public readonly int $reviewId)
     {

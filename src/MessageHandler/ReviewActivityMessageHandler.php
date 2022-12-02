@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\MessageHandler;
 
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Message\Comment\CommentAdded;
 use DR\GitCommitNotification\Message\Review\ReviewAccepted;
 use DR\GitCommitNotification\Message\Review\ReviewClosed;
@@ -13,7 +14,6 @@ use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewActivityRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityProvider;
 use Psr\Log\LoggerAwareInterface;
@@ -35,7 +35,7 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
-    public function __invoke(WebhookEventInterface $evt): void
+    public function __invoke(CodeReviewAwareInterface $evt): void
     {
         $activity = null;
         if ($evt instanceof ReviewCreated) {
