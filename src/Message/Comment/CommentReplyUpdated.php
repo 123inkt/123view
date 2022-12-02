@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Message\Comment;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Message\MailNotificationInterface;
 
-class CommentReplyUpdated implements AsyncMessageInterface, CodeReviewAwareInterface, MailNotificationInterface
+class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentReplyEventInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $commentReplyId, public readonly string $originalComment)
     {
@@ -21,6 +20,11 @@ class CommentReplyUpdated implements AsyncMessageInterface, CodeReviewAwareInter
     public function getReviewId(): int
     {
         return $this->reviewId;
+    }
+
+    public function getCommentReplyId(): int
+    {
+        return $this->commentReplyId;
     }
 
     /**

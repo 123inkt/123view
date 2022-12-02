@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Message\Review;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 
-class ReviewResumed implements AsyncMessageInterface, CodeReviewAwareInterface
+class ReviewResumed implements AsyncMessageInterface, CodeReviewEventInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $byUserId)
     {
@@ -20,6 +19,11 @@ class ReviewResumed implements AsyncMessageInterface, CodeReviewAwareInterface
     public function getReviewId(): int
     {
         return $this->reviewId;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->byUserId;
     }
 
     /**

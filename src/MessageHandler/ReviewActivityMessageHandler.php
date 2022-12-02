@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\MessageHandler;
 
+use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
 use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\Comment\CommentAdded;
-use DR\GitCommitNotification\Message\Review\ReviewAccepted;
-use DR\GitCommitNotification\Message\Review\ReviewClosed;
+use DR\GitCommitNotification\Message\Comment\CommentEventInterface;
+use DR\GitCommitNotification\Message\Comment\CommentReplyEventInterface;
+use DR\GitCommitNotification\Message\Review\CodeReviewEventInterface;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Review\ReviewOpened;
-use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
@@ -32,24 +31,36 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
     ) {
     }
 
+    private function getActivity(CodeReviewAwareInterface $evt): ?CodeReviewActivity
+    {
+        if ($evt instanceof ReviewCreated) {
+            return $this->activityProvider->fromReviewCreated($evt);
+        }
+        if ($evt instanceof CodeReviewEventInterface) {
+            return $this->activityProvider->fromReviewEvent($evt);
+        }
+        if ($evt instanceof ReviewRevisionAdded || $evt instanceof ReviewRevisionRemoved) {
+            return $this->activityProvider->fromReviewRevisionEvent($evt);
+        }
+        if ($evt instanceof ReviewerAdded || $evt instanceof ReviewerRemoved) {
+            return $this->activityProvider->fromReviewerEvent($evt);
+        }
+        if ($evt instanceof CommentEventInterface) {
+            return $this->activityProvider->fromCommentEvent($evt);
+        }
+        if ($evt instanceof CommentReplyEventInterface) {
+            return $this->activityProvider->fromCommentReplyEvent($evt);
+        }
+
+        return null;
+    }
+
     /**
      * @throws Throwable
      */
     public function __invoke(CodeReviewAwareInterface $evt): void
     {
-        $activity = null;
-        if ($evt instanceof ReviewCreated) {
-            $activity = $this->activityProvider->fromReviewCreated($evt);
-        } elseif ($evt instanceof ReviewAccepted || $evt instanceof ReviewRejected || $evt instanceof ReviewOpened || $evt instanceof ReviewClosed) {
-            $activity = $this->activityProvider->fromReviewEvent($evt);
-        } elseif ($evt instanceof ReviewRevisionAdded || $evt instanceof ReviewRevisionRemoved) {
-            $activity = $this->activityProvider->fromReviewRevisionEvent($evt);
-        } elseif ($evt instanceof ReviewerAdded || $evt instanceof ReviewerRemoved) {
-            $activity = $this->activityProvider->fromReviewerEvent($evt);
-        } elseif ($evt instanceof CommentAdded) {
-            $activity = $this->activityProvider->fromCommendAdded($evt);
-        }
-
+        $activity = $this->getActivity($evt);
         if ($activity === null) {
             $this->logger?->info('ReviewActivityHandler: no activity for review event: ' . $evt->getName());
 
