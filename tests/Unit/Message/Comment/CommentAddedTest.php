@@ -15,6 +15,7 @@ class CommentAddedTest extends AbstractMessageEventTestCase
      * @covers ::__construct
      * @covers ::getName
      * @covers ::getReviewId
+     * @covers ::getCommentId
      * @covers ::getPayload
      */
     public function testAccessors(): void

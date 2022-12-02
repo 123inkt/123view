@@ -15,6 +15,7 @@ class CommentReplyUpdatedTest extends AbstractMessageEventTestCase
      * @covers ::__construct
      * @covers ::getName
      * @covers ::getReviewId
+     * @covers ::getCommentReplyId
      * @covers ::getPayload
      */
     public function testAccessors(): void
