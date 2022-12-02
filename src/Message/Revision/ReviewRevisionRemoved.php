@@ -5,11 +5,12 @@ namespace DR\GitCommitNotification\Message\Revision;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
 use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
+use DR\GitCommitNotification\Message\UserAwareInterface;
 
 /**
  * Message to notify consumers a revision was removed from a review.
  */
-class ReviewRevisionRemoved implements AsyncMessageInterface, CodeReviewAwareInterface
+class ReviewRevisionRemoved implements AsyncMessageInterface, CodeReviewAwareInterface, UserAwareInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $revisionId, public readonly ?int $byUserId)
     {
@@ -23,6 +24,11 @@ class ReviewRevisionRemoved implements AsyncMessageInterface, CodeReviewAwareInt
     public function getReviewId(): int
     {
         return $this->reviewId;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->byUserId;
     }
 
     /**

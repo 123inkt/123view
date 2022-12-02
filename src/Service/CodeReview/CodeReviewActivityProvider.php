@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
+use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Message\Comment\CommentEventInterface;
 use DR\GitCommitNotification\Message\Comment\CommentReplyEventInterface;
 use DR\GitCommitNotification\Message\Review\CodeReviewEventInterface;
@@ -12,6 +14,7 @@ use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
+use DR\GitCommitNotification\Message\UserAwareInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
@@ -31,107 +34,88 @@ class CodeReviewActivityProvider
 
     public function fromReviewCreated(ReviewCreated $event): ?CodeReviewActivity
     {
-        $review   = $this->reviewRepository->find($event->reviewId);
-        $revision = $review?->getRevisions()->first();
-        if ($review === null || $revision === null || $revision === false) {
-            return null;
+        $activity = $this->createActivity($event);
+        $revision = $activity?->getReview()?->getRevisions()->first();
+        if ($activity !== null && $revision instanceof Revision) {
+            $activity->setData(['revisionId' => $revision->getId(), 'commit-hash' => $revision->getCommitHash()]);
         }
-
-        $activity = new CodeReviewActivity();
-        $activity->setReview($review);
-        $activity->setCreateTimestamp(time());
-        $activity->setData(['revisionId' => $revision->getId(), 'commit-hash' => $revision->getCommitHash()]);
-        $activity->setEventName($event->getName());
 
         return $activity;
     }
 
     public function fromReviewRevisionEvent(ReviewRevisionAdded|ReviewRevisionRemoved $event): ?CodeReviewActivity
     {
-        $review   = $this->reviewRepository->find($event->reviewId);
+        $activity = $this->createActivity($event);
         $revision = $this->revisionRepository->find($event->revisionId);
-        $user     = $event->byUserId === null ? null : $this->userRepository->find($event->byUserId);
-        if ($review === null || $revision === null) {
+        if ($activity === null || $revision === null) {
             return null;
         }
 
-        $activity = new CodeReviewActivity();
-        $activity->setReview($review);
-        $activity->setUser($user);
-        $activity->setCreateTimestamp(time());
         $activity->setData(['revisionId' => $revision->getId(), 'commit-hash' => $revision->getCommitHash()]);
-        $activity->setEventName($event->getName());
 
         return $activity;
     }
 
     public function fromReviewEvent(CodeReviewEventInterface $event): ?CodeReviewActivity
     {
-        $review = $this->reviewRepository->find($event->getReviewId());
-        $user   = $event->getUserId() === null ? null : $this->userRepository->find($event->getUserId());
-        if ($review === null) {
-            return null;
-        }
-
-        $activity = new CodeReviewActivity();
-        $activity->setReview($review);
-        $activity->setUser($user);
-        $activity->setCreateTimestamp(time());
-        $activity->setEventName($event->getName());
-
-        return $activity;
+        return $this->createActivity($event);
     }
 
     public function fromReviewerEvent(ReviewerAdded|ReviewerRemoved $event): ?CodeReviewActivity
     {
-        $review = $this->reviewRepository->find($event->reviewId);
-        $user   = $this->userRepository->find($event->byUserId);
-        if ($review === null || $user === null) {
+        $activity = $this->createActivity($event);
+        if ($activity === null) {
             return null;
         }
 
-        $activity = new CodeReviewActivity();
-        $activity->setReview($review);
-        $activity->setUser($user);
-        $activity->setCreateTimestamp(time());
         $activity->setData($event->userId !== $event->byUserId ? ['userId' => $event->userId] : []);
-        $activity->setEventName($event->getName());
 
         return $activity;
     }
 
     public function fromCommentEvent(CommentEventInterface $event): ?CodeReviewActivity
     {
-        $review  = $this->reviewRepository->find($event->getReviewId());
-        $comment = $this->commentRepository->find($event->getCommentId());
-        if ($review === null || $comment === null) {
+        $activity = $this->createActivity($event);
+        $comment  = $this->commentRepository->find($event->getCommentId());
+        if ($activity === null || $comment === null) {
             return null;
         }
 
-        $activity = new CodeReviewActivity();
-        $activity->setReview($review);
         $activity->setUser($comment->getUser());
-        $activity->setCreateTimestamp(time());
         $activity->setData(['message' => $comment->getMessage(), 'file' => $comment->getFilePath()]);
-        $activity->setEventName($event->getName());
 
         return $activity;
     }
 
     public function fromCommentReplyEvent(CommentReplyEventInterface $event): ?CodeReviewActivity
     {
+        $activity = $this->createActivity($event);
+        $reply    = $this->replyRepository->find($event->getCommentReplyId());
+        if ($activity === null || $reply === null) {
+            return null;
+        }
+
+        $activity->setUser($reply->getUser());
+        $activity->setData(['message' => $reply->getMessage()]);
+
+        return $activity;
+    }
+
+    private function createActivity(CodeReviewAwareInterface $event): ?CodeReviewActivity
+    {
         $review = $this->reviewRepository->find($event->getReviewId());
-        $reply  = $this->replyRepository->find($event->getCommentReplyId());
-        if ($review === null || $reply === null) {
+        if ($review === null) {
             return null;
         }
 
         $activity = new CodeReviewActivity();
         $activity->setReview($review);
-        $activity->setUser($reply->getUser());
         $activity->setCreateTimestamp(time());
-        $activity->setData(['message' => $reply->getMessage()]);
         $activity->setEventName($event->getName());
+
+        if ($event instanceof UserAwareInterface) {
+            $activity->setUser($this->userRepository->find($event->getUserId()));
+        }
 
         return $activity;
     }
