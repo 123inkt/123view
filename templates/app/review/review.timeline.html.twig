@@ -2,11 +2,18 @@
 
 {# timelineViewModel: TimelineViewModel #}
 
-
 <div class="review-timeline__overview">
     {% for entry in timelineViewModel.entries %}
         {% set activity = entry.activities|first %}
-        {% set username = activity.user ? activity.user.name : app_name %}
+
+        {% if activity.user is same as (null) %}
+            {% set username = app_name %}
+        {% elseif activity.user is same as app.user %}
+            {% set username = 'you'|trans %}
+        {% else %}
+            {% set username = activity.user.name %}
+        {% endif %}
+
         {{ block(activity.eventName|replace({'-': '_'})) }}
     {% endfor %}
 </div>

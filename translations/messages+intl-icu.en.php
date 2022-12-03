@@ -159,6 +159,7 @@ return [
     'user.theme.dark'                             => 'Dark mode',
     'user.theme.light'                            => 'Light mode',
     'users'                                       => 'Users',
+    'you'                                         => 'You',
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
     'comment.was.deleted.meanwhile'               => 'The comment was deleted in the meantime',
     'timeline.reviewer.added'                     => '<span class="text-primary">{username}</span> joined as reviewer',
