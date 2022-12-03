@@ -15,6 +15,7 @@ class ReviewRevisionAddedTest extends AbstractMessageEventTestCase
      * @covers ::__construct
      * @covers ::getName
      * @covers ::getReviewId
+     * @covers ::getUserId
      * @covers ::getPayload
      */
     public function testAccessors(): void
@@ -25,5 +26,6 @@ class ReviewRevisionAddedTest extends AbstractMessageEventTestCase
             5,
             ['reviewId' => 5, 'revisionId' => 6, 'userId' => 7]
         );
+        static::assertUserAware(new ReviewRevisionAdded(5, 6, 7), 7);
     }
 }
