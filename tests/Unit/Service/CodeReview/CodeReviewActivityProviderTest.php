@@ -5,7 +5,9 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
@@ -68,6 +70,43 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::fromReviewRevisionEvent
+     * @covers ::createActivity
+     */
+    public function testFromReviewRevisionEventWithoutReview(): void
+    {
+        $event = new ReviewRevisionAdded(123, 456, 789);
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+
+        static::assertNull($this->activityProvider->fromReviewRevisionEvent($event));
+    }
+
+    /**
+     * @covers ::fromReviewRevisionEvent
+     * @covers ::createActivity
+     */
+    public function testFromReviewRevisionEvent(): void
+    {
+        $event  = new ReviewRevisionAdded(123, 456, 789);
+        $review = new CodeReview();
+        $review->setId(123);
+        $revision = new Revision();
+        $revision->setCommitHash('hash');
+        $revision->setId(456);
+        $user = new User();
+        $user->setId(789);
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->revisionRepository->expects(self::once())->method('find')->with(456)->willReturn($revision);
+        $this->userRepository->expects(self::once())->method('find')->with(789)->willReturn($user);
+
+        $activity = $this->activityProvider->fromReviewRevisionEvent($event);
+        static::assertSame($user, $activity->getUser());
+        static::assertSame(['revisionId' => 456, 'commit-hash' => 'hash'], $activity->getData());
+    }
+
+    /**
      * @covers ::fromReviewEvent
      */
     public function testFromReviewEvent(): void
@@ -78,13 +117,6 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
      * @covers ::fromCommentEvent
      */
     public function testFromCommentEvent(): void
-    {
-    }
-
-    /**
-     * @covers ::fromReviewRevisionEvent
-     */
-    public function testFromReviewRevisionEvent(): void
     {
     }
 
