@@ -15,10 +15,12 @@ class ReviewerRemovedTest extends AbstractMessageEventTestCase
      * @covers ::__construct
      * @covers ::getName
      * @covers ::getReviewId
+     * @covers ::getUserId
      * @covers ::getPayload
      */
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(new ReviewerRemoved(5, 6, 7), 'reviewer-removed', 5, ['reviewId' => 5, 'userId' => 6, 'byUserId' => 7]);
+        static::assertUserAware(new ReviewerRemoved(5, 6, 7), 7);
     }
 }
