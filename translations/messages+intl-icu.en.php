@@ -160,5 +160,15 @@ return [
     'user.theme.light'                            => 'Light mode',
     'users'                                       => 'Users',
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
-    'comment.was.deleted.meanwhile'               => 'The comment was deleted in the meantime'
+    'comment.was.deleted.meanwhile'               => 'The comment was deleted in the meantime',
+    'timeline.reviewer.added'                     => '<span class="text-primary">{username}</span> joined as reviewer',
+    'timeline.reviewer.added.by'                  => '<span class="text-primary">{reviewerName}</span> was added as reviewer by <span class=text-primary">{username}</span>',
+    'timeline.reviewer.removed'                   => '<span class="text-primary">{username}</span> left as reviewer',
+    'timeline.reviewer.removed.by'                => '<span class="text-primary">{reviewerName}</span> was removed as reviewer by <span class=text-primary">{username}</span>',
+    'timeline.review.accepted'                    => '<span class="text-primary">{username}</span> <span class="text-success">accepted</span> the changes',
+    'timeline.review.rejected'                    => '<span class="text-primary">{username}</span> <span class="text-danger">raised concern</span> about the changes',
+    'timeline.review.created.from.revision'       => '<span class="text-primary">{username}</span> created the review from a revision',
+    'timeline.review.closed'                      => '<span class="text-primary">{username}</span> closed the review',
+    'timeline.review.opened'                      => '<span class="text-primary">{username}</span> reopened the review',
+    'timeline.review.resumed'                     => '<span class="text-primary">{username}</span> resumed the review',
 ];
