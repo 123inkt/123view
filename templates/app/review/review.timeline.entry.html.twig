@@ -1,12 +1,22 @@
 
 {% block reviewer_added %}
     {%- from 'app/review/review.timeline.macro.html.twig' import timelineEntry -%}
-    {{ timelineEntry('timeline.reviewer.added'|trans({username: username|e}), activity.createTimestamp) }}
+
+    {% if entry.data.reviewer is defined and activity.user != entry.data.reviewer %}
+        {{ timelineEntry('timeline.reviewer.added.by'|trans({username: username|e, reviewerName: entry.data.reviewer.name|e}), activity.createTimestamp) }}
+    {% else %}
+        {{ timelineEntry('timeline.reviewer.added'|trans({username: username|e}), activity.createTimestamp) }}
+    {% endif %}
 {% endblock %}
 
 {% block reviewer_removed %}
     {%- from 'app/review/review.timeline.macro.html.twig' import timelineEntry -%}
-    {{ timelineEntry('timeline.reviewer.removed'|trans({username: username|e}), activity.createTimestamp) }}
+
+    {% if entry.data.reviewer is defined and activity.user != entry.data.reviewer %}
+        {{ timelineEntry('timeline.reviewer.removed.by'|trans({username: username|e, reviewerName: entry.data.reviewer.name|e}), activity.createTimestamp) }}
+    {% else %}
+        {{ timelineEntry('timeline.reviewer.removed'|trans({username: username|e}), activity.createTimestamp) }}
+    {% endif %}
 {% endblock %}
 
 {% block review_created %}
