@@ -1,3 +1,23 @@
 {# timelineViewModel: TimelineViewModel #}
 
-foobar
+<div class="review-timeline__overview">
+    {% for entry in timelineViewModel.entries %}
+        <div class="review-timeline__entry">
+            {% set activity = entry.activities|first %}
+
+            <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIgMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGc+CiAgICA8cGF0aCBkPSJtNi45NDcgMGgtMS44OTV2Mi45OWMtMi45MDkuNDYzLTUuMDUgMy4wMS01LjA1IDYuMDEgMCAyLjk5NyAyLjE0NCA1LjU0NyA1LjA1IDYuMDF2Mi45OWgxLjg5NXYtMi45OWMyLjkwOS0uNDYzIDUuMDUtMy4wMSA1LjA1LTYuMDEgMC0yLjk5Ny0yLjE0NC01LjU0Ny01LjA1LTYuMDF2LTIuOTltMCAxMy4wNmMtMS42OTUuNDA1LTMuNDU2LS4zMjctNC4zODktMS44MjQtLjkzMy0xLjQ5Ni0uODMzLTMuNDMuMjQ4LTQuODE5IDEuMDgyLTEuMzg5IDIuOTA4LTEuOTI5IDQuNTUzLTEuMzQ2IDEuNjQ0LjU4MyAyLjc0NiAyLjE2MSAyLjc0NiAzLjkzNC4wMDkgMS45MzctMS4zMDMgMy42MjEtMy4xNTggNC4wNTUiCiAgICAgICAgICBmaWxsPSIjODg4IgogICAgLz4KICA8L2c+Cjwvc3ZnPg=="
+                 width="15"
+                 height="15"
+                 alt="time-point"
+                 style="vertical-align: baseline"/>
+
+            <span class="text-primary">
+                {{ activity.user.name|default(app_name) }}
+            </span>
+            {{ activity.eventName }}
+            <span class="text-secondary small">
+                {{ activity.createTimestamp|format_datetime('short', 'short') }}
+            </span>
+        </div>
+    {% endfor %}
+</div>
