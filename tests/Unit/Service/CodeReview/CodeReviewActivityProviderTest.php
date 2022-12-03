@@ -4,9 +4,15 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\Review\CommentReply;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Message\Comment\CommentAdded;
+use DR\GitCommitNotification\Message\Comment\CommentReplyAdded;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
+use DR\GitCommitNotification\Message\Review\ReviewOpened;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
@@ -111,20 +117,17 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
      */
     public function testFromReviewEvent(): void
     {
-    }
+        $event  = new ReviewOpened(123, 456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $user = new User();
+        $user->setId(456);
 
-    /**
-     * @covers ::fromCommentEvent
-     */
-    public function testFromCommentEvent(): void
-    {
-    }
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->userRepository->expects(self::once())->method('find')->with(456)->willReturn($user);
 
-    /**
-     * @covers ::fromCommentReplyEvent
-     */
-    public function testFromCommentReplyEvent(): void
-    {
+        $activity = $this->activityProvider->fromReviewEvent($event);
+        static::assertSame($user, $activity->getUser());
     }
 
     /**
@@ -132,5 +135,64 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
      */
     public function testFromReviewerEvent(): void
     {
+        $event  = new ReviewerAdded(123, 789, 456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $user = new User();
+        $user->setId(456);
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->userRepository->expects(self::once())->method('find')->with(456)->willReturn($user);
+
+        $activity = $this->activityProvider->fromReviewerEvent($event);
+        static::assertSame($user, $activity->getUser());
+        static::assertSame(['userId' => 789], $activity->getData());
+    }
+
+    /**
+     * @covers ::fromCommentEvent
+     */
+    public function testFromCommentEvent(): void
+    {
+        $event  = new CommentAdded(123, 456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $user    = new User();
+        $comment = new Comment();
+        $comment->setId(456);
+        $comment->setUser($user);
+        $comment->setMessage('message');
+        $comment->setFilePath('filepath');
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->commentRepository->expects(self::once())->method('find')->with(456)->willReturn($comment);
+        $this->userRepository->expects(self::never())->method('find');
+
+        $activity = $this->activityProvider->fromCommentEvent($event);
+        static::assertSame($user, $activity->getUser());
+        static::assertSame(['message' => 'message', 'file' => 'filepath'], $activity->getData());
+    }
+
+    /**
+     * @covers ::fromCommentReplyEvent
+     */
+    public function testFromCommentReplyEvent(): void
+    {
+        $event  = new CommentReplyAdded(123, 456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $user    = new User();
+        $comment = new CommentReply();
+        $comment->setId(456);
+        $comment->setUser($user);
+        $comment->setMessage('message');
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->replyRepository->expects(self::once())->method('find')->with(456)->willReturn($comment);
+        $this->userRepository->expects(self::never())->method('find');
+
+        $activity = $this->activityProvider->fromCommentReplyEvent($event);
+        static::assertSame($user, $activity->getUser());
+        static::assertSame(['message' => 'message'], $activity->getData());
     }
 }

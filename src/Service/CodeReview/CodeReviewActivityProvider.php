@@ -64,11 +64,7 @@ class CodeReviewActivityProvider
     public function fromReviewerEvent(ReviewerAdded|ReviewerRemoved $event): ?CodeReviewActivity
     {
         $activity = $this->createActivity($event);
-        if ($activity === null) {
-            return null;
-        }
-
-        $activity->setData($event->userId !== $event->byUserId ? ['userId' => $event->userId] : []);
+        $activity?->setData($event->userId !== $event->byUserId ? ['userId' => $event->userId] : []);
 
         return $activity;
     }
@@ -77,12 +73,10 @@ class CodeReviewActivityProvider
     {
         $activity = $this->createActivity($event);
         $comment  = $this->commentRepository->find($event->getCommentId());
-        if ($activity === null || $comment === null) {
-            return null;
+        if ($activity !== null && $comment !== null) {
+            $activity->setUser($comment->getUser());
+            $activity->setData(['message' => $comment->getMessage(), 'file' => $comment->getFilePath()]);
         }
-
-        $activity->setUser($comment->getUser());
-        $activity->setData(['message' => $comment->getMessage(), 'file' => $comment->getFilePath()]);
 
         return $activity;
     }
@@ -91,12 +85,10 @@ class CodeReviewActivityProvider
     {
         $activity = $this->createActivity($event);
         $reply    = $this->replyRepository->find($event->getCommentReplyId());
-        if ($activity === null || $reply === null) {
-            return null;
+        if ($activity !== null && $reply !== null) {
+            $activity->setUser($reply->getUser());
+            $activity->setData(['message' => $reply->getMessage()]);
         }
-
-        $activity->setUser($reply->getUser());
-        $activity->setData(['message' => $reply->getMessage()]);
 
         return $activity;
     }

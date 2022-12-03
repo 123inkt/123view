@@ -5,8 +5,9 @@ namespace DR\GitCommitNotification\Message\Reviewer;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
 use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
+use DR\GitCommitNotification\Message\UserAwareInterface;
 
-class ReviewerAdded implements AsyncMessageInterface, CodeReviewAwareInterface
+class ReviewerAdded implements AsyncMessageInterface, CodeReviewAwareInterface, UserAwareInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $userId, public readonly int $byUserId)
     {
@@ -20,6 +21,11 @@ class ReviewerAdded implements AsyncMessageInterface, CodeReviewAwareInterface
     public function getReviewId(): int
     {
         return $this->reviewId;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->byUserId;
     }
 
     /**
