@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Message\Revision;
 
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Tests\Unit\Message\AbstractMessageEventTestCase;
 
@@ -27,6 +26,6 @@ class ReviewRevisionRemovedTest extends AbstractMessageEventTestCase
             5,
             ['reviewId' => 5, 'revisionId' => 6, 'userId' => 7]
         );
-        static::assertUserAware(new ReviewRevisionAdded(5, 6, 7), 7);
+        static::assertUserAware(new ReviewRevisionRemoved(5, 6, 7), 7);
     }
 }
