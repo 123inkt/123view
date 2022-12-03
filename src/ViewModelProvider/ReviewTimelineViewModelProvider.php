@@ -20,7 +20,7 @@ class ReviewTimelineViewModelProvider
 
     public function getTimelineViewModel(CodeReview $review): TimelineViewModel
     {
-        $activities = $this->activityRepository->findBy(['review' => $review->getId()], ['create_timestamp' => 'ASC']);
+        $activities = $this->activityRepository->findBy(['review' => $review->getId()], ['createTimestamp' => 'ASC']);
 
         $timelineEntries   = [];
         $previousEventName = null;
