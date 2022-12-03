@@ -15,11 +15,11 @@ class CodeReviewActivity
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(targetEntity: CodeReview::class)]
+    #[ORM\ManyToOne(targetEntity: CodeReview::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CodeReview $review = null;
 

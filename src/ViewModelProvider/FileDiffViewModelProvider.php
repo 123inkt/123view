@@ -29,12 +29,9 @@ class FileDiffViewModelProvider
     /**
      * @throws Throwable
      */
-    public function getFileDiffViewModel(CodeReview $review, ?DiffFile $selectedFile, ?AbstractReviewAction $reviewAction): FileDiffViewModel
+    public function getFileDiffViewModel(CodeReview $review, DiffFile $selectedFile, ?AbstractReviewAction $reviewAction): FileDiffViewModel
     {
         $viewModel = new FileDiffViewModel($selectedFile);
-        if ($selectedFile === null) {
-            return $viewModel;
-        }
 
         // gather comments view model
         $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));

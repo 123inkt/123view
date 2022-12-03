@@ -25,6 +25,7 @@ class ReviewViewModelProvider
         private readonly FileTreeGenerator $treeGenerator,
         private readonly FileTreeViewModelProvider $fileTreeModelProvider,
         private readonly RevisionViewModelProvider $revisionModelProvider,
+        private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider,
         private readonly DiffFinder $diffFinder
     ) {
     }
@@ -34,24 +35,28 @@ class ReviewViewModelProvider
      */
     public function getViewModel(CodeReview $review, ?string $filePath, string $sidebarTab, ?AbstractReviewAction $reviewAction): ReviewViewModel
     {
+        $viewModel = new ReviewViewModel($review);
         $revisions = $review->getRevisions()->toArray();
-        $files     = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(9999999));
-        $fileTree  = $this->treeGenerator->generate($files)
+
+        // gather diff files
+        $files    = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(9999999));
+        $fileTree = $this->treeGenerator->generate($files)
             ->flatten()
             ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename()));
 
-        // find selected file
+        // get selected file (if any)
         $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);
-        if ($selectedFile === null && count($files) > 0) {
-            $selectedFile = $fileTree->getFirstFileInTree();
+
+        // get timeline or file-diff view model
+        if ($selectedFile === null) {
+            $viewModel->setTimelineViewModel($this->timelineViewModelProvider->getTimelineViewModel($review));
+            $viewModel->setDescriptionVisible(true);
+        } else {
+            $viewModel->setFileDiffViewModel($this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction));
+            $viewModel->setDescriptionVisible(false);
         }
 
-        $viewModel = new ReviewViewModel(
-            $review,
-            $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $reviewAction)
-        );
-        $viewModel->setDescriptionVisible($filePath === null);
-
+        // get sidebar view model
         $viewModel->setSidebarTabMode($sidebarTab);
         if ($sidebarTab === ReviewViewModel::SIDEBAR_TAB_OVERVIEW) {
             $viewModel->setAddReviewerForm($this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView());

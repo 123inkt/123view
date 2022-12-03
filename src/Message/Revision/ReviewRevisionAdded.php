@@ -12,13 +12,15 @@ use DR\GitCommitNotification\Message\UserAwareInterface;
  */
 class ReviewRevisionAdded implements AsyncMessageInterface, CodeReviewAwareInterface, UserAwareInterface
 {
+    public const NAME = 'review-revision-added';
+
     public function __construct(public readonly int $reviewId, public readonly int $revisionId, public readonly ?int $byUserId)
     {
     }
 
     public function getName(): string
     {
-        return 'review-revision-added';
+        return self::NAME;
     }
 
     public function getReviewId(): int
