@@ -60,6 +60,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
     /**
      * @dataProvider eventDataProvider
      * @covers ::__invoke
+     * @covers ::getActivity
      * @throws Throwable
      */
     public function testInvoke(CodeReviewAwareInterface $event, string $expectedMethod): void
