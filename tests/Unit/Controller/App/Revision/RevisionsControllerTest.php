@@ -9,7 +9,7 @@ use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Model\Page\Breadcrumb;
 use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
 use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\RevisionsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;

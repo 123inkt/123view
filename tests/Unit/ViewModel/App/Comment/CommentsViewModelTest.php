@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
+namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Comment;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\CommentsViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel
+ * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Comment\CommentsViewModel
  * @covers ::__construct
  */
 class CommentsViewModelTest extends AbstractTestCase

@@ -9,8 +9,8 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewRevisionViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\RevisionsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\ReviewRevisionViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class RevisionViewModelProvider

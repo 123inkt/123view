@@ -7,6 +7,7 @@ use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\ViewModel\App\Revision\ReviewRevisionViewModel;
 use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
