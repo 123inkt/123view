@@ -47,6 +47,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::getActivity
      * @throws Throwable
      */
     public function testInvokeWithUnsupportedEvent(): void
