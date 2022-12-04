@@ -5,6 +5,7 @@ namespace DR\GitCommitNotification\Service\CodeReview;
 
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Message\Review\ReviewAccepted;
 use DR\GitCommitNotification\Message\Review\ReviewClosed;
@@ -15,6 +16,9 @@ use DR\GitCommitNotification\Message\Review\ReviewResumed;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
+use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
+use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,6 +27,7 @@ class CodeReviewActivityFormatter
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly UserRepository $userRepository,
+        private readonly RevisionRepository $revisionRepository,
         private string $applicationName
     ) {
     }
@@ -35,7 +40,7 @@ class CodeReviewActivityFormatter
         }
         $username = $user === $activity->getUser() ? $this->translator->trans('you') : $activity->getUser()?->getName() ?? $this->applicationName;
 
-        $params = $this->addCustomParams($activity, ['username' => $username, ENT_QUOTES]);
+        $params = $this->addCustomParams($activity, ['username' => $username]);
 
         // html escape as the translation strings are html
         $params = array_map(static fn(string $val): string => htmlspecialchars($val, ENT_QUOTES), $params);
@@ -54,6 +59,14 @@ class CodeReviewActivityFormatter
         if (in_array($activity->getEventName(), [ReviewerRemoved::NAME, ReviewerAdded::NAME], true)
             && $activity->getDataValue('userId') !== $activity->getDataValue('byUserId')) {
             $params['reviewerName'] = $this->userRepository->find((int)$activity->getDataValue('userId'))?->getName() ?? '';
+        }
+
+        // when revision was added or removed, add revision hash + message
+        if (in_array($activity->getEventName(), [ReviewRevisionAdded::NAME, ReviewRevisionRemoved::NAME], true)) {
+            $revision = $this->revisionRepository->find((int)$activity->getDataValue('revisionId'));
+            if ($revision instanceof Revision) {
+                $params['revision'] = sprintf('%s - %s', substr($revision->getCommitHash(), 0, 8), $revision->getTitle());
+            }
         }
 
         return $params;
@@ -91,6 +104,10 @@ class CodeReviewActivityFormatter
                 return 'timeline.review.opened';
             case ReviewResumed::NAME:
                 return 'timeline.review.resumed';
+            case ReviewRevisionAdded::NAME:
+                return 'timeline.review.revision.added';
+            case ReviewRevisionRemoved::NAME:
+                return 'timeline.review.revision.removed';
             default:
                 return null;
         }
