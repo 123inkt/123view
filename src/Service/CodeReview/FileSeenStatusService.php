@@ -10,7 +10,7 @@ use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
-use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeService;
+use DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Throwable;
@@ -20,7 +20,7 @@ class FileSeenStatusService implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly GitDiffTreeService $treeService,
+        private readonly LockableGitDiffTreeService $treeService,
         private readonly FileSeenStatusRepository $statusRepository,
         private readonly ?User $user
     ) {
@@ -67,8 +67,10 @@ class FileSeenStatusService implements LoggerAwareInterface
             foreach ($statusFiles as $statusFile) {
                 $this->statusRepository->remove($statusFile, $statusFile === $lastItem);
             }
+            // @codeCoverageIgnoreStart
         } catch (Throwable $exception) {
-            $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+            $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
+            // @codeCoverageIgnoreEnd
         }
     }
 
