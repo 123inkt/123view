@@ -28,7 +28,7 @@ class CodeReviewActivityProvider
         $activity->setEventName($event->getName());
         $activity->setData($event->getPayload());
 
-        if ($event instanceof UserAwareInterface) {
+        if ($event instanceof UserAwareInterface && $event->getUserId() !== null) {
             $activity->setUser($this->userRepository->find($event->getUserId()));
         }
 
