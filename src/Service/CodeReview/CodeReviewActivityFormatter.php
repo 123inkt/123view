@@ -20,8 +20,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CodeReviewActivityFormatter
 {
-    public function __construct(private readonly TranslatorInterface $translator, private readonly UserRepository $userRepository)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly UserRepository $userRepository,
+        private string $applicationName
+    ) {
     }
 
     public function format(User $user, CodeReviewActivity $activity): ?string
@@ -30,7 +33,7 @@ class CodeReviewActivityFormatter
         if ($translationId === null) {
             return null;
         }
-        $username = $user === $activity->getUser() ? $this->translator->trans('you') : $activity->getUser()?->getName() ?? '';
+        $username = $user === $activity->getUser() ? $this->translator->trans('you') : $activity->getUser()?->getName() ?? $this->applicationName;
 
         $params = $this->addCustomParams($activity, ['username' => $username, ENT_QUOTES]);
 
