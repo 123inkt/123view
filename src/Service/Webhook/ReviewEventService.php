@@ -15,6 +15,7 @@ use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Review\ReviewResumed;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -37,7 +38,23 @@ class ReviewEventService
         $this->bus->dispatch(new ReviewerRemoved((int)$review->getId(), (int)$reviewer->getUser()?->getId(), $byUserId));
     }
 
-    public function reviewerStateChanged(CodeReview $review, string $previousReviewerState, int $byUserId): void
+    public function reviewerStateChanged(CodeReview $review, CodeReviewer $reviewer, string $previousState): void
+    {
+        if ($reviewer->getState() === $previousState) {
+            return;
+        }
+
+        $event = new ReviewerStateChanged(
+            (int)$review->getId(),
+            (int)$reviewer->getId(),
+            (int)$reviewer->getUser()?->getId(),
+            $previousState,
+            $reviewer->getState()
+        );
+        $this->bus->dispatch($event);
+    }
+
+    public function reviewReviewerStateChanged(CodeReview $review, string $previousReviewerState, int $byUserId): void
     {
         $reviewerState = $review->getReviewersState();
         if ($reviewerState === $previousReviewerState) {

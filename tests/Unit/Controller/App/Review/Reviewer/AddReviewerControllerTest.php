@@ -93,7 +93,7 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
 
         $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 456, true);
-        $this->eventService->expects(self::once())->method('reviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
+        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

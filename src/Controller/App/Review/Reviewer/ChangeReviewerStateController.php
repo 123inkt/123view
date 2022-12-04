@@ -6,6 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Review\Reviewer;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\GitCommitNotification\Controller\AbstractController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Request\Review\ChangeReviewerStateRequest;
 use DR\GitCommitNotification\Security\Role\Roles;
@@ -30,13 +31,15 @@ class ChangeReviewerStateController extends AbstractController
     #[Entity('review')]
     public function __invoke(ChangeReviewerStateRequest $request, CodeReview $review): RedirectResponse
     {
-        $state         = $request->getState();
-        $reviewState   = (string)$review->getState();
-        $reviewerState = $review->getReviewersState();
-        $reviewerAdded = false;
+        $state       = $request->getState();
+        $reviewState = (string)$review->getState();
+
+        $reviewReviewerState = $review->getReviewersState();
+        $reviewerAdded       = false;
 
         // get reviewer, or assign one
-        $userReviewer = $review->getReviewer($this->getUser());
+        $userReviewer  = $review->getReviewer($this->getUser());
+        $reviewerState = $userReviewer?->getState() ?? CodeReviewerStateType::OPEN;
         if ($userReviewer === null) {
             $userReviewer  = $this->reviewerService->addReviewer($review, $this->getUser());
             $reviewerAdded = true;
@@ -53,7 +56,8 @@ class ChangeReviewerStateController extends AbstractController
         // dispatch events
         $userId = (int)$this->getUser()->getId();
         $this->eventService->reviewerAdded($review, $userReviewer, $userId, $reviewerAdded);
-        $this->eventService->reviewerStateChanged($review, $reviewerState, $userId);
+        $this->eventService->reviewerStateChanged($review, $userReviewer, $reviewerState);
+        $this->eventService->reviewReviewerStateChanged($review, $reviewReviewerState, $userId);
         $this->eventService->reviewStateChanged($review, $reviewState, $userId);
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);

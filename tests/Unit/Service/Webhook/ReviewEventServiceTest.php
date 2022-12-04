@@ -85,9 +85,9 @@ class ReviewEventServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::reviewerStateChanged
+     * @covers ::reviewReviewerStateChanged
      */
-    public function testReviewerStateChanged(): void
+    public function testReviewReviewerStateChanged(): void
     {
         $user = new User();
         $user->setId(456);
@@ -109,16 +109,16 @@ class ReviewEventServiceTest extends AbstractTestCase
             ->willReturn($this->envelope);
 
         $reviewer->setState(CodeReviewerStateType::REJECTED);
-        $this->service->reviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
+        $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
 
         $reviewer->setState(CodeReviewerStateType::REJECTED);
-        $this->service->reviewerStateChanged($review, CodeReviewerStateType::OPEN, 5);
+        $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::OPEN, 5);
 
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
-        $this->service->reviewerStateChanged($review, CodeReviewerStateType::OPEN, 5);
+        $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::OPEN, 5);
 
         $reviewer->setState(CodeReviewerStateType::OPEN);
-        $this->service->reviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
+        $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
     }
 
     /**
