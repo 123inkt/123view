@@ -3,7 +3,7 @@
 
 {% set detachRevisionForm = revisionViewModel.detachRevisionForm %}
 <div class="review-revision mt-3">
-    <h5>{{ 'revisions'|trans }}</h5>
+    <h6 class="border-bottom">{{ 'revisions'|trans }}</h6>
 
     {{ form_start(detachRevisionForm) }}
     {%- for revision in revisionViewModel.revisions -%}
