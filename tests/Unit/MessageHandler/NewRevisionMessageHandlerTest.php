@@ -30,6 +30,7 @@ use Throwable;
 /**
  * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler
  * @covers ::__construct
+ * @suppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class NewRevisionMessageHandlerTest extends AbstractTestCase
 {

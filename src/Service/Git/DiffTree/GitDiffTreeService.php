@@ -32,7 +32,7 @@ class GitDiffTreeService
             ->noCommitId()
             ->nameOnly()
             ->recurseSubTree()
-            ->hash($revision->getCommitHash());
+            ->hash((string)$revision->getCommitHash());
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $revision->getRepository()?->getName()));
 
