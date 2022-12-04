@@ -77,11 +77,11 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
 
         // dispatch events
         if ($reviewCreated) {
-            $this->dispatchAfter(new ReviewCreated((int)$review->getId()));
+            $this->dispatchAfter(new ReviewCreated((int)$review->getId(), (int)$revision->getId()));
         }
         if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
-            $this->dispatchAfter(new ReviewOpened((int)$review->getId()));
+            $this->dispatchAfter(new ReviewOpened((int)$review->getId(), null));
         }
-        $this->dispatchAfter(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId()));
+        $this->dispatchAfter(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null));
     }
 }

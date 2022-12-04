@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\App\Review\ChangeReviewStateController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Request\Review\ChangeReviewStateRequest;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
@@ -42,8 +43,12 @@ class ChangeReviewStateControllerTest extends AbstractControllerTestCase
         $review->setId(123);
         $review->setState(CodeReviewStateType::CLOSED);
 
+        $user = new User();
+        $user->setId(456);
+
+        $this->expectGetUser($user);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED);
+        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED, 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

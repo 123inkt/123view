@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Controller\App\Revision\DetachRevisionController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
@@ -72,7 +73,10 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
         $review->setId(456);
         $review->getRevisions()->add($revisionA);
         $review->getRevisions()->add($revisionB);
+        $user = new User();
+        $user->setId(456);
 
+        $this->expectGetUser($user);
         $this->expectCreateForm(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => [$revisionA, $revisionB]])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
@@ -81,7 +85,7 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
 
         $this->revisionRepository->expects(self::once())->method('save')->with($revisionA);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('revisionsDetached')->with($review, [$revisionA]);
+        $this->eventService->expects(self::once())->method('revisionsDetached')->with($review, [$revisionA], 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

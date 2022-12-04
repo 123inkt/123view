@@ -4,17 +4,20 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Message\Reviewer;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
+use DR\GitCommitNotification\Message\UserAwareInterface;
 
-class ReviewerAdded implements AsyncMessageInterface, WebhookEventInterface
+class ReviewerAdded implements AsyncMessageInterface, CodeReviewAwareInterface, UserAwareInterface
 {
-    public function __construct(public readonly int $reviewId, public readonly int $userId)
+    public const NAME = 'reviewer-added';
+
+    public function __construct(public readonly int $reviewId, public readonly int $userId, public readonly int $byUserId)
     {
     }
 
     public function getName(): string
     {
-        return 'reviewer-added';
+        return self::NAME;
     }
 
     public function getReviewId(): int
@@ -22,11 +25,16 @@ class ReviewerAdded implements AsyncMessageInterface, WebhookEventInterface
         return $this->reviewId;
     }
 
+    public function getUserId(): int
+    {
+        return $this->byUserId;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['reviewId' => $this->reviewId, 'userId' => $this->userId];
+        return ['reviewId' => $this->reviewId, 'userId' => $this->userId, 'byUserId' => $this->byUserId];
     }
 }

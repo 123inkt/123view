@@ -5,7 +5,7 @@ namespace DR\GitCommitNotification\Service\Webhook;
 
 use DR\GitCommitNotification\Entity\Webhook\Webhook;
 use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -21,7 +21,7 @@ class WebhookExecutionService implements LoggerAwareInterface
     {
     }
 
-    public function execute(Webhook $webhook, WebhookEventInterface $event): WebhookActivity
+    public function execute(Webhook $webhook, CodeReviewAwareInterface $event): WebhookActivity
     {
         // track request/response
         $activity = new WebhookActivity();
@@ -45,7 +45,7 @@ class WebhookExecutionService implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
-    private function tryExecute(Webhook $webhook, WebhookActivity $activity, WebhookEventInterface $event): void
+    private function tryExecute(Webhook $webhook, WebhookActivity $activity, CodeReviewAwareInterface $event): void
     {
         $client = $this->httpClient;
         // @codeCoverageIgnoreStart

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
+namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Revision;
 
 use ArrayIterator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -9,11 +9,11 @@ use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\RevisionsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Review\RevisionsViewModel
+ * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel
  * @covers ::__construct
  */
 class RevisionsViewModelTest extends AbstractTestCase

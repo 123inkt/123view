@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\Webhook;
 
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
 use Psr\Log\LoggerAwareInterface;
@@ -20,7 +20,7 @@ class WebhookNotifier implements LoggerAwareInterface
     ) {
     }
 
-    public function notify(WebhookEventInterface $event): void
+    public function notify(CodeReviewAwareInterface $event): void
     {
         $repositoryId = $this->reviewRepository->find($event->getReviewId())?->getRepository()?->getId();
         if ($repositoryId === null) {

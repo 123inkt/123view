@@ -5,11 +5,10 @@ namespace DR\GitCommitNotification\Message\Comment;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
 use DR\GitCommitNotification\Message\MailNotificationInterface;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
 
-class CommentReplyAdded implements AsyncMessageInterface, WebhookEventInterface, MailNotificationInterface
+class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterface, CommentReplyEventInterface
 {
-    public function __construct(public readonly int $reviewId, public readonly int $commentReplyId)
+    public function __construct(public readonly int $reviewId, public readonly int $commentReplyId, public readonly string $message)
     {
     }
 
@@ -23,11 +22,16 @@ class CommentReplyAdded implements AsyncMessageInterface, WebhookEventInterface,
         return $this->reviewId;
     }
 
+    public function getCommentReplyId(): int
+    {
+        return $this->commentReplyId;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['comment-id' => $this->commentReplyId];
+        return ['comment-id' => $this->commentReplyId, 'message' => $this->message];
     }
 }

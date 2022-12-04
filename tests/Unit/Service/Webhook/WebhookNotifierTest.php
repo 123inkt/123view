@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Tests\Unit\Service\Webhook;
 use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Webhook\Webhook;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
 use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
@@ -42,7 +42,7 @@ class WebhookNotifierTest extends AbstractTestCase
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
         $this->webhookRepository->expects(self::never())->method('findBy');
 
-        $event = $this->createMock(WebhookEventInterface::class);
+        $event = $this->createMock(CodeReviewAwareInterface::class);
         $event->method('getReviewId')->willReturn(123);
 
         $this->notifier->notify($event);
@@ -63,7 +63,7 @@ class WebhookNotifierTest extends AbstractTestCase
         $webhook = new Webhook();
         $webhook->setId(789);
 
-        $event = $this->createMock(WebhookEventInterface::class);
+        $event = $this->createMock(CodeReviewAwareInterface::class);
         $event->method('getReviewId')->willReturn(123);
 
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);

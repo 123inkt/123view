@@ -15,6 +15,7 @@ use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Review\ReviewResumed;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -25,19 +26,35 @@ class ReviewEventService
     {
     }
 
-    public function reviewerAdded(CodeReview $review, CodeReviewer $reviewer, bool $added): void
+    public function reviewerAdded(CodeReview $review, CodeReviewer $reviewer, int $byUserId, bool $added): void
     {
         if ($added) {
-            $this->bus->dispatch(new ReviewerAdded((int)$review->getId(), (int)$reviewer->getUser()?->getId()));
+            $this->bus->dispatch(new ReviewerAdded((int)$review->getId(), (int)$reviewer->getUser()?->getId(), $byUserId));
         }
     }
 
-    public function reviewerRemoved(CodeReview $review, CodeReviewer $reviewer): void
+    public function reviewerRemoved(CodeReview $review, CodeReviewer $reviewer, int $byUserId): void
     {
-        $this->bus->dispatch(new ReviewerRemoved((int)$review->getId(), (int)$reviewer->getUser()?->getId()));
+        $this->bus->dispatch(new ReviewerRemoved((int)$review->getId(), (int)$reviewer->getUser()?->getId(), $byUserId));
     }
 
-    public function reviewerStateChanged(CodeReview $review, string $previousReviewerState): void
+    public function reviewerStateChanged(CodeReview $review, CodeReviewer $reviewer, string $previousState): void
+    {
+        if ($reviewer->getState() === $previousState) {
+            return;
+        }
+
+        $event = new ReviewerStateChanged(
+            (int)$review->getId(),
+            (int)$reviewer->getId(),
+            (int)$reviewer->getUser()?->getId(),
+            $previousState,
+            (string)$reviewer->getState()
+        );
+        $this->bus->dispatch($event);
+    }
+
+    public function reviewReviewerStateChanged(CodeReview $review, string $previousReviewerState, int $byUserId): void
     {
         $reviewerState = $review->getReviewersState();
         if ($reviewerState === $previousReviewerState) {
@@ -45,43 +62,43 @@ class ReviewEventService
         }
 
         if ($reviewerState === CodeReviewerStateType::REJECTED) {
-            $this->bus->dispatch(new ReviewRejected((int)$review->getId()));
+            $this->bus->dispatch(new ReviewRejected((int)$review->getId(), $byUserId));
         } elseif ($reviewerState === CodeReviewerStateType::ACCEPTED) {
-            $this->bus->dispatch(new ReviewAccepted((int)$review->getId()));
+            $this->bus->dispatch(new ReviewAccepted((int)$review->getId(), $byUserId));
         } elseif ($reviewerState === CodeReviewerStateType::OPEN) {
-            $this->bus->dispatch(new ReviewResumed((int)$review->getId()));
+            $this->bus->dispatch(new ReviewResumed((int)$review->getId(), $byUserId));
         }
     }
 
-    public function reviewStateChanged(CodeReview $review, string $reviewState): void
+    public function reviewStateChanged(CodeReview $review, string $reviewState, int $byUserId): void
     {
         if ($review->getState() === $reviewState) {
             return;
         }
         if ($review->getState() === CodeReviewStateType::OPEN) {
-            $this->bus->dispatch(new ReviewOpened((int)$review->getId()));
+            $this->bus->dispatch(new ReviewOpened((int)$review->getId(), $byUserId));
         } elseif ($review->getState() === CodeReviewStateType::CLOSED) {
-            $this->bus->dispatch(new ReviewClosed((int)$review->getId()));
+            $this->bus->dispatch(new ReviewClosed((int)$review->getId(), $byUserId));
         }
     }
 
     /**
      * @param Revision[] $revisions
      */
-    public function revisionsAdded(CodeReview $review, array $revisions): void
+    public function revisionsAdded(CodeReview $review, array $revisions, ?int $byUserId): void
     {
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId()));
+            $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $byUserId));
         }
     }
 
     /**
      * @param Revision[] $detachedRevisions
      */
-    public function revisionsDetached(CodeReview $review, array $detachedRevisions): void
+    public function revisionsDetached(CodeReview $review, array $detachedRevisions, ?int $byUserId): void
     {
         foreach ($detachedRevisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId()));
+            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), $byUserId));
         }
     }
 }

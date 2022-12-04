@@ -5,9 +5,8 @@ namespace DR\GitCommitNotification\Message\Comment;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
 use DR\GitCommitNotification\Message\MailNotificationInterface;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
 
-class CommentResolved implements AsyncMessageInterface, WebhookEventInterface, MailNotificationInterface
+class CommentResolved implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
 {
     public function __construct(public readonly int $reviewId, public readonly int $commentId, public readonly int $resolveByUserId)
     {
@@ -21,6 +20,11 @@ class CommentResolved implements AsyncMessageInterface, WebhookEventInterface, M
     public function getReviewId(): int
     {
         return $this->reviewId;
+    }
+
+    public function getCommentId(): int
+    {
+        return $this->commentId;
     }
 
     /**

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\MessageHandler;
 
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
 use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
 use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
@@ -35,7 +35,7 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
     /**
      * @throws Throwable
      */
-    public function handleEvent(WebhookEventInterface $event): void
+    public function handleEvent(CodeReviewAwareInterface $event): void
     {
         $review = $this->reviewRepository->find($event->getReviewId());
         if ($review === null) {

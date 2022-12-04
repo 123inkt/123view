@@ -28,7 +28,7 @@ class ChangeReviewStateController extends AbstractController
         $reviewState = $review->getState();
         $this->reviewRepository->save($review->setState($request->getState()), true);
 
-        $this->eventService->reviewStateChanged($review, (string)$reviewState);
+        $this->eventService->reviewStateChanged($review, (string)$reviewState, (int)$this->getUser()->getId());
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }

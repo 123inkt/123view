@@ -43,21 +43,6 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
      * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
-    public function testGetFileDiffViewModelWithoutSelectedFile(): void
-    {
-        $action = new AddCommentAction(new LineReference('reference', 1, 2, 3));
-        $review = new CodeReview();
-
-        $this->commentModelProvider->expects(self::never())->method('getCommentsViewModel');
-
-        $viewModel = $this->provider->getFileDiffViewModel($review, null, $action);
-        static::assertNull($viewModel->getHighlightedFile());
-    }
-
-    /**
-     * @covers ::getFileDiffViewModel
-     * @throws Throwable
-     */
     public function testGetFileDiffViewModelAddComment(): void
     {
         $action              = new AddCommentAction(new LineReference('reference', 1, 2, 3));

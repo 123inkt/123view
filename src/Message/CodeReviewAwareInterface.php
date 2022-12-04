@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Message;
 
-interface WebhookEventInterface
+interface CodeReviewAwareInterface
 {
     public function getName(): string;
 

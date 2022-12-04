@@ -52,7 +52,7 @@ class AddCommentController extends AbstractController
 
         $this->commentRepository->save($comment, true);
 
-        $this->bus->dispatch(new CommentAdded((int)$comment->getReview()?->getId(), (int)$comment->getId()));
+        $this->bus->dispatch(new CommentAdded((int)$comment->getReview()?->getId(), (int)$comment->getId(), $data['message']));
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review], ['action'], 'focus:comment:' . $comment->getId());
     }

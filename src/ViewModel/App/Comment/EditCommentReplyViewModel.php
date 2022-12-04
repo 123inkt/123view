@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review;
+namespace DR\GitCommitNotification\ViewModel\App\Comment;
 
 use DR\GitCommitNotification\Entity\Review\CommentReply;
 use Symfony\Component\Form\FormView;

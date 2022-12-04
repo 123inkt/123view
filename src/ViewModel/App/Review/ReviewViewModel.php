@@ -7,6 +7,8 @@ use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewer;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\ViewModel\App\Review\Timeline\TimelineViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\ReviewRevisionViewModel;
 use Symfony\Component\Form\FormView;
 
 class ReviewViewModel
@@ -17,10 +19,12 @@ class ReviewViewModel
     private string                   $sidebarTabMode     = self::SIDEBAR_TAB_OVERVIEW;
     private ?FileTreeViewModel       $fileTreeModel      = null;
     private ?ReviewRevisionViewModel $revisionViewModel  = null;
+    private ?TimelineViewModel       $timelineViewModel  = null;
+    private ?FileDiffViewModel       $fileDiffViewModel  = null;
     private ?FormView                $addReviewerForm    = null;
     private bool                     $descriptionVisible = true;
 
-    public function __construct(public readonly CodeReview $review, public readonly FileDiffViewModel $fileDiffViewModel)
+    public function __construct(public readonly CodeReview $review)
     {
     }
 
@@ -74,6 +78,30 @@ class ReviewViewModel
     public function getFileTreeModel(): ?FileTreeViewModel
     {
         return $this->fileTreeModel;
+    }
+
+    public function getFileDiffViewModel(): ?FileDiffViewModel
+    {
+        return $this->fileDiffViewModel;
+    }
+
+    public function setFileDiffViewModel(?FileDiffViewModel $fileDiffViewModel): self
+    {
+        $this->fileDiffViewModel = $fileDiffViewModel;
+
+        return $this;
+    }
+
+    public function getTimelineViewModel(): ?TimelineViewModel
+    {
+        return $this->timelineViewModel;
+    }
+
+    public function setTimelineViewModel(?TimelineViewModel $timelineViewModel): self
+    {
+        $this->timelineViewModel = $timelineViewModel;
+
+        return $this;
     }
 
     public function getOpenComments(): int

@@ -18,7 +18,7 @@
                 {% set isFileSeen = fileTreeModel.fileSeen(file) or fileTreeModel.fileSelected(file) %}
 
                 <li class="review-file-tree--file
-                    {%- if fileTreeModel.fileSelected(file) %} review-file-tree--selected
+                    {%- if fileTreeModel.fileSelected(file) %} bg-primary bg-opacity-10
                     {%- elseif not isFileSeen %} review-file-tree--unseen{% endif -%}"
                     data-role="review-file-tree-file {%- if fileTreeModel.fileSelected(file) %} active-file{% endif %}"
                 >

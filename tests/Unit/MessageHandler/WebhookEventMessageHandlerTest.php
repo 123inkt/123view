@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
 
-use DR\GitCommitNotification\Message\WebhookEventInterface;
+use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
 use DR\GitCommitNotification\MessageHandler\WebhookEventMessageHandler;
 use DR\GitCommitNotification\Service\Webhook\WebhookNotifier;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
@@ -30,7 +30,7 @@ class WebhookEventMessageHandlerTest extends AbstractTestCase
      */
     public function testInvoke(): void
     {
-        $event = $this->createMock(WebhookEventInterface::class);
+        $event = $this->createMock(CodeReviewAwareInterface::class);
         $this->notifier->expects(self::once())->method('notify')->with($event);
         ($this->handler)($event);
     }

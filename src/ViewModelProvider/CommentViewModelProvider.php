@@ -17,11 +17,11 @@ use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
 use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Review\AddCommentViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\CommentsViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\EditCommentReplyViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\EditCommentViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\ReplyCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\AddCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\CommentsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentReplyViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\ReplyCommentViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class CommentViewModelProvider

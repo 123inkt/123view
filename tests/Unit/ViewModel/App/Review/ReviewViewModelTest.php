@@ -10,7 +10,6 @@ use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 
 /**
@@ -42,7 +41,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review->getComments()->add($commentB);
         $review->getComments()->add($commentC);
 
-        $model = new ReviewViewModel($review, new FileDiffViewModel(null));
+        $model = new ReviewViewModel($review);
         static::assertSame(2, $model->getOpenComments());
     }
 
@@ -58,7 +57,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getRevisions()->add($revision);
 
-        $model = new ReviewViewModel($review, new FileDiffViewModel(null));
+        $model = new ReviewViewModel($review);
 
         static::assertSame(['holmes@example.com' => 'Sherlock Holmes'], $model->getAuthors());
     }
@@ -77,7 +76,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getReviewers()->add($reviewer);
 
-        $model = new ReviewViewModel($review, new FileDiffViewModel(null));
+        $model = new ReviewViewModel($review);
 
         static::assertNotNull($model->getReviewer($userA));
         static::assertNull($model->getReviewer($userB));

@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\GitCommitNotification\EventSubscriber\AccessDeniedExceptionSubscriber
@@ -25,7 +24,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 {
-    private TranslatorInterface&MockObject   $translator;
     private UrlGeneratorInterface&MockObject $urlGenerator;
     private AccessDeniedExceptionSubscriber  $subscriber;
 
@@ -33,9 +31,8 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->translator   = $this->createMock(TranslatorInterface::class);
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->subscriber   = new AccessDeniedExceptionSubscriber($this->urlGenerator, $this->translator);
+        $this->subscriber   = new AccessDeniedExceptionSubscriber($this->urlGenerator);
     }
 
     /**
@@ -53,7 +50,6 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
      */
     public function testOnKernelExceptionOnlyAcceptAccessDeniedException(): void
     {
-        $this->translator->expects(self::never())->method('trans');
         $this->urlGenerator->expects(self::never())->method('generate');
 
         $event = new ExceptionEvent(
@@ -70,7 +66,6 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
      */
     public function testOnKernelExceptionShouldRedirect(): void
     {
-        $this->translator->expects(self::once())->method('trans')->with('redirect.access.denied.session.expired')->willReturn('message');
         $this->urlGenerator
             ->expects(self::once())
             ->method('generate')

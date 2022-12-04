@@ -4,17 +4,18 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Message\Review;
 
 use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\WebhookEventInterface;
 
-class ReviewResumed implements AsyncMessageInterface, WebhookEventInterface
+class ReviewResumed implements AsyncMessageInterface, CodeReviewEventInterface
 {
-    public function __construct(public readonly int $reviewId)
+    public const NAME = 'review-resumed';
+
+    public function __construct(public readonly int $reviewId, public readonly int $byUserId)
     {
     }
 
     public function getName(): string
     {
-        return 'review-resumed';
+        return self::NAME;
     }
 
     public function getReviewId(): int
@@ -22,11 +23,16 @@ class ReviewResumed implements AsyncMessageInterface, WebhookEventInterface
         return $this->reviewId;
     }
 
+    public function getUserId(): int
+    {
+        return $this->byUserId;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['reviewId' => $this->reviewId];
+        return ['reviewId' => $this->reviewId, 'userId' => $this->byUserId];
     }
 }

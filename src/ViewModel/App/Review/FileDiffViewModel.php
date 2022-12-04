@@ -5,6 +5,11 @@ namespace DR\GitCommitNotification\ViewModel\App\Review;
 
 use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
+use DR\GitCommitNotification\ViewModel\App\Comment\AddCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\CommentsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentReplyViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentViewModel;
+use DR\GitCommitNotification\ViewModel\App\Comment\ReplyCommentViewModel;
 
 class FileDiffViewModel
 {

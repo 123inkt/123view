@@ -6,7 +6,7 @@ namespace DR\GitCommitNotification\Controller\App\Revision;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Security\Role\Roles;
 use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Review\AttachRevisionsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\AttachRevisionsViewModel;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

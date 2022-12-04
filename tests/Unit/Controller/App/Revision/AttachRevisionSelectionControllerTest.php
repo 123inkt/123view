@@ -7,8 +7,8 @@ use DR\GitCommitNotification\Controller\App\Revision\AttachRevisionSelectionCont
 use DR\GitCommitNotification\Entity\Repository\Repository;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\AttachRevisionsViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\RevisionsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\AttachRevisionsViewModel;
+use DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
