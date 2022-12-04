@@ -98,7 +98,7 @@ class CodeReviewActivityFormatter
                 $key .= $activity->getDataValue('userId') !== $activity->getDataValue('byUserId') ? '-by' : '';
                 break;
             case ReviewerStateChanged::NAME:
-                $key .= $activity->getDataValue('newState');
+                $key .= '-' . $activity->getDataValue('newState');
                 break;
         }
 
