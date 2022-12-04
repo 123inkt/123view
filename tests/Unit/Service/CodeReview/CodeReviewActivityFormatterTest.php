@@ -136,4 +136,24 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
 
         $this->formatter->format($user, $activity);
     }
+
+    /**
+     * @covers ::format
+     * @covers ::addCustomParams
+     * @covers ::getTranslationId
+     */
+    public function testFormatUnknownEvent(): void
+    {
+        $user = new User();
+        $user->setId(456);
+
+        $activity = new CodeReviewActivity();
+        $activity->setEventName('foobar');
+
+        $this->translator->expects(self::never())->method('trans');
+        $this->userRepository->expects(self::never())->method('find');
+        $this->revisionRepository->expects(self::never())->method('find');
+
+        static::assertNull($this->formatter->format($user, $activity));
+    }
 }
