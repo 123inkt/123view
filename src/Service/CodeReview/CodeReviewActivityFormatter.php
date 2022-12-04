@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\CodeReview;
 
+use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Message\Review\ReviewAccepted;
@@ -13,6 +14,7 @@ use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Review\ReviewResumed;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -65,6 +67,15 @@ class CodeReviewActivityFormatter
                 return $activity->getDataValue('userId') !== $activity->getDataValue('byUserId')
                     ? 'timeline.reviewer.added.by'
                     : 'timeline.reviewer.added';
+            case ReviewerStateChanged::NAME:
+                if ($activity->getDataValue('newState') === CodeReviewerStateType::ACCEPTED) {
+                    return 'timeline.reviewer.accepted';
+                }
+                if ($activity->getDataValue('newState') === CodeReviewerStateType::REJECTED) {
+                    return 'timeline.reviewer.rejected';
+                }
+
+                return null;
             case ReviewCreated::NAME:
                 return 'timeline.review.created.from.revision';
             case ReviewClosed::NAME:

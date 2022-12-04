@@ -10,14 +10,13 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see https://symfony.com/doc/current/security/access_denied_handler.html
  */
 class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator, private TranslatorInterface $translator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 
@@ -29,7 +28,7 @@ class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $request->getSession()->getFlashBag()->add('error', $this->translator->trans('redirect.access.denied.session.expired'));
+        $request->getSession()->getFlashBag()->add('error', 'redirect.access.denied.session.expired');
 
         $url = $this->urlGenerator->generate(AuthenticationController::class, ['next' => $request->getRequestUri()]);
 
