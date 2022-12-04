@@ -16,6 +16,7 @@ use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,6 +35,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
     private CodeReviewService&MockObject         $reviewService;
+    private FileSeenStatusService&MockObject     $seenStatusService;
     private CodeReviewRevisionMatcher&MockObject $reviewRevisionMatcher;
     private ManagerRegistry&MockObject           $registry;
     private MessageBusInterface&MockObject       $bus;
@@ -46,6 +48,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->envelope              = new Envelope(new stdClass(), []);
         $this->revisionRepository    = $this->createMock(RevisionRepository::class);
         $this->reviewService         = $this->createMock(CodeReviewService::class);
+        $this->seenStatusService     = $this->createMock(FileSeenStatusService::class);
         $this->reviewRevisionMatcher = $this->createMock(CodeReviewRevisionMatcher::class);
         $this->registry              = $this->createMock(ManagerRegistry::class);
         $this->bus                   = $this->createMock(MessageBusInterface::class);
@@ -53,6 +56,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
             $this->revisionRepository,
             $this->reviewService,
             $this->reviewRevisionMatcher,
+            $this->seenStatusService,
             $this->registry,
             $this->bus
         );
@@ -149,6 +153,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
                 ),
                 [$revision]
             );
+        $this->seenStatusService->expects(self::once())->method('markAllAsUnseen')->with($review, $revision);
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
             ->withConsecutive(
