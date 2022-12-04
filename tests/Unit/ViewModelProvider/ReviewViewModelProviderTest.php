@@ -18,6 +18,7 @@ use DR\GitCommitNotification\Tests\AbstractTestCase;
 use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
 use DR\GitCommitNotification\ViewModelProvider\FileDiffViewModelProvider;
 use DR\GitCommitNotification\ViewModelProvider\FileTreeViewModelProvider;
+use DR\GitCommitNotification\ViewModelProvider\ReviewTimelineViewModelProvider;
 use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
 use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,32 +31,35 @@ use Throwable;
  */
 class ReviewViewModelProviderTest extends AbstractTestCase
 {
-    private FileDiffViewModelProvider&MockObject  $fileDiffProvider;
-    private ReviewDiffServiceInterface&MockObject $reviewDiffService;
-    private FormFactoryInterface&MockObject       $formFactory;
-    private FileTreeGenerator&MockObject          $treeGenerator;
-    private FileTreeViewModelProvider&MockObject  $fileTreeModelProvider;
-    private RevisionViewModelProvider&MockObject  $revisionModelProvider;
-    private DiffFinder&MockObject                 $diffFinder;
-    private ReviewViewModelProvider               $modelProvider;
+    private FileDiffViewModelProvider&MockObject       $fileDiffProvider;
+    private ReviewDiffServiceInterface&MockObject      $reviewDiffService;
+    private FormFactoryInterface&MockObject            $formFactory;
+    private FileTreeGenerator&MockObject               $treeGenerator;
+    private FileTreeViewModelProvider&MockObject       $fileTreeModelProvider;
+    private RevisionViewModelProvider&MockObject       $revisionModelProvider;
+    private DiffFinder&MockObject                      $diffFinder;
+    private ReviewTimelineViewModelProvider&MockObject $timelineViewModelProvider;
+    private ReviewViewModelProvider                    $modelProvider;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->fileDiffProvider      = $this->createMock(FileDiffViewModelProvider::class);
-        $this->reviewDiffService     = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->formFactory           = $this->createMock(FormFactoryInterface::class);
-        $this->treeGenerator         = $this->createMock(FileTreeGenerator::class);
-        $this->fileTreeModelProvider = $this->createMock(FileTreeViewModelProvider::class);
-        $this->revisionModelProvider = $this->createMock(RevisionViewModelProvider::class);
-        $this->diffFinder            = $this->createMock(DiffFinder::class);
-        $this->modelProvider         = new ReviewViewModelProvider(
+        $this->fileDiffProvider          = $this->createMock(FileDiffViewModelProvider::class);
+        $this->reviewDiffService         = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->formFactory               = $this->createMock(FormFactoryInterface::class);
+        $this->treeGenerator             = $this->createMock(FileTreeGenerator::class);
+        $this->fileTreeModelProvider     = $this->createMock(FileTreeViewModelProvider::class);
+        $this->revisionModelProvider     = $this->createMock(RevisionViewModelProvider::class);
+        $this->timelineViewModelProvider = $this->createMock(ReviewTimelineViewModelProvider::class);
+        $this->diffFinder                = $this->createMock(DiffFinder::class);
+        $this->modelProvider             = new ReviewViewModelProvider(
             $this->fileDiffProvider,
             $this->reviewDiffService,
             $this->formFactory,
             $this->treeGenerator,
             $this->fileTreeModelProvider,
             $this->revisionModelProvider,
+            $this->timelineViewModelProvider,
             $this->diffFinder
         );
     }

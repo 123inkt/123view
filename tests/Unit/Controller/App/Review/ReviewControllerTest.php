@@ -62,7 +62,8 @@ class ReviewControllerTest extends AbstractControllerTestCase
         $review->setProjectId(123);
 
         $diffFile  = new DiffFile();
-        $viewModel = new ReviewViewModel($review, new FileDiffViewModel($diffFile));
+        $viewModel = new ReviewViewModel($review);
+        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile));
 
         $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, 'filepath', 'tab', $action)->willReturn($viewModel);
         $this->fileSeenService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFile);
