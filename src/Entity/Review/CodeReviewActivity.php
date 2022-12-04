@@ -89,6 +89,11 @@ class CodeReviewActivity
         return $this->data;
     }
 
+    public function getDataValue(string $key): int|float|string|null
+    {
+        return $this->data[$key] ?? null;
+    }
+
     /**
      * @param array<string, int|float|string|null> $data
      */

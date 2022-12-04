@@ -10,10 +10,9 @@ class TimelineEntryViewModel
     /**
      * @codeCoverageIgnore
      *
-     * @param CodeReviewActivity[]  $activities
-     * @param array<string, object> $data
+     * @param non-empty-array<CodeReviewActivity> $activities
      */
-    public function __construct(public readonly array $activities, public readonly array $data)
+    public function __construct(public readonly array $activities, public readonly string $message)
     {
     }
 }
