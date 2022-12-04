@@ -7,13 +7,15 @@ use DR\GitCommitNotification\Message\AsyncMessageInterface;
 
 class ReviewClosed implements AsyncMessageInterface, CodeReviewEventInterface
 {
+    public const NAME = 'review-closed';
+
     public function __construct(public readonly int $reviewId, public readonly int $byUserId)
     {
     }
 
     public function getName(): string
     {
-        return 'review-closed';
+        return self::NAME;
     }
 
     public function getReviewId(): int

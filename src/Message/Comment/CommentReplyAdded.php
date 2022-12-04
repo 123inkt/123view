@@ -8,7 +8,7 @@ use DR\GitCommitNotification\Message\MailNotificationInterface;
 
 class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterface, CommentReplyEventInterface
 {
-    public function __construct(public readonly int $reviewId, public readonly int $commentReplyId)
+    public function __construct(public readonly int $reviewId, public readonly int $commentReplyId, public readonly string $message)
     {
     }
 
@@ -32,6 +32,6 @@ class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterf
      */
     public function getPayload(): array
     {
-        return ['comment-id' => $this->commentReplyId];
+        return ['comment-id' => $this->commentReplyId, 'message' => $this->message];
     }
 }

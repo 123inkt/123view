@@ -7,13 +7,15 @@ use DR\GitCommitNotification\Message\AsyncMessageInterface;
 
 class ReviewRejected implements AsyncMessageInterface, CodeReviewEventInterface
 {
+    public const NAME = 'review-rejected';
+
     public function __construct(public readonly int $reviewId, public readonly int $byUserId)
     {
     }
 
     public function getName(): string
     {
-        return 'review-rejected';
+        return self::NAME;
     }
 
     public function getReviewId(): int
