@@ -143,6 +143,7 @@ return [
     'settings'                                    => 'Settings',
     'sign.in'                                     => 'Sign in',
     'theme'                                       => 'Theme',
+    'timeline.review'                             => 'Review timeline',
     'timeline.review.accepted'                    => 'The review was <span class="text-success">accepted</span>.',
     'timeline.review.closed'                      => '<span class="text-primary">{username}</span> closed the review.',
     'timeline.review.created.from.revision'       => '<span class="text-primary">{username}</span> created the review from a revision.',

@@ -52,14 +52,18 @@
             {{- form(reviewModel.addReviewerForm) -}}
         </div>
 
-        <div class="mt-2">
-            <a class="text-body"
-               href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
-                <h6>{{ 'Review timeline'|trans }}</h6>
-            </a>
+        <div class="mt-1">
+            {%- if reviewModel.timelineViewModel is not same as (null) -%}
+                <h6 class="m-0 pt-1 pb-1 bg-primary bg-opacity-10">{{ 'timeline.review'|trans }}</h6>
+            {% else %}
+                <a class="pt-1 pb-1 text-body d-block"
+                   href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                    <h6 class="m-0">{{ 'timeline.review'|trans }}</h6>
+                </a>
+            {% endif %}
         </div>
 
-        <div class="clearfix mt-2 border-bottom">
+        <div class="clearfix mt-1 border-bottom">
             {% set summary = reviewModel.fileTreeModel.changeSummary %}
 
             <h6 class="float-start mb-0">{{ 'files'|trans }} ({{ summary.files }})</h6>

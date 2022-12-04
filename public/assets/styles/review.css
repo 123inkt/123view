@@ -58,10 +58,6 @@
     grid-template-columns: 1fr auto;
 }
 
-.review-file-tree--file.review-file-tree--selected {
-    background: var(--review-file-tree-file-selected-bg-color);
-}
-
 .review-file-tree--file-link:hover .review-file-tree--file-name {
     text-decoration: underline;
 }
