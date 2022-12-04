@@ -18,7 +18,9 @@
     {% endif %}
 
     {% if reviewModel.sidebarTabMode == 'overview' %}
-        <h6 class="mt-1 mb-1 border-bottom">{{ 'author'|trans }}</h6>
+        <h6 class="mt-1 mb-1 border-bottom">
+            {% if reviewModel.authors|length > 1 %}{{ 'authors'|trans }}{% else %}{{ 'author'|trans }}{% endif %}
+        </h6>
         <div class="ms-2">
             {% for email, name in reviewModel.authors %}
                 <small>{{ name }}</small><br>
@@ -27,7 +29,9 @@
             {% endfor %}
         </div>
 
-        <h6 class="mt-2 mb-1 border-bottom">{{ 'reviewers'|trans }}</h6>
+        <h6 class="mt-2 mb-1 border-bottom">
+            {% if review.reviewers|length > 1 %}{{ 'reviewers'|trans }}{% else %}{{ 'reviewer'|trans }}{% endif %}
+        </h6>
         <div class="ms-2">
             {%- for reviewer in review.reviewers -%}
                 <span class="reviewer-state small">
