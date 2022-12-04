@@ -26,7 +26,10 @@ class ReviewTimelineViewModelProvider
 
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
-            $timelineEntries[] = new TimelineEntryViewModel([$activity], $this->activityFormatter->format($this->user, $activity));
+            $message = $this->activityFormatter->format($this->user, $activity);
+            if ($message !== null) {
+                $timelineEntries[] = new TimelineEntryViewModel([$activity], $message);
+            }
         }
 
         return new TimelineViewModel($timelineEntries);

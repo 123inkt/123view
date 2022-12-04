@@ -65,7 +65,7 @@ class CodeReviewActivityFormatter
         if (in_array($activity->getEventName(), [ReviewRevisionAdded::NAME, ReviewRevisionRemoved::NAME], true)) {
             $revision = $this->revisionRepository->find((int)$activity->getDataValue('revisionId'));
             if ($revision instanceof Revision) {
-                $params['revision'] = sprintf('%s - %s', substr($revision->getCommitHash(), 0, 8), $revision->getTitle());
+                $params['revision'] = sprintf('%s - %s', substr((string)$revision->getCommitHash(), 0, 8), $revision->getTitle());
             }
         }
 

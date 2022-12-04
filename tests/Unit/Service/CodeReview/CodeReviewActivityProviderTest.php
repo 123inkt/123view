@@ -46,6 +46,7 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $this->userRepository->expects(self::once())->method('find')->with(789)->willReturn($user);
 
         $activity = $this->activityProvider->fromEvent($event);
+        static::assertNotNull($activity);
         static::assertSame($review, $activity->getReview());
         static::assertSame($user, $activity->getUser());
         static::assertSame(ReviewOpened::NAME, $activity->getEventName());

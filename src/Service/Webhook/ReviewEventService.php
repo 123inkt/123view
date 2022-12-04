@@ -49,7 +49,7 @@ class ReviewEventService
             (int)$reviewer->getId(),
             (int)$reviewer->getUser()?->getId(),
             $previousState,
-            $reviewer->getState()
+            (string)$reviewer->getState()
         );
         $this->bus->dispatch($event);
     }
