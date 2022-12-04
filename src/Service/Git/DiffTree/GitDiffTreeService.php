@@ -7,7 +7,6 @@ use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Exception\RepositoryException;
 use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
 use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\Log\LockableGitLogService;
 use Psr\Log\LoggerAwareTrait;
 
 class GitDiffTreeService
