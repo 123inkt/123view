@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Service\CodeReview;
 
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
@@ -24,6 +23,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CodeReviewActivityFormatter
 {
+    private const TRANSLATION_MAP = [
+        ReviewerAdded::NAME . '-by'              => 'timeline.reviewer.added.by',
+        ReviewerAdded::NAME                      => 'timeline.reviewer.added',
+        ReviewerRemoved::NAME . '-by'            => 'timeline.reviewer.removed.by',
+        ReviewerRemoved::NAME                    => 'timeline.reviewer.removed',
+        ReviewCreated::NAME                      => 'timeline.review.created.from.revision',
+        ReviewClosed::NAME                       => 'timeline.review.closed',
+        ReviewerStateChanged::NAME . '-accepted' => 'timeline.reviewer.accepted',
+        ReviewerStateChanged::NAME . '-rejected' => 'timeline.reviewer.rejected',
+        ReviewAccepted::NAME                     => 'timeline.review.accepted',
+        ReviewRejected::NAME                     => 'timeline.review.rejected',
+        ReviewOpened::NAME                       => 'timeline.review.opened',
+        ReviewResumed::NAME                      => 'timeline.review.resumed',
+        ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
+        ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
+    ];
+
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly UserRepository $userRepository,
@@ -74,42 +90,18 @@ class CodeReviewActivityFormatter
 
     private function getTranslationId(CodeReviewActivity $activity): ?string
     {
-        switch ($activity->getEventName()) {
-            case ReviewerRemoved::NAME:
-                return $activity->getDataValue('userId') !== $activity->getDataValue('byUserId')
-                    ? 'timeline.reviewer.removed.by'
-                    : 'timeline.reviewer.removed';
-            case ReviewerAdded::NAME:
-                return $activity->getDataValue('userId') !== $activity->getDataValue('byUserId')
-                    ? 'timeline.reviewer.added.by'
-                    : 'timeline.reviewer.added';
-            case ReviewerStateChanged::NAME:
-                if ($activity->getDataValue('newState') === CodeReviewerStateType::ACCEPTED) {
-                    return 'timeline.reviewer.accepted';
-                }
-                if ($activity->getDataValue('newState') === CodeReviewerStateType::REJECTED) {
-                    return 'timeline.reviewer.rejected';
-                }
+        $key = $activity->getEventName();
 
-                return null;
-            case ReviewCreated::NAME:
-                return 'timeline.review.created.from.revision';
-            case ReviewClosed::NAME:
-                return 'timeline.review.closed';
-            case ReviewAccepted::NAME:
-                return 'timeline.review.accepted';
-            case ReviewRejected::NAME:
-                return 'timeline.review.rejected';
-            case ReviewOpened::NAME:
-                return 'timeline.review.opened';
-            case ReviewResumed::NAME:
-                return 'timeline.review.resumed';
-            case ReviewRevisionAdded::NAME:
-                return 'timeline.review.revision.added';
-            case ReviewRevisionRemoved::NAME:
-                return 'timeline.review.revision.removed';
-            default:
-                return null;
+        switch ($activity->getEventName()) {
+            case ReviewerAdded::NAME:
+            case ReviewerRemoved::NAME:
+                $key .= $activity->getDataValue('userId') !== $activity->getDataValue('byUserId') ? '-by' : '';
+                break;
+            case ReviewerStateChanged::NAME:
+                $key .= $activity->getDataValue('newState');
+                break;
         }
+
+        return self::TRANSLATION_MAP[$key] ?? null;
     }
 }
