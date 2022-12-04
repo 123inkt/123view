@@ -98,7 +98,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
      * @covers ::getViewModel
      * @throws Throwable
      */
-    public function testGetViewModelRevisionOverview(): void
+    public function testGetViewModelWithoutSelectedFile(): void
     {
         $action     = new EditCommentAction(new Comment());
         $filePath   = '/path/to/file';
@@ -114,11 +114,14 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->reviewDiffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->treeGenerator->expects(self::once())->method('generate')->with([$file])->willReturn($tree);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], $filePath)->willReturn(null);
-        $this->fileDiffProvider->expects(self::once())->method('getFileDiffViewModel')->with($review, $file, $action);
+        $this->timelineViewModelProvider->expects(self::once())->method('getTimelineViewModel')->with($review);
+        $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');
         $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
 
         $viewModel = $this->modelProvider->getViewModel($review, $filePath, ReviewViewModel::SIDEBAR_TAB_REVISIONS, $action);
-        static::assertFalse($viewModel->isDescriptionVisible());
+        static::assertTrue($viewModel->isDescriptionVisible());
+        static::assertNotNull($viewModel->getTimelineViewModel());
+        static::assertNull($viewModel->getFileDiffViewModel());
         static::assertNotNull($viewModel->getRevisionViewModel());
     }
 }
