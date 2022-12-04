@@ -1,6 +1,8 @@
 {# timelineViewModel: TimelineViewModel #}
 
 <div class="review-timeline__overview">
+    <h5>{{ 'timeline.review'|trans }}</h5>
+
     {%- for entry in timelineViewModel.entries -%}
         {%- set activity = entry.activities|first -%}
 
