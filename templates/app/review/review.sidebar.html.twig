@@ -1,0 +1,79 @@
+<div class="review-grid-sidebar">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {% if reviewModel.sidebarTabMode == 'overview' %}active{% endif %}" href="{{ url_query_params({tab: 'overview'}) }}">
+                {{ 'overview'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if reviewModel.sidebarTabMode == 'revisions' %}active{% endif %}" href="{{ url_query_params({tab: 'revisions'}) }}">
+                {{ 'revisions'|trans }} ({{ review.revisions|length }})
+            </a>
+        </li>
+    </ul>
+
+    {% if reviewModel.sidebarTabMode == 'revisions' %}
+        {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+    {% endif %}
+
+    {% if reviewModel.sidebarTabMode == 'overview' %}
+        <h6 class="mt-3 mb-1 border-bottom">{{ 'author'|trans }}</h6>
+        <div class="ms-2">
+            {% for email, name in reviewModel.authors %}
+                <small>{{ name }}</small><br>
+            {% else %}
+                <em>{{ 'review.no.authors'|trans }}</em>
+            {% endfor %}
+        </div>
+
+        <h6 class="mt-2 mb-1 border-bottom">{{ 'reviewers'|trans }}</h6>
+        <div class="ms-2">
+            {% for reviewer in review.reviewers %}
+                <span class="reviewer-state small">
+                    {%- if reviewer.state == 'accepted' -%}
+                        😃
+                    {%- elseif reviewer.state == 'rejected' -%}
+                        😞
+                    {%- endif -%}
+                </span>
+
+                <span class="reviewer-name small">{{ reviewer.user.name }}</span>
+
+                <form method="POST"
+                      class="d-inline-block"
+                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <button type="submit" class="btn-close reviewer-remove"></button>
+                </form><br>
+
+            {% endfor %}
+        </div>
+
+        {{ form(reviewModel.addReviewerForm) }}
+
+        <div class="mt-2">
+            <a class="text-decoration-none text-body"
+               href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                <h6>{{ 'Review timeline'|trans }}</h6>
+            </a>
+        </div>
+
+        <div class="clearfix mt-2 border-bottom">
+            {% set summary = reviewModel.fileTreeModel.changeSummary %}
+
+            <h6 class="float-start mb-0">{{ 'files'|trans }} ({{ summary.files }})</h6>
+
+            <div class="float-start ms-2">
+                <span class="text-success">+{{ summary.added }}</span>
+                <span class="text-danger">-{{ summary.removed }}</span>
+            </div>
+        </div>
+        {% if not reviewModel.fileTreeModel.fileTree.empty %}
+            {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
+        {% else %}
+            <em>{{ 'review.no.files'|trans }}</em>
+        {% endif %}
+
+    {% endif %}
+</div>

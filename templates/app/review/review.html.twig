@@ -1,154 +1,23 @@
 {% extends 'app/app.wide.base.html.twig' %}
 
-{% block page_content %}
+{%- block page_content -%}
     {% set review = reviewModel.review %}
     {% set reviewer = reviewModel.getReviewer(app.user) %}
 
     <div class="review-grid-layout" data-controller="Review">
-        <div class="review-grid-header">
-            <h3 class="mt-2 overflow-hidden review-heading" title="{{ review.title }}">
-                <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
-                {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
-            </h3>
+        {%- include 'app/review/review.header.html.twig' with {reviewModel, review, reviewer} -%}
 
-            {% include 'app/flash/flashes.html.twig' %}
+        {%- include 'app/review/review.sidebar.html.twig' -%}
 
-            {% if reviewModel.descriptionVisible and review.description|length > 0 %}
-                <div class="mb-2 me-2 bg-primary bg-opacity-10 rounded-2 p-2 review--description">
-                    {{- review.description|markdown -}}
-                </div>
-            {% endif %}
-
-            {% if review.state == 'open' and (reviewer == null or reviewer.state == 'open') %}
-                <form method="POST"
-                      class="d-inline-block"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
-                    <input type="hidden" name="state" value="accepted"/>
-
-                    {% set openComments = reviewModel.openComments %}
-                    <button type="submit"
-                            class="btn btn-outline-success btn-sm"
-                            {% if openComments > 0 %}title="{{ 'accept.open.comments'|trans({count: openComments}) }}"{% endif %}>
-                        😃 {{ 'accept'|trans }}
-                        {% if openComments > 0 %}
-                            ({{ openComments }})
-                        {% endif %}
-                    </button>
-                </form>
-
-                <form method="POST"
-                      class="d-inline-block"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
-                    <input type="hidden" name="state" value="rejected"/>
-                    <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'raise.concern'|trans }}</button>
-                </form>
-            {% endif %}
-
-            {% if review.state == 'open' %}
-                {% if reviewer and reviewer.state != 'open' %}
-                    <form method="POST"
-                          class="d-inline-block"
-                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
-                        <input type="hidden" name="state" value="open"/>
-                        <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'resume.review'|trans }}</button>
-                    </form>
-                {% endif %}
-                <form method="POST"
-                      class="d-inline-block"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
-                    <input type="hidden" name="state" value="closed"/>
-                    <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'close.review'|trans }}</button>
-                </form>
-            {% elseif review.state == 'closed' %}
-                <form method="POST"
-                      class="d-inline-block"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
-                    <input type="hidden" name="state" value="open"/>
-                    <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'reopen.review'|trans }}</button>
-                </form>
-            {% endif %}
-        </div>
-
-        <div class="review-grid-sidebar">
-
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link {% if reviewModel.sidebarTabMode == 'overview' %}active{% endif %}"
-                       href="{{ url_query_params({tab: 'overview'}) }}">
-                        {{ 'overview'|trans }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if reviewModel.sidebarTabMode == 'revisions' %}active{% endif %}"
-                       href="{{ url_query_params({tab: 'revisions'}) }}">
-                        {{ 'revisions'|trans }} ({{ review.revisions|length }})
-                    </a>
-                </li>
-            </ul>
-
-            {% if reviewModel.sidebarTabMode == 'revisions' %}
-                {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
-            {% endif %}
-
-            {% if reviewModel.sidebarTabMode == 'overview' %}
-                <h5 class="mt-3">{{ 'author'|trans }}</h5>
-                {% for email, name in reviewModel.authors %}
-                    {{ name }}<br>
-                {% else %}
-                    <em>{{ 'review.no.authors'|trans }}</em>
-                {% endfor %}
-
-                <h5 class="mt-2">{{ 'reviewers'|trans }}</h5>
-                {% for reviewer in review.reviewers %}
-                    <span class="reviewer-state">
-                        {%- if reviewer.state == 'accepted' -%}
-                            😃
-                        {%- elseif reviewer.state == 'rejected' -%}
-                            😞
-                        {%- endif -%}
-                    </span>
-
-                    <span class="reviewer-name">{{ reviewer.user.name }}</span>
-
-                    <form method="POST"
-                          class="d-inline-block"
-                          action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
-                        <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit" class="btn-close reviewer-remove"></button>
-                    </form><br>
-
-                {% endfor %}
-
-                {{ form(reviewModel.addReviewerForm) }}
-
-                <div class="clearfix mt-2">
-                    {% set summary = reviewModel.fileTreeModel.changeSummary %}
-
-                    <h5 class="float-start">{{ 'files'|trans }} ({{ summary.files }})</h5>
-
-                    <div class="float-start mt-1 ms-2">
-                        <span class="text-success">+{{ summary.added }}</span>
-                        <span class="text-danger">-{{ summary.removed }}</span>
-                    </div>
-                </div>
-                {% if not reviewModel.fileTreeModel.fileTree.empty %}
-                    {% include 'app/review/review.file_tree.html.twig' with {fileTreeModel: reviewModel.fileTreeModel} %}
-                {% else %}
-                    <em>{{ 'review.no.files'|trans }}</em>
-                {% endif %}
-
-            {% endif %}
-        </div>
-
-        {% if reviewModel.timelineViewModel is not same as (null) %}
+        {%- if reviewModel.timelineViewModel is not same as (null) -%}
             <div class="review-grid-code">
                 {%- include 'app/review/review.timeline.html.twig' with {timelineViewModel: reviewModel.timelineViewModel} %}
             </div>
-        {% elseif reviewModel.fileDiffViewModel is not same as (null) %}
+        {%- elseif reviewModel.fileDiffViewModel is not same as (null) -%}
             <div class="review-grid-code" data-controller="ScrollPositioner">
                 {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
             </div>
-        {% endif %}
+        {%- endif -%}
     </div>
 
-{% endblock %}
+{%- endblock -%}
