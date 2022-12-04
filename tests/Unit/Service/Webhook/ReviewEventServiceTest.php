@@ -16,6 +16,7 @@ use DR\GitCommitNotification\Message\Review\ReviewRejected;
 use DR\GitCommitNotification\Message\Review\ReviewResumed;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
+use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
 use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
@@ -119,6 +120,32 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $reviewer->setState(CodeReviewerStateType::OPEN);
         $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
+    }
+
+    /**
+     * @covers ::reviewerStateChanged
+     */
+    public function testReviewerStateChanged(): void
+    {
+        $user = new User();
+        $user->setId(789);
+        $review = new CodeReview();
+        $review->setId(123);
+        $reviewer = new CodeReviewer();
+        $reviewer->setId(456);
+        $reviewer->setState(CodeReviewerStateType::ACCEPTED);
+        $reviewer->setUser($user);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(new ReviewerStateChanged(123, 456, 789, CodeReviewerStateType::REJECTED, CodeReviewerStateType::ACCEPTED))
+            ->willReturn($this->envelope);
+
+        // first test without state change
+        $this->service->reviewerStateChanged($review, $reviewer, CodeReviewerStateType::ACCEPTED);
+
+        // test with state change
+        $this->service->reviewerStateChanged($review, $reviewer, CodeReviewerStateType::REJECTED);
     }
 
     /**

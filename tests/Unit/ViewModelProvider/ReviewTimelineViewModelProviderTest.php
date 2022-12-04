@@ -21,6 +21,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     private CodeReviewActivityRepository&MockObject $activityRepository;
     private CodeReviewActivityFormatter&MockObject  $activityFormatter;
     private ReviewTimelineViewModelProvider         $provider;
+    private User                                    $user;
 
     public function setUp(): void
     {
