@@ -58,7 +58,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
         $this->diffService->expects(self::never())->method('getDiffFiles');
 
-        $this->messageHandler->handleEvent(new ReviewCreated(123));
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
 
     /**
@@ -72,7 +72,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
         $this->diffService->expects(self::never())->method('getDiffFiles');
 
-        $this->messageHandler->handleEvent(new ReviewCreated(123));
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
 
     /**
@@ -98,7 +98,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->fileService->expects(self::once())->method('fromDiffFile')->with($repository, $file);
 
-        $this->messageHandler->handleEvent(new ReviewCreated(123));
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
 
     /**
@@ -123,7 +123,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->fileService->expects(self::once())->method('fromDiffFile')->willThrowException(new RuntimeException());
 
-        $this->messageHandler->handleEvent(new ReviewCreated(123));
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
 
     /**
@@ -148,7 +148,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->fileService->expects(self::never())->method('fromDiffFile');
 
-        $this->messageHandler->handleEvent(new ReviewCreated(123));
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
 
     /**

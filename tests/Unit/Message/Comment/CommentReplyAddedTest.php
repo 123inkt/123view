@@ -20,7 +20,7 @@ class CommentReplyAddedTest extends AbstractMessageEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertCodeReviewEvent(new CommentReplyAdded(5, 6), 'comment-reply-added', 5, ['comment-id' => 6]);
-        static::assertCommentReplyEvent(new CommentReplyAdded(5, 6), 6);
+        static::assertCodeReviewEvent(new CommentReplyAdded(5, 6, 'message'), 'comment-reply-added', 5, ['comment-id' => 6, 'message' => 'message']);
+        static::assertCommentReplyEvent(new CommentReplyAdded(5, 6, 'message'), 6);
     }
 }
