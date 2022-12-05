@@ -27,6 +27,11 @@ class CommentResolved implements AsyncMessageInterface, MailNotificationInterfac
         return $this->commentId;
     }
 
+    public function getUserId(): int
+    {
+        return $this->resolveByUserId;
+    }
+
     /**
      * @inheritDoc
      */

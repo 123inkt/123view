@@ -41,8 +41,9 @@ class AddCommentController extends AbstractController
 
         $lineReference = LineReference::fromString($data['lineReference']);
 
+        $user    = $this->getUser();
         $comment = new Comment();
-        $comment->setUser($this->getUser());
+        $comment->setUser($user);
         $comment->setReview($review);
         $comment->setFilePath($lineReference->filePath);
         $comment->setLineReference($lineReference);
@@ -52,7 +53,7 @@ class AddCommentController extends AbstractController
 
         $this->commentRepository->save($comment, true);
 
-        $this->bus->dispatch(new CommentAdded((int)$comment->getReview()?->getId(), (int)$comment->getId(), $data['message']));
+        $this->bus->dispatch(new CommentAdded((int)$comment->getReview()?->getId(), (int)$comment->getId(), (int)$user->getId(), $data['message']));
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review], ['action'], 'focus:comment:' . $comment->getId());
     }

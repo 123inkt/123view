@@ -45,8 +45,9 @@ class AddCommentReplyController extends AbstractController
         /** @var array{message: string} $data */
         $data = $form->getData();
 
+        $user  = $this->getUser();
         $reply = new CommentReply();
-        $reply->setUser($this->getUser());
+        $reply->setUser($user);
         $reply->setComment($comment);
         $reply->setMessage($data['message']);
         $reply->setCreateTimestamp(time());
@@ -54,7 +55,9 @@ class AddCommentReplyController extends AbstractController
 
         $this->replyRepository->save($reply, true);
 
-        $this->bus->dispatch(new CommentReplyAdded((int)$comment->getReview()?->getId(), (int)$reply->getId(), $data['message']));
+        $this->bus->dispatch(
+            new CommentReplyAdded((int)$comment->getReview()?->getId(), (int)$reply->getId(), (int)$user->getId(), $data['message'])
+        );
 
         return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action'], 'focus:reply:' . $reply->getId());
     }
