@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Revision;
+namespace DR\Review\Controller\App\Revision;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;

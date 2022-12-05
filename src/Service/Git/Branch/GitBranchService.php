@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Branch;
+namespace DR\Review\Service\Git\Branch;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -27,7 +27,7 @@ class GitBranchService implements LoggerAwareInterface
             $this->deleteBranch($repository, $ref);
 
             return true;
-        } catch (RepositoryException | ProcessFailedException $exception) {
+        } catch (RepositoryException|ProcessFailedException $exception) {
             $this->logger?->notice('Recovered from exception', ['exception' => $exception]);
 
             return false;

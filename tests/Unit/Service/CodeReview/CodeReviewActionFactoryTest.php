@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Model\Review\Action\AddCommentAction;
+use DR\Review\Model\Review\Action\AddCommentReplyAction;
+use DR\Review\Model\Review\Action\EditCommentAction;
+use DR\Review\Model\Review\Action\EditCommentReplyAction;
+use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory
+ * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActionFactory
  * @covers ::__construct
  */
 class CodeReviewActionFactoryTest extends AbstractTestCase

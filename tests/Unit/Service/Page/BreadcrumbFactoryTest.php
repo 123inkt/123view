@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Page;
+namespace DR\Review\Tests\Unit\Service\Page;
 
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewsController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Controller\App\Review\ReviewsController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Service\Page\BreadcrumbFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Page\BreadcrumbFactory
+ * @coversDefaultClass \DR\Review\Service\Page\BreadcrumbFactory
  * @covers ::__construct
  */
 class BreadcrumbFactoryTest extends AbstractTestCase

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler;
+namespace DR\Review\MessageHandler;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\Git\Log\LockableGitLogService;
-use DR\GitCommitNotification\Service\Revision\RevisionFactory;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Message\Revision\NewRevisionMessage;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Git\Log\LockableGitLogService;
+use DR\Review\Service\Revision\RevisionFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

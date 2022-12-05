@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig;
+namespace DR\Review\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

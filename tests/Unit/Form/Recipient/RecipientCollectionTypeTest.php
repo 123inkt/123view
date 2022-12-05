@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Recipient;
+namespace DR\Review\Tests\Unit\Form\Recipient;
 
-use DR\GitCommitNotification\Entity\Notification\Recipient;
-use DR\GitCommitNotification\Form\Recipient\RecipientCollectionType;
-use DR\GitCommitNotification\Form\Recipient\RecipientType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Recipient;
+use DR\Review\Form\Recipient\RecipientCollectionType;
+use DR\Review\Form\Recipient\RecipientType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Recipient\RecipientCollectionType
+ * @coversDefaultClass \DR\Review\Form\Recipient\RecipientCollectionType
  */
 class RecipientCollectionTypeTest extends AbstractTestCase
 {

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Command\Revision;
+namespace DR\Review\Command\Revision;
 
-use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
+use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Repository\Config\RepositoryRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Attribute\AsCommand;

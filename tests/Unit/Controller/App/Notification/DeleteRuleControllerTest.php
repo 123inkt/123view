@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Notification;
+namespace DR\Review\Tests\Unit\Controller\App\Notification;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Notification\DeleteRuleController;
-use DR\GitCommitNotification\Controller\App\Notification\RulesController;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Security\Voter\RuleVoter;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Notification\DeleteRuleController;
+use DR\Review\Controller\App\Notification\RulesController;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Security\Voter\RuleVoter;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Notification\DeleteRuleController
+ * @coversDefaultClass \DR\Review\Controller\App\Notification\DeleteRuleController
  * @covers ::__construct
  */
 class DeleteRuleControllerTest extends AbstractControllerTestCase

@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
+namespace DR\Review\Tests\Unit\Service\Git\Log;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
-use DR\GitCommitNotification\Service\Git\Log\GitLogService;
-use DR\GitCommitNotification\Service\Git\Log\LockableGitLogService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\Log\GitLogService;
+use DR\Review\Service\Git\Log\LockableGitLogService;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\LockableGitLogService
+ * @coversDefaultClass \DR\Review\Service\Git\Log\LockableGitLogService
  * @covers ::__construct
  */
 class LockableGitLogServiceTest extends AbstractTestCase

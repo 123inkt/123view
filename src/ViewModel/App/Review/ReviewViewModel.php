@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review;
+namespace DR\Review\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\ViewModel\App\Review\Timeline\TimelineViewModel;
-use DR\GitCommitNotification\ViewModel\App\Revision\ReviewRevisionViewModel;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\User\User;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
+use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use Symfony\Component\Form\FormView;
 
 class ReviewViewModel

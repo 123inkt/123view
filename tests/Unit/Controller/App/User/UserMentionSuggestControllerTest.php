@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\User;
+namespace DR\Review\Tests\Unit\Controller\App\User;
 
-use DR\GitCommitNotification\Controller\App\User\UserMentionSuggestController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\User\UserMentionSuggestController;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\User\UserMentionSuggestController
+ * @coversDefaultClass \DR\Review\Controller\App\User\UserMentionSuggestController
  * @covers ::__construct
  */
 class UserMentionSuggestControllerTest extends AbstractTestCase

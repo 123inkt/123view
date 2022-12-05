@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\Auth\SingleSignOn;
+namespace DR\Review\Controller\Auth\SingleSignOn;
 
-use DR\GitCommitNotification\Controller\AbstractController;
+use DR\Review\Controller\AbstractController;
 use JsonException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

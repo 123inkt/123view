@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Command;
+namespace DR\Review\Command;
 
-use DR\GitCommitNotification\Utility\Strings;
+use DR\Review\Utility\Strings;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

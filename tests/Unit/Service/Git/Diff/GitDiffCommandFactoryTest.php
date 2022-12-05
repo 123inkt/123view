@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff;
+namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
+use DR\Review\Service\Git\Diff\GitDiffCommandFactory;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory
+ * @coversDefaultClass \DR\Review\Service\Git\Diff\GitDiffCommandFactory
  * @covers ::__construct
  */
 class GitDiffCommandFactoryTest extends AbstractTestCase

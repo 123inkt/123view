@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Filter;
+namespace DR\Review\Tests\Unit\Form\Filter;
 
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Form\Filter\FilterType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Form\Filter\FilterType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Filter\FilterType
+ * @coversDefaultClass \DR\Review\Form\Filter\FilterType
  */
 class FilterTypeTest extends AbstractTestCase
 {

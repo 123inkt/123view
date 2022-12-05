@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
-use DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\FileSeenStatus;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\FileSeenStatusRepository;
+use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService
+ * @coversDefaultClass \DR\Review\Service\CodeReview\FileSeenStatusService
  * @covers ::__construct
  */
 class FileSeenStatusServiceTest extends AbstractTestCase

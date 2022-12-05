@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Doctrine\Type;
+namespace DR\Review\Doctrine\Type;
 
 class DiffAlgorithmType extends AbstractEnumType
 {
@@ -11,5 +11,5 @@ class DiffAlgorithmType extends AbstractEnumType
     public const MYERS     = 'myers';
 
     public const    TYPE   = 'enum_diff_algorithm';
-    public const VALUES = [self::PATIENCE, self::MINIMAL, self::HISTOGRAM, self::MYERS];
+    public const    VALUES = [self::PATIENCE, self::MINIMAL, self::HISTOGRAM, self::MYERS];
 }

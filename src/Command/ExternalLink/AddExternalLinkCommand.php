@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Command\ExternalLink;
+namespace DR\Review\Command\ExternalLink;
 
 use DigitalRevolution\SymfonyConsoleValidation\Exception\ViolationException;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
-use DR\GitCommitNotification\Input\AddExternalLinkInput;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\Review\Entity\Config\ExternalLink;
+use DR\Review\Input\AddExternalLinkInput;
+use DR\Review\Repository\Config\ExternalLinkRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

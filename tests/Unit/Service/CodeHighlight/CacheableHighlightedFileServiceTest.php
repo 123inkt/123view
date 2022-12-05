@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeHighlight;
+namespace DR\Review\Tests\Unit\Service\CodeHighlight;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
-use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
-use DR\GitCommitNotification\Service\CodeHighlight\HighlightedFileService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Model\Review\Highlight\HighlightedFile;
+use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\Review\Service\CodeHighlight\HighlightedFileService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService
+ * @coversDefaultClass \DR\Review\Service\CodeHighlight\CacheableHighlightedFileService
  * @covers ::__construct
  */
 class CacheableHighlightedFileServiceTest extends AbstractTestCase

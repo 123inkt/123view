@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\Auth;
+namespace DR\Review\Tests\Unit\Controller\Auth;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
-use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
-use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdAuthController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\User\UserApprovalPendingController;
+use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
+use DR\Review\Entity\User\User;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\Auth\AuthenticationController
+ * @coversDefaultClass \DR\Review\Controller\Auth\AuthenticationController
  * @covers ::__construct
  */
 class AuthenticationControllerTest extends AbstractControllerTestCase

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Asset;
+namespace DR\Review\Entity\Asset;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Asset\AssetRepository;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Asset\AssetRepository;
 
 #[ORM\Entity(repositoryClass: AssetRepository::class)]
 class Asset

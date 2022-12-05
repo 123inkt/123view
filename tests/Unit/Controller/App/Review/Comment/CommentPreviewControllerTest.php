@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Comment;
+namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\Comment\CommentPreviewController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Request\Comment\CommentPreviewRequest;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Service\Markdown\MarkdownService;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\Comment\CommentPreviewController;
+use DR\Review\Entity\User\User;
+use DR\Review\Request\Comment\CommentPreviewRequest;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\Markdown\MarkdownService;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\Comment\CommentPreviewController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\CommentPreviewController
  * @covers ::__construct
  */
 class CommentPreviewControllerTest extends AbstractControllerTestCase

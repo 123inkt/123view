@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeHighlight;
+namespace DR\Review\Service\CodeHighlight;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Model\Review\Highlight\HighlightedFile;
+use DR\Review\Utility\Assert;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;

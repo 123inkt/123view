@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Review;
+namespace DR\Review\Tests\Unit\Form\Review;
 
-use DR\GitCommitNotification\Form\Review\CommentType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Form\Review\CommentType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Review\CommentType
+ * @coversDefaultClass \DR\Review\Form\Review\CommentType
  */
 class CommentTypeTest extends AbstractTestCase
 {

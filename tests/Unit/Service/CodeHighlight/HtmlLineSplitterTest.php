@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeHighlight;
+namespace DR\Review\Tests\Unit\Service\CodeHighlight;
 
-use DR\GitCommitNotification\Service\CodeHighlight\HighlightHtmlLineSplitter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeHighlight\HighlightHtmlLineSplitter
+ * @coversDefaultClass \DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter
  */
 class HtmlLineSplitterTest extends AbstractTestCase
 {

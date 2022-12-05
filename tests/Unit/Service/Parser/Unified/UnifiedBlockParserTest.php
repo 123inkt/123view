@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Parser\Unified;
+namespace DR\Review\Tests\Unit\Service\Parser\Unified;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Git\LineReader;
-use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
-use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
-use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Git\LineReader;
+use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
+use DR\Review\Service\Parser\Unified\UnifiedLineParser;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser
+ * @coversDefaultClass \DR\Review\Service\Parser\Unified\UnifiedBlockParser
  * @covers ::__construct
  */
 class UnifiedBlockParserTest extends AbstractTestCase
@@ -35,7 +35,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     public function testParseAdded(): void
     {
         $reader = new LineReader(["+added"]);
-        $block = $this->parser->parse(10, 12, $reader);
+        $block  = $this->parser->parse(10, 12, $reader);
         static::assertCount(1, $block->lines);
         self::assertDiffChange(DiffChange::ADDED, 'added', $block->lines[0]->changes->first());
     }
@@ -46,7 +46,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     public function testParseRemoved(): void
     {
         $reader = new LineReader(["-removed"]);
-        $block = $this->parser->parse(10, 12, $reader);
+        $block  = $this->parser->parse(10, 12, $reader);
         static::assertCount(1, $block->lines);
         self::assertDiffChange(DiffChange::REMOVED, 'removed', $block->lines[0]->changes->first());
     }
@@ -57,7 +57,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     public function testParseUnchanged(): void
     {
         $reader = new LineReader([" unchanged"]);
-        $block = $this->parser->parse(10, 12, $reader);
+        $block  = $this->parser->parse(10, 12, $reader);
         static::assertCount(1, $block->lines);
         self::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[0]->changes->first());
     }
@@ -68,7 +68,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     public function testParseComment(): void
     {
         $reader = new LineReader(["\comment"]);
-        $block = $this->parser->parse(10, 12, $reader);
+        $block  = $this->parser->parse(10, 12, $reader);
         static::assertCount(0, $block->lines);
     }
 
@@ -78,7 +78,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     public function testParseSkipEmptyStrings(): void
     {
         $reader = new LineReader([""]);
-        $block = $this->parser->parse(10, 12, $reader);
+        $block  = $this->parser->parse(10, 12, $reader);
         static::assertCount(0, $block->lines);
     }
 

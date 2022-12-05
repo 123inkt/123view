@@ -56,7 +56,7 @@
                                 <a class="nav-link"
                                    aria-label="{{ 'projects'|trans }}"
                                    title="{{ 'projects'|trans }}"
-                                   href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ProjectsController') }}">
+                                   href="{{ path('DR\\Review\\Controller\\App\\Review\\ProjectsController') }}">
                                     {{- 'projects'|trans -}}
                                 </a>
                             </li>
@@ -76,7 +76,7 @@
                                         <a class="nav-link"
                                            aria-label="{{ 'users'|trans }}"
                                            title="{{ 'users'|trans }}"
-                                           href="{{ path('DR\\GitCommitNotification\\Controller\\App\\User\\UsersController') }}">
+                                           href="{{ path('DR\\Review\\Controller\\App\\User\\UsersController') }}">
                                             {{- 'users'|trans -}}
 
                                             {% set new_user_count = new_user_count() %}
@@ -92,7 +92,7 @@
                                     <a class="nav-link"
                                        aria-label="{{ 'settings'|trans }}"
                                        title="{{ 'settings'|trans }}"
-                                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\User\\UserSettingController') }}">
+                                       href="{{ path('DR\\Review\\Controller\\App\\User\\UserSettingController') }}">
                                         {{- 'settings'|trans -}}
                                     </a>
                                 </li>
@@ -100,7 +100,7 @@
                                     <a class="nav-link"
                                        aria-label="{{ 'notifications'|trans }}"
                                        title="{{ 'notifications'|trans }}"
-                                       href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Notification\\RulesController') }}">
+                                       href="{{ path('DR\\Review\\Controller\\App\\Notification\\RulesController') }}">
                                         {{- 'notifications'|trans -}}
                                     </a>
                                 </li>
@@ -108,7 +108,7 @@
                                     <a class="nav-link"
                                        aria-label="{{ 'logout'|trans }}"
                                        title="{{ 'logout'|trans }}"
-                                       href="{{ path('DR\\GitCommitNotification\\Controller\\Auth\\LogoutController') }}">
+                                       href="{{ path('DR\\Review\\Controller\\Auth\\LogoutController') }}">
                                         <i class="bi-box-arrow-right"></i>
                                     </a>
                                 </li>

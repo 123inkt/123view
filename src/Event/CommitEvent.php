@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Event;
+namespace DR\Review\Event;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\Review\Entity\Git\Commit;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class CommitEvent extends Event

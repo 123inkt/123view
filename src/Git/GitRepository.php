@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Git;
+namespace DR\Review\Git;
 
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;

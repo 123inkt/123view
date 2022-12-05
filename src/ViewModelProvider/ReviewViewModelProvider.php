@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Form\Review\AddReviewerFormType;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\CodeReview\FileTreeGenerator;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 

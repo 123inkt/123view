@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Command\Repository;
+namespace DR\Review\Command\Repository;
 
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
-use DR\GitCommitNotification\Input\AddRepositoryInput;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\RepositoryProperty;
+use DR\Review\Input\AddRepositoryInput;
+use DR\Review\Repository\Config\RepositoryRepository;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

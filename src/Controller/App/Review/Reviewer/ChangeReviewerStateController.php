@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review\Reviewer;
+namespace DR\Review\Controller\App\Review\Reviewer;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Request\Review\ChangeReviewerStateRequest;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
-use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Request\Review\ChangeReviewerStateRequest;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Git\Review\CodeReviewerService;
+use DR\Review\Service\Webhook\ReviewEventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;

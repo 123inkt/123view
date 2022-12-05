@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Utility;
+namespace DR\Review\Tests\Unit\Utility;
 
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\Assert;
 use RuntimeException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Utility\Assert
+ * @coversDefaultClass \DR\Review\Utility\Assert
  */
 class AssertTest extends AbstractTestCase
 {

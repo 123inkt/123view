@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Revision\RevisionTitleNormalizer;
 
 class CodeReviewFactory
 {

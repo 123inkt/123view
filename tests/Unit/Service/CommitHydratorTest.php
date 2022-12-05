@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service;
+namespace DR\Review\Tests\Unit\Service;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Git\FormatPattern;
-use DR\GitCommitNotification\Service\CommitHydrator;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Git\FormatPattern;
+use DR\Review\Service\CommitHydrator;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CommitHydrator
+ * @coversDefaultClass \DR\Review\Service\CommitHydrator
  */
 class CommitHydratorTest extends AbstractTestCase
 {

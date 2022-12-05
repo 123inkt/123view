@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Commit;
+namespace DR\Review\Tests\Unit\Service\Git\Commit;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Service\Git\Commit\CommitCombiner;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Service\Git\Commit\CommitCombiner;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Commit\CommitCombiner
+ * @coversDefaultClass \DR\Review\Service\Git\Commit\CommitCombiner
  */
 class CommitCombinerTest extends AbstractTestCase
 {

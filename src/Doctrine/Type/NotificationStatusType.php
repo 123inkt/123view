@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Doctrine\Type;
+namespace DR\Review\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
-use DR\GitCommitNotification\Entity\Review\NotificationStatus;
+use DR\Review\Entity\Review\NotificationStatus;
 
 class NotificationStatusType extends Type
 {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\Delay\DelayableMessage;
-use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Message\AsyncMessageInterface;
+use DR\Review\Message\Delay\DelayableMessage;
+use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {

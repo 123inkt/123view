@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
+namespace DR\Review\Tests\Unit\Service\Git\Log;
 
-use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Log\FormatPatternFactory;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory
+ * @coversDefaultClass \DR\Review\Service\Git\Log\FormatPatternFactory
  */
 class FormatPatternFactoryTest extends AbstractTestCase
 {

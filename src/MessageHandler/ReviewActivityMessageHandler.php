@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler;
+namespace DR\Review\MessageHandler;
 
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Repository\Review\CodeReviewActivityRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityProvider;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller;
+namespace DR\Review\Tests\Unit\Controller;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Entity\User\User;
+use DR\Review\Tests\AbstractControllerTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\AbstractController
+ * @coversDefaultClass \DR\Review\Controller\AbstractController
  */
 class AbstractControllerTest extends AbstractControllerTestCase
 {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Add;
+namespace DR\Review\Service\Git\Add;
 
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 class GitAddCommandBuilder implements GitCommandBuilderInterface
 {

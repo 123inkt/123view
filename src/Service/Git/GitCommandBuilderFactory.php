@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\Review\Service\Git;
 
-use DR\GitCommitNotification\Service\Git\Add\GitAddCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Branch\GitBranchCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilder;
-use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
-use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Reset\GitResetCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
+use DR\Review\Service\Git\Add\GitAddCommandBuilder;
+use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
+use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
+use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
+use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
+use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
+use DR\Review\Service\Git\Log\GitLogCommandBuilder;
+use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
+use DR\Review\Service\Git\Show\GitShowCommandBuilder;
 
 class GitCommandBuilderFactory
 {

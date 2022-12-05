@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Revision;
+namespace DR\Review\Tests\Unit\Controller\App\Revision;
 
-use DR\GitCommitNotification\Controller\App\Revision\AttachRevisionSelectionController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Revision\AttachRevisionsViewModel;
-use DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel;
-use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
+use DR\Review\Controller\App\Revision\AttachRevisionSelectionController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Revision\AttachRevisionsViewModel;
+use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
+use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Revision\AttachRevisionSelectionController
+ * @coversDefaultClass \DR\Review\Controller\App\Revision\AttachRevisionSelectionController
  * @covers ::__construct
  */
 class AttachRevisionSelectionControllerTest extends AbstractTestCase

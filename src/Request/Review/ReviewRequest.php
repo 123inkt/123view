@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Request\Review;
+namespace DR\Review\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFactory;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

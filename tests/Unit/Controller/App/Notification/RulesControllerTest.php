@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Notification;
+namespace DR\Review\Tests\Unit\Controller\App\Notification;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Notification\RulesController;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Notification\RulesController;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\User\User;
+use DR\Review\Tests\AbstractControllerTestCase;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Notification\RulesController
+ * @coversDefaultClass \DR\Review\Controller\App\Notification\RulesController
  */
 class RulesControllerTest extends AbstractControllerTestCase
 {

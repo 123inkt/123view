@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Checkout;
+namespace DR\Review\Tests\Unit\Service\Git\Checkout;
 
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder
  * @covers ::__construct
  */
 class GitCheckoutCommandBuilderTest extends AbstractTestCase

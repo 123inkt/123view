@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Reset;
+namespace DR\Review\Tests\Unit\Service\Git\Reset;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\Reset\GitResetCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
+use DR\Review\Service\Git\Reset\GitResetService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Reset\GitResetService
+ * @coversDefaultClass \DR\Review\Service\Git\Reset\GitResetService
  * @covers ::__construct
  */
 class GitResetServiceTest extends AbstractTestCase

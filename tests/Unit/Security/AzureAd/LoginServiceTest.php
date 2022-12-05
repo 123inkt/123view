@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
+namespace DR\Review\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
-use DR\GitCommitNotification\Security\AzureAd\LoginService;
-use DR\GitCommitNotification\Security\AzureAd\LoginSuccess;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Security\AzureAd\LoginFailure;
+use DR\Review\Security\AzureAd\LoginService;
+use DR\Review\Security\AzureAd\LoginSuccess;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,7 +16,7 @@ use TheNetworg\OAuth2\Client\Provider\Azure;
 use TheNetworg\OAuth2\Client\Token\AccessToken;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\AzureAd\LoginService
+ * @coversDefaultClass \DR\Review\Security\AzureAd\LoginService
  * @covers ::__construct
  */
 class LoginServiceTest extends AbstractTestCase

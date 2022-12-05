@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Integration\MessageHandler\Mail;
+namespace DR\Review\Tests\Integration\MessageHandler\Mail;
 
-use DR\GitCommitNotification\Message\Comment\CommentAdded;
-use DR\GitCommitNotification\Message\Comment\CommentReplyAdded;
-use DR\GitCommitNotification\Message\Comment\CommentReplyUpdated;
-use DR\GitCommitNotification\Message\Comment\CommentResolved;
-use DR\GitCommitNotification\Message\Comment\CommentUpdated;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentAddedMailNotificationHandler;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
-use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
-use DR\GitCommitNotification\Tests\AbstractKernelTestCase;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentReplyUpdated;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUpdated;
+use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
+use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
+use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
+use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
+use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
+use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
+use DR\Review\Tests\AbstractKernelTestCase;
 use Exception;
 
 /**

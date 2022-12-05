@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Git\Diff;
+namespace DR\Review\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffLine;
 use Generator;
 use IteratorAggregate;
 

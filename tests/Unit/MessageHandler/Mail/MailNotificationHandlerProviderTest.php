@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler\Mail;
+namespace DR\Review\Tests\Unit\MessageHandler\Mail;
 
 use ArrayObject;
-use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerInterface;
-use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\MessageHandler\Mail\MailNotificationHandlerInterface;
+use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider
+ * @coversDefaultClass \DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider
  * @covers ::__construct
  */
 class MailNotificationHandlerProviderTest extends AbstractTestCase

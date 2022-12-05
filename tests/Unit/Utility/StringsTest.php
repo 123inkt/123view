@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Utility;
+namespace DR\Review\Tests\Unit\Utility;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\Strings;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\Strings;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Utility\Strings
+ * @coversDefaultClass \DR\Review\Utility\Strings
  */
 class StringsTest extends AbstractTestCase
 {

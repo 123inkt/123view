@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
-use DR\GitCommitNotification\ViewModel\App\Revision\ReviewRevisionViewModel;
-use DR\GitCommitNotification\ViewModel\App\Revision\RevisionsViewModel;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\ViewModel\App\Review\PaginatorViewModel;
+use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
+use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class RevisionViewModelProvider

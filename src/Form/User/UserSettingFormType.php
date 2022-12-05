@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\User;
+namespace DR\Review\Form\User;
 
-use DR\GitCommitNotification\Controller\App\User\UserSettingController;
+use DR\Review\Controller\App\User\UserSettingController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;

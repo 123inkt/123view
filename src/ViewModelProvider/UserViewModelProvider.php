@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Form\User\UserProfileFormType;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\ViewModel\App\User\UsersViewModel;
+use DR\Review\Form\User\UserProfileFormType;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\ViewModel\App\User\UsersViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class UserViewModelProvider

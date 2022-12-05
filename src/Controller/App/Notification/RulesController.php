@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Notification;
+namespace DR\Review\Controller\App\Notification;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\ViewModel\App\Rule\RulesViewModel;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Security\Role\Roles;
+use DR\Review\ViewModel\App\Rule\RulesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;

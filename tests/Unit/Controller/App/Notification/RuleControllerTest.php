@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Notification;
+namespace DR\Review\Tests\Unit\Controller\App\Notification;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Notification\RuleController;
-use DR\GitCommitNotification\Controller\App\Notification\RulesController;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\Rule\EditRuleFormType;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Security\Voter\RuleVoter;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\Rule\EditRuleViewModel;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Notification\RuleController;
+use DR\Review\Controller\App\Notification\RulesController;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\Rule\EditRuleFormType;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Security\Voter\RuleVoter;
+use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\App\Rule\EditRuleViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Notification\RuleController
+ * @coversDefaultClass \DR\Review\Controller\App\Notification\RuleController
  * @covers ::__construct
  */
 class RuleControllerTest extends AbstractControllerTestCase

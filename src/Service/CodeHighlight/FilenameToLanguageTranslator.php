@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeHighlight;
+namespace DR\Review\Service\CodeHighlight;
 
 class FilenameToLanguageTranslator
 {

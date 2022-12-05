@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Review;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Model\Page\Breadcrumb;
-use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Request\Review\ReviewRequest;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
-use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
-use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\User\User;
+use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Request\Review\ReviewRequest;
+use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\Page\BreadcrumbFactory;
+use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\ViewModel\App\Review\ReviewViewModel;
+use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\ReviewController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\ReviewController
  * @covers ::__construct
  */
 class ReviewControllerTest extends AbstractControllerTestCase

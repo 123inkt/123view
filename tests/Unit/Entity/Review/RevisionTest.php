@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
+namespace DR\Review\Tests\Unit\Entity\Review;
 
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\Revision
+ * @coversDefaultClass \DR\Review\Entity\Review\Revision
  */
 class RevisionTest extends AbstractTestCase
 {

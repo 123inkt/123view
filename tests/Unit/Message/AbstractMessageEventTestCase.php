@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Message;
+namespace DR\Review\Tests\Unit\Message;
 
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\Comment\CommentEventInterface;
-use DR\GitCommitNotification\Message\Comment\CommentReplyEventInterface;
-use DR\GitCommitNotification\Message\UserAwareInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\Comment\CommentEventInterface;
+use DR\Review\Message\Comment\CommentReplyEventInterface;
+use DR\Review\Message\UserAwareInterface;
+use DR\Review\Tests\AbstractTestCase;
 
 abstract class AbstractMessageEventTestCase extends AbstractTestCase
 {

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
+namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Entity\Review\NotificationStatus;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\Review\NotificationStatus;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\Comment
+ * @coversDefaultClass \DR\Review\Entity\Review\Comment
  * @covers ::__construct
  */
 class CommentTest extends AbstractTestCase

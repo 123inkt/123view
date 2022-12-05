@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Review;
+namespace DR\Review\Entity\Review;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\CodeReviewRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]

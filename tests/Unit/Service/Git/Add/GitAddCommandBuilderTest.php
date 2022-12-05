@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Add;
+namespace DR\Review\Tests\Unit\Service\Git\Add;
 
-use DR\GitCommitNotification\Service\Git\Add\GitAddCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Add\GitAddCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Add\GitAddCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\Add\GitAddCommandBuilder
  * @covers ::__construct
  */
 class GitAddCommandBuilderTest extends AbstractTestCase

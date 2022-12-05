@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review\Comment;
+namespace DR\Review\Controller\App\Review\Comment;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Message\Comment\CommentResolved;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest;
-use DR\GitCommitNotification\Security\Role\Roles;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Request\Comment\ChangeCommentStateRequest;
+use DR\Review\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;

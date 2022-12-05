@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Transformer;
+namespace DR\Review\Tests\Unit\Transformer;
 
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Transformer\UserProfileRoleTransformer;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Transformer\UserProfileRoleTransformer;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Transformer\UserProfileRoleTransformer
+ * @coversDefaultClass \DR\Review\Transformer\UserProfileRoleTransformer
  */
 class UserProfileRoleTransformerTest extends AbstractTestCase
 {

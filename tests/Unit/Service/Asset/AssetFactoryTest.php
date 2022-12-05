@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Asset;
+namespace DR\Review\Tests\Unit\Service\Asset;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Service\Asset\AssetFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\User\User;
+use DR\Review\Service\Asset\AssetFactory;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\Assert;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Asset\AssetFactory
+ * @coversDefaultClass \DR\Review\Service\Asset\AssetFactory
  */
 class AssetFactoryTest extends AbstractTestCase
 {

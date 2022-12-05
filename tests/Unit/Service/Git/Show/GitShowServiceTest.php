@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Show;
+namespace DR\Review\Tests\Unit\Service\Git\Show;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\GitRepositoryService;
-use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Show\GitShowService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Service\Git\Show\GitShowCommandBuilder;
+use DR\Review\Service\Git\Show\GitShowService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Show\GitShowService
+ * @coversDefaultClass \DR\Review\Service\Git\Show\GitShowService
  * @covers ::__construct
  */
 class GitShowServiceTest extends AbstractTestCase

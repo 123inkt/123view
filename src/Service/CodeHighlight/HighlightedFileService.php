@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeHighlight;
+namespace DR\Review\Service\CodeHighlight;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Model\Review\Highlight\HighlightedFile;
 use Exception;
 use Highlight\Highlighter;
 

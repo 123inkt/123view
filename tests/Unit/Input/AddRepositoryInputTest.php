@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Input;
+namespace DR\Review\Tests\Unit\Input;
 
-use DR\GitCommitNotification\Input\AddRepositoryInput;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Input\AddRepositoryInput;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Input\AddRepositoryInput
+ * @coversDefaultClass \DR\Review\Input\AddRepositoryInput
  * @covers ::__construct
  */
 class AddRepositoryInputTest extends AbstractTestCase

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\Review\Service\Git;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\Helpers;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Utility\CircuitBreaker;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
+use DR\Review\Utility\CircuitBreaker;
 use League\Uri\Http;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

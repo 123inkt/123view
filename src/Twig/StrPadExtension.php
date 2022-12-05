@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig;
+namespace DR\Review\Twig;
 
 use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
@@ -27,9 +27,9 @@ class StrPadExtension extends AbstractExtension
     public function strpad(int|string|null $input, int $padLength, string $padType = 'left'): string
     {
         $strPadType = match ($padType) {
-            'left' => STR_PAD_LEFT,
+            'left'  => STR_PAD_LEFT,
             'right' => STR_PAD_RIGHT,
-            'both' => STR_PAD_BOTH,
+            'both'  => STR_PAD_BOTH,
             default => throw new InvalidArgumentException(sprintf('%s isn\'t a valid pad type', $padType)),
         };
 

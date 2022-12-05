@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Asset;
+namespace DR\Review\Service\Asset;
 
-use DR\GitCommitNotification\Entity\Asset\Asset;
-use DR\GitCommitNotification\Entity\User\User;
+use DR\Review\Entity\Asset\Asset;
+use DR\Review\Entity\User\User;
 
 class AssetFactory
 {

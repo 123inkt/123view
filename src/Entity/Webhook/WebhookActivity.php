@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Webhook;
+namespace DR\Review\Entity\Webhook;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
+use DR\Review\Repository\Webhook\WebhookActivityRepository;
 
 #[ORM\Entity(repositoryClass: WebhookActivityRepository::class)]
 class WebhookActivity

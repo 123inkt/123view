@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review;
+namespace DR\Review\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
-use DR\GitCommitNotification\ViewModel\App\Comment\AddCommentViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\CommentsViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentReplyViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\ReplyCommentViewModel;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Model\Review\Highlight\HighlightedFile;
+use DR\Review\ViewModel\App\Comment\AddCommentViewModel;
+use DR\Review\ViewModel\App\Comment\CommentsViewModel;
+use DR\Review\ViewModel\App\Comment\EditCommentReplyViewModel;
+use DR\Review\ViewModel\App\Comment\EditCommentViewModel;
+use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 
 class FileDiffViewModel
 {

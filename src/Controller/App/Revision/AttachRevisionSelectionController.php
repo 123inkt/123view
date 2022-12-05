@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Revision;
+namespace DR\Review\Controller\App\Revision;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Revision\AttachRevisionsViewModel;
-use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModel\App\Revision\AttachRevisionsViewModel;
+use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

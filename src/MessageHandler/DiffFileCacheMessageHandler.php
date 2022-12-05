@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler;
+namespace DR\Review\MessageHandler;
 
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

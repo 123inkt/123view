@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Comment;
+namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\Comment\DeleteCommentReplyController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\Comment\DeleteCommentReplyController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Security\Voter\CommentReplyVoter;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\Comment\DeleteCommentReplyController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\DeleteCommentReplyController
  * @covers ::__construct
  */
 class DeleteCommentReplyControllerTest extends AbstractControllerTestCase

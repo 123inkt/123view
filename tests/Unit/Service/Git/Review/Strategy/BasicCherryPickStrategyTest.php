@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review\Strategy;
+namespace DR\Review\Tests\Unit\Service\Git\Review\Strategy;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\ParseException;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
-use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\GitRepositoryResetManager;
-use DR\GitCommitNotification\Service\Git\Review\Strategy\BasicCherryPickStrategy;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\ParseException;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\CherryPick\GitCherryPickService;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\GitRepositoryResetManager;
+use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\Strategy\BasicCherryPickStrategy
+ * @coversDefaultClass \DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy
  * @covers ::__construct
  */
 class BasicCherryPickStrategyTest extends AbstractTestCase

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Request\Asset;
+namespace DR\Review\Request\Asset;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\GitCommitNotification\Entity\Asset\Asset;
+use DR\Review\Entity\Asset\Asset;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AddAssetRequest extends AbstractValidatedRequest

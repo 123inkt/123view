@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message\Reviewer;
+namespace DR\Review\Message\Reviewer;
 
-use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\UserAwareInterface;
+use DR\Review\Message\AsyncMessageInterface;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\UserAwareInterface;
 
 class ReviewerAdded implements AsyncMessageInterface, CodeReviewAwareInterface, UserAwareInterface
 {

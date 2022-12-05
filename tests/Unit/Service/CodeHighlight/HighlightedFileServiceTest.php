@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeHighlight;
+namespace DR\Review\Tests\Unit\Service\CodeHighlight;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
-use DR\GitCommitNotification\Service\CodeHighlight\FilenameToLanguageTranslator;
-use DR\GitCommitNotification\Service\CodeHighlight\HighlightedFileService;
-use DR\GitCommitNotification\Service\CodeHighlight\HighlightHtmlLineSplitter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Git\Diff\DiffBlock;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Model\Review\Highlight\HighlightedFile;
+use DR\Review\Service\CodeHighlight\FilenameToLanguageTranslator;
+use DR\Review\Service\CodeHighlight\HighlightedFileService;
+use DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\Assert;
 use Exception;
 use Highlight\Highlighter;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeHighlight\HighlightedFileService
+ * @coversDefaultClass \DR\Review\Service\CodeHighlight\HighlightedFileService
  * @covers ::__construct
  */
 class HighlightedFileServiceTest extends AbstractTestCase

@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Parser;
+namespace DR\Review\Tests\Unit\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\CommitHydrator;
-use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
-use DR\GitCommitNotification\Service\Parser\DiffParser;
-use DR\GitCommitNotification\Service\Parser\GitLogParser;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\CommitHydrator;
+use DR\Review\Service\Git\Log\FormatPatternFactory;
+use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Service\Parser\GitLogParser;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\GitLogParser
+ * @coversDefaultClass \DR\Review\Service\Parser\GitLogParser
  * @covers ::__construct
  */
 class GitLogParserTest extends AbstractTestCase

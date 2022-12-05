@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Utility;
+namespace DR\Review\Tests\Unit\Utility;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\Arrays;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\Arrays;
 use RuntimeException;
 use stdClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Utility\Arrays
+ * @coversDefaultClass \DR\Review\Utility\Arrays
  */
 class ArraysTest extends AbstractTestCase
 {

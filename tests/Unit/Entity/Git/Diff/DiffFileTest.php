@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Git\Diff;
+namespace DR\Review\Tests\Unit\Entity\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffBlock;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Diff\DiffFile
+ * @coversDefaultClass \DR\Review\Entity\Git\Diff\DiffFile
  */
 class DiffFileTest extends AbstractTestCase
 {

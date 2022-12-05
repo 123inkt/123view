@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service;
+namespace DR\Review\Service;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Git\FormatPattern;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\FormatPattern;
 use Exception;
 
 class CommitHydrator

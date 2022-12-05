@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request\Review;
+namespace DR\Review\Tests\Unit\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Request\Review\ReviewRequest;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActionFactory;
-use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Request\Review\ReviewRequest;
+use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @extends AbstractRequestTestCase<ReviewRequest>
- * @coversDefaultClass \DR\GitCommitNotification\Request\Review\ReviewRequest
+ * @coversDefaultClass \DR\Review\Request\Review\ReviewRequest
  * @covers ::__construct
  */
 class ReviewRequestTest extends AbstractRequestTestCase

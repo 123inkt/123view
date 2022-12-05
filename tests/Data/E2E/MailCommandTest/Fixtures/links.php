@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
+use DR\Review\Entity\Config\ExternalLink;
 
 return [
     (new ExternalLink())

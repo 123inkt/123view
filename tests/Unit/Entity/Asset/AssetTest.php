@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Asset;
+namespace DR\Review\Tests\Unit\Entity\Asset;
 
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
-use DR\GitCommitNotification\Entity\Asset\Asset;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Asset\Asset;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Asset\Asset
+ * @coversDefaultClass \DR\Review\Entity\Asset\Asset
  */
 class AssetTest extends AbstractTestCase
 {

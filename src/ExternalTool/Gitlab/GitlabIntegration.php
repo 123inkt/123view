@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ExternalTool\Gitlab;
+namespace DR\Review\ExternalTool\Gitlab;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\IntegrationLink;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\Utility\Icon;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\IntegrationLink;
+use DR\Review\Event\CommitEvent;
+use DR\Review\Utility\Icon;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Throwable;

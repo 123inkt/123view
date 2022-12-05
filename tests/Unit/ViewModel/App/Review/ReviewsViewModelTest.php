@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
+namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
 use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Review\PaginatorViewModel;
+use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel
+ * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewsViewModel
  * @covers ::__construct
  */
 class ReviewsViewModelTest extends AbstractTestCase

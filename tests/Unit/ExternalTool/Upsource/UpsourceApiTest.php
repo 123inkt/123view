@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ExternalTool\Upsource;
+namespace DR\Review\Tests\Unit\ExternalTool\Upsource;
 
-use DR\GitCommitNotification\ExternalTool\Upsource\UpsourceApi;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\ExternalTool\Upsource\UpsourceApi;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -12,7 +12,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ExternalTool\Upsource\UpsourceApi
+ * @coversDefaultClass \DR\Review\ExternalTool\Upsource\UpsourceApi
  * @covers ::__construct
  */
 class UpsourceApiTest extends AbstractTestCase

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\DataFixtures;
+namespace DR\Review\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use DR\GitCommitNotification\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\Repository;
 
 class RepositoryFixtures extends Fixture
 {

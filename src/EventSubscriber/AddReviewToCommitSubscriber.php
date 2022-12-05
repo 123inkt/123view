@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\EventSubscriber;
+namespace DR\Review\EventSubscriber;
 
 use Doctrine\ORM\NonUniqueResultException;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
+use DR\Review\Event\CommitEvent;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AddReviewToCommitSubscriber implements EventSubscriberInterface

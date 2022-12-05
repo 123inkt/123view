@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig;
+namespace DR\Review\Twig;
 
-use DR\GitCommitNotification\Service\Markdown\MarkdownService;
+use DR\Review\Service\Markdown\MarkdownService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

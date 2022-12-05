@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Transformer;
+namespace DR\Review\Tests\Unit\Transformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Transformer\FilterCollectionTransformer;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Transformer\FilterCollectionTransformer;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Transformer\FilterCollectionTransformer
+ * @coversDefaultClass \DR\Review\Transformer\FilterCollectionTransformer
  */
 class FilterCollectionTransformerTest extends AbstractTestCase
 {

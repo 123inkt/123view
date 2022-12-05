@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review;
+namespace DR\Review\Tests\Unit\Service\Git\Review;
 
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\FileDiffOptions
+ * @coversDefaultClass \DR\Review\Service\Git\Review\FileDiffOptions
  * @covers ::__construct
  */
 class FileDiffOptionsTest extends AbstractTestCase

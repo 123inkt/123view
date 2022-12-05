@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git;
+namespace DR\Review\Tests\Unit\Service\Git;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
 use CzProject\GitPhp\RunnerResult;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\GitRepositoryService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\GitRepositoryService
+ * @coversDefaultClass \DR\Review\Service\Git\GitRepositoryService
  * @covers ::__construct
  */
 class GitRepositoryServiceTest extends AbstractTestCase

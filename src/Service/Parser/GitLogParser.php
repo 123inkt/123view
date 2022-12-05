@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Parser;
+namespace DR\Review\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Git\FormatPattern;
-use DR\GitCommitNotification\Service\CommitHydrator;
-use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\FormatPattern;
+use DR\Review\Service\CommitHydrator;
+use DR\Review\Service\Git\Log\FormatPatternFactory;
 use Exception;
 
 class GitLogParser

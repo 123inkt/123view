@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Command\Repository;
+namespace DR\Review\Tests\Unit\Command\Repository;
 
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use DR\GitCommitNotification\Command\Repository\AddRepositoryCommand;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Command\Repository\AddRepositoryCommand;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\RepositoryProperty;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Validator\Validation;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Command\Repository\AddRepositoryCommand
+ * @coversDefaultClass \DR\Review\Command\Repository\AddRepositoryCommand
  * @covers ::__construct
  */
 class AddRepositoryCommandTest extends AbstractTestCase

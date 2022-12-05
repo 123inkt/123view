@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Helper;
+namespace DR\Review\Tests\Helper;
 
 use Symfony\Component\Mailer\Event\MessageEvent;
 

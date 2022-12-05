@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ExternalTool\Upsource;
+namespace DR\Review\Tests\Unit\ExternalTool\Upsource;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\ExternalTool\Upsource\UpsourceApi;
-use DR\GitCommitNotification\ExternalTool\Upsource\UpsourceIntegration;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Repository\RepositoryProperty;
+use DR\Review\Event\CommitEvent;
+use DR\Review\ExternalTool\Upsource\UpsourceApi;
+use DR\Review\ExternalTool\Upsource\UpsourceIntegration;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ExternalTool\Upsource\UpsourceIntegration
+ * @coversDefaultClass \DR\Review\ExternalTool\Upsource\UpsourceIntegration
  * @covers ::__construct
  */
 class UpsourceIntegrationTest extends AbstractTestCase

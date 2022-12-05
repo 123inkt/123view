@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Review;
+namespace DR\Review\Tests\Unit\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentController;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Form\Review\CommentType;
-use DR\GitCommitNotification\Form\Review\EditCommentFormType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Form\Review\CommentType;
+use DR\Review\Form\Review\EditCommentFormType;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Review\EditCommentFormType
+ * @coversDefaultClass \DR\Review\Form\Review\EditCommentFormType
  * @covers ::__construct
  */
 class EditCommentFormTypeTest extends AbstractTestCase

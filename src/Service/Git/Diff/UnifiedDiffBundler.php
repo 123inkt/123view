@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Diff;
+namespace DR\Review\Service\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLineCollection;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLinePair;
-use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
-use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
-use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
-use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult;
+use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Git\Diff\DiffLineCollection;
+use DR\Review\Entity\Git\Diff\DiffLinePair;
+use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Git\Diff\DiffLineDiffer;
+use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
+use DR\Review\Service\Git\Diff\Bundle\DiffLineCompareResult;
 
 /**
  * Bundle certain deletions and additions below each other together.

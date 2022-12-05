@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Integration\Service\Parser\Unified;
+namespace DR\Review\Tests\Integration\Service\Parser\Unified;
 
-use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
-use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
-use DR\GitCommitNotification\Git\LineReader;
-use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
-use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
-use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
-use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Git\Diff\DiffLineDiffer;
+use DR\Review\Git\LineReader;
+use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
+use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
+use DR\Review\Service\Parser\Unified\UnifiedLineParser;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversNothing

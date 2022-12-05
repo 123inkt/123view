@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler;
+namespace DR\Review\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Review\ReviewOpened;
-use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
-use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Message\AsyncMessageInterface;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Revision\NewRevisionMessage;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\Git\Review\CodeReviewService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

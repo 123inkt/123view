@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Model\Review\DirectoryTreeNode;
 
 class FileTreeGenerator
 {
     /**
      * @param DiffFile[] $diffFiles
+     *
      * @return DirectoryTreeNode<DiffFile>
      */
     public function generate(array $diffFiles): DirectoryTreeNode

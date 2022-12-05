@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\ExternalLinkExtension;
+use DR\Review\Entity\Config\ExternalLink;
+use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\ExternalLinkExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\ExternalLinkExtension
+ * @coversDefaultClass \DR\Review\Twig\ExternalLinkExtension
  * @covers ::__construct
  */
 class ExternalLinkExtensionTest extends AbstractTestCase

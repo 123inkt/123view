@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
 use Doctrine\ORM\NonUniqueResultException;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewFactory;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
-use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
-use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewFactory;
+use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\Review\Service\Revision\RevisionPatternMatcher;
+use DR\Review\Service\Revision\RevisionTitleNormalizer;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher
+ * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewRevisionMatcher
  * @covers ::__construct
  */
 class CodeReviewRevisionMatcherTest extends AbstractTestCase

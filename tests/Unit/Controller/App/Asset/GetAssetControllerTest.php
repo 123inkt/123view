@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Asset;
+namespace DR\Review\Tests\Unit\Controller\App\Asset;
 
-use DR\GitCommitNotification\Controller\App\Asset\GetAssetController;
-use DR\GitCommitNotification\Entity\Asset\Asset;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Asset\GetAssetController;
+use DR\Review\Entity\Asset\Asset;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Asset\GetAssetController
+ * @coversDefaultClass \DR\Review\Controller\App\Asset\GetAssetController
  */
 class GetAssetControllerTest extends AbstractTestCase
 {

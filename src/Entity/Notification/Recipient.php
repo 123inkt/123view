@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Notification;
+namespace DR\Review\Entity\Notification;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Repository\Config\RecipientRepository;
+use DR\Review\Repository\Config\RecipientRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipientRepository::class)]

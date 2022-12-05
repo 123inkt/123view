@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeTokenizer;
+namespace DR\Review\Service\CodeTokenizer;
 
 use InvalidArgumentException;
 

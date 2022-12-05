@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler\Mail;
+namespace DR\Review\MessageHandler\Mail;
 
-use DR\GitCommitNotification\Message\MailNotificationInterface;
+use DR\Review\Message\MailNotificationInterface;
 
 interface MailNotificationHandlerInterface
 {

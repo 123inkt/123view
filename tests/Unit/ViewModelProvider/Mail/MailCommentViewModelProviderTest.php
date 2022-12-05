@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModelProvider\Mail;
+namespace DR\Review\Tests\Unit\ViewModelProvider\Mail;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider
+ * @coversDefaultClass \DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider
  * @covers ::__construct
  */
 class MailCommentViewModelProviderTest extends AbstractTestCase

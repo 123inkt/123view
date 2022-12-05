@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler\Mail;
+namespace DR\Review\Tests\Unit\MessageHandler\Mail;
 
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\NotificationStatus;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Message\Comment\CommentResolved;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\Mail\CommentMailService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\NotificationStatus;
+use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\Mail\CommentMailService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotificationHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler
  * @covers ::__construct
  */
 class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase

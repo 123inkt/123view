@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Doctrine\Type;
+namespace DR\Review\Tests\Unit\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
-use DR\GitCommitNotification\Doctrine\Type\NotificationStatusType;
-use DR\GitCommitNotification\Entity\Review\NotificationStatus;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\NotificationStatusType;
+use DR\Review\Entity\Review\NotificationStatus;
+use DR\Review\Tests\AbstractTestCase;
 use stdClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Doctrine\Type\NotificationStatusType
+ * @coversDefaultClass \DR\Review\Doctrine\Type\NotificationStatusType
  */
 class NotificationStatusTypeTest extends AbstractTestCase
 {

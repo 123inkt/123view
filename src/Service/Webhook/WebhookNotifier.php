@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Webhook;
+namespace DR\Review\Service\Webhook;
 
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Webhook\WebhookRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

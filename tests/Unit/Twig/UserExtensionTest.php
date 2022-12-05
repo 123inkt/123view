@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\UserExtension;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\UserExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\UserExtension
+ * @coversDefaultClass \DR\Review\Twig\UserExtension
  * @covers ::__construct
  */
 class UserExtensionTest extends AbstractTestCase

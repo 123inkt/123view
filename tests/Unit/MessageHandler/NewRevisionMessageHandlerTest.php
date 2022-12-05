@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
+namespace DR\Review\Tests\Unit\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Review\ReviewOpened;
-use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
-use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Revision\NewRevisionMessage;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\MessageHandler\NewRevisionMessageHandler;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\Git\Review\CodeReviewService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -28,7 +28,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\NewRevisionMessageHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\NewRevisionMessageHandler
  * @covers ::__construct
  * @suppressWarnings(PHPMD.CouplingBetweenObjects)
  */

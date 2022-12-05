@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Diff\Bundle;
+namespace DR\Review\Service\Git\Diff\Bundle;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Utility\Strings;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Utility\Strings;
 
 class DiffLineComparator
 {
@@ -33,13 +33,13 @@ class DiffLineComparator
 
         // find and replace common prefix
         $prefix = Strings::findPrefix($lineA, $lineB);
-        $lineA = Strings::replacePrefix($lineA, $prefix);
-        $lineB = Strings::replacePrefix($lineB, $prefix);
+        $lineA  = Strings::replacePrefix($lineA, $prefix);
+        $lineB  = Strings::replacePrefix($lineB, $prefix);
 
         // find and replace common suffix
         $suffix = Strings::findSuffix($lineA, $lineB);
-        $lineA = Strings::replaceSuffix($lineA, $suffix);
-        $lineB = Strings::replaceSuffix($lineB, $suffix);
+        $lineA  = Strings::replaceSuffix($lineA, $suffix);
+        $lineB  = Strings::replaceSuffix($lineB, $suffix);
 
         return [strlen($lineA), strlen($lineB)];
     }

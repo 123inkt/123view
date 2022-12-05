@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider\Mail;
+namespace DR\Review\ViewModelProvider\Mail;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModel\Mail\CommentViewModel;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 

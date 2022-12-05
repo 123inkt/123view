@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
+namespace DR\Review\Tests\Unit\Repository\Config;
 
-use DR\GitCommitNotification\Entity\Notification\Frequency;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use DR\GitCommitNotification\Tests\DataFixtures\UserFixtures;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Notification\Frequency;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractRepositoryTestCase;
+use DR\Review\Tests\DataFixtures\UserFixtures;
+use DR\Review\Utility\Assert;
 use Exception;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Repository\Config\RuleRepository
+ * @coversDefaultClass \DR\Review\Repository\Config\RuleRepository
  * @covers ::__construct
  */
 class RuleRepositoryTest extends AbstractRepositoryTestCase

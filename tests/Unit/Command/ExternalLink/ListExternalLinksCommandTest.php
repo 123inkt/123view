@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Command\ExternalLink;
+namespace DR\Review\Tests\Unit\Command\ExternalLink;
 
-use DR\GitCommitNotification\Command\ExternalLink\ListExternalLinksCommand;
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Command\ExternalLink\ListExternalLinksCommand;
+use DR\Review\Entity\Config\ExternalLink;
+use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Command\ExternalLink\ListExternalLinksCommand
+ * @coversDefaultClass \DR\Review\Command\ExternalLink\ListExternalLinksCommand
  * @covers ::__construct
  */
 class ListExternalLinksCommandTest extends AbstractTestCase

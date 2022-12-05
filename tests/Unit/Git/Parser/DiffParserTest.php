@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Git\Parser;
+namespace DR\Review\Tests\Unit\Git\Parser;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Exception\ParseException;
-use DR\GitCommitNotification\Service\Parser\DiffFileParser;
-use DR\GitCommitNotification\Service\Parser\DiffParser;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Exception\ParseException;
+use DR\Review\Service\Parser\DiffFileParser;
+use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\DiffParser
+ * @coversDefaultClass \DR\Review\Service\Parser\DiffParser
  * @covers ::__construct
  */
 class DiffParserTest extends AbstractTestCase

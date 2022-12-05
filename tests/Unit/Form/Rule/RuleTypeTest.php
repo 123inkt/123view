@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Rule;
+namespace DR\Review\Tests\Unit\Form\Rule;
 
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Form\Filter\InExclusionFilterType;
-use DR\GitCommitNotification\Form\Recipient\RecipientCollectionType;
-use DR\GitCommitNotification\Form\Repository\RepositoryChoiceType;
-use DR\GitCommitNotification\Form\Rule\RuleOptionsType;
-use DR\GitCommitNotification\Form\Rule\RuleType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Form\Filter\InExclusionFilterType;
+use DR\Review\Form\Recipient\RecipientCollectionType;
+use DR\Review\Form\Repository\RepositoryChoiceType;
+use DR\Review\Form\Rule\RuleOptionsType;
+use DR\Review\Form\Rule\RuleType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Rule\RuleType
+ * @coversDefaultClass \DR\Review\Form\Rule\RuleType
  * @covers ::__construct
  */
 class RuleTypeTest extends AbstractTestCase

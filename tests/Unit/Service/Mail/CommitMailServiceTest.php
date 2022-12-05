@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
+namespace DR\Review\Tests\Unit\Service\Mail;
 
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use DR\GitCommitNotification\Entity\Notification\Recipient;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Service\Mail\CommitMailService;
-use DR\GitCommitNotification\Service\Mail\MailSubjectFormatter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Recipient;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Service\Mail\CommitMailService;
+use DR\Review\Service\Mail\MailSubjectFormatter;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Mail\CommitMailService
+ * @coversDefaultClass \DR\Review\Service\Mail\CommitMailService
  * @covers ::__construct
  */
 class CommitMailServiceTest extends AbstractTestCase

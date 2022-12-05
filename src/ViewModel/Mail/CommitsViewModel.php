@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\Mail;
+namespace DR\Review\ViewModel\Mail;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Utility\Arrays;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Utility\Arrays;
 
 class CommitsViewModel
 {

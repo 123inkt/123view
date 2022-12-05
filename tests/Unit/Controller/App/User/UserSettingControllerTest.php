@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\User;
+namespace DR\Review\Tests\Unit\Controller\App\User;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\User\UserSettingController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Entity\User\UserSetting;
-use DR\GitCommitNotification\Form\User\UserSettingFormType;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\User\UserSettingViewModel;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\User\UserSettingController;
+use DR\Review\Entity\User\User;
+use DR\Review\Entity\User\UserSetting;
+use DR\Review\Form\User\UserSettingFormType;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\App\User\UserSettingViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\User\UserSettingController
+ * @coversDefaultClass \DR\Review\Controller\App\User\UserSettingController
  * @covers ::__construct
  */
 class UserSettingControllerTest extends AbstractControllerTestCase

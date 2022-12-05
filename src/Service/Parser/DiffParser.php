@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Parser;
+namespace DR\Review\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Exception\ParseException;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Exception\ParseException;
 use Psr\Log\LoggerInterface;
 
 class DiffParser

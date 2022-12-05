@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\DiffTree;
+namespace DR\Review\Tests\Unit\Service\Git\DiffTree;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeService;
-use DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\DiffTree\GitDiffTreeService;
+use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService
+ * @coversDefaultClass \DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService
  * @covers ::__construct
  */
 class LockableGitDiffTreeServiceTest extends AbstractTestCase

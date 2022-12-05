@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\User;
+namespace DR\Review\Controller\App\User;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Form\User\UserSettingFormType;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\ViewModel\App\User\UserSettingViewModel;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Form\User\UserSettingFormType;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Security\Role\Roles;
+use DR\Review\ViewModel\App\User\UserSettingViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;

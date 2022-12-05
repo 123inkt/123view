@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Notification;
+namespace DR\Review\Entity\Notification;
 
-use DR\GitCommitNotification\Doctrine\Type\FilterType;
-use DR\GitCommitNotification\Entity\User\User;
+use DR\Review\Doctrine\Type\FilterType;
+use DR\Review\Entity\User\User;
 
 class RuleFactory
 {

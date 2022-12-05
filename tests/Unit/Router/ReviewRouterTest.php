@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Router;
+namespace DR\Review\Tests\Unit\Router;
 
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Router\ReviewRouter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Router\ReviewRouter;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Router\ReviewRouter
+ * @coversDefaultClass \DR\Review\Router\ReviewRouter
  * @covers ::__construct
  */
 class ReviewRouterTest extends AbstractTestCase

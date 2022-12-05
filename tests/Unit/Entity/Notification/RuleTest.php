@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Notification;
+namespace DR\Review\Tests\Unit\Entity\Notification;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Entity\Notification\Recipient;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Entity\Notification\Recipient;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Notification\Rule
+ * @coversDefaultClass \DR\Review\Entity\Notification\Rule
  * @covers ::__construct
  */
 class RuleTest extends AbstractTestCase

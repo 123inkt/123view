@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Diff;
+namespace DR\Review\Service\Git\Diff;
 
-use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\ParseException;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Parser\DiffParser;
+use DR\Review\Doctrine\Type\DiffAlgorithmType;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\ParseException;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Parser\DiffParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

@@ -1,32 +1,32 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModelProvider;
+namespace DR\Review\Tests\Unit\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
-use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
-use DR\GitCommitNotification\ViewModelProvider\FileDiffViewModelProvider;
-use DR\GitCommitNotification\ViewModelProvider\FileTreeViewModelProvider;
-use DR\GitCommitNotification\ViewModelProvider\ReviewTimelineViewModelProvider;
-use DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider;
-use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Form\Review\AddReviewerFormType;
+use DR\Review\Model\Review\Action\EditCommentAction;
+use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\CodeReview\FileTreeGenerator;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Review\ReviewViewModel;
+use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
+use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
+use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
+use DR\Review\ViewModelProvider\ReviewViewModelProvider;
+use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModelProvider\ReviewViewModelProvider
+ * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewViewModelProvider
  * @covers ::__construct
  */
 class ReviewViewModelProviderTest extends AbstractTestCase

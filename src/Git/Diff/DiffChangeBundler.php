@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Git\Diff;
+namespace DR\Review\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
-use DR\GitCommitNotification\Utility\Strings;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Utility\Strings;
 
 /**
  * As --word-diff-regex gives some unexpected behaviour, optimize consecutive DiffChange blocks that have similar starting and ending strings
@@ -91,8 +91,8 @@ class DiffChangeBundler
     private function mergePrefix(string $prefix, DiffChange $previous, DiffChange $change, DiffChange $next): void
     {
         $previous->code .= $prefix;
-        $change->code = Strings::replacePrefix($change->code, $prefix);
-        $next->code   = Strings::replacePrefix($next->code, $prefix);
+        $change->code   = Strings::replacePrefix($change->code, $prefix);
+        $next->code     = Strings::replacePrefix($next->code, $prefix);
     }
 
     /**

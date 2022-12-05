@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
+namespace DR\Review\Tests\Unit\Repository\Review;
 
-use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use DR\GitCommitNotification\Tests\DataFixtures\CodeReviewFixtures;
-use DR\GitCommitNotification\Tests\DataFixtures\UserFixtures;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Review\FileSeenStatus;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Review\FileSeenStatusRepository;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractRepositoryTestCase;
+use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
+use DR\Review\Tests\DataFixtures\UserFixtures;
+use DR\Review\Utility\Assert;
 use Exception;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository
+ * @coversDefaultClass \DR\Review\Repository\Review\FileSeenStatusRepository
  * @covers ::__construct
  */
 class FileSeenStatusRepositoryTest extends AbstractRepositoryTestCase

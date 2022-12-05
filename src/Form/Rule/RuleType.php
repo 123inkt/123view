@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Rule;
+namespace DR\Review\Form\Rule;
 
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Form\Filter\InExclusionFilterType;
-use DR\GitCommitNotification\Form\Recipient\RecipientCollectionType;
-use DR\GitCommitNotification\Form\Repository\RepositoryChoiceType;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Form\Filter\InExclusionFilterType;
+use DR\Review\Form\Recipient\RecipientCollectionType;
+use DR\Review\Form\Repository\RepositoryChoiceType;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

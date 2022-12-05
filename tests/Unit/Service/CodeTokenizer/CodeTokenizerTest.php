@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeTokenizer;
+namespace DR\Review\Tests\Unit\Service\CodeTokenizer;
 
-use DR\GitCommitNotification\Service\CodeTokenizer\CodeCommentTokenizer;
-use DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer;
-use DR\GitCommitNotification\Service\CodeTokenizer\CodeTokenizer;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\CodeTokenizer\CodeCommentTokenizer;
+use DR\Review\Service\CodeTokenizer\CodeStringTokenizer;
+use DR\Review\Service\CodeTokenizer\CodeTokenizer;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeTokenizer\CodeTokenizer
+ * @coversDefaultClass \DR\Review\Service\CodeTokenizer\CodeTokenizer
  * @covers ::__construct
  */
 class CodeTokenizerTest extends AbstractTestCase

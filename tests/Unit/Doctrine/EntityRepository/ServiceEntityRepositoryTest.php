@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Doctrine\EntityRepository;
+namespace DR\Review\Tests\Unit\Doctrine\EntityRepository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository
+ * @coversDefaultClass \DR\Review\Doctrine\EntityRepository\ServiceEntityRepository
  * @covers ::__construct
  */
 class ServiceEntityRepositoryTest extends AbstractTestCase

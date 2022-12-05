@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Reset;
+namespace DR\Review\Tests\Unit\Service\Git\Reset;
 
-use DR\GitCommitNotification\Service\Git\Reset\GitResetCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Reset\GitResetCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\Reset\GitResetCommandBuilder
  * @covers ::__construct
  */
 class GitResetCommandBuilderTest extends AbstractTestCase

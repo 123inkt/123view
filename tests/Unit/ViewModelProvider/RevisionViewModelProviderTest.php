@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModelProvider;
+namespace DR\Review\Tests\Unit\ViewModelProvider;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModelProvider\RevisionViewModelProvider
+ * @coversDefaultClass \DR\Review\ViewModelProvider\RevisionViewModelProvider
  * @covers ::__construct
  */
 class RevisionViewModelProviderTest extends AbstractTestCase

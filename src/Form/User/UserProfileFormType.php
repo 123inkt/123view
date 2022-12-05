@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\User;
+namespace DR\Review\Form\User;
 
-use DR\GitCommitNotification\Controller\App\User\ChangeUserProfileController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Transformer\UserProfileRoleTransformer;
+use DR\Review\Controller\App\User\ChangeUserProfileController;
+use DR\Review\Entity\User\User;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Transformer\UserProfileRoleTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

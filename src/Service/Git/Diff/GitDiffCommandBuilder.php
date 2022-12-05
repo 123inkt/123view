@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Diff;
+namespace DR\Review\Service\Git\Diff;
 
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)

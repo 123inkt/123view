@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Log;
+namespace DR\Review\Service\Git\Log;
 
-use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Doctrine\Type\DiffAlgorithmType;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Utility\Assert;
 
 class GitLogCommandFactory
 {

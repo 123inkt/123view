@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\DiffTree;
+namespace DR\Review\Tests\Unit\Service\Git\DiffTree;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
-use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
+use DR\Review\Service\Git\DiffTree\GitDiffTreeService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeService
+ * @coversDefaultClass \DR\Review\Service\Git\DiffTree\GitDiffTreeService
  * @covers ::__construct
  */
 class GitDiffTreeServiceTest extends AbstractTestCase

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Log;
+namespace DR\Review\Service\Git\Log;
 
 use DateTimeInterface;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)

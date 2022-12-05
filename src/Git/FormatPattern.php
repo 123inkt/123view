@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Git;
+namespace DR\Review\Git;
 
 /**
  * @link https://git-scm.com/docs/pretty-formats
@@ -21,5 +21,5 @@ class FormatPattern
     public const REF_NAMES            = '%D';
 
     // key for defining the `patch` data.
-    public const PATCH                = 'patch';
+    public const PATCH = 'patch';
 }

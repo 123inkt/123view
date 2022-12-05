@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
+namespace DR\Review\Tests\Unit\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Service\Mail\CommentMailService;
-use DR\GitCommitNotification\Service\Mail\MailRecipientService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\User\User;
+use DR\Review\Service\Mail\CommentMailService;
+use DR\Review\Service\Mail\MailRecipientService;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Mail\CommentMailService
+ * @coversDefaultClass \DR\Review\Service\Mail\CommentMailService
  * @covers ::__construct
  */
 class CommentMailServiceTest extends AbstractTestCase

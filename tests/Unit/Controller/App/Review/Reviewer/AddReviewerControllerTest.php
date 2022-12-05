@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Reviewer;
+namespace DR\Review\Tests\Unit\Controller\App\Review\Reviewer;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Controller\App\Review\Reviewer\AddReviewerController;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Service\Git\Review\CodeReviewerService;
-use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Controller\App\Review\Reviewer\AddReviewerController;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\Review\AddReviewerFormType;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\Git\Review\CodeReviewerService;
+use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\Reviewer\AddReviewerController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\Reviewer\AddReviewerController
  * @covers ::__construct
  */
 class AddReviewerControllerTest extends AbstractControllerTestCase

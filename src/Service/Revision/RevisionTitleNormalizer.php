@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Revision;
+namespace DR\Review\Service\Revision;
 
 class RevisionTitleNormalizer
 {

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Revision;
+namespace DR\Review\Tests\Unit\Service\Revision;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\Revision\RevisionFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Revision\RevisionFactory;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Revision\RevisionFactory
+ * @coversDefaultClass \DR\Review\Service\Revision\RevisionFactory
  */
 class RevisionFactoryTest extends AbstractTestCase
 {

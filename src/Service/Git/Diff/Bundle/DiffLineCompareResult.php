@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Diff\Bundle;
+namespace DR\Review\Service\Git\Diff\Bundle;
 
 class DiffLineCompareResult
 {

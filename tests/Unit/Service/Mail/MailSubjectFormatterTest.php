@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
+namespace DR\Review\Tests\Unit\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\Mail\MailSubjectFormatter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Mail\MailSubjectFormatter;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Mail\MailSubjectFormatter
+ * @coversDefaultClass \DR\Review\Service\Mail\MailSubjectFormatter
  */
 class MailSubjectFormatterTest extends AbstractTestCase
 {

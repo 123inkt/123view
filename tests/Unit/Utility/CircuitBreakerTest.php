@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Utility;
+namespace DR\Review\Tests\Unit\Utility;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Utility\CircuitBreaker;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\CircuitBreaker;
 use RuntimeException;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Utility\CircuitBreaker
+ * @coversDefaultClass \DR\Review\Utility\CircuitBreaker
  * @covers ::__construct
  */
 class CircuitBreakerTest extends AbstractTestCase

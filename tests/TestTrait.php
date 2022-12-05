@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests;
+namespace DR\Review\Tests;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
 use SplFileInfo;
 
 trait TestTrait
@@ -58,7 +58,7 @@ trait TestTrait
     private function getDataDir(): string
     {
         $namespace = str_replace(
-            ['DR\\GitCommitNotification\\Tests\\', 'DR\\GitCommitNotification\\Tests\\', 'DR\\GitCommitNotification\\Tests\\', '\\'],
+            ['DR\\Review\\Tests\\', 'DR\\Review\\Tests\\', 'DR\\Review\\Tests\\', '\\'],
             '/',
             implode('\\', explode('\\', get_class($this)))
         );

@@ -6,12 +6,12 @@ index 2692788..f20977c 100644
 +++ b/src/Service/Parser/GitLogParser.php
 @@ -3,7 +3,6 @@ declare(strict_types=1);
 
- namespace DR\GitCommitNotification\Service\Parser;
+ namespace DR\Review\Service\Parser;
 
--use DR\GitCommitNotification\Entity\Config\Rule;
- use DR\GitCommitNotification\Entity\Git\Commit;
- use DR\GitCommitNotification\Git\FormatPattern;
- use DR\GitCommitNotification\Service\CommitHydrator;
+-use DR\Review\Entity\Config\Rule;
+ use DR\Review\Entity\Git\Commit;
+ use DR\Review\Git\FormatPattern;
+ use DR\Review\Service\CommitHydrator;
 @@ -33,7 +32,7 @@ class GitLogParser
       * @return Commit[]
       * @throws Exception
@@ -149,12 +149,12 @@ index f20977c..2692788 100644
 +++ b/src/Service/Parser/GitLogParser.php
 @@ -3,6 +3,7 @@ declare(strict_types=1);
 
- namespace DR\GitCommitNotification\Service\Parser;
+ namespace DR\Review\Service\Parser;
 
-+use DR\GitCommitNotification\Entity\Config\Rule;
- use DR\GitCommitNotification\Entity\Git\Commit;
- use DR\GitCommitNotification\Git\FormatPattern;
- use DR\GitCommitNotification\Service\CommitHydrator;
++use DR\Review\Entity\Config\Rule;
+ use DR\Review\Entity\Git\Commit;
+ use DR\Review\Git\FormatPattern;
+ use DR\Review\Service\CommitHydrator;
 @@ -32,7 +33,7 @@ class GitLogParser
       * @return Commit[]
       * @throws Exception

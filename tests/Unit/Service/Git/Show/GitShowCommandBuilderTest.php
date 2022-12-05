@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Show;
+namespace DR\Review\Tests\Unit\Service\Git\Show;
 
-use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Show\GitShowCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\Show\GitShowCommandBuilder
  * @covers ::__construct
  */
 class GitShowCommandBuilderTest extends AbstractTestCase

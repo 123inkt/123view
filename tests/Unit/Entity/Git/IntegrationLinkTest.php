@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Git;
+namespace DR\Review\Tests\Unit\Entity\Git;
 
-use DR\GitCommitNotification\Entity\Git\IntegrationLink;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\IntegrationLink;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\IntegrationLink
+ * @coversDefaultClass \DR\Review\Entity\Git\IntegrationLink
  * @covers ::__construct
  */
 class IntegrationLinkTest extends AbstractTestCase

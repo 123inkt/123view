@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Review;
+namespace DR\Review\Entity\Review;
 
 use InvalidArgumentException;
 

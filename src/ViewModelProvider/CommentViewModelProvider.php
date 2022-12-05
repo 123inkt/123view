@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Form\Review\AddCommentFormType;
-use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
-use DR\GitCommitNotification\Form\Review\EditCommentFormType;
-use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Comment\AddCommentViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\CommentsViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentReplyViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\EditCommentViewModel;
-use DR\GitCommitNotification\ViewModel\App\Comment\ReplyCommentViewModel;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Form\Review\AddCommentFormType;
+use DR\Review\Form\Review\AddCommentReplyFormType;
+use DR\Review\Form\Review\EditCommentFormType;
+use DR\Review\Form\Review\EditCommentReplyFormType;
+use DR\Review\Model\Review\Action\AddCommentAction;
+use DR\Review\Model\Review\Action\AddCommentReplyAction;
+use DR\Review\Model\Review\Action\EditCommentAction;
+use DR\Review\Model\Review\Action\EditCommentReplyAction;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModel\App\Comment\AddCommentViewModel;
+use DR\Review\ViewModel\App\Comment\CommentsViewModel;
+use DR\Review\ViewModel\App\Comment\EditCommentReplyViewModel;
+use DR\Review\ViewModel\App\Comment\EditCommentViewModel;
+use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class CommentViewModelProvider

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Git;
+namespace DR\Review\Tests\Unit\Git;
 
-use DR\GitCommitNotification\Git\LineReader;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Git\LineReader;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Git\LineReader
+ * @coversDefaultClass \DR\Review\Git\LineReader
  * @covers ::__construct
  */
 class LineReaderTest extends AbstractTestCase

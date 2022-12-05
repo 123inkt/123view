@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
+namespace DR\Review\Tests\Unit\Service\Git\Log;
 
 use DateInterval;
 use DatePeriod;
 use DateTimeImmutable;
-use DR\GitCommitNotification\Entity\Notification\Frequency;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\Log\FormatPatternFactory;
-use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Frequency;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\Log\FormatPatternFactory;
+use DR\Review\Service\Git\Log\GitLogCommandBuilder;
+use DR\Review\Service\Git\Log\GitLogCommandFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\GitLogCommandFactory
+ * @coversDefaultClass \DR\Review\Service\Git\Log\GitLogCommandFactory
  * @covers ::__construct
  */
 class GitLogCommandFactoryTest extends AbstractTestCase

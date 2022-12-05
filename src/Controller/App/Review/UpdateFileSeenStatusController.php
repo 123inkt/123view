@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review;
+namespace DR\Review\Controller\App\Review;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Request\Review\FileSeenStatusRequest;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Request\Review\FileSeenStatusRequest;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Utility\Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;

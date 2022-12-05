@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Vcs;
+namespace DR\Review\Tests\Unit\Controller\App\Vcs;
 
-use DR\GitCommitNotification\Controller\App\Vcs\FetchRevisionsController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Vcs\FetchRevisionsController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Vcs\FetchRevisionsController
+ * @coversDefaultClass \DR\Review\Controller\App\Vcs\FetchRevisionsController
  * @covers ::__construct
  */
 class FetchRevisionsControllerTest extends AbstractTestCase

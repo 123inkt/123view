@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Event;
+namespace DR\Review\Tests\Unit\Event;
 
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Event\CommitEvent;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Event\CommitEvent
+ * @coversDefaultClass \DR\Review\Event\CommitEvent
  * @covers ::__construct
  */
 class CommitEventTest extends AbstractTestCase

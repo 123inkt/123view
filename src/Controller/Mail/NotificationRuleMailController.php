@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\Mail;
+namespace DR\Review\Controller\Mail;
 
 use DateTimeImmutable;
-use DR\GitCommitNotification\Entity\Notification\Frequency;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\RuleProcessor;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel;
+use DR\Review\Entity\Notification\Frequency;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\RuleProcessor;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModel\Mail\CommitsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

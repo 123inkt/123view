@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Message\Comment\CommentAdded;
-use DR\GitCommitNotification\Message\Review\ReviewAccepted;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityFormatter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Reviewer\ReviewerAdded;
+use DR\Review\Message\Reviewer\ReviewerStateChanged;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityFormatter
+ * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActivityFormatter
  * @covers ::__construct
  */
 class CodeReviewActivityFormatterTest extends AbstractTestCase

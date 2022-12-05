@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Filter;
+namespace DR\Review\Form\Filter;
 
-use DR\GitCommitNotification\Transformer\FilterCollectionTransformer;
+use DR\Review\Transformer\FilterCollectionTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 

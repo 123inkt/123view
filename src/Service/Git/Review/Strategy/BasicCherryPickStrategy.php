@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Review\Strategy;
+namespace DR\Review\Service\Git\Review\Strategy;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
-use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickService;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\GitRepositoryResetManager;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Utility\Arrays;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\CherryPick\GitCherryPickService;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\GitRepositoryResetManager;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Utility\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**

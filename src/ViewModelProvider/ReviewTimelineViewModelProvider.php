@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\CodeReviewActivityRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityFormatter;
-use DR\GitCommitNotification\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\Timeline\TimelineViewModel;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
 class ReviewTimelineViewModelProvider
 {

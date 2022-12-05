@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\User;
+namespace DR\Review\Tests\Unit\Controller\App\User;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\User\UsersController;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\User\UsersViewModel;
-use DR\GitCommitNotification\ViewModelProvider\UserViewModelProvider;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\User\UsersController;
+use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\App\User\UsersViewModel;
+use DR\Review\ViewModelProvider\UserViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\User\UsersController
+ * @coversDefaultClass \DR\Review\Controller\App\User\UsersController
  * @covers ::__construct
  */
 class UsersControllerTest extends AbstractControllerTestCase

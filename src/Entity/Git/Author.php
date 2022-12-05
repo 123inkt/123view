@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Git;
+namespace DR\Review\Entity\Git;
 
 class Author
 {

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review\Comment;
+namespace DR\Review\Controller\App\Review\Comment;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Request\Comment\CommentPreviewRequest;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Service\Markdown\MarkdownService;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Request\Comment\CommentPreviewRequest;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\Markdown\MarkdownService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

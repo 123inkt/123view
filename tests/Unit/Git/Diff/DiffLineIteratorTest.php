@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Git\Diff;
+namespace DR\Review\Tests\Unit\Git\Diff;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Git\Diff\DiffLineIterator;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffBlock;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\Diff\DiffLineIterator;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Git\Diff\DiffLineIterator
+ * @coversDefaultClass \DR\Review\Git\Diff\DiffLineIterator
  * @covers ::__construct
  */
 class DiffLineIteratorTest extends AbstractTestCase
@@ -31,7 +31,7 @@ class DiffLineIteratorTest extends AbstractTestCase
         $block        = new DiffBlock();
         $block->lines = [$lineA, $lineB];
 
-        $file         = new DiffFile();
+        $file = new DiffFile();
         $file->addBlock($block);
 
         $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), new DateTime(), 'subject', 'refs', [$file]);

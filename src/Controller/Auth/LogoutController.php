@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\Auth;
+namespace DR\Review\Controller\Auth;
 
 use RuntimeException;
 use Symfony\Component\Routing\Annotation\Route;

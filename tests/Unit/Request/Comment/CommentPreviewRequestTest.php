@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request\Comment;
+namespace DR\Review\Tests\Unit\Request\Comment;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Request\Comment\CommentPreviewRequest;
-use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
+use DR\Review\Request\Comment\CommentPreviewRequest;
+use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 
 /**
  * @extends AbstractRequestTestCase<CommentPreviewRequest>
- * @coversDefaultClass \DR\GitCommitNotification\Request\Comment\CommentPreviewRequest
+ * @coversDefaultClass \DR\Review\Request\Comment\CommentPreviewRequest
  */
 class CommentPreviewRequestTest extends AbstractRequestTestCase
 {

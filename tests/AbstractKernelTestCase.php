@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests;
+namespace DR\Review\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

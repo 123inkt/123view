@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Revision;
+namespace DR\Review\Tests\Unit\Controller\App\Revision;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Controller\App\Revision\DetachRevisionController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Controller\App\Revision\DetachRevisionController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Revision\DetachRevisionController
+ * @coversDefaultClass \DR\Review\Controller\App\Revision\DetachRevisionController
  * @covers ::__construct
  */
 class DetachRevisionControllerTest extends AbstractControllerTestCase

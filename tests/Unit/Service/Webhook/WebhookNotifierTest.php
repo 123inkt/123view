@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Webhook;
+namespace DR\Review\Tests\Unit\Service\Webhook;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Webhook\Webhook;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Webhook\WebhookRepository;
-use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
-use DR\GitCommitNotification\Service\Webhook\WebhookNotifier;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Webhook\Webhook;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Webhook\WebhookRepository;
+use DR\Review\Service\Webhook\WebhookExecutionService;
+use DR\Review\Service\Webhook\WebhookNotifier;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Webhook\WebhookNotifier
+ * @coversDefaultClass \DR\Review\Service\Webhook\WebhookNotifier
  * @covers ::__construct
  */
 class WebhookNotifierTest extends AbstractTestCase

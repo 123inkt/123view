@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Config;
+namespace DR\Review\Entity\Config;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
+use DR\Review\Repository\Config\ExternalLinkRepository;
 
 #[ORM\Entity(repositoryClass: ExternalLinkRepository::class)]
 class ExternalLink

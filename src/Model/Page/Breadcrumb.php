@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Model\Page;
+namespace DR\Review\Model\Page;
 
 /**
  * @codeCoverageIgnore

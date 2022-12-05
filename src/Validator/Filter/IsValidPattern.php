@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Validator\Filter;
+namespace DR\Review\Validator\Filter;
 
 use Symfony\Component\Validator\Constraint;
 

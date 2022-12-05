@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Notification;
+namespace DR\Review\Tests\Unit\Entity\Notification;
 
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Notification\RuleOptions
+ * @coversDefaultClass \DR\Review\Entity\Notification\RuleOptions
  */
 class RuleOptionsTest extends AbstractTestCase
 {

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Repository\Review;
+namespace DR\Review\Repository\Review;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\User\User;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\User\User;
 
 class CodeReviewQueryBuilder
 {

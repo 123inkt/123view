@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Model\Review;
+namespace DR\Review\Model\Review;
 
-use DR\GitCommitNotification\Utility\Arrays;
+use DR\Review\Utility\Arrays;
 use Iterator;
 use LogicException;
 

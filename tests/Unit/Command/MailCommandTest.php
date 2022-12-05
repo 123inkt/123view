@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Command;
+namespace DR\Review\Tests\Unit\Command;
 
-use DR\GitCommitNotification\Command\MailCommand;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Service\Mail\CommitMailService;
-use DR\GitCommitNotification\Service\RuleProcessor;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Command\MailCommand;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Service\Mail\CommitMailService;
+use DR\Review\Service\RuleProcessor;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,12 +17,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Command\MailCommand
+ * @coversDefaultClass \DR\Review\Command\MailCommand
  * @covers ::__construct
  */
 class MailCommandTest extends AbstractTestCase
 {
-    private RuleProcessor&MockObject  $ruleProcessor;
+    private RuleProcessor&MockObject     $ruleProcessor;
     private RuleRepository&MockObject    $ruleRepository;
     private CommitMailService&MockObject $mailService;
     private MailCommand                  $command;

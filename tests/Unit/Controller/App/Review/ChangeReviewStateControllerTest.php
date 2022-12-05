@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Review;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ChangeReviewStateController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Request\Review\ChangeReviewStateRequest;
-use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ChangeReviewStateController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Request\Review\ChangeReviewStateRequest;
+use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\ChangeReviewStateController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\ChangeReviewStateController
  * @covers ::__construct
  */
 class ChangeReviewStateControllerTest extends AbstractControllerTestCase

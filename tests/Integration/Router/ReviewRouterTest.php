@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Integration\Router;
+namespace DR\Review\Tests\Integration\Router;
 
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Tests\AbstractKernelTestCase;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Tests\AbstractKernelTestCase;
 use Exception;
 use Symfony\Component\Routing\RouterInterface;
 

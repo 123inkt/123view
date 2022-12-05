@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\EventSubscriber;
+namespace DR\Review\Tests\Unit\EventSubscriber;
 
 use Doctrine\ORM\NonUniqueResultException;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\EventSubscriber\AddReviewToCommitSubscriber;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Event\CommitEvent;
+use DR\Review\EventSubscriber\AddReviewToCommitSubscriber;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\EventSubscriber\AddReviewToCommitSubscriber
+ * @coversDefaultClass \DR\Review\EventSubscriber\AddReviewToCommitSubscriber
  * @covers ::__construct
  */
 class AddReviewToCommitSubscriberTest extends AbstractTestCase
