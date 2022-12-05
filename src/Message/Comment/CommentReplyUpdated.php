@@ -43,6 +43,6 @@ class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInte
      */
     public function getPayload(): array
     {
-        return ['comment-id' => $this->commentReplyId, 'original-comment' => $this->originalComment];
+        return ['commentId' => $this->commentReplyId, 'originalComment' => $this->originalComment];
     }
 }

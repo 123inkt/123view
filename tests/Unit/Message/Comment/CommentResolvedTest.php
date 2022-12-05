@@ -21,7 +21,7 @@ class CommentResolvedTest extends AbstractMessageEventTestCase
      */
     public function testAccessors(): void
     {
-        static::assertCodeReviewEvent(new CommentResolved(5, 6, 7), 'comment-resolved', 5, ['comment-id' => 6, 'resolved-by-user-id' => 7]);
+        static::assertCodeReviewEvent(new CommentResolved(5, 6, 7), 'comment-resolved', 5, ['commentId' => 6, 'resolvedByUserId' => 7]);
         static::assertCommentEvent(new CommentResolved(5, 6, 7), 6);
         static::assertUserAware(new CommentResolved(5, 6, 7), 7);
     }

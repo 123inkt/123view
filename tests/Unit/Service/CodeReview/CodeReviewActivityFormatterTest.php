@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
+use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Message\Comment\CommentAdded;
 use DR\GitCommitNotification\Message\Review\ReviewAccepted;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
+use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityFormatter;
@@ -26,6 +29,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
     private TranslatorInterface&MockObject $translator;
     private UserRepository&MockObject      $userRepository;
     private RevisionRepository&MockObject  $revisionRepository;
+    private CommentRepository&MockObject   $commentRepository;
     private CodeReviewActivityFormatter    $formatter;
 
     public function setUp(): void
@@ -34,7 +38,14 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->translator         = $this->createMock(TranslatorInterface::class);
         $this->userRepository     = $this->createMock(UserRepository::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $this->formatter          = new CodeReviewActivityFormatter($this->translator, $this->userRepository, $this->revisionRepository, 'app');
+        $this->commentRepository  = $this->createMock(CommentRepository::class);
+        $this->formatter          = new CodeReviewActivityFormatter(
+            $this->translator,
+            $this->userRepository,
+            $this->revisionRepository,
+            $this->commentRepository,
+            'app'
+        );
     }
 
     /**
@@ -133,6 +144,32 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->willReturnArgument(0);
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::once())->method('find')->with(789)->willReturn($revision);
+
+        $this->formatter->format($user, $activity);
+    }
+
+    /**
+     * @covers ::format
+     * @covers ::addCustomParams
+     * @covers ::getTranslationId
+     */
+    public function testFormatCommentEvent(): void
+    {
+        $user = new User();
+        $user->setId(456);
+
+        $comment = new Comment();
+        $comment->setFilePath('filepath');
+
+        $activity = new CodeReviewActivity();
+        $activity->setEventName(CommentAdded::NAME);
+        $activity->setData(['commentId' => 789]);
+
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
+            ->willReturnArgument(0);
+        $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn($comment);
 
         $this->formatter->format($user, $activity);
     }

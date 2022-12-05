@@ -39,6 +39,6 @@ class CommentResolved implements AsyncMessageInterface, MailNotificationInterfac
      */
     public function getPayload(): array
     {
-        return ['comment-id' => $this->commentId, 'resolved-by-user-id' => $this->resolveByUserId];
+        return ['commentId' => $this->commentId, 'resolvedByUserId' => $this->resolveByUserId];
     }
 }
