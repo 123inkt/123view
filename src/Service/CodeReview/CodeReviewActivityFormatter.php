@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
-use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Message\Comment\CommentAdded;
@@ -94,10 +93,8 @@ class CodeReviewActivityFormatter
 
         // add filepath the comment was added to
         if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME], true)) {
-            $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
-            if ($comment instanceof Comment) {
-                $params['file'] = $comment->getFilePath();
-            }
+            $comment        = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
+            $params['file'] = (string)$comment?->getFilePath();
         }
 
         return $params;
