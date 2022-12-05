@@ -7,13 +7,23 @@ use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
+use DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Throwable;
 
-class FileSeenStatusService
+class FileSeenStatusService implements LoggerAwareInterface
 {
-    public function __construct(private readonly FileSeenStatusRepository $statusRepository, private readonly ?User $user)
-    {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private readonly LockableGitDiffTreeService $treeService,
+        private readonly FileSeenStatusRepository $statusRepository,
+        private readonly ?User $user
+    ) {
     }
 
     public function markAsSeen(CodeReview $review, User $user, DiffFile|string|null $file): void
@@ -47,23 +57,20 @@ class FileSeenStatusService
         $this->statusRepository->remove($seenStatus, true);
     }
 
-    /**
-     * @param DiffFile[] $files
-     */
-    public function markAllAsUnseen(CodeReview $review, array $files): void
+    public function markAllAsUnseen(CodeReview $review, Revision $revision): void
     {
-        $filePaths = [];
-        foreach ($files as $file) {
-            $filePaths[] = $file->filePathBefore;
-            $filePaths[] = $file->filePathAfter;
-        }
-        $filePaths = array_filter(array_unique($filePaths), static fn($path) => $path !== null && $path !== '');
+        try {
+            $filePaths   = $this->treeService->getFilesInRevision($revision);
+            $statusFiles = $this->statusRepository->findBy(['review' => $review->getId(), 'filePath' => $filePaths]);
 
-        $statusFiles = $this->statusRepository->findBy(['review' => $review->getId(), 'filePath' => $filePaths]);
-
-        $lastItem = end($statusFiles);
-        foreach ($statusFiles as $statusFile) {
-            $this->statusRepository->remove($statusFile, $statusFile === $lastItem);
+            $lastItem = end($statusFiles);
+            foreach ($statusFiles as $statusFile) {
+                $this->statusRepository->remove($statusFile, $statusFile === $lastItem);
+            }
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $exception) {
+            $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
+            // @codeCoverageIgnoreEnd
         }
     }
 

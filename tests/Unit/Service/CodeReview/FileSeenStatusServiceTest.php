@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
+use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
 use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
+use DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService;
 use DR\GitCommitNotification\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -18,16 +19,19 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class FileSeenStatusServiceTest extends AbstractTestCase
 {
-    private FileSeenStatusRepository&MockObject $statusRepository;
-    private User                                $user;
-    private FileSeenStatusService               $service;
+    private LockableGitDiffTreeService&MockObject $treeService;
+    private FileSeenStatusRepository&MockObject   $statusRepository;
+
+    private User                  $user;
+    private FileSeenStatusService $service;
 
     public function setUp(): void
     {
         parent::setUp();
+        $this->treeService      = $this->createMock(LockableGitDiffTreeService::class);
         $this->statusRepository = $this->createMock(FileSeenStatusRepository::class);
         $this->user             = new User();
-        $this->service          = new FileSeenStatusService($this->statusRepository, $this->user);
+        $this->service          = new FileSeenStatusService($this->treeService, $this->statusRepository, $this->user);
     }
 
     /**
@@ -121,23 +125,20 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $fileA                 = new DiffFile();
-        $fileA->filePathBefore = 'filePathBefore';
-        $fileA->filePathAfter  = 'filePathAfter';
-        $fileB                 = new DiffFile();
-        $fileB->filePathBefore = 'filePathBefore';
-        $fileB->filePathAfter  = null;
+        $revision = new Revision();
+        $revision->setId(456);
 
         $statusA = new FileSeenStatus();
         $statusB = new FileSeenStatus();
 
+        $this->treeService->expects(self::once())->method('getFilesInRevision')->with($revision)->willReturn(['filePathBefore', 'filePathAfter']);
         $this->statusRepository->expects(self::once())
             ->method('findBy')
             ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
             ->willReturn([$statusA, $statusB]);
         $this->statusRepository->expects(self::exactly(2))->method('remove')->withConsecutive([$statusA, false], [$statusB, true]);
 
-        $this->service->markAllAsUnseen($review, [$fileA, $fileB]);
+        $this->service->markAllAsUnseen($review, $revision);
     }
 
     /**

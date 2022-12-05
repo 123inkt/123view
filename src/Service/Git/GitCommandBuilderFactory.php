@@ -8,6 +8,7 @@ use DR\GitCommitNotification\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
+use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Reset\GitResetCommandBuilder;
 use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
@@ -31,6 +32,11 @@ class GitCommandBuilderFactory
     public function createDiff(): GitDiffCommandBuilder
     {
         return new GitDiffCommandBuilder($this->git);
+    }
+
+    public function createDiffTree(): GitDiffTreeCommandBuilder
+    {
+        return new GitDiffTreeCommandBuilder($this->git);
     }
 
     public function createLog(): GitLogCommandBuilder

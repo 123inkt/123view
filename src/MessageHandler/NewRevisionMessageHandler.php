@@ -12,6 +12,7 @@ use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Service\CodeReview\CodeReviewRevisionMatcher;
+use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
 use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -31,6 +32,7 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
         private RevisionRepository $revisionRepository,
         private CodeReviewService $reviewService,
         private CodeReviewRevisionMatcher $reviewRevisionMatcher,
+        private FileSeenStatusService $seenStatusService,
         private ManagerRegistry $registry,
         private MessageBusInterface $bus
     ) {
@@ -74,6 +76,9 @@ class NewRevisionMessageHandler implements MessageHandlerInterface, LoggerAwareI
         }
 
         $this->logger?->info('MessageHandler: add revision ' . $revision->getCommitHash() . ' to review ' . $revision->getTitle());
+
+        // mark files in revision as unseen
+        $this->seenStatusService->markAllAsUnseen($review, $revision);
 
         // dispatch events
         if ($reviewCreated) {
