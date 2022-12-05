@@ -76,7 +76,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
         /** @var Commit[] $commitChunk */
         foreach (array_chunk($commits, 50) as $commitChunk) {
             $revisions = $this->revisionFactory->createFromCommits($commitChunk);
-            $this->revisionRepository->saveAll($repository, $revisions);
+            $revisions = $this->revisionRepository->saveAll($repository, $revisions);
             $this->dispatchRevisions($revisions);
         }
 

@@ -38,8 +38,8 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
         $revision->setCreateTimestamp(time());
         $revision->setRepository($repository);
 
-        $revisionRepository->saveAll($repository, [$revision]);
-        $revisionRepository->saveAll($repository, [$revision]);
+        static::assertCount(1, $revisionRepository->saveAll($repository, [$revision]));
+        static::assertCount(0, $revisionRepository->saveAll($repository, [$revision]));
 
         static::assertNotNull($revision->getId());
     }
