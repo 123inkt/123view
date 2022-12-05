@@ -8,13 +8,19 @@ use DR\GitCommitNotification\Message\MailNotificationInterface;
 
 class CommentAdded implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
 {
-    public function __construct(public readonly int $reviewId, public readonly int $commentId, public readonly string $message)
-    {
+    public const NAME = 'comment-added';
+
+    public function __construct(
+        public readonly int $reviewId,
+        public readonly int $commentId,
+        public readonly int $byUserId,
+        public readonly string $message
+    ) {
     }
 
     public function getName(): string
     {
-        return 'comment-added';
+        return self::NAME;
     }
 
     public function getReviewId(): int
@@ -25,6 +31,11 @@ class CommentAdded implements AsyncMessageInterface, MailNotificationInterface, 
     public function getCommentId(): int
     {
         return $this->commentId;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->byUserId;
     }
 
     /**

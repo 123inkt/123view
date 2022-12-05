@@ -9,6 +9,7 @@ use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
 use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Form\Review\EditCommentFormType;
 use DR\GitCommitNotification\Message\Comment\CommentUpdated;
 use DR\GitCommitNotification\Repository\Review\CommentRepository;
@@ -114,6 +115,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $comment->setMessage('message');
         $comment->setReview($review);
 
+        $this->expectGetUser((new User())->setId(789));
         $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
         $this->expectCreateForm(EditCommentFormType::class, $comment, ['comment' => $comment])
             ->handleRequest($request)
@@ -133,7 +135,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
                 ),
                 true
             );
-        $this->bus->expects(self::once())->method('dispatch')->with(new CommentUpdated(123, 456, 'message'))->willReturn($this->envelope);
+        $this->bus->expects(self::once())->method('dispatch')->with(new CommentUpdated(123, 456, 789, 'message'))->willReturn($this->envelope);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $comment);

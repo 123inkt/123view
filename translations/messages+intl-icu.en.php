@@ -148,6 +148,8 @@ return [
     'timeline.review'                             => 'Review timeline',
     'timeline.review.accepted'                    => 'The review was <span class="text-success">accepted</span>.',
     'timeline.review.closed'                      => '<span class="text-primary">{username}</span> closed the review.',
+    'timeline.comment.added'                      => '<span class="text-primary">{username}</span> added a comment to <code>{file}</code>.',
+    'timeline.comment.resolved'                   => '<span class="text-primary">{username}</span> resolved a comment on <code>{file}</code>.',
     'timeline.review.created.from.revision'       => '<span class="text-primary">{username}</span> created the review from a revision.',
     'timeline.review.opened'                      => '<span class="text-primary">{username}</span> reopened the review.',
     'timeline.review.rejected'                    => 'The review was <span class="text-danger">rejected</span>.',

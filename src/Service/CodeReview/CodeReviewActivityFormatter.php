@@ -6,6 +6,8 @@ namespace DR\GitCommitNotification\Service\CodeReview;
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
+use DR\GitCommitNotification\Message\Comment\CommentAdded;
+use DR\GitCommitNotification\Message\Comment\CommentResolved;
 use DR\GitCommitNotification\Message\Review\ReviewAccepted;
 use DR\GitCommitNotification\Message\Review\ReviewClosed;
 use DR\GitCommitNotification\Message\Review\ReviewCreated;
@@ -38,6 +40,8 @@ class CodeReviewActivityFormatter
         ReviewResumed::NAME                      => 'timeline.review.resumed',
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
+        CommentAdded::NAME                       => 'timeline.comment.added',
+        CommentResolved::NAME                    => 'timeline.comment.resolved'
     ];
 
     public function __construct(

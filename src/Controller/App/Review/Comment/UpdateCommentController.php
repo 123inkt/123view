@@ -49,7 +49,9 @@ class UpdateCommentController extends AbstractController
         $this->commentRepository->save($comment, true);
 
         if ($comment->getMessage() !== $originalComment) {
-            $this->bus->dispatch(new CommentUpdated((int)$comment->getReview()?->getId(), (int)$comment->getId(), $originalComment));
+            $this->bus->dispatch(
+                new CommentUpdated((int)$comment->getReview()?->getId(), (int)$comment->getId(), (int)$this->getUser()->getId(), $originalComment)
+            );
         }
 
         return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], ['action'], 'focus:comment:' . $comment->getId());
