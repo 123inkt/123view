@@ -8,13 +8,15 @@ use DR\GitCommitNotification\Message\MailNotificationInterface;
 
 class CommentResolved implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
 {
+    public const NAME = 'comment-resolved';
+
     public function __construct(public readonly int $reviewId, public readonly int $commentId, public readonly int $resolveByUserId)
     {
     }
 
     public function getName(): string
     {
-        return 'comment-resolved';
+        return self::NAME;
     }
 
     public function getReviewId(): int

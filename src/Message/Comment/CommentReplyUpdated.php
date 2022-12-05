@@ -8,6 +8,8 @@ use DR\GitCommitNotification\Message\MailNotificationInterface;
 
 class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentReplyEventInterface
 {
+    public const NAME = 'comment-reply-updated';
+
     public function __construct(
         public readonly int $reviewId,
         public readonly int $commentReplyId,
@@ -18,7 +20,7 @@ class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInte
 
     public function getName(): string
     {
-        return 'comment-reply-updated';
+        return self::NAME;
     }
 
     public function getReviewId(): int
