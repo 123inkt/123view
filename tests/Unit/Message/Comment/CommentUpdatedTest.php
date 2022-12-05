@@ -25,7 +25,7 @@ class CommentUpdatedTest extends AbstractMessageEventTestCase
             new CommentUpdated(5, 6, 7, 'original'),
             'comment-updated',
             5,
-            ['comment-id' => 6, 'original-comment' => 'original']
+            ['commentId' => 6, 'originalComment' => 'original']
         );
         static::assertCommentEvent(new CommentUpdated(5, 6, 7, 'message'), 6);
         static::assertUserAware(new CommentUpdated(5, 6, 7, 'message'), 7);
