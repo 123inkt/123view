@@ -27,20 +27,25 @@ class RevisionRepository extends ServiceEntityRepository
     /**
      * @param Revision[] $revisions
      *
+     * @return Revision[] all saved and not already existing revisions
      * @throws Throwable
      */
-    public function saveAll(Repository $repository, array $revisions): void
+    public function saveAll(Repository $repository, array $revisions): array
     {
         $em = $this->getEntityManager();
 
-        $em->wrapInTransaction(function () use ($repository, $revisions): void {
-            foreach ($revisions as $revision) {
+        /** @var Revision[] $revisions */
+        $revisions = $em->wrapInTransaction(function () use ($repository, $revisions): array {
+            foreach ($revisions as $index => $revision) {
                 $entityExists = $this->findOneBy(['repository' => (int)$repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
                 if ($entityExists) {
+                    unset($revisions[$index]);
                     continue;
                 }
                 parent::save($revision);
             }
+
+            return $revisions;
         });
 
         try {
@@ -51,6 +56,8 @@ class RevisionRepository extends ServiceEntityRepository
             throw $exception;
             // @codeCoverageIgnoreEnd
         }
+
+        return $revisions;
     }
 
     /**

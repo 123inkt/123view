@@ -108,7 +108,7 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
             ->willReturn($latestRevision);
         $this->logService->expects(self::once())->method('getCommitsSince')->with($repository, $latestRevision, 1000)->willReturn([$commit]);
         $this->revisionFactory->expects(self::once())->method('createFromCommits')->with([$commit])->willReturn([$newRevision]);
-        $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$newRevision]);
+        $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$newRevision])->willReturn([$newRevision]);
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
             ->withConsecutive(
