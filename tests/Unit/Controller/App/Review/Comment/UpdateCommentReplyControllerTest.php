@@ -10,6 +10,7 @@ use DR\GitCommitNotification\Controller\App\Review\ReviewController;
 use DR\GitCommitNotification\Entity\Review\CodeReview;
 use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\CommentReply;
+use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
 use DR\GitCommitNotification\Message\Comment\CommentReplyUpdated;
 use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
@@ -121,6 +122,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $reply->setMessage('message');
         $reply->setComment($comment);
 
+        $this->expectGetUser((new User())->setId(101));
         $this->expectDenyAccessUnlessGranted(CommentReplyVoter::EDIT, $reply);
         $this->expectCreateForm(EditCommentReplyFormType::class, $reply, ['reply' => $reply])
             ->handleRequest($request)
@@ -140,7 +142,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
                 ),
                 true
             );
-        $this->bus->expects(self::once())->method('dispatch')->with(new CommentReplyUpdated(123, 789, 'message'))->willReturn($this->envelope);
+        $this->bus->expects(self::once())->method('dispatch')->with(new CommentReplyUpdated(123, 789, 101, 'message'))->willReturn($this->envelope);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $reply);

@@ -51,7 +51,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
         $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
-        $this->handler->handle(new CommentReplyUpdated(4, 123, 'comment'));
+        $this->handler->handle(new CommentReplyUpdated(4, 123, 456, 'comment'));
     }
 
     /**
@@ -65,7 +65,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
 
         $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
         $this->mentionService->expects(self::once())->method('getMentionedUsers')->with('comment1')->willReturn([]);
-        $this->handler->handle(new CommentReplyUpdated(4, 123, 'comment2'));
+        $this->handler->handle(new CommentReplyUpdated(4, 123, 456, 'comment2'));
     }
 
     /**
@@ -89,7 +89,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
             ->willReturn([$user], [$user]);
         $this->mailService->expects(self::never())->method('sendNewCommentReplyMail');
 
-        $this->handler->handle(new CommentReplyUpdated(5, 123, 'comment1'));
+        $this->handler->handle(new CommentReplyUpdated(5, 123, 456, 'comment1'));
     }
 
     /**
@@ -113,6 +113,6 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
             ->willReturn([$user], []);
         $this->mailService->expects(self::once())->method('sendNewCommentReplyMail')->with($review, $comment, $reply);
 
-        $this->handler->handle(new CommentReplyUpdated(5, 123, 'comment1'));
+        $this->handler->handle(new CommentReplyUpdated(5, 123, 456, 'comment1'));
     }
 }

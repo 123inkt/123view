@@ -16,11 +16,13 @@ class CommentAddedTest extends AbstractMessageEventTestCase
      * @covers ::getName
      * @covers ::getReviewId
      * @covers ::getCommentId
+     * @covers ::getUserId
      * @covers ::getPayload
      */
     public function testAccessors(): void
     {
-        static::assertCodeReviewEvent(new CommentAdded(5, 6, 'message'), 'comment-added', 5, ['comment-id' => 6, 'message' => 'message']);
-        static::assertCommentEvent(new CommentAdded(5, 6, 'message'), 6);
+        static::assertCodeReviewEvent(new CommentAdded(5, 6, 7, 'message'), 'comment-added', 5, ['comment-id' => 6, 'message' => 'message']);
+        static::assertCommentEvent(new CommentAdded(5, 6, 7, 'message'), 6);
+        static::assertUserAware(new CommentAdded(5, 6, 7, 'message'), 7);
     }
 }
