@@ -107,7 +107,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CssToInlineStyles::class);
     $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, GithubFlavoredMarkdownConverter::class)
-        ->arg('$config', ['html_input' => 'strip', 'allow_unsafe_links' => false]);
+        ->arg('$config', ['html_input' => 'escape', 'allow_unsafe_links' => false]);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
 
     // custom register cache dir
