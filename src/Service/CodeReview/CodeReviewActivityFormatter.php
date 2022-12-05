@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\GitCommitNotification\Service\CodeReview;
 
 use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
+use DR\GitCommitNotification\Entity\Review\Comment;
 use DR\GitCommitNotification\Entity\Review\Revision;
 use DR\GitCommitNotification\Entity\User\User;
 use DR\GitCommitNotification\Message\Comment\CommentAdded;
@@ -19,6 +20,7 @@ use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
 use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
 use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
+use DR\GitCommitNotification\Repository\Review\CommentRepository;
 use DR\GitCommitNotification\Repository\Review\RevisionRepository;
 use DR\GitCommitNotification\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -48,6 +50,7 @@ class CodeReviewActivityFormatter
         private readonly TranslatorInterface $translator,
         private readonly UserRepository $userRepository,
         private readonly RevisionRepository $revisionRepository,
+        private readonly CommentRepository $commentRepository,
         private string $applicationName
     ) {
     }
@@ -86,6 +89,14 @@ class CodeReviewActivityFormatter
             $revision = $this->revisionRepository->find((int)$activity->getDataValue('revisionId'));
             if ($revision instanceof Revision) {
                 $params['revision'] = sprintf('%s - %s', substr((string)$revision->getCommitHash(), 0, 8), $revision->getTitle());
+            }
+        }
+
+        // add filepath the comment was added to
+        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME], true)) {
+            $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
+            if ($comment instanceof Comment) {
+                $params['file'] = $comment->getFilePath();
             }
         }
 
