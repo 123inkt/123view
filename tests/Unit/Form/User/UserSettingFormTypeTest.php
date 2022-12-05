@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\User;
+namespace DR\Review\Tests\Unit\Form\User;
 
-use DR\GitCommitNotification\Controller\App\User\UserSettingController;
-use DR\GitCommitNotification\Form\User\UserSettingFormType;
-use DR\GitCommitNotification\Form\User\UserSettingType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\User\UserSettingController;
+use DR\Review\Form\User\UserSettingFormType;
+use DR\Review\Form\User\UserSettingType;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\User\UserSettingFormType
+ * @coversDefaultClass \DR\Review\Form\User\UserSettingFormType
  * @covers ::__construct
  */
 class UserSettingFormTypeTest extends AbstractTestCase

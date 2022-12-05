@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request\Comment;
+namespace DR\Review\Tests\Unit\Request\Comment;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest;
-use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Request\Comment\ChangeCommentStateRequest;
+use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 
 /**
  * @extends AbstractRequestTestCase<ChangeCommentStateRequest>
- * @coversDefaultClass \DR\GitCommitNotification\Request\Comment\ChangeCommentStateRequest
+ * @coversDefaultClass \DR\Review\Request\Comment\ChangeCommentStateRequest
  */
 class ChangeCommentStateRequestTest extends AbstractRequestTestCase
 {

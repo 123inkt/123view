@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Log;
+namespace DR\Review\Service\Git\Log;
 
-use DR\GitCommitNotification\Git\FormatPattern;
+use DR\Review\Git\FormatPattern;
 
 /**
  * Factory for creation Git log --format pattern that's parseable by GitLogParser.
  */
 class FormatPatternFactory
 {
-    public const PATTERN          = [
+    public const PATTERN = [
         FormatPattern::PARENT_HASH,
         FormatPattern::COMMIT_HASH,
         FormatPattern::AUTHOR_NAME,

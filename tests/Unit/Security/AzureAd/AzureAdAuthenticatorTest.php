@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
+namespace DR\Review\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
-use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
-use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
-use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
-use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
-use DR\GitCommitNotification\Security\AzureAd\LoginService;
-use DR\GitCommitNotification\Security\AzureAd\LoginSuccess;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\User\UserApprovalPendingController;
+use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Security\AzureAd\AzureAdAuthenticator;
+use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
+use DR\Review\Security\AzureAd\LoginFailure;
+use DR\Review\Security\AzureAd\LoginService;
+use DR\Review\Security\AzureAd\LoginSuccess;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Tests\AbstractTestCase;
 use JsonException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator
+ * @coversDefaultClass \DR\Review\Security\AzureAd\AzureAdAuthenticator
  * @covers ::__construct
  */
 class AzureAdAuthenticatorTest extends AbstractTestCase

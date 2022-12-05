@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Security\AzureAd;
+namespace DR\Review\Security\AzureAd;
 
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
-use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\User\UserApprovalPendingController;
+use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Utility\Assert;
 use JsonException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

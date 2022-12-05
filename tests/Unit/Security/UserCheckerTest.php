@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security;
+namespace DR\Review\Tests\Unit\Security;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Security\UserChecker;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\User\User;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Security\UserChecker;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\UserChecker
+ * @coversDefaultClass \DR\Review\Security\UserChecker
  * @covers ::__construct
  */
 class UserCheckerTest extends AbstractTestCase

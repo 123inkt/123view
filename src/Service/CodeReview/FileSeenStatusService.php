@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
-use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\FileSeenStatusRepository;
-use DR\GitCommitNotification\Service\Git\DiffTree\LockableGitDiffTreeService;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\FileSeenStatus;
+use DR\Review\Entity\Review\FileSeenStatusCollection;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\FileSeenStatusRepository;
+use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Throwable;

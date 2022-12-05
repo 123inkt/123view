@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Request\Review;
+namespace DR\Review\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;

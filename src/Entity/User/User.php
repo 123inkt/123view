@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\User;
+namespace DR\Review\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Doctrine\Type\SpaceSeparatedStringValueType;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Repository\User\UserRepository;
+use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Repository\User\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]

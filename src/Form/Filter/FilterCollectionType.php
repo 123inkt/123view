@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Filter;
+namespace DR\Review\Form\Filter;
 
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Validator\Filter\IsValidPattern;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

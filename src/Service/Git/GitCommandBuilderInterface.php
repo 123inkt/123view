@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\Review\Service\Git;
 
 interface GitCommandBuilderInterface
 {

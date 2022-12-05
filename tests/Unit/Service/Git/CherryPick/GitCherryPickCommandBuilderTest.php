@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\CherryPick;
+namespace DR\Review\Tests\Unit\Service\Git\CherryPick;
 
-use DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\CherryPick\GitCherryPickCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder
  * @covers ::__construct
  */
 class GitCherryPickCommandBuilderTest extends AbstractTestCase

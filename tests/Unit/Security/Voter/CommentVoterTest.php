@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security\Voter;
+namespace DR\Review\Tests\Unit\Security\Voter;
 
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Security\Voter\CommentVoter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\User\User;
+use DR\Review\Security\Voter\CommentVoter;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\Voter\CommentVoter
+ * @coversDefaultClass \DR\Review\Security\Voter\CommentVoter
  */
 class CommentVoterTest extends AbstractTestCase
 {

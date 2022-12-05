@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Filter;
+namespace DR\Review\Tests\Unit\Service\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Doctrine\Type\FilterType;
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Service\Filter\CommitFilter;
-use DR\GitCommitNotification\Service\Filter\DefinitionFileMatcher;
-use DR\GitCommitNotification\Service\Filter\DefinitionSubjectMatcher;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\FilterType;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Service\Filter\CommitFilter;
+use DR\Review\Service\Filter\DefinitionFileMatcher;
+use DR\Review\Service\Filter\DefinitionSubjectMatcher;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Filter\CommitFilter
+ * @coversDefaultClass \DR\Review\Service\Filter\CommitFilter
  * @covers ::__construct
  */
 class CommitFilterTest extends AbstractTestCase

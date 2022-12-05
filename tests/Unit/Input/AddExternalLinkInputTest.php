@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Input;
+namespace DR\Review\Tests\Unit\Input;
 
-use DR\GitCommitNotification\Input\AddExternalLinkInput;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Input\AddExternalLinkInput;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Input\AddExternalLinkInput
+ * @coversDefaultClass \DR\Review\Input\AddExternalLinkInput
  * @covers ::__construct
  */
 class AddExternalLinkInputTest extends AbstractTestCase

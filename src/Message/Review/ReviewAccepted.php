@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message\Review;
+namespace DR\Review\Message\Review;
 
-use DR\GitCommitNotification\Message\AsyncMessageInterface;
+use DR\Review\Message\AsyncMessageInterface;
 
 class ReviewAccepted implements AsyncMessageInterface, CodeReviewEventInterface
 {

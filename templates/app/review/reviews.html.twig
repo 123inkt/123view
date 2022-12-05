@@ -11,7 +11,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link"
-                   href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
+                   href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
                     {{ 'revisions'|trans }}
                 </a>
             </li>
@@ -42,7 +42,7 @@
     <div class="list-group">
         {%- for review in reviewsModel.reviews -%}
             <a class="list-group-item list-group-item-action"
-               href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review}) }}">
+               href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}">
 
                 <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
                     {{ review.state|trans }}

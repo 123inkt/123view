@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Exception;
+namespace DR\Review\Exception;
 
 use Exception;
 

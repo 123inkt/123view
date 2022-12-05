@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\MentionsExtension;
+use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\MentionsExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\MentionsExtension
+ * @coversDefaultClass \DR\Review\Twig\MentionsExtension
  * @covers ::__construct
  */
 class MentionsExtensionTest extends AbstractTestCase

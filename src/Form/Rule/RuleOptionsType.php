@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Rule;
+namespace DR\Review\Form\Rule;
 
-use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
-use DR\GitCommitNotification\Entity\Notification\Frequency;
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
+use DR\Review\Doctrine\Type\DiffAlgorithmType;
+use DR\Review\Doctrine\Type\MailThemeType;
+use DR\Review\Entity\Notification\Frequency;
+use DR\Review\Entity\Notification\RuleOptions;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

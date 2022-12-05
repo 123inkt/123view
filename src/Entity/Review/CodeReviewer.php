@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Review;
+namespace DR\Review\Entity\Review;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\CodeReviewerRepository;
 
 #[ORM\Entity(repositoryClass: CodeReviewerRepository::class)]
 class CodeReviewer

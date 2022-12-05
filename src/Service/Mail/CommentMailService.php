@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Mail;
+namespace DR\Review\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Utility\Arrays;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\User\User;
+use DR\Review\Utility\Arrays;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

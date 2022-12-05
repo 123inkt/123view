@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ExternalTool\Gitlab;
+namespace DR\Review\ExternalTool\Gitlab;
 
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

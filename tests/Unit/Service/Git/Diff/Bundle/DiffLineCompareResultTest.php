@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff\Bundle;
+namespace DR\Review\Tests\Unit\Service\Git\Diff\Bundle;
 
-use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Diff\Bundle\DiffLineCompareResult;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult
+ * @coversDefaultClass \DR\Review\Service\Git\Diff\Bundle\DiffLineCompareResult
  * @covers ::__construct
  */
 class DiffLineCompareResultTest extends AbstractTestCase

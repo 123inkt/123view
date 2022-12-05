@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Mail;
+namespace DR\Review\Tests\Unit\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Service\Mail\MailRecipientService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\Mail\MailRecipientService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Mail\MailRecipientService
+ * @coversDefaultClass \DR\Review\Service\Mail\MailRecipientService
  * @covers ::__construct
  */
 class MailRecipientServiceTest extends AbstractTestCase

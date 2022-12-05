@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Review;
+namespace DR\Review\Tests\Unit\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\Reviewer\AddReviewerController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\Review\AddReviewerFormType;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Review\Reviewer\AddReviewerController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\Review\AddReviewerFormType;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Review\AddReviewerFormType
+ * @coversDefaultClass \DR\Review\Form\Review\AddReviewerFormType
  * @covers ::__construct
  */
 class AddReviewerFormTypeTest extends AbstractTestCase

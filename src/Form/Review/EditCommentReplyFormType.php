@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Review;
+namespace DR\Review\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentReplyController;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
+use DR\Review\Controller\App\Review\Comment\UpdateCommentReplyController;
+use DR\Review\Entity\Review\CommentReply;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;

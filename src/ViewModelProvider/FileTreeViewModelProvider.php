@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
-use DR\GitCommitNotification\Service\CodeReview\FileSeenStatusService;
-use DR\GitCommitNotification\ViewModel\App\Review\FileTreeViewModel;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 
 class FileTreeViewModelProvider
 {

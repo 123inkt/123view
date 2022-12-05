@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\User;
+namespace DR\Review\Tests\Unit\Controller\App\User;
 
-use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\User\UserApprovalPendingController;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController
+ * @coversDefaultClass \DR\Review\Controller\App\User\UserApprovalPendingController
  */
 class UserApprovalPendingControllerTest extends AbstractTestCase
 {

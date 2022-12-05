@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Git\Diff;
+namespace DR\Review\Tests\Unit\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
-use DR\GitCommitNotification\Git\Diff\DiffChangeBundler;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Git\Diff\DiffChangeBundler
+ * @coversDefaultClass \DR\Review\Git\Diff\DiffChangeBundler
  */
 class DiffChangeBundlerTest extends AbstractTestCase
 {

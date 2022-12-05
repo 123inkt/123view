@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Notification;
+namespace DR\Review\Tests\Unit\Entity\Notification;
 
-use DR\GitCommitNotification\Entity\Notification\Recipient;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Recipient;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Notification\Recipient
+ * @coversDefaultClass \DR\Review\Entity\Notification\Recipient
  */
 class RecipientTest extends AbstractTestCase
 {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\StrPadExtension;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\StrPadExtension;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\StrPadExtension
+ * @coversDefaultClass \DR\Review\Twig\StrPadExtension
  */
 class StrPadExtensionTest extends AbstractTestCase
 {

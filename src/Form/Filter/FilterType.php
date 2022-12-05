@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Filter;
+namespace DR\Review\Form\Filter;
 
-use DR\GitCommitNotification\Doctrine\Type\FilterType as EntityFilterType;
-use DR\GitCommitNotification\Entity\Notification\Filter;
+use DR\Review\Doctrine\Type\FilterType as EntityFilterType;
+use DR\Review\Entity\Notification\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

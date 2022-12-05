@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Filter;
+namespace DR\Review\Tests\Unit\Form\Filter;
 
-use DR\GitCommitNotification\Form\Filter\FilterCollectionType;
-use DR\GitCommitNotification\Form\Filter\InExclusionFilterType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Transformer\FilterCollectionTransformer;
+use DR\Review\Form\Filter\FilterCollectionType;
+use DR\Review\Form\Filter\InExclusionFilterType;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Transformer\FilterCollectionTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Filter\InExclusionFilterType
+ * @coversDefaultClass \DR\Review\Form\Filter\InExclusionFilterType
  */
 class InExclusionFilterTypeTest extends AbstractTestCase
 {

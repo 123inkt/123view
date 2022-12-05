@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller;
+namespace DR\Review\Controller;
 
-use DR\GitCommitNotification\Entity\User\User;
+use DR\Review\Entity\User\User;
 use League\Uri\Http;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

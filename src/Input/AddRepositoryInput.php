@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Input;
+namespace DR\Review\Input;
 
 use DigitalRevolution\SymfonyConsoleValidation\AbstractValidatedInput;
 use DigitalRevolution\SymfonyConsoleValidation\ValidationRules;

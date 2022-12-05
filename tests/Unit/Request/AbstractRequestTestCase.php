@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request;
+namespace DR\Review\Tests\Unit\Request;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraint;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFactory;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\DataFixtures;
+namespace DR\Review\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\User\User;
+use DR\Review\Utility\Assert;
 
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {

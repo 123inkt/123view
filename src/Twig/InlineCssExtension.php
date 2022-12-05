@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig;
+namespace DR\Review\Twig;
 
-use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
+use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

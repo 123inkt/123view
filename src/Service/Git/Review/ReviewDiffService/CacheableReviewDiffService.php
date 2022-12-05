@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
+namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheableReviewDiffService implements ReviewDiffServiceInterface

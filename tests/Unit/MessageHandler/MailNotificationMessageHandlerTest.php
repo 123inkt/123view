@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
+namespace DR\Review\Tests\Unit\MessageHandler;
 
-use DR\GitCommitNotification\Message\Comment\CommentAdded;
-use DR\GitCommitNotification\Message\Delay\DelayableMessage;
-use DR\GitCommitNotification\Message\MailNotificationInterface;
-use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerInterface;
-use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
-use DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Delay\DelayableMessage;
+use DR\Review\Message\MailNotificationInterface;
+use DR\Review\MessageHandler\Mail\MailNotificationHandlerInterface;
+use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
+use DR\Review\MessageHandler\MailNotificationMessageHandler;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\MailNotificationMessageHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\MailNotificationMessageHandler
  * @covers ::__construct
  */
 class MailNotificationMessageHandlerTest extends AbstractTestCase

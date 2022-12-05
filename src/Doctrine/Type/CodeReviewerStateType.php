@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Doctrine\Type;
+namespace DR\Review\Doctrine\Type;
 
 class CodeReviewerStateType extends AbstractEnumType
 {

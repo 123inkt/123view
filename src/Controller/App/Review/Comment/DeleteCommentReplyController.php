@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review\Comment;
+namespace DR\Review\Controller\App\Review\Comment;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Security\Voter\CommentReplyVoter;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Security\Voter\CommentReplyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;

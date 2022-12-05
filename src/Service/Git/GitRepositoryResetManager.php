@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\Review\Service\Git;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\Branch\GitBranchService;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
-use DR\GitCommitNotification\Service\Git\Reset\GitResetService;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Reset\GitResetService;
 
 class GitRepositoryResetManager
 {

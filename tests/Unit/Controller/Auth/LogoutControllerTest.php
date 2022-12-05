@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\Auth;
+namespace DR\Review\Tests\Unit\Controller\Auth;
 
-use DR\GitCommitNotification\Controller\Auth\LogoutController;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\Auth\LogoutController;
+use DR\Review\Tests\AbstractTestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\Auth\LogoutController
+ * @coversDefaultClass \DR\Review\Controller\Auth\LogoutController
  */
 class LogoutControllerTest extends AbstractTestCase
 {

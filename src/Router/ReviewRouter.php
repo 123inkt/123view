@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Router;
+namespace DR\Review\Router;
 
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Review\CodeReview;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;

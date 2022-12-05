@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler\Mail;
+namespace DR\Review\MessageHandler\Mail;
 
 use Traversable;
 
 /**
- * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentAddedMailNotificationHandler
- * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler
- * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentUpdatedMailNotificationHandler
- * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
- * @uses \DR\GitCommitNotification\MessageHandler\Mail\CommentResolvedMailNotificationHandler
+ * @uses \DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler
+ * @uses \DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler
+ * @uses \DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler
+ * @uses \DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
+ * @uses \DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler
  */
 class MailNotificationHandlerProvider
 {

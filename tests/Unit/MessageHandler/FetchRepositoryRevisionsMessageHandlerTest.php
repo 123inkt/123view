@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
+namespace DR\Review\Tests\Unit\MessageHandler;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Message\Revision\NewRevisionMessage;
-use DR\GitCommitNotification\MessageHandler\FetchRepositoryRevisionsMessageHandler;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\Git\Log\LockableGitLogService;
-use DR\GitCommitNotification\Service\Revision\RevisionFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Message\Revision\NewRevisionMessage;
+use DR\Review\MessageHandler\FetchRepositoryRevisionsMessageHandler;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Git\Log\LockableGitLogService;
+use DR\Review\Service\Revision\RevisionFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use stdClass;
@@ -21,7 +21,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\FetchRepositoryRevisionsMessageHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\FetchRepositoryRevisionsMessageHandler
  * @covers ::__construct
  */
 class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase

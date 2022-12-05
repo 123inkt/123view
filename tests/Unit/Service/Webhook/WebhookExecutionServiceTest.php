@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Webhook;
+namespace DR\Review\Tests\Unit\Service\Webhook;
 
-use DR\GitCommitNotification\Entity\Webhook\Webhook;
-use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
-use DR\GitCommitNotification\Service\Webhook\WebhookExecutionService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Webhook\Webhook;
+use DR\Review\Entity\Webhook\WebhookActivity;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Repository\Webhook\WebhookActivityRepository;
+use DR\Review\Service\Webhook\WebhookExecutionService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Webhook\WebhookExecutionService
+ * @coversDefaultClass \DR\Review\Service\Webhook\WebhookExecutionService
  * @covers ::__construct
  */
 class WebhookExecutionServiceTest extends AbstractTestCase

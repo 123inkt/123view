@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\UrlQueryExtension;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\UrlQueryExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\UrlQueryExtension
+ * @coversDefaultClass \DR\Review\Twig\UrlQueryExtension
  * @covers ::__construct
  */
 class UrlQueryExtensionTest extends AbstractTestCase

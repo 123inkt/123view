@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Model\Review\Highlight;
+namespace DR\Review\Tests\Unit\Model\Review\Highlight;
 
-use DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Model\Review\Highlight\HighlightedFile;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Model\Review\Highlight\HighlightedFile
+ * @coversDefaultClass \DR\Review\Model\Review\Highlight\HighlightedFile
  * @covers ::__construct
  */
 class HighlightedFileTest extends AbstractTestCase

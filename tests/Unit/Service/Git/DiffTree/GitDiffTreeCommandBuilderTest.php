@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\DiffTree;
+namespace DR\Review\Tests\Unit\Service\Git\DiffTree;
 
-use DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\DiffTree\GitDiffTreeCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder
  * @covers ::__construct
  */
 class GitDiffTreeCommandBuilderTest extends AbstractTestCase

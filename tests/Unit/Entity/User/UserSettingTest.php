@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\User;
+namespace DR\Review\Tests\Unit\Entity\User;
 
-use DR\GitCommitNotification\Entity\User\UserSetting;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\User\UserSetting;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\User\UserSetting
+ * @coversDefaultClass \DR\Review\Entity\User\UserSetting
  */
 class UserSettingTest extends AbstractTestCase
 {

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Webhook;
+namespace DR\Review\Tests\Unit\Entity\Webhook;
 
-use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Webhook\WebhookActivity;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Webhook\WebhookActivity
+ * @coversDefaultClass \DR\Review\Entity\Webhook\WebhookActivity
  */
 class WebhookActivityTest extends AbstractTestCase
 {

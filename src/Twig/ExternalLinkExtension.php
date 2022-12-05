@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig;
+namespace DR\Review\Twig;
 
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Config\ExternalLink;
+use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Review\Utility\Assert;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

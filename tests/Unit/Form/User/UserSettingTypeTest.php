@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\User;
+namespace DR\Review\Tests\Unit\Form\User;
 
-use DR\GitCommitNotification\Entity\User\UserSetting;
-use DR\GitCommitNotification\Form\User\UserSettingType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\User\UserSetting;
+use DR\Review\Form\User\UserSettingType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\User\UserSettingType
+ * @coversDefaultClass \DR\Review\Form\User\UserSettingType
  */
 class UserSettingTypeTest extends AbstractTestCase
 {

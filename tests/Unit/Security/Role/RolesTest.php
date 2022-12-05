@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security\Role;
+namespace DR\Review\Tests\Unit\Security\Role;
 
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\Role\Roles
+ * @coversDefaultClass \DR\Review\Security\Role\Roles
  */
 class RolesTest extends AbstractTestCase
 {

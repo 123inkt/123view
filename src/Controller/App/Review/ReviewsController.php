@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Review;
+namespace DR\Review\Controller\App\Review;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Model\Page\Breadcrumb;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
-use DR\GitCommitNotification\ViewModel\App\Review\PaginatorViewModel;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Page\BreadcrumbFactory;
+use DR\Review\ViewModel\App\Review\PaginatorViewModel;
+use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

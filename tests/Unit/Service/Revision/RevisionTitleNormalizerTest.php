@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Revision;
+namespace DR\Review\Tests\Unit\Service\Revision;
 
-use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Revision\RevisionTitleNormalizer;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer
+ * @coversDefaultClass \DR\Review\Service\Revision\RevisionTitleNormalizer
  */
 class RevisionTitleNormalizerTest extends AbstractTestCase
 {

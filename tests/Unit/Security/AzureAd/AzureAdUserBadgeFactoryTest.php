@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
+namespace DR\Review\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\AzureAd\AzureAdUserBadgeFactory
+ * @coversDefaultClass \DR\Review\Security\AzureAd\AzureAdUserBadgeFactory
  * @covers ::__construct
  */
 class AzureAdUserBadgeFactoryTest extends AbstractTestCase

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request\Review;
+namespace DR\Review\Tests\Unit\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Request\Review\FileSeenStatusRequest;
-use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
+use DR\Review\Request\Review\FileSeenStatusRequest;
+use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 
 /**
  * @extends AbstractRequestTestCase<FileSeenStatusRequest>
- * @coversDefaultClass \DR\GitCommitNotification\Request\Review\FileSeenStatusRequest
+ * @coversDefaultClass \DR\Review\Request\Review\FileSeenStatusRequest
  */
 class FileSeenStatusRequestTest extends AbstractRequestTestCase
 {

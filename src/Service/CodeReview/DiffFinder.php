@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Git\Diff\DiffBlock;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Utility\Assert;
 
 class DiffFinder
 {

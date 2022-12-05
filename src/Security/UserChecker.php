@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Security;
+namespace DR\Review\Security;
 
-use DR\GitCommitNotification\Security\Role\Roles;
+use DR\Review\Security\Role\Roles;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

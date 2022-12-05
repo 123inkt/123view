@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\EventSubscriber;
+namespace DR\Review\Tests\Unit\EventSubscriber;
 
-use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
-use DR\GitCommitNotification\EventSubscriber\AccessDeniedExceptionSubscriber;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\EventSubscriber\AccessDeniedExceptionSubscriber;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\EventSubscriber\AccessDeniedExceptionSubscriber
+ * @coversDefaultClass \DR\Review\EventSubscriber\AccessDeniedExceptionSubscriber
  * @covers ::__construct
  */
 class AccessDeniedExceptionSubscriberTest extends AbstractTestCase

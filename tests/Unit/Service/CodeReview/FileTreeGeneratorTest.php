@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
-use DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Service\CodeReview\FileTreeGenerator;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\FileTreeGenerator
+ * @coversDefaultClass \DR\Review\Service\CodeReview\FileTreeGenerator
  */
 class FileTreeGeneratorTest extends AbstractTestCase
 {

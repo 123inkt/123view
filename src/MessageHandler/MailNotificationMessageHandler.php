@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler;
+namespace DR\Review\MessageHandler;
 
-use DR\GitCommitNotification\Message\Delay\DelayableMessage;
-use DR\GitCommitNotification\Message\MailNotificationInterface;
-use DR\GitCommitNotification\MessageHandler\Mail\MailNotificationHandlerProvider;
+use DR\Review\Message\Delay\DelayableMessage;
+use DR\Review\Message\MailNotificationInterface;
+use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

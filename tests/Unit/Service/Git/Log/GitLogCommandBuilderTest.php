@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Log;
+namespace DR\Review\Tests\Unit\Service\Git\Log;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Log\GitLogCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Log\GitLogCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\Log\GitLogCommandBuilder
  * @covers ::__construct
  */
 class GitLogCommandBuilderTest extends AbstractTestCase

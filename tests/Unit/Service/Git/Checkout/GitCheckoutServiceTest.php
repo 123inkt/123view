@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Checkout;
+namespace DR\Review\Tests\Unit\Service\Git\Checkout;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
+use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Checkout\GitCheckoutService
+ * @coversDefaultClass \DR\Review\Service\Git\Checkout\GitCheckoutService
  * @covers ::__construct
  */
 class GitCheckoutServiceTest extends AbstractTestCase

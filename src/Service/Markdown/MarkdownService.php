@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Markdown;
+namespace DR\Review\Service\Markdown;
 
 use League\CommonMark\MarkdownConverter;
 

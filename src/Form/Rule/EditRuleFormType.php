@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Rule;
+namespace DR\Review\Form\Rule;
 
-use DR\GitCommitNotification\Controller\App\Notification\RuleController;
-use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\Review\Controller\App\Notification\RuleController;
+use DR\Review\Entity\Notification\Rule;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;

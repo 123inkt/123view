@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service;
+namespace DR\Review\Service;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\Service\Filter\CommitFilter;
-use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\Log\GitLogService;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Event\CommitEvent;
+use DR\Review\Service\Filter\CommitFilter;
+use DR\Review\Service\Git\Commit\CommitBundler;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\Log\GitLogService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Review;
+namespace DR\Review\Service\Git\Review;
 
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\User\User;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\User\User;
 
 class CodeReviewerService
 {

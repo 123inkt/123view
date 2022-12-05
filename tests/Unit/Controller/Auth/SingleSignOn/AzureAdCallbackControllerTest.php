@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\Auth\SingleSignOn;
+namespace DR\Review\Tests\Unit\Controller\Auth\SingleSignOn;
 
-use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdCallbackController;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController;
+use DR\Review\Tests\AbstractTestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdCallbackController
+ * @coversDefaultClass \DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController
  */
 class AzureAdCallbackControllerTest extends AbstractTestCase
 {

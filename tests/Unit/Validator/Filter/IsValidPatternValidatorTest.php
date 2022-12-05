@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Validator\Filter;
+namespace DR\Review\Tests\Unit\Validator\Filter;
 
-use DR\GitCommitNotification\Doctrine\Type\FilterType as EntityFilterType;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
-use DR\GitCommitNotification\Validator\Filter\IsValidPatternValidator;
+use DR\Review\Doctrine\Type\FilterType as EntityFilterType;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Validator\Filter\IsValidPattern;
+use DR\Review\Validator\Filter\IsValidPatternValidator;
 use RuntimeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Validator\Filter\IsValidPatternValidator
+ * @coversDefaultClass \DR\Review\Validator\Filter\IsValidPatternValidator
  * @extends ConstraintValidatorTestCase<IsValidPatternValidator>
  */
 class IsValidPatternValidatorTest extends ConstraintValidatorTestCase

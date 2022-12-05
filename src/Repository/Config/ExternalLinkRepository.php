@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Repository\Config;
+namespace DR\Review\Repository\Config;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
-use DR\GitCommitNotification\Entity\Config\ExternalLink;
+use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Entity\Config\ExternalLink;
 
 /**
  * @extends ServiceEntityRepository<ExternalLink>

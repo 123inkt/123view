@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\UserAwareInterface;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
+use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\UserAwareInterface;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\User\UserRepository;
 
 class CodeReviewActivityProvider
 {

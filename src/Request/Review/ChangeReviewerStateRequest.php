@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Request\Review;
+namespace DR\Review\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
 
 class ChangeReviewerStateRequest extends AbstractValidatedRequest
 {

@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Review\ReviewOpened;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityProvider;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\User\User;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityProvider
+ * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActivityProvider
  * @covers ::__construct
  */
 class CodeReviewActivityProviderTest extends AbstractTestCase

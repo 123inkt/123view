@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review\ReviewDiffService;
+namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffService;
-use DR\GitCommitNotification\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
+use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffService
+ * @coversDefaultClass \DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService
  * @covers ::__construct
  */
 class ReviewDiffServiceTest extends AbstractTestCase

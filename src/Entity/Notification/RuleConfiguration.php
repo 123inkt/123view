@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Notification;
+namespace DR\Review\Entity\Notification;
 
 use DatePeriod;
 

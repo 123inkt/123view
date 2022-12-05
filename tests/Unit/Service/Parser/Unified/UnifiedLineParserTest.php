@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Parser\Unified;
+namespace DR\Review\Tests\Unit\Service\Parser\Unified;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Service\Parser\Unified\UnifiedLineParser;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use LogicException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Parser\Unified\UnifiedLineParser
+ * @coversDefaultClass \DR\Review\Service\Parser\Unified\UnifiedLineParser
  */
 class UnifiedLineParserTest extends AbstractTestCase
 {
@@ -42,7 +42,7 @@ class UnifiedLineParserTest extends AbstractTestCase
     public function testParseAddition(): void
     {
         $parser = new UnifiedLineParser();
-        $line = $parser->parse('+addition');
+        $line   = $parser->parse('+addition');
 
         static::assertNotNull($line);
         static::assertSame(DiffChange::ADDED, $line->changes->first()->type);
@@ -55,7 +55,7 @@ class UnifiedLineParserTest extends AbstractTestCase
     public function testParseRemoval(): void
     {
         $parser = new UnifiedLineParser();
-        $line = $parser->parse('-removal');
+        $line   = $parser->parse('-removal');
 
         static::assertNotNull($line);
         static::assertSame(DiffChange::REMOVED, $line->changes->first()->type);
@@ -68,7 +68,7 @@ class UnifiedLineParserTest extends AbstractTestCase
     public function testParseUnchanged(): void
     {
         $parser = new UnifiedLineParser();
-        $line = $parser->parse(' unchanged');
+        $line   = $parser->parse(' unchanged');
 
         static::assertNotNull($line);
         static::assertSame(DiffChange::UNCHANGED, $line->changes->first()->type);

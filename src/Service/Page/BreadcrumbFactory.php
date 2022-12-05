@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Page;
+namespace DR\Review\Service\Page;
 
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewsController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Model\Page\Breadcrumb;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Controller\App\Review\ReviewsController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Model\Page\Breadcrumb;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class BreadcrumbFactory

@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
+namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\CodeReview
+ * @coversDefaultClass \DR\Review\Entity\Review\CodeReview
  * @covers ::__construct
  */
 class CodeReviewTest extends AbstractTestCase

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Filter;
+namespace DR\Review\Tests\Unit\Service\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Service\Filter\DefinitionFileMatcher;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Service\Filter\DefinitionFileMatcher;
+use DR\Review\Tests\AbstractTestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Filter\DefinitionFileMatcher
+ * @coversDefaultClass \DR\Review\Service\Filter\DefinitionFileMatcher
  */
 class DefinitionFileMatcherTest extends AbstractTestCase
 {
@@ -20,7 +20,7 @@ class DefinitionFileMatcherTest extends AbstractTestCase
      */
     public function testMatchesEmptyDiffFileShouldNotMatch(): void
     {
-        $file       = new DiffFile();
+        $file   = new DiffFile();
         $filter = new Filter();
 
         $matcher = new DefinitionFileMatcher();

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\User;
+namespace DR\Review\Tests\Unit\Form\User;
 
-use DR\GitCommitNotification\Controller\App\User\ChangeUserProfileController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\User\UserProfileFormType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\User\ChangeUserProfileController;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\User\UserProfileFormType;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\User\UserProfileFormType
+ * @coversDefaultClass \DR\Review\Form\User\UserProfileFormType
  * @covers ::__construct
  */
 class UserProfileFormTypeTest extends AbstractTestCase

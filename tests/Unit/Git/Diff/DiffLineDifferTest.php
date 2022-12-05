@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Git\Diff;
+namespace DR\Review\Tests\Unit\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Git\Diff\DiffLineDiffer;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Git\Diff\DiffLineDiffer;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Git\Diff\DiffLineDiffer
+ * @coversDefaultClass \DR\Review\Git\Diff\DiffLineDiffer
  */
 class DiffLineDifferTest extends AbstractTestCase
 {

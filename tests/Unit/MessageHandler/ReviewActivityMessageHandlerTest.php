@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
+namespace DR\Review\Tests\Unit\MessageHandler;
 
-use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\MessageHandler\ReviewActivityMessageHandler;
-use DR\GitCommitNotification\Repository\Review\CodeReviewActivityRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityProvider;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\MessageHandler\ReviewActivityMessageHandler;
+use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\ReviewActivityMessageHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\ReviewActivityMessageHandler
  * @covers ::__construct
  */
 class ReviewActivityMessageHandlerTest extends AbstractTestCase

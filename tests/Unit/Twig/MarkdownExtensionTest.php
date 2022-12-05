@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Service\Markdown\MarkdownService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\MarkdownExtension;
+use DR\Review\Service\Markdown\MarkdownService;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\MarkdownExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\MarkdownExtension
+ * @coversDefaultClass \DR\Review\Twig\MarkdownExtension
  * @covers ::__construct
  */
 class MarkdownExtensionTest extends AbstractTestCase

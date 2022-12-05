@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
+namespace DR\Review\Tests\Unit\MessageHandler;
 
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\MessageHandler\WebhookEventMessageHandler;
-use DR\GitCommitNotification\Service\Webhook\WebhookNotifier;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\MessageHandler\WebhookEventMessageHandler;
+use DR\Review\Service\Webhook\WebhookNotifier;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\WebhookEventMessageHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\WebhookEventMessageHandler
  * @covers ::__construct
  */
 class WebhookEventMessageHandlerTest extends AbstractTestCase

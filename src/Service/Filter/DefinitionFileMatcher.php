@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Filter;
+namespace DR\Review\Service\Filter;
 
 use Doctrine\Common\Collections\Collection;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Notification\Filter;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Notification\Filter;
 use RuntimeException;
 
 class DefinitionFileMatcher

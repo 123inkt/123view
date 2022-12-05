@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\User;
+namespace DR\Review\Form\User;
 
-use DR\GitCommitNotification\Doctrine\Type\ColorThemeType;
-use DR\GitCommitNotification\Entity\User\UserSetting;
+use DR\Review\Doctrine\Type\ColorThemeType;
+use DR\Review\Entity\User\UserSetting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\DiffTree;
+namespace DR\Review\Service\Git\DiffTree;
 
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Utility\Assert;
 use Exception;
 
 class LockableGitDiffTreeService

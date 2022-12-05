@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Transformer;
+namespace DR\Review\Transformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use DR\GitCommitNotification\Entity\Notification\Filter;
+use DR\Review\Entity\Notification\Filter;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

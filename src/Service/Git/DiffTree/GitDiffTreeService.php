@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\DiffTree;
+namespace DR\Review\Service\Git\DiffTree;
 
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareTrait;
 
 class GitDiffTreeService

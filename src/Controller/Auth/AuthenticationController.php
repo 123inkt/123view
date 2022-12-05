@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\Auth;
+namespace DR\Review\Controller\Auth;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\User\UserApprovalPendingController;
-use DR\GitCommitNotification\Controller\Auth\SingleSignOn\AzureAdAuthController;
-use DR\GitCommitNotification\Security\Role\Roles;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\User\UserApprovalPendingController;
+use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
+use DR\Review\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

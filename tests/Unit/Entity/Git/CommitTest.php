@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Git;
+namespace DR\Review\Tests\Unit\Entity\Git;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Git\Commit
+ * @coversDefaultClass \DR\Review\Entity\Git\Commit
  */
 class CommitTest extends AbstractTestCase
 {

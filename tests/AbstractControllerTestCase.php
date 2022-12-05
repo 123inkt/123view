@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests;
+namespace DR\Review\Tests;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Tests\Helper\FormAssertion;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Entity\User\User;
+use DR\Review\Tests\Helper\FormAssertion;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\FormFactoryInterface;

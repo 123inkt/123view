@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler;
+namespace DR\Review\Tests\Unit\MessageHandler;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
-use DR\GitCommitNotification\MessageHandler\DiffFileCacheMessageHandler;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\MessageHandler\DiffFileCacheMessageHandler;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\DiffFileCacheMessageHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\DiffFileCacheMessageHandler
  * @covers ::__construct
  */
 class DiffFileCacheMessageHandlerTest extends AbstractTestCase

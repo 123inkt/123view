@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Asset;
+namespace DR\Review\Controller\App\Asset;
 
-use DR\GitCommitNotification\Entity\Asset\Asset;
-use DR\GitCommitNotification\Security\Role\Roles;
+use DR\Review\Entity\Asset\Asset;
+use DR\Review\Security\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
-use DR\GitCommitNotification\Controller\Auth\LogoutController;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Security\AzureAd\AzureAdAuthenticator;
-use DR\GitCommitNotification\Security\UserChecker;
+use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LogoutController;
+use DR\Review\Entity\User\User;
+use DR\Review\Security\AzureAd\AzureAdAuthenticator;
+use DR\Review\Security\UserChecker;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security): void {

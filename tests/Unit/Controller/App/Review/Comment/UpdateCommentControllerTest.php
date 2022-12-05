@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review\Comment;
+namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\Review\EditCommentFormType;
-use DR\GitCommitNotification\Message\Comment\CommentUpdated;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Security\Voter\CommentVoter;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\Review\EditCommentFormType;
+use DR\Review\Message\Comment\CommentUpdated;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Security\Voter\CommentVoter;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +23,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\Comment\UpdateCommentController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\UpdateCommentController
  * @covers ::__construct
  */
 class UpdateCommentControllerTest extends AbstractControllerTestCase

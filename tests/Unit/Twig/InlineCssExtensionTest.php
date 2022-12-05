@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
-use DR\GitCommitNotification\Twig\InlineCssExtension;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\InlineCss\CssToInlineStyles;
+use DR\Review\Twig\InlineCssExtension;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\InlineCssExtension
+ * @coversDefaultClass \DR\Review\Twig\InlineCssExtension
  * @covers ::__construct
  */
 class InlineCssExtensionTest extends AbstractTestCase
@@ -31,7 +31,7 @@ class InlineCssExtensionTest extends AbstractTestCase
         $inliner->expects(static::once())->method('convert')->with('foobar', 'css')->willReturn('html');
 
         $extension = new InlineCssExtension($inliner);
-        $result = $extension->inlineCss('foobar', 'css');
+        $result    = $extension->inlineCss('foobar', 'css');
         static::assertSame('html', $result);
     }
 }

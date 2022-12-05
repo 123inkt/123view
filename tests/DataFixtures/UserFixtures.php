@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\DataFixtures;
+namespace DR\Review\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Entity\User\UserSetting;
+use DR\Review\Entity\User\User;
+use DR\Review\Entity\User\UserSetting;
 
 class UserFixtures extends Fixture
 {

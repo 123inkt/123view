@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Command;
+namespace DR\Review\Command;
 
 use DateTimeImmutable;
-use DR\GitCommitNotification\Entity\Notification\Frequency;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Service\Mail\CommitMailService;
-use DR\GitCommitNotification\Service\RuleProcessor;
-use DR\GitCommitNotification\Utility\Strings;
+use DR\Review\Entity\Notification\Frequency;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Service\Mail\CommitMailService;
+use DR\Review\Service\RuleProcessor;
+use DR\Review\Utility\Strings;
 use InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

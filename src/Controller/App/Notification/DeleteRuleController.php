@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Notification;
+namespace DR\Review\Controller\App\Notification;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Security\Voter\RuleVoter;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Security\Voter\RuleVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;

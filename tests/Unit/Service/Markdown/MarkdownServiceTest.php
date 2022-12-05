@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Markdown;
+namespace DR\Review\Tests\Unit\Service\Markdown;
 
-use DR\GitCommitNotification\Service\Markdown\MarkdownService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Markdown\MarkdownService;
+use DR\Review\Tests\AbstractTestCase;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Output\RenderedContentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Markdown\MarkdownService
+ * @coversDefaultClass \DR\Review\Service\Markdown\MarkdownService
  * @covers ::__construct
  */
 class MarkdownServiceTest extends AbstractTestCase

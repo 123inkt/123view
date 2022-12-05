@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Checkout;
+namespace DR\Review\Service\Git\Checkout;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

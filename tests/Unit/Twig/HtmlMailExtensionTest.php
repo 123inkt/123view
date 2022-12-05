@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig;
+namespace DR\Review\Tests\Unit\Twig;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\HtmlMailExtension;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\HtmlMailExtension;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\HtmlMailExtension
+ * @coversDefaultClass \DR\Review\Twig\HtmlMailExtension
  */
 class HtmlMailExtensionTest extends AbstractTestCase
 {

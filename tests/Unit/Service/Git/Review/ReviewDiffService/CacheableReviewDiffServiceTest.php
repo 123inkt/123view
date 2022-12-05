@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review\ReviewDiffService;
+namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService
+ * @coversDefaultClass \DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService
  * @covers ::__construct
  */
 class CacheableReviewDiffServiceTest extends AbstractTestCase

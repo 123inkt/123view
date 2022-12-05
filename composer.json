@@ -1,6 +1,6 @@
 {
-    "name": "digitalrevolution/git-commmit-notification",
-    "description": "A bundled git commit notification mailer",
+    "name": "digitalrevolution/review",
+    "description": "A code review and commit notification symfony application",
     "keywords": ["git", "commit", "summary", "bundle", "filter", "mail", "notification"],
     "type": "project",
     "license": "MIT",
@@ -17,15 +17,15 @@
     },
     "autoload": {
         "psr-4": {
-            "DR\\GitCommitNotification\\": "src/"
+            "DR\\Review\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DR\\GitCommitNotification\\Tests\\E2E\\": "tests/E2E",
-            "DR\\GitCommitNotification\\Tests\\Integration\\": "tests/Integration",
-            "DR\\GitCommitNotification\\Tests\\Unit\\": "tests/Unit",
-            "DR\\GitCommitNotification\\Tests\\": "tests/"
+            "DR\\Review\\Tests\\E2E\\": "tests/E2E",
+            "DR\\Review\\Tests\\Integration\\": "tests/Integration",
+            "DR\\Review\\Tests\\Unit\\": "tests/Unit",
+            "DR\\Review\\Tests\\": "tests/"
         }
     },
     "require": {

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\DataFixtures;
+namespace DR\Review\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Utility\Assert;
 
 class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
 {

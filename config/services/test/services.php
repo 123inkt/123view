@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

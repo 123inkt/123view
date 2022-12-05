@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Command\Repository;
+namespace DR\Review\Tests\Unit\Command\Repository;
 
-use DR\GitCommitNotification\Command\Repository\ListRepositoriesCommand;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Command\Repository\ListRepositoriesCommand;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Command\Repository\ListRepositoriesCommand
+ * @coversDefaultClass \DR\Review\Command\Repository\ListRepositoriesCommand
  * @covers ::__construct
  */
 class ListRepositoriesCommandTest extends AbstractTestCase

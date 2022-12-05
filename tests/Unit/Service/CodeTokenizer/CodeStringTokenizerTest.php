@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeTokenizer;
+namespace DR\Review\Tests\Unit\Service\CodeTokenizer;
 
-use DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer;
-use DR\GitCommitNotification\Service\CodeTokenizer\StringReader;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\CodeTokenizer\CodeStringTokenizer;
+use DR\Review\Service\CodeTokenizer\StringReader;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeTokenizer\CodeStringTokenizer
+ * @coversDefaultClass \DR\Review\Service\CodeTokenizer\CodeStringTokenizer
  */
 class CodeStringTokenizerTest extends AbstractTestCase
 {

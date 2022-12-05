@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Review;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewsController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Model\Page\Breadcrumb;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Service\Page\BreadcrumbFactory;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewsViewModel;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewsController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\User\User;
+use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\Page\BreadcrumbFactory;
+use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\ReviewsController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\ReviewsController
  * @covers ::__construct
  */
 class ReviewsControllerTest extends AbstractControllerTestCase

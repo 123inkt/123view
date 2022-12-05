@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Comment;
+namespace DR\Review\ViewModel\App\Comment;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Entity\Review\Comment;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Review\Comment;
 
 class CommentsViewModel
 {

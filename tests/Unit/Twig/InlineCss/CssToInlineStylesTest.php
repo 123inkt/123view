@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Twig\InlineCss;
+namespace DR\Review\Tests\Unit\Twig\InlineCss;
 
 use DOMDocument;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Yep\Reflection\ReflectionClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Twig\InlineCss\CssToInlineStyles
+ * @coversDefaultClass \DR\Review\Twig\InlineCss\CssToInlineStyles
  */
 class CssToInlineStylesTest extends AbstractTestCase
 {

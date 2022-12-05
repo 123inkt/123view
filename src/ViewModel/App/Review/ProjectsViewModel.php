@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review;
+namespace DR\Review\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\Repository;
 
 /**
  * @codeCoverageIgnore

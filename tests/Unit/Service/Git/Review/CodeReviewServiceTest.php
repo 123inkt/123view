@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review;
+namespace DR\Review\Tests\Unit\Service\Git\Review;
 
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Repository\Review\CodeReviewerRepository;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Repository\Review\CodeReviewerRepository;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Git\Review\CodeReviewService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\CodeReviewService
+ * @coversDefaultClass \DR\Review\Service\Git\Review\CodeReviewService
  * @covers ::__construct
  */
 class CodeReviewServiceTest extends AbstractTestCase

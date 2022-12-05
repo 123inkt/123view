@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
+namespace DR\Review\Tests\Unit\Entity\Review;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Tests\AbstractTestCase;
 use LogicException;
 use stdClass;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Model\Review\DirectoryTreeNode
+ * @coversDefaultClass \DR\Review\Model\Review\DirectoryTreeNode
  * @covers ::__construct
  */
 class DirectoryTreeNodeTest extends AbstractTestCase

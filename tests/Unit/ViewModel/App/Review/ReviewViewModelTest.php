@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
+namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Review\ReviewViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Review\ReviewViewModel
+ * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewViewModel
  */
 class ReviewViewModelTest extends AbstractTestCase
 {

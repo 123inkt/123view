@@ -46,7 +46,7 @@
 
                 <form method="POST"
                       class="d-inline-block"
-                      action="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\Reviewer\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Reviewer\\RemoveReviewerController', {reviewerId: reviewer.id, reviewId: review.id}) }}">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button type="submit" class="btn-close reviewer-remove"></button>
                 </form><br>
@@ -61,7 +61,7 @@
                 <h6 class="m-0 pt-1 pb-1 bg-primary bg-opacity-10">{{ 'timeline.review'|trans }}</h6>
             {% else %}
                 <a class="pt-1 pb-1 text-body d-block"
-                   href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                   href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
                     <h6 class="m-0">{{ 'timeline.review'|trans }}</h6>
                 </a>
             {% endif %}

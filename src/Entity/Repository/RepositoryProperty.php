@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Repository;
+namespace DR\Review\Entity\Repository;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Repository\Config\RepositoryPropertyRepository;
+use DR\Review\Repository\Config\RepositoryPropertyRepository;
 
 #[ORM\Entity(repositoryClass: RepositoryPropertyRepository::class)]
 class RepositoryProperty

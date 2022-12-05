@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModelProvider;
+namespace DR\Review\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
-use DR\GitCommitNotification\Service\CodeHighlight\CacheableHighlightedFileService;
-use DR\GitCommitNotification\Utility\Assert;
-use DR\GitCommitNotification\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Model\Review\Action\AddCommentAction;
+use DR\Review\Model\Review\Action\AddCommentReplyAction;
+use DR\Review\Model\Review\Action\EditCommentAction;
+use DR\Review\Model\Review\Action\EditCommentReplyAction;
+use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\Review\Utility\Assert;
+use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use Throwable;
 
 /**

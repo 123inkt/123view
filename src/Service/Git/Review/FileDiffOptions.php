@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Review;
+namespace DR\Review\Service\Git\Review;
 
 class FileDiffOptions
 {

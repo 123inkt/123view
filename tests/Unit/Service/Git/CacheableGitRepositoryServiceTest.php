@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git;
+namespace DR\Review\Tests\Unit\Service\Git;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitRepository;
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService
+ * @coversDefaultClass \DR\Review\Service\Git\CacheableGitRepositoryService
  */
 class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {

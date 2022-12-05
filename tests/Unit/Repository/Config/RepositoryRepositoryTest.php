@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Repository\Config;
+namespace DR\Review\Tests\Unit\Repository\Config;
 
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use DR\GitCommitNotification\Tests\DataFixtures\RepositoryFixtures;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractRepositoryTestCase;
+use DR\Review\Tests\DataFixtures\RepositoryFixtures;
+use DR\Review\Utility\Assert;
 use Exception;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Repository\Config\RepositoryRepository
+ * @coversDefaultClass \DR\Review\Repository\Config\RepositoryRepository
  * @covers ::__construct
  */
 class RepositoryRepositoryTest extends AbstractRepositoryTestCase

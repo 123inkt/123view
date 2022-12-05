@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig;
+namespace DR\Review\Twig;
 
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

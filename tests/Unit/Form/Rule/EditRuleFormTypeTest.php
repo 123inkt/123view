@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Rule;
+namespace DR\Review\Tests\Unit\Form\Rule;
 
-use DR\GitCommitNotification\Controller\App\Notification\RuleController;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Form\Rule\EditRuleFormType;
-use DR\GitCommitNotification\Form\Rule\RuleType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Notification\RuleController;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Form\Rule\EditRuleFormType;
+use DR\Review\Form\Rule\RuleType;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Rule\EditRuleFormType
+ * @coversDefaultClass \DR\Review\Form\Rule\EditRuleFormType
  * @covers ::__construct
  */
 class EditRuleFormTypeTest extends AbstractTestCase

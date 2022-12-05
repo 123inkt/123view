@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Notification;
+namespace DR\Review\Entity\Notification;
 
 use DateInterval;
 use DatePeriod;
@@ -35,13 +35,13 @@ class Frequency
     public static function getPeriod(DateTimeImmutable $currentTime, string $frequency): DatePeriod
     {
         $interval = match ($frequency) {
-            self::ONCE_PER_HOUR => new DateInterval("PT1H"),
-            self::ONCE_PER_TWO_HOURS => new DateInterval("PT2H"),
+            self::ONCE_PER_HOUR        => new DateInterval("PT1H"),
+            self::ONCE_PER_TWO_HOURS   => new DateInterval("PT2H"),
             self::ONCE_PER_THREE_HOURS => new DateInterval("PT3H"),
-            self::ONCE_PER_FOUR_HOURS => new DateInterval("PT4H"),
-            self::ONCE_PER_DAY => new DateInterval("P1D"),
-            self::ONCE_PER_WEEK => new DateInterval("P7D"),
-            default => throw new InvalidArgumentException('Invalid frequency: ' . $frequency),
+            self::ONCE_PER_FOUR_HOURS  => new DateInterval("PT4H"),
+            self::ONCE_PER_DAY         => new DateInterval("P1D"),
+            self::ONCE_PER_WEEK        => new DateInterval("P7D"),
+            default                    => throw new InvalidArgumentException('Invalid frequency: ' . $frequency),
         };
 
         return new DatePeriod(DateTime::createFromImmutable($currentTime)->sub($interval), $interval, $currentTime);

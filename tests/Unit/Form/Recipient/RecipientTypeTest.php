@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Recipient;
+namespace DR\Review\Tests\Unit\Form\Recipient;
 
-use DR\GitCommitNotification\Entity\Notification\Recipient;
-use DR\GitCommitNotification\Form\Recipient\RecipientType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Recipient;
+use DR\Review\Form\Recipient\RecipientType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Recipient\RecipientType
+ * @coversDefaultClass \DR\Review\Form\Recipient\RecipientType
  */
 class RecipientTypeTest extends AbstractTestCase
 {

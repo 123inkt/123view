@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Review\ReviewDiffService;
+namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
-use DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
+use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Review\ReviewDiffService\LockableReviewDiffService
+ * @coversDefaultClass \DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService
  * @covers ::__construct
  */
 class LockableReviewDiffServiceTest extends AbstractTestCase

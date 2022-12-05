@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\Repository;
+namespace DR\Review\Entity\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Repository\Config\RepositoryRepository;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]

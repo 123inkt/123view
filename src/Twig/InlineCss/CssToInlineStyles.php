@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Twig\InlineCss;
+namespace DR\Review\Twig\InlineCss;
 
 use DOMDocument;
 

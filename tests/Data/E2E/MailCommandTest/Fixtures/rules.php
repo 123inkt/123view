@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use DR\GitCommitNotification\Doctrine\Type\MailThemeType;
-use DR\GitCommitNotification\Entity\Notification\Recipient;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\User\User;
+use DR\Review\Doctrine\Type\MailThemeType;
+use DR\Review\Entity\Notification\Recipient;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\User\User;
 
 $name  = 'Sherlock Holmes';
 $email = 'sherlock@example.com';

@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\MessageHandler\Mail;
+namespace DR\Review\Tests\Unit\MessageHandler\Mail;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Message\Comment\CommentReplyUpdated;
-use DR\GitCommitNotification\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Service\Mail\CommentMailService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentReplyUpdated;
+use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
+use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\Mail\CommentMailService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
+ * @coversDefaultClass \DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
  * @covers ::__construct
  */
 class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase

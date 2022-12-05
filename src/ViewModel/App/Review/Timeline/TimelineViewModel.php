@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review\Timeline;
+namespace DR\Review\ViewModel\App\Review\Timeline;
 
 class TimelineViewModel
 {

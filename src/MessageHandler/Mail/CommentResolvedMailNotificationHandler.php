@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\MessageHandler\Mail;
+namespace DR\Review\MessageHandler\Mail;
 
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Review\NotificationStatus;
-use DR\GitCommitNotification\Message\Comment\CommentResolved;
-use DR\GitCommitNotification\Message\MailNotificationInterface;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\Mail\CommentMailService;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\NotificationStatus;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\MailNotificationInterface;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\Mail\CommentMailService;
+use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Throwable;

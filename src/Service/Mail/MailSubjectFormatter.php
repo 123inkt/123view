@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Mail;
+namespace DR\Review\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Notification\Rule;
 
 class MailSubjectFormatter
 {

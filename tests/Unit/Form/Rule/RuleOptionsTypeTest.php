@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Rule;
+namespace DR\Review\Tests\Unit\Form\Rule;
 
-use DR\GitCommitNotification\Entity\Notification\RuleOptions;
-use DR\GitCommitNotification\Form\Rule\RuleOptionsType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\RuleOptions;
+use DR\Review\Form\Rule\RuleOptionsType;
+use DR\Review\Tests\AbstractTestCase;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Rule\RuleOptionsType
+ * @coversDefaultClass \DR\Review\Form\Rule\RuleOptionsType
  */
 class RuleOptionsTypeTest extends AbstractTestCase
 {

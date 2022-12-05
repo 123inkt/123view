@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review\Timeline;
+namespace DR\Review\ViewModel\App\Review\Timeline;
 
-use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
+use DR\Review\Entity\Review\CodeReviewActivity;
 
 class TimelineEntryViewModel
 {

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Parser;
+namespace DR\Review\Service\Parser;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Exception\ParseException;
-use DR\GitCommitNotification\Git\LineReader;
-use DR\GitCommitNotification\Service\Parser\Unified\UnifiedBlockParser;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Exception\ParseException;
+use DR\Review\Git\LineReader;
+use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use Throwable;
 
 class DiffFileParser

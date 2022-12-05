@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review;
+namespace DR\Review\ViewModel\App\Review;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
 
 class ReviewsViewModel
 {

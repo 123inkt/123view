@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Message\Review;
+namespace DR\Review\Tests\Unit\Message\Review;
 
-use DR\GitCommitNotification\Message\Review\ReviewClosed;
-use DR\GitCommitNotification\Tests\Unit\Message\AbstractMessageEventTestCase;
+use DR\Review\Message\Review\ReviewClosed;
+use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Message\Review\ReviewClosed
+ * @coversDefaultClass \DR\Review\Message\Review\ReviewClosed
  */
 class ReviewClosedTest extends AbstractMessageEventTestCase
 {

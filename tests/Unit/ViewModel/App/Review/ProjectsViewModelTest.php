@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModel\App\Review;
+namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Review\ProjectsViewModel;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModel\App\Review\ProjectsViewModel
+ * @coversDefaultClass \DR\Review\ViewModel\App\Review\ProjectsViewModel
  * @covers ::__construct
  */
 class ProjectsViewModelTest extends AbstractTestCase

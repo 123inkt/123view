@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Security\AzureAd;
+namespace DR\Review\Tests\Unit\Security\AzureAd;
 
-use DR\GitCommitNotification\Security\AzureAd\LoginFailure;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Security\AzureAd\LoginFailure;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Security\AzureAd\LoginFailure
+ * @coversDefaultClass \DR\Review\Security\AzureAd\LoginFailure
  * @covers ::__construct
  */
 class LoginFailureTest extends AbstractTestCase

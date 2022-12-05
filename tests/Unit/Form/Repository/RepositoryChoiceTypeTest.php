@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Repository;
+namespace DR\Review\Tests\Unit\Form\Repository;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Form\Repository\RepositoryChoiceType;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Form\Repository\RepositoryChoiceType;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Repository\RepositoryChoiceType
+ * @coversDefaultClass \DR\Review\Form\Repository\RepositoryChoiceType
  * @covers ::__construct
  */
 class RepositoryChoiceTypeTest extends AbstractTestCase

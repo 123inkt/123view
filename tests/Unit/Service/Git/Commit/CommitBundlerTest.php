@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Commit;
+namespace DR\Review\Tests\Unit\Service\Git\Commit;
 
-use DR\GitCommitNotification\Entity\Git\Author;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
-use DR\GitCommitNotification\Service\Git\Commit\CommitCombiner;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Author;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Git\Commit\CommitBundler;
+use DR\Review\Service\Git\Commit\CommitCombiner;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Commit\CommitBundler
+ * @coversDefaultClass \DR\Review\Service\Git\Commit\CommitBundler
  * @covers ::__construct
  */
 class CommitBundlerTest extends AbstractTestCase

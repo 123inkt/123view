@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
 use Doctrine\ORM\NonUniqueResultException;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Service\Revision\RevisionPatternMatcher;
-use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\Revision\RevisionPatternMatcher;
+use DR\Review\Service\Revision\RevisionTitleNormalizer;
+use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

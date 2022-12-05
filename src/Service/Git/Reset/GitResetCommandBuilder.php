@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Reset;
+namespace DR\Review\Service\Git\Reset;
 
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 class GitResetCommandBuilder implements GitCommandBuilderInterface
 {

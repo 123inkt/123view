@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Git;
+namespace DR\Review\Git;
 
 class LineReader
 {

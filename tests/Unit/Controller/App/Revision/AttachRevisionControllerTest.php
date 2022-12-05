@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Revision;
+namespace DR\Review\Tests\Unit\Controller\App\Revision;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ReviewController;
-use DR\GitCommitNotification\Controller\App\Revision\AttachRevisionController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Service\Git\Review\CodeReviewService;
-use DR\GitCommitNotification\Service\Webhook\ReviewEventService;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Controller\App\Revision\AttachRevisionController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Git\Review\CodeReviewService;
+use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Revision\AttachRevisionController
+ * @coversDefaultClass \DR\Review\Controller\App\Revision\AttachRevisionController
  * @covers ::__construct
  */
 class AttachRevisionControllerTest extends AbstractControllerTestCase

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\Mail;
+namespace DR\Review\Controller\Mail;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\ViewModel\Mail\CommentViewModel;
-use DR\GitCommitNotification\ViewModelProvider\Mail\MailCommentViewModelProvider;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Security\Role\Roles;
+use DR\Review\ViewModel\Mail\CommentViewModel;
+use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

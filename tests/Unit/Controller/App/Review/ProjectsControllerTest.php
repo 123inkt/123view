@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Review;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Review\ProjectsController;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Review\ProjectsController
+ * @coversDefaultClass \DR\Review\Controller\App\Review\ProjectsController
  * @covers ::__construct
  */
 class ProjectsControllerTest extends AbstractControllerTestCase

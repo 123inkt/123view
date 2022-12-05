@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff\Bundle;
+namespace DR\Review\Tests\Unit\Service\Git\Diff\Bundle;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator;
-use DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineCompareResult;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
+use DR\Review\Service\Git\Diff\Bundle\DiffLineCompareResult;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\Bundle\DiffLineComparator
+ * @coversDefaultClass \DR\Review\Service\Git\Diff\Bundle\DiffLineComparator
  */
 class DiffLineComparatorTest extends AbstractTestCase
 {

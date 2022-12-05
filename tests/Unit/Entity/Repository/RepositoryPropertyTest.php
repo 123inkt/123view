@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Repository;
+namespace DR\Review\Tests\Unit\Entity\Repository;
 
-use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\RepositoryProperty;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Repository\RepositoryProperty
+ * @coversDefaultClass \DR\Review\Entity\Repository\RepositoryProperty
  */
 class RepositoryPropertyTest extends AbstractTestCase
 {

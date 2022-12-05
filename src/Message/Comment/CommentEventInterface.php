@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message\Comment;
+namespace DR\Review\Message\Comment;
 
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\UserAwareInterface;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\UserAwareInterface;
 
 interface CommentEventInterface extends CodeReviewAwareInterface, UserAwareInterface
 {

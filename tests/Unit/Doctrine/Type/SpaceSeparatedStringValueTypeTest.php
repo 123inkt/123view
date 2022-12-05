@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Doctrine\Type;
+namespace DR\Review\Tests\Unit\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
-use DR\GitCommitNotification\Doctrine\Type\SpaceSeparatedStringValueType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Doctrine\Type\SpaceSeparatedStringValueType
+ * @coversDefaultClass \DR\Review\Doctrine\Type\SpaceSeparatedStringValueType
  */
 class SpaceSeparatedStringValueTypeTest extends AbstractTestCase
 {

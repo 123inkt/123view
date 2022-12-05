@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Mail;
+namespace DR\Review\Service\Mail;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\ViewModel\Mail\CommitsViewModel;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\ViewModel\Mail\CommitsViewModel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

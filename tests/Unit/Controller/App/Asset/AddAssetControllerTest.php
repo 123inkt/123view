@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Controller\App\Asset;
+namespace DR\Review\Tests\Unit\Controller\App\Asset;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Controller\App\Asset\AddAssetController;
-use DR\GitCommitNotification\Controller\App\Asset\GetAssetController;
-use DR\GitCommitNotification\Entity\Asset\Asset;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Asset\AssetRepository;
-use DR\GitCommitNotification\Request\Asset\AddAssetRequest;
-use DR\GitCommitNotification\Service\Asset\AssetFactory;
-use DR\GitCommitNotification\Tests\AbstractControllerTestCase;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Asset\AddAssetController;
+use DR\Review\Controller\App\Asset\GetAssetController;
+use DR\Review\Entity\Asset\Asset;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Asset\AssetRepository;
+use DR\Review\Request\Asset\AddAssetRequest;
+use DR\Review\Service\Asset\AssetFactory;
+use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Controller\App\Asset\AddAssetController
+ * @coversDefaultClass \DR\Review\Controller\App\Asset\AddAssetController
  * @covers ::__construct
  */
 class AddAssetControllerTest extends AbstractControllerTestCase

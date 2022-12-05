@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Commit;
+namespace DR\Review\Service\Git\Commit;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
+use DR\Review\Entity\Git\Commit;
 
 /**
  * Combine similar commits together, based on author, branch and commit subject line

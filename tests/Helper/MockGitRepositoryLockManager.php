@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Helper;
+namespace DR\Review\Tests\Helper;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Git\GitRepositoryLockManager;
 use Symfony\Component\Filesystem\Filesystem;
 
 class MockGitRepositoryLockManager extends GitRepositoryLockManager

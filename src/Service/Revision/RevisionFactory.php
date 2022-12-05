@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Revision;
+namespace DR\Review\Service\Revision;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Review\Revision;
 
 class RevisionFactory
 {

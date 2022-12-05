@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Request\Asset;
+namespace DR\Review\Tests\Unit\Request\Asset;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\GitCommitNotification\Entity\Asset\Asset;
-use DR\GitCommitNotification\Request\Asset\AddAssetRequest;
-use DR\GitCommitNotification\Tests\Unit\Request\AbstractRequestTestCase;
+use DR\Review\Entity\Asset\Asset;
+use DR\Review\Request\Asset\AddAssetRequest;
+use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @extends AbstractRequestTestCase<AddAssetRequest>
- * @coversDefaultClass \DR\GitCommitNotification\Request\Asset\AddAssetRequest
+ * @coversDefaultClass \DR\Review\Request\Asset\AddAssetRequest
  * @covers ::__construct
  */
 class AddAssetRequestTest extends AbstractRequestTestCase

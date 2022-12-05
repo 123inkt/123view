@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Branch;
+namespace DR\Review\Tests\Unit\Service\Git\Branch;
 
-use DR\GitCommitNotification\Service\Git\Branch\GitBranchCommandBuilder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Branch\GitBranchCommandBuilder
+ * @coversDefaultClass \DR\Review\Service\Git\Branch\GitBranchCommandBuilder
  * @covers ::__construct
  */
 class GitBranchCommandBuilderTest extends AbstractTestCase

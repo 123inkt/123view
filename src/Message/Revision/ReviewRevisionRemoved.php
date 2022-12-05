@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message\Revision;
+namespace DR\Review\Message\Revision;
 
-use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Message\UserAwareInterface;
+use DR\Review\Message\AsyncMessageInterface;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Message\UserAwareInterface;
 
 /**
  * Message to notify consumers a revision was removed from a review.

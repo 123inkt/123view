@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Transformer;
+namespace DR\Review\Transformer;
 
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Utility\Assert;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

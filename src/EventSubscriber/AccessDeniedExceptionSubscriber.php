@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\EventSubscriber;
+namespace DR\Review\EventSubscriber;
 
-use DR\GitCommitNotification\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\AuthenticationController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;

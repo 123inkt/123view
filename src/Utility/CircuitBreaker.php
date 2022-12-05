@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Utility;
+namespace DR\Review\Utility;
 
 use RuntimeException;
 use Throwable;

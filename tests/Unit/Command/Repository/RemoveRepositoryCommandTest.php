@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Command\Repository;
+namespace DR\Review\Tests\Unit\Command\Repository;
 
-use DR\GitCommitNotification\Command\Repository\RemoveRepositoryCommand;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Command\Repository\RemoveRepositoryCommand;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Command\Repository\RemoveRepositoryCommand
+ * @coversDefaultClass \DR\Review\Command\Repository\RemoveRepositoryCommand
  * @covers ::__construct
  */
 class RemoveRepositoryCommandTest extends AbstractTestCase

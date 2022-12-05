@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git\Diff;
+namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
-use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandBuilder;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffCommandFactory;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Git\Show\GitShowCommandBuilder;
-use DR\GitCommitNotification\Service\Parser\DiffParser;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\DiffAlgorithmType;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Git\GitRepository;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
+use DR\Review\Service\Git\Diff\GitDiffCommandFactory;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Show\GitShowCommandBuilder;
+use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\Diff\GitDiffService
+ * @coversDefaultClass \DR\Review\Service\Git\Diff\GitDiffService
  * @covers ::__construct
  */
 class GitDiffServiceTest extends AbstractTestCase

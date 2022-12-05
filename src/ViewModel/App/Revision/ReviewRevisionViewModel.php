@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Revision;
+namespace DR\Review\ViewModel\App\Revision;
 
-use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\Review\Entity\Review\Revision;
 use Symfony\Component\Form\FormView;
 
 class ReviewRevisionViewModel

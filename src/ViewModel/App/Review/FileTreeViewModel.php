@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Review;
+namespace DR\Review\ViewModel\App\Review;
 
 use Doctrine\Common\Collections\Collection;
-use DR\GitCommitNotification\Doctrine\Type\CommentStateType;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
-use DR\GitCommitNotification\Model\Review\DirectoryTreeNode;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\FileSeenStatusCollection;
+use DR\Review\Model\Review\DirectoryTreeNode;
 
 class FileTreeViewModel
 {

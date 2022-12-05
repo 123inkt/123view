@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message\Delay;
+namespace DR\Review\Message\Delay;
 
 /**
  * @codeCoverageIgnore

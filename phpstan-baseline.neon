@@ -1,17 +1,17 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method DR\\\\GitCommitNotification\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
 
 		-
-			message: "#^Method DR\\\\GitCommitNotification\\\\Router\\\\ReviewRouter\\:\\:match\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:match\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
 
 		-
-			message: "#^Method DR\\\\GitCommitNotification\\\\Router\\\\ReviewRouter\\:\\:matchRequest\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:matchRequest\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
 
@@ -21,6 +21,6 @@ parameters:
 			path: tests/Unit/Utility/ArraysTest.php
 
 		-
-			message: "#^Return type of call to static method DR\\\\GitCommitNotification\\\\Utility\\\\Assert\\:\\:isArray\\(\\) contains unresolvable type\\.$#"
+			message: "#^Return type of call to static method DR\\\\Review\\\\Utility\\\\Assert\\:\\:isArray\\(\\) contains unresolvable type\\.$#"
 			count: 1
 			path: tests/Unit/Utility/AssertTest.php

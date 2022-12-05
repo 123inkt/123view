@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Validator\Filter;
+namespace DR\Review\Tests\Unit\Validator\Filter;
 
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\Validator\Filter\IsValidPattern;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Validator\Filter\IsValidPattern;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Validator\Filter\IsValidPattern
+ * @coversDefaultClass \DR\Review\Validator\Filter\IsValidPattern
  */
 class IsValidPatternTest extends AbstractTestCase
 {

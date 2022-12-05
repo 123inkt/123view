@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\ViewModel\App\Rule;
+namespace DR\Review\ViewModel\App\Rule;
 
 use Countable;
-use DR\GitCommitNotification\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\Rule;
 use IteratorAggregate;
 
 class RulesViewModel

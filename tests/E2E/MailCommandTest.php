@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\E2E;
+namespace DR\Review\Tests\E2E;
 
-use DR\GitCommitNotification\Git\GitRepository;
-use DR\GitCommitNotification\Repository\Config\ExternalLinkRepository;
-use DR\GitCommitNotification\Repository\Config\RuleRepository;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitRepositoryService;
-use DR\GitCommitNotification\Tests\AbstractKernelTestCase;
-use DR\GitCommitNotification\Tests\Helper\MessageEventCollector;
+use DR\Review\Git\GitRepository;
+use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Tests\AbstractKernelTestCase;
+use DR\Review\Tests\Helper\MessageEventCollector;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

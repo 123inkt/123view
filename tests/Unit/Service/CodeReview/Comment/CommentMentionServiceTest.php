@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview\Comment;
+namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\Comment\CommentMentionService
+ * @coversDefaultClass \DR\Review\Service\CodeReview\Comment\CommentMentionService
  * @covers ::__construct
  */
 class CommentMentionServiceTest extends AbstractTestCase

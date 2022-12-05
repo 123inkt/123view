@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service;
+namespace DR\Review\Tests\Unit\Service;
 
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\Service\Filter\CommitFilter;
-use DR\GitCommitNotification\Service\Git\Commit\CommitBundler;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\Log\GitLogService;
-use DR\GitCommitNotification\Service\RuleProcessor;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Event\CommitEvent;
+use DR\Review\Service\Filter\CommitFilter;
+use DR\Review\Service\Git\Commit\CommitBundler;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\Log\GitLogService;
+use DR\Review\Service\RuleProcessor;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\RuleProcessor
+ * @coversDefaultClass \DR\Review\Service\RuleProcessor
  * @covers ::__construct
  */
 class RuleProcessorTest extends AbstractTestCase

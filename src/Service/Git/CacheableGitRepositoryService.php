@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\Review\Service\Git;
 
-use DR\GitCommitNotification\Exception\RepositoryException;
-use DR\GitCommitNotification\Git\GitRepository;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
 
 class CacheableGitRepositoryService extends GitRepositoryService
 {

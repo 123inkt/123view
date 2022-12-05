@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Entity\User;
+namespace DR\Review\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\GitCommitNotification\Doctrine\Type\ColorThemeType;
-use DR\GitCommitNotification\Repository\User\UserSettingRepository;
+use DR\Review\Doctrine\Type\ColorThemeType;
+use DR\Review\Repository\User\UserSettingRepository;
 
 #[ORM\Entity(repositoryClass: UserSettingRepository::class)]
 class UserSetting

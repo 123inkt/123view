@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Vcs;
+namespace DR\Review\Controller\App\Vcs;
 
-use DR\GitCommitNotification\Message\Revision\FetchRepositoryRevisionsMessage;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
+use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Repository\Config\RepositoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;

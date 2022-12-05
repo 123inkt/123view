@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Doctrine\Type;
+namespace DR\Review\Tests\Unit\Doctrine\Type;
 
 use DateInterval;
 use DateTime;
 use DateTimeImmutable;
-use DR\GitCommitNotification\Doctrine\Type\FrequencyType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Doctrine\Type\FrequencyType;
+use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Doctrine\Type\FrequencyType
+ * @coversDefaultClass \DR\Review\Doctrine\Type\FrequencyType
  */
 class FrequencyTypeTest extends AbstractTestCase
 {

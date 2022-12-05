@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Security\Role;
+namespace DR\Review\Security\Role;
 
 class Roles
 {

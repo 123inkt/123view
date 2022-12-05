@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Git\Diff;
+namespace DR\Review\Git\Diff;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChange;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffChangeCollection;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Utility\Strings;
+use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Utility\Strings;
 use InvalidArgumentException;
 
 /**

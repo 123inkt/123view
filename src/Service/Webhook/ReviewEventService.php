@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Webhook;
+namespace DR\Review\Service\Webhook;
 
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewerStateType;
-use DR\GitCommitNotification\Doctrine\Type\CodeReviewStateType;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewer;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Message\Review\ReviewAccepted;
-use DR\GitCommitNotification\Message\Review\ReviewClosed;
-use DR\GitCommitNotification\Message\Review\ReviewOpened;
-use DR\GitCommitNotification\Message\Review\ReviewRejected;
-use DR\GitCommitNotification\Message\Review\ReviewResumed;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Review\ReviewClosed;
+use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Review\ReviewRejected;
+use DR\Review\Message\Review\ReviewResumed;
+use DR\Review\Message\Reviewer\ReviewerAdded;
+use DR\Review\Message\Reviewer\ReviewerRemoved;
+use DR\Review\Message\Reviewer\ReviewerStateChanged;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class ReviewEventService

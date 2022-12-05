@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModelProvider;
+namespace DR\Review\Tests\Unit\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Form\User\UserProfileFormType;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModelProvider\UserViewModelProvider;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\User\UserProfileFormType;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModelProvider\UserViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModelProvider\UserViewModelProvider
+ * @coversDefaultClass \DR\Review\ViewModelProvider\UserViewModelProvider
  * @covers ::__construct
  */
 class UserViewModelProviderTest extends AbstractTestCase

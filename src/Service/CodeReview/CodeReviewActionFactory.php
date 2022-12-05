@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Model\Review\Action\AbstractReviewAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
-use DR\GitCommitNotification\Repository\Review\CommentReplyRepository;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Model\Review\Action\AddCommentAction;
+use DR\Review\Model\Review\Action\AddCommentReplyAction;
+use DR\Review\Model\Review\Action\EditCommentAction;
+use DR\Review\Model\Review\Action\EditCommentReplyAction;
+use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Repository\Review\CommentRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class CodeReviewActionFactory

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git;
+namespace DR\Review\Service\Git;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Utility\Assert;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepositoryLockManager

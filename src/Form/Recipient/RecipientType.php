@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Recipient;
+namespace DR\Review\Form\Recipient;
 
-use DR\GitCommitNotification\Entity\Notification\Recipient;
+use DR\Review\Entity\Notification\Recipient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

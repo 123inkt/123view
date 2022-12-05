@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Webhook;
+namespace DR\Review\Tests\Unit\Entity\Webhook;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Webhook\Webhook;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Webhook\Webhook;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Webhook\Webhook
+ * @coversDefaultClass \DR\Review\Entity\Webhook\Webhook
  * @covers ::__construct
  */
 class WebhookTest extends AbstractTestCase

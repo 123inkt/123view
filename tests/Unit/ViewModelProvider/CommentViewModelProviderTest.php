@@ -1,31 +1,31 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModelProvider;
+namespace DR\Review\Tests\Unit\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffFile;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\Comment;
-use DR\GitCommitNotification\Entity\Review\CommentReply;
-use DR\GitCommitNotification\Entity\Review\LineReference;
-use DR\GitCommitNotification\Form\Review\AddCommentFormType;
-use DR\GitCommitNotification\Form\Review\AddCommentReplyFormType;
-use DR\GitCommitNotification\Form\Review\EditCommentFormType;
-use DR\GitCommitNotification\Form\Review\EditCommentReplyFormType;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\AddCommentReplyAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentAction;
-use DR\GitCommitNotification\Model\Review\Action\EditCommentReplyAction;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Service\CodeReview\DiffFinder;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModelProvider\CommentViewModelProvider;
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Form\Review\AddCommentFormType;
+use DR\Review\Form\Review\AddCommentReplyFormType;
+use DR\Review\Form\Review\EditCommentFormType;
+use DR\Review\Form\Review\EditCommentReplyFormType;
+use DR\Review\Model\Review\Action\AddCommentAction;
+use DR\Review\Model\Review\Action\AddCommentReplyAction;
+use DR\Review\Model\Review\Action\EditCommentAction;
+use DR\Review\Model\Review\Action\EditCommentReplyAction;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModelProvider\CommentViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModelProvider\CommentViewModelProvider
+ * @coversDefaultClass \DR\Review\ViewModelProvider\CommentViewModelProvider
  * @covers ::__construct
  */
 class CommentViewModelProviderTest extends AbstractTestCase

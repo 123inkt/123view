@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use DR\GitCommitNotification\Kernel;
+use DR\Review\Kernel;
 
 require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 

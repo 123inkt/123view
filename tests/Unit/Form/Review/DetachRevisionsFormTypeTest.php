@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Form\Review;
+namespace DR\Review\Tests\Unit\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Revision\DetachRevisionController;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Form\Review\DetachRevisionsFormType;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Controller\App\Revision\DetachRevisionController;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Form\Review\DetachRevisionsFormType
+ * @coversDefaultClass \DR\Review\Form\Review\DetachRevisionsFormType
  * @covers ::__construct
  */
 class DetachRevisionsFormTypeTest extends AbstractTestCase

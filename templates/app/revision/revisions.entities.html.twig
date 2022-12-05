@@ -20,7 +20,7 @@
             <td>{{ revision.createTimestamp|format_datetime('short', 'short') }}</td>
             <td>
                 {% if revision.review != null %}
-                    <a href="{{ path('DR\\GitCommitNotification\\Controller\\App\\Review\\ReviewController', {review: revision.review}) }}">
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: revision.review}) }}">
                         CR-{{ revision.review.projectId }}
                     </a>
                 {% endif %}

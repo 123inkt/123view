@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Webhook;
+namespace DR\Review\Service\Webhook;
 
-use DR\GitCommitNotification\Entity\Webhook\Webhook;
-use DR\GitCommitNotification\Entity\Webhook\WebhookActivity;
-use DR\GitCommitNotification\Message\CodeReviewAwareInterface;
-use DR\GitCommitNotification\Repository\Webhook\WebhookActivityRepository;
+use DR\Review\Entity\Webhook\Webhook;
+use DR\Review\Entity\Webhook\WebhookActivity;
+use DR\Review\Message\CodeReviewAwareInterface;
+use DR\Review\Repository\Webhook\WebhookActivityRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpClient\RetryableHttpClient;

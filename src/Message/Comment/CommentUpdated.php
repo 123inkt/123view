@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message\Comment;
+namespace DR\Review\Message\Comment;
 
-use DR\GitCommitNotification\Message\AsyncMessageInterface;
-use DR\GitCommitNotification\Message\MailNotificationInterface;
+use DR\Review\Message\AsyncMessageInterface;
+use DR\Review\Message\MailNotificationInterface;
 
 class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
 {

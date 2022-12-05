@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Review;
+namespace DR\Review\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Review\Comment\AddCommentController;
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\LineReference;
+use DR\Review\Controller\App\Review\Comment\AddCommentController;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\LineReference;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

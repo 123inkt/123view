@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Repository\User;
+namespace DR\Review\Repository\User;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\GitCommitNotification\Doctrine\EntityRepository\ServiceEntityRepository;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Entity\User\User;
+use DR\Review\Utility\Assert;
 
 /**
  * @extends ServiceEntityRepository<User>

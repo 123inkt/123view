@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Log;
+namespace DR\Review\Service\Git\Log;
 
 use DateTime;
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Notification\RuleConfiguration;
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\Git\CacheableGitRepositoryService;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
-use DR\GitCommitNotification\Service\Git\GitRepositoryService;
-use DR\GitCommitNotification\Service\Parser\GitLogParser;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Service\Parser\GitLogParser;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

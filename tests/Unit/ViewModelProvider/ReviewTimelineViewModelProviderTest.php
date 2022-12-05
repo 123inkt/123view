@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ViewModelProvider;
+namespace DR\Review\Tests\Unit\ViewModelProvider;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Review\CodeReviewActivityRepository;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewActivityFormatter;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
-use DR\GitCommitNotification\ViewModelProvider\ReviewTimelineViewModelProvider;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
+use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ViewModelProvider\ReviewTimelineViewModelProvider
+ * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider
  * @covers ::__construct
  */
 class ReviewTimelineViewModelProviderTest extends AbstractTestCase

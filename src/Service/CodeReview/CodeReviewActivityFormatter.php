@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview;
+namespace DR\Review\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Review\CodeReviewActivity;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Message\Comment\CommentAdded;
-use DR\GitCommitNotification\Message\Comment\CommentResolved;
-use DR\GitCommitNotification\Message\Review\ReviewAccepted;
-use DR\GitCommitNotification\Message\Review\ReviewClosed;
-use DR\GitCommitNotification\Message\Review\ReviewCreated;
-use DR\GitCommitNotification\Message\Review\ReviewOpened;
-use DR\GitCommitNotification\Message\Review\ReviewRejected;
-use DR\GitCommitNotification\Message\Review\ReviewResumed;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerAdded;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerRemoved;
-use DR\GitCommitNotification\Message\Reviewer\ReviewerStateChanged;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionAdded;
-use DR\GitCommitNotification\Message\Revision\ReviewRevisionRemoved;
-use DR\GitCommitNotification\Repository\Review\CommentRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Repository\User\UserRepository;
+use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Review\ReviewClosed;
+use DR\Review\Message\Review\ReviewCreated;
+use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Review\ReviewRejected;
+use DR\Review\Message\Review\ReviewResumed;
+use DR\Review\Message\Reviewer\ReviewerAdded;
+use DR\Review\Message\Reviewer\ReviewerRemoved;
+use DR\Review\Message\Reviewer\ReviewerStateChanged;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CodeReviewActivityFormatter

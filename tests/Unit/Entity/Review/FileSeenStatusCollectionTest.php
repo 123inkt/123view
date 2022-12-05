@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Entity\Review;
+namespace DR\Review\Tests\Unit\Entity\Review;
 
-use DR\GitCommitNotification\Entity\Review\FileSeenStatus;
-use DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Review\FileSeenStatus;
+use DR\Review\Entity\Review\FileSeenStatusCollection;
+use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Entity\Review\FileSeenStatusCollection
+ * @coversDefaultClass \DR\Review\Entity\Review\FileSeenStatusCollection
  */
 class FileSeenStatusCollectionTest extends AbstractTestCase
 {

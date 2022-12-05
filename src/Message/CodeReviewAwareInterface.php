@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Message;
+namespace DR\Review\Message;
 
 interface CodeReviewAwareInterface
 {

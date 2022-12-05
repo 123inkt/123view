@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\ExternalTool\Gitlab;
+namespace DR\Review\Tests\Unit\ExternalTool\Gitlab;
 
-use DR\GitCommitNotification\Entity\Git\Commit;
-use DR\GitCommitNotification\Entity\Repository\RepositoryProperty;
-use DR\GitCommitNotification\Event\CommitEvent;
-use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabApi;
-use DR\GitCommitNotification\ExternalTool\Gitlab\GitlabIntegration;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Repository\RepositoryProperty;
+use DR\Review\Event\CommitEvent;
+use DR\Review\ExternalTool\Gitlab\GitlabApi;
+use DR\Review\ExternalTool\Gitlab\GitlabIntegration;
+use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\ExternalTool\Gitlab\GitlabIntegration
+ * @coversDefaultClass \DR\Review\ExternalTool\Gitlab\GitlabIntegration
  * @covers ::__construct
  */
 class GitlabIntegrationTest extends AbstractTestCase

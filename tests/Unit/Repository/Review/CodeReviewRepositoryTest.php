@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Repository\Review;
+namespace DR\Review\Tests\Unit\Repository\Review;
 
-use DR\GitCommitNotification\Entity\Review\CodeReview;
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\Config\RepositoryRepository;
-use DR\GitCommitNotification\Repository\Review\CodeReviewRepository;
-use DR\GitCommitNotification\Repository\Review\RevisionRepository;
-use DR\GitCommitNotification\Tests\AbstractRepositoryTestCase;
-use DR\GitCommitNotification\Tests\DataFixtures\CodeReviewFixtures;
-use DR\GitCommitNotification\Tests\DataFixtures\RevisionFixtures;
-use DR\GitCommitNotification\Tests\DataFixtures\UserFixtures;
-use DR\GitCommitNotification\Utility\Arrays;
-use DR\GitCommitNotification\Utility\Assert;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Tests\AbstractRepositoryTestCase;
+use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
+use DR\Review\Tests\DataFixtures\RevisionFixtures;
+use DR\Review\Tests\DataFixtures\UserFixtures;
+use DR\Review\Utility\Arrays;
+use DR\Review\Utility\Assert;
 use Exception;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Repository\Review\CodeReviewRepository
+ * @coversDefaultClass \DR\Review\Repository\Review\CodeReviewRepository
  * @covers ::__construct
  */
 class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
@@ -87,7 +87,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 
     /**
      * @covers ::getPaginatorForSearchQuery
-     * @covers \DR\GitCommitNotification\Repository\Review\CodeReviewQueryBuilder
+     * @covers \DR\Review\Repository\Review\CodeReviewQueryBuilder
      * @throws Exception
      */
     public function testGetPaginatorForSearchQuery(): void
@@ -123,7 +123,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 
     /**
      * @covers ::getPaginatorForSearchQuery
-     * @covers \DR\GitCommitNotification\Repository\Review\CodeReviewQueryBuilder
+     * @covers \DR\Review\Repository\Review\CodeReviewQueryBuilder
      * @throws Exception
      */
     public function testGetPaginatorForSearchQueryOneReviewTwoRevisions(): void

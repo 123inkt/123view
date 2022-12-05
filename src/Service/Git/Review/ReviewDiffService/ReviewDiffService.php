@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Review\ReviewDiffService;
+namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\Git\Diff\GitDiffService;
-use DR\GitCommitNotification\Service\Git\Review\FileDiffOptions;
-use DR\GitCommitNotification\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
-use DR\GitCommitNotification\Utility\Arrays;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Git\Diff\GitDiffService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
+use DR\Review\Utility\Arrays;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;

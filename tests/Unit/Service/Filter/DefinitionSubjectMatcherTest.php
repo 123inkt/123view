@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Filter;
+namespace DR\Review\Tests\Unit\Service\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\GitCommitNotification\Entity\Notification\Filter;
-use DR\GitCommitNotification\Service\Filter\DefinitionSubjectMatcher;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Notification\Filter;
+use DR\Review\Service\Filter\DefinitionSubjectMatcher;
+use DR\Review\Tests\AbstractTestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Filter\DefinitionSubjectMatcher
+ * @coversDefaultClass \DR\Review\Service\Filter\DefinitionSubjectMatcher
  */
 class DefinitionSubjectMatcherTest extends AbstractTestCase
 {

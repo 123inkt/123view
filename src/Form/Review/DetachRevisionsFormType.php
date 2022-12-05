@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Form\Review;
+namespace DR\Review\Form\Review;
 
-use DR\GitCommitNotification\Controller\App\Revision\DetachRevisionController;
-use DR\GitCommitNotification\Entity\Review\Revision;
+use DR\Review\Controller\App\Revision\DetachRevisionController;
+use DR\Review\Entity\Review\Revision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

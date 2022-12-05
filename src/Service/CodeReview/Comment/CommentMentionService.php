@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\CodeReview\Comment;
+namespace DR\Review\Service\CodeReview\Comment;
 
-use DR\GitCommitNotification\Entity\User\User;
-use DR\GitCommitNotification\Repository\User\UserRepository;
-use DR\GitCommitNotification\Utility\Arrays;
+use DR\Review\Entity\User\User;
+use DR\Review\Repository\User\UserRepository;
+use DR\Review\Utility\Arrays;
 
 class CommentMentionService
 {

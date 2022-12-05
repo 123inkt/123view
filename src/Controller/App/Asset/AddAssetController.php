@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Controller\App\Asset;
+namespace DR\Review\Controller\App\Asset;
 
-use DR\GitCommitNotification\Controller\AbstractController;
-use DR\GitCommitNotification\Repository\Asset\AssetRepository;
-use DR\GitCommitNotification\Request\Asset\AddAssetRequest;
-use DR\GitCommitNotification\Security\Role\Roles;
-use DR\GitCommitNotification\Service\Asset\AssetFactory;
+use DR\Review\Controller\AbstractController;
+use DR\Review\Repository\Asset\AssetRepository;
+use DR\Review\Request\Asset\AddAssetRequest;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Asset\AssetFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

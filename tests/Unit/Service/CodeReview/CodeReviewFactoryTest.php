@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\CodeReview;
+namespace DR\Review\Tests\Unit\Service\CodeReview;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Entity\Review\Revision;
-use DR\GitCommitNotification\Service\CodeReview\CodeReviewFactory;
-use DR\GitCommitNotification\Service\Revision\RevisionTitleNormalizer;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\Revision;
+use DR\Review\Service\CodeReview\CodeReviewFactory;
+use DR\Review\Service\Revision\RevisionTitleNormalizer;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\CodeReview\CodeReviewFactory
+ * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewFactory
  * @covers ::__construct
  */
 class CodeReviewFactoryTest extends AbstractTestCase

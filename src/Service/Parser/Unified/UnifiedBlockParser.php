@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Parser\Unified;
+namespace DR\Review\Service\Parser\Unified;
 
-use DR\GitCommitNotification\Entity\Git\Diff\DiffBlock;
-use DR\GitCommitNotification\Entity\Git\Diff\DiffLine;
-use DR\GitCommitNotification\Git\LineReader;
-use DR\GitCommitNotification\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Entity\Git\Diff\DiffBlock;
+use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Git\LineReader;
+use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 
 class UnifiedBlockParser
 {
@@ -16,7 +16,7 @@ class UnifiedBlockParser
     public function __construct(UnifiedLineParser $lineParser, ?UnifiedDiffBundler $bundler)
     {
         $this->lineParser = $lineParser;
-        $this->bundler = $bundler;
+        $this->bundler    = $bundler;
     }
 
     public function parse(int $startBefore, int $startAfter, LineReader $reader): DiffBlock

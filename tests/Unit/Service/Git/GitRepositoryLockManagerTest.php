@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Tests\Unit\Service\Git;
+namespace DR\Review\Tests\Unit\Service\Git;
 
-use DR\GitCommitNotification\Entity\Repository\Repository;
-use DR\GitCommitNotification\Service\Git\GitRepositoryLockManager;
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Tests\AbstractTestCase;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @coversDefaultClass \DR\GitCommitNotification\Service\Git\GitRepositoryLockManager
+ * @coversDefaultClass \DR\Review\Service\Git\GitRepositoryLockManager
  * @covers ::__construct
  */
 class GitRepositoryLockManagerTest extends AbstractTestCase

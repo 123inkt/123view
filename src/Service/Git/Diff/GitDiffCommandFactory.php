@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\GitCommitNotification\Service\Git\Diff;
+namespace DR\Review\Service\Git\Diff;
 
-use DR\GitCommitNotification\Doctrine\Type\DiffAlgorithmType;
-use DR\GitCommitNotification\Entity\Notification\Rule;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderFactory;
-use DR\GitCommitNotification\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Doctrine\Type\DiffAlgorithmType;
+use DR\Review\Entity\Notification\Rule;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 class GitDiffCommandFactory
 {
