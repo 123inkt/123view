@@ -8,10 +8,10 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\RuleVoter;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeleteRuleController extends AbstractController
@@ -22,8 +22,7 @@ class DeleteRuleController extends AbstractController
 
     #[Route('/app/rules/rule/delete/{id<\d+>}', self::class, methods: ['DELETE'])]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('rule')]
-    public function __invoke(Rule $rule): RedirectResponse
+    public function __invoke(#[MapEntity] Rule $rule): RedirectResponse
     {
         // check rule owner
         $this->denyAccessUnlessGranted(RuleVoter::DELETE, $rule);

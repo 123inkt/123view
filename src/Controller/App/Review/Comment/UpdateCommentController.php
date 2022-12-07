@@ -12,12 +12,12 @@ use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentVoter;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UpdateCommentController extends AbstractController
 {
@@ -27,8 +27,7 @@ class UpdateCommentController extends AbstractController
 
     #[Route('app/comments/{id<\d+>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('comment')]
-    public function __invoke(Request $request, ?Comment $comment): Response
+    public function __invoke(Request $request, #[MapEntity] ?Comment $comment): Response
     {
         if ($comment === null) {
             $this->addFlash('warning', 'comment.was.deleted.meanwhile');

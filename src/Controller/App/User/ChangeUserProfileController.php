@@ -8,11 +8,11 @@ use DR\Review\Entity\User\User;
 use DR\Review\Form\User\UserProfileFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ChangeUserProfileController extends AbstractController
 {
@@ -22,8 +22,7 @@ class ChangeUserProfileController extends AbstractController
 
     #[Route('/app/users/{id<\d+>}/profile', self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_ADMIN)]
-    #[Entity('user')]
-    public function __invoke(Request $request, User $user): RedirectResponse
+    public function __invoke(Request $request, #[MapEntity] User $user): RedirectResponse
     {
         $form = $this->createForm(UserProfileFormType::class, $user, ['user' => $user]);
         $form->handleRequest($request);

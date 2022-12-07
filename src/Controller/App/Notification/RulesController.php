@@ -6,7 +6,7 @@ namespace DR\Review\Controller\App\Notification;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Rule\RulesViewModel;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 

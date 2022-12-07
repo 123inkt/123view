@@ -12,12 +12,12 @@ use DR\Review\Form\Review\AddCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddCommentReplyController extends AbstractController
 {
@@ -27,8 +27,7 @@ class AddCommentReplyController extends AbstractController
 
     #[Route('app/comments/{id<\d+>}/add-reply', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('comment')]
-    public function __invoke(Request $request, ?Comment $comment): Response
+    public function __invoke(Request $request, #[MapEntity] ?Comment $comment): Response
     {
         if ($comment === null) {
             $this->addFlash('warning', 'comment.was.deleted.meanwhile');

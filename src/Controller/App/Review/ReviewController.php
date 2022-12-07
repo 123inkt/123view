@@ -11,12 +11,12 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
 class ReviewController extends AbstractController
@@ -30,8 +30,7 @@ class ReviewController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}', name: self::class . 'deprecated', methods: 'GET')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review')]
-    public function redirectReviewRoute(Request $request, CodeReview $review): RedirectResponse
+    public function redirectReviewRoute(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
         return $this->redirectToRoute(self::class, ['review' => $review] + $request->query->all());
     }
@@ -43,8 +42,7 @@ class ReviewController extends AbstractController
     #[Route('app/{repositoryName<[\w-]+>}/review/cr-{reviewId<\d+>}', name: self::class, methods: 'GET')]
     #[Template('app/review/review.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review', expr: 'repository.findByUrl(repositoryName, reviewId)')]
-    public function __invoke(ReviewRequest $request, CodeReview $review): array
+    public function __invoke(ReviewRequest $request, #[MapEntity(expr: 'repository.findByUrl(repositoryName, reviewId)')] CodeReview $review): array
     {
         $viewModel = $this->modelProvider->getViewModel($review, $request->getFilePath(), $request->getTab(), $request->getAction());
 

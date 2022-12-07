@@ -8,10 +8,10 @@ use DR\Review\Form\User\UserSettingFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\UserSettingViewModel;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserSettingController extends AbstractController
 {

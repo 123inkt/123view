@@ -12,12 +12,12 @@ use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddCommentController extends AbstractController
 {
@@ -27,8 +27,7 @@ class AddCommentController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}/add-comment', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): Response
+    public function __invoke(Request $request, #[MapEntity] CodeReview $review): Response
     {
         $form = $this->createForm(AddCommentFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);

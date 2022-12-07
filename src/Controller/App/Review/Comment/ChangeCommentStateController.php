@@ -12,11 +12,11 @@ use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Security\Role\Roles;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ChangeCommentStateController extends AbstractController
 {
@@ -26,8 +26,7 @@ class ChangeCommentStateController extends AbstractController
 
     #[Route('app/comments/{id<\d+>}/state', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('comment')]
-    public function __invoke(ChangeCommentStateRequest $request, ?Comment $comment): RedirectResponse
+    public function __invoke(ChangeCommentStateRequest $request, #[MapEntity] ?Comment $comment): RedirectResponse
     {
         if ($comment === null) {
             $this->addFlash('warning', 'comment.was.deleted.meanwhile');

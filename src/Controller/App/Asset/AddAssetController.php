@@ -8,9 +8,9 @@ use DR\Review\Repository\Asset\AssetRepository;
 use DR\Review\Request\Asset\AddAssetRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Asset\AssetFactory;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddAssetController extends AbstractController
 {

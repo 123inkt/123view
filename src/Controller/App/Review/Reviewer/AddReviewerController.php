@@ -12,11 +12,11 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Service\Webhook\ReviewEventService;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddReviewerController extends AbstractController
 {
@@ -29,8 +29,7 @@ class AddReviewerController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}/reviewer', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): RedirectResponse
+    public function __invoke(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
         $reviewerState = $review->getReviewersState();
 

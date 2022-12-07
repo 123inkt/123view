@@ -12,11 +12,11 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
-use Symfony\Bridge\Twig\Attribute\Entity;
-use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ReviewsController extends AbstractController
 {
@@ -30,8 +30,7 @@ class ReviewsController extends AbstractController
     #[Route('app/projects/{id<\d+>}/reviews', name: self::class, methods: 'GET')]
     #[Template('app/review/reviews.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('repository')]
-    public function __invoke(Request $request, Repository $repository): array
+    public function __invoke(Request $request, #[MapEntity] Repository $repository): array
     {
         $searchQuery = trim($request->query->get('search', 'state:open '));
         $page        = $request->query->getInt('page', 1);
