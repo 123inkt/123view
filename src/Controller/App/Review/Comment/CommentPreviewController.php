@@ -8,7 +8,7 @@ use DR\Review\Request\Comment\CommentPreviewRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Markdown\MarkdownService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 

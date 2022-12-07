@@ -11,8 +11,8 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentVoter;
 use DR\Review\Utility\Assert;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Attribute\Entity;
+use Symfony\Bridge\Twig\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 

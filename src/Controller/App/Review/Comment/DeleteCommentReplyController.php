@@ -10,8 +10,8 @@ use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentReplyVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Attribute\Entity;
+use Symfony\Bridge\Twig\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 

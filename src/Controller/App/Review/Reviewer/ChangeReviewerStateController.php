@@ -12,8 +12,8 @@ use DR\Review\Request\Review\ChangeReviewerStateRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Service\Webhook\ReviewEventService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Attribute\Entity;
+use Symfony\Bridge\Twig\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

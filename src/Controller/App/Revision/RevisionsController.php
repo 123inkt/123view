@@ -9,9 +9,9 @@ use DR\Review\Model\Page\Breadcrumb;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Entity;
+use Symfony\Bridge\Twig\Attribute\IsGranted;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
