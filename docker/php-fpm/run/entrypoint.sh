@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+sed -i "s/%PHP_MEMORY_LIMIT%/${PHP_MEMORY_LIMIT}/g" /usr/local/etc/php/conf.d/default.ini
+
 # wait for mysql
 sleep 30
 

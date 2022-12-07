@@ -23,6 +23,8 @@ services:
                 VERSION: $PHP_VERSION
             context: .
             dockerfile: ./docker/php-fpm/Dockerfile
+        environment:
+            PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
         depends_on:
             - mysql
             - rabbitmq
