@@ -5,17 +5,16 @@ namespace DR\Review\Controller\App\Asset;
 
 use DR\Review\Entity\Asset\Asset;
 use DR\Review\Security\Role\Roles;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class GetAssetController
 {
     #[Route('app/assets/{id<\d+>}', name: self::class, methods: 'GET')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('asset')]
-    public function __invoke(Asset $asset): Response
+    public function __invoke(#[MapEntity] Asset $asset): Response
     {
         /** @var resource $data */
         $data = $asset->getData();

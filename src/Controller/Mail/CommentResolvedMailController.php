@@ -9,10 +9,10 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\Mail\CommentViewModel;
 use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
 /**
@@ -31,8 +31,7 @@ class CommentResolvedMailController extends AbstractController
     #[Route('app/mail/comment-resolved/{id<\d+>}', name: self::class, methods: 'GET', condition: "env('APP_ENV') === 'dev'")]
     #[Template('mail/mail.comment.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('comment')]
-    public function __invoke(Comment $comment): array
+    public function __invoke(#[MapEntity] Comment $comment): array
     {
         /** @var CodeReview $review */
         $review = $comment->getReview();

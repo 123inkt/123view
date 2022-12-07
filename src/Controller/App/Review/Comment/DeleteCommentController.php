@@ -11,10 +11,10 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentVoter;
 use DR\Review\Utility\Assert;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DeleteCommentController extends AbstractController
 {
@@ -24,8 +24,7 @@ class DeleteCommentController extends AbstractController
 
     #[Route('app/comments/{id<\d+>}', name: self::class, methods: 'DELETE')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('comment')]
-    public function __invoke(?Comment $comment): Response
+    public function __invoke(#[MapEntity] ?Comment $comment): Response
     {
         if ($comment === null) {
             return $this->refererRedirect(ProjectsController::class, filter: ['action']);

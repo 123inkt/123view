@@ -8,7 +8,7 @@ use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
 use DR\Review\Security\Role\Roles;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

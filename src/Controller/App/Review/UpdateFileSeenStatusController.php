@@ -11,10 +11,10 @@ use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
 class UpdateFileSeenStatusController extends AbstractController
@@ -30,8 +30,7 @@ class UpdateFileSeenStatusController extends AbstractController
      */
     #[Route('app/reviews/{id<\d+>}/file-seen-status', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review')]
-    public function __invoke(FileSeenStatusRequest $request, CodeReview $review): Response
+    public function __invoke(FileSeenStatusRequest $request, #[MapEntity] CodeReview $review): Response
     {
         $filePath   = $request->getFilePath();
         $seenStatus = $request->getSeenStatus();

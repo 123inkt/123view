@@ -11,12 +11,12 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Webhook\ReviewEventService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DetachRevisionController extends AbstractController
 {
@@ -29,8 +29,7 @@ class DetachRevisionController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}/revisions', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review')]
-    public function __invoke(Request $request, CodeReview $review): RedirectResponse
+    public function __invoke(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
         $revisions = $review->getRevisions()->toArray();
 

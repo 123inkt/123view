@@ -12,12 +12,12 @@ use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentReplyVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UpdateCommentReplyController extends AbstractController
 {
@@ -27,8 +27,7 @@ class UpdateCommentReplyController extends AbstractController
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('reply')]
-    public function __invoke(Request $request, ?CommentReply $reply): Response
+    public function __invoke(Request $request, #[MapEntity] ?CommentReply $reply): Response
     {
         if ($reply === null) {
             $this->addFlash('warning', 'comment.was.deleted.meanwhile');

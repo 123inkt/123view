@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\User;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserApprovalPendingController

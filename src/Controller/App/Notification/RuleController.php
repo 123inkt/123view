@@ -11,13 +11,13 @@ use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\ViewModel\App\Rule\EditRuleViewModel;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RuleController extends AbstractController
 {
@@ -31,8 +31,7 @@ class RuleController extends AbstractController
     #[Route('/app/rules/rule/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/edit_rule.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('rule')]
-    public function __invoke(Request $request, ?Rule $rule): array|RedirectResponse
+    public function __invoke(Request $request, #[MapEntity] ?Rule $rule): array|RedirectResponse
     {
         if ($rule !== null) {
             $this->denyAccessUnlessGranted(RuleVoter::EDIT, $rule);

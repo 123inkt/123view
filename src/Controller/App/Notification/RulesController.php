@@ -6,9 +6,9 @@ namespace DR\Review\Controller\App\Notification;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Rule\RulesViewModel;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RulesController extends AbstractController
 {

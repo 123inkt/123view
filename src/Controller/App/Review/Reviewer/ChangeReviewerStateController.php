@@ -12,10 +12,10 @@ use DR\Review\Request\Review\ChangeReviewerStateRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Service\Webhook\ReviewEventService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ChangeReviewerStateController extends AbstractController
 {
@@ -28,8 +28,7 @@ class ChangeReviewerStateController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}/reviewer/state', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review')]
-    public function __invoke(ChangeReviewerStateRequest $request, CodeReview $review): RedirectResponse
+    public function __invoke(ChangeReviewerStateRequest $request, #[MapEntity('review')] CodeReview $review): RedirectResponse
     {
         $state       = $request->getState();
         $reviewState = (string)$review->getState();

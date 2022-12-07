@@ -12,10 +12,10 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Webhook\ReviewEventService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RemoveReviewerController extends AbstractController
 {
@@ -25,10 +25,10 @@ class RemoveReviewerController extends AbstractController
 
     #[Route('app/reviews/{reviewId<\d+>}/reviewer/{reviewerId<\d+>}', name: self::class, methods: 'DELETE')]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('review', expr: 'repository.find(reviewId)')]
-    #[Entity('reviewer', expr: 'repository.find(reviewerId)')]
-    public function __invoke(CodeReview $review, CodeReviewer $reviewer): RedirectResponse
-    {
+    public function __invoke(
+        #[MapEntity(expr: 'repository.find(reviewId)')] CodeReview $review,
+        #[MapEntity(expr: 'repository.find(reviewerId)')] CodeReviewer $reviewer
+    ): RedirectResponse {
         $reviewState   = (string)$review->getState();
         $reviewerState = $review->getReviewersState();
 

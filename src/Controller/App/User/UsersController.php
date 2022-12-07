@@ -7,9 +7,9 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\UsersViewModel;
 use DR\Review\ViewModelProvider\UserViewModelProvider;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UsersController extends AbstractController
 {

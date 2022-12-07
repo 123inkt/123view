@@ -6,11 +6,10 @@ namespace DR\Review\Controller\App\User;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserMentionSuggestController
 {
@@ -20,7 +19,6 @@ class UserMentionSuggestController
 
     #[Route('/app/user/mentions', self::class, methods: ['GET'])]
     #[IsGranted(Roles::ROLE_USER)]
-    #[Entity('rule')]
     public function __invoke(Request $request): JsonResponse
     {
         // search users
