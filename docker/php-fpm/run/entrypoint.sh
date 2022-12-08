@@ -1,15 +1,15 @@
 #!/bin/bash
 set -e
 
+##
+# Apply custom php memory limit setting
+#
 sed -i "s/%PHP_MEMORY_LIMIT%/${PHP_MEMORY_LIMIT}/g" /usr/local/etc/php/conf.d/default.ini
 
-# wait for mysql
-sleep 30
-
 if [ "${APP_ENV}" == "dev" ]; then
-    composer install --no-interaction --optimize-autoloader
+    composer install --no-interaction --optimize-autoloader --no-scripts
 else
-    composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative
+    composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative --no-scripts
 fi
 
 ##
