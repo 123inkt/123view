@@ -28,7 +28,7 @@ class ChangeReviewerStateController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}/reviewer/state', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(ChangeReviewerStateRequest $request, #[MapEntity('review')] CodeReview $review): RedirectResponse
+    public function __invoke(ChangeReviewerStateRequest $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
         $state       = $request->getState();
         $reviewState = (string)$review->getState();
