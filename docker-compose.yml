@@ -26,9 +26,12 @@ services:
         environment:
             PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
         depends_on:
-            - mysql
-            - rabbitmq
-            - mail
+            mysql:
+                condition: service_healthy
+            rabbitmq:
+                condition: service_healthy
+            mail:
+                condition: service_started
         volumes:
             - .:/app:rw
 
@@ -40,14 +43,23 @@ services:
             context: ./docker/mysql
         cap_add:
             - SYS_NICE  # CAP_SYS_NICE
-        volumes:
-            - ./docker/db/data:/var/lib/mysql
         ports:
             - ${MYSQL_PORT:-3306}:3306
+        healthcheck:
+            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+            timeout: 20s
+            retries: 10
+        volumes:
+            - ./docker/db/data:/var/lib/mysql
 
     rabbitmq:
         container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
         image: bitnami/rabbitmq:latest
+        healthcheck:
+            test: rabbitmq-diagnostics -q ping
+            interval: 30s
+            timeout: 30s
+            retries: 10
 
     mail:
         container_name: ${MAIL_CONTAINER:-mail}
