@@ -10,8 +10,6 @@ use DR\Review\Security\UserChecker;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security): void {
-    $security->enableAuthenticatorManager(true);
-
     $security->provider('app_user_provider')
         ->entity()
         ->class(User::class)

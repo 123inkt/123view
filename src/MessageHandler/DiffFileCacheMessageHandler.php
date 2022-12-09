@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
@@ -15,11 +14,9 @@ use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Throwable;
 
-#[AsMessageHandler(fromTransport: 'async_messages')]
-class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerAwareInterface
+class DiffFileCacheMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -33,7 +30,8 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
     /**
      * @throws Throwable
      */
-    public function handleEvent(CodeReviewAwareInterface $event): void
+    #[AsMessageHandler(fromTransport: 'async_messages')]
+    public function handleEvent(ReviewCreated|ReviewRevisionAdded|ReviewRevisionRemoved $event): void
     {
         $review = $this->reviewRepository->find($event->getReviewId());
         if ($review === null) {
@@ -66,15 +64,5 @@ class DiffFileCacheMessageHandler implements MessageSubscriberInterface, LoggerA
                 );
             }
         }
-    }
-
-    /**
-     * @return iterable<string, array<string, string>>
-     */
-    public static function getHandledMessages(): iterable
-    {
-        yield ReviewCreated::class => ['method' => 'handleEvent', 'from_transport' => 'async_messages'];
-        yield ReviewRevisionAdded::class => ['method' => 'handleEvent', 'from_transport' => 'async_messages'];
-        yield ReviewRevisionRemoved::class => ['method' => 'handleEvent', 'from_transport' => 'async_messages'];
     }
 }

@@ -11,7 +11,6 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
 
-#[AsMessageHandler(fromTransport: 'async_messages')]
 class ReviewActivityMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -25,6 +24,7 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
+    #[AsMessageHandler(fromTransport: 'async_messages')]
     public function __invoke(CodeReviewAwareInterface $evt): void
     {
         $activity = $this->activityProvider->fromEvent($evt);

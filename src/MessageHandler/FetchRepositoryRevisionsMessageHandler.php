@@ -14,12 +14,10 @@ use DR\Review\Service\Revision\RevisionFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
-#[AsMessageHandler(fromTransport: 'async_revisions')]
-class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface, LoggerAwareInterface
+class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -48,6 +46,7 @@ class FetchRepositoryRevisionsMessageHandler implements MessageHandlerInterface,
     /**
      * @throws Throwable
      */
+    #[AsMessageHandler(fromTransport: 'async_revisions')]
     public function __invoke(FetchRepositoryRevisionsMessage $message): void
     {
         $this->logger?->info("MessageHandler: repository: " . $message->repositoryId);
