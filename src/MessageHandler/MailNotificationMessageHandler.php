@@ -10,13 +10,11 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Throwable;
 
-#[AsMessageHandler]
-class MailNotificationMessageHandler implements MessageSubscriberInterface, LoggerAwareInterface
+class MailNotificationMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -31,6 +29,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
      * Stage 1: any mail notification message should be resubmitted with a xxx seconds delay
      * @throws Throwable
      */
+    #[AsMessageHandler(fromTransport: 'async_messages')]
     public function delayMessage(MailNotificationInterface $message): void
     {
         $logMessage = 'MailNotificationMessageHandler: delay message for {delay} seconds: {class}';
@@ -43,6 +42,7 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
      * Stage 2: a delayed mail notification message was received, dispatch to appropriate handler.
      * @throws Throwable
      */
+    #[AsMessageHandler(fromTransport: 'async_delay_mail')]
     public function handleDelayedMessage(DelayableMessage $message): void
     {
         $this->logger?->info('MailNotificationMessageHandler: delayed message received: ' . get_class($message->message));
@@ -57,14 +57,5 @@ class MailNotificationMessageHandler implements MessageSubscriberInterface, Logg
 
         assert($notificationMessage instanceof MailNotificationInterface);
         $handler->handle($notificationMessage);
-    }
-
-    /**
-     * @return iterable<string, array<string, string>>
-     */
-    public static function getHandledMessages(): iterable
-    {
-        yield MailNotificationInterface::class => ['method' => 'delayMessage', 'from_transport' => 'async_messages'];
-        yield DelayableMessage::class => ['method' => 'handleDelayedMessage', 'from_transport' => 'async_delay_mail'];
     }
 }

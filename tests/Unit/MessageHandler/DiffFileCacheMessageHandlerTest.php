@@ -8,8 +8,6 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Review\ReviewCreated;
-use DR\Review\Message\Revision\ReviewRevisionAdded;
-use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\MessageHandler\DiffFileCacheMessageHandler;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
@@ -144,20 +142,5 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->fileService->expects(self::never())->method('fromDiffFile');
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
-    }
-
-    /**
-     * @covers ::getHandledMessages
-     */
-    public function testGetHandledMessages(): void
-    {
-        $expected = [
-            ReviewCreated::class         => ['method' => 'handleEvent', 'from_transport' => 'async_messages'],
-            ReviewRevisionAdded::class   => ['method' => 'handleEvent', 'from_transport' => 'async_messages'],
-            ReviewRevisionRemoved::class => ['method' => 'handleEvent', 'from_transport' => 'async_messages']
-        ];
-
-        $actual = [...DiffFileCacheMessageHandler::getHandledMessages()];
-        static::assertSame($expected, $actual);
     }
 }

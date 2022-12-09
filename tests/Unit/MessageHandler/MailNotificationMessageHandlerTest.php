@@ -5,7 +5,6 @@ namespace DR\Review\Tests\Unit\MessageHandler;
 
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Delay\DelayableMessage;
-use DR\Review\Message\MailNotificationInterface;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerInterface;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
@@ -64,22 +63,6 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
             )
             ->willReturn($this->envelope);
         $this->handler->delayMessage($message);
-    }
-
-    /**
-     * @covers ::getHandledMessages
-     */
-    public function testGetHandledMessages(): void
-    {
-        $entries = [...MailNotificationMessageHandler::getHandledMessages()];
-
-        static::assertSame(
-            [
-                MailNotificationInterface::class => ['method' => 'delayMessage', 'from_transport' => 'async_messages'],
-                DelayableMessage::class          => ['method' => 'handleDelayedMessage', 'from_transport' => 'async_delay_mail']
-            ],
-            $entries
-        );
     }
 
     /**

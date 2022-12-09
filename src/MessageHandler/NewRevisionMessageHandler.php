@@ -22,7 +22,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 use Throwable;
 
-#[AsMessageHandler(fromTransport: 'async_messages')]
 class NewRevisionMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -45,6 +44,7 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
+    #[AsMessageHandler(fromTransport: 'async_messages')]
     public function __invoke(NewRevisionMessage $message): void
     {
         $this->logger?->info("MessageHandler: revision: " . $message->revisionId);
