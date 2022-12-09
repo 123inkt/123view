@@ -16,7 +16,7 @@ This will fetch all revisions since the last time the revisions were fetched and
 ## Web
 To manually trigger fetching new revisions from the frontend you can call the following endpoint:
 ```text
-https://<domain>:<port/~vcs/<repositoryid-or-name>
+https://<domain>:<port/~vcs/<repository-id-or-name>
 ```
 This will dispatch a fetch revisions message to the message bus and new revisions will be fetched in the background. This endpoint
 can also be used by ci pipelines to immediately notify the project to fetch new revisions.

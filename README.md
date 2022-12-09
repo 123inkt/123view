@@ -5,7 +5,7 @@
 [![Build Status](https://github.com/123inkt/123view/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
 [![Build Status](https://github.com/123inkt/123view/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
 
-# Code review and commit notifications
+# 123view - code review and commit notifications
 A symfony application to create code reviews for a specific set of revisions not tied to a branch and to allow receiving commit notification for all commits in a certain time period.
 
 ### Features
@@ -28,15 +28,14 @@ A symfony application to create code reviews for a specific set of revisions not
 - Exclude all commits done by ci- or other automated processes.
 - Exclude changes done to `composer.lock` for a repository.
 
-**Themes**
+## UI
 
-<img src="docs/images/upsource.png" alt="Upsource" title="Upsource" width="400">
-<img src="docs/images/darcula.png" alt="Darcula" title="Darcula" width="400">
-
-**UI**
-
-<img src="docs/images/login.png" alt="Login screen" title="Login screen" width="400">
-<img src="docs/images/add-rule.png" alt="Add rule" title="Add rule" width="400">
+<a href="docs/impressions.md">
+    <img src="docs/images/review-overview.png" width="200" alt="Review overview">
+</a>
+<a href="docs/impressions.md">
+    <img src="docs/images/review-details.png" width="200" alt="Review details">
+</a>
 
 ## Requirements
 
@@ -92,7 +91,7 @@ See [command line options](docs/command-line.md) for more information about the 
 1) Will fetch all commits for a given repository via the `git log` command.
 2) Will bundle commits when author, branch and subject are identical.
 3) For a set of commits, fetches the bundled changes between the first commit and the last
-4) Send a notification mail in the desired formatting
+4) Create reviews or send a notification mail in the desired formatting
 
 ## About us
 
