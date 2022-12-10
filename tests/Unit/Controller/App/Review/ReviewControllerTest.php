@@ -16,6 +16,7 @@ use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -63,9 +64,9 @@ class ReviewControllerTest extends AbstractControllerTestCase
 
         $diffFile  = new DiffFile();
         $viewModel = new ReviewViewModel($review);
-        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile));
+        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile, ReviewDiffModeEnum::INLINE));
 
-        $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, 'filepath', 'tab', $action)->willReturn($viewModel);
+        $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);
         $this->fileSeenService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFile);
         $this->breadcrumbFactory->expects(self::once())->method('createForReview')->with($review)->willReturn([$breadcrumb]);
 

@@ -65,7 +65,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
     {
         static::assertSame(ReviewDiffModeEnum::INLINE, $this->validatedRequest->getDiffMode());
 
-        $this->request->query->set('diff', 'split');
+        $this->request->query->set('diff', 'unified');
         static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
     }
 
@@ -80,7 +80,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
                 'query' => [
                     'filePath' => 'string|filled',
                     'tab'      => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
-                    'diff'     => 'string|in:split,unified,inline',
+                    'diff'     => 'string|in:unified,inline',
                     'action'   => 'string'
                 ]
             ]
