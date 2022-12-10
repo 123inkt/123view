@@ -8,7 +8,6 @@ use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewDiffModeEnum
- * @covers ::__construct
  */
 class ReviewDiffModeEnumTest extends AbstractTestCase
 {
