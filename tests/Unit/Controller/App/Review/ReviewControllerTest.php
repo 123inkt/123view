@@ -10,7 +10,6 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Page\Breadcrumb;
-use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Page\BreadcrumbFactory;
@@ -45,11 +44,7 @@ class ReviewControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $action  = $this->createMock(AbstractReviewAction::class);
         $request = $this->createMock(ReviewRequest::class);
-        $request->expects(self::once())->method('getFilePath')->willReturn('filepath');
-        $request->expects(self::once())->method('getTab')->willReturn('tab');
-        $request->expects(self::once())->method('getAction')->willReturn($action);
 
         $user = new User();
         $this->expectGetUser($user);
