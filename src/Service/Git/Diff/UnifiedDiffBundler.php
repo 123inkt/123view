@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
 use DR\Review\Entity\Git\Diff\DiffLinePair;
@@ -29,12 +30,21 @@ class UnifiedDiffBundler
         $this->differ        = $differ;
     }
 
+    public function bundleFile(DiffFile $file): DiffFile
+    {
+        foreach ($file->getBlocks() as $block) {
+            $block->lines = $this->bundleLines($block->lines);
+        }
+
+        return $file;
+    }
+
     /**
      * @param DiffLine[] $lines
      *
      * @return DiffLine[]
      */
-    public function bundle(array $lines): array
+    public function bundleLines(array $lines): array
     {
         $collection = new DiffLineCollection($lines);
 

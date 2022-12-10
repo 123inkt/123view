@@ -26,7 +26,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::bundle
+     * @covers ::bundleLines
      * @covers ::isBundleable
      */
     public function testBundle(): void
@@ -36,7 +36,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line3 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'line3')]);
         $line4 = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line4')]);
 
-        $result = $this->bundler->bundle([$line1, $line2, $line3, $line4]);
+        $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4]);
         static::assertCount(3, $result);
 
         $expected = [
@@ -48,7 +48,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::bundle
+     * @covers ::bundleLines
      * @covers ::isBundleable
      */
     public function testBundleAdditionsOnly(): void
@@ -56,7 +56,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line1 = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'line')]);
         $line2 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'line added')]);
 
-        $result = $this->bundler->bundle([$line1, $line2]);
+        $result = $this->bundler->bundleLines([$line1, $line2]);
         static::assertCount(1, $result);
 
         $expected = [
@@ -67,7 +67,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::bundle
+     * @covers ::bundleLines
      * @covers ::isBundleable
      */
     public function testBundleRemovalsOnly(): void
@@ -75,7 +75,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line1 = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'line removed')]);
         $line2 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'line')]);
 
-        $result = $this->bundler->bundle([$line1, $line2]);
+        $result = $this->bundler->bundleLines([$line1, $line2]);
         static::assertCount(1, $result);
 
         $expected = [
@@ -86,7 +86,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::bundle
+     * @covers ::bundleLines
      * @covers ::isBundleable
      */
     public function testBundleWhitespaceOnly(): void
@@ -94,7 +94,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line1 = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'linewhitespace')]);
         $line2 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'line  whitespace')]);
 
-        $result = $this->bundler->bundle([$line1, $line2]);
+        $result = $this->bundler->bundleLines([$line1, $line2]);
         static::assertCount(1, $result);
 
         $expected = [
@@ -106,7 +106,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::bundle
+     * @covers ::bundleLines
      * @covers ::isBundleable
      */
     public function testBundleNotBundleable(): void
@@ -114,7 +114,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line1 = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'this is the old text')]);
         $line2 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'but this text is completely different and many changes')]);
 
-        $result = $this->bundler->bundle([$line1, $line2]);
+        $result = $this->bundler->bundleLines([$line1, $line2]);
         static::assertCount(2, $result);
     }
 }

@@ -10,9 +10,13 @@
 <div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
 
     <div class="btn-group btn-group-sm float-end">
-        <a href="{{ url_query_params({diff: 'split'}) }}" class="btn btn-primary">{{ 'Split'|trans }}</a>
-        <a href="{{ url_query_params({diff: 'unified'}) }}" class="btn btn-outline-primary">{{ 'Unified'|trans }}</a>
-        <a href="{{ url_query_params({diff: 'inline'}) }}" class="btn btn-outline-primary">{{ 'Inline'|trans }}</a>
+        {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
+        {% for diffMode in fileDiffViewModel.diffModes %}
+            <a href="{{ url_query_params({diff: diffMode}) }}"
+               class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}">
+                {{ ('diff.' ~ diffMode)|trans }}
+            </a>
+        {% endfor %}
     </div>
 
     <div>
