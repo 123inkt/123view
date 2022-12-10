@@ -30,6 +30,7 @@ use Throwable;
 /**
  * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewViewModelProvider
  * @covers ::__construct
+ * @suppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ReviewViewModelProviderTest extends AbstractTestCase
 {
