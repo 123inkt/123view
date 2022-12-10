@@ -98,6 +98,12 @@
 }
 
 .review-grid-sidebar {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.review-grid-sidebar--grid-bottom {
+    overflow: auto;
     padding-bottom: 50px;
     padding-right: 5px;
 }

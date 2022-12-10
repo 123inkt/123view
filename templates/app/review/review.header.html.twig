@@ -1,8 +1,7 @@
 {# reviewModel: ReviewViewModel #}
 {# review:      CodeReview #}
-{# reviewer:    CodeReviewer #}
 <div class="review-grid-header">
-    <h3 class="mt-2 overflow-hidden review-heading" title="{{ review.title }}">
+    <h3 class="m-0 overflow-hidden review-heading" title="{{ review.title }}">
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
         {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
     </h3>
@@ -13,54 +12,5 @@
         <div class="mb-2 me-2 bg-primary bg-opacity-10 rounded-2 p-2 review--description">
             {{- review.description|markdown -}}
         </div>
-    {% endif %}
-
-    {% if review.state == 'open' and (reviewer == null or reviewer.state == 'open') %}
-        <form method="POST"
-              class="d-inline-block"
-              action="{{ path('DR\\Review\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="accepted"/>
-
-            {% set openComments = reviewModel.openComments %}
-            <button type="submit"
-                    class="btn btn-outline-success btn-sm"
-                    {% if openComments > 0 %}title="{{ 'accept.open.comments'|trans({count: openComments}) }}"{% endif %}>
-                😃 {{ 'accept'|trans }}
-                {% if openComments > 0 %}
-                    ({{ openComments }})
-                {% endif %}
-            </button>
-        </form>
-
-        <form method="POST"
-              class="d-inline-block"
-              action="{{ path('DR\\Review\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="rejected"/>
-            <button type="submit" class="btn btn-outline-primary btn-sm">😞 {{ 'raise.concern'|trans }}</button>
-        </form>
-    {% endif %}
-
-    {% if review.state == 'open' %}
-        {% if reviewer and reviewer.state != 'open' %}
-            <form method="POST"
-                  class="d-inline-block"
-                  action="{{ path('DR\\Review\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
-                <input type="hidden" name="state" value="open"/>
-                <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'resume.review'|trans }}</button>
-            </form>
-        {% endif %}
-        <form method="POST"
-              class="d-inline-block"
-              action="{{ path('DR\\Review\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="closed"/>
-            <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'close.review'|trans }}</button>
-        </form>
-    {% elseif review.state == 'closed' %}
-        <form method="POST"
-              class="d-inline-block"
-              action="{{ path('DR\\Review\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
-            <input type="hidden" name="state" value="open"/>
-            <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'reopen.review'|trans }}</button>
-        </form>
     {% endif %}
 </div>
