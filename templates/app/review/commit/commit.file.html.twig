@@ -7,40 +7,55 @@
 {%- set commentsViewModel    = fileDiffViewModel.commentsViewModel -%}
 {%- set file                 = fileDiffViewModel.selectedFile -%}
 
-<div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
-    <div>
+<div class="diff-file__file-revision-info clearfix pb-2">
+    <div class="float-start">
+        <div>
+            {%- if file.rename -%}
+                <span class="diff-file__file-change-state text-primary">↗</span>
+            {%- elseif file.added -%}
+                <span class="diff-file__file-change-state text-success">+</span>
+            {%- elseif file.deleted -%}
+                <span class="diff-file__file-change-state text-danger">-</span>
+            {%- elseif file.modified -%}
+                <span class="diff-file__file-change-state text-primary">*</span>
+            {%- endif -%}
+            <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
+            <span class="diff-file__directory-name">{{ file.dirname }}</span>
+        </div>
+
         {%- if file.rename -%}
-            <span class="diff-file__file-change-state text-primary">↗</span>
-        {%- elseif file.added -%}
-            <span class="diff-file__file-change-state text-success">+</span>
-        {%- elseif file.deleted -%}
-            <span class="diff-file__file-change-state text-danger">-</span>
-        {%- elseif file.modified -%}
-            <span class="diff-file__file-change-state text-primary">*</span>
+            <div class="diff-file__file-mode-change">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
         {%- endif -%}
-        <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
-        <span class="diff-file__directory-name">{{ file.dirname }}</span>
+
+        {%- if file.fileModeBefore is not same as (null) and file.fileModeBefore != file.fileModeAfter -%}
+            <div class="diff-file__file-mode-change">{{ 'file.mode.changed'|trans }} {{ file.fileModeBefore }} &gt; {{ file.fileModeAfter }}</div>
+        {%- endif -%}
     </div>
 
-    {%- if file.rename -%}
-        <div class="diff-file__file-mode-change">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
-    {%- endif -%}
+    <div class="btn-group btn-group-sm float-end pe-2">
+        {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
+        {% for diffMode in fileDiffViewModel.diffModes %}
+            <a href="{{ url_query_params({diff: diffMode}) }}" class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}">
+                {{ ('diff.' ~ diffMode)|trans }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
 
-    {%- if file.fileModeBefore is not same as (null) and file.fileModeBefore != file.fileModeAfter -%}
-        <div class="diff-file__file-mode-change">{{ 'file.mode.changed'|trans }} {{ file.fileModeBefore }} &gt; {{ file.fileModeAfter }}</div>
-    {%- endif -%}
-
-    {%- if file.blocks -%}
-        {%- for detachedComment in commentsViewModel.detachedComments -%}
-            {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
-        {%- endfor -%}
-
-        <div class="diff-file__file-diff">
-            {%- for block in file.blocks -%}
-                {%- include 'app/review/commit/commit.block.html.twig' -%}
+<div class="diff-file__file-revision-scrollpane" data-controller="ScrollPositioner">
+    <div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
+        {%- if file.blocks -%}
+            {%- for detachedComment in commentsViewModel.detachedComments -%}
+                {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
             {%- endfor -%}
-        </div>
-    {% else %}
-        <br><br>
-    {%- endif -%}
+
+            <div class="diff-file__file-diff">
+                {%- for block in file.blocks -%}
+                    {%- include 'app/review/commit/commit.block.html.twig' -%}
+                {%- endfor -%}
+            </div>
+        {% else %}
+            <br><br>
+        {%- endif -%}
+    </div>
 </div>

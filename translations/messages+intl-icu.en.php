@@ -181,4 +181,7 @@ return [
     'users'                                       => 'Users',
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
     'you'                                         => 'You',
+    'diff.split'                                  => 'Split',
+    'diff.unified'                                => 'Unified',
+    'diff.inline'                                 => 'Inline',
 ];

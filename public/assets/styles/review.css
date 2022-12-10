@@ -21,6 +21,12 @@
 .review-grid-layout .review-grid-code {
     overflow-y: auto;
 }
+
+.review-grid-layout .review-grid-code {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
 .review-grid-layout .review-grid-header .review-heading {
     height: 36px;
 }
@@ -98,6 +104,12 @@
 }
 
 .review-grid-sidebar {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.review-grid-sidebar--grid-bottom {
+    overflow: auto;
     padding-bottom: 50px;
     padding-right: 5px;
 }

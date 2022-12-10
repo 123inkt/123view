@@ -11,10 +11,12 @@ use DR\Review\Entity\Review\Revision;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\CodeReview\FileTreeGenerator;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
@@ -28,6 +30,7 @@ use Throwable;
 /**
  * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewViewModelProvider
  * @covers ::__construct
+ * @suppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ReviewViewModelProviderTest extends AbstractTestCase
 {
@@ -81,14 +84,20 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree = new DirectoryTreeNode('foobar');
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
+        $request = $this->createMock(ReviewRequest::class);
+        $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
+        $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
+        $request->expects(self::once())->method('getAction')->willReturn($action);
+        $request->expects(self::once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
+
         $this->reviewDiffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->treeGenerator->expects(self::once())->method('generate')->with([$file])->willReturn($tree);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], $filePath)->willReturn($file);
-        $this->fileDiffProvider->expects(self::once())->method('getFileDiffViewModel')->with($review, $file, $action);
+        $this->fileDiffProvider->expects(self::once())->method('getFileDiffViewModel')->with($review, $file, $action, ReviewDiffModeEnum::INLINE);
         $this->formFactory->expects(self::once())->method('create')->with(AddReviewerFormType::class, null, ['review' => $review]);
         $this->fileTreeModelProvider->expects(self::once())->method('getFileTreeViewModel')->with($review, $tree, $file);
 
-        $viewModel = $this->modelProvider->getViewModel($review, $filePath, ReviewViewModel::SIDEBAR_TAB_OVERVIEW, $action);
+        $viewModel = $this->modelProvider->getViewModel($review, $request);
         static::assertFalse($viewModel->isDescriptionVisible());
         static::assertNotNull($viewModel->getAddReviewerForm());
         static::assertNotNull($viewModel->getFileTreeModel());
@@ -100,7 +109,6 @@ class ReviewViewModelProviderTest extends AbstractTestCase
      */
     public function testGetViewModelWithoutSelectedFile(): void
     {
-        $action     = new EditCommentAction(new Comment());
         $filePath   = '/path/to/file';
         $revision   = new Revision();
         $repository = new Repository();
@@ -111,6 +119,10 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree = new DirectoryTreeNode('foobar');
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
+        $request = $this->createMock(ReviewRequest::class);
+        $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
+        $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
+
         $this->reviewDiffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$file]);
         $this->treeGenerator->expects(self::once())->method('generate')->with([$file])->willReturn($tree);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], $filePath)->willReturn(null);
@@ -118,7 +130,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');
         $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
 
-        $viewModel = $this->modelProvider->getViewModel($review, $filePath, ReviewViewModel::SIDEBAR_TAB_REVISIONS, $action);
+        $viewModel = $this->modelProvider->getViewModel($review, $request);
         static::assertTrue($viewModel->isDescriptionVisible());
         static::assertNotNull($viewModel->getTimelineViewModel());
         static::assertNull($viewModel->getFileDiffViewModel());

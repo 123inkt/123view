@@ -20,8 +20,16 @@ class FileDiffViewModel
     private ?EditCommentReplyViewModel $editReplyCommentForm = null;
     private ?HighlightedFile           $highlightedFile      = null;
 
-    public function __construct(public readonly ?DiffFile $selectedFile)
+    public function __construct(public readonly ?DiffFile $selectedFile, public readonly ReviewDiffModeEnum $diffMode)
     {
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDiffModes(): array
+    {
+        return ReviewDiffModeEnum::values();
     }
 
     public function setAddCommentForm(AddCommentViewModel $addCommentForm): self

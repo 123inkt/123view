@@ -11,8 +11,10 @@ use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use Throwable;
 
 /**
@@ -22,16 +24,21 @@ class FileDiffViewModelProvider
 {
     public function __construct(
         private readonly CommentViewModelProvider $commentModelProvider,
-        private readonly CacheableHighlightedFileService $hfService
+        private readonly CacheableHighlightedFileService $hfService,
+        private readonly UnifiedDiffBundler $bundler,
     ) {
     }
 
     /**
      * @throws Throwable
      */
-    public function getFileDiffViewModel(CodeReview $review, DiffFile $selectedFile, ?AbstractReviewAction $reviewAction): FileDiffViewModel
-    {
-        $viewModel = new FileDiffViewModel($selectedFile);
+    public function getFileDiffViewModel(
+        CodeReview $review,
+        DiffFile $selectedFile,
+        ?AbstractReviewAction $reviewAction,
+        ReviewDiffModeEnum $diffMode
+    ): FileDiffViewModel {
+        $viewModel = new FileDiffViewModel($selectedFile, $diffMode);
 
         // gather comments view model
         $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));
@@ -40,6 +47,11 @@ class FileDiffViewModelProvider
         if ($selectedFile->isDeleted() === false) {
             $highlightedFile = $this->hfService->fromDiffFile(Assert::notNull($review->getRepository()), $selectedFile);
             $viewModel->setHighlightedFile($highlightedFile);
+        }
+
+        // apply diff mode
+        if ($diffMode === ReviewDiffModeEnum::INLINE) {
+            $this->bundler->bundleFile($selectedFile);
         }
 
         // setup action forms

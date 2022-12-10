@@ -44,7 +44,7 @@ class ReviewController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(ReviewRequest $request, #[MapEntity(expr: 'repository.findByUrl(repositoryName, reviewId)')] CodeReview $review): array
     {
-        $viewModel = $this->modelProvider->getViewModel($review, $request->getFilePath(), $request->getTab(), $request->getAction());
+        $viewModel = $this->modelProvider->getViewModel($review, $request);
 
         $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->getFileDiffViewModel()?->selectedFile);
 

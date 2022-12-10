@@ -10,12 +10,12 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Page\Breadcrumb;
-use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -44,11 +44,7 @@ class ReviewControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $action  = $this->createMock(AbstractReviewAction::class);
         $request = $this->createMock(ReviewRequest::class);
-        $request->expects(self::once())->method('getFilePath')->willReturn('filepath');
-        $request->expects(self::once())->method('getTab')->willReturn('tab');
-        $request->expects(self::once())->method('getAction')->willReturn($action);
 
         $user = new User();
         $this->expectGetUser($user);
@@ -63,9 +59,9 @@ class ReviewControllerTest extends AbstractControllerTestCase
 
         $diffFile  = new DiffFile();
         $viewModel = new ReviewViewModel($review);
-        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile));
+        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile, ReviewDiffModeEnum::INLINE));
 
-        $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, 'filepath', 'tab', $action)->willReturn($viewModel);
+        $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);
         $this->fileSeenService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFile);
         $this->breadcrumbFactory->expects(self::once())->method('createForReview')->with($review)->willReturn([$breadcrumb]);
 
