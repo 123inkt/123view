@@ -5,7 +5,6 @@ namespace DR\Review\ViewModel\App\Review;
 
 enum ReviewDiffModeEnum: string
 {
-    case SPLIT = 'split';
     case UNIFIED = 'unified';
     case INLINE = 'inline';
 

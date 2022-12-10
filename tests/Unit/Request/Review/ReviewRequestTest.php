@@ -66,7 +66,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
         static::assertSame(ReviewDiffModeEnum::INLINE, $this->validatedRequest->getDiffMode());
 
         $this->request->query->set('diff', 'split');
-        static::assertSame(ReviewDiffModeEnum::SPLIT, $this->validatedRequest->getDiffMode());
+        static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
     }
 
     /**
