@@ -12,6 +12,7 @@ use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -26,6 +27,7 @@ class FileDiffViewModelProvider
         private readonly CommentViewModelProvider $commentModelProvider,
         private readonly CacheableHighlightedFileService $hfService,
         private readonly UnifiedDiffBundler $bundler,
+        private readonly UnifiedDiffEmphasizer $emphasizer,
     ) {
     }
 
@@ -52,6 +54,8 @@ class FileDiffViewModelProvider
         // apply diff mode
         if ($diffMode === ReviewDiffModeEnum::INLINE) {
             $this->bundler->bundleFile($selectedFile);
+        } elseif ($diffMode === ReviewDiffModeEnum::UNIFIED) {
+            $this->emphasizer->emphasizeFile($selectedFile);
         }
 
         // setup action forms
