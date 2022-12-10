@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\Parser\Unified;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Git\LineReader;
-use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
 use DR\Review\Tests\AbstractTestCase;
@@ -22,11 +21,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // let bundler return what was given
-        $bundler = $this->createMock(UnifiedDiffBundler::class);
-        $bundler->expects(static::atLeastOnce())->method('bundle')->willReturnArgument(0);
-
-        $this->parser = new UnifiedBlockParser(new UnifiedLineParser(), $bundler);
+        $this->parser = new UnifiedBlockParser(new UnifiedLineParser());
     }
 
     /**

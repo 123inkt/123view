@@ -6,17 +6,11 @@ namespace DR\Review\Service\Parser\Unified;
 use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Git\LineReader;
-use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 
 class UnifiedBlockParser
 {
-    private UnifiedLineParser   $lineParser;
-    private ?UnifiedDiffBundler $bundler;
-
-    public function __construct(UnifiedLineParser $lineParser, ?UnifiedDiffBundler $bundler)
+    public function __construct(private readonly UnifiedLineParser $lineParser)
     {
-        $this->lineParser = $lineParser;
-        $this->bundler    = $bundler;
     }
 
     public function parse(int $startBefore, int $startAfter, LineReader $reader): DiffBlock
@@ -44,10 +38,6 @@ class UnifiedBlockParser
             }
 
             $block->lines[] = $diffLine;
-        }
-
-        if ($this->bundler !== null) {
-            $block->lines = $this->bundler->bundle($block->lines);
         }
 
         return $block;
