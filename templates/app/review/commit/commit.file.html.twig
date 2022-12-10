@@ -42,22 +42,20 @@
     </div>
 </div>
 
-<div class="diff-file__file-revision-file"
-     data-role="revision-file"
-     data-file="{{ file.filePathAfter ?? file.filePathBefore }}"
-     data-controller="ScrollPositioner">
-
-    {%- if file.blocks -%}
-        {%- for detachedComment in commentsViewModel.detachedComments -%}
-            {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
-        {%- endfor -%}
-
-        <div class="diff-file__file-diff">
-            {%- for block in file.blocks -%}
-                {%- include 'app/review/commit/commit.block.html.twig' -%}
+<div class="diff-file__file-revision-scrollpane" data-controller="ScrollPositioner">
+    <div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
+        {%- if file.blocks -%}
+            {%- for detachedComment in commentsViewModel.detachedComments -%}
+                {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
             {%- endfor -%}
-        </div>
-    {% else %}
-        <br><br>
-    {%- endif -%}
+
+            <div class="diff-file__file-diff">
+                {%- for block in file.blocks -%}
+                    {%- include 'app/review/commit/commit.block.html.twig' -%}
+                {%- endfor -%}
+            </div>
+        {% else %}
+            <br><br>
+        {%- endif -%}
+    </div>
 </div>

@@ -1,6 +1,9 @@
+.diff-file__file-revision-scrollpane {
+    overflow: auto;
+}
+
 .diff-file__file-revision-file {
     min-width: 100%;
-    overflow: auto;
     width: max-content;
 }
 
