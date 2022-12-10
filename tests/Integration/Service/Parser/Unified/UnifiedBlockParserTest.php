@@ -18,21 +18,21 @@ use DR\Review\Tests\AbstractTestCase;
 class UnifiedBlockParserTest extends AbstractTestCase
 {
     private UnifiedBlockParser $parser;
+    private UnifiedDiffBundler $bundler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new UnifiedBlockParser(
-            new UnifiedLineParser(),
-            new UnifiedDiffBundler(new DiffLineComparator(), new DiffChangeBundler(), new DiffLineDiffer())
-        );
+        $this->parser  = new UnifiedBlockParser(new UnifiedLineParser());
+        $this->bundler = new UnifiedDiffBundler(new DiffLineComparator(), new DiffChangeBundler(), new DiffLineDiffer());
     }
 
     public function testParseAdditionsAndDeletions(): void
     {
         $reader = new LineReader(explode("\n", $this->getFileContents('additions-and-deletions.txt')));
 
-        $block = $this->parser->parse(10, 12, $reader);
+        $block        = $this->parser->parse(10, 12, $reader);
+        $block->lines = $this->bundler->bundleLines($block->lines);
         static::assertCount(3, $block->lines);
     }
 
