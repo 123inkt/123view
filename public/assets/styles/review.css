@@ -17,10 +17,11 @@
     grid-column-start: 1;
 }
 
-.review-grid-layout .review-grid-sidebar,
 .review-grid-layout .review-grid-code {
-    overflow-y: auto;
+    display: grid;
+    grid-template-rows: auto 1fr;
 }
+
 .review-grid-layout .review-grid-header .review-heading {
     height: 36px;
 }

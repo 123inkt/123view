@@ -1,6 +1,7 @@
 .diff-file__file-revision-file {
     min-width: 100%;
-    width: max-content
+    overflow: auto;
+    width: max-content;
 }
 
 .diff-file__file-change-state {
