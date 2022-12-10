@@ -8,6 +8,7 @@ use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFacto
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -38,6 +39,11 @@ class ReviewRequest extends AbstractValidatedRequest
         return $this->actionFactory->createFromRequest($this->request);
     }
 
+    public function getDiffMode(): ReviewDiffModeEnum
+    {
+        return ReviewDiffModeEnum::from($this->request->query->get('diff', ReviewDiffModeEnum::INLINE->value));
+    }
+
     protected function getValidationRules(): ?ValidationRules
     {
         return new ValidationRules(
@@ -45,6 +51,7 @@ class ReviewRequest extends AbstractValidatedRequest
                 'query' => [
                     'filePath' => 'string|filled',
                     'tab'      => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
+                    'diff'     => 'string|in:' . implode(',', ReviewDiffModeEnum::values()),
                     'action'   => 'string'
                 ]
             ]

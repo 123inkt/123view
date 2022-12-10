@@ -8,6 +8,13 @@
 {%- set file                 = fileDiffViewModel.selectedFile -%}
 
 <div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
+
+    <div class="btn-group btn-group-sm float-end">
+        <a href="{{ url_query_params({diff: 'split'}) }}" class="btn btn-primary">{{ 'Split'|trans }}</a>
+        <a href="{{ url_query_params({diff: 'unified'}) }}" class="btn btn-outline-primary">{{ 'Unified'|trans }}</a>
+        <a href="{{ url_query_params({diff: 'inline'}) }}" class="btn btn-outline-primary">{{ 'Inline'|trans }}</a>
+    </div>
+
     <div>
         {%- if file.rename -%}
             <span class="diff-file__file-change-state text-primary">↗</span>
