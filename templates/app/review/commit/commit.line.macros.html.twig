@@ -1,0 +1,22 @@
+{%- macro line_modifier(line) -%}
+    {%- if line.state == 1 -%}
+        +
+    {%- elseif line.state == 2 -%}
+        -
+    {%- elseif line.state == 3 -%}
+        *
+    {%- else -%}
+        &nbsp;
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro line_style(line, line_visible) -%}
+    {%- if line.state == 1 -%}
+        diff-file__line-change-added
+    {%- elseif line.state == 2 -%}
+        diff-file__line-change-removed
+    {%- elseif line.state == 3 -%}
+        diff-file__line-change-changed
+    {%- endif -%}
+    {{- line_visible ? '' : ' diff-file__diff-line-hidden' -}}
+{%- endmacro -%}
