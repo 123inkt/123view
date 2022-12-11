@@ -6,21 +6,8 @@
 {#- lineNrLengthAfter:  int               -#}
 <div class="diff-file__diff-line {{ macro.line_style(line, line_visible) }}" data-line="{{ line.lineNumberAfter }}">
     {#- gutter -#}
-    <span class="diff-file__line-gutter"
-          data-role="line-add-comment"
-          data-line="{{ line_number }}"
-          data-line-offset="{{ line_offset }}"
-          data-line-after="{{ line.lineNumberAfter|default('0') }}"
-    >
-        {#- add comments -#}
-        <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
+    {%- include 'app/review/commit/commit.line.gutter.html.twig' -%}
 
-        {#- line number -#}
-        <span class="diff-file__line-numbers">
-            {{- line.lineNumberBefore|strpad(lineNrLengthBefore) -}}
-            &nbsp;
-            {{- line.lineNumberAfter|strpad(lineNrLengthAfter) -}}
-        </span></span>
     {#- line state -#}
     <span class="diff-file__diff-change-state">{{ macro.line_modifier(line) }}</span>
 
