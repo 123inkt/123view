@@ -14,20 +14,6 @@
             {%- set line_offset = 0 -%}
         {%- endif -%}
 
-        {%- set line_modifier = '&nbsp;' -%}
-        {%- set line_style = '' -%}
-
-        {%- if line.state == 1 -%}
-            {%- set line_modifier = '+' %}
-            {%- set line_style = 'diff-file__line-change-added' -%}
-        {%- elseif line.state == 2 -%}
-            {%- set line_modifier = '-' %}
-            {%- set line_style = 'diff-file__line-change-removed' %}
-        {%- elseif line.state == 3 -%}
-            {%- set line_modifier = '*' %}
-            {%- set line_style = 'diff-file__line-change-changed' -%}
-        {%- endif -%}
-
         {%- set line_visible = block.isLineVisible(line_index, 8) -%}
 
         {%- if prev_line_visible is same as (false) and line_visible is same as (true) -%}
@@ -35,47 +21,11 @@
         {%- endif -%}
 
         {#- keep track of the amount of invisible lines -#}
-        {%- if line_visible is same as (false) -%}
-            {%- set invisible_lines = invisible_lines + 1 -%}
-        {%- else -%}
-            {%- set invisible_lines = 0 -%}
-        {%- endif -%}
-
+        {%- set invisible_lines   = line_visible is same as (false) ? invisible_lines + 1 : 0 -%}
         {%- set prev_line_visible = line_visible -%}
 
-        <div class="diff-file__diff-line {{ line_style }}{{ line_visible ? '' : ' diff-file__diff-line-hidden' }}" data-line="{{ line.lineNumberAfter }}">
-            {#- gutter -#}
-            <span class="diff-file__line-gutter"
-                  data-role="line-add-comment"
-                  data-line="{{ line_number }}"
-                  data-line-offset="{{ line_offset }}"
-                  data-line-after="{{ line.lineNumberAfter|default('0') }}"
-            >
-                {#- add comments -#}
-                <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
-
-                {#- line number -#}
-                <span class="diff-file__line-numbers">
-                    {{- line.lineNumberBefore|strpad(lineNrLengthBefore) -}}
-                    &nbsp;
-                    {{- line.lineNumberAfter|strpad(lineNrLengthAfter) -}}
-                </span></span>
-            {#- line state -#}
-            <span class="diff-file__diff-change-state">{{ line_modifier|raw }}</span>
-
-            {#- code changes -#}
-            {%- if line.changes|length == 1 and line.state != 2 -%}
-                {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
-            {%- else -%}
-                {%- for change in line.changes -%}
-                    {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
-                        <span class="diff-file__change-added">{{ change.code }}</span>
-                    {%- elseif change.type == 2 and (line.state != 2 or line.changes|length > 1) -%}
-                        <span class="diff-file__change-removed">{{ change.code }}</span>
-                    {%- else %}{{ change.code }}{% endif -%}
-                {%- endfor -%}
-            {%- endif -%}
-        </div>
+        {#- line of code -#}
+        {%- include 'app/review/commit/commit.line.html.twig' -%}
 
         {#- comments -#}
         {%- for comment in commentsViewModel.getComments(line) -%}
