@@ -39,4 +39,14 @@
             </span>
         </span>
     {%- endapply -%}
-{%- endmacro %}
+{%- endmacro -%}
+
+{%- macro changes(line) -%}
+    {%- for change in line.changes -%}
+        {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
+            <span class="diff-file__change-added">{{ change.code }}</span>
+        {%- elseif change.type == 2 and (line.state != 2 or line.changes|length > 1) -%}
+            <span class="diff-file__change-removed">{{ change.code }}</span>
+        {%- else %}{{ change.code }}{% endif -%}
+    {%- endfor -%}
+{%- endmacro -%}
