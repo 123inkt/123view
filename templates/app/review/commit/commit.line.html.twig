@@ -6,7 +6,7 @@
 {#- lineNrLengthAfter:  int               -#}
 <div class="diff-file__diff-line {{ macro.line_style(line, line_visible) }}" data-line="{{ line.lineNumberAfter }}">
     {#- gutter -#}
-    {%- include 'app/review/commit/commit.line.gutter.html.twig' -%}
+    {{ macro.gutter(line, line_number, line_offset, lineNrLengthBefore, lineNrLengthAfter) }}
 
     {#- line state -#}
     <span class="diff-file__diff-change-state">{{ macro.line_modifier(line) }}</span>
