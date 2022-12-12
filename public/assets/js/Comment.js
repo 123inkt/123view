@@ -42,7 +42,8 @@ export default class Comment extends Controller {
             return;
         }
 
-        const blob = item.getAsFile();
+        const mimeType = item.type;
+        const blob     = item.getAsFile();
         if (blob.size > 2097152) {
             alert('Pasted file size exceeds allowed file size of 2MB');
             return;
@@ -58,7 +59,7 @@ export default class Comment extends Controller {
 
             axios.post(
                     '/app/assets',
-                    {mimeType: item.type, data: base64data},
+                    {mimeType: mimeType, data: base64data},
                     {headers: {'Content-Type': 'multipart/form-data'}}
             ).then(response => {
                 // add url to textarea
@@ -68,6 +69,7 @@ export default class Comment extends Controller {
                 target.value = target.value.substring(0, target.selectionStart)
                         + "![file](" + url + ")\n"
                         + target.value.substring(target.selectionEnd, target.value.length);
+                this.commentPreviewListener(target);
             })
         };
         reader.readAsDataURL(blob);
