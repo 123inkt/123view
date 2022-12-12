@@ -13,6 +13,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\User\UserApprovalPendingController
+ * @covers ::__construct
  */
 class UserApprovalPendingControllerTest extends AbstractControllerTestCase
 {
