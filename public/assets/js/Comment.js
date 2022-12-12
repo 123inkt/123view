@@ -56,9 +56,13 @@ export default class Comment extends Controller {
             // get data base64 encoded string, and grab just the data string
             const base64data = event.target.result.replace(/^[^,]+,/, '')
 
+            const body = new FormData();
+            body.append('mimeType', 'image/png');
+            body.append('data', base64data);
+
             axios.post(
                     '/app/assets',
-                    {mimeType: item.type, data: base64data},
+                    body,
                     {headers: {'Content-Type': 'multipart/form-data'}}
             ).then(response => {
                 // add url to textarea
@@ -68,6 +72,7 @@ export default class Comment extends Controller {
                 target.value = target.value.substring(0, target.selectionStart)
                         + "![file](" + url + ")\n"
                         + target.value.substring(target.selectionEnd, target.value.length);
+                this.commentPreviewListener(target);
             })
         };
         reader.readAsDataURL(blob);
