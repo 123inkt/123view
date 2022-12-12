@@ -6,10 +6,14 @@
 
     {% include 'app/flash/flashes.html.twig' %}
 
-    <div class="mt-2 pb-3 clearfix">
+    <div class="mt-2 pb-2 clearfix">
         <button type="submit" class="btn btn-primary" form="attach-revision-form">{{ 'attach.to.review'|trans }} CR-{{ review.projectId }}</button>
         <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}"
            class="btn btn-outline-secondary">{{ 'cancel'|trans }}</a>
+    </div>
+
+    <div class="pb-2 fw-bold">
+        {{ review.title }}
     </div>
 
     {%- include 'app/revision/revisions.searchbar.html.twig' with {searchQuery: revisionsModel.searchQuery} -%}
@@ -18,12 +22,12 @@
             method="post"
           action="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
     >
-        <table class="table table-bordered table-hover rule-table">
+        <table class="table table-bordered table-hover rule-table" data-controller="CheckboxSelectAll">
             <thead>
             <tr>
-                <th scope="col"></th>
+                <th scope="col"><input type="checkbox" class="form-check-input" data-role="checkbox-select-all"></th>
                 <th scope="col">{{ 'hash'|trans }}</th>
-                <th scope="col">{{ 'title'|trans }}</th>
+                <th scope="col" class="review-revision-list--title">{{ 'title'|trans }}</th>
                 <th scope="col">{{ 'author'|trans }}</th>
                 <th scope="col">{{ 'at'|trans }}</th>
             </tr>
@@ -32,7 +36,7 @@
             <tbody>
             {%- for revision in revisionsModel.revisions -%}
                 <tr>
-                    <td><input type="checkbox" class="form-check-input" name="revision[{{ revision.id }}]"></td>
+                    <td><input type="checkbox" class="form-check-input" name="revision[{{ revision.id }}]" data-role="checkbox-select-target"></td>
                     <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
                     <td class="fw-bold">{{ revision.title|external_links }}</td>
                     <td>{{ revision.authorName }}</td>
