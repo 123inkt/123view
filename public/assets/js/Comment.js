@@ -42,7 +42,8 @@ export default class Comment extends Controller {
             return;
         }
 
-        const blob = item.getAsFile();
+        const mimeType = item.type;
+        const blob     = item.getAsFile();
         if (blob.size > 2097152) {
             alert('Pasted file size exceeds allowed file size of 2MB');
             return;
@@ -56,13 +57,9 @@ export default class Comment extends Controller {
             // get data base64 encoded string, and grab just the data string
             const base64data = event.target.result.replace(/^[^,]+,/, '')
 
-            const body = new FormData();
-            body.append('mimeType', 'image/png');
-            body.append('data', base64data);
-
             axios.post(
                     '/app/assets',
-                    body,
+                    {mimeType: mimeType, data: base64data},
                     {headers: {'Content-Type': 'multipart/form-data'}}
             ).then(response => {
                 // add url to textarea
