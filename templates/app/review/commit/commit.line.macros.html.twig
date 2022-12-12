@@ -1,0 +1,52 @@
+{%- macro line_modifier(line) -%}
+    {%- if line.state == 1 -%}
+        +
+    {%- elseif line.state == 2 -%}
+        -
+    {%- elseif line.state == 3 -%}
+        *
+    {%- else -%}
+        &nbsp;
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro line_style(line, line_visible) -%}
+    {%- if line.state == 1 -%}
+        diff-file__line-change-added
+    {%- elseif line.state == 2 -%}
+        diff-file__line-change-removed
+    {%- elseif line.state == 3 -%}
+        diff-file__line-change-changed
+    {%- endif -%}
+    {{- line_visible ? '' : ' diff-file__diff-line-hidden' -}}
+{%- endmacro -%}
+
+{%- macro gutter(line, line_number, line_offset, lineNrLengthBefore, lineNrLengthAfter) -%}
+    {%- apply spaceless -%}
+        <span class="diff-file__line-gutter"
+              data-role="line-add-comment"
+              data-line="{{ line_number }}"
+              data-line-offset="{{ line_offset }}"
+              data-line-after="{{ line.lineNumberAfter|default('0') }}">
+            {#- add comments -#}
+            <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
+
+            {#- line number -#}
+            <span class="diff-file__line-numbers">
+                {{- line.lineNumberBefore|strpad(lineNrLengthBefore) -}}
+                &nbsp;
+                {{- line.lineNumberAfter|strpad(lineNrLengthAfter) -}}
+            </span>
+        </span>
+    {%- endapply -%}
+{%- endmacro -%}
+
+{%- macro changes(line) -%}
+    {%- for change in line.changes -%}
+        {%- if change.type == 1 and (line.state != 1 or line.changes|length > 1) -%}
+            <span class="diff-file__change-added">{{ change.code }}</span>
+        {%- elseif change.type == 2 and (line.state != 2 or line.changes|length > 1) -%}
+            <span class="diff-file__change-removed">{{ change.code }}</span>
+        {%- else %}{{ change.code }}{% endif -%}
+    {%- endfor -%}
+{%- endmacro -%}

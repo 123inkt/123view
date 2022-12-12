@@ -8,6 +8,9 @@ export default class LineExpander extends Controller {
     expand() {
         // show all hidden lines above this collapsed block
         for (let el = this.el.previousSibling; el !== null; el = el.previousSibling) {
+            if (el.nodeType !==  Node.ELEMENT_NODE) {
+                continue;
+            }
             if (el.classList.contains('diff-file__diff-line-hidden') === false) {
                 break;
             }

@@ -1,0 +1,20 @@
+{%- import "app/review/commit/commit.line.macros.html.twig" as macro -%}
+{#- fileDiffViewModel:  FileDiffViewModel -#}
+{#- line:               DiffLine          -#}
+{#- line_visible:       bool              -#}
+{#- lineNrLengthBefore: int               -#}
+{#- lineNrLengthAfter:  int               -#}
+<div class="diff-file__diff-line {{ macro.line_style(line, line_visible) }}" data-line="{{ line.lineNumberAfter }}">
+    {#- gutter -#}
+    {{ macro.gutter(line, line_number, line_offset, lineNrLengthBefore, lineNrLengthAfter) }}
+
+    {#- line state -#}
+    <span class="diff-file__diff-change-state">{{ macro.line_modifier(line) }}</span>
+
+    {#- code changes -#}
+    {%- if line.changes|length == 1 and line.state != 2 -%}
+        {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
+    {%- else -%}
+        {{ macro.changes(line) }}
+    {%- endif -%}
+</div>
