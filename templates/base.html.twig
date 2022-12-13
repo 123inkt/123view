@@ -127,7 +127,7 @@
 <script>
     window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-controller]').forEach(async (el) => {
-            const module = await import('/assets/js/' + el.dataset.controller + '.js');
+            const module = await import('/assets/js/' + el.dataset.controller + '.js?{{ app_asset_version|e('url') }}');
 
             // instantiate module and notify controller
             new module.default(el).connect();
