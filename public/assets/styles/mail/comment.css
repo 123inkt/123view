@@ -81,14 +81,9 @@
 
 .comment__markdown pre,
 .comment__markdown p {
-    margin: 0 0 15px 0;
+    margin: 0;
     line-height: 16px;
     border-bottom: 2px solid #FFFEE0;
-}
-
-.comment__markdown pre:last-child,
-.comment__markdown p:last-child {
-    margin-bottom: 0;
 }
 
 .comment__marked-as-resolved {

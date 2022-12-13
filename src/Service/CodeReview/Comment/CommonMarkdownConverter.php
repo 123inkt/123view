@@ -37,7 +37,11 @@ class CommonMarkdownConverter extends MarkdownConverter
             [
                 'html_input'         => 'escape',
                 'allow_unsafe_links' => false,
-                'renderer'           => ['soft_break' => "<br>\n"]
+                'renderer'           => [
+                    'block_separator' => "<br>\n",
+                    'inner_separator' => "<br>\n",
+                    'soft_break'      => "<br>\n"
+                ]
             ]
         );
         $environment->addExtension(new CommonMarkCoreExtension());

@@ -1,10 +1,5 @@
 .comment__markdown pre,
 .comment__markdown p {
-    margin-bottom: 15px;
-}
-
-.comment__markdown pre:last-child,
-.comment__markdown p:last-child {
     margin-bottom: 0;
 }
 
