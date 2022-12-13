@@ -7,14 +7,14 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Request\Comment\CommentPreviewRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
-use DR\Review\Service\Markdown\MarkdownService;
+use League\CommonMark\MarkdownConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommentPreviewController extends AbstractController
 {
-    public function __construct(private readonly CommentMentionService $mentionService, private readonly MarkdownService $markdownService)
+    public function __construct(private readonly CommentMentionService $mentionService, private readonly MarkdownConverter $converter)
     {
     }
 
@@ -24,7 +24,7 @@ class CommentPreviewController extends AbstractController
     {
         $message = $request->getMessage();
         $message = $this->mentionService->replaceMentionedUsers($message, $this->mentionService->getMentionedUsers($message));
-        $message = $this->markdownService->convert($message);
+        $message = $this->converter->convert($message)->getContent();
 
         return (new Response($message, 200, ['Content-Type' => 'text/html']))
             ->setMaxAge(86400)
