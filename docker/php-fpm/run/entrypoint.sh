@@ -22,6 +22,11 @@ php bin/console cache:clear
 #
 php bin/console doctrine:migrations:migrate --no-interaction
 
+##
+# Get timestamp, hash sha256, take first 8 characters
+#
+export APP_ASSET_VERSION=`date '+%Y%m%d%H%M%S' | sha256sum | cut -c 1-8`
+
 printenv > /etc/environment
 mkdir -p /app/var/log
 chmod -R a+rw /app/var
