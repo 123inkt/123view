@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40bd7efbeea602a53224a20b33043ecd",
+    "content-hash": "a2f90e93c62313ae7514293cd6ec127d",
     "packages": [
         {
             "name": "czproject/git-php",
@@ -3472,6 +3472,60 @@
                 }
             ],
             "time": "2021-12-03T06:45:28+00:00"
+        },
+        {
+            "name": "spatie/commonmark-highlighter",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/commonmark-highlighter.git",
+                "reference": "d707943b3ce47fcd01240bb85b218e280856d017"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/commonmark-highlighter/zipball/d707943b3ce47fcd01240bb85b218e280856d017",
+                "reference": "d707943b3ce47fcd01240bb85b218e280856d017",
+                "shasum": ""
+            },
+            "require": {
+                "league/commonmark": "^2.0",
+                "php": "^7.4|^8.0",
+                "scrivo/highlight.php": "^9.18.1.7"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.0",
+                "phpunit/phpunit": "^8.5|^9.4",
+                "spatie/phpunit-snapshot-assertions": "^2.0|^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\CommonMarkHighlighter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Highlight your markdown code blocks with league/commonmark",
+            "homepage": "https://github.com/spatie/commonmark-highlighter",
+            "keywords": [
+                "commonmark-highlighter",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/commonmark-highlighter/issues",
+                "source": "https://github.com/spatie/commonmark-highlighter/tree/3.0.0"
+            },
+            "time": "2021-08-04T18:03:57+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

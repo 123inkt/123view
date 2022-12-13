@@ -8,10 +8,12 @@ use DR\Review\Controller\App\Review\Comment\CommentPreviewController;
 use DR\Review\Entity\User\User;
 use DR\Review\Request\Comment\CommentPreviewRequest;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
-use DR\Review\Service\Markdown\MarkdownService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use League\CommonMark\MarkdownConverter;
+use League\CommonMark\Output\RenderedContentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\once;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\CommentPreviewController
@@ -19,12 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CommentPreviewControllerTest extends AbstractControllerTestCase
 {
-    private MarkdownService&MockObject       $markdownService;
+    private MarkdownConverter&MockObject     $markdownService;
     private CommentMentionService&MockObject $mentionService;
 
     public function setUp(): void
     {
-        $this->markdownService = $this->createMock(MarkdownService::class);
+        $this->markdownService = $this->createMock(MarkdownConverter::class);
         $this->mentionService  = $this->createMock(CommentMentionService::class);
         parent::setUp();
     }
@@ -47,7 +49,9 @@ class CommentPreviewControllerTest extends AbstractControllerTestCase
             ->with('message1', ['@user:123[Sherlock Holmes]' => $user])
             ->willReturn('message2');
 
-        $this->markdownService->expects(self::once())->method('convert')->with('message2')->willReturn('markdown');
+        $renderedContent = $this->createMock(RenderedContentInterface::class);
+        $renderedContent->expects(once())->method('getContent')->willReturn('markdown');
+        $this->markdownService->expects(self::once())->method('convert')->with('message2')->willReturn($renderedContent);
 
         /** @var Response $response */
         $response = ($this->controller)($request);

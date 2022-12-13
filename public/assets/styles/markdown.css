@@ -1,0 +1,9 @@
+.comment__markdown pre,
+.comment__markdown p {
+    margin-bottom: 0;
+}
+
+.comment__markdown .hljs {
+    padding: 0;
+    background: none;
+}

@@ -20,6 +20,7 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
+use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -36,7 +37,6 @@ use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
-use League\CommonMark\GithubFlavoredMarkdownConverter;
 use League\CommonMark\MarkdownConverter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -106,8 +106,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(Highlighter::class);
-    $services->set(MarkdownConverter::class, GithubFlavoredMarkdownConverter::class)
-        ->arg('$config', ['html_input' => 'escape', 'allow_unsafe_links' => false]);
+    $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
 
     // custom register cache dir
