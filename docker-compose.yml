@@ -65,6 +65,22 @@ services:
         container_name: ${MAIL_CONTAINER:-mail}
         image: bytemark/smtp
 
+    mercure:
+        container_name: ${MERCURE_CONTAINER:-mercure}
+        image: dunglas/mercure
+        environment:
+            GLOBAL_OPTIONS: "auto_https off"
+            SERVER_NAME: ":8088"
+            MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+            MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+            MERCURE_EXTRA_DIRECTIVES: |
+                cors_origins https://phoebe.drshop.123dev.nl:8443
+        command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
+        volumes:
+            - ./docker/mercure/data:/data
+            - ./docker/mercure/config:/config
+        ports:
+            - ${MERCURE_PORT:-8088}:8088
 
 networks:
     default:

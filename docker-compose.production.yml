@@ -29,3 +29,6 @@ services:
             RABBITMQ_USERNAME: ${RABBITMQ_USERNAME}
             RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
         restart: unless-stopped
+
+    mercure:
+        restart: unless-stopped
