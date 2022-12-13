@@ -46,11 +46,4 @@ class CommonMarkdownConverter extends MarkdownConverter
 
         parent::__construct($environment);
     }
-
-    public function getEnvironment(): Environment
-    {
-        assert($this->environment instanceof Environment);
-
-        return $this->environment;
-    }
 }
