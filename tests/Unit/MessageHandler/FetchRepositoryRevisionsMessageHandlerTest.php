@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\MessageHandler;
 
+use DateTime;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
@@ -76,13 +77,17 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(456);
         $revision = new Revision();
+        $revision->setCreateTimestamp(14400);
 
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
         $this->revisionRepository->expects(self::once())
             ->method('findOneBy')
             ->with(['repository' => 456], ['createTimestamp' => 'DESC'])
             ->willReturn($revision);
-        $this->logService->expects(self::once())->method('getCommitsSince')->with($repository, $revision, 1000)->willReturn([]);
+        $this->logService->expects(self::once())
+            ->method('getCommitsSince')
+            ->with($repository, (new DateTime())->setTimestamp(7200), 1000)
+            ->willReturn([]);
 
         ($this->handler)($message);
     }
@@ -98,15 +103,19 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(456);
         $latestRevision = new Revision();
-        $newRevision    = new Revision();
-        $commit         = $this->createCommit();
+        $latestRevision->setCreateTimestamp(14400);
+        $newRevision = new Revision();
+        $commit      = $this->createCommit();
 
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
         $this->revisionRepository->expects(self::once())
             ->method('findOneBy')
             ->with(['repository' => 456], ['createTimestamp' => 'DESC'])
             ->willReturn($latestRevision);
-        $this->logService->expects(self::once())->method('getCommitsSince')->with($repository, $latestRevision, 1000)->willReturn([$commit]);
+        $this->logService->expects(self::once())
+            ->method('getCommitsSince')
+            ->with($repository, (new DateTime())->setTimestamp(7200), 1000)
+            ->willReturn([$commit]);
         $this->revisionFactory->expects(self::once())->method('createFromCommits')->with([$commit])->willReturn([$newRevision]);
         $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$newRevision])->willReturn([$newRevision]);
         $this->bus->expects(self::exactly(2))

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Log;
 
+use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use Exception;
 
@@ -19,8 +19,8 @@ class LockableGitLogService
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommitsSince(Repository $repository, ?Revision $revision = null, ?int $limit = null): array
+    public function getCommitsSince(Repository $repository, ?DateTime $since = null, ?int $limit = null): array
     {
-        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsSince($repository, $revision, $limit));
+        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsSince($repository, $since, $limit));
     }
 }

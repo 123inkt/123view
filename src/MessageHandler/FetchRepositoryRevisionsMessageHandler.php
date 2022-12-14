@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
+use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
@@ -59,9 +60,10 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
         // find the last revision
         $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
+        $since          = $latestRevision === null ? null : (new DateTime())->setTimestamp((int)$latestRevision->getCreateTimestamp() - 7200);
 
         // get commits since last visit
-        $commits = $this->logService->getCommitsSince($repository, $latestRevision, self::MAX_COMMITS_PER_MESSAGE);
+        $commits = $this->logService->getCommitsSince($repository, $since, self::MAX_COMMITS_PER_MESSAGE);
         if (count($commits) === 0) {
             return;
         }

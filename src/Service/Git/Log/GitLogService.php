@@ -7,7 +7,6 @@ use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -70,7 +69,7 @@ class GitLogService implements LoggerAwareInterface
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommitsSince(Repository $repository, ?Revision $revision = null, ?int $limit = null): array
+    public function getCommitsSince(Repository $repository, ?DateTime $since = null, ?int $limit = null): array
     {
         $command = $this->commandBuilderFactory->createLog();
         $command->noMerges()
@@ -78,8 +77,8 @@ class GitLogService implements LoggerAwareInterface
             ->reverse()
             ->dateOrder()
             ->format($this->formatPatternFactory->createPattern());
-        if ($revision !== null) {
-            $command->since((new DateTime())->setTimestamp((int)$revision->getCreateTimestamp()));
+        if ($since !== null) {
+            $command->since($since);
         }
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));

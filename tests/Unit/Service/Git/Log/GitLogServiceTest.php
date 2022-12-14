@@ -10,7 +10,6 @@ use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
@@ -97,9 +96,7 @@ class GitLogServiceTest extends AbstractTestCase
         $commits    = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
         $repository = new Repository();
         $repository->setUrl('https://example.com');
-
-        $revision = new Revision();
-        $revision->setCreateTimestamp(12345678);
+        $since = new DateTime();
 
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);
@@ -111,12 +108,12 @@ class GitLogServiceTest extends AbstractTestCase
         $logBuilder->expects(self::once())->method('reverse')->willReturnSelf();
         $logBuilder->expects(self::once())->method('dateOrder')->willReturnSelf();
         $logBuilder->expects(self::once())->method('format')->with('pattern')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('since')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('since')->with($since)->willReturnSelf();
 
         $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn('output');
         $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com', true)->willReturn($gitRepository);
         $this->logParser->expects(static::once())->method('parse')->with($repository, 'output', $limit)->willReturn($commits);
 
-        $this->logFactory->getCommitsSince($repository, $revision, $limit);
+        $this->logFactory->getCommitsSince($repository, $since, $limit);
     }
 }
