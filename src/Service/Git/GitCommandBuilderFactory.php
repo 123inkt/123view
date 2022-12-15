@@ -9,6 +9,7 @@ use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
+use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
@@ -42,6 +43,11 @@ class GitCommandBuilderFactory
     public function createLog(): GitLogCommandBuilder
     {
         return new GitLogCommandBuilder($this->git);
+    }
+
+    public function createFetch(): GitFetchCommandBuilder
+    {
+        return new GitFetchCommandBuilder($this->git);
     }
 
     public function createCheryPick(): GitCherryPickCommandBuilder

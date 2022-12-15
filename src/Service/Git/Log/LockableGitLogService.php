@@ -23,4 +23,13 @@ class LockableGitLogService
     {
         return $this->lockManager->start($repository, fn() => $this->logService->getCommitsSince($repository, $since, $limit));
     }
+
+    /**
+     * @return Commit[]
+     * @throws Exception
+     */
+    public function getCommitsFromRange(Repository $repository, string $fromHash, string $toHash): array
+    {
+        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsFromRange($repository, $fromHash, $toHash));
+    }
 }

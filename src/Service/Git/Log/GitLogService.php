@@ -89,4 +89,24 @@ class GitLogService implements LoggerAwareInterface
         // get commits
         return $this->logParser->parse($repository, $output, $limit);
     }
+
+    /**
+     * @return Commit[]
+     * @throws Exception
+     */
+    public function getCommitsFromRange(Repository $repository, string $fromHash, string $toHash): array
+    {
+        $command = $this->commandBuilderFactory->createLog();
+        $command->noMerges()
+            ->hashRange($fromHash, $toHash)
+            ->format($this->formatPatternFactory->createPattern());
+
+        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
+
+        // fetch revisions for range
+        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+
+        // get commits
+        return $this->logParser->parse($repository, $output);
+    }
 }
