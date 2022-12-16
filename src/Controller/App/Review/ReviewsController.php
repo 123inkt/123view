@@ -5,9 +5,13 @@ namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\Git\Log\GitLogService;
+use DR\Review\Service\Page\BreadcrumbFactory;
+use DR\Review\ViewModel\App\Review\PaginatorViewModel;
+use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ReviewsController extends AbstractController
 {
-    public function __construct(private GitLogService $service)
+    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly BreadcrumbFactory $breadcrumbFactory)
     {
     }
 
@@ -28,6 +32,17 @@ class ReviewsController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] Repository $repository): array
     {
-        $this->service->getCommitsFromRange($repository, '83122a59a4', '065a23e101');
+        $searchQuery = trim($request->query->get('search', 'state:open '));
+        $page        = $request->query->getInt('page', 1);
+        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), (int)$repository->getId(), $page, $searchQuery);
+
+        /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
+        $paginatorViewModel = new PaginatorViewModel($paginator, $page);
+
+        return [
+            'page_title'   => ucfirst((string)$repository->getDisplayName()),
+            'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
+            'reviewsModel' => new ReviewsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery)
+        ];
     }
 }
