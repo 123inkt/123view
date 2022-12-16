@@ -65,6 +65,8 @@ class GitDiffService implements LoggerAwareInterface
         $repository     = $revision->getRepository();
         $commandBuilder = $this->builderFactory
             ->createShow()
+            ->ignoreCrAtEol()
+            ->ignoreSpaceAtEol()
             ->unified($options?->unifiedDiffLines ?? 10)
             ->startPoint((string)$revision->getCommitHash());
 
