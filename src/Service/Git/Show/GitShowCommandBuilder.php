@@ -30,6 +30,20 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function ignoreCrAtEol(): self
+    {
+        $this->arguments['ignore-cr-at-eol'] = '--ignore-cr-at-eol';
+
+        return $this;
+    }
+
+    public function ignoreSpaceAtEol(): self
+    {
+        $this->arguments['ignore-space-at-eol'] = '--ignore-space-at-eol';
+
+        return $this;
+    }
+
     public function file(string $hash, string $filePath): self
     {
         $this->arguments['file'] = sprintf('%s:%s', $hash, $filePath);
