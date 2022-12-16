@@ -16,13 +16,13 @@ class GitFetchParser
         $result = [];
 
         // * [new branch]            NewBranch              -> origin/NewBranch
-        $count = preg_match_all('/^\s*\*?\s*\[new branch]\s+(\S+)\s+->\s+(\S+)\s*/m', $fetchLog, $matches);
+        $count = preg_match_all('/^\s*[+*=]?\s*\[new branch]\s+(\S+)\s+->\s+(\S+)\s*/m', $fetchLog, $matches);
         for ($i = 0; $i < $count; $i++) {
             $result[] = new BranchCreation($matches[1][$i], $matches[2][$i]);
         }
 
         //    0058886bd1..f56b867839  local_branch_name -> origin/remote_branch_name
-        $count = preg_match_all('/^\s*(\w+)\.{2,3}(\w+)\s+(\S+)\s+->\s+(\S+)\s*/m', $fetchLog, $matches);
+        $count = preg_match_all('/^\s*[+*=]?\s*(\w+)\.{2,3}(\w+)\s+(\S+)\s+->\s+(\S+)\s*/m', $fetchLog, $matches);
         for ($i = 0; $i < $count; $i++) {
             $result[] = new BranchUpdate($matches[1][$i], $matches[2][$i], $matches[3][$i], $matches[4][$i]);
         }

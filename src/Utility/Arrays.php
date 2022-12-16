@@ -29,11 +29,42 @@ class Arrays
      *
      * @param T[] $items
      *
+     * @return T
+     */
+    public static function last(array $items): mixed
+    {
+        $result = reset($items);
+        if ($result === false) {
+            throw new RuntimeException('Unable to obtain first item from array');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @template T
+     *
+     * @param T[] $items
+     *
      * @return T|null
      */
     public static function firstOrNull(array $items): mixed
     {
         $result = reset($items);
+
+        return $result === false ? null : $result;
+    }
+
+    /**
+     * @template T
+     *
+     * @param T[] $items
+     *
+     * @return T|null
+     */
+    public static function lastOrNull(array $items): mixed
+    {
+        $result = end($items);
 
         return $result === false ? null : $result;
     }

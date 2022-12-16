@@ -3,15 +3,18 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DateTime;
+use Carbon\Carbon;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Service\Revision\RevisionFactory;
+use DR\Review\Utility\Arrays;
+use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -27,6 +30,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private LockableGitLogService $logService,
+        private LockableGitFetchService $fetchService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private MessageBusInterface $bus,
@@ -51,26 +55,25 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
     public function __invoke(FetchRepositoryRevisionsMessage $message): void
     {
         $this->logger?->info("MessageHandler: repository: " . $message->repositoryId);
-        $repository = $this->repositoryRepository->find($message->repositoryId);
-        if ($repository === null) {
-            $this->logger?->critical('MessageHandler: unknown repository: ' . $message->repositoryId);
+        $repository = Assert::notNull($this->repositoryRepository->find($message->repositoryId));
 
-            return;
-        }
+        // get commits from fetch
+        $commits = $this->fetchService->fetch($repository);
+        $this->logger?->info("MessageHandler: fetched {count} revisions from {name}", ['count' => count($commits), 'name' => $repository->getName()]);
 
         // find the last revision
         $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
-        $since          = $latestRevision === null ? null : (new DateTime())->setTimestamp((int)$latestRevision->getCreateTimestamp() - 7200);
+        $since          = $latestRevision === null ? null : Carbon::createFromTimestampUTC((int)$latestRevision->getCreateTimestamp() - 7200);
 
-        // get commits since last visit
-        $commits = $this->logService->getCommitsSince($repository, $since, self::MAX_COMMITS_PER_MESSAGE);
+        // get commits since last fetch
+        $commits = array_merge($commits, $this->logService->getCommitsSince($repository, $since, self::MAX_COMMITS_PER_MESSAGE));
         if (count($commits) === 0) {
             return;
         }
 
         $this->logger?->info(
-            "MessageHandler: found {commits} commits since: {date}",
-            ['commits' => count($commits), 'date' => $latestRevision?->getCreateTimestamp()]
+            "MessageHandler: {commits} new commits since: {date}",
+            ['commits' => count($commits), 'date' => $since?->format('c')]
         );
 
         // chunk and save it
@@ -81,7 +84,9 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
             $this->dispatchRevisions($revisions);
         }
 
-        if (count($commits) === $this->maxCommitsPerMessage) {
+        // repeat while we have more commits
+        $lastDate = count($commits) === 0 ? null : Carbon::createFromTimestampUTC(Arrays::last($commits)->date->getTimestamp());
+        if ($lastDate !== null && count($this->logService->getCommitsSince($repository, $lastDate, 2)) === 2) {
             $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
         }
     }
