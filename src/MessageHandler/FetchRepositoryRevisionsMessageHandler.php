@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use Carbon\Carbon;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Service\Revision\RevisionFactory;
@@ -28,6 +28,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private RepositoryRepository $repositoryRepository,
+        private GitFetchRemoteRevisionService $remoteRevisionService,
         private LockableGitLogService $logService,
         private LockableGitFetchService $fetchService,
         private RevisionRepository $revisionRepository,
@@ -56,24 +57,8 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
         $this->logger?->info("MessageHandler: repository: " . $message->repositoryId);
         $repository = Assert::notNull($this->repositoryRepository->find($message->repositoryId));
 
-        // get commits from fetch
-        $commits = $this->fetchService->fetch($repository);
-        $this->logger?->info("MessageHandler: fetched {count} revisions from {name}", ['count' => count($commits), 'name' => $repository->getName()]);
-
-        // find the last revision
-        $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
-        $since          = $latestRevision === null ? null : Carbon::createFromTimestampUTC((int)$latestRevision->getCreateTimestamp() - 7200);
-
-        // get commits since last fetch
-        $commits = array_merge($commits, $this->logService->getCommitsSince($repository, $since, self::MAX_COMMITS_PER_MESSAGE));
-        if (count($commits) === 0) {
-            return;
-        }
-
-        $this->logger?->info(
-            "MessageHandler: {commits} new commits since: {date}",
-            ['commits' => count($commits), 'date' => $since?->format('c')]
-        );
+        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, $this->maxCommitsPerMessage);
+        $this->logger?->info("MessageHandler: {commits} new commits", ['commits' => count($commits)]);
 
         // chunk and save it
         /** @var Commit[] $commitChunk */

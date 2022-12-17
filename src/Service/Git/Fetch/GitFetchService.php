@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Fetch;
 
-use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Fetch\BranchCreation;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
@@ -27,7 +27,7 @@ class GitFetchService implements LoggerAwareInterface
     }
 
     /**
-     * @return Commit[]
+     * @return array<BranchCreation|BranchUpdate>
      * @throws Exception
      */
     public function fetch(Repository $repository): array
@@ -42,16 +42,7 @@ class GitFetchService implements LoggerAwareInterface
         // parse branch updates
         $changes = $this->parser->parse($output);
         $this->logger?->info(sprintf('Fetch: %d new updates for `%s`', count($changes), $repository->getName()));
-        $this->logger?->info($output);
 
-        // fetch revisions from branch update
-        $commits = [];
-        foreach ($changes as $change) {
-            if ($change instanceof BranchUpdate) {
-                $commits[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);
-            }
-        }
-
-        return array_merge(...$commits);
+        return $changes;
     }
 }
