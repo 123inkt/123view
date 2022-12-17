@@ -13,7 +13,6 @@ use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Service\Revision\RevisionFactory;
-use DR\Review\Utility\Arrays;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -84,9 +83,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
             $this->dispatchRevisions($revisions);
         }
 
-        // repeat while we have more commits
-        $lastDate = count($commits) === 0 ? null : Carbon::createFromTimestampUTC(Arrays::last($commits)->date->getTimestamp());
-        if ($lastDate !== null && count($this->logService->getCommitsSince($repository, $lastDate, 2)) === 2) {
+        if (count($commits) >= $this->maxCommitsPerMessage) {
             $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
         }
     }
