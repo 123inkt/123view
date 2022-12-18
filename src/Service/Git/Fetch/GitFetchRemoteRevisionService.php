@@ -58,6 +58,6 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
             }
         }
 
-        return $commits;
+        return array_values($commits);
     }
 }
