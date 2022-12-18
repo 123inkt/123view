@@ -10,8 +10,6 @@ use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
-use DR\Review\Service\Git\Fetch\LockableGitFetchService;
-use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -29,8 +27,6 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private GitFetchRemoteRevisionService $remoteRevisionService,
-        private LockableGitLogService $logService,
-        private LockableGitFetchService $fetchService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private MessageBusInterface $bus,
@@ -59,6 +55,10 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
         $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, $this->maxCommitsPerMessage);
         $this->logger?->info("MessageHandler: {commits} new commits", ['commits' => count($commits)]);
+
+        if (count($commits) === 0) {
+            return;
+        }
 
         // chunk and save it
         /** @var Commit[] $commitChunk */

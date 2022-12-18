@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\MessageHandler;
 
-use DateTime;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
@@ -11,11 +10,12 @@ use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\MessageHandler\FetchRepositoryRevisionsMessageHandler;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
-use DR\Review\Service\Git\Log\LockableGitLogService;
+use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -27,26 +27,26 @@ use Throwable;
  */
 class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
 {
-    private RepositoryRepository&MockObject        $repositoryRepository;
-    private LockableGitLogService&MockObject       $logService;
-    private RevisionRepository&MockObject          $revisionRepository;
-    private RevisionFactory&MockObject             $revisionFactory;
-    private MessageBusInterface&MockObject         $bus;
-    private Envelope                               $envelope;
-    private FetchRepositoryRevisionsMessageHandler $handler;
+    private RepositoryRepository&MockObject          $repositoryRepository;
+    private GitFetchRemoteRevisionService&MockObject $remoteRevisionService;
+    private RevisionRepository&MockObject            $revisionRepository;
+    private RevisionFactory&MockObject               $revisionFactory;
+    private MessageBusInterface&MockObject           $bus;
+    private Envelope                                 $envelope;
+    private FetchRepositoryRevisionsMessageHandler   $handler;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope             = new Envelope(new stdClass(), []);
-        $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
-        $this->logService           = $this->createMock(LockableGitLogService::class);
-        $this->revisionRepository   = $this->createMock(RevisionRepository::class);
-        $this->revisionFactory      = $this->createMock(RevisionFactory::class);
-        $this->bus                  = $this->createMock(MessageBusInterface::class);
-        $this->handler              = new FetchRepositoryRevisionsMessageHandler(
+        $this->envelope              = new Envelope(new stdClass(), []);
+        $this->repositoryRepository  = $this->createMock(RepositoryRepository::class);
+        $this->remoteRevisionService = $this->createMock(GitFetchRemoteRevisionService::class);
+        $this->revisionRepository    = $this->createMock(RevisionRepository::class);
+        $this->revisionFactory       = $this->createMock(RevisionFactory::class);
+        $this->bus                   = $this->createMock(MessageBusInterface::class);
+        $this->handler               = new FetchRepositoryRevisionsMessageHandler(
             $this->repositoryRepository,
-            $this->logService,
+            $this->remoteRevisionService,
             $this->revisionRepository,
             $this->revisionFactory,
             $this->bus,
@@ -64,6 +64,9 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $message = new FetchRepositoryRevisionsMessage(123);
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
 
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be not null');
+
         ($this->handler)($message);
     }
 
@@ -76,18 +79,13 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $message    = new FetchRepositoryRevisionsMessage(123);
         $repository = new Repository();
         $repository->setId(456);
-        $revision = new Revision();
-        $revision->setCreateTimestamp(14400);
 
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->revisionRepository->expects(self::once())
-            ->method('findOneBy')
-            ->with(['repository' => 456], ['createTimestamp' => 'DESC'])
-            ->willReturn($revision);
-        $this->logService->expects(self::once())
-            ->method('getCommitsSince')
-            ->with($repository, (new DateTime())->setTimestamp(7200), 1000)
+        $this->remoteRevisionService->expects(self::once())
+            ->method('fetchRevisionFromRemote')
+            ->with($repository, 1)
             ->willReturn([]);
+        $this->revisionFactory->expects(self::never())->method('createFromCommits');
 
         ($this->handler)($message);
     }
@@ -108,16 +106,14 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $commit      = $this->createCommit();
 
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->revisionRepository->expects(self::once())
-            ->method('findOneBy')
-            ->with(['repository' => 456], ['createTimestamp' => 'DESC'])
-            ->willReturn($latestRevision);
-        $this->logService->expects(self::once())
-            ->method('getCommitsSince')
-            ->with($repository, (new DateTime())->setTimestamp(7200), 1000)
+        $this->remoteRevisionService->expects(self::once())
+            ->method('fetchRevisionFromRemote')
+            ->with($repository, 1)
             ->willReturn([$commit]);
+
         $this->revisionFactory->expects(self::once())->method('createFromCommits')->with([$commit])->willReturn([$newRevision]);
         $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$newRevision])->willReturn([$newRevision]);
+
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
             ->withConsecutive(
