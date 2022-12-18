@@ -24,14 +24,17 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
     private const MAX_COMMITS_PER_MESSAGE = 1000;
 
+    private int $maxCommitsPerMessage;
+
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private GitFetchRemoteRevisionService $remoteRevisionService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private MessageBusInterface $bus,
-        private ?int $maxCommitsPerMessage = self::MAX_COMMITS_PER_MESSAGE
+        ?int $maxCommitsPerMessage = null
     ) {
+        $this->maxCommitsPerMessage = $maxCommitsPerMessage ?? self::MAX_COMMITS_PER_MESSAGE;
     }
 
     /**

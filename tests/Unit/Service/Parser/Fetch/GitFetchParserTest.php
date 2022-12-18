@@ -19,7 +19,7 @@ class GitFetchParserTest extends AbstractTestCase
     public function testParse(): void
     {
         $parser = new GitFetchParser();
-        $result = $parser->parse(file_get_contents(__DIR__ . '/log.txt'));
+        $result = $parser->parse((string)file_get_contents(__DIR__ . '/log.txt'));
 
         $expected = [
             new BranchCreation('NewBranch', 'origin/NewBranch'),

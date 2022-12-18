@@ -8,7 +8,6 @@ use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
-use DR\Review\Service\Git\Log\GitLogService;
 use DR\Review\Service\Parser\Fetch\GitFetchParser;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -21,7 +20,6 @@ class GitFetchService implements LoggerAwareInterface
     public function __construct(
         private readonly GitCommandBuilderFactory $commandFactory,
         private readonly GitFetchParser $parser,
-        private readonly GitLogService $logService,
         private readonly GitRepositoryService $gitRepositoryService,
     ) {
     }

@@ -14,6 +14,9 @@ use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
 
+/**
+ * @suppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class GitCommandBuilderFactory
 {
     public function __construct(private string $git)

@@ -10,7 +10,6 @@ use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
-use DR\Review\Service\Git\Log\GitLogService;
 use DR\Review\Service\Parser\Fetch\GitFetchParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
@@ -24,7 +23,6 @@ class GitFetchServiceTest extends AbstractTestCase
 {
     private GitCommandBuilderFactory&MockObject $commandBuilderFactory;
     private GitFetchParser&MockObject           $fetchParser;
-    private GitLogService&MockObject            $logService;
     private GitRepositoryService&MockObject     $repositoryService;
     private GitFetchService                     $fetchService;
 
@@ -33,12 +31,10 @@ class GitFetchServiceTest extends AbstractTestCase
         parent::setUp();
         $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
         $this->fetchParser           = $this->createMock(GitFetchParser::class);
-        $this->logService            = $this->createMock(GitLogService::class);
         $this->repositoryService     = $this->createMock(GitRepositoryService::class);
         $this->fetchService          = new GitFetchService(
             $this->commandBuilderFactory,
             $this->fetchParser,
-            $this->logService,
             $this->repositoryService
         );
     }
