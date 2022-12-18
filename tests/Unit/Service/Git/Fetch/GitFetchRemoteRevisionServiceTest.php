@@ -14,6 +14,7 @@ use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService
@@ -33,6 +34,7 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
         $this->fetchService       = $this->createMock(LockableGitFetchService::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
         $this->service            = new GitFetchRemoteRevisionService($this->logService, $this->fetchService, $this->revisionRepository);
+        $this->service->setLogger($this->createMock(LoggerInterface::class));
     }
 
     /**
