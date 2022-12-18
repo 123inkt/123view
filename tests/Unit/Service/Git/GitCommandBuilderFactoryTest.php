@@ -24,6 +24,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
      * @covers ::createCheryPick
      * @covers ::createCheckout
      * @covers ::createLog
+     * @covers ::createFetch
      * @covers ::createAdd
      * @covers ::createBranch
      * @covers ::createShow
@@ -36,6 +37,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createCheryPick();
         $this->factory->createCheckout();
         $this->factory->createLog();
+        $this->factory->createFetch();
         $this->factory->createAdd();
         $this->factory->createDiff();
         $this->factory->createDiffTree();

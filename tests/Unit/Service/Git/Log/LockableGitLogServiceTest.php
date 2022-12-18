@@ -52,4 +52,24 @@ class LockableGitLogServiceTest extends AbstractTestCase
         $result = $this->service->getCommitsSince($repository, $since, $limit);
         static::assertSame([$commit], $result);
     }
+
+    /**
+     * @covers ::getCommitsFromRange
+     * @throws Exception
+     */
+    public function testGetCommitsFromRange(): void
+    {
+        $repository = new Repository();
+        $repository->setId(123);
+        $commit = $this->createMock(Commit::class);
+
+        $this->lockManager->expects(self::once())
+            ->method('start')
+            ->with($repository)
+            ->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->logService->expects(self::once())->method('getCommitsFromRange')->with($repository, 'fromHash', 'toHash')->willReturn([$commit]);
+
+        $result = $this->service->getCommitsFromRange($repository, 'fromHash', 'toHash');
+        static::assertSame([$commit], $result);
+    }
 }
