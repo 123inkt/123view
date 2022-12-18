@@ -18,10 +18,10 @@ class GitRepository
     }
 
     /**
-     * Get the git commit log for the given repository.
+     * Execute git command via cli
      * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
      */
-    public function execute(string|GitCommandBuilderInterface $commandBuilder): string
+    public function execute(string|GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
     {
         $command = is_string($commandBuilder) ? $commandBuilder : implode(' ', $commandBuilder->build());
         $action  = is_string($commandBuilder) ? 'manual' : $commandBuilder->command();
@@ -40,7 +40,12 @@ class GitRepository
             throw new ProcessFailedException($process);
         }
 
+        $output = $process->getOutput();
+        if ($errorOutputAsOutput === true) {
+            $output .= $process->getErrorOutput();
+        }
+
         // remove any \r in the output
-        return str_replace("\r", "", $process->getOutput());
+        return str_replace("\r", "", $output);
     }
 }

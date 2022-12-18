@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
-use DR\Review\Service\Git\Log\LockableGitLogService;
+use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Revision\RevisionFactory;
+use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -24,14 +24,17 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
     private const MAX_COMMITS_PER_MESSAGE = 1000;
 
+    private int $maxCommitsPerMessage;
+
     public function __construct(
         private RepositoryRepository $repositoryRepository,
-        private LockableGitLogService $logService,
+        private GitFetchRemoteRevisionService $remoteRevisionService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private MessageBusInterface $bus,
-        private ?int $maxCommitsPerMessage = self::MAX_COMMITS_PER_MESSAGE
+        ?int $maxCommitsPerMessage = null
     ) {
+        $this->maxCommitsPerMessage = $maxCommitsPerMessage ?? self::MAX_COMMITS_PER_MESSAGE;
     }
 
     /**
@@ -51,27 +54,14 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
     public function __invoke(FetchRepositoryRevisionsMessage $message): void
     {
         $this->logger?->info("MessageHandler: repository: " . $message->repositoryId);
-        $repository = $this->repositoryRepository->find($message->repositoryId);
-        if ($repository === null) {
-            $this->logger?->critical('MessageHandler: unknown repository: ' . $message->repositoryId);
+        $repository = Assert::notNull($this->repositoryRepository->find($message->repositoryId));
 
-            return;
-        }
+        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, $this->maxCommitsPerMessage);
+        $this->logger?->info("MessageHandler: {commits} new commits", ['commits' => count($commits)]);
 
-        // find the last revision
-        $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
-        $since          = $latestRevision === null ? null : (new DateTime())->setTimestamp((int)$latestRevision->getCreateTimestamp() - 7200);
-
-        // get commits since last visit
-        $commits = $this->logService->getCommitsSince($repository, $since, self::MAX_COMMITS_PER_MESSAGE);
         if (count($commits) === 0) {
             return;
         }
-
-        $this->logger?->info(
-            "MessageHandler: found {commits} commits since: {date}",
-            ['commits' => count($commits), 'date' => $latestRevision?->getCreateTimestamp()]
-        );
 
         // chunk and save it
         /** @var Commit[] $commitChunk */
@@ -81,7 +71,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
             $this->dispatchRevisions($revisions);
         }
 
-        if (count($commits) === $this->maxCommitsPerMessage) {
+        if (count($commits) >= $this->maxCommitsPerMessage) {
             $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
         }
     }

@@ -39,10 +39,10 @@ class GitRepositoryService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
-    public function getRepository(string $repositoryUrl, bool $fetch = false): GitRepository
+    public function getRepository(string $repositoryUrl): GitRepository
     {
         try {
-            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repositoryUrl, $fetch));
+            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repositoryUrl));
         } catch (GitException $exception) {
             $message = $exception->getMessage() . ': ';
             if ($exception->getRunnerResult() !== null) {
@@ -58,7 +58,7 @@ class GitRepositoryService implements LoggerAwareInterface
     /**
      * @throws GitException
      */
-    private function tryGetRepository(string $repositoryUrl, bool $fetch): GitRepository
+    private function tryGetRepository(string $repositoryUrl): GitRepository
     {
         // create cache directory
         $this->filesystem->mkdir($this->cacheDirectory);
@@ -66,25 +66,12 @@ class GitRepositoryService implements LoggerAwareInterface
         $repositoryName = Helpers::extractRepositoryNameFromUrl($repositoryUrl);
         $repositoryDir  = $this->cacheDirectory . $repositoryName . '-' . hash('sha1', $repositoryUrl) . '/';
 
-        if ($this->filesystem->exists($repositoryDir . '.git')) {
-            // is existing repository
-            $this->stopwatch?->start('repository.open', 'git');
-            $this->logger?->info(sprintf('git: open repository `%s`', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
-            $repository = $this->git->open($repositoryDir);
-            $this->stopwatch?->stop('repository.open');
-        } else {
+        if ($this->filesystem->exists($repositoryDir . '.git') === false) {
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
             $this->logger?->info(sprintf('git: clone repository `%s`.', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
-            $repository = $this->git->cloneRepository($repositoryUrl, $repositoryDir);
+            $this->git->cloneRepository($repositoryUrl, $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
-        }
-
-        if ($fetch) {
-            $this->stopwatch?->start('repository.fetch', 'git');
-            $this->logger?->info(sprintf('git: fetch --all (%s)', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
-            $repository->fetch(null, ['--all']);
-            $this->stopwatch?->stop('repository.fetch');
         }
 
         return new GitRepository($this->stopwatch, $repositoryDir);

@@ -14,10 +14,10 @@ class CacheableGitRepositoryService extends GitRepositoryService
     /**
      * @throws RepositoryException
      */
-    public function getRepository(string $repositoryUrl, bool $fetch = false): GitRepository
+    public function getRepository(string $repositoryUrl): GitRepository
     {
         if (isset($this->repositories[$repositoryUrl]) === false) {
-            $this->repositories[$repositoryUrl] = parent::getRepository($repositoryUrl, $fetch);
+            $this->repositories[$repositoryUrl] = parent::getRepository($repositoryUrl);
         }
 
         return $this->repositories[$repositoryUrl];
