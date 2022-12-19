@@ -50,6 +50,7 @@ class RevisionRepository extends ServiceEntityRepository
 
         try {
             $em->flush();
+            $em->clear();
             // @codeCoverageIgnoreStart
         } catch (Throwable $exception) {
             $this->registry->resetManager();

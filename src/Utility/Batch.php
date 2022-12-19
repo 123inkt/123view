@@ -1,0 +1,48 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\Utility;
+
+/**
+ * @template T
+ */
+class Batch
+{
+    /** @var T[] */
+    private array $queue = [];
+
+    /**
+     * @param callable(array $entities): void $callback
+     */
+    public function __construct(private int $threshold, private $callback)
+    {
+    }
+
+    /**
+     * @param T $entity
+     */
+    public function add(mixed $entity): void
+    {
+        $this->queue[] = $entity;
+
+        if (count($this->queue) >= $this->threshold) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * @param T[] $entities
+     */
+    public function addAll(array $entities): void
+    {
+        foreach ($entities as $entity) {
+            $this->add($entity);
+        }
+    }
+
+    public function flush(): void
+    {
+        ($this->callback)($this->queue);
+        $this->queue = [];
+    }
+}

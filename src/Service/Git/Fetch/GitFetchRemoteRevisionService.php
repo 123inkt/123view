@@ -48,7 +48,7 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
                 function (bool &$repeat) use ($repository, &$since, $maxRevisions): array { // @codingStandardsIgnoreLine
                     $this->logger?->info('Fetch new commits since: {date}', ['date' => $since?->format('c')]);
                     $commits = $this->logService->getCommitsSince($repository, $since, $maxRevisions);
-                    $since   = Arrays::lastOrNull($commits) ?? $since;
+                    $since   = Arrays::lastOrNull($commits)?->date ?? $since;
                     $repeat  = count($commits) >= $maxRevisions;
 
                     return $commits;
