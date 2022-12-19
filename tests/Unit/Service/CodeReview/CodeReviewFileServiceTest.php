@@ -61,7 +61,8 @@ class CodeReviewFileServiceTest extends AbstractTestCase
 
         $diffFileA = new DiffFile();
         $diffFileB = new DiffFile();
-        $tree      = new DirectoryTreeNode('node');
+        /** @var DirectoryTreeNode<DiffFile> $tree */
+        $tree = new DirectoryTreeNode('node');
 
         $this->cache->expects(self::exactly(3))
             ->method('get')
