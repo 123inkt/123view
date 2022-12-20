@@ -24,17 +24,13 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
     private const MAX_COMMITS_PER_MESSAGE = 1000;
 
-    private int $maxCommitsPerMessage;
-
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private GitFetchRemoteRevisionService $remoteRevisionService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private MessageBusInterface $bus,
-        ?int $maxCommitsPerMessage = null
     ) {
-        $this->maxCommitsPerMessage = $maxCommitsPerMessage ?? self::MAX_COMMITS_PER_MESSAGE;
     }
 
     /**
@@ -66,7 +62,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
             }
         );
 
-        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, $this->maxCommitsPerMessage);
+        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, self::MAX_COMMITS_PER_MESSAGE);
         foreach ($commits as $commit) {
             $batch->addAll($this->revisionFactory->createFromCommit($commit));
         }
