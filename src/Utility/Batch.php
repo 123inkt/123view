@@ -42,7 +42,9 @@ class Batch
 
     public function flush(): void
     {
-        ($this->callback)($this->queue);
+        if (count($this->queue) > 0) {
+            ($this->callback)($this->queue);
+        }
         $this->queue = [];
     }
 }
