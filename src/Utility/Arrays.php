@@ -49,7 +49,7 @@ class Arrays
     {
         $result = end($items);
         if ($result === false) {
-            throw new RuntimeException('Unable to obtain first item from array');
+            throw new RuntimeException('Unable to obtain last item from array');
         }
 
         return $result;
