@@ -37,7 +37,7 @@ class RefreshRevisionCommand extends Command implements LoggerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         set_time_limit(0);
-        $repositories = $this->repositoryRepository->findBy(['active' => true]);
+        $repositories = $this->repositoryRepository->findByValidateRevisions();
         foreach ($repositories as $repository) {
             $this->logger?->info('Checking hashes for {name}', ['name', $repository->getName()]);
             $localHashes  = $this->revisionRepository->getCommitHashes($repository);

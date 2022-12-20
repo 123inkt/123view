@@ -34,11 +34,17 @@ class Repository
     #[ORM\Column]
     private bool $favorite = false;
 
-    #[ORM\Column(type: 'smallint', options: ['default' => 900])]
+    #[ORM\Column(type: 'integer', options: ['default' => 900])]
     private ?int $updateRevisionsInterval = 900;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $updateRevisionsTimestamp = null;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 3600])]
+    private ?int $validateRevisionsInterval = 3600;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $validateRevisionsTimestamp = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $createTimestamp = null;
@@ -150,6 +156,30 @@ class Repository
     public function setUpdateRevisionsTimestamp(int $updateRevisionsTimestamp): void
     {
         $this->updateRevisionsTimestamp = $updateRevisionsTimestamp;
+    }
+
+    public function getValidateRevisionsInterval(): ?int
+    {
+        return $this->validateRevisionsInterval;
+    }
+
+    public function setValidateRevisionsInterval(int $validateRevisionsInterval): Repository
+    {
+        $this->validateRevisionsInterval = $validateRevisionsInterval;
+
+        return $this;
+    }
+
+    public function getValidateRevisionsTimestamp(): ?int
+    {
+        return $this->validateRevisionsTimestamp;
+    }
+
+    public function setValidateRevisionsTimestamp(?int $validateRevisionsTimestamp): Repository
+    {
+        $this->validateRevisionsTimestamp = $validateRevisionsTimestamp;
+
+        return $this;
     }
 
     public function getCreateTimestamp(): ?int
