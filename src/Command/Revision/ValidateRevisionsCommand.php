@@ -54,6 +54,10 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
             foreach ($deleted as $hash) {
                 $this->bus->dispatch(new CommitRemovedMessage($repository->getId(), $hash));
             }
+
+            // set validate timestamp
+            $repository->setValidateRevisionsTimestamp(time());
+            $this->repositoryRepository->save($repository, true);
         }
 
         return self::SUCCESS;
