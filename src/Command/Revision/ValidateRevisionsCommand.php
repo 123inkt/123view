@@ -24,9 +24,9 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
 
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
-        private RevisionRepository $revisionRepository,
-        private LockableGitLogService $logService,
-        private MessageBusInterface $bus
+        private readonly RevisionRepository $revisionRepository,
+        private readonly LockableGitLogService $logService,
+        private readonly MessageBusInterface $bus
     ) {
         parent::__construct();
     }
