@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Revision;
 
+use Carbon\Carbon;
 use DateTime;
 use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
@@ -16,20 +17,6 @@ use DR\Review\Tests\AbstractTestCase;
 class RevisionFactoryTest extends AbstractTestCase
 {
     /**
-     * @covers ::createFromCommits
-     */
-    public function testCreateFromCommits(): void
-    {
-        $date       = new DateTime();
-        $repository = new Repository();
-        $author     = new Author('Sherlock', 'holmes@example.com');
-        $commit     = new Commit($repository, 'parent', 'commit', $author, $date, "subject\nmessage", null, []);
-
-        $factory = new RevisionFactory();
-        static::assertCount(1, $factory->createFromCommits([$commit]));
-    }
-
-    /**
      * @covers ::createFromCommit
      */
     public function testCreateFromCommit(): void
@@ -37,7 +24,7 @@ class RevisionFactoryTest extends AbstractTestCase
         $date       = new DateTime();
         $repository = new Repository();
         $author     = new Author('Sherlock', 'holmes@example.com');
-        $commit     = new Commit($repository, 'parent', 'commit', $author, $date, "subject\nmessage", null, []);
+        $commit     = new Commit($repository, 'parent', 'commit', $author, Carbon::now(), "subject\nmessage", null, []);
 
         $factory   = new RevisionFactory();
         $revisions = $factory->createFromCommit($commit);
