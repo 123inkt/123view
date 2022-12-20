@@ -14,7 +14,7 @@ class Batch
     /**
      * @param callable(T[] $entities): void $callback
      */
-    public function __construct(private int $threshold, private $callback)
+    public function __construct(private int $threshold, private $callback) // @codingStandardsIgnoreLine
     {
     }
 
