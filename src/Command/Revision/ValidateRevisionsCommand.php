@@ -32,6 +32,7 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
     }
 
     /**
+     * @inheritDoc
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
