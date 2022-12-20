@@ -42,16 +42,18 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
             $localHashes  = $this->revisionRepository->getCommitHashes($repository);
             $remoteHashes = $this->logService->getCommitHashes($repository);
 
-            $missing = array_diff($remoteHashes, $localHashes);
-            $deleted = array_diff($localHashes, $remoteHashes);
+            $missing = array_filter(array_diff($remoteHashes, $localHashes));
+            $deleted = array_filter(array_diff($localHashes, $remoteHashes));
 
-            $this->logger?->info('Found {count} missing hashes for repository {name}', ['count' => count($missing), 'name', $repository->getName()]);
-            $this->logger?->info('Found {count} deleted hashes for repository {name}', ['count' => count($missing), 'name', $repository->getName()]);
+            $this->logger?->info('Found {count} missing hashes in repository {name}', ['count' => count($missing), 'name' => $repository->getName()]);
+            $this->logger?->info('Found {count} deleted hashes in repository {name}', ['count' => count($deleted), 'name' => $repository->getName()]);
 
             foreach ($missing as $hash) {
+                $this->logger?->info('Adding commit {hash} for repository {name}', ['hash' => $hash, 'name' => $repository->getName()]);
                 $this->bus->dispatch(new CommitAddedMessage($repository->getId(), $hash));
             }
             foreach ($deleted as $hash) {
+                $this->logger?->info('Removing commit {hash} from repository {name}', ['hash' => $hash, 'name' => $repository->getName()]);
                 $this->bus->dispatch(new CommitRemovedMessage($repository->getId(), $hash));
             }
 
