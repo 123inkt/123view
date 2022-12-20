@@ -16,12 +16,12 @@ class LockableGitLogService
     }
 
     /**
-     * @return Commit[]
+     * @return string[]
      * @throws Exception
      */
-    public function getCommitsSince(Repository $repository, ?DateTime $since = null, ?int $limit = null): array
+    public function getCommitHashes(Repository $repository): array
     {
-        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsSince($repository, $since, $limit));
+        return $this->lockManager->start($repository, fn() => $this->logService->getCommitHashes($repository));
     }
 
     /**

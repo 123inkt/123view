@@ -7,7 +7,7 @@ use DR\Review\Message\Revision\CommitAddedMessage;
 use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
-use DR\Review\Service\Git\Log\GitLogService;
+use DR\Review\Service\Git\Log\LockableGitLogService;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -25,7 +25,7 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
         private RevisionRepository $revisionRepository,
-        private GitLogService $logService,
+        private LockableGitLogService $logService,
         private MessageBusInterface $bus
     ) {
         parent::__construct();

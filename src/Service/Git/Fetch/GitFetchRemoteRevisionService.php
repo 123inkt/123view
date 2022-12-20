@@ -6,7 +6,6 @@ namespace DR\Review\Service\Git\Fetch;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Model\Review\UniqueCommitIterator;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use Exception;
@@ -37,20 +36,14 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
             ['count' => count($changes), 'name' => $repository->getName()]
         );
 
-        return new UniqueCommitIterator(
-            [
-                function () use ($repository, $changes) {
-                    $commits = [];
-                    foreach ($changes as $change) {
-                        if ($change instanceof BranchUpdate) {
-                            $this->logger?->info('Fetch new commits from branch: {branch}', ['branch' => $change->remoteBranch]);
-                            $commits[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);
-                        }
-                    }
+        $commits = [];
+        foreach ($changes as $change) {
+            if ($change instanceof BranchUpdate) {
+                $this->logger?->info('Fetch new commits from branch: {branch}', ['branch' => $change->remoteBranch]);
+                $commits[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);
+            }
+        }
 
-                    return array_merge(...$commits);
-                }
-            ]
-        );
+        return array_merge(...$commits);
     }
 }
