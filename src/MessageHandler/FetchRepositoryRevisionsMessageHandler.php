@@ -22,8 +22,6 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private const MAX_COMMITS_PER_MESSAGE = 1000;
-
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private GitFetchRemoteRevisionService $remoteRevisionService,
@@ -54,7 +52,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
         // setup batch to save revisions
         $batch = new Batch(
-            50,
+            500,
             function (array $revisions) use ($repository): void {
                 $this->logger?->info("MessageHandler: {revisions} new revisions", ['revisions' => count($revisions)]);
                 $revisions = $this->revisionRepository->saveAll($repository, $revisions);
@@ -62,7 +60,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
             }
         );
 
-        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, self::MAX_COMMITS_PER_MESSAGE);
+        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository);
         foreach ($commits as $commit) {
             $batch->addAll($this->revisionFactory->createFromCommit($commit));
         }

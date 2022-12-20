@@ -23,6 +23,20 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function noPatch(): self
+    {
+        $this->arguments['no-patch'] = '--no-patch';
+
+        return $this;
+    }
+
+    public function format(string $format): self
+    {
+        $this->arguments['format'] = sprintf('--format="%s"', $format);
+
+        return $this;
+    }
+
     public function unified(int $numberOfLines): self
     {
         $this->arguments['unified'] = '--unified=' . $numberOfLines;
