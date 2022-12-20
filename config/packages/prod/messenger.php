@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 use DR\Review\Message\AsyncMessageInterface;
 use DR\Review\Message\Delay\DelayableMessage;
+use DR\Review\Message\Revision\CommitAddedMessage;
+use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use Symfony\Config\FrameworkConfig;
 
@@ -19,6 +21,8 @@ return static function (FrameworkConfig $framework): void {
 
     // https://symfony.com/doc/current/messenger.html#routing-messages-to-a-transport
     $messenger->routing(FetchRepositoryRevisionsMessage::class)->senders(['async_revisions']);
+    $messenger->routing(CommitAddedMessage::class)->senders(['async_revisions']);
+    $messenger->routing(CommitRemovedMessage::class)->senders(['async_revisions']);
     $messenger->routing(DelayableMessage::class)->senders(['async_delay_mail']);
     $messenger->routing(AsyncMessageInterface::class)->senders(['async_messages']);
 };

@@ -88,4 +88,18 @@ class RevisionRepository extends ServiceEntityRepository
 
         return new Paginator($query->getQuery(), true);
     }
+
+    /**
+     * @return string[]
+     */
+    public function getCommitHashes(Repository $repository): array
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->select('r.commitHash');
+        $qb->where('r.repository = :repositoryId');
+        $qb->setParameter('repositoryId', $repository->getId());
+        $result = $qb->getQuery()->getScalarResult();
+
+        return array_column($result, 'commitHash');
+    }
 }

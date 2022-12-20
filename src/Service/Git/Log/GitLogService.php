@@ -7,6 +7,7 @@ use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\FormatPattern;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -91,6 +92,28 @@ class GitLogService implements LoggerAwareInterface
     }
 
     /**
+     * @return string[]
+     * @throws Exception
+     */
+    public function getCommitHashes(Repository $repository): array
+    {
+        $command = $this->commandBuilderFactory->createLog();
+        $command->noMerges()
+            ->remotes()
+            ->format(FormatPattern::COMMIT_HASH);
+
+        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
+
+        // get repository and execute command
+        $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+
+        // cleanup output of any unwanted characters
+        $output = preg_replace("/[^\na-zA-Z0-9]+/", '', $output);
+
+        return array_map('trim', explode("\n", $output));
+    }
+
+    /**
      * @return Commit[]
      * @throws Exception
      */
@@ -104,7 +127,7 @@ class GitLogService implements LoggerAwareInterface
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
 
         // fetch revisions for range
-        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
 
         // get commits
         return $this->logParser->parse($repository, $output);
