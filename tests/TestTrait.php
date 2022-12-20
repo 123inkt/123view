@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests;
 
-use DateTime;
+use Carbon\Carbon;
 use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Diff\DiffFile;
@@ -27,7 +27,7 @@ trait TestTrait
             'parent-hash',
             'commit-hash',
             $author ?? new Author('name', 'email'),
-            new DateTime(),
+            Carbon::now(),
             'subject',
             'refs',
             $files
