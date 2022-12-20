@@ -80,7 +80,7 @@ class GitLogService implements LoggerAwareInterface
         $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
 
         // cleanup output of any unwanted characters
-        $output = preg_replace("/[^\na-zA-Z0-9]+/", '', $output);
+        $output = (string)preg_replace("/[^\na-zA-Z0-9]+/", '', $output);
 
         return array_map('trim', explode("\n", $output));
     }

@@ -12,7 +12,7 @@ class Batch
     private array $queue = [];
 
     /**
-     * @param callable(array $entities): void $callback
+     * @param callable(T[] $entities): void $callback
      */
     public function __construct(private int $threshold, private $callback)
     {
