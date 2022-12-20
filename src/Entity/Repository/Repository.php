@@ -22,7 +22,7 @@ class Repository
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private bool $active = true;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
