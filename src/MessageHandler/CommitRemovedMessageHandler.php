@@ -8,7 +8,6 @@ use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\RevisionRepository;
-use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -21,7 +20,6 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly LockableGitShowService $showService,
         private readonly RepositoryRepository $repositoryRepository,
         private readonly RevisionRepository $revisionRepository,
         private readonly CodeReviewRepository $reviewRepository,

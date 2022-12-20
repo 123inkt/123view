@@ -51,11 +51,11 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
 
             foreach ($missing as $hash) {
                 $this->logger?->info('Adding commit `{hash}` for repository {name}', ['hash' => $hash, 'name' => $repository->getName()]);
-                $this->bus->dispatch(new CommitAddedMessage($repository->getId(), $hash));
+                $this->bus->dispatch(new CommitAddedMessage((int)$repository->getId(), $hash));
             }
             foreach ($deleted as $hash) {
                 $this->logger?->info('Removing commit `{hash}` from repository {name}', ['hash' => $hash, 'name' => $repository->getName()]);
-                $this->bus->dispatch(new CommitRemovedMessage($repository->getId(), $hash));
+                $this->bus->dispatch(new CommitRemovedMessage((int)$repository->getId(), $hash));
             }
 
             // set validate timestamp

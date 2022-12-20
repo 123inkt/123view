@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\Git\Fetch;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\Revision;
-use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
@@ -23,16 +22,14 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
 {
     private LockableGitLogService&MockObject   $logService;
     private LockableGitFetchService&MockObject $fetchService;
-    private RevisionRepository&MockObject      $revisionRepository;
     private GitFetchRemoteRevisionService      $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->logService         = $this->createMock(LockableGitLogService::class);
-        $this->fetchService       = $this->createMock(LockableGitFetchService::class);
-        $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $this->service            = new GitFetchRemoteRevisionService($this->logService, $this->fetchService, $this->revisionRepository);
+        $this->logService   = $this->createMock(LockableGitLogService::class);
+        $this->fetchService = $this->createMock(LockableGitFetchService::class);
+        $this->service      = new GitFetchRemoteRevisionService($this->logService, $this->fetchService);
         $this->service->setLogger($this->createMock(LoggerInterface::class));
     }
 

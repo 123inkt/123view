@@ -6,7 +6,6 @@ namespace DR\Review\Service\Git\Fetch;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -16,11 +15,8 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private LockableGitLogService $logService,
-        private LockableGitFetchService $fetchService,
-        private RevisionRepository $revisionRepository,
-    ) {
+    public function __construct(private LockableGitLogService $logService, private LockableGitFetchService $fetchService)
+    {
     }
 
     /**
