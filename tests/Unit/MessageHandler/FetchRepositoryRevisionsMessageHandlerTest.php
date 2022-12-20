@@ -71,26 +71,6 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
 
     /**
      * @covers ::__invoke
-     * @throws Throwable
-     */
-    public function testInvokeShouldStopIfThereAreNoCommits(): void
-    {
-        $message    = new FetchRepositoryRevisionsMessage(123);
-        $repository = new Repository();
-        $repository->setId(456);
-
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->remoteRevisionService->expects(self::once())
-            ->method('fetchRevisionFromRemote')
-            ->with($repository)
-            ->willReturn([]);
-        $this->revisionFactory->expects(self::never())->method('createFromCommits');
-
-        ($this->handler)($message);
-    }
-
-    /**
-     * @covers ::__invoke
      * @covers ::dispatchRevisions
      * @throws Throwable
      */
