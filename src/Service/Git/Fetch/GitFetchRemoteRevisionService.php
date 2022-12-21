@@ -5,7 +5,6 @@ namespace DR\Review\Service\Git\Fetch;
 
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Fetch\BranchCreation;
-use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use Exception;
@@ -38,7 +37,7 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
             if ($change instanceof BranchCreation) {
                 $this->logger?->info('Fetch commits from new branch: {branch}', ['branch' => $change->remoteBranch]);
                 $commits[] = $this->logService->getCommitsFromRange($repository, 'origin/' . $repository->getMainBranchName(), $change->remoteBranch);
-            } elseif ($change instanceof BranchUpdate) {
+            } else {
                 $this->logger?->info('Fetch new commits from existing branch: {branch}', ['branch' => $change->remoteBranch]);
                 $commits[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);
             }
