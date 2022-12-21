@@ -37,7 +37,7 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
         foreach ($changes as $change) {
             if ($change instanceof BranchCreation) {
                 $this->logger?->info('Fetch commits from new branch: {branch}', ['branch' => $change->remoteBranch]);
-                $commits[] = $this->logService->getCommitsFromRange($repository, 'origin/master', $change->remoteBranch);
+                $commits[] = $this->logService->getCommitsFromRange($repository, 'origin/' . $repository->getMainBranchName(), $change->remoteBranch);
             } elseif ($change instanceof BranchUpdate) {
                 $this->logger?->info('Fetch new commits from existing branch: {branch}', ['branch' => $change->remoteBranch]);
                 $commits[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);

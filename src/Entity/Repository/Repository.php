@@ -28,6 +28,9 @@ class Repository
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $displayName = null;
 
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
+    private string $mainBranchName = 'master';
+
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
 
@@ -110,6 +113,18 @@ class Repository
     public function setDisplayName(?string $displayName): self
     {
         $this->displayName = $displayName;
+
+        return $this;
+    }
+
+    public function getMainBranchName(): string
+    {
+        return $this->mainBranchName;
+    }
+
+    public function setMainBranchName(string $mainBranchName): Repository
+    {
+        $this->mainBranchName = $mainBranchName;
 
         return $this;
     }
