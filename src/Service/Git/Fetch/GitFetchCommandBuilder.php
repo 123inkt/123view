@@ -30,6 +30,13 @@ class GitFetchCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function prune(): self
+    {
+        $this->arguments['prune'] = '--prune';
+
+        return $this;
+    }
+
     public function command(): string
     {
         return 'fetch';

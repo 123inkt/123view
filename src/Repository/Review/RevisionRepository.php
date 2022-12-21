@@ -50,6 +50,9 @@ class RevisionRepository extends ServiceEntityRepository
 
         try {
             $em->flush();
+            foreach ($revisions as $revision) {
+                $em->detach($revision);
+            }
             // @codeCoverageIgnoreStart
         } catch (Throwable $exception) {
             $this->registry->resetManager();
@@ -84,5 +87,19 @@ class RevisionRepository extends ServiceEntityRepository
         }
 
         return new Paginator($query->getQuery(), true);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCommitHashes(Repository $repository): array
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->select('r.commitHash');
+        $qb->where('r.repository = :repositoryId');
+        $qb->setParameter('repositoryId', $repository->getId());
+        $result = $qb->getQuery()->getScalarResult();
+
+        return array_column($result, 'commitHash');
     }
 }

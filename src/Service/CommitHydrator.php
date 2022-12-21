@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service;
 
-use DateTime;
+use Carbon\Carbon;
 use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Diff\DiffFile;
@@ -22,7 +22,7 @@ class CommitHydrator
     public function hydrate(Repository $repository, array $data, array $files): Commit
     {
         $author     = new Author((string)$data[FormatPattern::AUTHOR_NAME], (string)$data[FormatPattern::AUTHOR_EMAIL]);
-        $authorDate = new DateTime((string)$data[FormatPattern::AUTHOR_DATE_ISO8601]);
+        $authorDate = Carbon::parse((string)$data[FormatPattern::AUTHOR_DATE_ISO8601]);
         $refs       = trim((string)$data[FormatPattern::REF_NAMES]);
 
         return new Commit(

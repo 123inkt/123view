@@ -41,6 +41,33 @@ class ArraysTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::last
+     */
+    public function testLastThrowsExceptionOnEmptyArray(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Unable to obtain last item from array');
+        Arrays::last([]);
+    }
+
+    /**
+     * @covers ::last
+     */
+    public function testLast(): void
+    {
+        static::assertSame('bar', Arrays::last(['foo', 'bar']));
+    }
+
+    /**
+     * @covers ::lastOrNull
+     */
+    public function testLastOrNull(): void
+    {
+        static::assertSame('bar', Arrays::lastOrNull(['foo', 'bar']));
+        static::assertNull(Arrays::lastOrNull([]));
+    }
+
+    /**
      * @covers ::mapAssoc
      */
     public function testMapAssoc(): void

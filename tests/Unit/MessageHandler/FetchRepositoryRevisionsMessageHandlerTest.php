@@ -49,8 +49,7 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
             $this->remoteRevisionService,
             $this->revisionRepository,
             $this->revisionFactory,
-            $this->bus,
-            1
+            $this->bus
         );
         $this->handler->setLogger($this->createMock(LoggerInterface::class));
     }
@@ -66,26 +65,6 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be not null');
-
-        ($this->handler)($message);
-    }
-
-    /**
-     * @covers ::__invoke
-     * @throws Throwable
-     */
-    public function testInvokeShouldStopIfThereAreNoCommits(): void
-    {
-        $message    = new FetchRepositoryRevisionsMessage(123);
-        $repository = new Repository();
-        $repository->setId(456);
-
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->remoteRevisionService->expects(self::once())
-            ->method('fetchRevisionFromRemote')
-            ->with($repository, 1)
-            ->willReturn([]);
-        $this->revisionFactory->expects(self::never())->method('createFromCommits');
 
         ($this->handler)($message);
     }
@@ -108,18 +87,14 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
         $this->remoteRevisionService->expects(self::once())
             ->method('fetchRevisionFromRemote')
-            ->with($repository, 1)
+            ->with($repository)
             ->willReturn([$commit]);
 
-        $this->revisionFactory->expects(self::once())->method('createFromCommits')->with([$commit])->willReturn([$newRevision]);
+        $this->revisionFactory->expects(self::once())->method('createFromCommit')->with($commit)->willReturn([$newRevision]);
         $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$newRevision])->willReturn([$newRevision]);
-
-        $this->bus->expects(self::exactly(2))
+        $this->bus->expects(self::once())
             ->method('dispatch')
-            ->withConsecutive(
-                [self::isInstanceOf(NewRevisionMessage::class)],
-                [self::isInstanceOf(FetchRepositoryRevisionsMessage::class)]
-            )
+            ->with(self::isInstanceOf(NewRevisionMessage::class))
             ->willReturn($this->envelope);
 
         ($this->handler)($message);

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Git;
 
+use Carbon\Carbon;
 use DateTime;
 use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
@@ -21,7 +22,7 @@ class CommitTest extends AbstractTestCase
     {
         parent::setUp();
         $author     = new Author('name', 'email');
-        $this->date = new DateTime();
+        $this->date = Carbon::now();
         $refs       = 'refs/remotes/origin/foobar';
         $files      = [new DiffFile()];
         $subject    = "line1\nline2\nline3\n\n";

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Log;
 
-use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -32,25 +31,22 @@ class LockableGitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitsSince
+     * @covers ::getCommitHashes
      * @throws Exception
      */
-    public function testGetCommitsSince(): void
+    public function testGetCommitHashes(): void
     {
         $repository = new Repository();
         $repository->setId(123);
-        $since  = new DateTime();
-        $limit  = 10;
-        $commit = $this->createMock(Commit::class);
 
         $this->lockManager->expects(self::once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->logService->expects(self::once())->method('getCommitsSince')->with($repository, $since, $limit)->willReturn([$commit]);
+        $this->logService->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn(['hash']);
 
-        $result = $this->service->getCommitsSince($repository, $since, $limit);
-        static::assertSame([$commit], $result);
+        $result = $this->service->getCommitHashes($repository);
+        static::assertSame(['hash'], $result);
     }
 
     /**

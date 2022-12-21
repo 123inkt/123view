@@ -33,14 +33,23 @@ class GitShowCommandBuilderTest extends AbstractTestCase
      * @covers ::unified
      * @covers ::ignoreSpaceAtEol
      * @covers ::ignoreCrAtEol
+     * @covers ::noPatch
+     * @covers ::format
      * @covers ::file
      * @covers ::build
      */
     public function testBuild(): void
     {
         static::assertSame(
-            ['git', 'show', 'foobar', '--unified=5', 'hash:file', '--ignore-space-at-eol', '--ignore-cr-at-eol'],
-            $this->builder->startPoint('foobar')->unified(5)->file('hash', 'file')->ignoreSpaceAtEol()->ignoreCrAtEol()->build()
+            ['git', 'show', 'foobar', '--unified=5', '--no-patch', '--format="format"', 'hash:file', '--ignore-space-at-eol', '--ignore-cr-at-eol'],
+            $this->builder->startPoint('foobar')
+                ->unified(5)
+                ->noPatch()
+                ->format('format')
+                ->file('hash', 'file')
+                ->ignoreSpaceAtEol()
+                ->ignoreCrAtEol()
+                ->build()
         );
     }
 
@@ -49,14 +58,22 @@ class GitShowCommandBuilderTest extends AbstractTestCase
      * @covers ::unified
      * @covers ::ignoreSpaceAtEol
      * @covers ::ignoreCrAtEol
+     * @covers ::noPatch
+     * @covers ::format
      * @covers ::file
      * @covers ::__toString
      */
     public function testToString(): void
     {
         static::assertSame(
-            'git show foobar --unified=5 hash:file --ignore-space-at-eol --ignore-cr-at-eol',
-            (string)$this->builder->startPoint('foobar')->unified(5)->file('hash', 'file')->ignoreSpaceAtEol()->ignoreCrAtEol()
+            'git show foobar --unified=5 --no-patch --format="format" hash:file --ignore-space-at-eol --ignore-cr-at-eol',
+            (string)$this->builder->startPoint('foobar')
+                ->unified(5)
+                ->noPatch()
+                ->format('format')
+                ->file('hash', 'file')
+                ->ignoreSpaceAtEol()
+                ->ignoreCrAtEol()
         );
     }
 }

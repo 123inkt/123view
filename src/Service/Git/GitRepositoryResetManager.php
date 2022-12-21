@@ -35,7 +35,7 @@ class GitRepositoryResetManager
             $this->resetService->resetHard($repository);
 
             // checkout master
-            $this->checkoutService->checkout($repository, 'master');
+            $this->checkoutService->checkout($repository, $repository->getMainBranchName());
 
             // cleanup branch
             $this->branchService->tryDeleteBranch($repository, $branchName);
