@@ -10,10 +10,10 @@ use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\FormatPattern;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Log\FormatPatternFactory;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandFactory;
@@ -30,8 +30,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class GitLogServiceTest extends AbstractTestCase
 {
-    private CacheableGitRepositoryService&MockObject $cacheRepositoryService;
-    private GitRepositoryService&MockObject          $repositoryService;
+    private CacheableGitRepositoryService&MockObject $repositoryService;
     private GitCommandBuilderFactory&MockObject      $commandBuilderFactory;
     private GitLogCommandFactory&MockObject          $commandFactory;
     private FormatPatternFactory&MockObject          $patternFactory;
@@ -41,14 +40,12 @@ class GitLogServiceTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->cacheRepositoryService = $this->createMock(CacheableGitRepositoryService::class);
-        $this->repositoryService      = $this->createMock(GitRepositoryService::class);
-        $this->commandBuilderFactory  = $this->createMock(GitCommandBuilderFactory::class);
-        $this->commandFactory         = $this->createMock(GitLogCommandFactory::class);
-        $this->patternFactory         = $this->createMock(FormatPatternFactory::class);
-        $this->logParser              = $this->createMock(GitLogParser::class);
-        $this->logFactory             = new GitLogService(
-            $this->cacheRepositoryService,
+        $this->repositoryService     = $this->createMock(CacheableGitRepositoryService::class);
+        $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
+        $this->commandFactory        = $this->createMock(GitLogCommandFactory::class);
+        $this->patternFactory        = $this->createMock(FormatPatternFactory::class);
+        $this->logParser             = $this->createMock(GitLogParser::class);
+        $this->logFactory            = new GitLogService(
             $this->repositoryService,
             $this->commandBuilderFactory,
             new MockGitRepositoryLockManager(),
@@ -76,7 +73,7 @@ class GitLogServiceTest extends AbstractTestCase
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
 
         // setup mocks
-        $this->cacheRepositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($repository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($repository);
         $this->commandFactory->expects(static::once())->method('fromRule')->with($config)->willReturn($commandBuilder);
         $repository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects(static::once())->method('parse')->with($repositoryConfig, 'output')->willReturn($commits);
@@ -87,34 +84,26 @@ class GitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitsSince
+     * @covers ::getCommitHashes
      * @throws Exception
      */
-    public function testGetCommitsSince(): void
+    public function testGetCommitHashes(): void
     {
-        $limit      = 5;
-        $commits    = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
         $repository = new Repository();
         $repository->setUrl('https://example.com');
-        $since = new DateTime();
 
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);
 
         $this->commandBuilderFactory->expects(self::once())->method('createLog')->willReturn($logBuilder);
-        $this->patternFactory->expects(self::once())->method('createPattern')->willReturn('pattern');
         $logBuilder->expects(self::once())->method('noMerges')->willReturnSelf();
         $logBuilder->expects(self::once())->method('remotes')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('reverse')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('dateOrder')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('format')->with('pattern')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('since')->with($since)->willReturnSelf();
+        $logBuilder->expects(self::once())->method('format')->with(FormatPattern::COMMIT_HASH)->willReturnSelf();
 
-        $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn('output');
+        $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn(" #line1\nline2\n ");
         $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($gitRepository);
-        $this->logParser->expects(static::once())->method('parse')->with($repository, 'output', $limit)->willReturn($commits);
 
-        $this->logFactory->getCommitsSince($repository, $since, $limit);
+        static::assertSame(['line1', 'line2'], $this->logFactory->getCommitHashes($repository));
     }
 
     /**

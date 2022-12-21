@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Log;
 
-use DateTime;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\FormatPattern;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
-use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Parser\GitLogParser;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -22,7 +21,6 @@ class GitLogService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $cachedRepositoryService,
-        private readonly GitRepositoryService $gitRepositoryService,
         private readonly GitCommandBuilderFactory $commandBuilderFactory,
         private readonly GitRepositoryLockManager $lockManager,
         private readonly GitLogCommandFactory $commandFactory,
@@ -66,45 +64,42 @@ class GitLogService implements LoggerAwareInterface
     }
 
     /**
-     * @return Commit[]
+     * @return string[]
      * @throws Exception
      */
-    public function getCommitsSince(Repository $repository, ?DateTime $since = null, ?int $limit = null): array
+    public function getCommitHashes(Repository $repository): array
     {
         $command = $this->commandBuilderFactory->createLog();
         $command->noMerges()
             ->remotes()
-            ->reverse()
-            ->dateOrder()
-            ->format($this->formatPatternFactory->createPattern());
-        if ($since !== null) {
-            $command->since($since);
-        }
+            ->format(FormatPattern::COMMIT_HASH);
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
 
-        // get repository data without cache, fetch new revisions and execute command
-        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        // get repository and execute command
+        $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
 
-        // get commits
-        return $this->logParser->parse($repository, $output, $limit);
+        // cleanup output of any unwanted characters
+        $output = (string)preg_replace("/[^\na-zA-Z0-9]+/", '', $output);
+
+        return array_map('trim', explode("\n", trim($output)));
     }
 
     /**
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommitsFromRange(Repository $repository, string $fromHash, string $toHash): array
+    public function getCommitsFromRange(Repository $repository, string $fromReference, string $toReference): array
     {
         $command = $this->commandBuilderFactory->createLog();
         $command->noMerges()
-            ->hashRange($fromHash, $toHash)
+            ->hashRange($fromReference, $toReference)
             ->format($this->formatPatternFactory->createPattern());
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
 
         // fetch revisions for range
-        $output = $this->gitRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
 
         // get commits
         return $this->logParser->parse($repository, $output);

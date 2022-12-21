@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Fetch;
 
-use Carbon\Carbon;
 use DR\Review\Entity\Git\Commit;
-use DR\Review\Entity\Git\Fetch\BranchUpdate;
+use DR\Review\Entity\Git\Fetch\BranchCreation;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -17,47 +15,34 @@ class GitFetchRemoteRevisionService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private LockableGitLogService $logService,
-        private LockableGitFetchService $fetchService,
-        private RevisionRepository $revisionRepository,
-    ) {
+    public function __construct(private LockableGitLogService $logService, private LockableGitFetchService $fetchService)
+    {
     }
 
     /**
-     * @return Commit[]
+     * @return iterable<Commit>
      * @throws Exception
      */
-    public function fetchRevisionFromRemote(Repository $repository, int $maxRevisions): array
+    public function fetchRevisionFromRemote(Repository $repository): iterable
     {
-        // get commits from fetch
+        // fetch new revisions from remote
         $changes = $this->fetchService->fetch($repository);
         $this->logger?->info(
             "GitFetchRemoteRevisionService: fetched {count} updated or new branches from {name}",
             ['count' => count($changes), 'name' => $repository->getName()]
         );
 
-        // get commit information for the changes
-        $commitsGroup = [];
-        foreach ($changes as $change) {
-            if ($change instanceof BranchUpdate) {
-                $commitsGroup[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);
-            }
-        }
-
-        // find the last revision and get the commits since then +- 2 hours
-        $latestRevision = $this->revisionRepository->findOneBy(['repository' => $repository->getId()], ['createTimestamp' => 'DESC']);
-        $since          = $latestRevision === null ? null : Carbon::createFromTimestampUTC((int)$latestRevision->getCreateTimestamp() - 7200);
-        $commitsGroup[] = $this->logService->getCommitsSince($repository, $since, $maxRevisions);
-
-        // make unique
         $commits = [];
-        foreach ($commitsGroup as $group) {
-            foreach ($group as $commit) {
-                $commits[$commit->commitHashes[0]] = $commit;
+        foreach ($changes as $change) {
+            if ($change instanceof BranchCreation) {
+                $this->logger?->info('Fetch commits from new branch: {branch}', ['branch' => $change->remoteBranch]);
+                $commits[] = $this->logService->getCommitsFromRange($repository, 'origin/' . $repository->getMainBranchName(), $change->remoteBranch);
+            } else {
+                $this->logger?->info('Fetch new commits from existing branch: {branch}', ['branch' => $change->remoteBranch]);
+                $commits[] = $this->logService->getCommitsFromRange($repository, $change->fromHash, $change->toHash);
             }
         }
 
-        return array_values($commits);
+        return array_merge(...$commits);
     }
 }

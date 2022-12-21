@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Git\Diff;
 
-use DateTime;
+use Carbon\Carbon;
 use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Diff\DiffBlock;
@@ -34,7 +34,7 @@ class DiffLineIteratorTest extends AbstractTestCase
         $file = new DiffFile();
         $file->addBlock($block);
 
-        $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), new DateTime(), 'subject', 'refs', [$file]);
+        $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), Carbon::now(), 'subject', 'refs', [$file]);
 
         // execute iterator
         $result = iterator_to_array(new DiffLineIterator([$commit]));

@@ -48,6 +48,38 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @covers ::findByValidateRevisions
+     * @throws Exception
+     */
+    public function testFindByValidateRevisionsWithinRange(): void
+    {
+        $repositoryRepository = self::getService(RepositoryRepository::class);
+        $repository           = Assert::notNull($repositoryRepository->findOneBy(['name' => 'repository']));
+
+        $repository->setValidateRevisionsInterval(500);
+        $repository->setValidateRevisionsTimestamp(time() - 600);
+        $repositoryRepository->save($repository, true);
+
+        static::assertCount(1, $repositoryRepository->findByValidateRevisions());
+    }
+
+    /**
+     * @covers ::findByValidateRevisions
+     * @throws Exception
+     */
+    public function testFindByValidateRevisionsOutsideRange(): void
+    {
+        $repositoryRepository = self::getService(RepositoryRepository::class);
+        $repository           = Assert::notNull($repositoryRepository->findOneBy(['name' => 'repository']));
+
+        $repository->setValidateRevisionsInterval(500);
+        $repository->setValidateRevisionsTimestamp(time() - 100);
+        $repositoryRepository->save($repository, true);
+
+        static::assertCount(0, $repositoryRepository->findByValidateRevisions());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array

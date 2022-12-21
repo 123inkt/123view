@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Show;
 
+use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
-use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Service\Git\Log\FormatPatternFactory;
+use DR\Review\Service\Parser\GitLogParser;
+use DR\Review\Utility\Arrays;
+use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -15,21 +18,29 @@ class GitShowService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly GitCommandBuilderFactory $builderFactory, private readonly GitRepositoryService $repositoryService)
-    {
+    public function __construct(
+        private readonly GitCommandBuilderFactory $builderFactory,
+        private readonly GitRepositoryService $repositoryService,
+        private readonly GitLogParser $logParser,
+        private readonly FormatPatternFactory $formatPatternFactory,
+    ) {
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Exception
      */
-    public function getFileAtRevision(Revision $revision, string $filePath): string
+    public function getCommitFromHash(Repository $repository, string $commitHash): ?Commit
     {
-        /** @var Repository $repository */
-        $repository     = $revision->getRepository();
-        $commandBuilder = $this->builderFactory->createShow()->file((string)$revision->getCommitHash(), $filePath);
+        $commandBuilder = $this->builderFactory->createShow()
+            ->startPoint($commitHash)
+            ->noPatch()
+            ->format($this->formatPatternFactory->createPattern());
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
-        return $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+
+        // get first commit
+        return Arrays::firstOrNull($this->logParser->parse($repository, $output));
     }
 }

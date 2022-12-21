@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
@@ -12,6 +11,7 @@ use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Utility\Assert;
+use DR\Review\Utility\Batch;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,19 +22,13 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private const MAX_COMMITS_PER_MESSAGE = 1000;
-
-    private int $maxCommitsPerMessage;
-
     public function __construct(
         private RepositoryRepository $repositoryRepository,
         private GitFetchRemoteRevisionService $remoteRevisionService,
         private RevisionRepository $revisionRepository,
         private RevisionFactory $revisionFactory,
         private MessageBusInterface $bus,
-        ?int $maxCommitsPerMessage = null
     ) {
-        $this->maxCommitsPerMessage = $maxCommitsPerMessage ?? self::MAX_COMMITS_PER_MESSAGE;
     }
 
     /**
@@ -56,23 +50,20 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
         $this->logger?->info("MessageHandler: repository: " . $message->repositoryId);
         $repository = Assert::notNull($this->repositoryRepository->find($message->repositoryId));
 
-        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository, $this->maxCommitsPerMessage);
-        $this->logger?->info("MessageHandler: {commits} new commits", ['commits' => count($commits)]);
+        // setup batch to save revisions
+        $batch = new Batch(
+            500,
+            function (array $revisions) use ($repository): void {
+                $this->logger?->info("MessageHandler: {revisions} new revisions", ['revisions' => count($revisions)]);
+                $revisions = $this->revisionRepository->saveAll($repository, $revisions);
+                $this->dispatchRevisions($revisions);
+            }
+        );
 
-        if (count($commits) === 0) {
-            return;
+        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository);
+        foreach ($commits as $commit) {
+            $batch->addAll($this->revisionFactory->createFromCommit($commit));
         }
-
-        // chunk and save it
-        /** @var Commit[] $commitChunk */
-        foreach (array_chunk($commits, 50) as $commitChunk) {
-            $revisions = $this->revisionFactory->createFromCommits($commitChunk);
-            $revisions = $this->revisionRepository->saveAll($repository, $revisions);
-            $this->dispatchRevisions($revisions);
-        }
-
-        if (count($commits) >= $this->maxCommitsPerMessage) {
-            $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
-        }
+        $batch->flush();
     }
 }
