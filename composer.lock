@@ -3631,16 +3631,16 @@
         },
         {
             "name": "symfony/amqp-messenger",
-            "version": "v6.2.0",
+            "version": "v6.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/amqp-messenger.git",
-                "reference": "085ec598ae1ce5f9b5717075484d289e9d787dbf"
+                "reference": "c963a9a63c367bdaff23ff6610e78fa26dde0b1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/amqp-messenger/zipball/085ec598ae1ce5f9b5717075484d289e9d787dbf",
-                "reference": "085ec598ae1ce5f9b5717075484d289e9d787dbf",
+                "url": "https://api.github.com/repos/symfony/amqp-messenger/zipball/c963a9a63c367bdaff23ff6610e78fa26dde0b1a",
+                "reference": "c963a9a63c367bdaff23ff6610e78fa26dde0b1a",
                 "shasum": ""
             },
             "require": {
@@ -3680,7 +3680,7 @@
             "description": "Symfony AMQP extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/amqp-messenger/tree/v6.2.0"
+                "source": "https://github.com/symfony/amqp-messenger/tree/v6.2.2"
             },
             "funding": [
                 {
@@ -3696,7 +3696,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-18T13:21:06+00:00"
+            "time": "2022-12-14T16:11:27+00:00"
         },
         {
             "name": "symfony/asset",
