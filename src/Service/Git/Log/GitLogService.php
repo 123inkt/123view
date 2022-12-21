@@ -89,11 +89,11 @@ class GitLogService implements LoggerAwareInterface
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommitsFromRange(Repository $repository, string $fromHash, string $toHash): array
+    public function getCommitsFromRange(Repository $repository, string $fromReference, string $toReference): array
     {
         $command = $this->commandBuilderFactory->createLog();
         $command->noMerges()
-            ->hashRange($fromHash, $toHash)
+            ->hashRange($fromReference, $toReference)
             ->format($this->formatPatternFactory->createPattern());
 
         $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));

@@ -27,8 +27,8 @@ class LockableGitLogService
      * @return Commit[]
      * @throws Exception
      */
-    public function getCommitsFromRange(Repository $repository, string $fromHash, string $toHash): array
+    public function getCommitsFromRange(Repository $repository, string $fromReference, string $toReference): array
     {
-        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsFromRange($repository, $fromHash, $toHash));
+        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsFromRange($repository, $fromReference, $toReference));
     }
 }
