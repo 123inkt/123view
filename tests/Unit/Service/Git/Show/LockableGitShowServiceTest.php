@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class LockableGitShowServiceTest extends AbstractTestCase
 {
-
     private GitRepositoryLockManager&MockObject $lockManager;
     private GitShowService&MockObject           $showService;
     private LockableGitShowService              $service;

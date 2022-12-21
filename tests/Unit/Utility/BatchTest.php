@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Utility;
 
 use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Tests\Helper\MockCallableClass;
 use DR\Review\Utility\Batch;
 use stdClass;
 
@@ -24,14 +25,12 @@ class BatchTest extends AbstractTestCase
         $classB = new stdClass();
         $classC = new stdClass();
 
-        $shouldBeCalled = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['__invoke'])
-            ->getMock();
-        $shouldBeCalled->expects($this->exactly(2))
+        $shouldBeCalled = $this->createMock(MockCallableClass::class);
+        $shouldBeCalled->expects(static::exactly(2))
             ->method('__invoke')
             ->withConsecutive([[$classA, $classB]], [[$classC]]);
 
-        $batch = new Batch(2, [$shouldBeCalled, '__invoke']);
+        $batch = new Batch(2, $shouldBeCalled);
 
         $batch->add($classA);
         $batch->addAll([$classB, $classC]);
