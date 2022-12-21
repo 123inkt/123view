@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Fetch;
 
+use DR\Review\Entity\Git\Fetch\BranchCreation;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\Revision;
@@ -37,7 +38,7 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
      * @covers ::fetchRevisionFromRemote
      * @throws Exception
      */
-    public function testFetchRevisionFromRemote(): void
+    public function testFetchRevisionFromRemoteBranchUpdate(): void
     {
         $repository = new Repository();
         $repository->setId(123);
@@ -48,6 +49,31 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
 
         $this->fetchService->expects(self::once())->method('fetch')->with($repository)->willReturn([$change]);
         $this->logService->expects(self::once())->method('getCommitsFromRange')->with($repository, 'from', 'to')->willReturn([$commit]);
+
+        $result = $this->service->fetchRevisionFromRemote($repository);
+
+        static::assertSame([$commit], $result);
+    }
+
+    /**
+     * @covers ::fetchRevisionFromRemote
+     * @throws Exception
+     */
+    public function testFetchRevisionFromRemoteBranchCreation(): void
+    {
+        $repository = new Repository();
+        $repository->setId(123);
+        $repository->setMainBranchName('main');
+        $change   = new BranchCreation('local/newBranch', 'origin/newBranch');
+        $commit   = $this->createCommit();
+        $revision = new Revision();
+        $revision->setCreateTimestamp(time());
+
+        $this->fetchService->expects(self::once())->method('fetch')->with($repository)->willReturn([$change]);
+        $this->logService->expects(self::once())
+            ->method('getCommitsFromRange')
+            ->with($repository, 'origin/main', 'origin/newBranch')
+            ->willReturn([$commit]);
 
         $result = $this->service->fetchRevisionFromRemote($repository);
 
