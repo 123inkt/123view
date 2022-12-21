@@ -20,19 +20,21 @@ class BatchTest extends AbstractTestCase
      */
     public function testBatch(): void
     {
-        $count = 0;
-        $batch = new Batch(
-            2,
-            static function ($entities) use (&$count): void { // @codingStandardsIgnoreLine
-                $count += count($entities);
-            }
-        );
+        $classA = new stdClass();
+        $classB = new stdClass();
+        $classC = new stdClass();
 
-        $batch->add(new stdClass());
-        $batch->addAll([new stdClass(), new stdClass()]);
-        static::assertSame(2, $count);
+        $shouldBeCalled = $this->getMockBuilder(stdClass::class)
+            ->addMethods(['__invoke'])
+            ->getMock();
+        $shouldBeCalled->expects($this->exactly(2))
+            ->method('__invoke')
+            ->withConsecutive([[$classA, $classB]], [[$classC]]);
 
+        $batch = new Batch(2, [$shouldBeCalled, '__invoke']);
+
+        $batch->add($classA);
+        $batch->addAll([$classB, $classC]);
         $batch->flush();
-        static::assertSame(3, $count);
     }
 }
