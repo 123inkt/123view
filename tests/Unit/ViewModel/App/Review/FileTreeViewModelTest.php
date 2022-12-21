@@ -13,6 +13,7 @@ use DR\Review\Entity\Review\FileSeenStatusCollection;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
+use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -22,7 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 class FileTreeViewModelTest extends AbstractTestCase
 {
     private FileSeenStatusCollection&MockObject $statusCollection;
-    private DiffFile                            $selectedFile;
     /** @var DirectoryTreeNode<DiffFile>&MockObject */
     private MockObject&DirectoryTreeNode $directoryNode;
     private FileTreeViewModel            $viewModel;
@@ -41,7 +41,7 @@ class FileTreeViewModelTest extends AbstractTestCase
             $this->directoryNode,
             $this->commentCollection,
             $this->statusCollection,
-            $this->selectedFile
+            new DiffFile()
         );
     }
 
@@ -63,12 +63,41 @@ class FileTreeViewModelTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider fileSelectedDataProvider
      * @covers ::isFileSelected
      */
-    public function testIsFileSelected(): void
+    public function testIsFileSelected(?DiffFile $selectedFile, DiffFile $file, bool $selected): void
     {
-        static::assertFalse($this->viewModel->isFileSelected(new DiffFile()));
-        static::assertTrue($this->viewModel->isFileSelected($this->selectedFile));
+        $viewModel = new FileTreeViewModel(
+            new CodeReview(),
+            $this->directoryNode,
+            $this->commentCollection,
+            $this->statusCollection,
+            $selectedFile
+        );
+        static::assertSame($selected, $viewModel->isFileSelected($file));
+    }
+
+    public function fileSelectedDataProvider(): Generator
+    {
+        yield [null, new DiffFile(), false];
+        yield [new DiffFile(), new DiffFile(), true];
+
+        $fileA                = new DiffFile();
+        $fileA->filePathAfter = 'after1';
+
+        $fileB                = new DiffFile();
+        $fileB->filePathAfter = 'after2';
+        yield [$fileA, $fileB, false];
+
+        $fileA                = new DiffFile();
+        $fileA->filePathAfter = 'after';
+        $fileA->hashEnd       = 'end1';
+
+        $fileB                = new DiffFile();
+        $fileB->filePathAfter = 'after';
+        $fileB->hashEnd       = 'end2';
+        yield [$fileA, $fileB, false];
     }
 
     /**
