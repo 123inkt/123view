@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Filter;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Filter;
 use RuntimeException;
@@ -11,10 +11,10 @@ use RuntimeException;
 class DefinitionSubjectMatcher
 {
     /**
-     * @param Collection<int, Filter> $filters
+     * @param ReadableCollection<int, Filter> $filters
      * @suppressWarnings(PHPMD.ErrorControlOperator)
      */
-    public function matches(Commit $commit, Collection $filters): bool
+    public function matches(Commit $commit, ReadableCollection $filters): bool
     {
         /** @var Filter $filter */
         foreach ($filters as $filter) {
