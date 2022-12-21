@@ -33,7 +33,6 @@ class FileTreeViewModelTest extends AbstractTestCase
     {
         parent::setUp();
         $this->statusCollection  = $this->createMock(FileSeenStatusCollection::class);
-        $this->selectedFile      = new DiffFile();
         $this->directoryNode     = $this->createMock(DirectoryTreeNode::class);
         $this->commentCollection = new ArrayCollection();
         $this->viewModel         = new FileTreeViewModel(
