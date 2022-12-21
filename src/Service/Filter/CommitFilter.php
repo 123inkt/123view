@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Filter;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 use DR\Review\Doctrine\Type\FilterType;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Filter;
@@ -23,12 +23,12 @@ class CommitFilter
     }
 
     /**
-     * @param Commit[]                $commits
-     * @param Collection<int, Filter> $filters
+     * @param Commit[]                        $commits
+     * @param ReadableCollection<int, Filter> $filters
      *
      * @return Commit[]
      */
-    public function exclude(array $commits, Collection $filters): array
+    public function exclude(array $commits, ReadableCollection $filters): array
     {
         $authors  = $filters->filter(static fn($filter) => $filter->getType() === FilterType::AUTHOR);
         $subjects = $filters->filter(static fn($filter) => $filter->getType() === FilterType::SUBJECT);
@@ -65,12 +65,12 @@ class CommitFilter
     }
 
     /**
-     * @param Commit[]                $commits
-     * @param Collection<int, Filter> $filters
+     * @param Commit[]                        $commits
+     * @param ReadableCollection<int, Filter> $filters
      *
      * @return Commit[]
      */
-    public function include(array $commits, Collection $filters): array
+    public function include(array $commits, ReadableCollection $filters): array
     {
         $authors  = $filters->filter(static fn(Filter $filter) => $filter->getType() === FilterType::AUTHOR);
         $subjects = $filters->filter(static fn(Filter $filter) => $filter->getType() === FilterType::SUBJECT);
@@ -109,9 +109,9 @@ class CommitFilter
     }
 
     /**
-     * @param Collection<int, Filter> $filters
+     * @param ReadableCollection<int, Filter> $filters
      */
-    private function fileFilter(Commit $commit, Collection $filters, bool $exclude): void
+    private function fileFilter(Commit $commit, ReadableCollection $filters, bool $exclude): void
     {
         // filter out file and directory matches
         foreach ($commit->files as $fileIndex => $file) {
