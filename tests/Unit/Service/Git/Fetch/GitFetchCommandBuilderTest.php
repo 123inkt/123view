@@ -58,7 +58,7 @@ class GitFetchCommandBuilderTest extends AbstractTestCase
     public function testToString(): void
     {
         static::assertSame(
-            'git fetch --prune --verbose --all',
+            'git fetch --verbose --prune --all',
             (string)$this->builder->verbose()->prune()->all()
         );
     }
