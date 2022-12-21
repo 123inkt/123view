@@ -49,7 +49,12 @@ class FileTreeViewModel
 
     public function isFileSelected(DiffFile $file): bool
     {
-        return $file === $this->selectedFile;
+        return
+            $this->selectedFile !== null
+            && $file->filePathBefore === $this->selectedFile->filePathBefore
+            && $file->filePathAfter === $this->selectedFile->filePathAfter
+            && $file->hashStart === $this->selectedFile->hashStart
+            && $file->hashEnd === $this->selectedFile->hashEnd;
     }
 
     /**

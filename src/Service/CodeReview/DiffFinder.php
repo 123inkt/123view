@@ -26,19 +26,20 @@ class DiffFinder
             $hashEnd  = (string)$matches[2];
         }
 
+        // filepath matched, but not the hash
+        $partiallyMatchedFile = null;
+
         foreach ($files as $file) {
-            if ($hashEnd !== null && $file->hashEnd !== $hashEnd) {
-                continue;
-            }
+            if ($file->getPathname() === $filePath) {
+                $partiallyMatchedFile = $file;
 
-            if ($file->getFile()?->getPathname() !== $filePath) {
-                continue;
+                if ($hashEnd === null || $file->hashEnd === $hashEnd) {
+                    return $file;
+                }
             }
-
-            return $file;
         }
 
-        return null;
+        return $partiallyMatchedFile;
     }
 
     /**
