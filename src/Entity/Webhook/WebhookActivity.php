@@ -14,7 +14,7 @@ class WebhookActivity
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 1000)]
+    #[ORM\Column(type: 'text', length: 65535)]
     private ?string $request = null;
 
     /** @var array<string, string> */
@@ -24,7 +24,7 @@ class WebhookActivity
     #[ORM\Column(type: 'integer')]
     private ?int $statusCode = null;
 
-    #[ORM\Column(type: 'string', length: 5000)]
+    #[ORM\Column(type: 'text', length: 65535)]
     private ?string $response = null;
 
     /** @var array<string, string|string[]> */

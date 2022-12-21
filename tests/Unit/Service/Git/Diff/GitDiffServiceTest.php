@@ -105,6 +105,8 @@ class GitDiffServiceTest extends AbstractTestCase
 
         $builder = $this->createMock(GitShowCommandBuilder::class);
         $builder->expects(self::once())->method('startPoint')->with('commit-hash')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreCrAtEol')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreSpaceAtEol')->willReturnSelf();
         $builder->expects(self::once())->method('unified')->with(5)->willReturnSelf();
         $this->commandBuilderFactory->expects(self::once())->method('createShow')->willReturn($builder);
 

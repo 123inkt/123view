@@ -86,6 +86,22 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @covers ::getCommitHashes
+     * @throws Exception
+     */
+    public function testGetCommitHashes(): void
+    {
+        $revisionRepository = self::getService(RevisionRepository::class);
+        $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
+        $repository         = $revision->getRepository();
+
+        static::assertNotNull($repository);
+
+        $hashes = $revisionRepository->getCommitHashes($repository);
+        static::assertSame([RevisionFixtures::COMMIT_HASH_A, RevisionFixtures::COMMIT_HASH_B], $hashes);
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array

@@ -5,7 +5,6 @@ namespace DR\Review\Tests\Unit\Service\Git\Log;
 
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\Log\GitLogService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
@@ -32,25 +31,41 @@ class LockableGitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitsSince
+     * @covers ::getCommitHashes
      * @throws Exception
      */
-    public function testGetCommitsSince(): void
+    public function testGetCommitHashes(): void
     {
         $repository = new Repository();
         $repository->setId(123);
-        $revision = new Revision();
-        $revision->setCommitHash('hash');
-        $limit  = 10;
+
+        $this->lockManager->expects(self::once())
+            ->method('start')
+            ->with($repository)
+            ->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->logService->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn(['hash']);
+
+        $result = $this->service->getCommitHashes($repository);
+        static::assertSame(['hash'], $result);
+    }
+
+    /**
+     * @covers ::getCommitsFromRange
+     * @throws Exception
+     */
+    public function testGetCommitsFromRange(): void
+    {
+        $repository = new Repository();
+        $repository->setId(123);
         $commit = $this->createMock(Commit::class);
 
         $this->lockManager->expects(self::once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->logService->expects(self::once())->method('getCommitsSince')->with($repository, $revision, $limit)->willReturn([$commit]);
+        $this->logService->expects(self::once())->method('getCommitsFromRange')->with($repository, 'fromHash', 'toHash')->willReturn([$commit]);
 
-        $result = $this->service->getCommitsSince($repository, $revision, $limit);
+        $result = $this->service->getCommitsFromRange($repository, 'fromHash', 'toHash');
         static::assertSame([$commit], $result);
     }
 }

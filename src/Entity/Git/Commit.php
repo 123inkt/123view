@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Git;
 
-use DateTime;
+use Carbon\Carbon;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -13,11 +13,11 @@ class Commit
     public Repository $repository;
     public string     $parentHash;
     /** @var string[] */
-    public array    $commitHashes;
-    public Author   $author;
-    public DateTime $date;
-    public string   $subject;
-    public ?string  $refs;
+    public array   $commitHashes;
+    public Author  $author;
+    public Carbon  $date;
+    public string  $subject;
+    public ?string $refs;
     /** @var DiffFile[] */
     public array $files;
     /** @var IntegrationLink[] */
@@ -32,7 +32,7 @@ class Commit
         string $parentHash,
         string $commitHash,
         Author $author,
-        DateTime $date,
+        Carbon $date,
         string $subject,
         ?string $refs,
         array $files

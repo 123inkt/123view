@@ -46,8 +46,8 @@ class DiffFinderTest extends AbstractTestCase
         static::assertSame($fileB, $this->finder->findFileByPath($files, '/path/to/file/changed.doc'));
         static::assertSame($fileC, $this->finder->findFileByPath($files, '/path/to/file/created.txt'));
 
-        // with hash
-        static::assertNull($this->finder->findFileByPath($files, '/path/to/file/created.txt:foobar'));
+        // with non-existing hash
+        static::assertSame($fileC, $this->finder->findFileByPath($files, '/path/to/file/created.txt:foobar'));
         $fileC->hashEnd = 'foobar';
         static::assertSame($fileC, $this->finder->findFileByPath($files, '/path/to/file/created.txt:foobar'));
     }

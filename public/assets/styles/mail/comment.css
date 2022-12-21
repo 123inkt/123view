@@ -63,26 +63,27 @@
     filter: grayscale(1);
 }
 
-blockquote {
+.comment__markdown blockquote {
     margin: 0 0 0 0;
     padding-left: 5px;
     border-left: 2px solid #cccccc;
 }
 
-code {
+.comment__markdown code {
     color: #D63384;
     font-size: 13px;
 }
 
-p {
+.comment__markdown ul {
+    margin: 0;
+    padding-left: 15px;
+}
+
+.comment__markdown pre,
+.comment__markdown p {
     margin: 0;
     line-height: 16px;
     border-bottom: 2px solid #FFFEE0;
-}
-
-ul {
-    margin: 0;
-    padding-left: 15px;
 }
 
 .comment__marked-as-resolved {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Filter;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Notification\Filter;
 use RuntimeException;
@@ -11,10 +11,10 @@ use RuntimeException;
 class DefinitionFileMatcher
 {
     /**
-     * @param Collection<int, Filter> $filters
+     * @param ReadableCollection<int, Filter> $filters
      * @suppressWarnings(PHPMD.ErrorControlOperator)
      */
-    public function matches(DiffFile $file, Collection $filters): bool
+    public function matches(DiffFile $file, ReadableCollection $filters): bool
     {
         $filepath = $file->filePathAfter ?? $file->filePathBefore;
         if ($filepath === null) {

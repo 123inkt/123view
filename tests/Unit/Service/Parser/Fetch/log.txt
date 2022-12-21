@@ -1,0 +1,11 @@
+Fetching origin
+remote: Enumerating objects: 20, done.
+remote: Counting objects: 100% (26/26), done.
+remote: Compressing objects: 100% (12/12), done.
+remote: Total 230 (delta 94), reused 162 (delta 64), pack-reused 4
+Receiving objects: 100% (210/210), 277.91 KiB | 5.56 MiB/s, done.
+Resolving deltas: 100% (91/91), completed with 9 local objects.
+From https://github.com/123inkt/123view
+   9a07ab4ebc..060fab08bd  master                 -> origin/master
+ = [up to date]            UpdateToDateBranch     -> origin/UpdateToDateBranch
+ * [new branch]            NewBranch              -> origin/NewBranch

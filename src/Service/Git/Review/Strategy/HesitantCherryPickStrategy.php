@@ -80,7 +80,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
         }
 
         $this->resetService->resetHard($repository);
-        $this->checkoutService->checkout($repository, 'master');
+        $this->checkoutService->checkout($repository, $repository->getMainBranchName());
         $this->branchService->tryDeleteBranch($repository, $branchName);
 
         return $pickable;

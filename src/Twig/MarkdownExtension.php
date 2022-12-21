@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Twig;
 
-use DR\Review\Service\Markdown\MarkdownService;
+use League\CommonMark\MarkdownConverter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class MarkdownExtension extends AbstractExtension
 {
-    public function __construct(private readonly MarkdownService $markdownService)
+    public function __construct(private readonly MarkdownConverter $converter)
     {
     }
 
@@ -23,6 +23,6 @@ class MarkdownExtension extends AbstractExtension
 
     public function convert(string $string): string
     {
-        return $this->markdownService->convert($string);
+        return $this->converter->convert($string)->getContent();
     }
 }

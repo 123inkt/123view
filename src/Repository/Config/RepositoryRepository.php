@@ -41,4 +41,25 @@ class RepositoryRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    /**
+     * @return Repository[]
+     */
+    public function findByValidateRevisions(): array
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb
+            ->where('r.active = 1')
+            ->andWhere(
+                'r.validateRevisionsTimestamp + r.validateRevisionsInterval < :currentTime' .
+                ' OR ' .
+                'r.validateRevisionsTimestamp IS NULL'
+            )
+            ->setParameter('currentTime', time());
+
+        /** @var Repository[] $result */
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
 }
