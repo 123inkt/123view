@@ -82,7 +82,7 @@ class GitLogService implements LoggerAwareInterface
         // cleanup output of any unwanted characters
         $output = (string)preg_replace("/[^\na-zA-Z0-9]+/", '', $output);
 
-        return array_map('trim', explode("\n", $output));
+        return array_map('trim', explode("\n", trim($output)));
     }
 
     /**

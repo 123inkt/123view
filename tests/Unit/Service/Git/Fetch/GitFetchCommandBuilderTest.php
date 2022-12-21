@@ -33,13 +33,14 @@ class GitFetchCommandBuilderTest extends AbstractTestCase
     /**
      * @covers ::verbose
      * @covers ::all
+     * @covers ::prune
      * @covers ::build
      */
     public function testBuildWithOptions(): void
     {
         static::assertSame(
-            ['git', 'fetch', '--verbose', '--all'],
-            $this->builder->verbose()->all()->build()
+            ['git', 'fetch', '--verbose', '--prune', '--all'],
+            $this->builder->verbose()->prune()->all()->build()
         );
     }
 
@@ -57,8 +58,8 @@ class GitFetchCommandBuilderTest extends AbstractTestCase
     public function testToString(): void
     {
         static::assertSame(
-            'git fetch --verbose --all',
-            (string)$this->builder->verbose()->all()
+            'git fetch --prune --verbose --all',
+            (string)$this->builder->verbose()->prune()->all()
         );
     }
 }

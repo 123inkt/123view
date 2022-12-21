@@ -10,6 +10,7 @@ use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Git\FormatPattern;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
@@ -80,6 +81,29 @@ class GitLogServiceTest extends AbstractTestCase
         // execute test
         $actual = $this->logFactory->getCommits($config);
         static::assertSame(array_reverse($commits), $actual);
+    }
+
+    /**
+     * @covers ::getCommitHashes
+     * @throws Exception
+     */
+    public function testGetCommitHashes(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl('https://example.com');
+
+        $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
+        $gitRepository = $this->createMock(GitRepository::class);
+
+        $this->commandBuilderFactory->expects(self::once())->method('createLog')->willReturn($logBuilder);
+        $logBuilder->expects(self::once())->method('noMerges')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('remotes')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('format')->with(FormatPattern::COMMIT_HASH)->willReturnSelf();
+
+        $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn(" #line1\nline2\n ");
+        $this->repositoryService->expects(static::once())->method('getRepository')->with('https://example.com')->willReturn($gitRepository);
+
+        static::assertSame(['line1', 'line2'], $this->logFactory->getCommitHashes($repository));
     }
 
     /**
