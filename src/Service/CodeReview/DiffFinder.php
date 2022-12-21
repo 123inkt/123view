@@ -30,7 +30,7 @@ class DiffFinder
         $partiallyMatchedFile = null;
 
         foreach ($files as $file) {
-            if ($file->getFile()?->getPathname() === $filePath) {
+            if ($file->getPathname() === $filePath) {
                 $partiallyMatchedFile = $file;
 
                 if ($hashEnd === null || $file->hashEnd === $hashEnd) {
