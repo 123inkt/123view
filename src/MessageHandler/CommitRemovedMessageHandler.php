@@ -46,6 +46,7 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
         $review = $revision->getReview();
         if ($review !== null) {
             $review->getRevisions()->removeElement($revision);
+            $revision->setReview(null);
             $this->reviewRepository->save($review, true);
             $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), null));
         }
