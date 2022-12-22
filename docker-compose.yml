@@ -81,7 +81,6 @@ services:
             MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
             MERCURE_EXTRA_DIRECTIVES: |
                 cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}
-        command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
         ports:
             - ${MERCURE_SSL_PORT:-6443}:6443
 
