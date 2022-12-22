@@ -137,7 +137,9 @@
     const publishUrl      = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
     const eventSource     = new EventSource(publishUrl, {withCredentials: true});
     eventSource.onmessage = (event) => {
-        console.log("a", event);
+        const data = JSON.parse(event.data);
+        document.dispatchEvent(new CustomEvent('app.' + data.eventName, {detail: data}));
+        console.log(data);
     }
     {% endif %}
 </script>
