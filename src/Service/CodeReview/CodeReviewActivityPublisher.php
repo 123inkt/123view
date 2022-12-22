@@ -20,9 +20,10 @@ class CodeReviewActivityPublisher
     public function publish(CodeReviewActivity $activity): void
     {
         $payload = [
-            'userId'   => (int)$activity->getUser()?->getId(),
-            'reviewId' => (int)$activity->getReview()?->getId(),
-            'message'  => $this->activityFormatter->format($activity)
+            'userId'    => (int)$activity->getUser()?->getId(),
+            'reviewId'  => (int)$activity->getReview()?->getId(),
+            'eventName' => $activity->getEventName(),
+            'message'   => $this->activityFormatter->format($activity)
         ];
 
         // publish to mercure
