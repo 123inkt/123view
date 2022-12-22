@@ -33,4 +33,6 @@ services:
             - ${RABBITMQ_API_PORT:-15672}:15672
 
     mercure:
+        build:
+            target: dev
         command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev

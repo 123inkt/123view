@@ -31,4 +31,6 @@ services:
         restart: unless-stopped
 
     mercure:
+        build:
+            target: prod
         restart: unless-stopped
