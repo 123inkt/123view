@@ -18,8 +18,9 @@ class MercureTestController
     public function __invoke(): Response
     {
         $update = new Update(
-            '/review/1',
-            json_encode(['status' => 'OutOfStock'])
+            '/review/2',
+            json_encode(['status' => 'OutOfStock']),
+            true // private
         );
 
         $this->hub->publish($update);
