@@ -78,8 +78,8 @@ services:
             SERVER_NAME: |
                 ${APP_HOSTNAME}, mercure, localhost
                 tls /etc/ssl/certs/123view-cert.crt /etc/ssl/private/123view-cert.key
-            MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
-            MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+            MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET}
+            MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET}
             MERCURE_EXTRA_DIRECTIVES: |
                 cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}
         ports:
