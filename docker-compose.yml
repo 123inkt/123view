@@ -1,71 +1,69 @@
 version: '3'
 
 services:
-#    nginx:
-#        container_name: ${NGINX_CONTAINER:-nginx}
-#        build:
-#            args:
-#                VERSION: $NGINX_VERSION
-#            context: .
-#            dockerfile: ./docker/nginx/Dockerfile
-#        ports:
-#            - ${NGINX_PORT:-8080}:80
-#            - ${NGINX_SSL_PORT:-8443}:443
-#        volumes:
-#            - ./public:/app/public
-#        depends_on:
-#            - php-fpm
-#
-#    php-fpm:
-#        container_name: ${PHP_CONTAINER:-php-fpm}
-#        build:
-#            args:
-#                VERSION: $PHP_VERSION
-#            context: .
-#            dockerfile: ./docker/php-fpm/Dockerfile
-#        environment:
-#            PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
-#        depends_on:
-#            mysql:
-#                condition: service_healthy
-#            rabbitmq:
-#                condition: service_healthy
-#            mail:
-#                condition: service_started
-#        volumes:
-#            - .:/app:rw
-#
-#    mysql:
-#        container_name: ${MYSQL_CONTAINER:-mysql}
-#        build:
-#            args:
-#                VERSION: $MYSQL_VERSION
-#            context: ./docker/mysql
-#        cap_add:
-#            - SYS_NICE  # CAP_SYS_NICE
-#        ports:
-#            - ${MYSQL_PORT:-3306}:3306
-#        healthcheck:
-#            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-#            timeout: 20s
-#            retries: 10
-#        volumes:
-#            - ./docker/db/data:/var/lib/mysql
-#
-#    rabbitmq:
-#        container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
-#        image: bitnami/rabbitmq:latest
-#        healthcheck:
-#            test: rabbitmq-diagnostics -q ping
-#            interval: 30s
-#            timeout: 30s
-#            retries: 10
-#
-#    mail:
-#        container_name: ${MAIL_CONTAINER:-mail}
-#        image: bytemark/smtp
+    nginx:
+        container_name: ${NGINX_CONTAINER:-nginx}
+        build:
+            args:
+                VERSION: $NGINX_VERSION
+            context: .
+            dockerfile: ./docker/nginx/Dockerfile
+        ports:
+            - ${NGINX_PORT:-8080}:80
+            - ${NGINX_SSL_PORT:-8443}:443
+        volumes:
+            - ./public:/app/public
+        depends_on:
+            - php-fpm
 
-    #tls /etc/ssl/certs/123view-cert.crt /etc/ssl/private/123view-cert.key
+    php-fpm:
+        container_name: ${PHP_CONTAINER:-php-fpm}
+        build:
+            args:
+                VERSION: $PHP_VERSION
+            context: .
+            dockerfile: ./docker/php-fpm/Dockerfile
+        environment:
+            PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
+        depends_on:
+            mysql:
+                condition: service_healthy
+            rabbitmq:
+                condition: service_healthy
+            mail:
+                condition: service_started
+        volumes:
+            - .:/app:rw
+
+    mysql:
+        container_name: ${MYSQL_CONTAINER:-mysql}
+        build:
+            args:
+                VERSION: $MYSQL_VERSION
+            context: ./docker/mysql
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
+        ports:
+            - ${MYSQL_PORT:-3306}:3306
+        healthcheck:
+            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+            timeout: 20s
+            retries: 10
+        volumes:
+            - ./docker/db/data:/var/lib/mysql
+
+    rabbitmq:
+        container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
+        image: bitnami/rabbitmq:latest
+        healthcheck:
+            test: rabbitmq-diagnostics -q ping
+            interval: 30s
+            timeout: 30s
+            retries: 10
+
+    mail:
+        container_name: ${MAIL_CONTAINER:-mail}
+        image: bytemark/smtp
 
     mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}
