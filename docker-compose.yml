@@ -65,25 +65,25 @@ services:
 #        container_name: ${MAIL_CONTAINER:-mail}
 #        image: bytemark/smtp
 
+    #tls /etc/ssl/certs/123view-cert.crt /etc/ssl/private/123view-cert.key
+
     mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}
-        image: dunglas/mercure
+        build:
+            context: .
+            dockerfile: ./docker/mercure/Dockerfile
         environment:
             GLOBAL_OPTIONS: |
-                debug
                 http_port     6080
                 https_port    6443
             SERVER_NAME: |
                 ${APP_HOSTNAME}, mercure, localhost
-                tls /config/selfsigned.crt /config/selfsigned.key
+                tls /etc/ssl/certs/123view-cert.crt /etc/ssl/private/123view-cert.key
             MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
             MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
             MERCURE_EXTRA_DIRECTIVES: |
                 cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}
         command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
-        volumes:
-            - ./docker/mercure/data:/data
-            - ./docker/mercure/config:/config
         ports:
             - ${MERCURE_SSL_PORT:-6443}:6443
 
