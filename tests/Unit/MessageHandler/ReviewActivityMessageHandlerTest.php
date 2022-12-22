@@ -9,6 +9,7 @@ use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\MessageHandler\ReviewActivityMessageHandler;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
+use DR\Review\Service\CodeReview\CodeReviewActivityPublisher;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
@@ -21,6 +22,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
 {
     private CodeReviewActivityProvider&MockObject   $activityProvider;
     private CodeReviewActivityRepository&MockObject $activityRepository;
+    private CodeReviewActivityPublisher&MockObject  $activityPublisher;
     private ReviewActivityMessageHandler            $messageHandler;
 
     public function setUp(): void
@@ -28,7 +30,8 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->activityProvider   = $this->createMock(CodeReviewActivityProvider::class);
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
-        $this->messageHandler     = new ReviewActivityMessageHandler($this->activityProvider, $this->activityRepository);
+        $this->activityPublisher  = $this->createMock(CodeReviewActivityPublisher::class);
+        $this->messageHandler     = new ReviewActivityMessageHandler($this->activityProvider, $this->activityRepository, $this->activityPublisher);
     }
 
     /**
@@ -54,6 +57,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
         $activity = new CodeReviewActivity();
         $this->activityProvider->expects(self::once())->method('fromEvent')->with($event)->willReturn($activity);
         $this->activityRepository->expects(self::once())->method('save')->with($activity, true);
+        $this->activityPublisher->expects(self::once())->method('publish')->with($activity);
         ($this->messageHandler)($event);
     }
 }
