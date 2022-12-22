@@ -133,11 +133,13 @@
         });
     });
 
-    const publishUrl       = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
+    {% if is_granted('ROLE_USER') %}
+    const publishUrl      = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
     const eventSource     = new EventSource(publishUrl, {withCredentials: true});
     eventSource.onmessage = (event) => {
         console.log("a", event);
     }
+    {% endif %}
 </script>
 </body>
 </html>
