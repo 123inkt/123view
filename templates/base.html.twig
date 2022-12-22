@@ -82,9 +82,8 @@
 
                                             {% set new_user_count = new_user_count() %}
                                             {% if new_user_count > 0 %}
-                                            <span class="ms-1 badge rounded-pill bg-success"
-                                                  title="{{ 'users.new.user.waiting.for.approval'|trans({count: new_user_count}) }}"
-                                            >+{{ new_user_count }}</span>
+                                                <span class="ms-1 badge rounded-pill bg-success"
+                                                      title="{{ 'users.new.user.waiting.for.approval'|trans({count: new_user_count}) }}">+{{ new_user_count }}</span>
                                             {% endif %}
                                         </a>
                                     </li>
@@ -132,16 +131,13 @@
             // instantiate module and notify controller
             new module.default(el).connect();
         });
-
-
-        const eventSourceA = new EventSource("{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}", {
-            withCredentials: true
-        });
-
-        eventSourceA.onmessage = (event) => {
-            console.log("a", event);
-        }
     });
+
+    const publishUrl       = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
+    const eventSource     = new EventSource(publishUrl, {withCredentials: true});
+    eventSource.onmessage = (event) => {
+        console.log("a", event);
+    }
 </script>
 </body>
 </html>
