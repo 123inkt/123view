@@ -48,7 +48,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->willReturn([$activityA, $activityB]);
         $this->activityFormatter->expects(self::exactly(2))
             ->method('format')
-            ->withConsecutive([$this->user, $activityA], [$this->user, $activityA])
+            ->withConsecutive([$activityA, $this->user], [$activityA, $this->user])
             ->willReturn('message', null);
 
         $viewModel = $this->provider->getTimelineViewModel($review);
