@@ -133,7 +133,7 @@
             new module.default(el).connect();
         });
 
-        let url = new URL('http://phoebe.drshop.123dev.nl:8088/.well-known/mercure');
+        let url = new URL('https://phoebe.drshop.123dev.nl:6443/.well-known/mercure');
         url.searchParams.append('topic', '/review/1');
 
         const eventSource = new EventSource(url);
