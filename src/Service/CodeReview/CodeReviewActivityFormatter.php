@@ -54,7 +54,7 @@ class CodeReviewActivityFormatter
     ) {
     }
 
-    public function format(User $user, CodeReviewActivity $activity): ?string
+    public function format(CodeReviewActivity $activity, ?User $user = null): ?string
     {
         $translationId = $this->getTranslationId($activity);
         if ($translationId === null) {

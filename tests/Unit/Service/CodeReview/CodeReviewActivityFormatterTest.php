@@ -68,7 +68,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::never())->method('find');
 
-        $this->formatter->format($user, $activity);
+        $this->formatter->format($activity, $user);
     }
 
     /**
@@ -93,7 +93,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->userRepository->expects(self::once())->method('find')->with(789)->willReturn($reviewerUser);
         $this->revisionRepository->expects(self::never())->method('find');
 
-        $this->formatter->format($user, $activity);
+        $this->formatter->format($activity, $user);
     }
 
     /**
@@ -117,7 +117,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::never())->method('find');
 
-        $this->formatter->format($user, $activity);
+        $this->formatter->format($activity, $user);
     }
 
     /**
@@ -145,7 +145,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::once())->method('find')->with(789)->willReturn($revision);
 
-        $this->formatter->format($user, $activity);
+        $this->formatter->format($activity, $user);
     }
 
     /**
@@ -171,7 +171,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->willReturnArgument(0);
         $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn($comment);
 
-        $this->formatter->format($user, $activity);
+        $this->formatter->format($activity, $user);
     }
 
     /**
@@ -191,6 +191,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::never())->method('find');
 
-        static::assertNull($this->formatter->format($user, $activity));
+        static::assertNull($this->formatter->format($activity, $user));
     }
 }
