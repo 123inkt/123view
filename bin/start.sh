@@ -54,15 +54,15 @@ if [ "$mode" == 'prod' ]; then
     [[ -f ".env.prod.local" ]] && source .env.prod.local
     set +o allexport
 
-    cp ${SSL_DHPARAM}         ./docker/nginx/ssl/production/dhparam.pem
-    cp ${SSL_CERTIFICATE}     ./docker/nginx/ssl/production/production.crt
-    cp ${SSL_CERTIFICATE_KEY} ./docker/nginx/ssl/production/production.key
+    cp ${SSL_DHPARAM}         ./docker/ssl/production/dhparam.pem
+    cp ${SSL_CERTIFICATE}     ./docker/ssl/production/production.crt
+    cp ${SSL_CERTIFICATE_KEY} ./docker/ssl/production/production.key
 
     if [ "$REBUILD" == 'yes' ]; then
         DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.production.yml build
     fi
     docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
-    docker-compose logs --tail=2 --follow
+    docker-compose logs --tail=5 --follow
 
     exit 0;
 
@@ -76,6 +76,6 @@ elif [ "$mode" == 'dev' ]; then
     if [ "$REBUILD" == 'yes' ]; then
         DOCKER_BUILDKIT=1 docker-compose build
     fi
-    docker-compose up -d
-    docker-compose logs --tail=2 --follow
+    docker-compose up -d --remove-orphans
+    docker-compose logs --tail=5 --follow
 fi

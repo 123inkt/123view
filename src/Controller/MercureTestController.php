@@ -18,7 +18,7 @@ class MercureTestController
     public function __invoke(): Response
     {
         $update = new Update(
-            'https://example.com/books/1',
+            '/review/1',
             json_encode(['status' => 'OutOfStock'])
         );
 

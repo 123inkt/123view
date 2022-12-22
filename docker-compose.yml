@@ -1,86 +1,91 @@
 version: '3'
 
 services:
-    nginx:
-        container_name: ${NGINX_CONTAINER:-nginx}
-        build:
-            args:
-                VERSION: $NGINX_VERSION
-            context: .
-            dockerfile: ./docker/nginx/Dockerfile
-        ports:
-            - ${NGINX_PORT:-8080}:80
-            - ${NGINX_SSL_PORT:-8443}:443
-        volumes:
-            - ./public:/app/public
-        depends_on:
-            - php-fpm
-
-    php-fpm:
-        container_name: ${PHP_CONTAINER:-php-fpm}
-        build:
-            args:
-                VERSION: $PHP_VERSION
-            context: .
-            dockerfile: ./docker/php-fpm/Dockerfile
-        environment:
-            PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
-        depends_on:
-            mysql:
-                condition: service_healthy
-            rabbitmq:
-                condition: service_healthy
-            mail:
-                condition: service_started
-        volumes:
-            - .:/app:rw
-
-    mysql:
-        container_name: ${MYSQL_CONTAINER:-mysql}
-        build:
-            args:
-                VERSION: $MYSQL_VERSION
-            context: ./docker/mysql
-        cap_add:
-            - SYS_NICE  # CAP_SYS_NICE
-        ports:
-            - ${MYSQL_PORT:-3306}:3306
-        healthcheck:
-            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-            timeout: 20s
-            retries: 10
-        volumes:
-            - ./docker/db/data:/var/lib/mysql
-
-    rabbitmq:
-        container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
-        image: bitnami/rabbitmq:latest
-        healthcheck:
-            test: rabbitmq-diagnostics -q ping
-            interval: 30s
-            timeout: 30s
-            retries: 10
-
-    mail:
-        container_name: ${MAIL_CONTAINER:-mail}
-        image: bytemark/smtp
+#    nginx:
+#        container_name: ${NGINX_CONTAINER:-nginx}
+#        build:
+#            args:
+#                VERSION: $NGINX_VERSION
+#            context: .
+#            dockerfile: ./docker/nginx/Dockerfile
+#        ports:
+#            - ${NGINX_PORT:-8080}:80
+#            - ${NGINX_SSL_PORT:-8443}:443
+#        volumes:
+#            - ./public:/app/public
+#        depends_on:
+#            - php-fpm
+#
+#    php-fpm:
+#        container_name: ${PHP_CONTAINER:-php-fpm}
+#        build:
+#            args:
+#                VERSION: $PHP_VERSION
+#            context: .
+#            dockerfile: ./docker/php-fpm/Dockerfile
+#        environment:
+#            PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
+#        depends_on:
+#            mysql:
+#                condition: service_healthy
+#            rabbitmq:
+#                condition: service_healthy
+#            mail:
+#                condition: service_started
+#        volumes:
+#            - .:/app:rw
+#
+#    mysql:
+#        container_name: ${MYSQL_CONTAINER:-mysql}
+#        build:
+#            args:
+#                VERSION: $MYSQL_VERSION
+#            context: ./docker/mysql
+#        cap_add:
+#            - SYS_NICE  # CAP_SYS_NICE
+#        ports:
+#            - ${MYSQL_PORT:-3306}:3306
+#        healthcheck:
+#            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+#            timeout: 20s
+#            retries: 10
+#        volumes:
+#            - ./docker/db/data:/var/lib/mysql
+#
+#    rabbitmq:
+#        container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
+#        image: bitnami/rabbitmq:latest
+#        healthcheck:
+#            test: rabbitmq-diagnostics -q ping
+#            interval: 30s
+#            timeout: 30s
+#            retries: 10
+#
+#    mail:
+#        container_name: ${MAIL_CONTAINER:-mail}
+#        image: bytemark/smtp
 
     mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}
         image: dunglas/mercure
         environment:
-            GLOBAL_OPTIONS: "auto_https off"
-            SERVER_NAME: ":8088"
+            GLOBAL_OPTIONS: |
+                debug
+                http_port     6080
+                https_port    6443
+            SERVER_NAME: |
+                ${APP_HOSTNAME}, mercure, localhost
+                tls /config/selfsigned.crt /config/selfsigned.key
             MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
             MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
             MERCURE_EXTRA_DIRECTIVES: |
-                cors_origins https://phoebe.drshop.123dev.nl:8443
+                cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}
         command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
         volumes:
             - ./docker/mercure/data:/data
             - ./docker/mercure/config:/config
         ports:
-            - ${MERCURE_PORT:-8088}:8088
+            - ${MERCURE_SSL_PORT:-6443}:6443
 
 networks:
     default:
