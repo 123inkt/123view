@@ -10,9 +10,9 @@ export default class ReviewChangedNotification extends Controller {
     }
 
     handleNotification(event) {
-        const userId = parseInt(this.el.dataset.userId);
+        const userId   = parseInt(this.el.dataset.userId);
         const reviewId = parseInt(this.el.dataset.reviewId);
-        const data = event.detail;
+        const data     = event.detail;
 
         // notification for different review
         if (data.reviewId !== reviewId) {
