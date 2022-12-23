@@ -34,21 +34,15 @@
     {#- axios -#}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
 
+    {{- encore_entry_link_tags('app') -}}
     {%- for js in encore_entry_js_files('app') -%}
         <script src="{{ js }}" defer></script>
-    {% endfor -%}
-
-    {#- application -#}
-{#    <link href="{{ asset('/assets/styles/main.css') }}" rel="stylesheet">#}
-{#    <link href="{{ asset('/assets/styles/review.css') }}" rel="stylesheet">#}
-{#    <link href="{{ asset('/assets/styles/review.revisions.css') }}" rel="stylesheet">#}
-{#    <link href="{{ asset('/assets/styles/review-file-diff.css') }}" rel="stylesheet">#}
-{#    <link href="{{ asset('/assets/styles/comment.css') }}" rel="stylesheet">#}
-{#    <link href="{{ asset('/assets/styles/markdown.css') }}" rel="stylesheet">#}
-</head>
+    {%- endfor -%}
 <body>
 
 {% apply spaceless %}
+    <div data-controller="hello"></div>
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
