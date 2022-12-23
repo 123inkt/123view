@@ -34,13 +34,17 @@
     {#- axios -#}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
 
+    {%- for js in encore_entry_js_files('app') -%}
+        <script src="{{ js }}" defer></script>
+    {% endfor -%}
+
     {#- application -#}
-    <link href="{{ asset('/assets/styles/main.css') }}" rel="stylesheet">
-    <link href="{{ asset('/assets/styles/review.css') }}" rel="stylesheet">
-    <link href="{{ asset('/assets/styles/review.revisions.css') }}" rel="stylesheet">
-    <link href="{{ asset('/assets/styles/review-file-diff.css') }}" rel="stylesheet">
-    <link href="{{ asset('/assets/styles/comment.css') }}" rel="stylesheet">
-    <link href="{{ asset('/assets/styles/markdown.css') }}" rel="stylesheet">
+{#    <link href="{{ asset('/assets/styles/main.css') }}" rel="stylesheet">#}
+{#    <link href="{{ asset('/assets/styles/review.css') }}" rel="stylesheet">#}
+{#    <link href="{{ asset('/assets/styles/review.revisions.css') }}" rel="stylesheet">#}
+{#    <link href="{{ asset('/assets/styles/review-file-diff.css') }}" rel="stylesheet">#}
+{#    <link href="{{ asset('/assets/styles/comment.css') }}" rel="stylesheet">#}
+{#    <link href="{{ asset('/assets/styles/markdown.css') }}" rel="stylesheet">#}
 </head>
 <body>
 
@@ -125,14 +129,14 @@
 {%- block page %}{% endblock -%}
 
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('[data-controller]').forEach(async (el) => {
-            const module = await import('/assets/js/' + el.dataset.controller + '.js?{{ app_asset_version|e('url') }}');
+    {#window.addEventListener('DOMContentLoaded', () => {#}
+    {#    document.querySelectorAll('[data-controller]').forEach(async (el) => {#}
+    {#        const module = await import('/assets/js/' + el.dataset.controller + '.js?{{ app_asset_version|e('url') }}');#}
 
-            // instantiate module and notify controller
-            new module.default(el).connect();
-        });
-    })
+    {#        // instantiate module and notify controller#}
+    {#        new module.default(el).connect();#}
+    {#    });#}
+    {#})#}
 </script>
 </body>
 </html>
