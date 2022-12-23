@@ -1,10 +1,8 @@
 {# review: CodeReview #}
-<div class="review-notification-list"
-     data-controller="ReviewNotificationList"
-     data-review-id="{{ review.id }}"
-     data-user-id="{{ app.user.id }}"
->
+<div class="review-notification-list" data-controller="ReviewNotificationList" data-review-id="{{ review.id }}" data-user-id="{{ app.user.id }}">
     <template data-role="template">
-        <div class="review-notification bg-dark text-light small rounded-2 p-2 shadow-sm mt-2" data-role="item"></div>
+        <div class="review-notification-container">
+            <div class="bg-dark text-light small rounded-2 p-2 shadow-sm mt-2" data-role="item"></div>
+        </div>
     </template>
 </div>
