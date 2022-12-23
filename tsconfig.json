@@ -1,12 +1,26 @@
 {
     "compilerOptions": {
-        "target": "ES2015",
+        "target": "es2017",
         "module": "commonjs",
         "strict": true,
+        "allowJs": false,
         "esModuleInterop": true,
         "skipLibCheck": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
         "forceConsistentCasingInFileNames": true
     },
     "$schema": "https://json.schemastore.org/tsconfig",
-    "display": "Recommended"
+    "display": "Recommended",
+    "include": [
+        "./assets"
+    ],
+    "exclude": [
+        "./node_modules",
+        "./public",
+        "./var",
+        "./vendor"
+    ]
 }

@@ -65,6 +65,14 @@ services:
         container_name: ${MAIL_CONTAINER:-mail}
         image: bytemark/smtp
 
+    nodejs:
+        container_name: ${NODEJS_CONTAINER:-nodejs}
+        build:
+            context: .
+            dockerfile: ./docker/nodejs/Dockerfile
+        volumes:
+            - .:/app:rw
+
 
 networks:
     default:
