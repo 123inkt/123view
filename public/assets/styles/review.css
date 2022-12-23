@@ -142,3 +142,11 @@
 .review-grid-sidebar #add_reviewer_form_user option[value=""] {
     color: var(--review-add-reviewer-placeholder-color);
 }
+
+.review-reload-required {
+    display: none;
+    left: calc(50% - 100px);
+    position: absolute;
+    top: 0;
+    width: 300px;
+}

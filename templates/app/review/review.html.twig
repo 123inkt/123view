@@ -4,6 +4,13 @@
     {% set review = reviewModel.review %}
     {% set reviewer = reviewModel.getReviewer(app.user) %}
 
+    <div class="review-reload-required bg-primary text-white rounded-bottom ps-2 pe-2 pt-1 pb-1"
+         data-controller="ReviewChangedNotification"
+         data-review-id="{{ review.id }}"
+         data-user-id="{{ app.user.id }}">
+        {{ 'The review was updated'|trans }}. <a href="#" class="text-white" data-role="reload">Click to reload</a>
+    </div>
+
     <div class="review-grid-layout" data-controller="Review">
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
 

@@ -124,6 +124,12 @@
 {%- block page %}{% endblock -%}
 
 <script>
+    {% if is_granted('ROLE_USER') %}
+    const publishUrl      = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
+    const eventSource     = new EventSource(publishUrl, {withCredentials: true});
+    eventSource.onmessage = (event) => document.dispatchEvent(new CustomEvent('notification', {detail: JSON.parse(event.data)}))
+    {% endif %}
+
     window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-controller]').forEach(async (el) => {
             const module = await import('/assets/js/' + el.dataset.controller + '.js?{{ app_asset_version|e('url') }}');
@@ -132,15 +138,6 @@
             new module.default(el).connect();
         });
     });
-
-    {% if is_granted('ROLE_USER') %}
-    const publishUrl      = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
-    const eventSource     = new EventSource(publishUrl, {withCredentials: true});
-    eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        document.dispatchEvent(new CustomEvent('app.' + data.eventName, {detail: data}));
-    }
-    {% endif %}
 </script>
 </body>
 </html>
