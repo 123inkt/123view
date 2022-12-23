@@ -139,7 +139,6 @@
     eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
         document.dispatchEvent(new CustomEvent('app.' + data.eventName, {detail: data}));
-        console.log(data);
     }
     {% endif %}
 </script>
