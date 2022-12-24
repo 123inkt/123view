@@ -6,9 +6,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/darcula.min.css"
       integrity="sha384-lFTccAW6wisFEYAki2MTNxxZgyCnDAm0kr2UxurXE9g01lWUcpLiU9gyyHykJUm8"
       crossorigin="anonymous"
-      media="{{ media|default('screen') }}"
->
-<link href="{{ asset('/assets/styles/theme.dark.css') }}"
-      rel="stylesheet"
-      media="{{ media|default('screen') }}"
->
+      media="{{ media|default('screen') }}">
+{%- for css in encore_entry_css_files('app.dark') -%}
+    <link href="{{ css }}" rel="stylesheet" media="{{ media|default('screen') }}">
+{%- endfor -%}
