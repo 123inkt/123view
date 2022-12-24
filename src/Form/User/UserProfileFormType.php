@@ -45,7 +45,7 @@ class UserProfileFormType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'attr' => ['data-controller' => 'FormSubmitter'],
+                'attr' => ['data-controller' => 'form-submitter'],
                 'user' => null,
                 'data_class' => User::class,
             ]
