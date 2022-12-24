@@ -31,9 +31,6 @@
           integrity="sha384-YdM/o2MTG+kIKs1sV/gSEWXZo5d1DdBeuo/6s8qMJd5I5FKkStdHSXeNukljrWUZ"
           crossorigin="anonymous">
 
-    {#- axios -#}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
-
     {{- encore_entry_link_tags('app') -}}
     {%- for js in encore_entry_js_files('app') -%}
         <script src="{{ js }}" defer></script>
