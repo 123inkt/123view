@@ -4,7 +4,7 @@
     {% set review = reviewModel.review %}
     {% set reviewer = reviewModel.getReviewer(app.user) %}
 
-    <div class="review-grid-layout" data-controller="Review">
+    <div class="review-grid-layout" data-controller="review">
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
 
         {%- include 'app/review/review.sidebar.html.twig' -%}

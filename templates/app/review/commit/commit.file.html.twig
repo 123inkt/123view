@@ -43,7 +43,7 @@
 </div>
 
 <div class="diff-file__file-revision-scrollpane" data-controller="scroll-positioner">
-    <div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
+    <div class="diff-file__file-revision-file" data-review-target="revisionFile" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
         {%- if file.blocks -%}
             {%- for detachedComment in commentsViewModel.detachedComments -%}
                 {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}

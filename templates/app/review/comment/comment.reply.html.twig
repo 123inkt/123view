@@ -9,7 +9,7 @@
             {# edit comment #}
             <a href="javascript:"
                class="ms-1 text-decoration-none"
-               data-role="edit-reply"
+               data-action="click->review#editReply"
                data-reply-id="{{ reply.id }}"
                title="{{ 'edit.comment'|trans }}">
                 <i class="bi bi-pencil-fill"></i>
@@ -21,7 +21,7 @@
                 <input type="hidden" name="_method" value="DELETE" />
                 <a href="javascript:"
                    class="ms-1 text-decoration-none"
-                   data-role="delete-reply"
+                   data-action="click->review#deleteReply"
                    data-confirm-message="{{ 'confirm.delete.reply'|trans }}"
                    title="{{ 'delete.comment'|trans }}">
                     <i class="bi bi-trash-fill text-danger"></i>
