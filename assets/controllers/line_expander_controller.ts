@@ -1,8 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
-
-    expand() {
+    public expand(): void {
         // show all hidden lines above this collapsed block
         for (let el = this.element.previousSibling; el !== null; el = el.previousSibling) {
             if (el.nodeType !==  Node.ELEMENT_NODE) {

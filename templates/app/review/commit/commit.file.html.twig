@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div class="diff-file__file-revision-scrollpane" data-controller="ScrollPositioner">
+<div class="diff-file__file-revision-scrollpane" data-controller="scroll-positioner">
     <div class="diff-file__file-revision-file" data-role="revision-file" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
         {%- if file.blocks -%}
             {%- for detachedComment in commentsViewModel.detachedComments -%}

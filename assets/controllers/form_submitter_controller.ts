@@ -1,7 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
-    connect() {
+    public connect(): void {
         const element = (<HTMLFormElement>this.element);
         element.addEventListener('change', () => element.submit());
     }
