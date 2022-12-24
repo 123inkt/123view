@@ -3,12 +3,12 @@
 
     <div data-role="filters">
         {% for filter in filters %}
-            {% include '/app/filter.html.twig' %}
+            {% include '/app/notification/filter.html.twig' %}
         {% endfor %}
     </div>
 
     <template data-role="filter-template">
-        {% include '/app/filter.html.twig' with {filter: filters.vars.prototype} %}
+        {% include '/app/notification/filter.html.twig' with {filter: filters.vars.prototype} %}
     </template>
 
     <a href="javascript:" data-role="addFilter" class="btn btn-outline-primary">

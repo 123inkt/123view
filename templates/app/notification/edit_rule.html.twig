@@ -28,16 +28,16 @@
         </div>
 
         {# name #}
-        {% include '/app/form_row.html.twig' with {form: form.rule.name} %}
+        {% include '/app/notification/form_row.html.twig' with {form: form.rule.name} %}
 
         {# frequency #}
-        {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.frequency} %}
+        {% include '/app/notification/form_row.html.twig' with {form: form.rule.ruleOptions.frequency} %}
 
         {# mail theme #}
-        {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.theme} %}
+        {% include '/app/notification/form_row.html.twig' with {form: form.rule.ruleOptions.theme} %}
 
         {# subject #}
-        {% include '/app/form_row.html.twig' with
+        {% include '/app/notification/form_row.html.twig' with
             {
                 form: form.rule.ruleOptions.subject,
                 form_help: 'rule.options.subject.help'|trans
@@ -58,7 +58,7 @@
 
         {# recipients #}
         {% if form.rule.recipients is defined %}
-            {% include '/app/recipients.html.twig' with {recipients: form.rule.recipients} %}
+            {% include '/app/notification/recipients.html.twig' with {recipients: form.rule.recipients} %}
         {% endif %}
 
         {# filters #}
@@ -78,8 +78,8 @@
             </ul>
         </small>
 
-        {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'include.commits'|trans} %}
-        {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'exclude.commits'|trans} %}
+        {% include '/app/notification/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'include.commits'|trans} %}
+        {% include '/app/notification/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'exclude.commits'|trans} %}
 
         {# advanced #}
         <fieldset class="mb-4 row">

@@ -29,7 +29,7 @@ class RuleController extends AbstractController
      * @return array<string, EditRuleViewModel>|RedirectResponse
      */
     #[Route('/app/rules/rule/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
-    #[Template('app/edit_rule.html.twig')]
+    #[Template('app/notification/edit_rule.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] ?Rule $rule): array|RedirectResponse
     {
