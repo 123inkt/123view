@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Message\Comment;
 
-use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
 
 /**
- * @coversDefaultClass \DR\Review\Message\Comment\CommentAdded
+ * @coversDefaultClass \DR\Review\Message\Comment\CommentRemoved
  */
-class CommentAddedTest extends AbstractMessageEventTestCase
+class CommentRemovedTest extends AbstractMessageEventTestCase
 {
     /**
      * @covers ::__construct
@@ -22,12 +22,12 @@ class CommentAddedTest extends AbstractMessageEventTestCase
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(
-            new CommentAdded(5, 6, 7, 'file', 'message'),
-            'comment-added',
+            new CommentRemoved(5, 6, 7, 'file', 'message'),
+            'comment-removed',
             5,
             ['commentId' => 6, 'file' => 'file', 'message' => 'message']
         );
-        static::assertCommentEvent(new CommentAdded(5, 6, 7, 'file', 'message'), 6);
-        static::assertUserAware(new CommentAdded(5, 6, 7, 'file', 'message'), 7);
+        static::assertCommentEvent(new CommentRemoved(5, 6, 7, 'file', 'message'), 6);
+        static::assertUserAware(new CommentRemoved(5, 6, 7, 'file', 'message'), 7);
     }
 }

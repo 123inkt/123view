@@ -22,12 +22,12 @@ class CommentUpdatedTest extends AbstractMessageEventTestCase
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(
-            new CommentUpdated(5, 6, 7, 'original'),
+            new CommentUpdated(5, 6, 7, 'file', 'message', 'original'),
             'comment-updated',
             5,
-            ['commentId' => 6, 'originalComment' => 'original']
+            ['commentId' => 6, 'file' => 'file', 'message' => 'message', 'originalComment' => 'original']
         );
-        static::assertCommentEvent(new CommentUpdated(5, 6, 7, 'message'), 6);
-        static::assertUserAware(new CommentUpdated(5, 6, 7, 'message'), 7);
+        static::assertCommentEvent(new CommentUpdated(5, 6, 7, 'file', 'message', 'original'), 6);
+        static::assertUserAware(new CommentUpdated(5, 6, 7, 'file', 'message', 'original'), 7);
     }
 }

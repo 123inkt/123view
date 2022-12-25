@@ -42,7 +42,7 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
      */
     public function testDelayMessage(): void
     {
-        $message = new CommentAdded(1, 2, 3, 'message');
+        $message = new CommentAdded(1, 2, 3, 'file', 'message');
 
         $this->bus->expects(self::once())->method('dispatch')
             ->with(
@@ -82,7 +82,7 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
      */
     public function testHandleDelayedMessage(): void
     {
-        $commentAdded        = new CommentAdded(1, 2, 3, 'message');
+        $commentAdded        = new CommentAdded(1, 2, 3, 'file', 'message');
         $notificationHandler = $this->createMock(MailNotificationHandlerInterface::class);
 
         $this->handlerProvider->expects(self::once())->method('getHandler')->with(CommentAdded::class)->willReturn($notificationHandler);
