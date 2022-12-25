@@ -40,16 +40,11 @@ class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface
         return $this->byUserId;
     }
 
-    public function getFile(): string
-    {
-        return $this->file;
-    }
-
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'message' => $this->message, 'originalComment' => $this->originalComment];
+        return ['commentId' => $this->commentId, 'file' => $this->file, 'message' => $this->message, 'originalComment' => $this->originalComment];
     }
 }

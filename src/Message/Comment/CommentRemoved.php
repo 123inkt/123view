@@ -38,16 +38,11 @@ class CommentRemoved implements AsyncMessageInterface, CommentEventInterface
         return $this->byUserId;
     }
 
-    public function getFile(): string
-    {
-        return $this->file;
-    }
-
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'message' => $this->message];
+        return ['commentId' => $this->commentId, 'file' => $this->file, 'message' => $this->message];
     }
 }

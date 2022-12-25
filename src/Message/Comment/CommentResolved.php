@@ -38,16 +38,11 @@ class CommentResolved implements AsyncMessageInterface, MailNotificationInterfac
         return $this->resolveByUserId;
     }
 
-    public function getFile(): string
-    {
-        return $this->file;
-    }
-
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'resolvedByUserId' => $this->resolveByUserId];
+        return ['commentId' => $this->commentId, 'file' => $this->file, 'resolvedByUserId' => $this->resolveByUserId];
     }
 }

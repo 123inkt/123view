@@ -94,9 +94,9 @@ class CodeReviewActivityFormatter
         }
 
         // add filepath the comment was added to
-        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME], true)) {
+        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME], true)) {
             $comment        = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
-            $params['file'] = (string)$comment?->getFilePath();
+            $params['file'] = $comment?->getFilePath() ?? $activity->getDataValue('file') ?? '';
         }
 
         return $params;
