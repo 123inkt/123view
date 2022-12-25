@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
@@ -42,7 +43,8 @@ class CodeReviewActivityFormatter
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
         CommentAdded::NAME                       => 'timeline.comment.added',
-        CommentResolved::NAME                    => 'timeline.comment.resolved'
+        CommentRemoved::NAME                     => 'timeline.comment.removed',
+        CommentResolved::NAME                    => 'timeline.comment.resolved',
     ];
 
     public function __construct(
@@ -54,7 +56,7 @@ class CodeReviewActivityFormatter
     ) {
     }
 
-    public function format(User $user, CodeReviewActivity $activity): ?string
+    public function format(CodeReviewActivity $activity, ?User $user = null): ?string
     {
         $translationId = $this->getTranslationId($activity);
         if ($translationId === null) {
@@ -92,9 +94,9 @@ class CodeReviewActivityFormatter
         }
 
         // add filepath the comment was added to
-        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME], true)) {
+        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME], true)) {
             $comment        = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
-            $params['file'] = (string)$comment?->getFilePath();
+            $params['file'] = basename($comment?->getFilePath() ?? (string)$activity->getDataValue('file'));
         }
 
         return $params;

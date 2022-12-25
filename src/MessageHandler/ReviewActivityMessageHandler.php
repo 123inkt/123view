@@ -6,6 +6,7 @@ namespace DR\Review\MessageHandler;
 use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
+use DR\Review\Service\CodeReview\CodeReviewActivityPublisher;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -17,7 +18,8 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly CodeReviewActivityProvider $activityProvider,
-        private readonly CodeReviewActivityRepository $activityRepository
+        private readonly CodeReviewActivityRepository $activityRepository,
+        private readonly CodeReviewActivityPublisher $activityPublisher,
     ) {
     }
 
@@ -36,5 +38,8 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
 
         $this->logger?->info('ReviewActivityHandler: registered activity for review event: ' . $evt->getName());
         $this->activityRepository->save($activity, true);
+
+        $this->logger?->info('ReviewActivityHandler: publish to mercure: ' . $evt->getName());
+        $this->activityPublisher->publish($activity);
     }
 }

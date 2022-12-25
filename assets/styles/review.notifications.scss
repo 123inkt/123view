@@ -1,0 +1,19 @@
+.review-notification-list {
+    bottom: 10px;
+    position: fixed;
+    right: 25px;
+    width: 300px;
+}
+
+.review-notification-list .review-notification-container {
+    animation: review-notification-animation 0s ease-in 5s forwards;
+    animation-fill-mode: forwards;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+@keyframes review-notification-animation {
+    to {
+        height: 0;
+    }
+}

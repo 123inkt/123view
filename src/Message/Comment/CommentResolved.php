@@ -10,8 +10,12 @@ class CommentResolved implements AsyncMessageInterface, MailNotificationInterfac
 {
     public const NAME = 'comment-resolved';
 
-    public function __construct(public readonly int $reviewId, public readonly int $commentId, public readonly int $resolveByUserId)
-    {
+    public function __construct(
+        public readonly int $reviewId,
+        public readonly int $commentId,
+        public readonly int $resolveByUserId,
+        public readonly string $file
+    ) {
     }
 
     public function getName(): string
@@ -39,6 +43,6 @@ class CommentResolved implements AsyncMessageInterface, MailNotificationInterfac
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'resolvedByUserId' => $this->resolveByUserId];
+        return ['commentId' => $this->commentId, 'file' => $this->file, 'resolvedByUserId' => $this->resolveByUserId];
     }
 }

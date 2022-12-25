@@ -75,6 +75,25 @@ services:
         volumes:
             - .:/app:rw
 
+    mercure:
+        container_name: ${MERCURE_CONTAINER:-mercure}
+        build:
+            context: .
+            dockerfile: ./docker/mercure/Dockerfile
+        environment:
+            GLOBAL_OPTIONS: |
+                auto_https    off
+                http_port     6080
+                https_port    6443
+            SERVER_NAME: |
+                ${APP_HOSTNAME}, mercure, localhost
+                tls /etc/ssl/certs/123view-cert.crt /etc/ssl/private/123view-cert.key
+            MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET}
+            MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET}
+            MERCURE_EXTRA_DIRECTIVES: |
+                cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}
+        ports:
+            - ${MERCURE_SSL_PORT:-6443}:6443
 
 networks:
     default:

@@ -35,3 +35,8 @@ services:
     nodejs:
         environment:
             APP_ENV: dev
+
+    mercure:
+        build:
+            target: dev
+        command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev

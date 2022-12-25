@@ -10,16 +10,21 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentVoter;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Utility\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DeleteCommentController extends AbstractController
 {
-    public function __construct(private readonly CommentRepository $commentRepository)
-    {
+    public function __construct(
+        private readonly CommentRepository $commentRepository,
+        private readonly CommentEventMessageFactory $messageFactory,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     #[Route('app/comments/{id<\d+>}', name: self::class, methods: 'DELETE')]
@@ -33,6 +38,7 @@ class DeleteCommentController extends AbstractController
         $this->denyAccessUnlessGranted(CommentVoter::DELETE, $comment);
 
         $this->commentRepository->remove($comment, true);
+        $this->bus->dispatch($this->messageFactory->createRemoved($comment, $this->getUser()));
 
         $anchor = 'focus:line:' . Assert::notNull($comment->getLineReference())->lineAfter;
 

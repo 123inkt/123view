@@ -8,10 +8,10 @@ use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -20,8 +20,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ChangeCommentStateController extends AbstractController
 {
-    public function __construct(private readonly CommentRepository $commentRepository, private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly CommentRepository $commentRepository,
+        private readonly CommentEventMessageFactory $messageFactory,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     #[Route('app/comments/{id<\d+>}/state', name: self::class, methods: 'POST')]
@@ -41,7 +44,7 @@ class ChangeCommentStateController extends AbstractController
         $this->commentRepository->save($comment, true);
 
         if ($currentState !== $state && $state === CommentStateType::RESOLVED) {
-            $this->bus->dispatch(new CommentResolved((int)$comment->getReview()?->getId(), (int)$comment->getId(), (int)$this->getUser()->getId()));
+            $this->bus->dispatch($this->messageFactory->createResolved($comment, $this->getUser()));
         }
 
         return $this->refererRedirect(ReviewController::class, ['review' => $comment->getReview()], [], 'focus:comment:' . $comment->getId());

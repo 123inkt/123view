@@ -47,7 +47,7 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
         $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
-        $this->handler->handle(new CommentAdded(5, 123, 456, 'message'));
+        $this->handler->handle(new CommentAdded(5, 123, 456, 'file', 'message'));
     }
 
     /**
@@ -60,7 +60,7 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
 
         $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->handler->handle(new CommentAdded(5, 123, 456, 'message'));
+        $this->handler->handle(new CommentAdded(5, 123, 456, 'file', 'message'));
     }
 
     /**
@@ -77,7 +77,7 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
         $this->mailService->expects(self::once())->method('sendNewCommentMail')->with($review, $comment);
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
 
-        $this->handler->handle(new CommentAdded(5, 123, 456, 'message'));
+        $this->handler->handle(new CommentAdded(5, 123, 456, 'file', 'message'));
 
         static::assertTrue($comment->getNotificationStatus()->hasStatus(NotificationStatus::STATUS_CREATED));
     }

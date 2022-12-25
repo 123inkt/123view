@@ -9,9 +9,9 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
-use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,8 +21,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddCommentController extends AbstractController
 {
-    public function __construct(private readonly CommentRepository $commentRepository, private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly CommentRepository $commentRepository,
+        private readonly CommentEventMessageFactory $messageFactory,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     #[Route('app/reviews/{id<\d+>}/add-comment', name: self::class, methods: 'POST')]
@@ -51,8 +54,7 @@ class AddCommentController extends AbstractController
         $comment->setUpdateTimestamp(time());
 
         $this->commentRepository->save($comment, true);
-
-        $this->bus->dispatch(new CommentAdded((int)$comment->getReview()?->getId(), (int)$comment->getId(), (int)$user->getId(), $data['message']));
+        $this->bus->dispatch($this->messageFactory->createAdded($comment, $user));
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review], ['action'], 'focus:comment:' . $comment->getId());
     }

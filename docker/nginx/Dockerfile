@@ -31,9 +31,9 @@ COPY ./docker/nginx/snippets/ssl-params.conf  /etc/nginx/snippets/ssl-params.con
 FROM base as prod
 
 # setup https with production certificates
-COPY ./docker/nginx/ssl/production/dhparam.pem    /etc/ssl/certs/dhparam.pem
-COPY ./docker/nginx/ssl/production/production.crt /etc/ssl/certs/123view-cert.crt
-COPY ./docker/nginx/ssl/production/production.key /etc/ssl/private/123view-cert.key
+COPY ./docker/ssl/production/dhparam.pem    /etc/ssl/certs/dhparam.pem
+COPY ./docker/ssl/production/production.crt /etc/ssl/certs/123view-cert.crt
+COPY ./docker/ssl/production/production.key /etc/ssl/private/123view-cert.key
 
 ENTRYPOINT ["/run/entrypoint.sh"]
 
@@ -43,8 +43,8 @@ ENTRYPOINT ["/run/entrypoint.sh"]
 FROM base as dev
 
 # setup https with self-signed cert
-COPY ./docker/nginx/ssl/dhparam.pem /etc/ssl/certs/dhparam.pem
-COPY ./docker/nginx/ssl/development/nginx-selfsigned.crt /etc/ssl/certs/123view-cert.crt
-COPY ./docker/nginx/ssl/development/nginx-selfsigned.key /etc/ssl/private/123view-cert.key
+COPY ./docker/ssl/dhparam.pem /etc/ssl/certs/dhparam.pem
+COPY ./docker/ssl/development/development-self-signed.crt /etc/ssl/certs/123view-cert.crt
+COPY ./docker/ssl/development/development-self-signed.key /etc/ssl/private/123view-cert.key
 
 ENTRYPOINT ["/run/entrypoint.sh"]

@@ -14,6 +14,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
@@ -27,14 +28,16 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 {
-    private CommentRepository&MockObject   $commentRepository;
-    private MessageBusInterface&MockObject $bus;
-    private Envelope                       $envelope;
+    private CommentRepository&MockObject          $commentRepository;
+    private CommentEventMessageFactory&MockObject $messageFactory;
+    private MessageBusInterface&MockObject        $bus;
+    private Envelope                              $envelope;
 
     public function setUp(): void
     {
         $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentRepository::class);
+        $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
@@ -72,9 +75,12 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $user = new User();
         $user->setId(789);
 
+        $event = new CommentResolved(123, 456, 789, 'file');
+
         $this->expectGetUser($user);
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
-        $this->bus->expects(self::once())->method('dispatch')->with(new CommentResolved(123, 456, 789))->willReturn($this->envelope);
+        $this->messageFactory->expects(self::once())->method('createResolved')->willReturn($event);
+        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $comment);
@@ -96,6 +102,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $comment->setReview($review);
 
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->messageFactory->expects(self::never())->method('createResolved');
         $this->bus->expects(self::never())->method('dispatch');
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
@@ -104,6 +111,6 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new ChangeCommentStateController($this->commentRepository, $this->bus);
+        return new ChangeCommentStateController($this->commentRepository, $this->messageFactory, $this->bus);
     }
 }
