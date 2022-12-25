@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
@@ -42,7 +43,8 @@ class CodeReviewActivityFormatter
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
         CommentAdded::NAME                       => 'timeline.comment.added',
-        CommentResolved::NAME                    => 'timeline.comment.resolved'
+        CommentRemoved::NAME                     => 'timeline.comment.removed',
+        CommentResolved::NAME                    => 'timeline.comment.resolved',
     ];
 
     public function __construct(

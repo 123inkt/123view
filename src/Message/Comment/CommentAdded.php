@@ -14,6 +14,7 @@ class CommentAdded implements AsyncMessageInterface, MailNotificationInterface, 
         public readonly int $reviewId,
         public readonly int $commentId,
         public readonly int $byUserId,
+        public readonly string $file,
         public readonly string $message
     ) {
     }
@@ -36,6 +37,11 @@ class CommentAdded implements AsyncMessageInterface, MailNotificationInterface, 
     public function getUserId(): int
     {
         return $this->byUserId;
+    }
+
+    public function getFile(): string
+    {
+        return $this->file;
     }
 
     /**

@@ -4,19 +4,17 @@ declare(strict_types=1);
 namespace DR\Review\Message\Comment;
 
 use DR\Review\Message\AsyncMessageInterface;
-use DR\Review\Message\MailNotificationInterface;
 
-class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
+class CommentRemoved implements AsyncMessageInterface, CommentEventInterface
 {
-    public const NAME = 'comment-updated';
+    public const NAME = 'comment-removed';
 
     public function __construct(
         public readonly int $reviewId,
         public readonly int $commentId,
         public readonly int $byUserId,
         public readonly string $file,
-        public readonly string $message,
-        public readonly string $originalComment
+        public readonly string $message
     ) {
     }
 
@@ -50,6 +48,6 @@ class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'message' => $this->message, 'originalComment' => $this->originalComment];
+        return ['commentId' => $this->commentId, 'message' => $this->message];
     }
 }

@@ -157,6 +157,7 @@ return [
     'subject'                                     => 'Subject',
     'theme'                                       => 'Theme',
     'timeline.comment.added'                      => '<span class="text-primary">{username}</span> added a comment to <code>{file}</code>.',
+    'timeline.comment.removed'                    => '<span class="text-primary">{username}</span> removed a comment on <code>{file}</code>.',
     'timeline.comment.resolved'                   => '<span class="text-primary">{username}</span> resolved a comment on <code>{file}</code>.',
     'timeline.review'                             => 'Review timeline',
     'timeline.review.accepted'                    => 'The review was <span class="text-success">accepted</span>.',
