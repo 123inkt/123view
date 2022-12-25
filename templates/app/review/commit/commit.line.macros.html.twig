@@ -24,7 +24,7 @@
 {%- macro gutter(line, line_number, line_offset, lineNrLengthBefore, lineNrLengthAfter) -%}
     {%- apply spaceless -%}
         <span class="diff-file__line-gutter"
-              data-role="line-add-comment"
+              data-action="click->review#addComment"
               data-line="{{ line_number }}"
               data-line-offset="{{ line_offset }}"
               data-line-after="{{ line.lineNumberAfter|default('0') }}">

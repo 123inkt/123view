@@ -30,6 +30,8 @@ services:
                 condition: service_healthy
             rabbitmq:
                 condition: service_healthy
+            nodejs:
+                condition: service_started
             mail:
                 condition: service_started
         volumes:
@@ -64,6 +66,14 @@ services:
     mail:
         container_name: ${MAIL_CONTAINER:-mail}
         image: bytemark/smtp
+
+    nodejs:
+        container_name: ${NODEJS_CONTAINER:-nodejs}
+        build:
+            context: .
+            dockerfile: ./docker/nodejs/Dockerfile
+        volumes:
+            - .:/app:rw
 
     mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}

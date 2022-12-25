@@ -22,10 +22,12 @@
             method="post"
           action="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
     >
-        <table class="table table-bordered table-hover rule-table" data-controller="CheckboxSelectAll">
+        <table class="table table-bordered table-hover rule-table" data-controller="checkbox-select-all">
             <thead>
             <tr>
-                <th scope="col"><input type="checkbox" class="form-check-input" data-role="checkbox-select-all"></th>
+                <th scope="col">
+                    <input type="checkbox" class="form-check-input" data-action="change->checkbox-select-all#toggleAll">
+                </th>
                 <th scope="col">{{ 'hash'|trans }}</th>
                 <th scope="col" class="review-revision-list--title">{{ 'title'|trans }}</th>
                 <th scope="col">{{ 'author'|trans }}</th>
@@ -36,7 +38,11 @@
             <tbody>
             {%- for revision in revisionsModel.revisions -%}
                 <tr>
-                    <td><input type="checkbox" class="form-check-input" name="revision[{{ revision.id }}]" data-role="checkbox-select-target"></td>
+                    <td><input type="checkbox"
+                               class="form-check-input"
+                               name="revision[{{ revision.id }}]"
+                               data-checkbox-select-all-target="toggle">
+                    </td>
                     <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
                     <td class="fw-bold">{{ revision.title|external_links }}</td>
                     <td>{{ revision.authorName }}</td>

@@ -1,25 +1,24 @@
-export default class Comment {
-    textarea;
-    dropdown;
-    visible = false;
+import axios from 'axios';
+import MentionsDropdown from './MentionsDropdown';
+import type User from './User';
 
-    /**
-     * @param {HTMLElement} textarea
-     * @param {MentionsDropdown} dropdown
-     */
-    constructor(textarea, dropdown) {
+export default class Mentions {
+    private textarea: HTMLTextAreaElement;
+    private dropdown: MentionsDropdown;
+    public visible: boolean = false;
+
+    constructor(textarea: HTMLTextAreaElement, dropdown: MentionsDropdown) {
         this.textarea = textarea;
         this.dropdown = dropdown;
     }
 
-    bind() {
+    public bind(): void {
         this.textarea.addEventListener('keydown', this.onKeyDown.bind(this));
         this.textarea.addEventListener('input', this.onInput.bind(this));
         this.dropdown.addEventListener('click', this.onClick.bind(this));
     }
 
-    /** @private */
-    onKeyDown(event) {
+    private onKeyDown(event: KeyboardEvent): void {
         // show dropdown
         if (event.key === '@') {
             this.dropdown.show();
@@ -55,8 +54,7 @@ export default class Comment {
         }
     }
 
-    /** @private */
-    onInput() {
+    private onInput(): void {
         if (this.dropdown.isVisible()) {
             const mention = this.getMentionFromTextarea();
             if (mention === null) {
@@ -67,27 +65,24 @@ export default class Comment {
         }
     }
 
-    /** @private */
-    onClick(event) {
+    private onClick(event: Event): void {
         this.dropdown.hide();
         this.textarea.focus();
-        this.updateMentionInTextarea(this.dropdown.getSelectedUser(event.target));
+        this.updateMentionInTextarea(this.dropdown.getSelectedUser(<HTMLElement>event.target));
     }
 
-    /** @private */
-    getSuggestions(searchQuery, callback) {
-        axios.get('/app/user/mentions?search=' + encodeURI(searchQuery)).then(response => callback(response.data));
+    private getSuggestions(searchQuery: string | null, callback: (data: User[]) => void): void {
+        axios.get('/app/user/mentions?search=' + encodeURI(searchQuery ?? '')).then(response => callback(response.data));
     }
 
-    /** @private */
-    getMentionFromTextarea() {
+    private getMentionFromTextarea(): string | null {
         const text           = this.textarea.value.substring(0, this.textarea.selectionStart);
         const indexOfMention = text.lastIndexOf('@');
         return indexOfMention === -1 ? null : text.substring(indexOfMention + 1);
     }
 
     /** @private */
-    updateMentionInTextarea(user) {
+    private updateMentionInTextarea(user: User | undefined): void {
         if (user === undefined) {
             return;
         }

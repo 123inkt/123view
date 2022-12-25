@@ -1,0 +1,17 @@
+<fieldset class="pb-4" data-controller="recipients" data-recipients-count-value="{{ recipients|length }}">
+    <legend>{{ 'recipients'|trans }}</legend>
+
+    <div data-recipients-target="recipientList">
+        {% for recipient in recipients %}
+            {% include '/app/notification/recipient.html.twig' %}
+        {% endfor %}
+    </div>
+
+    <template data-recipients-target="recipientTemplate">
+        {% include '/app/notification/recipient.html.twig' with {recipient: recipients.vars.prototype} %}
+    </template>
+
+    <a href="javascript:" data-action="click->recipients#addRecipient" class="btn btn-outline-primary">
+        {{ 'add.recipient'|trans }}
+    </a>
+</fieldset>

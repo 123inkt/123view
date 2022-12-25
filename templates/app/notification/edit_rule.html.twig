@@ -4,11 +4,15 @@
     {% set form = editRuleModel.form %}
     {% set rule = form.rule.vars.value %}
 
-    <div class="pb-5" data-controller="EditRule">
+    <div class="pb-5" data-controller="edit-rule">
         <h1 class="mt-2">
             {% if rule.id %}{{ 'rule'|trans }}{% else %}{{ 'rule.new'|trans }}{% endif %}
 
-            <button type="button" class="btn btn-primary float-end" data-toggle="button" data-role="toggle-help">
+            <button type="button"
+                    class="btn btn-primary float-end"
+                    data-toggle="button"
+                    data-edit-rule-target="button"
+                    data-action="click->edit-rule#toggleHelp">
                 <i class="bi-question"></i>
             </button>
         </h1>
@@ -25,16 +29,16 @@
         </div>
 
         {# name #}
-        {% include '/app/form_row.html.twig' with {form: form.rule.name} %}
+        {% include '/app/notification/form_row.html.twig' with {form: form.rule.name} %}
 
         {# frequency #}
-        {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.frequency} %}
+        {% include '/app/notification/form_row.html.twig' with {form: form.rule.ruleOptions.frequency} %}
 
         {# mail theme #}
-        {% include '/app/form_row.html.twig' with {form: form.rule.ruleOptions.theme} %}
+        {% include '/app/notification/form_row.html.twig' with {form: form.rule.ruleOptions.theme} %}
 
         {# subject #}
-        {% include '/app/form_row.html.twig' with
+        {% include '/app/notification/form_row.html.twig' with
             {
                 form: form.rule.ruleOptions.subject,
                 form_help: 'rule.options.subject.help'|trans
@@ -55,37 +59,27 @@
 
         {# recipients #}
         {% if form.rule.recipients is defined %}
-            {% include '/app/recipients.html.twig' with {recipients: form.rule.recipients} %}
+            {% include '/app/notification/recipients.html.twig' with {recipients: form.rule.recipients} %}
         {% endif %}
 
         {# filters #}
-        <small class="form-text" data-role="explanation">
+        <small class="form-text" data-edit-rule-target="explanation">
             <ul>
-                <li>
-                    <em>Author</em> - In- or exclude a commit from a specific author. The pattern should match the email of the author.
-                </li>
-                <li>
-                    <em>Subject</em> - In- or exclude a commit with a specific commit message. The pattern will be matched against the first line of
-                    the message.
-                </li>
-                <li>
-                    <em>File</em> - In- or exclude a file from a commit by regex. The pattern will be matched against the relative path of the file
-                    in the project. For example <code>composer.json</code> or <code>src/Controller/ExampleController.php</code>
-                </li>
+                <li><em>{{ 'author'|trans }}</em> - {{ 'filter.explanation.author'|trans|raw }}</li>
+                <li><em>{{ 'subject'|trans }}</em> - {{ 'filter.explanation.subject'|trans|raw }}</li>
+                <li><em>{{ 'file'|trans }}</em> - {{ 'filter.explanation.file'|trans|raw }}</li>
             </ul>
         </small>
 
-        {% include '/app/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'include.commits'|trans} %}
-        {% include '/app/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'exclude.commits'|trans} %}
+        {% include '/app/notification/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'include.commits'|trans} %}
+        {% include '/app/notification/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'exclude.commits'|trans} %}
 
         {# advanced #}
         <fieldset class="mb-4 row">
             <legend>{{ 'advanced'|trans }}</legend>
 
-            <small class="form-text" data-role="explanation">
-                Options passed to the <code>git diff</code> command. See the
-                <a href="https://git-scm.com/docs/git-diff" target="_blank">git documentation</a>
-                for what each specific option does.
+            <small class="form-text" data-edit-rule-target="explanation">
+                {{ 'rule.advanced.explanation'|trans|raw }}
             </small>
 
             <div class="col">
