@@ -9,4 +9,4 @@ import './styles/markdown.scss';
 import './styles/comment.scss';
 
 // start the Stimulus application
-import './stimulus';
+import './ts/stimulus';
