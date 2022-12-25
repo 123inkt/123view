@@ -1,0 +1,101 @@
+import axios from 'axios';
+import MentionsDropdown from './MentionsDropdown';
+import type User from './User';
+
+export default class Mentions {
+    private textarea: HTMLTextAreaElement;
+    private dropdown: MentionsDropdown;
+    public visible: boolean = false;
+
+    constructor(textarea: HTMLTextAreaElement, dropdown: MentionsDropdown) {
+        this.textarea = textarea;
+        this.dropdown = dropdown;
+    }
+
+    public bind(): void {
+        this.textarea.addEventListener('keydown', this.onKeyDown.bind(this));
+        this.textarea.addEventListener('input', this.onInput.bind(this));
+        this.dropdown.addEventListener('click', this.onClick.bind(this));
+    }
+
+    private onKeyDown(event: KeyboardEvent): void {
+        // show dropdown
+        if (event.key === '@') {
+            this.dropdown.show();
+        }
+
+        // hide dropdown
+        if (this.dropdown.isVisible() && event.key === 'Escape') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.hide();
+        }
+
+        // select next suggestion
+        if (this.dropdown.isVisible() && event.key === 'ArrowDown') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.selectNext();
+        }
+
+        // select previous suggestion
+        if (this.dropdown.isVisible() && event.key === 'ArrowUp') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.selectPrev();
+        }
+
+        // select current user
+        if (this.dropdown.isVisible() && event.key === 'Enter') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.dropdown.hide();
+            this.updateMentionInTextarea(this.dropdown.getSelectedUser());
+        }
+    }
+
+    private onInput(): void {
+        if (this.dropdown.isVisible()) {
+            const mention = this.getMentionFromTextarea();
+            if (mention === null) {
+                this.dropdown.hide();
+                return;
+            }
+            this.getSuggestions(this.getMentionFromTextarea(), (users) => this.dropdown.setUsers(users));
+        }
+    }
+
+    private onClick(event: Event): void {
+        this.dropdown.hide();
+        this.textarea.focus();
+        this.updateMentionInTextarea(this.dropdown.getSelectedUser(<HTMLElement>event.target));
+    }
+
+    private getSuggestions(searchQuery: string | null, callback: (data: User[]) => void): void {
+        axios.get('/app/user/mentions?search=' + encodeURI(searchQuery ?? '')).then(response => callback(response.data));
+    }
+
+    private getMentionFromTextarea(): string | null {
+        const text           = this.textarea.value.substring(0, this.textarea.selectionStart);
+        const indexOfMention = text.lastIndexOf('@');
+        return indexOfMention === -1 ? null : text.substring(indexOfMention + 1);
+    }
+
+    /** @private */
+    private updateMentionInTextarea(user: User | undefined): void {
+        if (user === undefined) {
+            return;
+        }
+        const replacement       = `@user:${user.id}[${user.name}]`;
+        const text              = this.textarea.value;
+        const textBeforeCaret   = text.substring(0, this.textarea.selectionStart);
+        const textAfterCaret    = text.substring(this.textarea.selectionStart);
+        const textBeforeMention = textBeforeCaret.substring(0, text.lastIndexOf('@'));
+
+        // update textarea content
+        this.textarea.value = textBeforeMention + replacement + ' ' + textAfterCaret;
+
+        // set cursor position
+        this.textarea.selectionEnd = textBeforeMention.length + replacement.length;
+    }
+}

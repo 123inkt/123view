@@ -48,7 +48,7 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         $this->type->configureOptions($resolver);
 
         static::assertNull($introspector->getDefault('review'));
-        static::assertSame(['data-controller' => 'FormSubmitter'], $introspector->getDefault('attr'));
+        static::assertSame(['data-controller' => 'form-submitter'], $introspector->getDefault('attr'));
         static::assertSame([CodeReview::class], $introspector->getAllowedTypes('review'));
     }
 

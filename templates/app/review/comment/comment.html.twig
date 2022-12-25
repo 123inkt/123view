@@ -18,7 +18,7 @@
                 {# edit comment #}
                 <a href="javascript:"
                    class="ms-1 text-decoration-none comment__action-button"
-                   data-role="edit-comment"
+                   data-action="click->review#editComment"
                    data-comment-id="{{ comment.id }}"
                    title="{{ 'edit.comment'|trans }}">
                     <i class="bi bi-pencil-fill"></i>
@@ -31,7 +31,7 @@
                     <input type="hidden" name="_method" value="DELETE" />
                     <a href="javascript:"
                        class="text-decoration-none comment__action-button"
-                       data-role="delete-comment"
+                       data-action="click->review#deleteComment"
                        data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
                        title="{{ 'delete.comment'|trans }}">
                         <i class="bi bi-trash-fill text-danger"></i>
@@ -88,7 +88,7 @@
             <a href="javascript:"
                class="comment__action-button"
                data-reply-to="{{ comment.id }}"
-               data-role="reply-to-comment" title="{{ 'reply'|trans }}">
+               data-action="click->review#replyToComment" title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
         {% endif %}

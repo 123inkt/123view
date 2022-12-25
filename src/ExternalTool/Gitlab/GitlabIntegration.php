@@ -67,6 +67,6 @@ class GitlabIntegration implements EventSubscriberInterface
 
     private function getIcon(): string
     {
-        return Icon::getBase64(dirname(__DIR__, 3) . '/public/assets/images/gitlab.png');
+        return Icon::getBase64(dirname(__DIR__, 3) . '/assets/images/gitlab.png');
     }
 }

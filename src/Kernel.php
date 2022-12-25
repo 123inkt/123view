@@ -27,6 +27,7 @@ class Kernel extends BaseKernel
         $container->parameters()->set('container.dumper.inline_factories', true);
 
         $container->import('../config/{packages}/*.php');
+        $container->import('../config/{packages}/*.yaml');
         $container->import('../config/{packages}/' . $this->environment . '/*.php');
         $container->import('../config/{services}.php');
         $container->import('../config/{services}/' . $this->environment . '/*.php');

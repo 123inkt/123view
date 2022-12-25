@@ -75,6 +75,6 @@ class UpsourceIntegration implements EventSubscriberInterface
 
     private function getIcon(): string
     {
-        return Icon::getBase64(dirname(__DIR__, 3) . '/public/assets/images/upsource.png');
+        return Icon::getBase64(dirname(__DIR__, 3) . '/assets/images/upsource.png');
     }
 }

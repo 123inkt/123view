@@ -77,5 +77,5 @@ elif [ "$mode" == 'dev' ]; then
         DOCKER_BUILDKIT=1 docker-compose build
     fi
     docker-compose up -d
-    docker-compose logs --tail=2 --follow
+    docker-compose logs --tail=5 --follow
 fi

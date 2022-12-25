@@ -21,7 +21,7 @@ class AddReviewerFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['review' => null, 'attr' => ['data-controller' => 'FormSubmitter']]);
+        $resolver->setDefaults(['review' => null, 'attr' => ['data-controller' => 'form-submitter']]);
         $resolver->addAllowedTypes('review', CodeReview::class);
     }
 

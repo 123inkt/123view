@@ -31,3 +31,7 @@ services:
         ports:
             - ${RABBITMQ_CLIENT_PORT:-5672}:5672
             - ${RABBITMQ_API_PORT:-15672}:15672
+
+    nodejs:
+        environment:
+            APP_ENV: dev
