@@ -36,6 +36,20 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
      * @covers ::publish
      * @throws JsonException
      */
+    public function testPublishNoMessageNoPublish(): void
+    {
+        $activity = new CodeReviewActivity();
+
+        $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn(null);
+        $this->mercureHub->expects(self::never())->method('publish');
+
+        $this->service->publish($activity);
+    }
+
+    /**
+     * @covers ::publish
+     * @throws JsonException
+     */
     public function testPublish(): void
     {
         $user = new User();
