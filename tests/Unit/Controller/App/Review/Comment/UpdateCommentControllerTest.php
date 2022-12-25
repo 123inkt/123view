@@ -14,6 +14,7 @@ use DR\Review\Form\Review\EditCommentFormType;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Voter\CommentVoter;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
@@ -28,14 +29,16 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class UpdateCommentControllerTest extends AbstractControllerTestCase
 {
-    private CommentRepository&MockObject   $commentRepository;
-    private MessageBusInterface&MockObject $bus;
-    private Envelope                       $envelope;
+    private CommentRepository&MockObject          $commentRepository;
+    private CommentEventMessageFactory&MockObject $messageFactory;
+    private MessageBusInterface&MockObject        $bus;
+    private Envelope                              $envelope;
 
     public function setUp(): void
     {
         $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentRepository::class);
+        $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
@@ -114,6 +117,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $comment->setId(456);
         $comment->setMessage('message');
         $comment->setReview($review);
+        $event = new CommentUpdated(1, 2, 3, 'file', 'message', 'original');
 
         $this->expectGetUser((new User())->setId(789));
         $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
@@ -135,7 +139,8 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
                 ),
                 true
             );
-        $this->bus->expects(self::once())->method('dispatch')->with(new CommentUpdated(123, 456, 789, 'message'))->willReturn($this->envelope);
+        $this->messageFactory->expects(self::once())->method('createUpdated')->willReturn($event);
+        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $comment);
@@ -145,6 +150,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UpdateCommentController($this->commentRepository, $this->bus);
+        return new UpdateCommentController($this->commentRepository, $this->messageFactory, $this->bus);
     }
 }
