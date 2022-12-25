@@ -5,6 +5,7 @@ import './styles/app.scss';
 import './styles/review.scss';
 import './styles/review-file-diff.scss';
 import './styles/review.revisions.scss';
+import './styles/review.notifications.scss';
 import './styles/markdown.scss';
 import './styles/comment.scss';
 
