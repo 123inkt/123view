@@ -5,10 +5,12 @@ import Assert from '../lib/Assert';
 export default class extends Controller {
     public static targets = ['activeFile']
     private activeFileTarget?: HTMLElement;
+    private hasActiveFileTarget?: boolean;
 
     public connect(): void {
-        console.log(this.activeFileTarget);
-        this.activeFileTarget?.scrollIntoView({block: 'center'});
+        if (this.hasActiveFileTarget) {
+            this.activeFileTarget!.scrollIntoView({block: 'center'});
+        }
     }
 
     public toggleFileSeenStatus(event: Event): void {
