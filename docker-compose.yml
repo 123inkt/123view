@@ -91,7 +91,7 @@ services:
             MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET}
             MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET}
             MERCURE_EXTRA_DIRECTIVES: |
-                cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}
+                cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}  https://${APP_HOSTNAME}
         ports:
             - ${MERCURE_SSL_PORT:-6443}:6443
 
