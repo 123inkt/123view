@@ -23,9 +23,7 @@
         "webpack-cli": "^4.10.0",
         "webpack-notifier": "^1.15.0"
     },
-    "private": false,
     "scripts": {
-        "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"

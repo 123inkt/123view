@@ -30,6 +30,8 @@ services:
                 condition: service_healthy
             rabbitmq:
                 condition: service_healthy
+            nodejs:
+                condition: service_started
             mail:
                 condition: service_started
         volumes:
