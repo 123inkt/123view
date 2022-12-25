@@ -1,5 +1,3 @@
-import 'bootstrap/scss/bootstrap-utilities.scss';
-
 // import css
 import './styles/app.scss';
 import './styles/review.scss';
