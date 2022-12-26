@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
@@ -27,9 +28,17 @@ return static function (SecurityConfig $security): void {
         ->lazy(true)
         ->provider('app_user_provider')
         ->userChecker(UserChecker::class)
-        ->customAuthenticators([AzureAdAuthenticator::class])
-        ->formLogin()->loginPath(LoginController::class)->checkPath(LoginController::class)->enableCsrf(true);
+        ->customAuthenticators([AzureAdAuthenticator::class]);
 
+    // setup login flow
+    $security->firewall('main')
+        ->formLogin()
+        ->loginPath(LoginController::class)
+        ->checkPath(LoginController::class)
+        ->enableCsrf(true)
+        ->defaultTargetPath(ProjectsController::class);
+
+    // setup logout flow
     $security->firewall('main')
         ->logout()
         ->path(LogoutController::class)

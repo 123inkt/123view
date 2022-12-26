@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Auth;
 
-use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\RegistrationFormType;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Security\Role\Roles;
+use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class RegistrationController extends AbstractController
 
     /**
      * @return array<string, object>|Response
+     * @throws Exception
      */
     #[Route('/register', name: self::class, condition: 'env("bool:APP_AUTH_PASSWORD")')]
     #[Template('authentication/register.html.twig')]
@@ -34,10 +36,15 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
 
+            // make first user admin
+            if ($this->userRepository->getUserCount() === 0) {
+                $user->setRoles([Roles::ROLE_USER, Roles::ROLE_ADMIN]);
+            }
+
             // save user
             $this->userRepository->save($user, true);
 
-            return $this->redirectToRoute(ProjectsController::class);
+            return $this->redirectToRoute(LoginController::class);
         }
 
         return ['registrationForm' => $form->createView()];

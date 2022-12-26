@@ -47,18 +47,17 @@ class LoginController extends AbstractController
         if ($error !== null) {
             $this->addFlash('error', $this->translator->trans($error->getMessageKey(), $error->getMessageData(), 'security'));
         }
-        $form = $this->createForm(LoginFormType::class, null, ['username' => $this->authenticationUtils->getLastUsername()])->createView();
-
-        $params = [];
-        if ($request->query->has('next')) {
-            $params['next'] = $request->query->get('next', '');
-        }
+        $form = $this->createForm(
+            LoginFormType::class,
+            null,
+            ['username' => $this->authenticationUtils->getLastUsername(), 'targetPath' => $request->query->get('next')]
+        )->createView();
 
         return [
             'page_title' => $this->translator->trans('page.title.single.sign.on'),
             'loginModel' => new LoginViewModel(
                 $form,
-                $this->generateUrl(AzureAdAuthController::class, $params)
+                $this->generateUrl(AzureAdAuthController::class, array_filter(['next' => $request->query->get('next', '')]))
             )
         ];
     }
