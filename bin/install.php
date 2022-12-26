@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-$sourceDir = dirname(__DIR__) . '/';
-$options = getopt('', ['hostname:', 'sourcedir:']);
-$hostname = $options['hostname'] ?? 'unknown';
+$sourceDir     = dirname(__DIR__) . '/';
+$options       = getopt('', ['hostname:', 'sourcedir:']);
+$hostname      = $options['hostname'] ?? 'unknown';
 $hostSourceDir = $options['sourcedir'] ?? '';
 
 writeln();
@@ -64,12 +64,12 @@ $sslModeChoice = readline();
 
 if ($sslModeChoice === "1") {
     writeln();
-    replaceInFile('SSL_DHPARAM', $hostSourceDir . 'docker/ssl/dhparam.pem', $toFile);
-    writeln('SSL_DHPARAM: set to ' . $hostSourceDir . 'docker/ssl/dhparam.pem');
-    replaceInFile('SSL_CERTIFICATE', $hostSourceDir . 'docker/ssl/development/development-self-signed.crt', $toFile);
-    writeln('SSL_CERTIFICATE: set to ' . $hostSourceDir . 'docker/ssl/development/development-self-signed.crt');
-    replaceInFile('SSL_CERTIFICATE_KEY', $hostSourceDir . 'docker/ssl/development/development-self-signed.key', $toFile);
-    writeln('SSL_CERTIFICATE_KEY: set to ' . $hostSourceDir . 'docker/ssl/development/development-self-signed.key');
+    replaceInFile('SSL_DHPARAM', $hostSourceDir . '/docker/ssl/dhparam.pem', $toFile);
+    writeln('SSL_DHPARAM: set to ' . $hostSourceDir . '/docker/ssl/dhparam.pem');
+    replaceInFile('SSL_CERTIFICATE', $hostSourceDir . '/docker/ssl/development/development-self-signed.crt', $toFile);
+    writeln('SSL_CERTIFICATE: set to ' . $hostSourceDir . '/docker/ssl/development/development-self-signed.crt');
+    replaceInFile('SSL_CERTIFICATE_KEY', $hostSourceDir . '/docker/ssl/development/development-self-signed.key', $toFile);
+    writeln('SSL_CERTIFICATE_KEY: set to ' . $hostSourceDir . '/docker/ssl/development/development-self-signed.key');
 } elseif ($sslModeChoice === "2") {
     writeln();
     writeln("SSL: What's the path the the dhparam.pem: ");
