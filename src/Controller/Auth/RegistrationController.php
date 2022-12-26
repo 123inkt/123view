@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Auth;
 
+use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\RegistrationFormType;
 use DR\Review\Repository\User\UserRepository;
@@ -10,6 +11,7 @@ use DR\Review\Security\Role\Roles;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -17,8 +19,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher, private readonly UserRepository $userRepository)
-    {
+    public function __construct(
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly UserRepository $userRepository,
+        private readonly Security $security,
+    ) {
     }
 
     /**
@@ -34,7 +39,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
+            $user->setPassword($this->passwordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
 
             // make first user admin
             if ($this->userRepository->getUserCount() === 0) {
@@ -44,7 +49,10 @@ class RegistrationController extends AbstractController
             // save user
             $this->userRepository->save($user, true);
 
-            return $this->redirectToRoute(LoginController::class);
+            // login user
+            $this->security->login($user, "security.authenticator.form_login.main", "main");
+
+            return $this->redirectToRoute(ProjectsController::class);
         }
 
         return ['registrationForm' => $form->createView()];
