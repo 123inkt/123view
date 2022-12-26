@@ -20,8 +20,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginController extends AbstractController
 {
-    public function __construct(private TranslatorInterface $translator, private Security $security)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly Security $security,
+        private readonly AuthenticationUtils $authenticationUtils
+    ) {
     }
 
     /**
@@ -29,7 +32,7 @@ class LoginController extends AbstractController
      */
     #[Route('/', name: self::class)]
     #[Template('authentication/login.html.twig')]
-    public function __invoke(Request $request, AuthenticationUtils $authenticationUtils): array|Response
+    public function __invoke(Request $request): array|Response
     {
         if ($this->security->getUser() !== null) {
             if (in_array(Roles::ROLE_USER, $this->security->getUser()->getRoles(), true) === false) {
@@ -40,12 +43,11 @@ class LoginController extends AbstractController
         }
 
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        $form = $this->createForm(LoginFormType::class, null, ['username' => $lastUsername])->createView();
+        $error = $this->authenticationUtils->getLastAuthenticationError();
+        if ($error !== null) {
+            $this->addFlash('error', $this->translator->trans($error->getMessageKey(), $error->getMessageData(), 'security'));
+        }
+        $form = $this->createForm(LoginFormType::class, null, ['username' => $this->authenticationUtils->getLastUsername()])->createView();
 
         $params = [];
         if ($request->query->has('next')) {
@@ -54,7 +56,7 @@ class LoginController extends AbstractController
 
         return [
             'page_title' => $this->translator->trans('page.title.single.sign.on'),
-            'loginModel' => new LoginViewModel($form, $error, $this->generateUrl(AzureAdAuthController::class, $params))
+            'loginModel' => new LoginViewModel($form, $this->generateUrl(AzureAdAuthController::class, $params))
         ];
     }
 }

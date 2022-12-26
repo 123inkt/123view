@@ -6,12 +6,6 @@
 
         {% include 'app/flash/flashes.html.twig' %}
 
-        {% if loginModel.error %}
-            <div class="alert alert-danger mb-3">
-                {{ loginModel.error.messageKey|trans(loginModel.error.messageData, 'security') }}
-            </div>
-        {% endif %}
-
         {# Login form  #}
         {{ form_start(loginModel.form) }}
         {{ form_row(loginModel.form._username) }}

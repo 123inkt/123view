@@ -202,4 +202,5 @@ return [
     'password.minimum.length'                     => 'Your password should be at least {{ limit }} characters',
     'password.is.required'                        => 'Please enter a password',
     'create.new.account'                          => 'Create a new account',
+    'full.name'                                   => 'Full name',
 ];
