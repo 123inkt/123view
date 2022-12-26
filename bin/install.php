@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 $sourceDir = dirname(__DIR__) . '/';
+$sslMode   = getopt('', 'ssl:')['ssl'] ?? 'self-signed';
 
 writeln();
 writeln('This script will generate a .env.prod.local with freshly generated passwords, and will ask questions for additional settings.');
@@ -54,6 +55,33 @@ if ($hostname === false) {
     return;
 }
 replaceInFile('APP_HOSTNAME', $hostname, $toFile);
+
+if ($sslMode === 'self-signed') {
+    replaceInFile('SSL_DHPARAM', $sourceDir . 'docker/ssl/dhparam.pem', $toFile);
+    replaceInFile('SSL_CERTIFICATE', $sourceDir . 'docker/ssl/development/development-self-signed.crt', $toFile);
+    replaceInFile('SSL_CERTIFICATE_KEY', $sourceDir . 'docker/ssl/development/development-self-signed.key', $toFile);
+} else {
+    writeln("SSL: What's the path the the dhparam.pem: ");
+    $dhparam = readline();
+    if ($dhparam === false) {
+        return;
+    }
+    replaceInFile('SSL_DHPARAM', $dhparam, $toFile);
+
+    writeln("SSL: What's the path to your ssl certificate (.crt): ");
+    $cert = readline();
+    if ($cert === false) {
+        return;
+    }
+    replaceInFile('SSL_CERTIFICATE', $cert, $toFile);
+
+    writeln("SSL: What's the path to your ssl certificate key (.key): ");
+    $certKey = readline();
+    if ($certKey === false) {
+        return;
+    }
+    replaceInFile('SSL_CERTIFICATE_KEY', $certKey, $toFile);
+}
 
 /** ********************************************************************************************************************************************** **/
 /**                                            Utility methods                                                                                     **/
