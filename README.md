@@ -42,21 +42,12 @@ A symfony application to create code reviews for a specific set of revisions not
 - [docker >= 20.10](https://docs.docker.com/engine/install/)
 - [git](https://git-scm.com/download/linux)
 
-## Installation
+## Getting started
 
-1) clone repository
-```shell
-git clone https://github.com/123inkt/123view.git 123view && cd 123view
-```
-2) create `.env.dev.local` or `.env.prod.local`. See `.env` [configuration](docs/configuration.md) for how to configure the options.
-
-3) Start
-```shell
-./bin/start.sh
-```
-4) choose `prod` or `dev` based on your environment. The project will be available on your host on:
-   - dev: `https://<domain>:8443/`
-   - prod: `https://<domain>/`
+1) clone repository: `git clone https://github.com/123inkt/123view.git 123view && cd 123view`
+2) start installer: `bin/install.sh`
+3) start application: `bin/start.sh`, and choose `prod`
+4) project should be available on: `https://<domain>/`
 
 ### Next
 - [Adding repositories](docs/adding-repositories.md)
