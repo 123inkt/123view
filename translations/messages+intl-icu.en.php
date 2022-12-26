@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+// phpcs:ignoreFile
 return [
     'Are you sure you want to delete this rule?'  => 'Are you sure you want to delete this rule?',
     'At least {{ limit }} recipient is required'  => 'At least {{ limit }} recipient is required',
