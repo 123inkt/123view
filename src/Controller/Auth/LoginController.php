@@ -56,7 +56,11 @@ class LoginController extends AbstractController
 
         return [
             'page_title' => $this->translator->trans('page.title.single.sign.on'),
-            'loginModel' => new LoginViewModel($form, $this->generateUrl(AzureAdAuthController::class, $params))
+            'loginModel' => new LoginViewModel(
+                $form,
+                array_map('trim', explode(',', $this->getParameter('app.authentication.methods'))),
+                $this->generateUrl(AzureAdAuthController::class, $params)
+            )
         ];
     }
 }
