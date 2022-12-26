@@ -48,7 +48,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $container): void {
-    $container->parameters()->set('app.authentication.methods', '%env(APP_AUTHENTICATION_METHODS)%');
+    $container->parameters()->set('app.authentication.password', '%env(bool:APP_AUTH_PASSWORD)%');
+    $container->parameters()->set('app.authentication.azure-ad', '%env(bool:APP_AUTH_AZURE_AD)%');
     $container->parameters()->set('timezone', '%env(APP_TIMEZONE)%');
     $services = $container->services();
 

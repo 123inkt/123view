@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
     /**
      * @return array<string, object>|Response
      */
-    #[Route('/register', name: self::class)]
+    #[Route('/register', name: self::class, condition: 'env("bool:APP_AUTH_PASSWORD")')]
     #[Template('authentication/register.html.twig')]
     public function register(Request $request): array|Response
     {

@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AzureAdCallbackController
 {
-    #[Route('/single-sign-on/azure-ad/callback', name: self::class, methods: 'GET')]
+    #[Route('/single-sign-on/azure-ad/callback', name: self::class, methods: 'GET', condition: 'env("bool:APP_AUTH_AZURE_AD")')]
     public function __invoke(): void
     {
         // never called, handled by AzureAdAuthenticator
