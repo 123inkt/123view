@@ -3,13 +3,18 @@
 declare(strict_types=1);
 
 use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\UserChecker;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security): void {
+    // https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    $security->passwordHasher(PasswordAuthenticatedUserInterface::class)->algorithm('auto');
+
     $security->provider('app_user_provider')
         ->entity()
         ->class(User::class)
@@ -23,7 +28,8 @@ return static function (SecurityConfig $security): void {
         ->lazy(true)
         ->provider('app_user_provider')
         ->userChecker(UserChecker::class)
-        ->customAuthenticators([AzureAdAuthenticator::class]);
+        ->customAuthenticators([AzureAdAuthenticator::class])
+        ->formLogin()->loginPath(LoginController::class)->checkPath(LoginController::class)->enableCsrf(true);
 
     $security->firewall('main')
         ->logout()
