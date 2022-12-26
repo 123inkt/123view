@@ -102,7 +102,7 @@ if ($sslModeChoice === "1") {
 
 writeln();
 writeln(
-    "Configuration complete. All settings save in `.env.prod.local`. Review if everything is correct and use `bin/start.sh` to start the application"
+    "Configuration complete. All settings saved in `.env.prod.local`. Review if everything is correct and use `bin/start.sh` to start the application"
 );
 
 /** ********************************************************************************************************************************************** **/
