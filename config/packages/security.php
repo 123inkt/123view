@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use DR\Review\Controller\Auth\AuthenticationController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
@@ -34,7 +33,7 @@ return static function (SecurityConfig $security): void {
     $security->firewall('main')
         ->logout()
         ->path(LogoutController::class)
-        ->target(AuthenticationController::class);
+        ->target(LoginController::class);
 
     // require IS_AUTHENTICATED_FULLY for /app/*
     $security->accessControl()

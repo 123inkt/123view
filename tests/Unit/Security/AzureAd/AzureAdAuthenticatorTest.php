@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Security\AzureAd;
 
 use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
-use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginFailure;
@@ -149,7 +149,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $this->urlGenerator
             ->expects(self::once())
             ->method('generate')
-            ->with(AuthenticationController::class)
+            ->with(LoginController::class)
             ->willReturn($url);
 
         $request = new Request();

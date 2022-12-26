@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\EventSubscriber;
 
-use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LoginController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -30,7 +30,7 @@ class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $request->getSession()->getFlashBag()->add('error', 'redirect.access.denied.session.expired');
 
-        $url = $this->urlGenerator->generate(AuthenticationController::class, ['next' => $request->getRequestUri()]);
+        $url = $this->urlGenerator->generate(LoginController::class, ['next' => $request->getRequestUri()]);
 
         // redirect to frontend when access is denied
         $event->setResponse(new RedirectResponse($url));

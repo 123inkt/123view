@@ -5,7 +5,7 @@ namespace DR\Review\Security\AzureAd;
 
 use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
-use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Utility\Assert;
 use JsonException;
@@ -75,6 +75,6 @@ class AzureAdAuthenticator extends AbstractAuthenticator
         $request->getSession()->getFlashBag()->add('error', $exception->getMessage());
 
         // redirect to login page
-        return new RedirectResponse($this->urlGenerator->generate(AuthenticationController::class));
+        return new RedirectResponse($this->urlGenerator->generate(LoginController::class));
     }
 }
