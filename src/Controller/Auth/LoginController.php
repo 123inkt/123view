@@ -6,10 +6,9 @@ namespace DR\Review\Controller\Auth;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
-use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
-use DR\Review\Form\User\LoginFormType;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\Authentication\LoginViewModel;
+use DR\Review\ViewModelProvider\LoginViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +22,8 @@ class LoginController extends AbstractController
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly Security $security,
-        private readonly AuthenticationUtils $authenticationUtils
+        private readonly AuthenticationUtils $authenticationUtils,
+        private readonly LoginViewModelProvider $viewModelProvider
     ) {
     }
 
@@ -47,18 +47,10 @@ class LoginController extends AbstractController
         if ($error !== null) {
             $this->addFlash('error', $this->translator->trans($error->getMessageKey(), $error->getMessageData(), 'security'));
         }
-        $form = $this->createForm(
-            LoginFormType::class,
-            null,
-            ['username' => $this->authenticationUtils->getLastUsername(), 'targetPath' => $request->query->get('next')]
-        )->createView();
 
         return [
             'page_title' => $this->translator->trans('page.title.single.sign.on'),
-            'loginModel' => new LoginViewModel(
-                $form,
-                $this->generateUrl(AzureAdAuthController::class, array_filter(['next' => $request->query->get('next', '')]))
-            )
+            'loginModel' => $this->viewModelProvider->getLoginViewModel($request)
         ];
     }
 }
