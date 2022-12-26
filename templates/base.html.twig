@@ -109,6 +109,7 @@
     const publishUrl      = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
     const eventSource     = new EventSource(publishUrl, {withCredentials: true});
     eventSource.onmessage = (event) => document.dispatchEvent(new CustomEvent('notification', {detail: JSON.parse(event.data)}))
+    window.addEventListener('beforeunload', () => eventSource.close());
     {% endif %}
 </script>
 </body>
