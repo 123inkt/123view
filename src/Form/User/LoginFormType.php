@@ -37,7 +37,7 @@ class LoginFormType extends AbstractType
     {
         $builder->setAction($this->urlGenerator->generate(LoginController::class));
         $builder->setMethod('POST');
-        $builder->add('_username', EmailType::class, ['label' => 'email']);
+        $builder->add('_username', EmailType::class, ['label' => 'email', 'data' => $options['username'] ?? '']);
         $builder->add('_password', PasswordType::class, ['label' => 'password']);
         $builder->add('login', SubmitType::class, ['label' => 'login']);
     }
