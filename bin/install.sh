@@ -2,23 +2,16 @@
 
 SOURCEDIR=$(dirname $(dirname $(realpath "$0")))
 
-# ask which ssl option should be used
 echo ""
-echo "[1] Get me started with self-signed certificates, i'll replace this later"
-echo "[2] Setup with my own ssl certificates"
-echo ""
-echo -e "Use self-signed ssl certificate or use my own? "
-read choice
+echo "  _ ____  _____      _                 _           _        _ _"
+echo " / |___ \|___ /_   _(_) _____      __ (_)_ __  ___| |_ __ _| | | ___ _ __"
+echo " | | __) | |_ \ \ / / |/ _ \ \ /\ / / | | '_ \/ __| __/ _\` | | |/ _ \ '__|"
+echo " | |/ __/ ___) \ V /| |  __/\ V  V /  | | | | \__ \ || (_| | | |  __/ |"
+echo " |_|_____|____/ \_/ |_|\___| \_/\_/   |_|_| |_|___/\__\__,_|_|_|\___|_|"
 
-if [ "${choice}" == "1" ]; then
-    cert="self-signed"
-elif [ "${choice}" == "2" ]; then
-    cert="provided"
-else
-    exit
-fi
+
 
 ##
 # Installation PHP script executed via docker container
 #
-docker container run --rm --interactive -v ${SOURCEDIR}:/app php:8.1 php /app/bin/install.php --ssl ${cert}
+docker container run --rm --interactive -v ${SOURCEDIR}:/app php:8.1 php /app/bin/install.php --hostname ${HOSTNAME} --sourcedir ${SOURCEDIR}

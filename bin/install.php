@@ -2,20 +2,15 @@
 declare(strict_types=1);
 
 $sourceDir = dirname(__DIR__) . '/';
-$sslMode   = getopt('', 'ssl:')['ssl'] ?? 'self-signed';
+$options = getopt('', ['hostname:', 'sourcedir:']);
+$hostname = $options['hostname'] ?? 'unknown';
+$hostSourceDir = $options['sourcedir'] ?? '';
 
 writeln();
-writeln('This script will generate a .env.prod.local with freshly generated passwords, and will ask questions for additional settings.');
-writeln('This script will setup a production ready 123view application.');
-writeln();
-
-if (readline("Are you sure you want to continue? [Y/n] ") === "n") {
-    return;
-}
 
 // check if file already exists
 if (file_exists($sourceDir . '.env.prod.local')) {
-    writeln("env.prod.local already exists.");
+    writeln("A `env.prod.local` already exists.");
     if (readline("Are you sure you want to overwrite? [y/N] ") !== "y") {
         return;
     }
@@ -24,6 +19,7 @@ if (file_exists($sourceDir . '.env.prod.local')) {
 $fromFile = $sourceDir . '.env.prod.local.dist';
 $toFile   = $sourceDir . '.env.prod.local';
 
+writeln();
 writeln("Copy $fromFile > $toFile");
 copy($fromFile, $toFile);
 
@@ -32,7 +28,7 @@ replaceInFile("APP_SECRET", random_str(32), $toFile);
 replaceInFile("DB_PASS", random_str(32), $toFile);
 replaceInFile("RABBITMQ_PASSWORD", random_str(32), $toFile);
 replaceInFile("MERCURE_JWT_SECRET", random_str(32), $toFile);
-writeln("Secrets written to `$toFile`");
+writeln("Secrets written to `.env.prod.local`");
 writeln();
 
 writeln("What sender e-mail to use for outbound mails? Ex: 'Sherlock Holmes <sherlock@example.com>' ");
@@ -42,6 +38,7 @@ if ($senderEmail === false) {
 }
 replaceInFile('MAILER_SENDER', $senderEmail, $toFile);
 
+writeln();
 writeln("What e-mail to use for error mails? Ex: 'error@example.com'");
 $errorEmail = readline();
 if ($errorEmail === false) {
@@ -49,18 +46,32 @@ if ($errorEmail === false) {
 }
 replaceInFile('ERROR_MAIL', $errorEmail, $toFile);
 
-writeln("What hostname will be used for the application? Ex: '123view.example.com'");
-$hostname = readline();
-if ($hostname === false) {
+writeln();
+writeln("What hostname will be used for the application? Default: '" . $hostname . "'");
+$userHostname = readline();
+if ($userHostname === false) {
     return;
 }
-replaceInFile('APP_HOSTNAME', $hostname, $toFile);
+replaceInFile('APP_HOSTNAME', trim($userHostname) === '' ? $hostname : $userHostname, $toFile);
 
-if ($sslMode === 'self-signed') {
-    replaceInFile('SSL_DHPARAM', $sourceDir . 'docker/ssl/dhparam.pem', $toFile);
-    replaceInFile('SSL_CERTIFICATE', $sourceDir . 'docker/ssl/development/development-self-signed.crt', $toFile);
-    replaceInFile('SSL_CERTIFICATE_KEY', $sourceDir . 'docker/ssl/development/development-self-signed.key', $toFile);
-} else {
+# ask which ssl option should be used
+writeln();
+writeln("[1] Get me started with self-signed certificates, i'll replace this later");
+writeln("[2] Setup with my own ssl certificates");
+writeln();
+writeln("Use self-signed ssl certificate or use my own? ");
+$sslModeChoice = readline();
+
+if ($sslModeChoice === "1") {
+    writeln();
+    replaceInFile('SSL_DHPARAM', $hostSourceDir . 'docker/ssl/dhparam.pem', $toFile);
+    writeln('SSL_DHPARAM: set to ' . $hostSourceDir . 'docker/ssl/dhparam.pem');
+    replaceInFile('SSL_CERTIFICATE', $hostSourceDir . 'docker/ssl/development/development-self-signed.crt', $toFile);
+    writeln('SSL_CERTIFICATE: set to ' . $hostSourceDir . 'docker/ssl/development/development-self-signed.crt');
+    replaceInFile('SSL_CERTIFICATE_KEY', $hostSourceDir . 'docker/ssl/development/development-self-signed.key', $toFile);
+    writeln('SSL_CERTIFICATE_KEY: set to ' . $hostSourceDir . 'docker/ssl/development/development-self-signed.key');
+} elseif ($sslModeChoice === "2") {
+    writeln();
     writeln("SSL: What's the path the the dhparam.pem: ");
     $dhparam = readline();
     if ($dhparam === false) {
@@ -68,6 +79,7 @@ if ($sslMode === 'self-signed') {
     }
     replaceInFile('SSL_DHPARAM', $dhparam, $toFile);
 
+    writeln();
     writeln("SSL: What's the path to your ssl certificate (.crt): ");
     $cert = readline();
     if ($cert === false) {
@@ -75,13 +87,23 @@ if ($sslMode === 'self-signed') {
     }
     replaceInFile('SSL_CERTIFICATE', $cert, $toFile);
 
+    writeln();
     writeln("SSL: What's the path to your ssl certificate key (.key): ");
     $certKey = readline();
     if ($certKey === false) {
         return;
     }
     replaceInFile('SSL_CERTIFICATE_KEY', $certKey, $toFile);
+} else {
+    writeln("aborted");
+
+    return;
 }
+
+writeln();
+writeln(
+    "Configuration complete. All settings save in `.env.prod.local`. Review if everything is correct and use `bin/start.sh` to start the application"
+);
 
 /** ********************************************************************************************************************************************** **/
 /**                                            Utility methods                                                                                     **/
