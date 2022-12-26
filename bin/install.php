@@ -4,10 +4,16 @@ declare(strict_types=1);
 $sourceDir = dirname(__DIR__) . '/';
 
 writeln();
+writeln('This script will generate a .env.prod.local with freshly generated password, and will ask additional question for other settings.');
+writeln('This script will setup a production ready 123view application.');
+
+if (readline("Are you sure you want to continue? [Y/n] ") === "n") {
+    return;
+}
 
 // check if file already exists
 if (file_exists($sourceDir . '.env.prod.local') &&
-    readline(".env.prod.local already exists. Are you sure you want to overwrite all settings? [y/N]") !== "y") {
+    readline(".env.prod.local already exists. Are you sure you want to overwrite all settings? [y/N] ") !== "y") {
     return;
 }
 
@@ -23,6 +29,25 @@ replaceInFile("DB_PASS", random_str(32), $toFile);
 replaceInFile("RABBITMQ_PASSWORD", random_str(32), $toFile);
 replaceInFile("MERCURE_JWT_SECRET", random_str(32), $toFile);
 writeln("Secrets written to `$toFile`");
+writeln();
+
+$senderEmail = readline("What sender e-mail to use for outbound mails? Ex: 'Sherlock Holmes <sherlock@example.com>' ");
+if ($senderEmail === false) {
+    return;
+}
+replaceInFile('MAILER_SENDER', $senderEmail, $toFile);
+
+$errorEmail = readline("What e-mail to use for error mails? Ex: 'error@example.com' ");
+if ($errorEmail === false) {
+    return;
+}
+replaceInFile('ERROR_MAIL', $errorEmail, $toFile);
+
+$hostname = readline("What hostname will be used for the application? Ex: '123view.example.com' ");
+if ($hostname === false) {
+    return;
+}
+replaceInFile('APP_HOSTNAME', $hostname, $toFile);
 
 /** ********************************************************************************************************************************************** **/
 /**                                            Utility methods                                                                                     **/
