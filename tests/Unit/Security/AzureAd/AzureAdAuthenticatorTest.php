@@ -43,7 +43,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $this->loginService  = $this->createMock(LoginService::class);
         $this->badgeFactory  = $this->createMock(AzureAdUserBadgeFactory::class);
         $this->urlGenerator  = $this->createMock(UrlGeneratorInterface::class);
-        $this->authenticator = new AzureAdAuthenticator($this->loginService, $this->badgeFactory, $this->urlGenerator);
+        $this->authenticator = new AzureAdAuthenticator($this->loginService, $this->badgeFactory, $this->urlGenerator, true);
     }
 
     /**

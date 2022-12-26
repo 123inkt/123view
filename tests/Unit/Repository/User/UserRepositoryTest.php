@@ -62,6 +62,21 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @covers ::getUserCount
+     * @throws Exception
+     */
+    public function testGetUserCount(): void
+    {
+        $repository = self::getService(UserRepository::class);
+        $user       = Assert::notNull($repository->findOneBy(['email' => 'sherlock@example.com']));
+
+        static::assertSame(1, $repository->getUserCount());
+
+        $repository->remove($user, true);
+        static::assertSame(0, $repository->getUserCount());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array
