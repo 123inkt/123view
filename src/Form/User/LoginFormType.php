@@ -39,7 +39,7 @@ class LoginFormType extends AbstractType
         $builder->setMethod('POST');
         $builder->add('_username', EmailType::class, ['label' => 'email', 'data' => $options['username'] ?? '']);
         $builder->add('_password', PasswordType::class, ['label' => 'password']);
-        $builder->add('login', SubmitType::class, ['label' => 'login']);
+        $builder->add('loginBtn', SubmitType::class, ['label' => 'login']);
     }
 
     public function getBlockPrefix(): string

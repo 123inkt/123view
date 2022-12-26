@@ -201,4 +201,5 @@ return [
     'user.email.already.exists'                   => 'There is already an account with this email',
     'password.minimum.length'                     => 'Your password should be at least {{ limit }} characters',
     'password.is.required'                        => 'Please enter a password',
+    'create.new.account'                          => 'Create a new account',
 ];
