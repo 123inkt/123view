@@ -39,8 +39,8 @@ A symfony application to create code reviews for a specific set of revisions not
 
 ## Requirements
 
-- docker >= 20.10
-- git
+- [docker >= 20.10](https://docs.docker.com/engine/install/)
+- [git](https://git-scm.com/download/linux)
 
 ## Installation
 
