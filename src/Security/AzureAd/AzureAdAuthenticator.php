@@ -24,7 +24,8 @@ class AzureAdAuthenticator extends AbstractAuthenticator
     public function __construct(
         private LoginService $loginService,
         private AzureAdUserBadgeFactory $userBadgeFactory,
-        private UrlGeneratorInterface $urlGenerator
+        private UrlGeneratorInterface $urlGenerator,
+        private bool $authenticationEnabled
     ) {
     }
 
@@ -35,7 +36,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->getPathInfo() === '/single-sign-on/azure-ad/callback';
+        return $this->authenticationEnabled && $request->getPathInfo() === '/single-sign-on/azure-ad/callback';
     }
 
     public function authenticate(Request $request): Passport
