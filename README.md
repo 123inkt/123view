@@ -40,21 +40,13 @@ A symfony application to create code reviews for a specific set of revisions not
 ## Requirements
 
 - docker >= 20.10
-- docker-compose >= 2.6.0
+- git
 
-Or
-
-- nginx
-- php8.1+
-- mysql
-- git latest version
-
-## Quick start
+## Installation
 
 1) clone repository
 ```shell
-git clone https://github.com/123inkt/123view.git 123view
-cd 123view
+git clone https://github.com/123inkt/123view.git 123view && cd 123view
 ```
 2) create `.env.dev.local` or `.env.prod.local`. See `.env` [configuration](docs/configuration.md) for how to configure the options.
 
