@@ -12,10 +12,11 @@ use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Repository\User\UserRepository;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +28,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $email = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $password = null;
 
     /** @var string[]|null */
     #[ORM\Column(type: SpaceSeparatedStringValueType::TYPE, length: 500)]
@@ -91,6 +95,18 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): User
+    {
+        $this->password = $password;
 
         return $this;
     }
