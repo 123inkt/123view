@@ -35,7 +35,9 @@
     <div class="btn-group btn-group-sm float-end pe-2">
         {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
         {% for diffMode in fileDiffViewModel.diffModes %}
-            <a href="{{ url_query_params({diff: diffMode}) }}" class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}">
+            <a href="{{ url_query_params({diff: diffMode}) }}"
+               class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
+               data-controller="button">
                 {{ ('diff.' ~ diffMode)|trans }}
             </a>
         {% endfor %}

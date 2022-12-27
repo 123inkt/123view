@@ -140,6 +140,6 @@ class GitDiffServiceTest extends AbstractTestCase
         $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
         $this->parser->expects(self::once())->method('parse')->with('foobar');
 
-        $this->diffService->getBundledDiffFromRevisions($repository, 15);
+        $this->diffService->getBundledDiffFromRevisions($repository, new FileDiffOptions(15, true));
     }
 }

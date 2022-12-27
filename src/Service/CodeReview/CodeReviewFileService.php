@@ -35,7 +35,7 @@ class CodeReviewFileService
         $cacheKey = $this->getReviewCacheKey($review, $revisions);
 
         // generate small diff for common usage
-        $reducedFiles = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(0));
+        $reducedFiles = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(0, true));
 
         $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $reducedFiles, $cacheKey): DirectoryTreeNode {
             // generate full size files for diff

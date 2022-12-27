@@ -5,12 +5,12 @@ namespace DR\Review\Service\Git\Review;
 
 class FileDiffOptions
 {
-    public function __construct(public readonly int $unifiedDiffLines)
+    public function __construct(public readonly int $unifiedDiffLines, public readonly bool $minimal = false)
     {
     }
 
     public function __toString(): string
     {
-        return sprintf('udl-%s', $this->unifiedDiffLines);
+        return sprintf('fdo-%s-%s', $this->unifiedDiffLines, $this->minimal ? 1 : 0);
     }
 }

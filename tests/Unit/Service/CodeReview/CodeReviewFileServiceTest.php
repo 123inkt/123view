@@ -73,7 +73,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
             );
         $this->diffService->expects(self::exactly(2))->method('getDiffFiles')
             ->withConsecutive(
-                [$repository, [$revision], new FileDiffOptions(0)],
+                [$repository, [$revision], new FileDiffOptions(0, true)],
                 [$repository, [$revision], new FileDiffOptions(9999999)]
             )->willReturn([$diffFileA], [$diffFileB]);
 

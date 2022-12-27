@@ -75,20 +75,20 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output);
+        return $this->parser->parse($output, $options?->minimal ?? false);
     }
 
     /**
      * @return DiffFile[]
      * @throws RepositoryException|ParseException
      */
-    public function getBundledDiffFromRevisions(Repository $repository, int $unifiedDiffLines = 10): array
+    public function getBundledDiffFromRevisions(Repository $repository, ?FileDiffOptions $options = null): array
     {
         // create git diff HEAD command
         $commandBuilder = $this->builderFactory->createDiff()
             ->hash('HEAD')
             ->diffAlgorithm(DiffAlgorithmType::MYERS)
-            ->unified($unifiedDiffLines)
+            ->unified($options?->unifiedDiffLines ?? 10)
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol();
 
@@ -97,6 +97,6 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output);
+        return $this->parser->parse($output, $options?->minimal ?? false);
     }
 }

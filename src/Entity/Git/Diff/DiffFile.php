@@ -39,6 +39,11 @@ class DiffFile
         $this->blocks[] = $block;
     }
 
+    public function removeBlocks(): void
+    {
+        $this->blocks = [];
+    }
+
     public function isAdded(): bool
     {
         return $this->filePathBefore === null;

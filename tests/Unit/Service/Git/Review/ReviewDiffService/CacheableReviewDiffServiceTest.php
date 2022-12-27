@@ -54,11 +54,11 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20);
+        $options  = new FileDiffOptions(20, true);
 
         $this->cache->expects(self::once())
             ->method('get')
-            ->with('diff-files-123-hash-udl-20')
+            ->with('diff-files-123-hash-fdo-20-1')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFile]);
 
