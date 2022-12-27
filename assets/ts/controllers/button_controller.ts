@@ -7,7 +7,7 @@ export default class extends Controller<HTMLButtonElement> {
     }
 
     private load(): void {
-        if (this.element.type !== 'submit' || this.element.closest('form')?.checkValidity() === false) {
+        if (this.element.type === 'submit' && this.element.closest('form')?.checkValidity() === false) {
             return;
         }
 
