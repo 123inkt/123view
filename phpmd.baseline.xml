@@ -4,4 +4,5 @@
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Filter/CommitFilter.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Show/GitShowCommandBuilder.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Git/Parser/DiffParserTest.php"/>
 </phpmd-baseline>
