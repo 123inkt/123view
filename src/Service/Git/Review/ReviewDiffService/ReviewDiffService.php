@@ -35,21 +35,34 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
             return $revisions;
         }
 
+        $files = null;
         if (count($revisions) === 1) {
             // get the diff for the single revision
-            return $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
-        }
-
-        /** @var ReviewDiffStrategyInterface $strategy */
-        foreach ($this->reviewDiffStrategies as $strategy) {
-            try {
-                return $strategy->getDiffFiles($repository, $revisions, $options);
-            } catch (Throwable $exception) {
-                $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
-                continue;
+            $files = $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
+        } else {
+            /** @var ReviewDiffStrategyInterface $strategy */
+            foreach ($this->reviewDiffStrategies as $strategy) {
+                try {
+                    $files = $strategy->getDiffFiles($repository, $revisions, $options);
+                    break;
+                } catch (Throwable $exception) {
+                    $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
+                }
             }
         }
 
-        throw new RuntimeException('Failed to fetch diff for revisions. All strategies exhausted');
+        if ($files === null) {
+            throw new RuntimeException('Failed to fetch diff for revisions. All strategies exhausted');
+        }
+
+        if ($options?->minimal === true) {
+            foreach ($files as $file) {
+                $file->getNrOfLinesAdded();
+                $file->getNrOfLinesRemoved();
+                $file->removeBlocks();
+            }
+        }
+
+        return $files;
     }
 }
