@@ -11,7 +11,6 @@ use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
 use RuntimeException;
-use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
@@ -21,8 +20,7 @@ class CodeReviewFileService
         private readonly CacheInterface $revisionCache,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly FileTreeGenerator $treeGenerator,
-        private readonly DiffFinder $diffFinder,
-        private readonly ?Stopwatch $stopwatch = null,
+        private readonly DiffFinder $diffFinder
     ) {
     }
 
@@ -37,11 +35,8 @@ class CodeReviewFileService
         $cacheKey = $this->getReviewCacheKey($review, $revisions);
 
         // generate small diff for common usage
-        $this->stopwatch?->start('review.files', 'review');
         $reducedFiles = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(0, true));
-        $this->stopwatch?->stop('review.files');
 
-        $this->stopwatch?->start('review.file-tree', 'review');
         $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $reducedFiles, $cacheKey): DirectoryTreeNode {
             // generate full size files for diff
             $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(9999999));
@@ -55,12 +50,9 @@ class CodeReviewFileService
                 ->flatten()
                 ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename()));
         });
-        $this->stopwatch?->stop('review.file-tree');
 
         // get selected file (if any)
-        $this->stopwatch?->start('review.find.file', 'review');
         $selectedFile = $this->diffFinder->findFileByPath($reducedFiles, $filePath);
-        $this->stopwatch?->stop('review.find.file');
 
         // get full file from cache
         if ($selectedFile !== null) {
