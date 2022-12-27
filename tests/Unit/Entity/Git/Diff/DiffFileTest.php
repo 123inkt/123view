@@ -15,6 +15,7 @@ use DR\Review\Tests\AbstractTestCase;
 class DiffFileTest extends AbstractTestCase
 {
     /**
+     * @covers ::removeBlocks
      * @covers ::getBlocks
      * @covers ::addBlock
      */
@@ -26,6 +27,9 @@ class DiffFileTest extends AbstractTestCase
         $block = new DiffBlock();
         $file->addBlock($block);
         static::assertSame([$block], $file->getBlocks());
+
+        $file->removeBlocks();
+        static::assertCount(0, $file->getBlocks());
     }
 
     /**
