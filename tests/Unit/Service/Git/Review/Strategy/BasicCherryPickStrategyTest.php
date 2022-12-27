@@ -12,6 +12,7 @@ use DR\Review\Service\Git\Checkout\GitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -62,7 +63,7 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
         $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision]);
         $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository)->willReturn([$diffFile]);
 
-        $this->strategy->getDiffFiles($repository, [$revision]);
+        $this->strategy->getDiffFiles($repository, [$revision], new FileDiffOptions(20, true));
     }
 
     /**
