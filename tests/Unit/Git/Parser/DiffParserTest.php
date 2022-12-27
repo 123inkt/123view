@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Git\Parser;
 
+use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Exception\ParseException;
 use DR\Review\Service\Parser\DiffFileParser;
@@ -72,6 +73,34 @@ class DiffParserTest extends AbstractTestCase
         $file = $diffs[0];
         static::assertSame('example with space/exampleA.txt', $file->filePathBefore);
         static::assertSame('example with space/exampleB.txt', $file->filePathAfter);
+    }
+
+    /**
+     * @covers ::parse
+     * @throws ParseException
+     */
+    public function testParseSingleFileWithMinimalSettings(): void
+    {
+        $input = "\n";
+        $input .= "diff --git a/example with space/exampleA.txt b/example with space/exampleB.txt\n";
+        $input .= "foobar\n";
+
+        // setup mocks
+        $this->fileParser->expects(static::once())
+            ->method('parse')
+            ->with("foobar\n")
+            ->willReturnCallback(
+                static function (string $output, DiffFile $file) {
+                    $file->addBlock(new DiffBlock());
+
+                    return $file;
+                }
+            );
+
+        $diffs = $this->parser->parse($input, true);
+        static::assertCount(1, $diffs);
+        $file = $diffs[0];
+        static::assertCount(0, $file->getBlocks());
     }
 
     /**
