@@ -11,9 +11,11 @@
     </div>
 
     <div class="clearfix">
-        {{- form_widget(form.save, {attr: {title: 'comment.save.quick.key'}}) -}}
-        <button type="button" class="ms-2 btn btn-outline-secondary" data-action="click->comment#cancelComment">{{ 'cancel'|trans }}</button>
-
+        {{- form_widget(form.save, {attr: {title: 'comment.save.quick.key', 'data-controller': 'button'}}) -}}
+        <button type="button"
+                class="ms-2 btn btn-outline-secondary"
+                data-controller="button"
+                data-action="click->comment#cancelComment">{{ 'cancel'|trans }}</button>
         <span class="float-end text-secondary">
             {{ 'comment.markdown.examples'|trans }}
         </span>
