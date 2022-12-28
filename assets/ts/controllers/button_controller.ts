@@ -12,7 +12,9 @@ export default class extends Controller<HTMLButtonElement> {
         }
 
         const icon = ElementFactory.createElement('<span class="spinner-border spinner-border-sm me-1"/>');
-        this.element.disabled = true;
         this.element.insertBefore(icon, this.element.firstChild);
+
+        // delay disable slightly to avoid blocking the submit
+        window.setTimeout(() => this.element.disabled = true, 1);
     }
 }
