@@ -9,22 +9,17 @@ use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Revision;
-use DR\Review\Message\Review\ReviewCreated;
-use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Revision\NewRevisionMessage;
-use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\MessageHandler\NewRevisionMessageHandler;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;
+use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use stdClass;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 /**
@@ -39,27 +34,25 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     private FileSeenStatusService&MockObject     $seenStatusService;
     private CodeReviewRevisionMatcher&MockObject $reviewRevisionMatcher;
     private ManagerRegistry&MockObject           $registry;
-    private MessageBusInterface&MockObject       $bus;
+    private ReviewEventService&MockObject        $eventService;
     private NewRevisionMessageHandler            $messageHandler;
-    private Envelope                             $envelope;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope              = new Envelope(new stdClass(), []);
         $this->revisionRepository    = $this->createMock(RevisionRepository::class);
         $this->reviewService         = $this->createMock(CodeReviewService::class);
         $this->seenStatusService     = $this->createMock(FileSeenStatusService::class);
         $this->reviewRevisionMatcher = $this->createMock(CodeReviewRevisionMatcher::class);
         $this->registry              = $this->createMock(ManagerRegistry::class);
-        $this->bus                   = $this->createMock(MessageBusInterface::class);
+        $this->eventService          = $this->createMock(ReviewEventService::class);
         $this->messageHandler        = new NewRevisionMessageHandler(
             $this->revisionRepository,
             $this->reviewService,
             $this->reviewRevisionMatcher,
             $this->seenStatusService,
             $this->registry,
-            $this->bus
+            $this->eventService
         );
         $this->messageHandler->setLogger($this->createMock(LoggerInterface::class));
     }
@@ -98,7 +91,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::dispatchAfter
      * @throws Throwable
      */
     public function testInvokeShouldHandleNewReview(): void
@@ -111,20 +103,15 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
         $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
         $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->bus->expects(self::exactly(2))
-            ->method('dispatch')
-            ->withConsecutive(
-                [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewCreated)],
-                [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewRevisionAdded)]
-            )
-            ->willReturn($this->envelope);
+        $this->eventService->expects(self::once())
+            ->method('revisionAddedToReview')
+            ->with($review, $revision, true, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
 
         ($this->messageHandler)($message);
     }
 
     /**
      * @covers ::__invoke
-     * @covers ::dispatchAfter
      * @throws Throwable
      */
     public function testInvokeShouldHandleReopenClosedReview(): void
@@ -155,13 +142,9 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
                 [$revision]
             );
         $this->seenStatusService->expects(self::once())->method('markAllAsUnseen')->with($review, $revision);
-        $this->bus->expects(self::exactly(2))
-            ->method('dispatch')
-            ->withConsecutive(
-                [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewOpened)],
-                [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewRevisionAdded)]
-            )
-            ->willReturn($this->envelope);
+        $this->eventService->expects(self::once())
+            ->method('revisionAddedToReview')
+            ->with($review, $revision, false, CodeReviewStateType::CLOSED, CodeReviewerStateType::ACCEPTED);
 
         ($this->messageHandler)($message);
 
@@ -171,7 +154,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::dispatchAfter
      * @throws Throwable
      */
     public function testInvokeShouldResetRegistryManagerOnException(): void

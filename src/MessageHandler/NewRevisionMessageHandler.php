@@ -4,22 +4,15 @@ declare(strict_types=1);
 namespace DR\Review\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
-use DR\Review\Doctrine\Type\CodeReviewStateType;
-use DR\Review\Message\AsyncMessageInterface;
-use DR\Review\Message\Review\ReviewCreated;
-use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Revision\NewRevisionMessage;
-use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;
+use DR\Review\Service\Webhook\ReviewEventService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 use Throwable;
 
 class NewRevisionMessageHandler implements LoggerAwareInterface
@@ -32,13 +25,8 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
         private CodeReviewRevisionMatcher $reviewRevisionMatcher,
         private FileSeenStatusService $seenStatusService,
         private ManagerRegistry $registry,
-        private MessageBusInterface $bus
+        private ReviewEventService $eventService,
     ) {
-    }
-
-    private function dispatchAfter(AsyncMessageInterface $event): void
-    {
-        $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
     }
 
     /**
@@ -63,8 +51,9 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $reviewCreated = $review->getId() === null;
-        $reviewState   = $review->getState();
+        $reviewCreated  = $review->getId() === null;
+        $reviewersState = $review->getReviewersState();
+        $reviewState    = $review->getState();
 
         try {
             $this->reviewService->addRevisions($review, [$revision]);
@@ -80,12 +69,6 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
         $this->seenStatusService->markAllAsUnseen($review, $revision);
 
         // dispatch events
-        if ($reviewCreated) {
-            $this->dispatchAfter(new ReviewCreated((int)$review->getId(), (int)$revision->getId()));
-        }
-        if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
-            $this->dispatchAfter(new ReviewOpened((int)$review->getId(), null));
-        }
-        $this->dispatchAfter(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null));
+        $this->eventService->revisionAddedToReview($review, $revision, $reviewCreated, $reviewState, $reviewersState);
     }
 }

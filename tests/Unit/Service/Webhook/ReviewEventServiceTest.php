@@ -11,6 +11,7 @@ use DR\Review\Entity\Review\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
+use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Message\Review\ReviewResumed;
@@ -220,5 +221,48 @@ class ReviewEventServiceTest extends AbstractTestCase
             ->willReturn($this->envelope);
 
         $this->service->revisionsDetached($review, [$revisionA, $revisionB], 5);
+    }
+
+    /**
+     * @covers ::revisionAddedToReview
+     */
+    public function testRevisionAddedToReview(): void
+    {
+        $revision = new Revision();
+        $revision->setId(456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setState(CodeReviewStateType::OPEN);
+
+        $this->bus->expects(self::exactly(4))
+            ->method('dispatch')
+            ->withConsecutive(
+                [new Envelope(new ReviewCreated(123, 456))],
+                [new Envelope(new ReviewOpened(123, null))],
+                [new Envelope(new ReviewResumed(123, null))],
+                [new Envelope(new ReviewRevisionAdded(123, 456, null))],
+            )
+            ->willReturn($this->envelope);
+
+        $this->service->revisionAddedToReview($review, $revision, true, CodeReviewStateType::CLOSED, CodeReviewerStateType::ACCEPTED);
+    }
+
+    /**
+     * @covers ::revisionAddedToReview
+     */
+    public function testRevisionAddedToReviewWithMinimalEvents(): void
+    {
+        $revision = new Revision();
+        $revision->setId(456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setState(CodeReviewStateType::OPEN);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(new Envelope(new ReviewRevisionAdded(123, 456, null)))
+            ->willReturn($this->envelope);
+
+        $this->service->revisionAddedToReview($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
     }
 }
