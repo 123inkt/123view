@@ -7,7 +7,6 @@ use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
@@ -22,8 +21,7 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly ReviewDiffServiceInterface $diffService,
-        private readonly CacheableHighlightedFileService $fileService
+        private readonly ReviewDiffServiceInterface $diffService
     ) {
     }
 
@@ -40,6 +38,18 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
             return;
         }
 
+        // @codeCoverageIgnoreStart
+        $systemLoad = function_exists('sys_getloadavg') ? (sys_getloadavg()[1] ?? 0) : 0; // system load in the last 5 minutes
+        if ($systemLoad >= 1.1) {
+            $this->logger?->info(
+                'DiffFileCacheMessageHandler: system load too high, skipping cache of review {review}',
+                ['review' => $event->getReviewId()]
+            );
+
+            return;
+        }
+        // @codeCoverageIgnoreEnd
+
         $revisions = $review->getRevisions();
         if (count($revisions) === 0) {
             return;
@@ -49,23 +59,7 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
         $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray(), new FileDiffOptions(0));
 
         // fetch diff files for current review and trigger cache refresh
-        $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray(), new FileDiffOptions(9999999));
+        $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray(), new FileDiffOptions(9999999));
         $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);
-
-        foreach ($files as $file) {
-            if ($file->isDeleted()) {
-                continue;
-            }
-
-            try {
-                $this->fileService->fromDiffFile(Assert::notNull($review->getRepository()), $file);
-                $this->logger?->info('DiffFileCacheMessageHandler: file highlight cache warmed up for {file}', ['file' => $file->getPathname()]);
-            } catch (Throwable $e) {
-                $this->logger?->notice(
-                    'DiffFileCacheMessageHandler: failed to highlight: {file}',
-                    ['file' => $file->getPathname(), 'exception' => $e]
-                );
-            }
-        }
     }
 }
