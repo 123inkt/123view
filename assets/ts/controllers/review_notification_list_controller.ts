@@ -4,9 +4,9 @@ export default class extends Controller {
     public static targets = ['template']
     public static values = {userId: Number, reviewId: Number};
 
-    private templateTarget?: HTMLTemplateElement;
-    private userIdValue?: number;
-    private reviewIdValue?: number;
+    declare templateTarget: HTMLTemplateElement
+    declare userIdValue: number;
+    declare reviewIdValue: number;
 
     private events = [
         'review-accepted',
@@ -23,8 +23,8 @@ export default class extends Controller {
     }
 
     private handleNotification(event: Event): void {
-        const userId   = this.userIdValue ?? 0;
-        const reviewId = this.reviewIdValue ?? 0;
+        const userId   = this.userIdValue;
+        const reviewId = this.reviewIdValue;
         const data     = (<CustomEvent>event).detail;
 
         // notification for different review
@@ -46,7 +46,7 @@ export default class extends Controller {
     }
 
     private createItem(message: string) {
-        const clone = <HTMLElement>this.templateTarget!.content.cloneNode(true);
+        const clone = <HTMLElement>this.templateTarget.content.cloneNode(true);
 
         clone.querySelector('[data-role=item]')!.innerHTML = message;
         return clone;

@@ -2,7 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
     public static targets = ['revisionFile'];
-    private revisionFileTarget?: HTMLElement;
+    declare revisionFileTarget: HTMLElement;
 
     public addComment(event: Event): void {
         const target   = this.getTarget(event);
@@ -54,6 +54,6 @@ export default class extends Controller {
     }
 
     private getFilePath(): string {
-        return this.revisionFileTarget?.dataset.file ?? '';
+        return this.revisionFileTarget.dataset.file ?? '';
     }
 }

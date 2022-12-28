@@ -4,12 +4,12 @@ import Assert from '../lib/Assert';
 
 export default class extends Controller {
     public static targets = ['activeFile']
-    private activeFileTarget?: HTMLElement;
-    private hasActiveFileTarget?: boolean;
+    declare activeFileTarget: HTMLElement;
+    declare hasActiveFileTarget: boolean;
 
     public connect(): void {
         if (this.hasActiveFileTarget) {
-            this.activeFileTarget!.scrollIntoView({block: 'center'});
+            this.activeFileTarget.scrollIntoView({block: 'center'});
         }
     }
 

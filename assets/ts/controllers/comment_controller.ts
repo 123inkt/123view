@@ -7,16 +7,16 @@ import MentionsDropdown from '../lib/MentionsDropdown';
 export default class Comment extends Controller {
     public static targets = ['textarea', 'mentionSuggestions', 'markdownPreview']
 
-    private textareaTarget?: HTMLTextAreaElement;
-    private mentionSuggestionsTarget?: HTMLElement;
-    private markdownPreviewTarget?: HTMLElement;
+    declare textareaTarget: HTMLTextAreaElement;
+    declare mentionSuggestionsTarget: HTMLElement;
+    declare markdownPreviewTarget: HTMLElement;
     private abort: AbortController | null = null;
 
     public connect(): void {
-        const textarea = <HTMLTextAreaElement>this.textareaTarget;
+        const textarea = this.textareaTarget;
         textarea.scrollIntoView({block: 'center'});
         textarea.focus();
-        new Mentions(textarea, new MentionsDropdown(this.mentionSuggestionsTarget!)).bind();
+        new Mentions(textarea, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
         this.commentResizeListener(textarea);
         textarea.addEventListener('input', this.commentResizeListener.bind(this));
         textarea.addEventListener('input', this.commentPreviewListener.bind(this));
@@ -113,6 +113,5 @@ export default class Comment extends Controller {
             .catch(() => {
             })
             .finally(() => this.abort = null);
-
     }
 }
