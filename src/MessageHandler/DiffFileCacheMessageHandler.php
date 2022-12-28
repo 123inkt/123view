@@ -19,10 +19,8 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private readonly CodeReviewRepository $reviewRepository,
-        private readonly ReviewDiffServiceInterface $diffService
-    ) {
+    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly ReviewDiffServiceInterface $diffService)
+    {
     }
 
     /**
