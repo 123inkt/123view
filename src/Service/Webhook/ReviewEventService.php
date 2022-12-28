@@ -10,6 +10,7 @@ use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
+use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Message\Review\ReviewResumed;
@@ -18,7 +19,9 @@ use DR\Review\Message\Reviewer\ReviewerRemoved;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 class ReviewEventService
 {
@@ -99,6 +102,33 @@ class ReviewEventService
     {
         foreach ($detachedRevisions as $revision) {
             $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), $byUserId));
+        }
+    }
+
+    public function revisionAddedToReview(
+        CodeReview $review,
+        Revision $revision,
+        bool $reviewCreated,
+        ?string $reviewState,
+        string $reviewersState
+    ): void {
+        $events = [];
+
+        // create events
+        if ($reviewCreated) {
+            $events[] = new ReviewCreated((int)$review->getId(), (int)$revision->getId());
+        }
+        if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
+            $events[] = new ReviewOpened((int)$review->getId(), null);
+        }
+        if ($reviewersState !== CodeReviewerStateType::OPEN && $review->getReviewersState() === CodeReviewerStateType::OPEN) {
+            $events[] = new ReviewResumed((int)$review->getId(), null);
+        }
+        $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null);
+
+        // dispatch $events
+        foreach ($events as $event) {
+            $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
         }
     }
 }
