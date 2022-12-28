@@ -11,6 +11,7 @@ use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Revision;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Review\ReviewResumed;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\MessageHandler\NewRevisionMessageHandler;
@@ -155,10 +156,11 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
                 [$revision]
             );
         $this->seenStatusService->expects(self::once())->method('markAllAsUnseen')->with($review, $revision);
-        $this->bus->expects(self::exactly(2))
+        $this->bus->expects(self::exactly(3))
             ->method('dispatch')
             ->withConsecutive(
                 [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewOpened)],
+                [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewResumed)],
                 [self::callback(static fn(Envelope $envelope) => $envelope->getMessage() instanceof ReviewRevisionAdded)]
             )
             ->willReturn($this->envelope);
