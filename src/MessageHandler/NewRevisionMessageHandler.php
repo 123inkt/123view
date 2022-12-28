@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace DR\Review\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Message\AsyncMessageInterface;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Review\ReviewResumed;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\RevisionRepository;
@@ -63,8 +65,9 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $reviewCreated = $review->getId() === null;
-        $reviewState   = $review->getState();
+        $reviewCreated  = $review->getId() === null;
+        $reviewersState = $review->getReviewersState();
+        $reviewState    = $review->getState();
 
         try {
             $this->reviewService->addRevisions($review, [$revision]);
@@ -85,6 +88,9 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
         }
         if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
             $this->dispatchAfter(new ReviewOpened((int)$review->getId(), null));
+        }
+        if ($reviewersState !== CodeReviewerStateType::OPEN && $review->getReviewersState() === CodeReviewerStateType::OPEN) {
+            $this->dispatchAfter(new ReviewResumed((int)$review->getId(), null));
         }
         $this->dispatchAfter(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null));
     }
