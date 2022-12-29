@@ -1,8 +1,8 @@
 import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
-import Assert from '../lib/Assert';
-import Mentions from '../lib/Mentions';
-import MentionsDropdown from '../lib/MentionsDropdown';
+import Assert from '../../lib/Assert';
+import Mentions from '../../lib/Mentions';
+import MentionsDropdown from '../../lib/MentionsDropdown';
 
 export default class Comment extends Controller {
     public static targets = ['textarea', 'mentionSuggestions', 'markdownPreview']
