@@ -1,16 +1,16 @@
 <div class="diff-file__comment_form" data-controller="comment">
     {{- form_start(form) -}}
-    {{- form_widget(form.message, {attr: {class: 'diff-file__comment_textarea', 'data-comment-target': 'textarea'}}) -}}
+    {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea'}}) -}}
 
     <div class="position-relative diff-file__comment-mention">
-        <ul class="dropdown-menu" data-comment-target="mentionSuggestions"></ul>
+        <ul class="dropdown-menu" {{ stimulus_target('comment', 'mentionSuggestions') }}></ul>
     </div>
 
-    <div class="comment__markdown" data-comment-target="markdownPreview" class="mb-2">
+    <div class="comment__markdown" {{ stimulus_target('comment', 'markdownPreview') }} class="mb-2">
         {{ form.message.vars.value|markdown }}
     </div>
 
-    <div class="clearfix">
+    <div class="mt-2 clearfix">
         {{- form_widget(form.save, {attr: {title: 'comment.save.quick.key', 'data-controller': 'button'}}) -}}
         <button type="button"
                 class="ms-2 btn btn-outline-secondary"

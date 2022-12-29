@@ -1,22 +1,25 @@
 import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
+import {useDebounce} from 'stimulus-use';
 import Assert from '../lib/Assert';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
 
 export default class Comment extends Controller {
-    public static targets = ['textarea', 'mentionSuggestions', 'markdownPreview']
+    public static debounces = ['commentPreviewListener'];
+    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview']
 
-    private textareaTarget?: HTMLTextAreaElement;
-    private mentionSuggestionsTarget?: HTMLElement;
-    private markdownPreviewTarget?: HTMLElement;
+    declare textareaTarget: HTMLTextAreaElement;
+    declare mentionSuggestionsTarget: HTMLElement;
+    declare markdownPreviewTarget: HTMLElement;
     private abort: AbortController | null = null;
 
     public connect(): void {
-        const textarea = <HTMLTextAreaElement>this.textareaTarget;
+        useDebounce(this, {wait: 100});
+        const textarea = this.textareaTarget;
         textarea.scrollIntoView({block: 'center'});
         textarea.focus();
-        new Mentions(textarea, new MentionsDropdown(this.mentionSuggestionsTarget!)).bind();
+        new Mentions(textarea, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
         this.commentResizeListener(textarea);
         textarea.addEventListener('input', this.commentResizeListener.bind(this));
         textarea.addEventListener('input', this.commentPreviewListener.bind(this));
@@ -89,7 +92,7 @@ export default class Comment extends Controller {
         reader.readAsDataURL(blob);
     }
 
-    private commentPreviewListener(event: Event|HTMLTextAreaElement) {
+    private commentPreviewListener(event: Event | HTMLTextAreaElement) {
         const target    = event instanceof HTMLTextAreaElement ? event : <HTMLTextAreaElement>event.target;
         const previewEl = this.markdownPreviewTarget!;
         const comment   = target.value.trim();
@@ -106,13 +109,12 @@ export default class Comment extends Controller {
 
         this.abort = new AbortController();
         axios.get(
-            '/app/reviews/comment/markdown?message=' + encodeURI(comment),
+            '/app/reviews/comment/markdown?message=' + encodeURIComponent(comment),
             {signal: this.abort.signal}
         )
             .then((response) => previewEl.innerHTML = response.data)
             .catch(() => {
             })
             .finally(() => this.abort = null);
-
     }
 }

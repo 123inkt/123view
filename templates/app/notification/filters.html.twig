@@ -1,17 +1,17 @@
-<fieldset class="pb-4" data-controller="filter" data-filter-count-value="{{ filters|length }}">
+<fieldset class="pb-4" {{ stimulus_controller('filter') }} data-filter-count-value="{{ filters|length }}">
     <legend>{{ title }}</legend>
 
-    <div data-filter-target="filterList">
+    <div {{ stimulus_target('filter', 'filterList') }}>
         {% for filter in filters %}
             {% include '/app/notification/filter.html.twig' %}
         {% endfor %}
     </div>
 
-    <template data-filter-target="filterTemplate">
+    <template {{ stimulus_target('filter', 'filterTemplate') }}>
         {% include '/app/notification/filter.html.twig' with {filter: filters.vars.prototype} %}
     </template>
 
-    <a href="javascript:" data-action="click->filter#addFilter" class="btn btn-outline-primary">
+    <a href="javascript:" {{ stimulus_action('filter', 'addFilter', 'click') }} class="btn btn-outline-primary">
         {{ 'add.filter'|trans }}
     </a>
 </fieldset>

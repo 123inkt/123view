@@ -24,7 +24,7 @@
                    name="search"
                    value="{{ reviewsModel.searchQuery }} "
                    class="form-control"
-                   data-controller="search-field"
+                   {{ stimulus_controller('search-field') }}
                    placeholder="{{ 'search.review'|trans }}"/>
             {% if reviewsModel.searchQuery != '' %}
                 <a href="?search=" class="btn btn-secondary">&times;</a>

@@ -5,7 +5,7 @@
         {{ form_errors(form) }}
 
         {% if form_help is defined and form_help %}
-            <small class="form-text" data-edit-rule-target="explanation">
+            <small class="form-text" {{ stimulus_target('edit-rule', 'explanation') }}>
                 {{ form_help|raw }}
             </small>
         {% endif %}

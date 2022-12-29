@@ -3,8 +3,8 @@ import {Controller} from '@hotwired/stimulus';
 export default class extends Controller {
     public static values = {userId: Number, reviewId: Number};
 
-    private userIdValue?: number;
-    private reviewIdValue?: number;
+    declare userIdValue: number;
+    declare reviewIdValue: number;
 
     public connect(): void {
         document.addEventListener('notification', this.handleNotification.bind(this));
@@ -16,8 +16,8 @@ export default class extends Controller {
     }
 
     private handleNotification(event: Event): void {
-        const userId   = this.userIdValue ?? 0;
-        const reviewId = this.reviewIdValue ?? 0;
+        const userId   = this.userIdValue;
+        const reviewId = this.reviewIdValue;
         const data     = (<CustomEvent>event).detail;
 
         // notification for different review

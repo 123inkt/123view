@@ -50,6 +50,14 @@
     filter: grayscale(1);
 }
 
+.comment__message {
+    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 55px);
+}
+
+.comment__reply .comment__message {
+    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 75px);
+}
+
 .comment__comment .comment__edit,
 .comment__reply .comment__edit {
     display: none;

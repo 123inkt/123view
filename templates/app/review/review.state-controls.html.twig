@@ -10,8 +10,7 @@
 
         {% set openComments = reviewModel.openComments %}
         <button type="submit"
-                class="btn btn-outline-success btn-sm"
-                data-controller="button"
+                class="btn btn-outline-success btn-sm" {{ stimulus_controller('button') }}
                 {% if openComments > 0 %}title="{{ 'accept.open.comments'|trans({count: openComments}) }}"{% endif %}>
             😃 {{ 'accept'|trans }}
             {% if openComments > 0 %}
@@ -24,7 +23,7 @@
           class="d-inline-block"
           action="{{ path('DR\\Review\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
         <input type="hidden" name="state" value="rejected"/>
-        <button type="submit" class="btn btn-outline-primary btn-sm" data-controller="button">😞 {{ 'raise.concern'|trans }}</button>
+        <button type="submit" class="btn btn-outline-primary btn-sm" {{ stimulus_controller('button') }}>😞 {{ 'raise.concern'|trans }}</button>
     </form>
 {% endif %}
 
@@ -34,20 +33,20 @@
               class="d-inline-block"
               action="{{ path('DR\\Review\\Controller\\App\\Review\\Reviewer\\ChangeReviewerStateController', {id: review.id}) }}">
             <input type="hidden" name="state" value="open"/>
-            <button type="submit" class="btn btn-outline-secondary btn-sm" data-controller="button">{{ 'resume.review'|trans }}</button>
+            <button type="submit" class="btn btn-outline-secondary btn-sm" {{ stimulus_controller('button') }}>{{ 'resume.review'|trans }}</button>
         </form>
     {% endif %}
     <form method="POST"
           class="d-inline-block"
           action="{{ path('DR\\Review\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
         <input type="hidden" name="state" value="closed"/>
-        <button type="submit" class="btn btn-outline-secondary btn-sm" data-controller="button">{{ 'close.review'|trans }}</button>
+        <button type="submit" class="btn btn-outline-secondary btn-sm" {{ stimulus_controller('button') }}>{{ 'close.review'|trans }}</button>
     </form>
 {% elseif review.state == 'closed' %}
     <form method="POST"
           class="d-inline-block"
           action="{{ path('DR\\Review\\Controller\\App\\Review\\ChangeReviewStateController', {id: review.id}) }}">
         <input type="hidden" name="state" value="open"/>
-        <button type="submit" class="btn btn-outline-secondary btn-sm" data-controller="button">{{ 'reopen.review'|trans }}</button>
+        <button type="submit" class="btn btn-outline-secondary btn-sm" {{ stimulus_controller('button') }}>{{ 'reopen.review'|trans }}</button>
     </form>
 {% endif %}

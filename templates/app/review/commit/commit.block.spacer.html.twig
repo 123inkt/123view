@@ -1,7 +1,10 @@
 {# invisible_lines:    int #}
 {# lineNrLengthBefore: int #}
 {# lineNrLengthAfter:  int #}
-<div class="diff-file__block-spacer clearfix" data-controller="line-expander" data-action="click->line-expander#expand">
+<div class="diff-file__block-spacer clearfix"
+        {{ stimulus_controller('line-expander') }}
+        {{ stimulus_action('line-expander', 'expand', 'click') }}
+>
     <div class="diff-file__block-spacer-line-nr float-start">
         {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
     </div>

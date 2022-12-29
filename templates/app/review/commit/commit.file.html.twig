@@ -37,15 +37,16 @@
         {% for diffMode in fileDiffViewModel.diffModes %}
             <a href="{{ url_query_params({diff: diffMode}) }}"
                class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
-               data-controller="button">
+                    {{ stimulus_controller('button') }}
+            >
                 {{ ('diff.' ~ diffMode)|trans }}
             </a>
         {% endfor %}
     </div>
 </div>
 
-<div class="diff-file__file-revision-scrollpane" data-controller="scroll-positioner">
-    <div class="diff-file__file-revision-file" data-review-target="revisionFile" data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
+<div class="diff-file__file-revision-scrollpane" {{ stimulus_controller('scroll-positioner') }}>
+    <div class="diff-file__file-revision-file" {{ stimulus_target('review', 'revisionFile') }} data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
         {%- if file.blocks -%}
             {%- for detachedComment in commentsViewModel.detachedComments -%}
                 {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
