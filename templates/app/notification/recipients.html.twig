@@ -1,7 +1,7 @@
 <fieldset class="pb-4" {{ stimulus_controller('recipients') }} data-recipients-count-value="{{ recipients|length }}">
     <legend>{{ 'recipients'|trans }}</legend>
 
-    <div data-recipients-target="recipientList">
+    <div {{ stimulus_target('recipients', 'recipientList') }}>
         {% for recipient in recipients %}
             {% include '/app/notification/recipient.html.twig' %}
         {% endfor %}

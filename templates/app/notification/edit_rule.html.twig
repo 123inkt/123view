@@ -8,11 +8,10 @@
         <h1 class="mt-2">
             {% if rule.id %}{{ 'rule'|trans }}{% else %}{{ 'rule.new'|trans }}{% endif %}
 
-            <button type="button"
-                    class="btn btn-primary float-end"
-                    data-toggle="button"
-                    data-edit-rule-target="button"
-                    data-action="click->edit-rule#toggleHelp">
+            <button type="button" class="btn btn-primary float-end" data-toggle="button"
+                    {{ stimulus_target('edit-rule', 'button') }}
+                    {{ stimulus_action('edit-rule', 'toggleHelp', 'click') }}
+            >
                 <i class="bi-question"></i>
             </button>
         </h1>
@@ -63,7 +62,7 @@
         {% endif %}
 
         {# filters #}
-        <small class="form-text" data-edit-rule-target="explanation">
+        <small class="form-text" {{ stimulus_target('edit-rule', 'explanation') }}>
             <ul>
                 <li><em>{{ 'author'|trans }}</em> - {{ 'filter.explanation.author'|trans|raw }}</li>
                 <li><em>{{ 'subject'|trans }}</em> - {{ 'filter.explanation.subject'|trans|raw }}</li>
@@ -78,7 +77,7 @@
         <fieldset class="mb-4 row">
             <legend>{{ 'advanced'|trans }}</legend>
 
-            <small class="form-text" data-edit-rule-target="explanation">
+            <small class="form-text" {{ stimulus_target('edit-rule', 'explanation') }}>
                 {{ 'rule.advanced.explanation'|trans|raw }}
             </small>
 

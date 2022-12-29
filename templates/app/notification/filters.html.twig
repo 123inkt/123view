@@ -1,7 +1,7 @@
 <fieldset class="pb-4" {{ stimulus_controller('filter') }} data-filter-count-value="{{ filters|length }}">
     <legend>{{ title }}</legend>
 
-    <div data-filter-target="filterList">
+    <div {{ stimulus_target('filter', 'filterList') }}>
         {% for filter in filters %}
             {% include '/app/notification/filter.html.twig' %}
         {% endfor %}

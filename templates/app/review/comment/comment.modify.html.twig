@@ -3,10 +3,10 @@
     {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea'}}) -}}
 
     <div class="position-relative diff-file__comment-mention">
-        <ul class="dropdown-menu" data-comment-target="mentionSuggestions"></ul>
+        <ul class="dropdown-menu" {{ stimulus_target('comment', 'mentionSuggestions') }}></ul>
     </div>
 
-    <div class="comment__markdown" data-comment-target="markdownPreview" class="mb-2">
+    <div class="comment__markdown" {{ stimulus_target('comment', 'markdownPreview') }} class="mb-2">
         {{ form.message.vars.value|markdown }}
     </div>
 

@@ -21,7 +21,7 @@
                     {%- if fileTreeModel.fileSelected(file) %} bg-primary bg-opacity-10
                     {%- elseif not isFileSeen %} review-file-tree--unseen{% endif -%}"
                     data-role="review-file-tree-file"
-                    {%- if fileTreeModel.fileSelected(file) %}data-review-file-tree-target="activeFile"{% endif %}
+                    {%- if fileTreeModel.fileSelected(file) %}{{ stimulus_target('review-file-tree', 'activeFile') }}{% endif %}
                 >
                     {%- set filePath = file.file.pathname -%}
                     {%- if file.hashEnd != null -%}

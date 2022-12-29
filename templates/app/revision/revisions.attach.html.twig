@@ -41,7 +41,7 @@
                     <td><input type="checkbox"
                                class="form-check-input"
                                name="revision[{{ revision.id }}]"
-                               data-checkbox-select-all-target="toggle">
+                               {{ stimulus_target('checkbox-select-all', 'toggle') }}>
                     </td>
                     <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
                     <td class="fw-bold">{{ revision.title|external_links }}</td>
