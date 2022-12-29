@@ -22,7 +22,7 @@
             method="post"
           action="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
     >
-        <table class="table table-bordered table-hover rule-table" data-controller="checkbox-select-all">
+        <table class="table table-bordered table-hover rule-table" {{ stimulus_controller('checkbox-select-all') }}>
             <thead>
             <tr>
                 <th scope="col">

@@ -4,7 +4,7 @@
     {% set form = editRuleModel.form %}
     {% set rule = form.rule.vars.value %}
 
-    <div class="pb-5" data-controller="edit-rule">
+    <div class="pb-5" {{ stimulus_controller('edit-rule') }}>
         <h1 class="mt-2">
             {% if rule.id %}{{ 'rule'|trans }}{% else %}{{ 'rule.new'|trans }}{% endif %}
 

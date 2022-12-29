@@ -1,6 +1,6 @@
 {# review: CodeReview #}
 <div class="review-notification-list"
-     data-controller="review-notification-list"
+     {{ stimulus_controller('review-notification-list') }}
      data-review-notification-list-review-id-value="{{ review.id }}"
      data-review-notification-list-user-id-value="{{ app.user.id }}">
     <template data-review-notification-list-target="template">

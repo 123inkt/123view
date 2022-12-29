@@ -30,7 +30,7 @@
     <div class="pt-3 ">
         <div class="float-start">
             <a href="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionSelectionController', {id: review.id}) }}"
-               class="btn btn-outline-success" data-controller="button">{{ 'add.revisions'|trans }}</a>
+               class="btn btn-outline-success" {{ stimulus_controller('button') }}>{{ 'add.revisions'|trans }}</a>
         </div>
 
         <div class="float-start ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">

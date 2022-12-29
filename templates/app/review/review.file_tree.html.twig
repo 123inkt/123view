@@ -77,6 +77,6 @@
 {% endmacro %}
 {% from _self import recursiveFileTree %}
 
-<div class="review-file-tree--directories-root" data-controller="review-file-tree">
+<div class="review-file-tree--directories-root" {{ stimulus_controller('review-file-tree') }}>
     {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}
 </div>

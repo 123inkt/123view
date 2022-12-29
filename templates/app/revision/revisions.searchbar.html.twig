@@ -6,7 +6,7 @@
                name="search"
                value="{{ searchQuery }}"
                class="form-control"
-               data-controller="search-field"
+               {{ stimulus_controller('search-field') }}
                placeholder="{{ 'search.revisions'|trans }}"/>
         {%- if searchQuery != '' -%}
             <a href="{{ url_query_params({search: ''}) }}" class="btn btn-secondary">&times;</a>
