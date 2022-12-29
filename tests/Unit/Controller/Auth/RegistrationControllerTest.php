@@ -36,7 +36,7 @@ class RegistrationControllerTest extends AbstractControllerTestCase
     }
 
     /**
-     * @covers ::register
+     * @covers ::__invoke
      */
     public function testRegisterShowForm(): void
     {
@@ -53,7 +53,7 @@ class RegistrationControllerTest extends AbstractControllerTestCase
     }
 
     /**
-     * @covers ::register
+     * @covers ::__invoke
      */
     public function testRegisterSubmitFormFirstUser(): void
     {
@@ -80,7 +80,7 @@ class RegistrationControllerTest extends AbstractControllerTestCase
     }
 
     /**
-     * @covers ::register
+     * @covers ::__invoke
      */
     public function testRegisterSubmitForm(): void
     {
