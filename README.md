@@ -55,6 +55,7 @@ A symfony application to create code reviews for a specific set of revisions not
 - [Adding repositories](docs/adding-repositories.md)
 - [Adding external links](docs/adding-external-link.md)
 - [Add reviews](docs/indexing-repositories.md)
+- [Configuration](docs/configuration.md)
 
 ## Development
 ```shell
