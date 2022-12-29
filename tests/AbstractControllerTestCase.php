@@ -66,7 +66,7 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
 
         $this->container->set('form.factory', $factory);
 
-        return new FormAssertion($form);
+        return new FormAssertion($form, $this);
     }
 
     public function expectAddFlash(string $type, mixed $message): void

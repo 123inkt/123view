@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Auth;
 
+use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\RegistrationFormType;
@@ -10,7 +11,6 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
      */
     #[Route('/register', name: self::class, condition: 'env("bool:APP_AUTH_PASSWORD")')]
     #[Template('authentication/register.html.twig')]
-    public function register(Request $request): array|Response
+    public function __invoke(Request $request): array|Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
