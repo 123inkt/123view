@@ -6,7 +6,7 @@ namespace ${NAMESPACE};
 #end
 
 use ${TESTED_NAMESPACE}\\${TESTED_NAME};
-use DR\GitCommitNotification\Tests\AbstractTestCase;
+use DR\Review\Tests\AbstractTestCase;
 
 #parse("PHPUnit Class Doc Comment.php")
 class ${NAME} extends AbstractTestCase
