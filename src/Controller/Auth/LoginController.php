@@ -28,7 +28,7 @@ class LoginController extends AbstractController
     }
 
     /**
-     * @return array<string, LoginViewModel>|Response
+     * @return array<string, string|LoginViewModel>|Response
      */
     #[Route('/', name: self::class)]
     #[Template('authentication/login.html.twig')]

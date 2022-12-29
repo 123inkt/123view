@@ -9,6 +9,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Form\User\RegistrationFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Utility\Assert;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -39,7 +40,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword($this->passwordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
+            $user->setPassword($this->passwordHasher->hashPassword($user, Assert::isString($form->get('plainPassword')->getData())));
 
             // make first user admin
             if ($this->userRepository->getUserCount() === 0) {
