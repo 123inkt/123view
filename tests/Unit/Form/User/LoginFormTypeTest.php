@@ -19,7 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class LoginFormTypeTest extends AbstractTestCase
 {
-
     /**
      * @covers ::configureOptions
      */
