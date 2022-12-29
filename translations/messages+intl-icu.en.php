@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+// phpcs:ignoreFile
 return [
     'Are you sure you want to delete this rule?'  => 'Are you sure you want to delete this rule?',
     'At least {{ limit }} recipient is required'  => 'At least {{ limit }} recipient is required',
@@ -37,6 +38,7 @@ return [
     'commit.notification.rules'                   => 'Commit notification rules',
     'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'confirm.delete.reply'                        => 'Are you sure you want to delete this comment?',
+    'create.new.account'                          => 'Create a new account',
     'darcula'                                     => 'Darcula',
     'delete.comment'                              => 'Delete comment',
     'detach.revisions'                            => 'Detach selected',
@@ -65,6 +67,7 @@ return [
     'form.label.mail.comment.replied'             => 'Receive a notification when a reply is added to a comment thread you are participant of',
     'form.label.mail.comment.resolved'            => 'Receive a notification when a comment thread is resolved you are participant of',
     'frequency'                                   => 'Frequency',
+    'full.name'                                   => 'Full name',
     'hash'                                        => 'Hash',
     'ignore.all.space'                            => 'Ignore all space',
     'ignore.blank.lines'                          => 'Ignore blank lines',
@@ -75,6 +78,7 @@ return [
     'inclusions'                                  => 'Inclusions',
     'leave.a.comment.on.line'                     => 'Leave a comment on line {line}',
     'leave.a.reply'                               => 'Leave a comment. Markdown is supported',
+    'login'                                       => 'Login',
     'login.authorization.has.no.token'            => 'The authorization token doesn\'t contain a username. Unable to login',
     'login.cancelled'                             => 'The log in was cancelled',
     'login.in.with.active.directory'              => 'Login in with Active Directory',
@@ -108,11 +112,15 @@ return [
     'options'                                     => 'Options',
     'overview'                                    => 'Overview',
     'page.title.single.sign.on'                   => 'Login',
+    'password'                                    => 'Password',
+    'password.is.required'                        => 'Please enter a password',
+    'password.minimum.length'                     => 'Your password should be at least {{ limit }} characters',
     'pattern'                                     => 'Pattern',
     'projects'                                    => 'Projects',
     'raise.concern'                               => 'Raise concern',
     'recipients'                                  => 'Recipients',
     'redirect.access.denied.session.expired'      => 'Your session has expired.',
+    'register'                                    => 'Register',
     'renamed.from'                                => 'renamed from',
     'reopen.review'                               => 'Reopen review',
     'reply'                                       => 'Reply',
@@ -154,6 +162,7 @@ return [
     'search.revisions'                            => 'Search revision',
     'settings'                                    => 'Settings',
     'sign.in'                                     => 'Sign in',
+    'sign.up'                                     => 'Sign up',
     'subject'                                     => 'Subject',
     'theme'                                       => 'Theme',
     'timeline.comment.added'                      => '<span class="text-primary">{username}</span> added a comment to <code>{file}</code>.',
@@ -183,6 +192,7 @@ return [
     'user.account.suspended'                      => 'Your account has been suspended',
     'user.approval.welcome.text'                  => 'Welcome to {app_name}. Your account must be approved by an administrator before you can continue.',
     'user.color.theme'                            => 'Color theme',
+    'user.email.already.exists'                   => 'There is already an account with this email',
     'user.id'                                     => 'Id',
     'user.profile.saved.successful'               => 'User profile successfully changed.',
     'user.role'                                   => 'Role',

@@ -39,59 +39,32 @@ A symfony application to create code reviews for a specific set of revisions not
 
 ## Requirements
 
-- docker >= 20.10
-- docker-compose >= 2.6.0
+- [docker >= 20.10](https://docs.docker.com/engine/install/)
+- [docker compose plugin](https://docs.docker.com/compose/install/linux/)
+- [git](https://git-scm.com/download/linux)
 
-Or
+## Getting started
 
-- nginx
-- php8.1+
-- mysql
-- git latest version
-
-## Quick start
-
-1) clone repository
-```shell
-git clone https://github.com/123inkt/123view.git 123view
-cd 123view
-```
-2) create `.env.dev.local` or `.env.prod.local`. See `.env` [configuration](docs/configuration.md) for how to configure the options.
-
-3) Start
-```shell
-./bin/start.sh
-```
-4) choose `prod` or `dev` based on your environment. The project will be available on your host on:
-   - dev: `https://<domain>:8443/`
-   - prod: `https://<domain>/`
+1) Clone repository: `git clone https://github.com/123inkt/123view.git 123view && cd 123view`
+2) Start installer `bin/install.sh` to aid in filling the configuration options.
+3) Start the application with `bin/start.sh`, and choose `prod`
+4) Project should be available on: `https://<domain>/`.
+5) The first user registered will receive admin permissions.
 
 ### Next
 - [Adding repositories](docs/adding-repositories.md)
 - [Adding external links](docs/adding-external-link.md)
 - [Add reviews](docs/indexing-repositories.md)
 
-## The crontab (prod):
-
-When starting docker in production mode, the crontab will be configured. For manual setup, configure the crontab as below:
-
+## Development
 ```shell
-0 */1 * * * php bin/console mail --frequency=once-per-hour         > /dev/null 2>&1
-0 */2 * * * php bin/console mail --frequency=once-per-two-hours    > /dev/null 2>&1
-0 */3 * * * php bin/console mail --frequency=once-per-three-hours  > /dev/null 2>&1
-0 */4 * * * php bin/console mail --frequency=once-per-four-hours   > /dev/null 2>&1
-0 0 * * *   php bin/console mail --frequency=once-per-day          > /dev/null 2>&1
-0 0 * * 1   php bin/console mail --frequency=once-per-week         > /dev/null 2>&1
+git clone https://github.com/123inkt/123view.git 123view
+cd 123view
+./bin/start.sh
 ```
-
-See [command line options](docs/command-line.md) for more information about the console commands.
-
-## Under the hood
-
-1) Will fetch all commits for a given repository via the `git log` command.
-2) Will bundle commits when author, branch and subject are identical.
-3) For a set of commits, fetches the bundled changes between the first commit and the last
-4) Create reviews or send a notification mail in the desired formatting
+Choose `dev` and after all containers are started project should be available on https://<domain|localhost>.<br>
+Accept the self-signed certificate in the browser.<br>
+Review `.env.dev` and when needed and create a `.env.dev.local` with your own settings.
 
 ## About us
 

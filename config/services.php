@@ -98,7 +98,7 @@ return static function (ContainerConfigurator $container): void {
             ]
         );
     $services->set(AzureAdUserBadgeFactory::class);
-    $services->set(AzureAdAuthenticator::class);
+    $services->set(AzureAdAuthenticator::class)->arg('$authenticationEnabled', '%env(bool:APP_AUTH_AZURE_AD)%');
 
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);

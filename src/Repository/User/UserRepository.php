@@ -39,6 +39,19 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @throws NoResultException|NonUniqueResultException
+     */
+    public function getUserCount(): int
+    {
+        return Assert::isInt(
+            $this->createQueryBuilder('u')
+                ->select('count(u.id)')
+                ->getQuery()
+                ->getSingleScalarResult()
+        );
+    }
+
+    /**
      * @return User[]
      */
     public function findBySearchQuery(string $searchQuery, int $limit): array

@@ -5,7 +5,7 @@ namespace DR\Review\Security\AzureAd;
 
 use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
-use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Utility\Assert;
 use JsonException;
@@ -24,7 +24,8 @@ class AzureAdAuthenticator extends AbstractAuthenticator
     public function __construct(
         private LoginService $loginService,
         private AzureAdUserBadgeFactory $userBadgeFactory,
-        private UrlGeneratorInterface $urlGenerator
+        private UrlGeneratorInterface $urlGenerator,
+        private bool $authenticationEnabled
     ) {
     }
 
@@ -35,7 +36,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->getPathInfo() === '/single-sign-on/azure-ad/callback';
+        return $this->authenticationEnabled && $request->getPathInfo() === '/single-sign-on/azure-ad/callback';
     }
 
     public function authenticate(Request $request): Passport
@@ -75,6 +76,6 @@ class AzureAdAuthenticator extends AbstractAuthenticator
         $request->getSession()->getFlashBag()->add('error', $exception->getMessage());
 
         // redirect to login page
-        return new RedirectResponse($this->urlGenerator->generate(AuthenticationController::class));
+        return new RedirectResponse($this->urlGenerator->generate(LoginController::class));
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\EventSubscriber;
 
-use DR\Review\Controller\Auth\AuthenticationController;
+use DR\Review\Controller\Auth\LoginController;
 use DR\Review\EventSubscriber\AccessDeniedExceptionSubscriber;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
@@ -69,7 +69,7 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         $this->urlGenerator
             ->expects(self::once())
             ->method('generate')
-            ->with(AuthenticationController::class)
+            ->with(LoginController::class)
             ->willReturn('url');
 
         $request = new Request();

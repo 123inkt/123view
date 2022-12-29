@@ -6,30 +6,37 @@ namespace DR\Review\Tests\Unit\Controller\Auth;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
-use DR\Review\Controller\Auth\AuthenticationController;
-use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
+use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\Authentication\LoginViewModel;
+use DR\Review\ViewModelProvider\LoginViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\Review\Controller\Auth\AuthenticationController
+ * @coversDefaultClass \DR\Review\Controller\Auth\LoginController
  * @covers ::__construct
  */
-class AuthenticationControllerTest extends AbstractControllerTestCase
+class LoginControllerTest extends AbstractControllerTestCase
 {
-    private TranslatorInterface&MockObject $translator;
-    private Security&MockObject            $security;
+    private TranslatorInterface&MockObject    $translator;
+    private Security&MockObject               $security;
+    private AuthenticationUtils&MockObject    $authenticationUtils;
+    private LoginViewModelProvider&MockObject $viewModelProvider;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->security   = $this->createMock(Security::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->translator          = $this->createMock(TranslatorInterface::class);
+        $this->security            = $this->createMock(Security::class);
+        $this->authenticationUtils = $this->createMock(AuthenticationUtils::class);
+        $this->viewModelProvider   = $this->createMock(LoginViewModelProvider::class);
         parent::setUp();
     }
 
@@ -38,17 +45,20 @@ class AuthenticationControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $request = new Request(['error_message' => 'pretty bad', 'next' => 'next-url']);
+        $user = new User();
+        $user->setRoles([Roles::ROLE_USER]);
+        $request   = new Request();
+        $viewModel = $this->createMock(LoginViewModel::class);
 
         $this->security->expects(self::once())->method('getUser')->willReturn(null);
-        $this->translator->expects(self::once())->method('trans')->with('page.title.single.sign.on')->willReturn('page title');
-        $this->expectGenerateUrl(AzureAdAuthController::class, ['next' => 'next-url'])->willReturn('http://azure.ad.auth.controller');
+
+        $this->authenticationUtils->expects(self::once())->method('getLastAuthenticationError')->willReturn(new AuthenticationException());
+        $this->translator->expects(self::exactly(2))->method('trans')->willReturn('message', 'page_title');
+        $this->expectAddFlash('error', 'message');
+        $this->viewModelProvider->expects(self::once())->method('getLoginViewModel')->with($request)->willReturn($viewModel);
 
         $result = ($this->controller)($request);
-        static::assertSame(
-            ['page_title' => 'page title', 'azure_ad_url' => 'http://azure.ad.auth.controller'],
-            $result
-        );
+        static::assertSame(['page_title' => 'page_title', 'loginModel' => $viewModel], $result);
     }
 
     /**
@@ -86,6 +96,6 @@ class AuthenticationControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new AuthenticationController($this->translator, $this->security);
+        return new LoginController($this->translator, $this->security, $this->authenticationUtils, $this->viewModelProvider);
     }
 }

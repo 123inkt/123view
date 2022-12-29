@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block page %}
+    <div style="width: 400px; margin: 100px auto;">
+        <h2 class="mb-4">{{ 'sign.in' | trans }}</h2>
+
+        {%- include 'app/flash/flashes.html.twig' -%}
+
+        {#- Login form -#}
+        {%- if app_auth_password -%}
+            {{ form_start(loginModel.form) }}
+            {{ form_row(loginModel.form._username) }}
+            {{ form_row(loginModel.form._password) }}
+            <div class="mb-3">
+                {{ form_widget(loginModel.form.loginBtn) }}
+                <a class="ms-2" href="{{ path('DR\\Review\\Controller\\Auth\\RegistrationController') }}">{{ 'create.new.account'|trans }}</a>
+            </div>
+            {{ form_rest(loginModel.form) }}
+            {{ form_end(loginModel.form) }}
+        {%- endif -%}
+
+        {#- AzureAd login -#}
+        {%- if app_auth_azure_ad -%}
+            <a href="{{ loginModel.azureAdUrl }}" class="btn btn-outline-primary">
+                <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgLjA1aDM3Ljc5djM3Ljc5SDB6IiBmaWxsPSIjZjM1MzI1Ii8+PHBhdGggZD0iTTQyLjIxLjA1SDgwdjM3Ljc5SDQyLjIxeiIgZmlsbD0iIzgxYmMwNiIvPjxwYXRoIGQ9Ik0wIDQyLjA3aDM3Ljc5djM3Ljc5SDB6IiBmaWxsPSIjMDVhNmYwIi8+PHBhdGggZD0iTTQyLjIxIDQyLjA3SDgwdjM3Ljc5SDQyLjIxeiIgZmlsbD0iI2ZmYmEwOCIvPjwvc3ZnPg=="
+                     width="12"
+                     height="12"
+                     alt="microsoft"
+                     style="margin-right: 10px; margin-bottom: 4px">
+                {{- 'login.in.with.active.directory'|trans -}}
+            </a>
+        {%- endif -%}
+    </div>
+{% endblock %}
