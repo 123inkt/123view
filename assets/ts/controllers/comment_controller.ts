@@ -1,11 +1,13 @@
 import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
+import {useDebounce} from 'stimulus-use';
 import Assert from '../lib/Assert';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
 
 export default class Comment extends Controller {
-    public static targets = ['textarea', 'mentionSuggestions', 'markdownPreview']
+    public static debounces = ['commentPreviewListener'];
+    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview']
 
     declare textareaTarget: HTMLTextAreaElement;
     declare mentionSuggestionsTarget: HTMLElement;
@@ -13,6 +15,7 @@ export default class Comment extends Controller {
     private abort: AbortController | null = null;
 
     public connect(): void {
+        useDebounce(this, {wait: 100});
         const textarea = this.textareaTarget;
         textarea.scrollIntoView({block: 'center'});
         textarea.focus();
@@ -89,7 +92,7 @@ export default class Comment extends Controller {
         reader.readAsDataURL(blob);
     }
 
-    private commentPreviewListener(event: Event|HTMLTextAreaElement) {
+    private commentPreviewListener(event: Event | HTMLTextAreaElement) {
         const target    = event instanceof HTMLTextAreaElement ? event : <HTMLTextAreaElement>event.target;
         const previewEl = this.markdownPreviewTarget!;
         const comment   = target.value.trim();
