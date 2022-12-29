@@ -36,7 +36,7 @@
         "czproject/git-php": "^4.0",
         "digitalrevolution/symfony-console-validation": "^1.0",
         "digitalrevolution/symfony-request-validation": "^2.0",
-        "doctrine/annotations": "^1.13",
+        "doctrine/annotations": "^1.13 || ^2.0.0",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
