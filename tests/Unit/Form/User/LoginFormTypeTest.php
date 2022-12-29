@@ -15,7 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\Review\Form\User\LoginFormType
- * @covers ::__construct
  */
 class LoginFormTypeTest extends AbstractTestCase
 {

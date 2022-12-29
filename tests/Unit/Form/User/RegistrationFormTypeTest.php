@@ -16,7 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\Review\Form\User\RegistrationFormType
- * @covers ::__construct
  */
 class RegistrationFormTypeTest extends AbstractTestCase
 {
