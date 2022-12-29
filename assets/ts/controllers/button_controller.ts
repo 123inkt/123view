@@ -1,5 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
-import ElementFactory from '../../lib/ElementFactory';
+import ElementFactory from '../lib/ElementFactory';
 
 export default class extends Controller<HTMLButtonElement> {
     public connect(): void {

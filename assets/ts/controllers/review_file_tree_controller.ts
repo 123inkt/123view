@@ -1,6 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
-import Assert from '../../lib/Assert';
+import Assert from '../lib/Assert';
 
 export default class extends Controller {
     public static targets = ['activeFile']
