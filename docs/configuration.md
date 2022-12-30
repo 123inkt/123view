@@ -19,6 +19,7 @@ For `Front-channel logout URL` set url to: `https://<domain>(:<port>)/sign-out`.
 
 Add a secret, and fill in the `.env` options below:
 
+- `APP_AUTH_AZURE_AD`: set to true to enable azure ad sso.
 - `OAUTH_AZURE_AD_TENANT_ID`: the `Directory (tenant) ID` from azure ad
 - `OAUTH_AZURE_AD_CLIENT_ID`: the `Application (client) ID` from azure ad
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: the secret `value` created in the step above.
@@ -36,7 +37,7 @@ CODE_REVIEW_MATCHING_PATTERN='^(?:US#\d+\s(?<storyBugOrTask>[BT]#\d+))|(?<bug>B#
 CODE_REVIEW_MATCHING_GROUPS='storyBugOrTask,bug'
 
 Commit message: US#456 T#123 my first task
-> matches: 'US#456', group 'storyBugOrTask'
+> matches: 'T#123', group 'storyBugOrTask'
 
 Commit message: B#789 my first bug
 > matches: 'B#789', group 'bug'
