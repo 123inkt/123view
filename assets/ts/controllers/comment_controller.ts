@@ -7,9 +7,10 @@ import CommentService from '../service/CommentService';
 
 export default class Comment extends Controller {
     public static throttles = ['commentPreviewListener'];
-    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview']
+    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form']
 
     private readonly commentService = new CommentService();
+    private declare formTarget: HTMLFormElement;
     private declare textareaTarget: HTMLTextAreaElement;
     private declare mentionSuggestionsTarget: HTMLElement;
     private declare markdownPreviewTarget: HTMLElement;
@@ -19,10 +20,22 @@ export default class Comment extends Controller {
         this.textareaTarget.focus();
         new Mentions(this.textareaTarget, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
         this.textareaTarget.addEventListener('input', this.commentPreviewListener.bind(this));
+        this.formTarget.addEventListener('submit', this.submitComment.bind(this));
+        this.commentPreviewListener(this.textareaTarget);
     }
 
     public cancelComment(): void {
         this.element.remove();
+    }
+
+    public submitComment(event: Event): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.commentService
+            .submitAddCommentForm(this.formTarget)
+            .then(commentUrl => this.commentService.getCommentThread(commentUrl))
+            .then(commentThread => this.element.replaceWith(commentThread))
+            .catch(Function.empty);
     }
 
     private commentPreviewListener(event: Event | HTMLTextAreaElement) {

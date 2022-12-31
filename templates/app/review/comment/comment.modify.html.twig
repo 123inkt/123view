@@ -1,6 +1,6 @@
 {# form: FormView #}
-<div class="diff-file__comment_form" data-controller="comment" {{ stimulus_target('review', 'commentForm') }}>
-    {{- form_start(form) -}}
+<div class="diff-file__comment_form" {{ stimulus_controller('comment') }} {{ stimulus_target('review', 'commentForm') }}>
+    {{- form_start(form, {attr: {'data-comment-target': 'form'}}) -}}
     {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea', 'data-controller': 'form-submitter textarea-resize textarea-paste'}}) -}}
 
     <div class="position-relative diff-file__comment-mention">
@@ -12,7 +12,10 @@
     </div>
 
     <div class="mt-2 clearfix">
-        {{- form_widget(form.save, {attr: {title: 'comment.save.quick.key', 'data-controller': 'button'}}) -}}
+        {{- form_widget(
+            form.save,
+            {attr: {title: 'comment.save.quick.key', 'data-controller': 'button', 'data-comment-target': 'submitButton'}})
+        -}}
         <button type="button"
                 class="ms-2 btn btn-outline-secondary"
                 data-controller="button"

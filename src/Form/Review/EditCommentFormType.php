@@ -6,7 +6,7 @@ namespace DR\Review\Form\Review;
 use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
 use DR\Review\Entity\Review\Comment;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,6 +34,6 @@ class EditCommentFormType extends AbstractType
         $builder->setAction($this->urlGenerator->generate(UpdateCommentController::class, ['id' => $comment->getId()]));
         $builder->setMethod('POST');
         $builder->add('message', CommentType::class);
-        $builder->add('save', SubmitType::class, ['label' => 'save']);
+        $builder->add('save', ButtonType::class, ['label' => 'save', 'attr' => ['class' => 'btn-primary']]);
     }
 }

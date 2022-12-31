@@ -11,6 +11,13 @@ export default class HttpClient {
         return this.wrap(config, () => axios.post(url, data, config));
     }
 
+    public form<T = any, R = AxiosResponse<T>>(form: HTMLFormElement): Promise<R> {
+        if (form.method.toLowerCase() !== 'post') {
+            throw new Error('Only POST forms are supported');
+        }
+        return this.post<T, R>(form.action, new FormData(form), {headers: {'Content-Type': form.encoding}});
+    }
+
     private wrap<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>, callback: () => Promise<R>) {
         if (this.abortController !== null) {
             this.abortController.abort();

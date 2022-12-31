@@ -24,7 +24,7 @@ export default class extends Controller<HTMLElement> {
     private submitOnEnter(event: KeyboardEvent): void {
         // ctrl + enter should submit the form
         if (event.key === 'Enter' && event.ctrlKey) {
-            (<HTMLElement>event.target).closest('form')?.submit();
+            (<HTMLElement>event.target).closest('form')?.requestSubmit();
         }
     }
 }
