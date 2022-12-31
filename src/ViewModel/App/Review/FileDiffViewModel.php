@@ -7,13 +7,11 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
 use DR\Review\ViewModel\App\Comment\EditCommentReplyViewModel;
-use DR\Review\ViewModel\App\Comment\EditCommentViewModel;
 use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 
 class FileDiffViewModel
 {
     private ?CommentsViewModel         $commentsViewModel    = null;
-    private ?EditCommentViewModel      $editCommentForm      = null;
     private ?ReplyCommentViewModel     $replyCommentForm     = null;
     private ?EditCommentReplyViewModel $editReplyCommentForm = null;
     private ?HighlightedFile           $highlightedFile      = null;
@@ -33,16 +31,6 @@ class FileDiffViewModel
     public function getCommentsViewModel(): ?CommentsViewModel
     {
         return $this->commentsViewModel;
-    }
-
-    public function getEditCommentForm(): ?EditCommentViewModel
-    {
-        return $this->editCommentForm;
-    }
-
-    public function setEditCommentForm(?EditCommentViewModel $editCommentForm): void
-    {
-        $this->editCommentForm = $editCommentForm;
     }
 
     public function setCommentsViewModel(?CommentsViewModel $commentsViewModel): void

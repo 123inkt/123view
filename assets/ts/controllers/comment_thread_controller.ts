@@ -10,6 +10,18 @@ export default class extends Controller<HTMLElement> {
     private declare idValue: number;
     private declare urlValue: string;
 
+    public commentUpdated(event: CustomEvent): void {
+        Events.stop(event);
+        if (event.detail !== this.idValue) {
+            return;
+        }
+
+        this.commentService
+            .getCommentThread(this.urlValue)
+            .then(el => this.element.replaceWith(el))
+            .catch(Function.empty);
+    }
+
     public editComment(event: Event): void {
         Events.stop(event);
         this.commentService

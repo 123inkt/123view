@@ -23,6 +23,10 @@ export default class CommentService {
         return this.client.form(form).then(response => response.data.commentUrl);
     }
 
+    public submitCommentForm(form: HTMLFormElement): Promise<number> {
+        return this.client.form(form).then(response => response.data.commentId);
+    }
+
     public getCommentThread(url: string, action?: string): Promise<HTMLElement> {
         let params = {};
         if (action !== undefined) {

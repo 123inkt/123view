@@ -7,6 +7,7 @@
     {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}" data-comment-id="{{ comment.id }}"
         data-comment-thread-id-value="{{ comment.id }}"
         data-comment-thread-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetCommentThreadController', {id: comment.id}) }}"
+        {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
         {{ stimulus_controller('comment-thread') }}
 >
     <div class="comment__comment">

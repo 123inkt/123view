@@ -31,11 +31,20 @@ export default class extends Controller {
 
     public submitComment(event: Event): void {
         Events.stop(event);
-        this.commentService
-            .submitAddCommentForm(this.formTarget)
-            .then(commentUrl => this.commentService.getCommentThread(commentUrl))
-            .then(commentThread => this.element.replaceWith(commentThread))
-            .catch(Function.empty);
+
+        const commentThread = this.element.closest<HTMLElement>('[data-controller="comment-thread"]') !== null;
+
+        if (commentThread) {
+            this.commentService
+                .submitCommentForm(this.formTarget)
+                .then(commentId => window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId})));
+        } else {
+            this.commentService
+                .submitAddCommentForm(this.formTarget)
+                .then(commentUrl => this.commentService.getCommentThread(commentUrl))
+                .then(commentThread => this.element.replaceWith(commentThread))
+                .catch(Function.empty);
+        }
     }
 
     private commentPreviewListener(event: Event | HTMLTextAreaElement) {
