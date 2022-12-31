@@ -1,5 +1,5 @@
 {# form: FormView #}
-<div class="diff-file__comment_form" data-controller="comment">
+<div class="diff-file__comment_form" data-controller="comment" {{ stimulus_target('review', 'commentForm') }}>
     {{- form_start(form) -}}
     {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea', 'data-controller': 'form-submitter textarea-resize textarea-paste'}}) -}}
 
