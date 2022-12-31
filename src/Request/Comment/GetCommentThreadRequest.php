@@ -11,7 +11,7 @@ use DR\Review\Service\CodeReview\CodeReviewActionFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class GetCommentRequest extends AbstractValidatedRequest
+class GetCommentThreadRequest extends AbstractValidatedRequest
 {
     public function __construct(
         private readonly CodeReviewActionFactory $actionFactory,
@@ -29,13 +29,6 @@ class GetCommentRequest extends AbstractValidatedRequest
 
     protected function getValidationRules(): ?ValidationRules
     {
-        return new ValidationRules(
-            [
-                'query' => [
-                    'filePath' => 'string|filled',
-                    'action'   => 'string'
-                ]
-            ]
-        );
+        return new ValidationRules(['query' => ['action' => 'string']]);
     }
 }
