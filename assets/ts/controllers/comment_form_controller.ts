@@ -5,7 +5,7 @@ import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
 import CommentService from '../service/CommentService';
 
-export default class Comment extends Controller {
+export default class extends Controller {
     public static throttles = ['commentPreviewListener'];
     public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form']
 
