@@ -1,16 +1,18 @@
 import {Controller} from '@hotwired/stimulus';
-import axios from 'axios';
 import {useDebounce} from 'stimulus-use';
 import Assert from '../lib/Assert';
 import Function from '../lib/Function';
+import InputElement from '../lib/InputElement';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
+import AssetService from '../service/AssetService';
 import CommentService from '../service/CommentService';
 
 export default class Comment extends Controller {
     public static debounces = ['commentPreviewListener'];
     public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview']
 
+    private readonly assetService   = new AssetService();
     private readonly commentService = new CommentService();
     private declare textareaTarget: HTMLTextAreaElement;
     private declare mentionSuggestionsTarget: HTMLElement;
@@ -76,20 +78,12 @@ export default class Comment extends Controller {
             // get data base64 encoded string, and grab just the data string
             const base64data = (<string>event.target!.result).replace(/^[^,]+,/, '')
 
-            axios.post(
-                '/app/assets',
-                {mimeType: mimeType, data: base64data},
-                {headers: {'Content-Type': 'multipart/form-data'}}
-            ).then(response => {
-                // add url to textarea
-                const url = response.data.url;
-
-                // insert at cursor
-                target.value = target.value.substring(0, target.selectionStart)
-                    + '![file](' + url + ')\n'
-                    + target.value.substring(target.selectionEnd, target.value.length);
-                this.commentPreviewListener(target);
-            })
+            this.assetService.uploadImage(mimeType, base64data)
+                .then(url => {
+                    InputElement.insertAtCursor(target, `![file](${url})\n`);
+                    this.commentPreviewListener(target);
+                })
+                .catch(Function.empty);
         };
         reader.readAsDataURL(blob);
     }
