@@ -31,9 +31,7 @@ export default class Comment extends Controller {
     }
 
     public cancelComment(): void {
-        const location = new URL(window.location.href);
-        location.searchParams.delete('action');
-        (window as Window).location = location.toString();
+        this.element.remove();
     }
 
     private commentResizeListener(event: Event | HTMLTextAreaElement): void {
