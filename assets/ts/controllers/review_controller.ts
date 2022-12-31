@@ -13,8 +13,6 @@ export default class extends Controller {
 
     public addComment(event: Event): void {
         const line     = Elements.closestRole(<HTMLElement>event.target, 'diff-line');
-        const inserter = Elements.siblingRole(line, 'add-comment-inserter');
-
         this.commentService
             .getAddCommentForm(
                 this.addCommentUrlValue,
@@ -23,7 +21,7 @@ export default class extends Controller {
                 DataSet.int(line, 'lineOffset'),
                 DataSet.int(line, 'lineAfter')
             )
-            .then(form => inserter.after(form))
+            .then(form => Elements.siblingRole(line, 'add-comment-inserter').after(form))
             .catch(Function.empty);
     }
 
