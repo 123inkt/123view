@@ -21,7 +21,6 @@ export default class Comment extends Controller {
     public connect(): void {
         useDebounce(this, {wait: 100});
         const textarea = this.textareaTarget;
-        textarea.scrollIntoView({block: 'center'});
         textarea.focus();
         new Mentions(textarea, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
         this.commentResizeListener(textarea);
