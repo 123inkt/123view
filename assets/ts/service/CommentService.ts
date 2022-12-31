@@ -10,4 +10,10 @@ export default class CommentService {
             .then(response => response.data)
             .then(html => Elements.create(html));
     }
+
+    public getMarkdownPreview(comment: string): Promise<string> {
+        return this.client
+            .get('/app/reviews/comment/markdown', {params: {message: comment}})
+            .then((response) => response.data);
+    }
 }

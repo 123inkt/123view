@@ -2,17 +2,19 @@ import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
 import {useDebounce} from 'stimulus-use';
 import Assert from '../lib/Assert';
+import Function from '../lib/Function';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
+import CommentService from '../service/CommentService';
 
 export default class Comment extends Controller {
     public static debounces = ['commentPreviewListener'];
     public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview']
 
-    declare textareaTarget: HTMLTextAreaElement;
-    declare mentionSuggestionsTarget: HTMLElement;
-    declare markdownPreviewTarget: HTMLElement;
-    private abort: AbortController | null = null;
+    private readonly commentService = new CommentService();
+    private declare textareaTarget: HTMLTextAreaElement;
+    private declare mentionSuggestionsTarget: HTMLElement;
+    private declare markdownPreviewTarget: HTMLElement;
 
     public connect(): void {
         useDebounce(this, {wait: 100});
@@ -102,19 +104,9 @@ export default class Comment extends Controller {
             return;
         }
 
-        // abort any running requests
-        if (this.abort !== null) {
-            this.abort.abort();
-        }
-
-        this.abort = new AbortController();
-        axios.get(
-            '/app/reviews/comment/markdown?message=' + encodeURIComponent(comment),
-            {signal: this.abort.signal}
-        )
-            .then((response) => previewEl.innerHTML = response.data)
-            .catch(() => {
-            })
-            .finally(() => this.abort = null);
+        this.commentService
+            .getMarkdownPreview(comment)
+            .then(html => previewEl.innerHTML = html)
+            .catch(Function.empty);
     }
 }
