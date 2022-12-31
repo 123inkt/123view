@@ -1,12 +1,12 @@
 import {Controller} from '@hotwired/stimulus';
-import {useDebounce} from 'stimulus-use';
+import {useThrottle} from 'stimulus-use';
 import Function from '../lib/Function';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
 import CommentService from '../service/CommentService';
 
 export default class Comment extends Controller {
-    public static debounces = ['commentPreviewListener'];
+    public static throttles = ['commentPreviewListener'];
     public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview']
 
     private readonly commentService = new CommentService();
@@ -15,7 +15,7 @@ export default class Comment extends Controller {
     private declare markdownPreviewTarget: HTMLElement;
 
     public connect(): void {
-        useDebounce(this, {wait: 100});
+        useThrottle(this, {wait: 150});
         this.textareaTarget.focus();
         new Mentions(this.textareaTarget, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
         this.textareaTarget.addEventListener('input', this.commentPreviewListener.bind(this));
