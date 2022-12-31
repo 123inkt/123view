@@ -26,7 +26,6 @@ export default class Comment extends Controller {
         this.commentResizeListener(textarea);
         textarea.addEventListener('input', this.commentResizeListener.bind(this));
         textarea.addEventListener('input', this.commentPreviewListener.bind(this));
-        textarea.addEventListener('keyup', this.commentKeyListener.bind(this));
         textarea.addEventListener('paste', this.commentPasteListener.bind(this));
     }
 
@@ -38,14 +37,6 @@ export default class Comment extends Controller {
         const target        = event instanceof HTMLTextAreaElement ? event : <HTMLElement>event.target;
         target.style.height = '5px';
         target.style.height = Math.max(84, (target.scrollHeight)) + 'px';
-    }
-
-    private commentKeyListener(event: KeyboardEvent): void {
-        const target = <HTMLElement>event.target;
-        // ctrl + enter should submit the form
-        if (event.key === 'Enter' && event.ctrlKey) {
-            target.closest('form')?.submit();
-        }
     }
 
     private commentPasteListener(event: ClipboardEvent) {
