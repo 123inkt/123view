@@ -18,12 +18,12 @@ export default class extends Controller {
     private findTarget(hash: string): Element | null {
         let matches = hash.match(/^#focus:comment:(\d+)$/);
         if (matches !== null) {
-            return this.element.querySelector(`[data-comment="${matches[1]}"]`)
+            return this.element.querySelector(`[data-comment-id="${matches[1]}"]`)
         }
 
         matches = hash.match(/^#focus:reply:(\d+)$/);
         if (matches !== null) {
-            return this.element.querySelector(`[data-reply="${matches[1]}"]`)
+            return this.element.querySelector(`[data-reply-id="${matches[1]}"]`)
         }
 
         matches = hash.match(/^#focus:line:(\d+)$/);
