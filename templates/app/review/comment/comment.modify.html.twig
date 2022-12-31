@@ -1,7 +1,7 @@
 {# form: FormView #}
 <div class="diff-file__comment_form" data-controller="comment">
     {{- form_start(form) -}}
-    {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea', 'data-controller': 'form-submitter'}}) -}}
+    {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea', 'data-controller': 'form-submitter textarea-resize'}}) -}}
 
     <div class="position-relative diff-file__comment-mention">
         <ul class="dropdown-menu" {{ stimulus_target('comment', 'mentionSuggestions') }}></ul>

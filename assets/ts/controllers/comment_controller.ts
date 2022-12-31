@@ -23,20 +23,12 @@ export default class Comment extends Controller {
         const textarea = this.textareaTarget;
         textarea.focus();
         new Mentions(textarea, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
-        this.commentResizeListener(textarea);
-        textarea.addEventListener('input', this.commentResizeListener.bind(this));
         textarea.addEventListener('input', this.commentPreviewListener.bind(this));
         textarea.addEventListener('paste', this.commentPasteListener.bind(this));
     }
 
     public cancelComment(): void {
         this.element.remove();
-    }
-
-    private commentResizeListener(event: Event | HTMLTextAreaElement): void {
-        const target        = event instanceof HTMLTextAreaElement ? event : <HTMLElement>event.target;
-        target.style.height = '5px';
-        target.style.height = Math.max(84, (target.scrollHeight)) + 'px';
     }
 
     private commentPasteListener(event: ClipboardEvent) {
