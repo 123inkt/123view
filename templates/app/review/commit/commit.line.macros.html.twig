@@ -21,13 +21,9 @@
     {{- line_visible ? '' : ' diff-file__diff-line-hidden' -}}
 {%- endmacro -%}
 
-{%- macro gutter(line, line_number, line_offset, lineNrLengthBefore, lineNrLengthAfter) -%}
+{%- macro gutter(line, lineNrLengthBefore, lineNrLengthAfter) -%}
     {%- apply spaceless -%}
-        <span class="diff-file__line-gutter"
-              data-action="click->review#addComment"
-              data-line="{{ line_number }}"
-              data-line-offset="{{ line_offset }}"
-              data-line-after="{{ line.lineNumberAfter|default('0') }}">
+        <span class="diff-file__line-gutter" data-action="click->review#addComment">
             {#- add comments -#}
             <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
 

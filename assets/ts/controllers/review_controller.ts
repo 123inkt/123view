@@ -1,15 +1,28 @@
 import {Controller} from '@hotwired/stimulus';
+import DataSet from '../lib/DataSet';
+import Elements from '../lib/Elements';
+import CommentService from '../service/CommentService';
 
 export default class extends Controller {
-    public static targets = ['revisionFile'];
-    declare revisionFileTarget: HTMLElement;
+    public static targets           = ['revisionFile'];
+    public static values            = {addCommentUrl: String};
+    private readonly commentService = new CommentService();
+    private declare revisionFileTarget: HTMLElement;
+    private declare addCommentUrlValue: string;
 
     public addComment(event: Event): void {
-        const target   = this.getTarget(event);
-        const location = new URL(window.location.href);
-        location.searchParams.set('filePath', this.getFilePath());
-        location.searchParams.set('action', 'add-comment:' + target.dataset.line + ':' + target.dataset.lineOffset + ':' + target.dataset.lineAfter);
-        (window as Window).location = location.toString();
+        const line     = Elements.closestRole(<HTMLElement>event.target, 'diff-line');
+        const inserter = Elements.siblingRole(line, 'add-comment-inserter');
+
+        this.commentService.getAddCommentForm(
+            this.addCommentUrlValue,
+            DataSet.string(this.revisionFileTarget, 'file'),
+            DataSet.int(line, 'line'),
+            DataSet.int(line, 'lineOffset'),
+            DataSet.int(line, 'lineAfter')
+        ).then(form => {
+            inserter.after(form);
+        });
     }
 
     public editComment(event: Event): void {

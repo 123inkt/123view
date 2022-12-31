@@ -1,5 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
-import ElementFactory from '../lib/ElementFactory';
+import Elements from '../lib/Elements';
 
 export default class extends Controller<HTMLButtonElement> {
     public connect(): void {
@@ -11,7 +11,7 @@ export default class extends Controller<HTMLButtonElement> {
             return;
         }
 
-        const icon = ElementFactory.createElement('<span class="spinner-border spinner-border-sm me-1"/>');
+        const icon = Elements.create('<span class="spinner-border spinner-border-sm me-1"/>');
         this.element.insertBefore(icon, this.element.firstChild);
 
         // delay disable slightly to avoid blocking the submit

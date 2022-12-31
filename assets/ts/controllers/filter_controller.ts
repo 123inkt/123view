@@ -1,5 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
-import ElementFactory from '../lib/ElementFactory';
+import Elements from '../lib/Elements';
 
 export default class extends Controller {
     public static targets = ['filterList', 'filterTemplate'];
@@ -19,7 +19,7 @@ export default class extends Controller {
         const template = this.filterTemplateTarget.innerHTML;
 
         // create new element from template
-        const element = ElementFactory.createElement(template.replace(/__name__/g, String(this.countValue++)));
+        const element = Elements.create(template.replace(/__name__/g, String(this.countValue++)));
 
         // append to the end
         this.filterListTarget.appendChild(element);

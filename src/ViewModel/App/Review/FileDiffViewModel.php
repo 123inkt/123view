@@ -5,7 +5,6 @@ namespace DR\Review\ViewModel\App\Review;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
-use DR\Review\ViewModel\App\Comment\AddCommentViewModel;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
 use DR\Review\ViewModel\App\Comment\EditCommentReplyViewModel;
 use DR\Review\ViewModel\App\Comment\EditCommentViewModel;
@@ -14,7 +13,6 @@ use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 class FileDiffViewModel
 {
     private ?CommentsViewModel         $commentsViewModel    = null;
-    private ?AddCommentViewModel       $addCommentForm       = null;
     private ?EditCommentViewModel      $editCommentForm      = null;
     private ?ReplyCommentViewModel     $replyCommentForm     = null;
     private ?EditCommentReplyViewModel $editReplyCommentForm = null;
@@ -30,18 +28,6 @@ class FileDiffViewModel
     public function getDiffModes(): array
     {
         return ReviewDiffModeEnum::values();
-    }
-
-    public function setAddCommentForm(AddCommentViewModel $addCommentForm): self
-    {
-        $this->addCommentForm = $addCommentForm;
-
-        return $this;
-    }
-
-    public function getAddCommentForm(): ?AddCommentViewModel
-    {
-        return $this->addCommentForm;
     }
 
     public function getCommentsViewModel(): ?CommentsViewModel
