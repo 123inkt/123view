@@ -1,6 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import DataSet from '../lib/DataSet';
 import Elements from '../lib/Elements';
+import Function from '../lib/Function';
 import CommentService from '../service/CommentService';
 
 export default class extends Controller {
@@ -14,15 +15,16 @@ export default class extends Controller {
         const line     = Elements.closestRole(<HTMLElement>event.target, 'diff-line');
         const inserter = Elements.siblingRole(line, 'add-comment-inserter');
 
-        this.commentService.getAddCommentForm(
-            this.addCommentUrlValue,
-            DataSet.string(this.revisionFileTarget, 'file'),
-            DataSet.int(line, 'line'),
-            DataSet.int(line, 'lineOffset'),
-            DataSet.int(line, 'lineAfter')
-        ).then(form => {
-            inserter.after(form);
-        });
+        this.commentService
+            .getAddCommentForm(
+                this.addCommentUrlValue,
+                DataSet.string(this.revisionFileTarget, 'file'),
+                DataSet.int(line, 'line'),
+                DataSet.int(line, 'lineOffset'),
+                DataSet.int(line, 'lineAfter')
+            )
+            .then(form => inserter.after(form))
+            .catch(Function.empty);
     }
 
     public editComment(event: Event): void {
