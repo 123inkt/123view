@@ -1,5 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
 import Assert from '../lib/Assert';
+import Events from '../lib/Events';
 import Function from '../lib/Function';
 import InputElement from '../lib/InputElement';
 import AssetService from '../service/AssetService';
@@ -30,8 +31,7 @@ export default class extends Controller<HTMLTextAreaElement> {
             return;
         }
 
-        event.preventDefault();
-        event.stopPropagation();
+        Events.stop(event);
 
         const reader  = new FileReader();
         reader.onload = event => {

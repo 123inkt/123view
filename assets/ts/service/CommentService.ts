@@ -17,9 +17,14 @@ export default class CommentService {
             .then((response) => response.data);
     }
 
-    public getCommentThread(url: string): Promise<HTMLElement> {
+    public getCommentThread(url: string, action?: string): Promise<HTMLElement> {
+        let params = {};
+        if (action !== undefined) {
+            params = {params: {action}};
+        }
+
         return this.client
-            .get(url)
+            .get(url, params)
             .then(response => response.data)
             .then(html => Elements.create(html));
     }

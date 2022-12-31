@@ -1,5 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
 import {useThrottle} from 'stimulus-use';
+import Events from '../lib/Events';
 import Function from '../lib/Function';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
@@ -29,8 +30,7 @@ export default class extends Controller {
     }
 
     public submitComment(event: Event): void {
-        event.preventDefault();
-        event.stopPropagation();
+        Events.stop(event);
         this.commentService
             .submitAddCommentForm(this.formTarget)
             .then(commentUrl => this.commentService.getCommentThread(commentUrl))

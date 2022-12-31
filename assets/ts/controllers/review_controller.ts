@@ -29,13 +29,13 @@ export default class extends Controller {
             .catch(Function.empty);
     }
 
-    public editComment(event: Event): void {
-        const target   = this.getTarget(event);
-        const location = new URL(window.location.href);
-        location.searchParams.set('filePath', this.getFilePath());
-        location.searchParams.set('action', 'edit-comment:' + target.dataset.commentId);
-        (window as Window).location = location.toString();
-    }
+    // public editComment(event: Event): void {
+    //     const target   = this.getTarget(event);
+    //     const location = new URL(window.location.href);
+    //     location.searchParams.set('filePath', this.getFilePath());
+    //     location.searchParams.set('action', 'edit-comment:' + target.dataset.commentId);
+    //     (window as Window).location = location.toString();
+    // }
 
     public deleteComment(event: Event): void {
         const target = this.getTarget(event);
