@@ -34,18 +34,13 @@
                     </a>
 
                     {# delete comment #}
-                    <form method="post"
-                          class="d-inline"
-                          action="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\DeleteCommentController', {id: comment.id}) }}">
-                        <input type="hidden" name="_method" value="DELETE"/>
-                        <a href="javascript:"
-                           class="text-decoration-none comment__action-button"
-                           data-action="click->review#deleteComment"
-                           data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
-                           title="{{ 'delete.comment'|trans }}">
-                            <i class="bi bi-trash-fill text-danger"></i>
-                        </a>
-                    </form>
+                    <a href="#"
+                       class="text-decoration-none comment__action-button"
+                       {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
+                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
+                       title="{{ 'delete.comment'|trans }}">
+                        <i class="bi bi-trash-fill text-danger"></i>
+                    </a>
                 </span>
             {% endif %}
 

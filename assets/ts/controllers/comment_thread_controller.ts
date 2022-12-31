@@ -17,4 +17,18 @@ export default class extends Controller<HTMLElement> {
             .then(el => this.element.replaceWith(el))
             .catch(Function.empty);
     }
+
+    public deleteComment(event: Event): void {
+        Events.stop(event);
+
+        const message = (<HTMLElement>event.currentTarget).dataset.confirmMessage;
+        if (message !== null && confirm(message) === false) {
+            return;
+        }
+
+        this.commentService
+            .deleteComment(this.urlValue)
+            .then(() => this.element.remove())
+            .catch(Function.empty);
+    }
 }

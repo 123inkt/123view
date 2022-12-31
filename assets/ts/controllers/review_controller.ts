@@ -36,13 +36,13 @@ export default class extends Controller {
     //     location.searchParams.set('action', 'edit-comment:' + target.dataset.commentId);
     //     (window as Window).location = location.toString();
     // }
-
-    public deleteComment(event: Event): void {
-        const target = this.getTarget(event);
-        if (confirm(target.dataset.confirmMessage)) {
-            target.closest('form')?.submit();
-        }
-    }
+    //
+    // public deleteComment(event: Event): void {
+    //     const target = this.getTarget(event);
+    //     if (confirm(target.dataset.confirmMessage)) {
+    //         target.closest('form')?.submit();
+    //     }
+    // }
 
     public replyToComment(event: Event): void {
         const target   = this.getTarget(event);

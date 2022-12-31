@@ -4,6 +4,14 @@ import HttpClient from '../lib/HttpClient';
 export default class CommentService {
     private readonly client = new HttpClient();
 
+
+
+    public getMarkdownPreview(comment: string): Promise<string> {
+        return this.client
+            .get('/app/reviews/comment/markdown', {params: {message: comment}})
+            .then((response) => response.data);
+    }
+
     public getAddCommentForm(url: string, filePath: string, line: number, offset: number, lineAfter: number): Promise<HTMLElement> {
         return this.client
             .get(url, {params: {filePath, line, offset, lineAfter}})
@@ -11,10 +19,8 @@ export default class CommentService {
             .then(html => Elements.create(html));
     }
 
-    public getMarkdownPreview(comment: string): Promise<string> {
-        return this.client
-            .get('/app/reviews/comment/markdown', {params: {message: comment}})
-            .then((response) => response.data);
+    public submitAddCommentForm(form: HTMLFormElement): Promise<string> {
+        return this.client.form(form).then(response => response.data.commentUrl);
     }
 
     public getCommentThread(url: string, action?: string): Promise<HTMLElement> {
@@ -29,7 +35,7 @@ export default class CommentService {
             .then(html => Elements.create(html));
     }
 
-    public submitAddCommentForm(form: HTMLFormElement): Promise<string> {
-        return this.client.form(form).then(response => response.data.commentUrl);
+    public deleteComment(url: string): Promise<void> {
+        return this.client.delete(url);
     }
 }

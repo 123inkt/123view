@@ -11,6 +11,10 @@ export default class HttpClient {
         return this.wrap(config, () => axios.post(url, data, config));
     }
 
+    public delete<T = any, R = AxiosResponse<T>, D = any>(url: string, config: AxiosRequestConfig<D> = {}): Promise<R> {
+        return this.wrap(config, () => axios.delete(url, config));
+    }
+
     public form<T = any, R = AxiosResponse<T>>(form: HTMLFormElement): Promise<R> {
         if (form.method.toLowerCase() !== 'post') {
             throw new Error('Only POST forms are supported');
