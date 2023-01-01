@@ -1,6 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
 import {useThrottle} from 'stimulus-use';
-import DataSet from '../lib/DataSet';
 import Errors from '../lib/Errors';
 import Events from '../lib/Events';
 import Mentions from '../lib/Mentions';
@@ -27,8 +26,12 @@ export default class extends Controller<HTMLElement> {
     }
 
     public cancelComment(): void {
-        const commentId = DataSet.int(this.element, 'commentId');
-        window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}))
+        const commentId = this.element.dataset.commentId;
+        if (commentId === null) {
+            this.element.remove();
+        } else {
+            window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}))
+        }
     }
 
     public submitComment(event: Event): void {
