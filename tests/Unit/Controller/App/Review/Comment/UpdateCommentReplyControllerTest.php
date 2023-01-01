@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\UpdateCommentReplyController
@@ -30,6 +31,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 {
     private CommentReplyRepository&MockObject $replyRepository;
+    private TranslatorInterface&MockObject    $translator;
     private MessageBusInterface&MockObject    $bus;
     private Envelope                          $envelope;
 
@@ -37,6 +39,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
     {
         $this->envelope        = new Envelope(new stdClass(), []);
         $this->replyRepository = $this->createMock(CommentReplyRepository::class);
+        $this->translator      = $this->createMock(TranslatorInterface::class);
         $this->bus             = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
@@ -152,6 +155,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UpdateCommentReplyController($this->replyRepository, $this->bus);
+        return new UpdateCommentReplyController($this->replyRepository, $this->translator, $this->bus);
     }
 }
