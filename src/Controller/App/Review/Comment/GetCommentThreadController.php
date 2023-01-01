@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\Review\Comment;
 
+use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
@@ -15,7 +16,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class GetCommentThreadController
+class GetCommentThreadController extends AbstractController
 {
     public function __construct(private readonly CommentViewModelProvider $commentModelProvider)
     {
