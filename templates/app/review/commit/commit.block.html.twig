@@ -31,9 +31,8 @@
         {%- for comment in commentsViewModel.getComments(line) -%}
             {%- include 'app/review/comment/comment.html.twig' -%}
         {%- endfor -%}
-        {%- if addCommentForm is not null and addCommentForm.diffLine is same as line -%}
-            {%- include 'app/review/comment/comment.modify.html.twig' with {form: addCommentForm.form} -%}
-        {%- endif -%}
+
+        <div data-role="add-comment-inserter"></div>
 
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}

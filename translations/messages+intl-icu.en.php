@@ -34,7 +34,7 @@ return [
     'comment.mark.as.resolved'                    => '<em>{userName}</em> marked comment as resolved.',
     'comment.markdown.examples'                   => '**Bold** # Heading > Quote [link text](URL) `<code>`',
     'comment.save.quick.key'                      => 'Ctrl+Enter to save',
-    'comment.was.deleted.meanwhile'               => 'The comment was deleted in the meantime',
+    'comment.was.deleted.meanwhile'               => 'The comment no longer exists, refresh the page to receive the latest updates',
     'commit.notification.rules'                   => 'Commit notification rules',
     'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'confirm.delete.reply'                        => 'Are you sure you want to delete this comment?',

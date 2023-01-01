@@ -1,5 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
-import ElementFactory from '../lib/ElementFactory';
+import Elements from '../lib/Elements';
+import Events from '../lib/Events';
 
 export default class extends Controller {
     public static targets = ['filterList', 'filterTemplate'];
@@ -9,7 +10,9 @@ export default class extends Controller {
     declare filterTemplateTarget: HTMLTemplateElement;
     declare countValue: number;
 
-    public addFilter(): void {
+    public addFilter(event: Event): void {
+        Events.stop(event);
+
         // maximum filter reached
         if (this.filterListTarget.children.length >= 10) {
             return;
@@ -19,13 +22,14 @@ export default class extends Controller {
         const template = this.filterTemplateTarget.innerHTML;
 
         // create new element from template
-        const element = ElementFactory.createElement(template.replace(/__name__/g, String(this.countValue++)));
+        const element = Elements.create(template.replace(/__name__/g, String(this.countValue++)));
 
         // append to the end
         this.filterListTarget.appendChild(element);
     }
 
     public deleteFilter(event: Event): void {
+        Events.stop(event);
         (<HTMLElement>event.target).closest('[data-role="filter"]')?.remove();
     }
 }

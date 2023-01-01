@@ -5,8 +5,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\DeleteCommentReplyController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
@@ -14,7 +12,9 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\DeleteCommentReplyController
@@ -35,10 +35,8 @@ class DeleteCommentReplyControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeCommentMissing(): void
     {
-        $this->expectRefererRedirect(ProjectsController::class);
-
-        $response = ($this->controller)(null);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        $this->expectException(NotFoundHttpException::class);
+        ($this->controller)(null);
     }
 
     /**
@@ -57,9 +55,10 @@ class DeleteCommentReplyControllerTest extends AbstractControllerTestCase
 
         $this->expectDenyAccessUnlessGranted(CommentReplyVoter::DELETE, $reply);
         $this->commentRepository->expects(self::once())->method('remove')->with($reply, true);
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
-        static::assertInstanceOf(RedirectResponse::class, ($this->controller)($reply));
+        $response = ($this->controller)($reply);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController

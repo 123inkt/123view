@@ -1,4 +1,16 @@
-<div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}" data-comment="{{ comment.id }}">
+{# comment:          Comment #}
+{# detached:         bool|null #}
+{# editCommentForm:  FormView|null #}
+{# replyCommentform: FormView|null #}
+
+<div class="comment__comment-thread
+    {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}"
+     data-comment-id="{{ comment.id }}"
+     data-comment-thread-id-value="{{ comment.id }}"
+     data-comment-thread-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetCommentThreadController', {id: comment.id}) }}"
+        {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
+        {{ stimulus_controller('comment-thread') }}
+>
     <div class="comment__comment">
         {# detached comments #}
         {% if detached is defined and detached %}
@@ -14,50 +26,39 @@
                 {{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
             </span>
             {% if comment.user == app.user %}
-            <span class="comment__edit">
-                {# edit comment #}
-                <a href="javascript:"
-                   class="ms-1 text-decoration-none comment__action-button"
-                   data-action="click->review#editComment"
-                   data-comment-id="{{ comment.id }}"
-                   title="{{ 'edit.comment'|trans }}">
-                    <i class="bi bi-pencil-fill"></i>
-                </a>
+                <span class="comment__edit">
+                    {# edit comment #}
+                    <a href="#" class="ms-1 text-decoration-none comment__action-button"
+                            {{ stimulus_action('comment-thread', 'editComment', 'click') }}
+                       title="{{ 'edit.comment'|trans }}">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
 
-                {# delete comment #}
-                <form method="post"
-                      class="d-inline"
-                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\DeleteCommentController', {id: comment.id}) }}">
-                    <input type="hidden" name="_method" value="DELETE" />
-                    <a href="javascript:"
-                       class="text-decoration-none comment__action-button"
-                       data-action="click->review#deleteComment"
-                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
-                       title="{{ 'delete.comment'|trans }}">
+                    {# delete comment #}
+                    <a href="#" class="text-decoration-none comment__action-button"
+                            {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
+                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
                         <i class="bi bi-trash-fill text-danger"></i>
                     </a>
-                </form>
-            </span>
+                </span>
             {% endif %}
 
             <span class="comment__state float-end">
-                <form id="change-comment-state-{{ comment.id }}"
-                      method="post"
-                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}">
+                {% if comment.state == 'open' %}
+                    {% set state = 'resolved' %}
+                    {% set title = 'click.to.resolve'|trans %}
+                    {% set label = 'resolve'|trans %}
+                {% else %}
+                    {% set state = 'open' %}
+                    {% set title = 'click.to.unresolve'|trans %}
+                    {% set label = '✓ ' ~ 'resolved'|trans %}
+                {% endif %}
 
-                    {% if comment.state == 'open' %}
-                        {% set state = 'resolved' %}
-                        {% set title = 'click.to.resolve'|trans %}
-                        {% set label = 'resolve'|trans %}
-                    {% else %}
-                        {% set state = 'open' %}
-                        {% set title = 'click.to.unresolve'|trans %}
-                        {% set label = '✓ ' ~ 'resolved'|trans %}
-                    {% endif %}
-
-                    <input type="hidden" name="state" value="{{ state }}">
-                    <a href="javascript:document.getElementById('change-comment-state-{{ comment.id }}').submit()" title="{{ title }}">{{ label }}</a>
-                </form>
+                <a href="#"
+                   {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
+                   data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
+                   data-state="{{ state }}"
+                   title="{{ title }}">{{ label }}</a>
             </span>
         </div>
 
@@ -67,9 +68,9 @@
     </div>
 
     {# edit comment form #}
-    {% set is_edit_comment = editCommentForm != null  and editCommentForm.comment == comment %}
+    {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
     {% if is_edit_comment %}
-        {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form}%}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form, commentId: comment.id} %}
     {% endif %}
 
 
@@ -80,21 +81,20 @@
         {% endfor %}
     {% endif %}
 
-    {% set is_reply_on_comment = replyCommentForm != null and replyCommentForm.comment == comment %}
+    {% set is_reply_on_comment = replyCommentForm is defined and replyCommentForm != null and replyCommentForm.comment == comment %}
 
     {# comment action buttons #}
     <div class="comment__toolbar">
         {% if not is_reply_on_comment and not is_edit_comment %}
-            <a href="javascript:"
-               class="comment__action-button"
-               data-reply-to="{{ comment.id }}"
-               data-action="click->review#replyToComment" title="{{ 'reply'|trans }}">
+            <a href="#" class="comment__action-button"
+                    {{ stimulus_action('comment-thread', 'replyToComment', 'click') }}
+               title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
         {% endif %}
     </div>
 
     {% if is_reply_on_comment %}
-        {% include 'app/review/comment/comment.modify.html.twig' with {form: replyCommentForm.form} %}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: replyCommentForm.form, commentId: comment.id} %}
     {% endif %}
 </div>

@@ -5,13 +5,10 @@ namespace DR\Review\Tests\Unit\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
-use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Review\ReviewRequest;
-use DR\Review\Service\CodeReview\CodeReviewActionFactory;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @extends AbstractRequestTestCase<ReviewRequest>
@@ -20,14 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ReviewRequestTest extends AbstractRequestTestCase
 {
-    private CodeReviewActionFactory&MockObject $actionFactory;
-
-    public function setUp(): void
-    {
-        $this->actionFactory = $this->createMock(CodeReviewActionFactory::class);
-        parent::setUp();
-    }
-
     /**
      * @covers ::getFilePath
      */
@@ -44,18 +33,6 @@ class ReviewRequestTest extends AbstractRequestTestCase
     {
         $this->request->query->set('tab', 'revisions');
         static::assertSame('revisions', $this->validatedRequest->getTab());
-    }
-
-    /**
-     * @covers ::getAction
-     */
-    public function testGetAction(): void
-    {
-        $action = $this->createMock(AbstractReviewAction::class);
-        $this->actionFactory->expects(self::once())->method('createFromRequest')->with($this->request)->willReturn($action);
-
-        $this->request->query->set('action', 'my-action');
-        static::assertSame($action, $this->validatedRequest->getAction());
     }
 
     /**
@@ -80,8 +57,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
                 'query' => [
                     'filePath' => 'string|filled',
                     'tab'      => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
-                    'diff'     => 'string|in:unified,inline',
-                    'action'   => 'string'
+                    'diff'     => 'string|in:unified,inline'
                 ]
             ]
         );
@@ -93,13 +69,5 @@ class ReviewRequestTest extends AbstractRequestTestCase
     protected static function getClassToTest(): string
     {
         return ReviewRequest::class;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getConstructorArguments(): array
-    {
-        return [$this->actionFactory];
     }
 }

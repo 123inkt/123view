@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\AddCommentController;
-use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Controller\App\Review\Comment\GetCommentThreadController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
@@ -17,8 +17,9 @@ use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -44,7 +45,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::refererRedirect
      */
     public function testInvokeFormNotSubmitted(): void
     {
@@ -56,10 +56,9 @@ class AddCommentControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
         $response = ($this->controller)($request, $review);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /**
@@ -87,6 +86,7 @@ class AddCommentControllerTest extends AbstractControllerTestCase
             ->method('save')
             ->with(
                 self::callback(static function (Comment $comment) use ($user, $review) {
+                    $comment->setId(123);
                     static::assertSame($user, $comment->getUser());
                     static::assertSame($review, $comment->getReview());
                     static::assertSame('filepath', $comment->getFilePath());
@@ -99,12 +99,13 @@ class AddCommentControllerTest extends AbstractControllerTestCase
                 }),
                 true
             );
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
         $this->messageFactory->expects(self::once())->method('createAdded')->willReturn($event);
         $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
+        $this->expectGenerateUrl(GetCommentThreadController::class, ['id' => 123]);
 
         $response = ($this->controller)($request, $review);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController

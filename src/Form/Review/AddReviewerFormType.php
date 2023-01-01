@@ -21,7 +21,7 @@ class AddReviewerFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['review' => null, 'attr' => ['data-controller' => 'form-submitter']]);
+        $resolver->setDefaults(['review' => null]);
         $resolver->addAllowedTypes('review', CodeReview::class);
     }
 
@@ -49,7 +49,7 @@ class AddReviewerFormType extends AbstractType
                 'preferred_choices'         => [$this->user],
                 'multiple'                  => false,
                 'expanded'                  => false,
-                'attr'                      => ['class' => 'form-select-sm']
+                'attr'                      => ['class' => 'form-select-sm', 'data-controller' => 'form-submitter']
             ]);
         }
     }

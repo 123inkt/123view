@@ -5,8 +5,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\DeleteCommentController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
@@ -18,7 +16,9 @@ use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -47,10 +47,8 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeCommentMissing(): void
     {
-        $this->expectRefererRedirect(ProjectsController::class);
-
-        $response = ($this->controller)(null);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        $this->expectException(NotFoundHttpException::class);
+        ($this->controller)(null);
     }
 
     /**
@@ -73,9 +71,10 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
         $this->commentRepository->expects(self::once())->method('remove')->with($comment, true);
         $this->messageFactory->expects(self::once())->method('createRemoved')->willReturn($event);
         $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
-        static::assertInstanceOf(RedirectResponse::class, ($this->controller)($comment));
+        $response = ($this->controller)($comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController

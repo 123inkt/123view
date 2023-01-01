@@ -104,13 +104,9 @@
 
 {%- block page %}{% endblock -%}
 
-<script>
-    {% if is_granted('ROLE_USER') %}
-    const publishUrl      = "{{ mercure('/review/{id}', { subscribe: '/review/{id}' })|escape('js') }}";
-    const eventSource     = new EventSource(publishUrl, {withCredentials: true});
-    eventSource.onmessage = (event) => document.dispatchEvent(new CustomEvent('notification', {detail: JSON.parse(event.data)}))
-    window.addEventListener('beforeunload', () => eventSource.close());
-    {% endif %}
-</script>
+{% if is_granted('ROLE_USER') %}
+    <div {{ stimulus_controller('server-event') }} data-url="{{ mercure('/review/{id}', { subscribe: '/review/{id}' }) }}"></div>
+{% endif %}
+
 </body>
 </html>

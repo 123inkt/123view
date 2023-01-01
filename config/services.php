@@ -6,6 +6,7 @@ use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\Review\Entity\User\User;
+use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\Git\Diff\DiffChangeBundler;
 use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
@@ -83,6 +84,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(LoginService::class);
     $services->set(UserChecker::class);
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
+    $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)

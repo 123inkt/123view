@@ -1,21 +1,31 @@
-<div class="diff-file__comment_form" data-controller="comment">
-    {{- form_start(form) -}}
-    {{- form_widget(form.message, {attr: {'data-comment-target': 'textarea'}}) -}}
+{# commentId: number #}
+{# form: FormView #}
+<div class="diff-file__comment_form"
+        {{ stimulus_controller('comment-form') }}
+        {{ stimulus_target('review', 'commentForm') }}
+        {% if commentId is defined %}data-comment-id="{{ commentId }}"{% endif %}
+>
+    {{- form_start(form, {attr: {'data-comment-form-target': 'form'}}) -}}
+    {{- form_widget(form.message, {attr: {'data-comment-form-target': 'textarea', 'data-controller': 'form-submitter textarea-resize textarea-paste'}}) -}}
 
     <div class="position-relative diff-file__comment-mention">
-        <ul class="dropdown-menu" {{ stimulus_target('comment', 'mentionSuggestions') }}></ul>
+        <ul class="dropdown-menu" {{ stimulus_target('comment-form', 'mentionSuggestions') }}></ul>
     </div>
 
-    <div class="comment__markdown" {{ stimulus_target('comment', 'markdownPreview') }} class="mb-2">
+    <div class="comment__markdown" {{ stimulus_target('comment-form', 'markdownPreview') }} class="mb-2">
         {{ form.message.vars.value|markdown }}
     </div>
 
     <div class="mt-2 clearfix">
-        {{- form_widget(form.save, {attr: {title: 'comment.save.quick.key', 'data-controller': 'button'}}) -}}
+        {{- form_widget(
+            form.save,
+            {attr: {title: 'comment.save.quick.key', 'data-controller': 'button', 'data-comment-form-target': 'submitButton'}})
+        -}}
         <button type="button"
                 class="ms-2 btn btn-outline-secondary"
-                data-controller="button"
-                data-action="click->comment#cancelComment">{{ 'cancel'|trans }}</button>
+                {{ stimulus_controller('button') }}
+                {{ stimulus_action('comment-form', 'cancelComment', 'click') }}
+        >{{ 'cancel'|trans }}</button>
         <span class="float-end text-secondary">
             {{ 'comment.markdown.examples'|trans }}
         </span>

@@ -36,6 +36,7 @@ class UserProfileFormType extends AbstractType
                 'required' => true,
                 'label'    => false,
                 'choices'  => array_flip(Roles::PROFILE_NAMES),
+                'attr'     => ['data-controller' => 'form-submitter'],
             ]
         );
         $builder->get('roles')->addModelTransformer(new UserProfileRoleTransformer());
@@ -43,13 +44,7 @@ class UserProfileFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(
-            [
-                'attr' => ['data-controller' => 'form-submitter'],
-                'user' => null,
-                'data_class' => User::class,
-            ]
-        );
+        $resolver->setDefaults(['user' => null, 'data_class' => User::class]);
         $resolver->addAllowedTypes('user', User::class);
     }
 }

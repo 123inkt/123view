@@ -1,5 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
-import ElementFactory from '../lib/ElementFactory';
+import Elements from '../lib/Elements';
+import Events from '../lib/Events';
 
 export default class extends Controller {
     public static targets = ['recipientList', 'recipientTemplate'];
@@ -9,7 +10,9 @@ export default class extends Controller {
     declare recipientTemplateTarget: HTMLTemplateElement;
     declare countValue: number;
 
-    public addRecipient(): void {
+    public addRecipient(event: Event): void {
+        Events.stop(event);
+
         // maximum recipient reached
         if (this.recipientListTarget.children.length >= 10) {
             return;
@@ -19,13 +22,14 @@ export default class extends Controller {
         const template = this.recipientTemplateTarget.innerHTML;
 
         // create new element from template
-        const element = ElementFactory.createElement(template.replace(/__name__/g, String(this.countValue++)));
+        const element = Elements.create(template.replace(/__name__/g, String(this.countValue++)));
 
         // append to the end
         this.recipientListTarget.appendChild(element);
     }
 
     public deleteRecipient(event: Event) : void{
+        Events.stop(event);
         (<HTMLElement>event.target).closest('[data-role="recipient"]')?.remove();
     }
 }

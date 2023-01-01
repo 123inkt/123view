@@ -11,7 +11,7 @@
         {% include '/app/notification/recipient.html.twig' with {recipient: recipients.vars.prototype} %}
     </template>
 
-    <a href="javascript:" {{ stimulus_action('recipients', 'addRecipient', 'click') }} class="btn btn-outline-primary">
+    <a href="#" {{ stimulus_action('recipients', 'addRecipient', 'click') }} class="btn btn-outline-primary">
         {{ 'add.recipient'|trans }}
     </a>
 </fieldset>

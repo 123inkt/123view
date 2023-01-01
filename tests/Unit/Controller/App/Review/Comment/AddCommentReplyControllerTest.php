@@ -5,8 +5,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\AddCommentReplyController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
@@ -17,10 +15,12 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\AddCommentReplyController
@@ -29,6 +29,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class AddCommentReplyControllerTest extends AbstractControllerTestCase
 {
     private CommentReplyRepository&MockObject $commentRepository;
+    private TranslatorInterface&MockObject    $translator;
     private MessageBusInterface&MockObject    $bus;
     private Envelope                          $envelope;
 
@@ -36,6 +37,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     {
         $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentReplyRepository::class);
+        $this->translator        = $this->createMock(TranslatorInterface::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
@@ -45,11 +47,9 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeCommentMissing(): void
     {
-        $this->expectAddFlash('warning', 'comment.was.deleted.meanwhile');
-        $this->expectRefererRedirect(ProjectsController::class);
-
         $response = ($this->controller)(new Request(), null);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     /**
@@ -68,10 +68,9 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
         $response = ($this->controller)($request, $comment);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /**
@@ -109,16 +108,16 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
                 }),
                 true
             );
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         $this->bus->expects(self::once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
 
         $response = ($this->controller)($request, $comment);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
     {
-        return new AddCommentReplyController($this->commentRepository, $this->bus);
+        return new AddCommentReplyController($this->commentRepository, $this->translator, $this->bus);
     }
 }

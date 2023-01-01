@@ -5,8 +5,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
@@ -18,10 +16,12 @@ use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\UpdateCommentController
@@ -31,6 +31,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject          $commentRepository;
     private CommentEventMessageFactory&MockObject $messageFactory;
+    private TranslatorInterface&MockObject        $translator;
     private MessageBusInterface&MockObject        $bus;
     private Envelope                              $envelope;
 
@@ -39,6 +40,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentRepository::class);
         $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
+        $this->translator        = $this->createMock(TranslatorInterface::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
@@ -48,11 +50,9 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeCommentMissing(): void
     {
-        $this->expectAddFlash('warning', 'comment.was.deleted.meanwhile');
-        $this->expectRefererRedirect(ProjectsController::class);
-
         $response = ($this->controller)(new Request(), null);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     /**
@@ -71,9 +71,9 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
-        ($this->controller)($request, $comment);
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /**
@@ -98,9 +98,9 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
         $this->bus->expects(self::never())->method('dispatch');
 
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
-        ($this->controller)($request, $comment);
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         static::assertEqualsWithDelta(time(), $comment->getUpdateTimestamp(), 10);
     }
@@ -141,15 +141,16 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
             );
         $this->messageFactory->expects(self::once())->method('createUpdated')->willReturn($event);
         $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
-        ($this->controller)($request, $comment);
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         static::assertEqualsWithDelta(time(), $comment->getUpdateTimestamp(), 10);
     }
 
     public function getController(): AbstractController
     {
-        return new UpdateCommentController($this->commentRepository, $this->messageFactory, $this->bus);
+        return new UpdateCommentController($this->commentRepository, $this->messageFactory, $this->translator, $this->bus);
     }
 }

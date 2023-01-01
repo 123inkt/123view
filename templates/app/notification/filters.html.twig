@@ -11,7 +11,7 @@
         {% include '/app/notification/filter.html.twig' with {filter: filters.vars.prototype} %}
     </template>
 
-    <a href="javascript:" {{ stimulus_action('filter', 'addFilter', 'click') }} class="btn btn-outline-primary">
+    <a href="#" {{ stimulus_action('filter', 'addFilter', 'click') }} class="btn btn-outline-primary">
         {{ 'add.filter'|trans }}
     </a>
 </fieldset>
