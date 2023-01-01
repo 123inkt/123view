@@ -51,7 +51,6 @@ export default class extends Controller<HTMLElement> {
     public deleteReplyComment(event: Event): void {
         Events.stop(event);
         const target  = <HTMLElement>event.currentTarget;
-        console.log(target);
         const message = DataSet.string(target, 'confirmMessage');
         if (confirm(message) === false) {
             return;
@@ -59,6 +58,15 @@ export default class extends Controller<HTMLElement> {
 
         this.commentService
             .deleteCommentReply(DataSet.string(target, 'url'))
+            .then(() => this.updateCommentThread());
+    }
+
+    public resolveComment(event: Event): void {
+        Events.stop(event);
+        const target  = <HTMLElement>event.currentTarget;
+
+        this.commentService
+            .changeCommentState(DataSet.string(target, 'url'), DataSet.string(target, 'state'))
             .then(() => this.updateCommentThread());
     }
 

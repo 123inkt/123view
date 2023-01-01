@@ -41,6 +41,10 @@ export default class CommentService {
         return this.client.delete(url);
     }
 
+    public changeCommentState(url: string, state: string): Promise<void> {
+        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+    }
+
     public deleteCommentReply(url: string): Promise<void> {
         return this.client.delete(url);
     }

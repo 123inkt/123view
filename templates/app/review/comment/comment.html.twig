@@ -4,9 +4,10 @@
 {# replyCommentform: FormView|null #}
 
 <div class="comment__comment-thread
-    {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}" data-comment-id="{{ comment.id }}"
-        data-comment-thread-id-value="{{ comment.id }}"
-        data-comment-thread-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetCommentThreadController', {id: comment.id}) }}"
+    {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}"
+     data-comment-id="{{ comment.id }}"
+     data-comment-thread-id-value="{{ comment.id }}"
+     data-comment-thread-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetCommentThreadController', {id: comment.id}) }}"
         {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
         {{ stimulus_controller('comment-thread') }}
 >
@@ -27,42 +28,37 @@
             {% if comment.user == app.user %}
                 <span class="comment__edit">
                     {# edit comment #}
-                    <a href="#"
-                       class="ms-1 text-decoration-none comment__action-button"
-                       {{ stimulus_action('comment-thread', 'editComment', 'click') }}
+                    <a href="#" class="ms-1 text-decoration-none comment__action-button"
+                            {{ stimulus_action('comment-thread', 'editComment', 'click') }}
                        title="{{ 'edit.comment'|trans }}">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
 
                     {# delete comment #}
-                    <a href="#"
-                       class="text-decoration-none comment__action-button"
-                       {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
-                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}"
-                       title="{{ 'delete.comment'|trans }}">
+                    <a href="#" class="text-decoration-none comment__action-button"
+                            {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
+                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
                         <i class="bi bi-trash-fill text-danger"></i>
                     </a>
                 </span>
             {% endif %}
 
             <span class="comment__state float-end">
-                <form id="change-comment-state-{{ comment.id }}"
-                      method="post"
-                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}">
+                {% if comment.state == 'open' %}
+                    {% set state = 'resolved' %}
+                    {% set title = 'click.to.resolve'|trans %}
+                    {% set label = 'resolve'|trans %}
+                {% else %}
+                    {% set state = 'open' %}
+                    {% set title = 'click.to.unresolve'|trans %}
+                    {% set label = '✓ ' ~ 'resolved'|trans %}
+                {% endif %}
 
-                    {% if comment.state == 'open' %}
-                        {% set state = 'resolved' %}
-                        {% set title = 'click.to.resolve'|trans %}
-                        {% set label = 'resolve'|trans %}
-                    {% else %}
-                        {% set state = 'open' %}
-                        {% set title = 'click.to.unresolve'|trans %}
-                        {% set label = '✓ ' ~ 'resolved'|trans %}
-                    {% endif %}
-
-                    <input type="hidden" name="state" value="{{ state }}">
-                    <a href="#" {{ stimulus_controller('form-submitter') }} title="{{ title }}">{{ label }}</a>
-                </form>
+                <a href="#"
+                   {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
+                   data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
+                   data-state="{{ state }}"
+                   title="{{ title }}">{{ label }}</a>
             </span>
         </div>
 
@@ -90,9 +86,8 @@
     {# comment action buttons #}
     <div class="comment__toolbar">
         {% if not is_reply_on_comment and not is_edit_comment %}
-            <a href="#"
-               class="comment__action-button"
-               {{ stimulus_action('comment-thread', 'replyToComment', 'click') }}
+            <a href="#" class="comment__action-button"
+                    {{ stimulus_action('comment-thread', 'replyToComment', 'click') }}
                title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
