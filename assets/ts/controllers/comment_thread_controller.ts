@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import DataSet from '../lib/DataSet';
 import Events from '../lib/Events';
 import Function from '../lib/Function';
 import CommentService from '../service/CommentService';
@@ -15,26 +16,19 @@ export default class extends Controller<HTMLElement> {
         if (event.detail !== this.idValue) {
             return;
         }
-
-        this.commentService
-            .getCommentThread(this.urlValue)
-            .then(el => this.element.replaceWith(el))
-            .catch(Function.empty);
+        this.updateCommentThread();
     }
 
     public editComment(event: Event): void {
         Events.stop(event);
-        this.commentService
-            .getCommentThread(this.urlValue, 'edit-comment:' + this.idValue)
-            .then(el => this.element.replaceWith(el))
-            .catch(Function.empty);
+        this.updateCommentThread('edit-comment:' + this.idValue);
     }
 
     public deleteComment(event: Event): void {
         Events.stop(event);
 
-        const message = (<HTMLElement>event.currentTarget).dataset.confirmMessage;
-        if (message !== null && confirm(message) === false) {
+        const message = DataSet.string(<HTMLElement>event.currentTarget, 'confirmMessage');
+        if (confirm(message) === false) {
             return;
         }
 
@@ -46,16 +40,31 @@ export default class extends Controller<HTMLElement> {
 
     public replyToComment(event: Event): void {
         Events.stop(event);
-        this.commentService
-            .getCommentThread(this.urlValue, 'add-reply:' + this.idValue)
-            .then(el => this.element.replaceWith(el))
-            .catch(Function.empty);
+        this.updateCommentThread('add-reply:' + this.idValue);
     }
 
     public editReplyComment(event: Event): void {
         Events.stop(event);
+        this.updateCommentThread('edit-reply:' + (<HTMLElement>event.currentTarget).dataset.replyId);
+    }
+
+    public deleteReplyComment(event: Event): void {
+        Events.stop(event);
+        const target  = <HTMLElement>event.currentTarget;
+        console.log(target);
+        const message = DataSet.string(target, 'confirmMessage');
+        if (confirm(message) === false) {
+            return;
+        }
+
         this.commentService
-            .getCommentThread(this.urlValue, 'edit-reply:' + (<HTMLElement>event.currentTarget).dataset.replyId)
+            .deleteCommentReply(DataSet.string(target, 'url'))
+            .then(() => this.updateCommentThread());
+    }
+
+    private updateCommentThread(action?: string): void {
+        this.commentService
+            .getCommentThread(this.urlValue, action)
             .then(el => this.element.replaceWith(el))
             .catch(Function.empty);
     }

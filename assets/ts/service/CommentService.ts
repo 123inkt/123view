@@ -42,4 +42,8 @@ export default class CommentService {
     public deleteComment(url: string): Promise<void> {
         return this.client.delete(url);
     }
+
+    public deleteCommentReply(url: string): Promise<void> {
+        return this.client.delete(url);
+    }
 }

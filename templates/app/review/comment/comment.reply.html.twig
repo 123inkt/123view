@@ -5,29 +5,25 @@
             {{ 'on'|trans }} {{ reply.updateTimestamp|format_datetime('short', 'short') }}
         </span>
         {% if reply.user == app.user %}
-        <span class="comment__edit">
-            {# edit comment #}
-            <a href="#"
-               class="ms-1 text-decoration-none"
-               {{ stimulus_action('comment-thread', 'editReplyComment', 'click') }}
-               data-reply-id="{{ reply.id }}"
-               title="{{ 'edit.comment'|trans }}">
-                <i class="bi bi-pencil-fill"></i>
-            </a>
-            {# delete comment #}
-            <form method="post"
-                  class="d-inline"
-                  action="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\DeleteCommentReplyController', {id: reply.id}) }}">
-                <input type="hidden" name="_method" value="DELETE" />
-                <a href="javascript:"
+            <span class="comment__edit">
+                {# edit reply #}
+                <a href="#"
                    class="ms-1 text-decoration-none"
-                   data-action="click->review#deleteReply"
+                   {{ stimulus_action('comment-thread', 'editReplyComment', 'click') }}
+                   data-reply-id="{{ reply.id }}"
+                   title="{{ 'edit.comment'|trans }}">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                {# delete reply  #}
+                <a href="#"
+                   class="ms-1 text-decoration-none"
+                   {{ stimulus_action('comment-thread', 'deleteReplyComment', 'click') }}
+                   data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\DeleteCommentReplyController', {id: reply.id}) }}"
                    data-confirm-message="{{ 'confirm.delete.reply'|trans }}"
                    title="{{ 'delete.comment'|trans }}">
                     <i class="bi bi-trash-fill text-danger"></i>
                 </a>
-            </form>
-        </span>
+            </span>
         {% endif %}
     </div>
 
