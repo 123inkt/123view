@@ -6,13 +6,6 @@ namespace DR\Review\Tests\Unit\ViewModelProvider;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\CommentReply;
-use DR\Review\Entity\Review\LineReference;
-use DR\Review\Model\Review\Action\AddCommentAction;
-use DR\Review\Model\Review\Action\AddCommentReplyAction;
-use DR\Review\Model\Review\Action\EditCommentAction;
-use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
@@ -55,9 +48,8 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
      * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
-    public function testGetFileDiffViewModelAddComment(): void
+    public function testGetFileDiffViewModelInline(): void
     {
-        $action              = new AddCommentAction(new LineReference('reference', 1, 2, 3));
         $file                = new DiffFile();
         $file->filePathAfter = 'filepath';
         $repository          = new Repository();
@@ -67,11 +59,10 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
-        $this->commentModelProvider->expects(self::once())->method('getAddCommentViewModel')->with($review, $file, $action);
         $this->bundler->expects(self::once())->method('bundleFile')->with($file);
         $this->emphasizer->expects(self::never())->method('emphasizeFile');
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, ReviewDiffModeEnum::INLINE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, ReviewDiffModeEnum::INLINE);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
 
@@ -79,9 +70,8 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
      * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
-    public function testGetFileDiffViewModelEditComment(): void
+    public function testGetFileDiffViewModelUnified(): void
     {
-        $action              = new EditCommentAction(new Comment());
         $file                = new DiffFile();
         $file->filePathAfter = 'filepath';
         $repository          = new Repository();
@@ -91,55 +81,10 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
 
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
-        $this->commentModelProvider->expects(self::once())->method('getEditCommentViewModel')->with($action);
         $this->bundler->expects(self::never())->method('bundleFile');
         $this->emphasizer->expects(self::once())->method('emphasizeFile')->with($file);
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, ReviewDiffModeEnum::UNIFIED);
-        static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
-    }
-
-    /**
-     * @covers ::getFileDiffViewModel
-     * @throws Throwable
-     */
-    public function testGetFileDiffViewModelAddCommentReply(): void
-    {
-        $action              = new AddCommentReplyAction(new Comment());
-        $file                = new DiffFile();
-        $file->filePathAfter = 'filepath';
-        $repository          = new Repository();
-        $review              = new CodeReview();
-        $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', []);
-
-        $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
-        $this->commentModelProvider->expects(self::once())->method('getReplyCommentViewModel')->with($action);
-
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, ReviewDiffModeEnum::INLINE);
-        static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
-    }
-
-    /**
-     * @covers ::getFileDiffViewModel
-     * @throws Throwable
-     */
-    public function testGetFileDiffViewModelEditCommentReply(): void
-    {
-        $action              = new EditCommentReplyAction(new CommentReply());
-        $file                = new DiffFile();
-        $file->filePathAfter = 'filepath';
-        $repository          = new Repository();
-        $review              = new CodeReview();
-        $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', []);
-
-        $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
-        $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
-        $this->commentModelProvider->expects(self::once())->method('getEditCommentReplyViewModel')->with($action);
-
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, ReviewDiffModeEnum::INLINE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, ReviewDiffModeEnum::UNIFIED);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
 
@@ -156,7 +101,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::never())->method('fromDiffFile');
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::INLINE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, ReviewDiffModeEnum::INLINE);
         static::assertNull($viewModel->getHighlightedFile());
     }
 }
