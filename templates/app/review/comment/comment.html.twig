@@ -70,7 +70,7 @@
     {# edit comment form #}
     {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
     {% if is_edit_comment %}
-        {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form} %}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form, commentId: comment.id} %}
     {% endif %}
 
 
@@ -95,6 +95,6 @@
     </div>
 
     {% if is_reply_on_comment %}
-        {% include 'app/review/comment/comment.modify.html.twig' with {form: replyCommentForm.form} %}
+        {% include 'app/review/comment/comment.modify.html.twig' with {form: replyCommentForm.form, commentId: comment.id} %}
     {% endif %}
 </div>
