@@ -5,8 +5,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\ChangeCommentStateController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -18,9 +16,11 @@ use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\ChangeCommentStateController
@@ -30,6 +30,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject          $commentRepository;
     private CommentEventMessageFactory&MockObject $messageFactory;
+    private TranslatorInterface&MockObject        $translator;
     private MessageBusInterface&MockObject        $bus;
     private Envelope                              $envelope;
 
@@ -38,6 +39,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentRepository::class);
         $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
+        $this->translator        = $this->createMock(TranslatorInterface::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
@@ -49,11 +51,9 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
 
-        $this->expectAddFlash('warning', 'comment.was.deleted.meanwhile');
-        $this->expectRefererRedirect(ProjectsController::class);
-
         $response = ($this->controller)($request, null);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     /**
@@ -81,9 +81,10 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
         $this->messageFactory->expects(self::once())->method('createResolved')->willReturn($event);
         $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
-        ($this->controller)($request, $comment);
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     /**
@@ -104,13 +105,14 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
         $this->messageFactory->expects(self::never())->method('createResolved');
         $this->bus->expects(self::never())->method('dispatch');
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
-        ($this->controller)($request, $comment);
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
     {
-        return new ChangeCommentStateController($this->commentRepository, $this->messageFactory, $this->bus);
+        return new ChangeCommentStateController($this->commentRepository, $this->messageFactory, $this->translator, $this->bus);
     }
 }
