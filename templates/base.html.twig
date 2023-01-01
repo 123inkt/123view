@@ -105,7 +105,7 @@
 {%- block page %}{% endblock -%}
 
 {% if is_granted('ROLE_USER') %}
-<div {{ stimulus_controller('server-event') }} data-url="{{ mercure('/review/{id}', { subscribe: '/review/{id}' }) }}"></div>
+    <div {{ stimulus_controller('server-event') }} data-url="{{ mercure('/review/{id}', { subscribe: '/review/{id}' }) }}"></div>
 {% endif %}
 
 </body>

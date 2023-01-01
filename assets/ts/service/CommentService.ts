@@ -4,8 +4,6 @@ import HttpClient from '../lib/HttpClient';
 export default class CommentService {
     private readonly client = new HttpClient();
 
-
-
     public getMarkdownPreview(comment: string): Promise<string> {
         return this.client
             .get('/app/reviews/comment/markdown', {params: {message: comment}})
