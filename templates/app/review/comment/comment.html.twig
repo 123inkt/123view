@@ -61,7 +61,7 @@
                     {% endif %}
 
                     <input type="hidden" name="state" value="{{ state }}">
-                    <a {{ stimulus_controller('form-submitter') }} title="{{ title }}">{{ label }}</a>
+                    <a href="#" {{ stimulus_controller('form-submitter') }} title="{{ title }}">{{ label }}</a>
                 </form>
             </span>
         </div>
@@ -72,7 +72,7 @@
     </div>
 
     {# edit comment form #}
-    {% set is_edit_comment = editCommentForm != null  and editCommentForm.comment == comment %}
+    {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
     {% if is_edit_comment %}
         {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form} %}
     {% endif %}
@@ -85,15 +85,14 @@
         {% endfor %}
     {% endif %}
 
-    {% set is_reply_on_comment = replyCommentForm != null and replyCommentForm.comment == comment %}
+    {% set is_reply_on_comment = replyCommentForm is defined and replyCommentForm != null and replyCommentForm.comment == comment %}
 
     {# comment action buttons #}
     <div class="comment__toolbar">
         {% if not is_reply_on_comment and not is_edit_comment %}
-            <a href="javascript:"
+            <a href="#"
                class="comment__action-button"
-               data-reply-to="{{ comment.id }}"
-               data-action="click->review#replyToComment"
+               {{ stimulus_action('comment-thread', 'replyToComment', 'click') }}
                title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>

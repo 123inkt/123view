@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import Events from '../lib/Events';
 
 export default class extends Controller<HTMLElement> {
     public connect(): void {
@@ -18,7 +19,10 @@ export default class extends Controller<HTMLElement> {
     }
 
     private submit(event: Event): void {
-        (<HTMLElement>event.target).closest<HTMLFormElement>('form')?.submit();
+        if ((<HTMLElement>event.currentTarget).tagName.toLowerCase() === 'a') {
+            Events.stop(event);
+        }
+        (<HTMLElement>event.currentTarget).closest<HTMLFormElement>('form')?.submit();
     }
 
     private submitOnEnter(event: KeyboardEvent): void {

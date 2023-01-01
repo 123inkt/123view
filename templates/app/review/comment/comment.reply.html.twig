@@ -37,7 +37,7 @@
 </div>
 
 <div class="comment__edit-reply">
-    {% if editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
+    {% if editReplyCommentForm is defined and editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
         {% include 'app/review/comment/comment.modify.html.twig' with {form: editReplyCommentForm.form} %}
     {% endif %}
 </div>

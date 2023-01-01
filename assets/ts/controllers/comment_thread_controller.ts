@@ -43,4 +43,12 @@ export default class extends Controller<HTMLElement> {
             .then(() => this.element.remove())
             .catch(Function.empty);
     }
+
+    public replyToComment(event: Event): void {
+        Events.stop(event);
+        this.commentService
+            .getCommentThread(this.urlValue, 'add-reply:' + this.idValue)
+            .then(el => this.element.replaceWith(el))
+            .catch(Function.empty);
+    }
 }

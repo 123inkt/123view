@@ -29,12 +29,7 @@ class GetCommentThreadController
     #[Template('app/review/comment/comment.html.twig')]
     public function __invoke(GetCommentThreadRequest $request, #[MapEntity] Comment $comment): array
     {
-        $data = [
-            'comment'          => $comment,
-            'detached'         => false,
-            'editCommentForm'  => null,
-            'replyCommentForm' => null,
-        ];
+        $data = ['comment' => $comment];
 
         $action = $request->getAction();
         if ($action instanceof EditCommentAction) {
@@ -42,7 +37,7 @@ class GetCommentThreadController
         } elseif ($action instanceof AddCommentReplyAction) {
             $data['replyCommentForm'] = $this->commentModelProvider->getReplyCommentViewModel($action);
         } elseif ($action instanceof EditCommentReplyAction) {
-            $data['replyCommentForm'] = $this->commentModelProvider->getEditCommentReplyViewModel($action);
+            $data['editReplyCommentForm'] = $this->commentModelProvider->getEditCommentReplyViewModel($action);
         }
 
         return $data;
