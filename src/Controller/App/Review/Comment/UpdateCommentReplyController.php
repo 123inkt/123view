@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Form\Review\EditCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyUpdated;
@@ -13,26 +11,29 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentReplyVoter;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UpdateCommentReplyController extends AbstractController
 {
-    public function __construct(private readonly CommentReplyRepository $replyRepository, private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly CommentReplyRepository $replyRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(Request $request, #[MapEntity] ?CommentReply $reply): Response
+    public function __invoke(Request $request, #[MapEntity] ?CommentReply $reply): JsonResponse
     {
         if ($reply === null) {
-            $this->addFlash('warning', 'comment.was.deleted.meanwhile');
-
-            return $this->refererRedirect(ProjectsController::class, filter: ['action']);
+            return $this->json(['success' => false, 'error' => $this->translator->trans('comment.was.deleted.meanwhile')], Response::HTTP_NOT_FOUND);
         }
 
         $originalComment = (string)$reply->getMessage();
@@ -41,7 +42,7 @@ class UpdateCommentReplyController extends AbstractController
         $form = $this->createForm(EditCommentReplyFormType::class, $reply, ['reply' => $reply]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return $this->refererRedirect(ReviewController::class, ['review' => $reply->getComment()?->getReview()]);
+            return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
         }
 
         $reply->setUpdateTimestamp(time());
@@ -58,11 +59,6 @@ class UpdateCommentReplyController extends AbstractController
             );
         }
 
-        return $this->refererRedirect(
-            ReviewController::class,
-            ['review' => $reply->getComment()?->getReview()],
-            ['action'],
-            'focus:reply:' . $reply->getId()
-        );
+        return $this->json(['success' => true, 'commentId' => $reply->getComment()?->getId()]);
     }
 }

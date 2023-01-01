@@ -7,9 +7,9 @@
         {% if reply.user == app.user %}
         <span class="comment__edit">
             {# edit comment #}
-            <a href="javascript:"
+            <a href="#"
                class="ms-1 text-decoration-none"
-               data-action="click->review#editReply"
+               {{ stimulus_action('comment-thread', 'editReplyComment', 'click') }}
                data-reply-id="{{ reply.id }}"
                title="{{ 'edit.comment'|trans }}">
                 <i class="bi bi-pencil-fill"></i>
