@@ -3,7 +3,7 @@
 <div class="diff-file__comment_form"
         {{ stimulus_controller('comment-form') }}
         {{ stimulus_target('review', 'commentForm') }}
-        data-comment-id="{{ commentId }}"
+        {% if commentId is defined %}data-comment-id="{{ commentId }}"{% endif %}
 >
     {{- form_start(form, {attr: {'data-comment-form-target': 'form'}}) -}}
     {{- form_widget(form.message, {attr: {'data-comment-form-target': 'textarea', 'data-controller': 'form-submitter textarea-resize textarea-paste'}}) -}}

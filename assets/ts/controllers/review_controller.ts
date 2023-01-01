@@ -1,7 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import DataSet from '../lib/DataSet';
 import Elements from '../lib/Elements';
-import Function from '../lib/Function';
+import Errors from '../lib/Errors';
 import CommentService from '../service/CommentService';
 
 export default class extends Controller {
@@ -26,6 +26,6 @@ export default class extends Controller {
                 this.commentFormTargets.forEach(el => el.remove());
                 Elements.siblingRole(line, 'add-comment-inserter').after(form)
             })
-            .catch(Function.empty);
+            .catch(Errors.catch);
     }
 }

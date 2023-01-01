@@ -1,8 +1,8 @@
 import {Controller} from '@hotwired/stimulus';
 import {useThrottle} from 'stimulus-use';
 import DataSet from '../lib/DataSet';
+import Errors from '../lib/Errors';
 import Events from '../lib/Events';
-import Function from '../lib/Function';
 import Mentions from '../lib/Mentions';
 import MentionsDropdown from '../lib/MentionsDropdown';
 import CommentService from '../service/CommentService';
@@ -39,13 +39,14 @@ export default class extends Controller<HTMLElement> {
         if (commentThread) {
             this.commentService
                 .submitCommentForm(this.formTarget)
-                .then(commentId => window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId})));
+                .then(commentId => window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId})))
+                .catch(Errors.catch);
         } else {
             this.commentService
                 .submitAddCommentForm(this.formTarget)
                 .then(commentUrl => this.commentService.getCommentThread(commentUrl))
                 .then(commentThread => this.element.replaceWith(commentThread))
-                .catch(Function.empty);
+                .catch(Errors.catch);
         }
     }
 
@@ -62,6 +63,6 @@ export default class extends Controller<HTMLElement> {
         this.commentService
             .getMarkdownPreview(comment)
             .then(html => previewEl.innerHTML = html)
-            .catch(Function.empty);
+            .catch(Errors.catch);
     }
 }

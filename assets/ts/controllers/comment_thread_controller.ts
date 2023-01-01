@@ -1,7 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import DataSet from '../lib/DataSet';
+import Errors from '../lib/Errors';
 import Events from '../lib/Events';
-import Function from '../lib/Function';
 import CommentService from '../service/CommentService';
 
 export default class extends Controller<HTMLElement> {
@@ -35,7 +35,7 @@ export default class extends Controller<HTMLElement> {
         this.commentService
             .deleteComment(this.urlValue)
             .then(() => this.element.remove())
-            .catch(Function.empty);
+            .catch(Errors.catch);
     }
 
     public replyToComment(event: Event): void {
@@ -58,7 +58,8 @@ export default class extends Controller<HTMLElement> {
 
         this.commentService
             .deleteCommentReply(DataSet.string(target, 'url'))
-            .then(() => this.updateCommentThread());
+            .then(() => this.updateCommentThread())
+            .catch(Errors.catch);
     }
 
     public resolveComment(event: Event): void {
@@ -67,13 +68,14 @@ export default class extends Controller<HTMLElement> {
 
         this.commentService
             .changeCommentState(DataSet.string(target, 'url'), DataSet.string(target, 'state'))
-            .then(() => this.updateCommentThread());
+            .then(() => this.updateCommentThread())
+            .catch(Errors.catch);
     }
 
     private updateCommentThread(action?: string): void {
         this.commentService
             .getCommentThread(this.urlValue, action)
             .then(el => this.element.replaceWith(el))
-            .catch(Function.empty);
+            .catch(Errors.catch);
     }
 }
