@@ -7,10 +7,14 @@ export default class extends Controller {
             if (el.nodeType !==  Node.ELEMENT_NODE) {
                 continue;
             }
-            if ((<HTMLElement>el).classList.contains('diff-file__diff-line-hidden') === false) {
+            const target = (<HTMLElement>el);
+            if (target.matches('[data-role~="diff-line"]') === false) {
+                continue;
+            }
+            if (target.classList.contains('diff-file__diff-line-hidden') === false) {
                 break;
             }
-            (<HTMLElement>el).classList.remove('diff-file__diff-line-hidden');
+            target.classList.remove('diff-file__diff-line-hidden');
         }
         // and remove the expander
         this.element.remove();
