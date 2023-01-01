@@ -98,7 +98,7 @@
         </fieldset>
 
         <div>
-            {{ form_widget(form.save, {attr: {style: 'width: 150px; max-width: 40%'}}) }}
+            {{ form_widget(form.save) }}
 
             <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RulesController') }}" class="btn btn-outline-primary">
                 {{ 'cancel'|trans }}
