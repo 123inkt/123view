@@ -5,8 +5,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\UpdateCommentReplyController;
-use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
@@ -18,8 +16,9 @@ use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -49,11 +48,9 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeCommentMissing(): void
     {
-        $this->expectAddFlash('warning', 'comment.was.deleted.meanwhile');
-        $this->expectRefererRedirect(ProjectsController::class);
-
         $response = ($this->controller)(new Request(), null);
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     /**
@@ -74,9 +71,9 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
-        ($this->controller)($request, $reply);
+        $response = ($this->controller)($request, $reply);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /**
@@ -102,9 +99,9 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $this->replyRepository->expects(self::once())->method('save')->with($reply, true);
         $this->bus->expects(self::never())->method('dispatch');
 
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
-        ($this->controller)($request, $reply);
+        $response = ($this->controller)($request, $reply);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
     }
@@ -146,9 +143,10 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
                 true
             );
         $this->bus->expects(self::once())->method('dispatch')->with(new CommentReplyUpdated(123, 789, 101, 'message'))->willReturn($this->envelope);
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
-        ($this->controller)($request, $reply);
+        $response = ($this->controller)($request, $reply);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
     }
