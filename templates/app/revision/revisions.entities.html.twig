@@ -15,7 +15,7 @@
     {%- for revision in revisions -%}
         <tr>
             <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
-            <td class="fw-bold text-nowrap overflow-hidden" style="max-width: 600px">{{ revision.title|external_links }}</td>
+            <td class="revision-entities-title fw-bold text-nowrap overflow-hidden">{{ revision.title|external_links }}</td>
             <td title="{{ revision.authorEmail }}">{{ revision.authorName }}</td>
             <td>{{ revision.createTimestamp|format_datetime('short', 'short') }}</td>
             <td>

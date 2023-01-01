@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page %}
-    <div style="width: 400px; margin: 100px auto;">
+    <div class="login-registration-container">
         <h2 class="mb-4">{{ 'sign.in' | trans }}</h2>
 
         {%- include 'app/flash/flashes.html.twig' -%}
@@ -26,7 +26,7 @@
                      width="12"
                      height="12"
                      alt="microsoft"
-                     style="margin-right: 10px; margin-bottom: 4px">
+                     class="single-sign-on-icon">
                 {{- 'login.in.with.active.directory'|trans -}}
             </a>
         {%- endif -%}
