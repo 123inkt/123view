@@ -177,6 +177,10 @@ class CodeReview
      */
     public function getRevisions(): Collection
     {
+        if ($this->revisions instanceof RevisionCollection === false) {
+            $this->revisions = new RevisionCollection($this->revisions->toArray());
+        }
+
         return $this->revisions;
     }
 
