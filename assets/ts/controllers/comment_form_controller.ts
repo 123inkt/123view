@@ -27,7 +27,7 @@ export default class extends Controller<HTMLElement> {
 
     public cancelComment(): void {
         const commentId = this.element.dataset.commentId;
-        if (commentId === null) {
+        if (commentId === undefined) {
             this.element.remove();
         } else {
             window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}))
