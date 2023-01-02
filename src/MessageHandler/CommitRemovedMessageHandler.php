@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
+use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Message\Revision\CommitRemovedMessage;
-use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 class CommitRemovedMessageHandler implements LoggerAwareInterface
@@ -23,7 +23,7 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
         private readonly RepositoryRepository $repositoryRepository,
         private readonly RevisionRepository $revisionRepository,
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly MessageBusInterface $bus,
+        private readonly ReviewEventService $eventService
     ) {
     }
 
@@ -45,10 +45,15 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
 
         $review = $revision->getReview();
         if ($review !== null) {
+            $reviewState = $review->getState();
             $review->getRevisions()->removeElement($revision);
             $revision->setReview(null);
+            if (count($review->getRevisions()) === 0) {
+                $review->setState(CodeReviewStateType::CLOSED);
+            }
+
             $this->reviewRepository->save($review, true);
-            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), null, (string)$revision->getTitle()));
+            $this->eventService->revisionRemovedFromReview($review, $revision, $reviewState);
         }
         $this->revisionRepository->remove($revision, true);
 

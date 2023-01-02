@@ -9,7 +9,7 @@ class ReviewClosed implements AsyncMessageInterface, CodeReviewEventInterface
 {
     public const NAME = 'review-closed';
 
-    public function __construct(public readonly int $reviewId, public readonly int $byUserId)
+    public function __construct(public readonly int $reviewId, public readonly ?int $byUserId)
     {
     }
 
@@ -23,7 +23,7 @@ class ReviewClosed implements AsyncMessageInterface, CodeReviewEventInterface
         return $this->reviewId;
     }
 
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->byUserId;
     }

@@ -131,4 +131,20 @@ class ReviewEventService
             $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
         }
     }
+
+    public function revisionRemovedFromReview(CodeReview $review, Revision $revision, string $reviewState): void
+    {
+        $events   = [];
+        $events[] = new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), null, (string)$revision->getTitle());
+
+        // close review event
+        if ($reviewState !== $review->getState()) {
+            $events[] = new ReviewClosed((int)$review->getId(), null);
+        }
+
+        // dispatch $events
+        foreach ($events as $event) {
+            $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
+        }
+    }
 }
