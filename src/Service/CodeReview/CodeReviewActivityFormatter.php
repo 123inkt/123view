@@ -90,6 +90,8 @@ class CodeReviewActivityFormatter
             $revision = $this->revisionRepository->find((int)$activity->getDataValue('revisionId'));
             if ($revision instanceof Revision) {
                 $params['revision'] = sprintf('%s - %s', substr((string)$revision->getCommitHash(), 0, 8), $revision->getTitle());
+            } else {
+                $params['revision'] = (string)$activity->getDataValue('title');
             }
         }
 

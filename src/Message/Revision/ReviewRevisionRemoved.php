@@ -14,8 +14,12 @@ class ReviewRevisionRemoved implements AsyncMessageInterface, CodeReviewAwareInt
 {
     public const NAME = 'review-revision-removed';
 
-    public function __construct(public readonly int $reviewId, public readonly int $revisionId, public readonly ?int $byUserId)
-    {
+    public function __construct(
+        public readonly int $reviewId,
+        public readonly int $revisionId,
+        public readonly ?int $byUserId,
+        public readonly string $title
+    ) {
     }
 
     public function getName(): string
@@ -38,6 +42,6 @@ class ReviewRevisionRemoved implements AsyncMessageInterface, CodeReviewAwareInt
      */
     public function getPayload(): array
     {
-        return ['reviewId' => $this->reviewId, 'revisionId' => $this->revisionId, 'userId' => $this->byUserId];
+        return ['reviewId' => $this->reviewId, 'revisionId' => $this->revisionId, 'userId' => $this->byUserId, 'title' => $this->title];
     }
 }
