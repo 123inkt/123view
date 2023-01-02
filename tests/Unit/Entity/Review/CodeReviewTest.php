@@ -9,7 +9,6 @@ use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Revision;
-use DR\Review\Entity\Review\RevisionCollection;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
 
@@ -36,7 +35,8 @@ class CodeReviewTest extends AbstractTestCase
      */
     public function testRevisions(): void
     {
-        $collection = new RevisionCollection();
+        /** @var ArrayCollection<int, Revision> $collection */
+        $collection = new ArrayCollection();
 
         $review = new CodeReview();
         static::assertInstanceOf(ArrayCollection::class, $review->getRevisions());
