@@ -49,6 +49,7 @@ class CodeReview
 
     /** @phpstan-var Collection<int, Revision> */
     #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false)]
+    #[ORM\OrderBy(["createTimestamp" => "ASC"])]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
