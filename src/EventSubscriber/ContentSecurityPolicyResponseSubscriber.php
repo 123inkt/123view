@@ -18,7 +18,7 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
         // only allow content from own host.
         // allow image svg+xml
         // allow websocket to connect to any port.
-        $policy = sprintf("default-src 'self'; img-src 'self' data: *; connect-src 'self' %s:*", $this->hostname);
+        $policy = sprintf("default-src 'self'; img-src 'self' data:; object-src: 'none'; connect-src 'self' %s:*", $this->hostname);
 
         $event->getResponse()->headers->set("Content-Security-Policy", $policy);
     }
