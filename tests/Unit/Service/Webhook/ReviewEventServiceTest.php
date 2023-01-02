@@ -182,8 +182,10 @@ class ReviewEventServiceTest extends AbstractTestCase
     {
         $revisionA = new Revision();
         $revisionA->setId(456);
+        $revisionA->setTitle('title');
         $revisionB = new Revision();
         $revisionB->setId(789);
+        $revisionB->setTitle('title');
 
         $review = new CodeReview();
         $review->setId(123);
@@ -191,8 +193,8 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [new ReviewRevisionAdded(123, 456, 5)],
-                [new ReviewRevisionAdded(123, 789, 5)],
+                [new ReviewRevisionAdded(123, 456, 5, 'title')],
+                [new ReviewRevisionAdded(123, 789, 5, 'title')],
             )
             ->willReturn($this->envelope);
 
@@ -206,8 +208,10 @@ class ReviewEventServiceTest extends AbstractTestCase
     {
         $revisionA = new Revision();
         $revisionA->setId(456);
+        $revisionA->setTitle('title');
         $revisionB = new Revision();
         $revisionB->setId(789);
+        $revisionB->setTitle('title');
 
         $review = new CodeReview();
         $review->setId(123);
@@ -215,8 +219,8 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [new ReviewRevisionRemoved(123, 456, 5)],
-                [new ReviewRevisionRemoved(123, 789, 5)],
+                [new ReviewRevisionRemoved(123, 456, 5, 'title')],
+                [new ReviewRevisionRemoved(123, 789, 5, 'title')],
             )
             ->willReturn($this->envelope);
 
@@ -230,6 +234,7 @@ class ReviewEventServiceTest extends AbstractTestCase
     {
         $revision = new Revision();
         $revision->setId(456);
+        $revision->setTitle('title');
         $review = new CodeReview();
         $review->setId(123);
         $review->setState(CodeReviewStateType::OPEN);
@@ -240,7 +245,7 @@ class ReviewEventServiceTest extends AbstractTestCase
                 [new Envelope(new ReviewCreated(123, 456))],
                 [new Envelope(new ReviewOpened(123, null))],
                 [new Envelope(new ReviewResumed(123, null))],
-                [new Envelope(new ReviewRevisionAdded(123, 456, null))],
+                [new Envelope(new ReviewRevisionAdded(123, 456, null, 'title'))],
             )
             ->willReturn($this->envelope);
 
@@ -254,13 +259,14 @@ class ReviewEventServiceTest extends AbstractTestCase
     {
         $revision = new Revision();
         $revision->setId(456);
+        $revision->setTitle('title');
         $review = new CodeReview();
         $review->setId(123);
         $review->setState(CodeReviewStateType::OPEN);
 
         $this->bus->expects(self::once())
             ->method('dispatch')
-            ->with(new Envelope(new ReviewRevisionAdded(123, 456, null)))
+            ->with(new Envelope(new ReviewRevisionAdded(123, 456, null, 'title')))
             ->willReturn($this->envelope);
 
         $this->service->revisionAddedToReview($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);

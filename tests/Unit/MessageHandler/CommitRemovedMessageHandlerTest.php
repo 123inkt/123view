@@ -76,6 +76,7 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
         $review->setId(789);
         $revision = new Revision();
         $revision->setId(456);
+        $revision->setTitle('title');
         $revision->setReview($review);
         $review->getRevisions()->add($revision);
 
@@ -85,7 +86,7 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
             ->with(['commitHash' => 'hash', 'repository' => 123])
             ->willReturn($revision);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->bus->expects(self::once())->method('dispatch')->with(new ReviewRevisionRemoved(789, 456, null))->willReturn($this->envelope);
+        $this->bus->expects(self::once())->method('dispatch')->with(new ReviewRevisionRemoved(789, 456, null, 'title'))->willReturn($this->envelope);
         $this->revisionRepository->expects(self::once())->method('remove')->with($revision, true);
 
         ($this->messageHandler)(new CommitRemovedMessage(123, 'hash'));

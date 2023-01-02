@@ -153,6 +153,30 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
      * @covers ::addCustomParams
      * @covers ::getTranslationId
      */
+    public function testFormatRevisionAddedEventWithAbsentRevision(): void
+    {
+        $user = new User();
+        $user->setId(456);
+
+        $activity = new CodeReviewActivity();
+        $activity->setEventName(ReviewRevisionAdded::NAME);
+        $activity->setData(['revisionId' => 789, 'title' => 'title']);
+
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with('timeline.review.revision.added', ['username' => 'app', 'revision' => 'title'])
+            ->willReturnArgument(0);
+        $this->userRepository->expects(self::never())->method('find');
+        $this->revisionRepository->expects(self::once())->method('find')->with(789)->willReturn(null);
+
+        $this->formatter->format($activity, $user);
+    }
+
+    /**
+     * @covers ::format
+     * @covers ::addCustomParams
+     * @covers ::getTranslationId
+     */
     public function testFormatCommentEvent(): void
     {
         $user = new User();
