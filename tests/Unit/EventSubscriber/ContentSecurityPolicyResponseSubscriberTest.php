@@ -36,7 +36,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $subscriber->onResponse($event);
 
         static::assertSame(
-            "default-src 'self'; img-src 'self' data: *; connect-src 'self' host:*",
+            "default-src 'self'; img-src 'self' data:; object-src: 'none'; connect-src 'self' host:*",
             $response->headers->get("Content-Security-Policy")
         );
     }
