@@ -271,4 +271,47 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->service->revisionAddedToReview($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
     }
+
+    /**
+     * @covers ::revisionRemovedFromReview
+     */
+    public function testRevisionRemovedFromReview(): void
+    {
+        $revision = new Revision();
+        $revision->setId(456);
+        $revision->setTitle('title');
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setState(CodeReviewStateType::OPEN);
+
+        $this->bus->expects(self::exactly(2))
+            ->method('dispatch')
+            ->withConsecutive(
+                [new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title'))],
+                [new Envelope(new ReviewClosed(123, null))]
+            )
+            ->willReturn($this->envelope);
+
+        $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::CLOSED);
+    }
+
+    /**
+     * @covers ::revisionRemovedFromReview
+     */
+    public function testRevisionRemovedFromReviewWithMinimalEvents(): void
+    {
+        $revision = new Revision();
+        $revision->setId(456);
+        $revision->setTitle('title');
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setState(CodeReviewStateType::OPEN);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title')))
+            ->willReturn($this->envelope);
+
+        $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::OPEN);
+    }
 }
