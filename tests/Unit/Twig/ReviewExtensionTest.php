@@ -9,7 +9,6 @@ use DR\Review\Twig\ReviewExtension;
 
 /**
  * @coversDefaultClass \DR\Review\Twig\ReviewExtension
- * @covers ::__construct
  */
 class ReviewExtensionTest extends AbstractTestCase
 {
