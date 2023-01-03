@@ -22,7 +22,7 @@ class FileTreeViewModel
         public readonly DirectoryTreeNode $fileTree,
         public readonly Collection $comments,
         private readonly FileSeenStatusCollection $fileSeenCollection,
-        private readonly ?DiffFile $selectedFile
+        public readonly ?DiffFile $selectedFile
     ) {
     }
 
@@ -55,6 +55,19 @@ class FileTreeViewModel
             && $file->filePathAfter === $this->selectedFile->filePathAfter
             && $file->hashStart === $this->selectedFile->hashStart
             && $file->hashEnd === $this->selectedFile->hashEnd;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRevisionHashes(): array
+    {
+        $hashes = [];
+        foreach ($this->review->getRevisions() as $revision) {
+            $hashes[] = $revision->getCommitHash();
+        }
+
+        return $hashes;
     }
 
     /**

@@ -23,12 +23,7 @@
                     data-role="review-file-tree-file"
                     {%- if fileTreeModel.fileSelected(file) %}{{ stimulus_target('review-file-tree', 'activeFile') }}{% endif %}
                 >
-                    {%- set filePath = file.file.pathname -%}
-                    {%- if file.hashEnd != null -%}
-                        {%- set filePath = filePath ~ ':' ~ file.hashEnd -%}
-                    {%- endif -%}
-
-                    <a href="?filePath={{ filePath|e('url') }}"
+                    <a href="?filePath={{ file|review_file_path|e('url') }}"
                        class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate me-2">
                         {%- if file.rename -%}
                             <span class="diff-file__file-change-state text-primary">↗</span>
@@ -77,6 +72,12 @@
 {% endmacro %}
 {% from _self import recursiveFileTree %}
 
-<div class="review-file-tree--directories-root" {{ stimulus_controller('review-file-tree') }}>
+<div class="review-file-tree--directories-root"
+        {{ stimulus_controller('review-file-tree') }}
+        data-revisions="{{ fileTreeModel.revisionHashes|join(',') }}"
+        {% if fileTreeModel.selectedFile is not same as (null) -%}
+            data-selected-file="{{ fileTreeModel.selectedFile|review_file_path|e('url') }}"
+        {%- endif -%}
+>
     {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}
 </div>
