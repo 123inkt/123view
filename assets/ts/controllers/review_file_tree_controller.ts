@@ -30,10 +30,9 @@ export default class extends Controller<HTMLElement> {
     }
 
     public updateReviewFileTree(): void {
-        const url          = DataSet.string(this.element, 'url');
-        const revisions    = DataSet.string(this.element, 'revisions');
-        const selectedFile = DataSet.stringOrNull(this.element, 'selectedFile');
-        this.fileTreeService.getReviewFileTree(url, revisions, selectedFile)
+        const url      = DataSet.string(this.element, 'url');
+        const filePath = DataSet.stringOrNull(this.element, 'selectedFile');
+        this.fileTreeService.getReviewFileTree(url, filePath)
             .then(element => this.element.replaceWith(element))
             .catch(Function.empty);
     }

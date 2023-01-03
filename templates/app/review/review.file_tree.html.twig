@@ -76,9 +76,8 @@
         {{ stimulus_controller('review-file-tree') }}
         data-url="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewFileTreeController', {id: fileTreeModel.review.id}) }}"
         data-review-id="{{ fileTreeModel.review.id }}"
-        data-revisions="{{ fileTreeModel.revisionHashes|join(',') }}"
         {% if fileTreeModel.selectedFile is not same as (null) -%}
-            data-selected-file="{{ fileTreeModel.selectedFile|review_file_path|e('url') }}"
+            data-selected-file="{{ fileTreeModel.selectedFile|review_file_path }}"
         {%- endif -%}
 >
     {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}

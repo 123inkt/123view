@@ -58,19 +58,6 @@ class FileTreeViewModel
     }
 
     /**
-     * @return string[]
-     */
-    public function getRevisionHashes(): array
-    {
-        $hashes = [];
-        foreach ($this->review->getRevisions() as $revision) {
-            $hashes[] = $revision->getCommitHash();
-        }
-
-        return $hashes;
-    }
-
-    /**
      * @return array{unresolved: int, total: int}
      */
     public function getCommentsForFile(DiffFile $file): array
