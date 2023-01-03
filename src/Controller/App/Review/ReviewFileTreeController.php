@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\Review;
 
+use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
-class ReviewFileTreeController
+class ReviewFileTreeController extends AbstractController
 {
     public function __construct(private readonly FileTreeViewModelProvider $viewModelProvider, private readonly CodeReviewFileService $fileService)
     {
