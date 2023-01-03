@@ -132,7 +132,7 @@ class ReviewEventService
         }
     }
 
-    public function revisionRemovedFromReview(CodeReview $review, Revision $revision, string $reviewState): void
+    public function revisionRemovedFromReview(CodeReview $review, Revision $revision, ?string $reviewState): void
     {
         $events   = [];
         $events[] = new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), null, (string)$revision->getTitle());
