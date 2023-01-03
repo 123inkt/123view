@@ -91,7 +91,7 @@ class ReviewEventService
     public function revisionsAdded(CodeReview $review, array $revisions, ?int $byUserId): void
     {
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $byUserId));
+            $this->bus->dispatch(new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $byUserId, (string)$revision->getTitle()));
         }
     }
 
@@ -101,7 +101,7 @@ class ReviewEventService
     public function revisionsDetached(CodeReview $review, array $detachedRevisions, ?int $byUserId): void
     {
         foreach ($detachedRevisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), $byUserId));
+            $this->bus->dispatch(new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), $byUserId, (string)$revision->getTitle()));
         }
     }
 
@@ -124,7 +124,23 @@ class ReviewEventService
         if ($reviewersState !== CodeReviewerStateType::OPEN && $review->getReviewersState() === CodeReviewerStateType::OPEN) {
             $events[] = new ReviewResumed((int)$review->getId(), null);
         }
-        $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null);
+        $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null, (string)$revision->getTitle());
+
+        // dispatch $events
+        foreach ($events as $event) {
+            $this->bus->dispatch(new Envelope($event))->with(new DispatchAfterCurrentBusStamp());
+        }
+    }
+
+    public function revisionRemovedFromReview(CodeReview $review, Revision $revision, ?string $reviewState): void
+    {
+        $events   = [];
+        $events[] = new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), null, (string)$revision->getTitle());
+
+        // close review event
+        if ($reviewState !== $review->getState()) {
+            $events[] = new ReviewClosed((int)$review->getId(), null);
+        }
 
         // dispatch $events
         foreach ($events as $event) {

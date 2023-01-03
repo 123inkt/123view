@@ -21,11 +21,11 @@ class ReviewRevisionAddedTest extends AbstractMessageEventTestCase
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(
-            new ReviewRevisionAdded(5, 6, 7),
+            new ReviewRevisionAdded(5, 6, 7, 'title'),
             'review-revision-added',
             5,
-            ['reviewId' => 5, 'revisionId' => 6, 'userId' => 7]
+            ['reviewId' => 5, 'revisionId' => 6, 'userId' => 7, 'title' => 'title']
         );
-        static::assertUserAware(new ReviewRevisionAdded(5, 6, 7), 7);
+        static::assertUserAware(new ReviewRevisionAdded(5, 6, 7, 'title'), 7);
     }
 }
