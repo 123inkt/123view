@@ -22,7 +22,7 @@ class FileTreeViewModel
         public readonly DirectoryTreeNode $fileTree,
         public readonly Collection $comments,
         private readonly FileSeenStatusCollection $fileSeenCollection,
-        private readonly ?DiffFile $selectedFile
+        public readonly ?DiffFile $selectedFile
     ) {
     }
 

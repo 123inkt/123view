@@ -1,16 +1,40 @@
 import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
 import Assert from '../lib/Assert';
+import DataSet from '../lib/DataSet';
+import Function from '../lib/Function';
+import ReviewFileTreeService from '../service/ReviewFileTreeService';
+import ReviewNotificationService from '../service/ReviewNotificationService';
 
-export default class extends Controller {
-    public static targets = ['activeFile']
-    declare activeFileTarget: HTMLElement;
-    declare hasActiveFileTarget: boolean;
+export default class extends Controller<HTMLElement> {
+    public static targets                = ['activeFile'];
+    private readonly notificationService = new ReviewNotificationService();
+    private readonly fileTreeService     = new ReviewFileTreeService();
+    private declare activeFileTarget: HTMLElement;
+    private declare hasActiveFileTarget: boolean;
 
     public connect(): void {
         if (this.hasActiveFileTarget) {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
+        document.addEventListener('notification', this.notificationService.onEvent);
+        this.notificationService.subscribe(
+            ['comment-added', 'comment-removed', 'comment-resolved'],
+            this.updateReviewFileTree.bind(this),
+            DataSet.int(this.element, 'reviewId')
+        );
+    }
+
+    public disconnect(): void {
+        document.removeEventListener('notification', this.notificationService.onEvent);
+    }
+
+    public updateReviewFileTree(): void {
+        const url      = DataSet.string(this.element, 'url');
+        const filePath = DataSet.stringOrNull(this.element, 'selectedFile');
+        this.fileTreeService.getReviewFileTree(url, filePath)
+            .then(element => this.element.replaceWith(element))
+            .catch(Function.empty);
     }
 
     public toggleFileSeenStatus(event: Event): void {
