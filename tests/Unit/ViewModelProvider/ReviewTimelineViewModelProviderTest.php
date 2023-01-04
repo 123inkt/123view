@@ -73,7 +73,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $comment->setId(456);
         $review = new CodeReview();
         $review->setId(123);
-        $review->getComments()->add($comment);
+        $review->getComments()->set(456, $comment);
 
         $this->activityRepository->expects(self::once())
             ->method('findBy')
