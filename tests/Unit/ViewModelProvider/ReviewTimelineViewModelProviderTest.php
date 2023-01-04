@@ -5,7 +5,9 @@ namespace DR\Review\Tests\Unit\ViewModelProvider;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
 use DR\Review\Tests\AbstractTestCase;
@@ -57,5 +59,35 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $timeline = $viewModel->entries[0];
         static::assertSame([$activityA], $timeline->activities);
         static::assertSame('message', $timeline->message);
+    }
+
+    /**
+     * @covers ::getTimelineViewModel
+     */
+    public function testGetTimelineViewModelWithComment(): void
+    {
+        $activity = new CodeReviewActivity();
+        $activity->setEventName(CommentAdded::NAME);
+        $activity->setData(['commentId' => 456]);
+        $comment = new Comment();
+        $comment->setId(456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->getComments()->add($comment);
+
+        $this->activityRepository->expects(self::once())
+            ->method('findBy')
+            ->with(['review' => 123], ['createTimestamp' => 'ASC'])
+            ->willReturn([$activity]);
+        $this->activityFormatter->expects(self::once())
+            ->method('format')
+            ->with($activity, $this->user)
+            ->willReturn('message');
+
+        $viewModel = $this->provider->getTimelineViewModel($review);
+        static::assertCount(1, $viewModel->entries);
+
+        $timeline = $viewModel->entries[0];
+        static::assertSame($comment, $timeline->comment);
     }
 }
