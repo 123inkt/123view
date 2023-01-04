@@ -10,6 +10,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
@@ -80,6 +81,37 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
         $this->messageFactory->expects(self::once())->method('createResolved')->willReturn($event);
+        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
+
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /**
+     * @covers ::__invoke
+     * @covers ::getUser
+     */
+    public function testInvokeWithUnresolvedComment(): void
+    {
+        $request = $this->createMock(ChangeCommentStateRequest::class);
+        $request->expects(self::once())->method('getState')->willReturn(CommentStateType::OPEN);
+
+        $review = new CodeReview();
+        $review->setId(123);
+        $comment = new Comment();
+        $comment->setId(456);
+        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setReview($review);
+
+        $user = new User();
+        $user->setId(789);
+
+        $event = new CommentUnresolved(123, 456, 789, 'file');
+
+        $this->expectGetUser($user);
+        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->messageFactory->expects(self::once())->method('createUnresolved')->willReturn($event);
         $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
 
         $response = ($this->controller)($request, $comment);
