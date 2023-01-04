@@ -35,7 +35,7 @@ class ReviewTimelineViewModelProvider
             }
             $comment = null;
             if ($activity->getEventName() === CommentAdded::NAME) {
-                $comment = $comments->get($activity->getDataValue('commentId'));
+                $comment = $comments->get((int)$activity->getDataValue('commentId'));
             }
             $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment);
         }
