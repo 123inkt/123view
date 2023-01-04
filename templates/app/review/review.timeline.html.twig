@@ -18,5 +18,9 @@
             </span>
         </div>
 
+        {% if entry.comment is not same as (null) %}
+            {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
+        {% endif %}
+
     {%- endfor -%}
 </div>

@@ -42,8 +42,12 @@ class ChangeCommentStateController extends AbstractController
         $comment->setState($state);
         $this->commentRepository->save($comment, true);
 
-        if ($currentState !== $state && $state === CommentStateType::RESOLVED) {
-            $this->bus->dispatch($this->messageFactory->createResolved($comment, $this->getUser()));
+        if ($currentState !== $state) {
+            if ($state === CommentStateType::RESOLVED) {
+                $this->bus->dispatch($this->messageFactory->createResolved($comment, $this->getUser()));
+            } elseif ($state === CommentStateType::OPEN) {
+                $this->bus->dispatch($this->messageFactory->createUnresolved($comment, $this->getUser()));
+            }
         }
 
         return $this->json(['success' => true, 'commentId' => $comment->getId()]);

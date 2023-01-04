@@ -19,7 +19,7 @@ export default class extends Controller<HTMLElement> {
         }
         document.addEventListener('notification', this.notificationService.onEvent);
         this.notificationService.subscribe(
-            ['comment-added', 'comment-removed', 'comment-resolved'],
+            ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
             this.updateReviewFileTree.bind(this),
             DataSet.int(this.element, 'reviewId')
         );

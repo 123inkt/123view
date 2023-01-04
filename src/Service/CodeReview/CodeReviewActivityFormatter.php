@@ -9,6 +9,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
 use DR\Review\Message\Review\ReviewCreated;
@@ -45,6 +46,7 @@ class CodeReviewActivityFormatter
         CommentAdded::NAME                       => 'timeline.comment.added',
         CommentRemoved::NAME                     => 'timeline.comment.removed',
         CommentResolved::NAME                    => 'timeline.comment.resolved',
+        CommentUnresolved::NAME                  => 'timeline.comment.unresolved',
     ];
 
     public function __construct(
@@ -96,7 +98,7 @@ class CodeReviewActivityFormatter
         }
 
         // add filepath the comment was added to
-        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME], true)) {
+        if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME, CommentUnresolved::NAME], true)) {
             $comment        = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
             $params['file'] = basename($comment?->getFilePath() ?? (string)$activity->getDataValue('file'));
         }

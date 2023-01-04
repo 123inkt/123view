@@ -82,6 +82,25 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::createUnresolved
+     */
+    public function testCreateUnresolved(): void
+    {
+        $user = new User();
+        $user->setId(123);
+        $comment = new Comment();
+        $comment->setId(456);
+        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setMessage('message');
+
+        $event = $this->factory->createUnresolved($comment, $user);
+        static::assertSame(456, $event->getCommentId());
+        static::assertSame(123, $event->getUserId());
+        static::assertSame('filepath', $event->file);
+        static::assertSame('comment-unresolved', $event->getName());
+    }
+
+    /**
      * @covers ::createRemoved
      */
     public function testCreateRemoved(): void

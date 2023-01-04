@@ -8,6 +8,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Comment\CommentUpdated;
 
 class CommentEventMessageFactory
@@ -38,6 +39,16 @@ class CommentEventMessageFactory
     public function createResolved(Comment $comment, User $user): CommentResolved
     {
         return new CommentResolved(
+            (int)$comment->getReview()?->getId(),
+            (int)$comment->getId(),
+            (int)$user->getId(),
+            (string)$comment->getLineReference()?->filePath,
+        );
+    }
+
+    public function createUnresolved(Comment $comment, User $user): CommentUnresolved
+    {
+        return new CommentUnresolved(
             (int)$comment->getReview()?->getId(),
             (int)$comment->getId(),
             (int)$user->getId(),

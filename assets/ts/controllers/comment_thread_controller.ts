@@ -13,7 +13,7 @@ export default class extends Controller<HTMLElement> {
 
     public commentUpdated(event: CustomEvent): void {
         Events.stop(event);
-        if (event.detail !== this.idValue) {
+        if (parseInt(event.detail) !== this.idValue) {
             return;
         }
         this.updateCommentThread();
