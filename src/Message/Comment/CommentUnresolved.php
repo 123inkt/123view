@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Message\Comment;
 
 use DR\Review\Message\AsyncMessageInterface;
-use DR\Review\Message\MailNotificationInterface;
 
-class CommentUnresolved implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
+class CommentUnresolved implements AsyncMessageInterface, CommentEventInterface
 {
     public const NAME = 'comment-unresolved';
 
