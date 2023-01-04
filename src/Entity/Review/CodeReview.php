@@ -57,7 +57,7 @@ class CodeReview
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, Comment> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false, indexBy: 'id')]
     private Collection $comments;
 
     public function __construct()
