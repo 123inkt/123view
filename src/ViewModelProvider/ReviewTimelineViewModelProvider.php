@@ -5,6 +5,7 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
@@ -24,12 +25,19 @@ class ReviewTimelineViewModelProvider
         $activities      = $this->activityRepository->findBy(['review' => $review->getId()], ['createTimestamp' => 'ASC']);
         $timelineEntries = [];
 
+        $comments = $review->getComments();
+
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
             $message = $this->activityFormatter->format($activity, $this->user);
-            if ($message !== null) {
-                $timelineEntries[] = new TimelineEntryViewModel([$activity], $message);
+            if ($message === null) {
+                continue;
             }
+            $comment = null;
+            if ($activity->getEventName() === CommentAdded::NAME) {
+                $comment = $comments->findFirst(static fn(int $key) => $comments->get($key)?->getId() === $activity->getDataValue('commentId'));
+            }
+            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment);
         }
 
         return new TimelineViewModel($timelineEntries);
