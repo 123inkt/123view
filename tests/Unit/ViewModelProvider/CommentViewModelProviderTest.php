@@ -158,10 +158,15 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $file     = new DiffFile();
         $line     = new DiffLine(0, []);
 
-        $file->filePathAfter = '/path/to/file';
+        $file->filePathBefore = '/path/to/fileBefore';
+        $file->filePathAfter  = '/path/to/fileAfter';
 
-        $this->commentRepository->expects(self::once())->method('findByReview')->with($review, '/path/to/file')->willReturn($comments);
-        $this->diffFinder->expects(self::exactly(2))->method('findLineInFile')
+        $this->commentRepository->expects(self::once())
+            ->method('findByReview')
+            ->with($review, ['/path/to/fileAfter', '/path/to/fileBefore'])
+            ->willReturn($comments);
+        $this->diffFinder->expects(self::exactly(2))
+            ->method('findLineInFile')
             ->withConsecutive([$file, $commentA->getLineReference()], [$file, $commentB->getLineReference()])
             ->willReturn($line, null);
 

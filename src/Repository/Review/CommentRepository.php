@@ -23,15 +23,17 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string[] $filePaths
+     *
      * @return Comment[]
      */
-    public function findByReview(CodeReview $review, string $filePath): array
+    public function findByReview(CodeReview $review, array $filePaths): array
     {
         $qb = $this->createQueryBuilder('c')
             ->where('c.review = :reviewId')
-            ->andWhere('c.filePath = :filePath')
+            ->andWhere('c.filePath IN (:filePaths)')
             ->setParameter('reviewId', $review->getId())
-            ->setParameter('filePath', $filePath)
+            ->setParameter('filePaths', $filePaths)
             ->orderBy('c.id', 'ASC');
 
         /** @var Comment[] $result */

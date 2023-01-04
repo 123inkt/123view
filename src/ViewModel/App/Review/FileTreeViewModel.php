@@ -65,7 +65,7 @@ class FileTreeViewModel
         $result = ['unresolved' => 0, 'total' => 0];
 
         foreach ($this->comments as $comment) {
-            if ($comment->getFilePath() !== ($file->filePathBefore ?? $file->filePathAfter)) {
+            if ($comment->getFilePath() !== $file->filePathBefore && $comment->getFilePath() !== $file->filePathAfter) {
                 continue;
             }
 
