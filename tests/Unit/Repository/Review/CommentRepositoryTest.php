@@ -25,11 +25,11 @@ class CommentRepositoryTest extends AbstractRepositoryTestCase
         $comment           = Assert::notNull($commentRepository->findOneBy(['message' => 'message']));
         $review            = Assert::notNull($comment->getReview());
 
-        static::assertCount(1, $commentRepository->findByReview($review, 'filepath'));
-        static::assertCount(0, $commentRepository->findByReview($review, 'foobar'));
+        static::assertCount(1, $commentRepository->findByReview($review, ['filepath']));
+        static::assertCount(0, $commentRepository->findByReview($review, ['foobar']));
 
         $review->setId(-123);
-        static::assertCount(0, $commentRepository->findByReview($review, 'filepath'));
+        static::assertCount(0, $commentRepository->findByReview($review, ['filepath']));
     }
 
     /**
