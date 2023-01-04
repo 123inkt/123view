@@ -86,7 +86,7 @@ class CommentViewModelProvider
 
     public function getCommentsViewModel(CodeReview $review, DiffFile $file): CommentsViewModel
     {
-        $comments         = $this->commentRepository->findByReview($review, (string)($file->filePathBefore ?? $file->filePathAfter));
+        $comments         = $this->commentRepository->findByReview($review, array_filter([$file->filePathAfter, $file->filePathBefore]));
         $detachedComments = [];
         $groupedComments  = [];
 
