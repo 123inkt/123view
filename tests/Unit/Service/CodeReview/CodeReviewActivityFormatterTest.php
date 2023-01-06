@@ -213,6 +213,29 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
      * @covers ::addCustomParams
      * @covers ::getTranslationId
      */
+    public function testFormatDeletedCommentEvent(): void
+    {
+        $user = new User();
+        $user->setId(456);
+
+        $activity = new CodeReviewActivity();
+        $activity->setEventName(CommentAdded::NAME);
+        $activity->setData(['commentId' => 789, 'file' => 'filepath']);
+
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
+            ->willReturnArgument(0);
+        $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn(null);
+
+        $this->formatter->format($activity, $user);
+    }
+
+    /**
+     * @covers ::format
+     * @covers ::addCustomParams
+     * @covers ::getTranslationId
+     */
     public function testFormatUnknownEvent(): void
     {
         $user = new User();
