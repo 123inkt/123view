@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\CodeReview;
+namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Revision;
@@ -21,6 +21,7 @@ use DR\Review\Message\Reviewer\ReviewerRemoved;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\Model\Review\ActivityVariable as Variable;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
@@ -54,6 +55,7 @@ class CodeReviewActivityFormatter
         private readonly UserRepository $userRepository,
         private readonly RevisionRepository $revisionRepository,
         private readonly CommentRepository $commentRepository,
+        private readonly CodeReviewActivityVariableFactory $variableFactory,
         private string $applicationName
     ) {
     }
@@ -66,41 +68,43 @@ class CodeReviewActivityFormatter
         }
         $username = $user === $activity->getUser() ? $this->translator->trans('you') : $activity->getUser()?->getName() ?? $this->applicationName;
 
-        $params = $this->addCustomParams($activity, ['username' => $username]);
-
-        // html escape as the translation strings are html
-        $params = array_map(static fn(string $val): string => htmlspecialchars($val, ENT_QUOTES), $params);
+        // create variables and transform to params
+        $params = $this->variableFactory->createParams($this->addCustomParams($activity, [new Variable('username', $username)]));
 
         return $this->translator->trans($translationId, $params);
     }
 
     /**
-     * @param array<string, string> $params
+     * @param Variable[] $params
      *
-     * @return array<string, string>
+     * @return Variable[]
      */
     private function addCustomParams(CodeReviewActivity $activity, array $params): array
     {
         // when reviewer was added/removed by someone else, set reviewer name
         if (in_array($activity->getEventName(), [ReviewerRemoved::NAME, ReviewerAdded::NAME], true)
             && $activity->getDataValue('userId') !== $activity->getDataValue('byUserId')) {
-            $params['reviewerName'] = $this->userRepository->find((int)$activity->getDataValue('userId'))?->getName() ?? '';
+            $params[] = new Variable('reviewerName', $this->userRepository->find((int)$activity->getDataValue('userId'))?->getName() ?? '');
         }
 
         // when revision was added or removed, add revision hash + message
         if (in_array($activity->getEventName(), [ReviewRevisionAdded::NAME, ReviewRevisionRemoved::NAME], true)) {
             $revision = $this->revisionRepository->find((int)$activity->getDataValue('revisionId'));
             if ($revision instanceof Revision) {
-                $params['revision'] = sprintf('%s - %s', substr((string)$revision->getCommitHash(), 0, 8), $revision->getTitle());
+                $params[] = new Variable('revision', sprintf('%s - %s', substr((string)$revision->getCommitHash(), 0, 8), $revision->getTitle()));
             } else {
-                $params['revision'] = (string)$activity->getDataValue('title');
+                $params[] = new Variable('revision', (string)$activity->getDataValue('title'));
             }
         }
 
         // add filepath the comment was added to
         if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME, CommentUnresolved::NAME], true)) {
-            $comment        = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
-            $params['file'] = basename($comment?->getFilePath() ?? (string)$activity->getDataValue('file'));
+            $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
+            if ($comment === null) {
+                $params[] = new Variable('file', (string)$activity->getDataValue('file'));
+            } else {
+                $params[] = $this->variableFactory->createFromComment($comment);
+            }
         }
 
         return $params;

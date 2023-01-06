@@ -7,7 +7,7 @@ use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Comment\GetCommentThreadRequest;
-use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 

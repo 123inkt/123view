@@ -15,13 +15,13 @@ use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
-use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActivityFormatter
+ * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter
  * @covers ::__construct
  */
 class CodeReviewActivityFormatterTest extends AbstractTestCase

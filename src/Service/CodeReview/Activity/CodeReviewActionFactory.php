@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\CodeReview;
+namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
