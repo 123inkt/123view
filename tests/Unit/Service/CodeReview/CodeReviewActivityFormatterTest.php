@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\CodeReview;
 
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\Revision;
@@ -16,8 +17,10 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityVariableFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -39,11 +42,14 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->userRepository     = $this->createMock(UserRepository::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
         $this->commentRepository  = $this->createMock(CommentRepository::class);
-        $this->formatter          = new CodeReviewActivityFormatter(
+        $urlGenerator             = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->method('generate')->willReturn('url');
+        $this->formatter = new CodeReviewActivityFormatter(
             $this->translator,
             $this->userRepository,
             $this->revisionRepository,
             $this->commentRepository,
+            new CodeReviewActivityVariableFactory($urlGenerator),
             'app'
         );
     }
@@ -182,7 +188,11 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $user = new User();
         $user->setId(456);
 
+        $review = new CodeReview();
+        $review->setId(123);
         $comment = new Comment();
+        $comment->setId(832);
+        $comment->setReview($review);
         $comment->setFilePath('filepath');
 
         $activity = new CodeReviewActivity();
@@ -191,7 +201,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
 
         $this->translator->expects(self::once())
             ->method('trans')
-            ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
+            ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#focus:comment:832">filepath</a>'])
             ->willReturnArgument(0);
         $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn($comment);
 

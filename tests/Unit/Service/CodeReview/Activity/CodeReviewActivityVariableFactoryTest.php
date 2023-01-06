@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\CodeReview\Activity;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Model\Review\ActivityVariable;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityVariableFactory;
 use DR\Review\Tests\AbstractTestCase;
@@ -40,7 +39,7 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setId(123);
         $comment->setReview($review);
-        $comment->setLineReference(new LineReference('filepath', 1, 2, 3));
+        $comment->setFilePath('filepath');
 
         $this->urlGenerator->expects(self::once())
             ->method('generate')
