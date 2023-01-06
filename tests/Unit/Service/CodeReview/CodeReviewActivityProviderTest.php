@@ -9,12 +9,12 @@ use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\User\UserRepository;
-use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActivityProvider
+ * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider
  * @covers ::__construct
  */
 class CodeReviewActivityProviderTest extends AbstractTestCase

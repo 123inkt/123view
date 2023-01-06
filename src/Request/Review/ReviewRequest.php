@@ -7,7 +7,7 @@ use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFactory;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
-use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\HttpFoundation\RequestStack;

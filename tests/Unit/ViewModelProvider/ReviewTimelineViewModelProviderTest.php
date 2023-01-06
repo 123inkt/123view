@@ -9,7 +9,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
-use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;

@@ -7,7 +7,7 @@ use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFactory;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
-use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

@@ -5,8 +5,8 @@ namespace DR\Review\MessageHandler;
 
 use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
-use DR\Review\Service\CodeReview\CodeReviewActivityProvider;
-use DR\Review\Service\CodeReview\CodeReviewActivityPublisher;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

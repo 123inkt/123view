@@ -7,7 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
-use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 

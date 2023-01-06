@@ -11,13 +11,13 @@ use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Service\CodeReview\CodeReviewActionFactory;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActionFactory
+ * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory
  * @covers ::__construct
  */
 class CodeReviewActionFactoryTest extends AbstractTestCase

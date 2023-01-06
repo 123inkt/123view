@@ -6,8 +6,8 @@ namespace DR\Review\Tests\Unit\Service\CodeReview;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\User\User;
-use DR\Review\Service\CodeReview\CodeReviewActivityFormatter;
-use DR\Review\Service\CodeReview\CodeReviewActivityPublisher;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use DR\Review\Tests\AbstractTestCase;
 use JsonException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,7 +15,7 @@ use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 
 /**
- * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewActivityPublisher
+ * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher
  * @covers ::__construct
  */
 class CodeReviewActivityPublisherTest extends AbstractTestCase
