@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Controller\App\Review\ReviewController;
-use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Model\Review\ActivityVariable;
-use DR\Review\Model\Review\ActivityVariable as Variable;
 use DR\Review\Utility\Assert;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -15,11 +13,6 @@ class CodeReviewActivityVariableFactory
 {
     public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
-    }
-
-    public function createFormActivity(CodeReviewActivity $activity, string $key, string $valueKey): ActivityVariable
-    {
-        return new Variable($key, (string)$activity->getDataValue($valueKey));
     }
 
     public function createFromComment(Comment $comment): ActivityVariable
