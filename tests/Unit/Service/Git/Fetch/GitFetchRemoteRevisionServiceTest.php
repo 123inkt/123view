@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Fetch;
 use DR\Review\Entity\Git\Fetch\BranchCreation;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\Log\LockableGitLogService;

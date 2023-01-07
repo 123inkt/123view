@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModel\App\Revision;
 
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use Symfony\Component\Form\FormView;

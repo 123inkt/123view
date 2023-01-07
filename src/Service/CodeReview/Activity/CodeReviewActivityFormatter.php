@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentRemoved;

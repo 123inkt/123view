@@ -7,7 +7,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\DirectoryTreeNode;

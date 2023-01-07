@@ -5,7 +5,7 @@ namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use Throwable;
 

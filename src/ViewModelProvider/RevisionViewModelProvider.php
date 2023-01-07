@@ -5,7 +5,7 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\DetachRevisionsFormType;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;

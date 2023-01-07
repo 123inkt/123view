@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Repository\Review;
 
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Review\Strategy;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Checkout\GitCheckoutService;

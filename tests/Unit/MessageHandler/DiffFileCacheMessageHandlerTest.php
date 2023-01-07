@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\MessageHandler;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\MessageHandler\DiffFileCacheMessageHandler;
 use DR\Review\Repository\Review\CodeReviewRepository;

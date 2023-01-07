@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\CodeReview;
 use Doctrine\ORM\NonUniqueResultException;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\CodeReviewFactory;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;

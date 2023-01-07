@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Git\DiffTree;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeService;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
 use DR\Review\Service\Git\GitRepositoryLockManager;

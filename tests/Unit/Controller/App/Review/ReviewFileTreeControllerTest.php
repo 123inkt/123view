@@ -7,7 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewFileTreeController;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Tests\AbstractControllerTestCase;

@@ -7,7 +7,7 @@ use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;

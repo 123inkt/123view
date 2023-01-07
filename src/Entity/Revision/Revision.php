@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Entity\Review;
+namespace DR\Review\Entity\Revision;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\RevisionRepository;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]

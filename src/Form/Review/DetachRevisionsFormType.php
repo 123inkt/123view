@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Form\Review;
 
 use DR\Review\Controller\App\Revision\DetachRevisionController;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

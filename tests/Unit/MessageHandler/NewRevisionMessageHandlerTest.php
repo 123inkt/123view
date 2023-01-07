@@ -8,7 +8,7 @@ use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\MessageHandler\NewRevisionMessageHandler;
 use DR\Review\Repository\Review\RevisionRepository;

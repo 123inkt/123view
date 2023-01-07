@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\MessageHandler;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\MessageHandler\FetchRepositoryRevisionsMessageHandler;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Form\Review;
 
 use DR\Review\Controller\App\Revision\DetachRevisionController;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\DetachRevisionsFormType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

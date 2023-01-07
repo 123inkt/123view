@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\CodeReview;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Review\ReviewAccepted;

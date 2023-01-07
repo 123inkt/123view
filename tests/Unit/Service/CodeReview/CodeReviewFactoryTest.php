@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\CodeReview;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\CodeReview\CodeReviewFactory;
 use DR\Review\Service\Revision\RevisionTitleNormalizer;
 use DR\Review\Tests\AbstractTestCase;

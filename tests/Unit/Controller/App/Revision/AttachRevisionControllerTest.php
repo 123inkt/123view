@@ -8,7 +8,7 @@ use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Controller\App\Revision\AttachRevisionController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\RevisionRepository;
 use DR\Review\Service\Git\Review\CodeReviewService;

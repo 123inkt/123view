@@ -8,7 +8,7 @@ use DR\Review\Controller\App\Review\UpdateFileSeenStatusController;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Service\CodeReview\FileSeenStatusService;

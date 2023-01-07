@@ -7,7 +7,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use Throwable;
 
 /**

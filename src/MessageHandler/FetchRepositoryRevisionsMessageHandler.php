@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;

@@ -5,7 +5,7 @@ namespace DR\Review\Service\CodeReview;
 
 use Doctrine\ORM\NonUniqueResultException;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Revision\RevisionTitleNormalizer;

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 

@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\MessageHandler;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\MessageHandler\CommitRemovedMessageHandler;
 use DR\Review\Repository\Config\RepositoryRepository;

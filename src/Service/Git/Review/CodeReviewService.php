@@ -6,7 +6,7 @@ namespace DR\Review\Service\Git\Review;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\RevisionRepository;

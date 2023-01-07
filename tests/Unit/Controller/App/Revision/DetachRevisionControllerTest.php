@@ -7,7 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Controller\App\Revision\DetachRevisionController;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\DetachRevisionsFormType;
 use DR\Review\Repository\Review\CodeReviewRepository;

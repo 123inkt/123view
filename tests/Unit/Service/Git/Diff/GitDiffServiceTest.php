@@ -7,7 +7,7 @@ use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Revision;
 
 use DR\Review\Entity\Git\Commit;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 
 class RevisionFactory
 {

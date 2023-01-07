@@ -10,7 +10,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\LineReference;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
