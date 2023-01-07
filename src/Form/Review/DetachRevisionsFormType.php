@@ -42,7 +42,7 @@ class DetachRevisionsFormType extends AbstractType
             $builder->add(
                 'rev' . $revision->getId(),
                 CheckboxType::class,
-                ['data' => false, 'label' => false, 'translation_domain' => false, 'required' => false]
+                ['data' => false, 'label' => false, 'translation_domain' => false, 'required' => false, 'attr' => ['data-role' => 'detach']]
             );
         }
 
