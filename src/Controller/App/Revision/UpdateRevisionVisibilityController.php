@@ -25,9 +25,9 @@ class UpdateRevisionVisibilityController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): Response
     {
-        $revisions = $review->getRevisions()->toArray();
+        $visibilities = $this->visibilityProvider->getRevisionVisibilities($review, $review->getRevisions(), $this->getUser());
 
-        $form = $this->createForm(RevisionVisibilityFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions]);
+        $form = $this->createForm(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             throw new BadRequestHttpException('Submitted invalid form');

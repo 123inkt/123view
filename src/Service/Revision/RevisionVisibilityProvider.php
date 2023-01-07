@@ -20,7 +20,7 @@ class RevisionVisibilityProvider
      *
      * @return RevisionVisibility[]
      */
-    public function getRevisionVisibilities(CodeReview $review, array $revisions, User $user): array
+    public function getRevisionVisibilities(CodeReview $review, iterable $revisions, User $user): array
     {
         $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => $user->getId()]);
 

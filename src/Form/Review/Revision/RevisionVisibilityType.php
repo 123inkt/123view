@@ -31,7 +31,6 @@ class RevisionVisibilityType extends AbstractType
             'visible',
             CheckboxType::class,
             [
-                'data'               => false,
                 'label'              => false,
                 'translation_domain' => false,
                 'required'           => false,

@@ -29,7 +29,6 @@
         </div>
     </h6>
 
-
     {%- for revision in revisionViewModel.revisions -%}
 
         <div class="review-revision--grid">
@@ -52,8 +51,8 @@
                             {{ stimulus_controller('component--icon-checkbox') }}
                             {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
                         {{- form_widget(
-                            revisionVisibilityForm['rev' ~ revision.id],
-                            {attr: {class: 'btn-check icon-checkbox d-none', 'data-component--icon-checkbox-target': 'checkbox'}}
+                            revisionVisibilityForm.visibilities[loop.index0].visible,
+                            {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
                         )-}}
                         <i class="bi bi-eye-fill icon-checked"></i>
                         {#- -#}
