@@ -1,17 +1,17 @@
 .c-icon-checkbox {
-    .icon-checkbox:checked + .icon-checked {
+    .icon-checkbox:checked + label + .icon-checked {
         display: inline;
     }
 
-    .icon-checkbox:checked + .icon-checked + .icon-unchecked {
+    .icon-checkbox:checked + label + .icon-checked + .icon-unchecked {
         display: none;
     }
 
-    .icon-checkbox:not(:checked) + .icon-checked {
+    .icon-checkbox:not(:checked) + label + .icon-checked {
         display: none;
     }
 
-    .icon-checkbox:not(:checked) + .icon-checked + .icon-unchecked {
+    .icon-checkbox:not(:checked) + label + .icon-checked + .icon-unchecked {
         display: inline;
     }
 }

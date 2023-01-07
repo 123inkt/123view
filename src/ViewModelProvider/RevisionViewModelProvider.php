@@ -7,6 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Form\Review\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
@@ -38,6 +39,9 @@ class RevisionViewModelProvider
             $revisions,
             $this->formFactory
                 ->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
+                ->createView(),
+            $this->formFactory
+                ->create(RevisionVisibilityFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
                 ->createView()
         );
     }

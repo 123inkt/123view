@@ -7,12 +7,11 @@ use DR\Review\Controller\App\Revision\DetachRevisionController;
 use DR\Review\Entity\Revision\Revision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class DetachRevisionsFormType extends AbstractType
+class RevisionVisibilityFormType extends AbstractType
 {
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -34,7 +33,7 @@ class DetachRevisionsFormType extends AbstractType
         $revisions = $options['revisions'];
         /** @var int $reviewId */
         $reviewId = $options['reviewId'];
-        $formId   = 'detach-revision-form';
+        $formId   = 'revision-visibility-form';
 
         $builder->setAttribute('id', $formId);
         $builder->setAction($this->urlGenerator->generate(DetachRevisionController::class, ['id' => $reviewId]));
@@ -49,12 +48,10 @@ class DetachRevisionsFormType extends AbstractType
                     'label'              => false,
                     'translation_domain' => false,
                     'required'           => false,
-                    'attr'               => ['data-role' => 'detach', 'form' => $formId]
+                    'attr'               => ['data-component--icon-checkbox-target' => 'checkbox', 'form' => $formId]
                 ]
             );
         }
-
-        $builder->add('detach', SubmitType::class, ['label' => 'detach.revisions']);
     }
 
     public function getBlockPrefix(): string
