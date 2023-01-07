@@ -48,7 +48,7 @@ class RevisionVisibilityFormType extends AbstractType
                     'label'              => false,
                     'translation_domain' => false,
                     'required'           => false,
-                    'attr'               => ['data-component--icon-checkbox-target' => 'checkbox', 'form' => $formId]
+                    'attr'               => ['data-component--icon-checkbox-target' => 'checkbox', 'form' => $formId, 'data-role' => 'visibility']
                 ]
             );
         }
