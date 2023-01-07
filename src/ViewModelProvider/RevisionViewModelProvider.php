@@ -6,7 +6,6 @@ namespace DR\Review\ViewModelProvider;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionRepository;
@@ -21,8 +20,7 @@ class RevisionViewModelProvider
     public function __construct(
         private readonly RevisionRepository $revisionRepository,
         private readonly RevisionVisibilityProvider $visibilityProvider,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly User $user,
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 
@@ -41,7 +39,7 @@ class RevisionViewModelProvider
      */
     public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
     {
-        $visibilities = $this->visibilityProvider->getRevisionVisibilities($review, $revisions, $this->user);
+        $visibilities = $this->visibilityProvider->getRevisionVisibilities($review, $revisions);
 
         return new ReviewRevisionViewModel(
             $revisions,
