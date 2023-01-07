@@ -30,6 +30,9 @@ class UpdateRevisionVisibilityController extends AbstractController
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
         $visibilities = $this->visibilityProvider->getRevisionVisibilities($review, $review->getRevisions(), $this->getUser());
+        foreach ($visibilities as $visibility) {
+            $visibility->setVisible(false);
+        }
 
         $form = $this->createForm(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()]);
         $form->handleRequest($request);
