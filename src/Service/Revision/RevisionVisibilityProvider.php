@@ -62,7 +62,7 @@ class RevisionVisibilityProvider
 
             $result[] = (new RevisionVisibility())
                 ->setReview($review)
-                ->setUser($user)
+                ->setUser($this->user)
                 ->setRevision($revision)
                 ->setVisible(true);
         }
