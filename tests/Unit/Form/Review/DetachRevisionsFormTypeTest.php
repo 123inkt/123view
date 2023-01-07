@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Form\Review;
 
 use DR\Review\Controller\App\Revision\DetachRevisionController;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\Review\Form\Review\DetachRevisionsFormType
+ * @coversDefaultClass \DR\Review\Form\Review\Revision\DetachRevisionsFormType
  * @covers ::__construct
  */
 class DetachRevisionsFormTypeTest extends AbstractTestCase

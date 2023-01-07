@@ -6,7 +6,7 @@ namespace DR\Review\Controller\App\Revision;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Security\Role\Roles;

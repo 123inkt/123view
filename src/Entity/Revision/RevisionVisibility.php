@@ -66,12 +66,12 @@ class RevisionVisibility
         return $this;
     }
 
-    public function getVisible(): ?bool
+    public function isVisible(): ?bool
     {
         return $this->visible;
     }
 
-    public function isVisible(?bool $visible): self
+    public function setVisible(?bool $visible): self
     {
         $this->visible = $visible;
 

@@ -6,9 +6,11 @@ namespace DR\Review\ViewModelProvider;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Form\Review\DetachRevisionsFormType;
-use DR\Review\Form\Review\RevisionVisibilityFormType;
+use DR\Review\Entity\User\User;
+use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
+use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\Revision\RevisionVisibilityProvider;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
@@ -16,8 +18,12 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class RevisionViewModelProvider
 {
-    public function __construct(private readonly RevisionRepository $revisionRepository, private readonly FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        private readonly RevisionRepository $revisionRepository,
+        private readonly RevisionVisibilityProvider $visibilityProvider,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly User $user,
+    ) {
     }
 
     public function getRevisionsViewModel(Repository $repository, int $page, string $searchQuery, ?bool $attached = null): RevisionsViewModel
@@ -35,13 +41,15 @@ class RevisionViewModelProvider
      */
     public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
     {
+        $visibilities = $this->visibilityProvider->getRevisionVisibilities($review, $revisions, $this->user);
+
         return new ReviewRevisionViewModel(
             $revisions,
             $this->formFactory
                 ->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
                 ->createView(),
             $this->formFactory
-                ->create(RevisionVisibilityFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
+                ->create(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()])
                 ->createView()
         );
     }

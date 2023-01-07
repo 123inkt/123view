@@ -7,7 +7,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;

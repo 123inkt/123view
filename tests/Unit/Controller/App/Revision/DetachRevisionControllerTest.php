@@ -9,7 +9,7 @@ use DR\Review\Controller\App\Revision\DetachRevisionController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
-use DR\Review\Form\Review\DetachRevisionsFormType;
+use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
