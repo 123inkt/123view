@@ -23,20 +23,8 @@
                     {{- revision.commitHash|slice(0, 7) }}
                 </small>
                 <div class="text-center pt-1">
-                    <a href="#" class="p-1 c-icon-checkbox"
-                            {{ stimulus_controller('component--icon-checkbox') }}
-                            {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
-                        <input type="checkbox"
-                               {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
-                               class="d-none icon-checkbox"
-                               name="visibility[{{ revision.id }}]"
-                               value="1"
-                               checked>
-                        <i class="bi bi-eye-fill icon-checked"></i>
-                        <i class="bi bi-eye-slash icon-unchecked"></i>
-                    </a>
+                    {% include 'app/component/icon.checkbox.html.twig' %}
                 </div>
-
             </div>
         </div>
     {% else %}
