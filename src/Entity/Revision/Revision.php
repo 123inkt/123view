@@ -6,7 +6,7 @@ namespace DR\Review\Entity\Revision;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]
 #[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]

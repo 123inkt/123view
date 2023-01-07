@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Repository\Review;
+namespace DR\Review\Tests\Unit\Repository\Revision;
 
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\RevisionFixtures;
@@ -14,7 +14,7 @@ use Exception;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\Review\Repository\Review\RevisionRepository
+ * @coversDefaultClass \DR\Review\Repository\Revision\RevisionRepository
  * @covers ::__construct
  */
 class RevisionRepositoryTest extends AbstractRepositoryTestCase

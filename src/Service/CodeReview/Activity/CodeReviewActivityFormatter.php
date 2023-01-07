@@ -23,7 +23,7 @@ use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Model\Review\ActivityVariable as Variable;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

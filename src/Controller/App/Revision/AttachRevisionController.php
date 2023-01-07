@@ -6,7 +6,7 @@ namespace DR\Review\Controller\App\Revision;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Git\Review\CodeReviewService;
 use DR\Review\Service\Webhook\ReviewEventService;

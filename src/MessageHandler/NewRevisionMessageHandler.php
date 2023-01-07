@@ -5,7 +5,7 @@ namespace DR\Review\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Message\Revision\NewRevisionMessage;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;

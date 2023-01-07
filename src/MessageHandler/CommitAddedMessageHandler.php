@@ -6,7 +6,7 @@ namespace DR\Review\MessageHandler;
 use DR\Review\Message\Revision\CommitAddedMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Utility\Assert;
