@@ -18,16 +18,33 @@
                     {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
                 </div>
             </div>
-            <small class="text-muted review-revision--commit-hash" title="{{ revision.commitHash }}">
-                {{- revision.commitHash|slice(0, 7) }}
-            </small>
+            <div>
+                <small class="text-muted d-block review-revision--commit-hash" title="{{ revision.commitHash }}">
+                    {{- revision.commitHash|slice(0, 7) }}
+                </small>
+                <div class="text-center pt-1">
+                    <a href="#" class="p-1 c-icon-checkbox"
+                            {{ stimulus_controller('component--icon-checkbox') }}
+                            {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
+                        <input type="checkbox"
+                               {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
+                               class="d-none icon-checkbox"
+                               name="visibility[{{ revision.id }}]"
+                               value="1"
+                               checked>
+                        <i class="bi bi-eye-fill icon-checked"></i>
+                        <i class="bi bi-eye-slash icon-unchecked"></i>
+                    </a>
+                </div>
+
+            </div>
         </div>
     {% else %}
         <em>{{ 'review.no.revisions'|trans }}</em>
 
     {%- endfor -%}
 
-    <div class="pt-3 ">
+    <div class="pt-1 pb-2 clearfix sticky-bottom bg-body">
         <div class="float-start">
             <a href="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionSelectionController', {id: review.id}) }}"
                class="btn btn-outline-success" {{ stimulus_controller('button') }}>{{ 'add.revisions'|trans }}</a>
@@ -35,6 +52,13 @@
 
         <div class="float-start ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
             {{ form_widget(detachRevisionForm.detach, {attr: {class: 'btn-outline-danger btn', 'data-controller': 'button'}}) }}
+        </div>
+
+        <div class="float-end ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
+            <button class="btn btn-outline-primary">
+                <i class="bi bi-eye-fill"></i>
+                <i class="bi bi-eye-slash"></i>
+            </button>
         </div>
     </div>
 

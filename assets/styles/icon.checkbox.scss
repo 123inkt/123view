@@ -1,0 +1,17 @@
+.c-icon-checkbox {
+    .icon-checkbox:checked + .icon-checked {
+        display: inline;
+    }
+
+    .icon-checkbox:checked + .icon-checked + .icon-unchecked {
+        display: none;
+    }
+
+    .icon-checkbox:not(:checked) + .icon-checked {
+        display: none;
+    }
+
+    .icon-checkbox:not(:checked) + .icon-checked + .icon-unchecked {
+        display: inline;
+    }
+}
