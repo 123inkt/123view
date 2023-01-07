@@ -9,45 +9,33 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 
 #[ORM\Entity(repositoryClass: RevisionVisibilityRepository::class)]
-#[ORM\UniqueConstraint(name: 'review_revision_user', columns: ['review_id', 'revision_id', 'user_id'])]
 #[ORM\Index(columns: ['review_id', 'user_id'], name: 'review_user_idx')]
 class RevisionVisibility
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\ManyToOne(targetEntity: Revision::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Revision $revision = null;
 
+    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?CodeReview $review = null;
 
+    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column]
-    private ?bool $visible = true;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
+    #[ORM\Column(nullable: false)]
+    private bool $visible = true;
 
     public function getRevision(): ?Revision
     {
         return $this->revision;
     }
 
-    public function setRevision(?Revision $revision): RevisionVisibility
+    public function setRevision(?Revision $revision): self
     {
         $this->revision = $revision;
 
@@ -59,7 +47,7 @@ class RevisionVisibility
         return $this->review;
     }
 
-    public function setReview(?CodeReview $review): RevisionVisibility
+    public function setReview(?CodeReview $review): self
     {
         $this->review = $review;
 
@@ -71,9 +59,21 @@ class RevisionVisibility
         return $this->user;
     }
 
-    public function setUser(?User $user): RevisionVisibility
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getVisible(): ?bool
+    {
+        return $this->visible;
+    }
+
+    public function isVisible(?bool $visible): self
+    {
+        $this->visible = $visible;
 
         return $this;
     }
