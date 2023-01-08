@@ -19,7 +19,7 @@ export default class MentionsDropdown {
         this.dropdown.style.display = 'block';
     }
 
-    hide() {
+    public hide(): void {
         this.visible                = false;
         this.dropdown.style.display = '';
         this.dropdown.innerHTML     = '';

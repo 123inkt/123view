@@ -1,15 +1,12 @@
 import axios from 'axios';
+import Function from './Function';
 import MentionsDropdown from './MentionsDropdown';
 import type User from './User';
 
 export default class Mentions {
-    private textarea: HTMLTextAreaElement;
-    private dropdown: MentionsDropdown;
     public visible: boolean = false;
 
-    constructor(textarea: HTMLTextAreaElement, dropdown: MentionsDropdown) {
-        this.textarea = textarea;
-        this.dropdown = dropdown;
+    constructor(private readonly textarea: HTMLTextAreaElement, private readonly dropdown: MentionsDropdown) {
     }
 
     public bind(): void {
@@ -68,11 +65,14 @@ export default class Mentions {
     private onClick(event: Event): void {
         this.dropdown.hide();
         this.textarea.focus();
-        this.updateMentionInTextarea(this.dropdown.getSelectedUser(<HTMLElement>event.target));
+        this.updateMentionInTextarea(this.dropdown.getSelectedUser(event.target as HTMLElement));
     }
 
     private getSuggestions(searchQuery: string | null, callback: (data: User[]) => void): void {
-        axios.get('/app/user/mentions?search=' + encodeURI(searchQuery ?? '')).then(response => callback(response.data));
+        axios
+            .get('/app/user/mentions?search=' + encodeURI(searchQuery ?? ''))
+            .then(response => callback(response.data))
+            .catch(Function.empty);
     }
 
     private getMentionFromTextarea(): string | null {

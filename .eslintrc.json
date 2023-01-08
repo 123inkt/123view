@@ -18,6 +18,7 @@
         "@typescript-eslint/object-curly-spacing": ["error", "never"],
         "@typescript-eslint/space-before-function-paren": ["error", "never"],
         "@typescript-eslint/promise-function-async": ["off"],
+        "@typescript-eslint/no-confusing-void-expression": ["error", {"ignoreArrowShorthand": true}],
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {

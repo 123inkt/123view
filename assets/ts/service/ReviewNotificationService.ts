@@ -23,7 +23,7 @@ export default class ReviewNotificationService {
     }
 
     public onEvent(event: Event): void {
-        const data      = (<CustomEvent>event).detail;
+        const data      = (event as CustomEvent).detail;
         const eventName = data.eventName;
 
         const subscriptions = this.subscriptions[eventName];

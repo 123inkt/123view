@@ -22,7 +22,7 @@ export default class HttpClient {
         return this.post<T, R>(form.action, new FormData(form), {headers: {'Content-Type': form.encoding}});
     }
 
-    private wrap<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>, callback: () => Promise<R>) {
+    private wrap<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>, callback: () => Promise<R>): Promise<R> {
         if (this.abortController !== null) {
             this.abortController.abort();
         }
