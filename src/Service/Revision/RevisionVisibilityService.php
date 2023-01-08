@@ -9,9 +9,9 @@ use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 
-class RevisionVisibilityProvider
+class RevisionVisibilityService
 {
-    public function __construct(private readonly User $user, readonly RevisionVisibilityRepository $visibilityRepository)
+    public function __construct(private readonly ?User $user, readonly RevisionVisibilityRepository $visibilityRepository)
     {
     }
 
@@ -47,9 +47,9 @@ class RevisionVisibilityProvider
      *
      * @return RevisionVisibility[]
      */
-    public function getRevisionVisibilities(CodeReview $review, iterable $revisions): array
+    public function getRevisionVisibilities(CodeReview $review, iterable $revisions, User $user): array
     {
-        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => $this->user->getId()]);
+        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => $user->getId()]);
 
         $result = [];
         foreach ($revisions as $revision) {
@@ -68,5 +68,17 @@ class RevisionVisibilityProvider
         }
 
         return $result;
+    }
+
+    /**
+     * @param Revision[] $revisions
+     */
+    public function setRevisionVisibility(CodeReview $review, iterable $revisions, User $user, bool $visible): void
+    {
+        $visibilities = $this->getRevisionVisibilities($review, $revisions, $user);
+        foreach ($visibilities as $visibility) {
+            $visibility->setVisible($visible);
+        }
+        $this->visibilityRepository->saveAll($visibilities, true);
     }
 }
