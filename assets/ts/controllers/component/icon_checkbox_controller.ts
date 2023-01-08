@@ -3,7 +3,7 @@ import Events from '../../lib/Events';
 
 export default class extends Controller {
     public static targets = ['checkbox'];
-    private declare checkboxTarget: HTMLInputElement;
+    private readonly declare checkboxTarget: HTMLInputElement;
 
     public onClick(event: Event): void {
         Events.stop(event);

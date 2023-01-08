@@ -14,7 +14,7 @@ export default class extends Controller<HTMLTextAreaElement> {
 
     private commentPasteListener(event: ClipboardEvent): void {
         const target = event.target as HTMLTextAreaElement;
-        if (!event.clipboardData || !event.clipboardData.items || event.clipboardData.items.length !== 1) {
+        if (event.clipboardData?.items === null || event.clipboardData?.items.length !== 1) {
             return;
         }
 
@@ -35,8 +35,12 @@ export default class extends Controller<HTMLTextAreaElement> {
 
         const reader  = new FileReader();
         reader.onload = event => {
+            if (event.target === null) {
+                return;
+            }
+
             // get data base64 encoded string, and grab just the data string
-            const base64data = (event.target!.result as string).replace(/^[^,]+,/, '');
+            const base64data = (event.target.result as string).replace(/^[^,]+,/, '');
 
             this.assetService.uploadImage(mimeType, base64data)
                 .then(url => {

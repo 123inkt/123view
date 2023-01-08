@@ -13,6 +13,7 @@
     },
     "rules": {
         "no-multi-spaces": ["off"],
+        "no-return-assign": ["off"],
         "@typescript-eslint/indent": ["error", 4],
         "@typescript-eslint/semi": ["error", "always"],
         "@typescript-eslint/object-curly-spacing": ["error", "never"],
