@@ -17,7 +17,12 @@
                     {% if reviewModel.visibleRevisionCount == review.revisions|length -%}
                         ({{ review.revisions|length }})
                     {%- else -%}
-                        ({{ reviewModel.visibleRevisionCount ~ '/' ~ review.revisions|length }})
+                        (
+                        {{- reviewModel.visibleRevisionCount -}}
+                        <i class="bi bi-eye"></i>
+                        /
+                        {{- review.revisions|length -}}
+                        )
                     {%- endif -%}
                 </a>
             </li>

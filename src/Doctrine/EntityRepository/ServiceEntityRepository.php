@@ -24,19 +24,6 @@ class ServiceEntityRepository extends DoctrineServiceEntityRepository
     }
 
     /**
-     * @param T[] $entities
-     */
-    public function saveAll(iterable $entities, bool $flush = false): void
-    {
-        foreach ($entities as $visibility) {
-            $this->save($visibility);
-        }
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    /**
      * @param T $entity
      */
     public function remove(object $entity, bool $flush = false): void
