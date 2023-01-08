@@ -75,6 +75,10 @@ class RevisionVisibilityService
      */
     public function setRevisionVisibility(CodeReview $review, iterable $revisions, User $user, bool $visible): void
     {
+        if (count($revisions) === 0) {
+            return;
+        }
+
         $visibilities = $this->getRevisionVisibilities($review, $revisions, $user);
         foreach ($visibilities as $visibility) {
             $visibility->setVisible($visible);

@@ -8,10 +8,12 @@ use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Review\CodeReviewService;
+use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -21,10 +23,11 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class CodeReviewServiceTest extends AbstractTestCase
 {
-    private RevisionRepository&MockObject     $revisionRepository;
-    private CodeReviewRepository&MockObject   $reviewRepository;
-    private CodeReviewerRepository&MockObject $reviewerRepository;
-    private CodeReviewService                 $service;
+    private RevisionRepository&MockObject        $revisionRepository;
+    private CodeReviewRepository&MockObject      $reviewRepository;
+    private CodeReviewerRepository&MockObject    $reviewerRepository;
+    private RevisionVisibilityService&MockObject $visibilityService;
+    private CodeReviewService                    $service;
 
     public function setUp(): void
     {
@@ -32,7 +35,13 @@ class CodeReviewServiceTest extends AbstractTestCase
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
         $this->reviewRepository   = $this->createMock(CodeReviewRepository::class);
         $this->reviewerRepository = $this->createMock(CodeReviewerRepository::class);
-        $this->service            = new CodeReviewService($this->revisionRepository, $this->reviewRepository, $this->reviewerRepository);
+        $this->visibilityService  = $this->createMock(RevisionVisibilityService::class);
+        $this->service            = new CodeReviewService(
+            $this->revisionRepository,
+            $this->reviewRepository,
+            $this->reviewerRepository,
+            $this->visibilityService
+        );
     }
 
     /**
@@ -40,21 +49,26 @@ class CodeReviewServiceTest extends AbstractTestCase
      */
     public function testAddRevisionsAndPersist(): void
     {
-        $revision = new Revision();
-        $reviewer = new CodeReviewer();
+        $revisionA = new Revision();
+        $revisionB = new Revision();
+        $user      = new User();
+        $reviewer  = new CodeReviewer();
+        $reviewer->setUser($user);
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $review = new CodeReview();
+        $review->getRevisions()->add($revisionA);
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
-        $this->revisionRepository->expects(self::once())->method('save')->with($revision, true);
+        $this->revisionRepository->expects(self::once())->method('save')->with($revisionB, true);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
         $this->reviewerRepository->expects(self::once())->method('save')->with($reviewer, true);
+        $this->visibilityService->expects(self::once())->method('setRevisionVisibility')->with($review, [$revisionA], $user, false);
 
-        $this->service->addRevisions($review, [$revision]);
+        $this->service->addRevisions($review, [$revisionB]);
 
-        static::assertSame($review, $revision->getReview());
-        static::assertTrue($review->getRevisions()->contains($revision));
+        static::assertSame($review, $revisionB->getReview());
+        static::assertTrue($review->getRevisions()->contains($revisionB));
         static::assertSame(CodeReviewStateType::OPEN, $review->getState());
         static::assertSame(CodeReviewerStateType::OPEN, $reviewer->getState());
     }
