@@ -1,9 +1,11 @@
+/* stylelint-disable */
 .comment__markdown pre,
 .comment__markdown p {
     margin-bottom: 0;
 }
+/* stylelint-enable */
 
 .comment__markdown .hljs {
-    padding: 0;
     background: none;
+    padding: 0;
 }

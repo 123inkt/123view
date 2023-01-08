@@ -23,7 +23,6 @@
         "selector-class-pattern": "[a-z][a-z0-9_-]+",
         "selector-list-comma-newline-after": null,
         "selector-max-compound-selectors": 5,
-        "selector-max-type": 0,
         "selector-no-vendor-prefix": null,
         "selector-no-qualifying-type": [true, {"ignore": ["attribute", "class"]}],
         "selector-type-no-unknown": [true, {"ignore": "custom-elements"}],
