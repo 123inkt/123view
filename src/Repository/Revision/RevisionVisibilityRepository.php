@@ -23,15 +23,4 @@ class RevisionVisibilityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RevisionVisibility::class);
     }
-
-    /**
-     * @param RevisionVisibility[] $visibilities
-     */
-    public function saveAll(iterable $visibilities): void
-    {
-        foreach ($visibilities as $visibility) {
-            $this->save($visibility);
-        }
-        $this->getEntityManager()->flush();
-    }
 }

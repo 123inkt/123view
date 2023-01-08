@@ -40,7 +40,7 @@ class UpdateRevisionVisibilityController extends AbstractController
             throw new BadRequestHttpException('Submitted invalid form');
         }
 
-        $this->visibilityRepository->saveAll($visibilities);
+        $this->visibilityRepository->saveAll($visibilities, true);
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
