@@ -72,4 +72,28 @@ class CodeReviewServiceTest extends AbstractTestCase
         static::assertSame(CodeReviewStateType::OPEN, $review->getState());
         static::assertSame(CodeReviewerStateType::OPEN, $reviewer->getState());
     }
+
+    /**
+     * @covers ::addRevisions
+     */
+    public function testAddRevisionsShouldSkipReviewers(): void
+    {
+        $revisionA = new Revision();
+        $revisionB = new Revision();
+        $user      = new User();
+        $reviewer  = new CodeReviewer();
+        $reviewer->setUser($user);
+        $reviewer->setState(CodeReviewerStateType::OPEN);
+        $review = new CodeReview();
+        $review->getRevisions()->add($revisionA);
+        $review->setState(CodeReviewStateType::CLOSED);
+        $review->getReviewers()->add($reviewer);
+
+        $this->revisionRepository->expects(self::once())->method('save')->with($revisionB, true);
+        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
+        $this->reviewerRepository->expects(self::never())->method('save');
+        $this->visibilityService->expects(self::never())->method('setRevisionVisibility');
+
+        $this->service->addRevisions($review, [$revisionB]);
+    }
 }
