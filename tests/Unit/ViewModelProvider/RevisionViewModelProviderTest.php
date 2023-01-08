@@ -7,8 +7,12 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Entity\Revision\RevisionVisibility;
+use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
+use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,16 +24,25 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class RevisionViewModelProviderTest extends AbstractTestCase
 {
-    private RevisionRepository&MockObject   $revisionRepository;
-    private FormFactoryInterface&MockObject $formFactory;
-    private RevisionViewModelProvider       $provider;
+    private RevisionRepository&MockObject        $revisionRepository;
+    private RevisionVisibilityService&MockObject $visibilityService;
+    private FormFactoryInterface&MockObject      $formFactory;
+    private RevisionViewModelProvider            $provider;
+    private User                                 $user;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
+        $this->visibilityService  = $this->createMock(RevisionVisibilityService::class);
         $this->formFactory        = $this->createMock(FormFactoryInterface::class);
-        $this->provider           = new RevisionViewModelProvider($this->revisionRepository, $this->formFactory);
+        $this->user               = new User();
+        $this->provider           = new RevisionViewModelProvider(
+            $this->revisionRepository,
+            $this->visibilityService,
+            $this->formFactory,
+            $this->user
+        );
     }
 
     /**
@@ -57,13 +70,21 @@ class RevisionViewModelProviderTest extends AbstractTestCase
      */
     public function testGetRevisionViewModel(): void
     {
-        $revision = new Revision();
-        $review   = new CodeReview();
+        $revision   = new Revision();
+        $visibility = new RevisionVisibility();
+        $review     = new CodeReview();
         $review->setId(123);
 
-        $this->formFactory->expects(self::once())
+        $this->visibilityService->expects(self::once())
+            ->method('getRevisionVisibilities')
+            ->with($review, [$revision], $this->user)
+            ->willReturn([$visibility]);
+        $this->formFactory->expects(self::exactly(2))
             ->method('create')
-            ->with(DetachRevisionsFormType::class, null, ['reviewId' => 123, 'revisions' => [$revision]]);
+            ->withConsecutive(
+                [DetachRevisionsFormType::class, null, ['reviewId' => 123, 'revisions' => [$revision]]],
+                [RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123]],
+            );
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);

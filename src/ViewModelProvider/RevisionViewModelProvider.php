@@ -20,7 +20,7 @@ class RevisionViewModelProvider
 {
     public function __construct(
         private readonly RevisionRepository $revisionRepository,
-        private readonly RevisionVisibilityService $visibilityProvider,
+        private readonly RevisionVisibilityService $visibilityService,
         private readonly FormFactoryInterface $formFactory,
         private readonly User $user,
     ) {
@@ -41,7 +41,7 @@ class RevisionViewModelProvider
      */
     public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
     {
-        $visibilities = $this->visibilityProvider->getRevisionVisibilities($review, $revisions, $this->user);
+        $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->user);
 
         return new ReviewRevisionViewModel(
             $revisions,
