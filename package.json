@@ -39,6 +39,6 @@
         "build": "encore production --progress",
         "stylelint": "stylelint \"assets/**/*.scss\"",
         "stylelint-fix": "stylelint \"assets/**/*.scss\" --fix",
-        "eslint": "eslint \"assets/**/*.ts\" --cache --report-unused-disable-directives"
+        "eslint": "eslint \"assets/**/*.ts\" --report-unused-disable-directives"
     }
 }
