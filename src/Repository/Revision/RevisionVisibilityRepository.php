@@ -16,9 +16,6 @@ use DR\Review\Entity\Revision\RevisionVisibility;
  */
 class RevisionVisibilityRepository extends ServiceEntityRepository
 {
-    /**
-     * @codeCoverageIgnore
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RevisionVisibility::class);
