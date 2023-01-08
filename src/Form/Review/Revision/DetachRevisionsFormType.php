@@ -14,13 +14,21 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DetachRevisionsFormType extends AbstractType
 {
+    private const FORM_ID = 'detach-revision-form';
+
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['reviewId' => null, 'revisions' => null]);
+        $resolver->setDefaults(
+            [
+                'reviewId'  => null,
+                'revisions' => null,
+                'attr'      => ['id' => self::FORM_ID]
+            ]
+        );
         $resolver->addAllowedTypes('revisions', 'array');
         $resolver->addAllowedTypes('reviewId', 'int');
     }
@@ -34,9 +42,7 @@ class DetachRevisionsFormType extends AbstractType
         $revisions = $options['revisions'];
         /** @var int $reviewId */
         $reviewId = $options['reviewId'];
-        $formId   = 'detach-revision-form';
 
-        $builder->setAttribute('id', $formId);
         $builder->setAction($this->urlGenerator->generate(DetachRevisionController::class, ['id' => $reviewId]));
         $builder->setMethod('POST');
 
@@ -49,7 +55,7 @@ class DetachRevisionsFormType extends AbstractType
                     'label'              => false,
                     'translation_domain' => false,
                     'required'           => false,
-                    'attr'               => ['data-role' => 'detach', 'form' => $formId]
+                    'attr'               => ['data-role' => 'detach', 'form' => self::FORM_ID]
                 ]
             );
         }
