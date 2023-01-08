@@ -30,7 +30,7 @@ export default class extends Controller<HTMLElement> {
         if (commentId === undefined) {
             this.element.remove();
         } else {
-            window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}))
+            window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}));
         }
     }
 
