@@ -1,4 +1,4 @@
-name: Check
+name: Checking PHP, Scss and Typescript code quality checks
 
 on:
     push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
     quality:
-        name: Quality checks
+        name: php
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
@@ -50,6 +50,7 @@ jobs:
                 run: php bin/console lint:container
 
     frontend:
+        name: typescript and scss
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
