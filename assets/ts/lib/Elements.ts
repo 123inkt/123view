@@ -1,5 +1,4 @@
 export default class Elements {
-
     public static closest(element: HTMLElement, selector: string): HTMLElement {
         const target = element.closest<HTMLElement>(selector);
         if (target === null) {
@@ -19,13 +18,13 @@ export default class Elements {
     public static siblingRole(element: HTMLElement, dataRole: string): HTMLElement {
         for (let el = element.nextElementSibling; el !== null; el = el.nextElementSibling) {
             if (el.matches(`[data-role~="${dataRole}"]`)) {
-                return <HTMLElement>el;
+                return el as HTMLElement;
             }
         }
 
         for (let el = element.previousElementSibling; el !== null; el = el.previousElementSibling) {
             if (el.matches(`[data-role~="${dataRole}"]`)) {
-                return <HTMLElement>el;
+                return el as HTMLElement;
             }
         }
 
@@ -41,6 +40,6 @@ export default class Elements {
         const container     = document.createElement('div');
         container.innerHTML = html;
 
-        return <HTMLElement>container.firstElementChild;
+        return container.firstElementChild as HTMLElement;
     }
 }

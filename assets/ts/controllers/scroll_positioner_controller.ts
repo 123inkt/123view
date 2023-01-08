@@ -9,7 +9,7 @@ export default class extends Controller {
     }
 
     private handleHash(hash: string): void {
-        let target = this.findTarget(hash);
+        const target = this.findTarget(hash);
         if (target !== null) {
             target.scrollIntoView({block: 'center'});
         }
@@ -18,17 +18,17 @@ export default class extends Controller {
     private findTarget(hash: string): Element | null {
         let matches = hash.match(/^#focus:comment:(\d+)$/);
         if (matches !== null) {
-            return this.element.querySelector(`[data-comment-id="${matches[1]}"]`)
+            return this.element.querySelector(`[data-comment-id="${matches[1]}"]`);
         }
 
         matches = hash.match(/^#focus:reply:(\d+)$/);
         if (matches !== null) {
-            return this.element.querySelector(`[data-reply-id="${matches[1]}"]`)
+            return this.element.querySelector(`[data-reply-id="${matches[1]}"]`);
         }
 
         matches = hash.match(/^#focus:line:(\d+)$/);
         if (matches !== null) {
-            return this.element.querySelector(`[data-line="${matches[1]}"]`)
+            return this.element.querySelector(`[data-line="${matches[1]}"]`);
         }
 
         return null;

@@ -18,8 +18,8 @@ export default class extends Controller<HTMLTextAreaElement> {
             return;
         }
 
-        const item         = <DataTransferItem>event.clipboardData.items[0];
-        const allowedMimes = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg']
+        const item         = event.clipboardData.items[0] as DataTransferItem;
+        const allowedMimes = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg'];
         if (item.kind !== 'file' || allowedMimes.includes(item.type) === false) {
             return;
         }
