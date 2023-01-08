@@ -18,7 +18,7 @@
 
 .diff-file__directory-name {
     color: var(--review-diff-directory-name-color);
-    font-size: 12px
+    font-size: 12px;
 }
 
 .diff-file__file-mode-change {
@@ -47,7 +47,7 @@
 }
 
 .diff-file__block-spacer-line-nr {
-    font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+    font-family: 'JetBrains Mono', Menlo, 'Bitstream Vera Sans Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;
     font-size: 13px;
     line-height: 20px;
     margin-right: 2px;
@@ -78,7 +78,7 @@
 .diff-file__diff-line {
     color: var(--review-diff-line-fg-color);
     cursor: default;
-    font-family: "JetBrains Mono", Menlo, "Bitstream Vera Sans Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
+    font-family: 'JetBrains Mono', Menlo, 'Bitstream Vera Sans Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;
     font-size: 13px;
     line-height: 20px;
     white-space: pre;
