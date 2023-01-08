@@ -1,7 +1,6 @@
 import HttpClient from '../lib/HttpClient';
 
 export default class AssetService {
-
     private readonly client = new HttpClient();
 
     public uploadImage(mimeType: string, base64data: string): Promise<string> {

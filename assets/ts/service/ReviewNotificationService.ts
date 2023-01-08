@@ -1,5 +1,5 @@
 interface Subscriptions {
-    [key: string]: {reviewId: number; userId?: number; callback: (event: Event) => void}[]
+    [key: string]: {reviewId: number; userId?: number; callback: (event: Event) => void}[];
 }
 
 export default class ReviewNotificationService {
