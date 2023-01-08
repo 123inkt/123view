@@ -2,6 +2,7 @@ import 'bootstrap-icons/font/bootstrap-icons.scss';
 
 // import css
 import './styles/app.scss';
+import './styles/icon.checkbox.scss';
 import './styles/login.scss';
 import './styles/review.scss';
 import './styles/review-file-diff.scss';

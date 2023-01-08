@@ -7,7 +7,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\FileSeenStatus;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\FileSeenStatusRepository;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;

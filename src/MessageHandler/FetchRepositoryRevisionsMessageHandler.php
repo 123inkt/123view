@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Utility\Assert;

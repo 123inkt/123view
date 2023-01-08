@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;

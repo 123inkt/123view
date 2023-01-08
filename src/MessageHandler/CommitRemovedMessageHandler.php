@@ -7,7 +7,7 @@ use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;

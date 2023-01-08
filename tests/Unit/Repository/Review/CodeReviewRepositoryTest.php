@@ -7,7 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Tests\DataFixtures\RevisionFixtures;

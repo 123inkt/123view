@@ -16,13 +16,14 @@ class ReviewViewModel
     public const SIDEBAR_TAB_OVERVIEW  = 'overview';
     public const SIDEBAR_TAB_REVISIONS = 'revisions';
 
-    private string                   $sidebarTabMode     = self::SIDEBAR_TAB_OVERVIEW;
-    private ?FileTreeViewModel       $fileTreeModel      = null;
-    private ?ReviewRevisionViewModel $revisionViewModel  = null;
-    private ?TimelineViewModel       $timelineViewModel  = null;
-    private ?FileDiffViewModel       $fileDiffViewModel  = null;
-    private ?FormView                $addReviewerForm    = null;
-    private bool                     $descriptionVisible = true;
+    private string                   $sidebarTabMode       = self::SIDEBAR_TAB_OVERVIEW;
+    private ?FileTreeViewModel       $fileTreeModel        = null;
+    private ?ReviewRevisionViewModel $revisionViewModel    = null;
+    private ?TimelineViewModel       $timelineViewModel    = null;
+    private ?FileDiffViewModel       $fileDiffViewModel    = null;
+    private ?FormView                $addReviewerForm      = null;
+    private bool                     $descriptionVisible   = true;
+    private int                      $visibleRevisionCount = 0;
 
     public function __construct(public readonly CodeReview $review)
     {
@@ -100,6 +101,18 @@ class ReviewViewModel
     public function setTimelineViewModel(?TimelineViewModel $timelineViewModel): self
     {
         $this->timelineViewModel = $timelineViewModel;
+
+        return $this;
+    }
+
+    public function getVisibleRevisionCount(): int
+    {
+        return $this->visibleRevisionCount;
+    }
+
+    public function setVisibleRevisionCount(int $visibleRevisionCount): ReviewViewModel
+    {
+        $this->visibleRevisionCount = $visibleRevisionCount;
 
         return $this;
     }

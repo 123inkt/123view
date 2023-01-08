@@ -7,7 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;

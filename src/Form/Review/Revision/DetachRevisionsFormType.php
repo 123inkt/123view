@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Form\Review;
+namespace DR\Review\Form\Review\Revision;
 
 use DR\Review\Controller\App\Revision\DetachRevisionController;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,13 +14,21 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DetachRevisionsFormType extends AbstractType
 {
+    private const FORM_ID = 'detach-revision-form';
+
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['reviewId' => null, 'revisions' => null]);
+        $resolver->setDefaults(
+            [
+                'reviewId'  => null,
+                'revisions' => null,
+                'attr'      => ['id' => self::FORM_ID]
+            ]
+        );
         $resolver->addAllowedTypes('revisions', 'array');
         $resolver->addAllowedTypes('reviewId', 'int');
     }
@@ -42,7 +50,13 @@ class DetachRevisionsFormType extends AbstractType
             $builder->add(
                 'rev' . $revision->getId(),
                 CheckboxType::class,
-                ['data' => false, 'label' => false, 'translation_domain' => false, 'required' => false]
+                [
+                    'data'               => false,
+                    'label'              => false,
+                    'translation_domain' => false,
+                    'required'           => false,
+                    'attr'               => ['data-role' => 'detach', 'form' => self::FORM_ID]
+                ]
             );
         }
 

@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\ViewModel\App\Revision;
 use ArrayIterator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;

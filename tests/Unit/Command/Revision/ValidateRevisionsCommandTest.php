@@ -8,7 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Message\Revision\CommitAddedMessage;
 use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Repository\Review\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

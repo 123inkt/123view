@@ -7,12 +7,13 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
@@ -38,6 +39,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
     private FileTreeViewModelProvider&MockObject       $fileTreeModelProvider;
     private RevisionViewModelProvider&MockObject       $revisionModelProvider;
     private ReviewTimelineViewModelProvider&MockObject $timelineViewModelProvider;
+    private RevisionVisibilityService&MockObject       $visibilityService;
     private ReviewViewModelProvider                    $modelProvider;
 
     public function setUp(): void
@@ -49,13 +51,15 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->fileTreeModelProvider     = $this->createMock(FileTreeViewModelProvider::class);
         $this->revisionModelProvider     = $this->createMock(RevisionViewModelProvider::class);
         $this->timelineViewModelProvider = $this->createMock(ReviewTimelineViewModelProvider::class);
+        $this->visibilityService         = $this->createMock(RevisionVisibilityService::class);
         $this->modelProvider             = new ReviewViewModelProvider(
             $this->fileDiffProvider,
             $this->formFactory,
             $this->fileService,
             $this->fileTreeModelProvider,
             $this->revisionModelProvider,
-            $this->timelineViewModelProvider
+            $this->timelineViewModelProvider,
+            $this->visibilityService
         );
     }
 
@@ -77,6 +81,10 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
         $request = $this->createMock(ReviewRequest::class);
+        $this->visibilityService->expects(self::once())
+            ->method('getVisibleRevisions')
+            ->with($review, [$revision])
+            ->willReturnArgument(1);
         $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
         $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
         $request->expects(self::once())->method('getAction')->willReturn($action);
@@ -113,6 +121,10 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
         $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
 
+        $this->visibilityService->expects(self::once())
+            ->method('getVisibleRevisions')
+            ->with($review, [$revision])
+            ->willReturnArgument(1);
         $this->fileService->expects(self::once())->method('getFiles')->with($review, [$revision], $filePath)->willReturn([$tree, null]);
         $this->timelineViewModelProvider->expects(self::once())->method('getTimelineViewModel')->with($review);
         $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');

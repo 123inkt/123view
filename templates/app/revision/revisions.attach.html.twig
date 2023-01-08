@@ -22,11 +22,11 @@
             method="post"
           action="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionController', {id: review.id}) }}"
     >
-        <table class="table table-bordered table-hover rule-table" {{ stimulus_controller('checkbox-select-all') }}>
+        <table class="table table-bordered table-hover rule-table" {{ stimulus_controller('component--checkbox-select-all') }}>
             <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" class="form-check-input" data-action="change->checkbox-select-all#toggleAll">
+                    <input type="checkbox" class="form-check-input" data-action="change->component--checkbox-select-all#toggleAll">
                 </th>
                 <th scope="col">{{ 'hash'|trans }}</th>
                 <th scope="col" class="review-revision-list--title">{{ 'title'|trans }}</th>
@@ -41,7 +41,7 @@
                     <td><input type="checkbox"
                                class="form-check-input"
                                name="revision[{{ revision.id }}]"
-                               {{ stimulus_target('checkbox-select-all', 'toggle') }}>
+                               {{ stimulus_target('component--checkbox-select-all', 'toggle') }}>
                     </td>
                     <td><code>{{ revision.commitHash|slice(0, 7) }}</code></td>
                     <td class="fw-bold">{{ revision.title|external_links }}</td>

@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\Revision;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
 use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;

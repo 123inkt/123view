@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
@@ -20,6 +21,7 @@ class ReviewViewModelProvider
         private readonly FileTreeViewModelProvider $fileTreeModelProvider,
         private readonly RevisionViewModelProvider $revisionModelProvider,
         private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider,
+        private readonly RevisionVisibilityService $visibilityService,
     ) {
     }
 
@@ -31,8 +33,12 @@ class ReviewViewModelProvider
         $viewModel = new ReviewViewModel($review);
         $revisions = $review->getRevisions()->toArray();
 
+        // visible revisions
+        $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
+        $viewModel->setVisibleRevisionCount(count($visibleRevisions));
+
         // get diff files for review
-        [$fileTree, $selectedFile] = $this->fileService->getFiles($review, $revisions, $request->getFilePath());
+        [$fileTree, $selectedFile] = $this->fileService->getFiles($review, $visibleRevisions, $request->getFilePath());
 
         // get timeline or file-diff view model
         if ($selectedFile === null) {
