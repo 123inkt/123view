@@ -5,13 +5,13 @@ export default class extends Controller {
     declare toggleTargets: HTMLInputElement[];
 
     public toggleAll(event: Event): void {
-        const dataRole = (<HTMLInputElement>event.currentTarget).dataset.role;
+        const role = (<HTMLInputElement>event.currentTarget).dataset.role;
 
-        if (dataRole === undefined) {
+        if (role === undefined) {
             this.toggleTargets.forEach(el => el.checked = (<HTMLInputElement>event.target).checked);
         } else {
             this.element
-                .querySelectorAll<HTMLInputElement>(`[data-role~="${dataRole}"]`)
+                .querySelectorAll<HTMLInputElement>(`[data-role~="${role}"]`)
                 .forEach(el => el.checked = (<HTMLInputElement>event.target).checked);
         }
     }

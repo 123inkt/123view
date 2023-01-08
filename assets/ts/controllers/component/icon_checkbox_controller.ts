@@ -8,5 +8,6 @@ export default class extends Controller {
     public onClick(event: Event): void {
         Events.stop(event);
         this.checkboxTarget.checked = this.checkboxTarget.checked === false;
+        this.checkboxTarget.dispatchEvent(new Event('change'));
     }
 }
