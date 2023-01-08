@@ -45,11 +45,12 @@ class AddReviewerFormType extends AbstractType
                 'choice_translation_domain' => false,
                 'choice_label'              => static fn(?User $user) => (string)$user?->getName(),
                 'choice_value'              => static fn(?User $user) => (string)$user?->getId(),
+                'choice_attr'               => static fn() => ['class' => 'user'],
                 'choices'                   => $choices,
                 'preferred_choices'         => [$this->user],
                 'multiple'                  => false,
                 'expanded'                  => false,
-                'attr'                      => ['class' => 'form-select-sm', 'data-controller' => 'form-submitter']
+                'attr'                      => ['class' => 'form-select-sm add-reviewer-form-user', 'data-controller' => 'form-submitter']
             ]);
         }
     }
