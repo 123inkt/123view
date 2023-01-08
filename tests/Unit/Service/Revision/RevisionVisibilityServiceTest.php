@@ -11,7 +11,6 @@ use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use function PHPUnit\Framework\once;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Revision\RevisionVisibilityService
@@ -51,7 +50,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibilityB = new RevisionVisibility();
         $visibilityB->setRevision($revisionB)->setVisible(false);
 
-        $this->visibilityRepository->expects(once())
+        $this->visibilityRepository->expects(self::once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
             ->willReturn([$visibilityA, $visibilityB]);
@@ -77,7 +76,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibilityA = new RevisionVisibility();
         $visibilityA->setRevision($revisionA)->setVisible(false);
 
-        $this->visibilityRepository->expects(once())
+        $this->visibilityRepository->expects(self::once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
             ->willReturn([$visibilityA]);
@@ -93,6 +92,33 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
      */
     public function testSetRevisionVisibility(): void
     {
+        $revision = new Revision();
+        $revision->setId(456);
+
+        $review = new CodeReview();
+        $review->setId(123);
+
+        $visibility = new RevisionVisibility();
+        $visibility->setRevision($revision);
+        $visibility->setVisible(true);
+
+        $this->visibilityRepository->expects(self::once())->method('findBy')->with(['review' => 123, 'user' => 789])->willReturn([$visibility]);
+        $this->visibilityRepository->expects(self::once())->method('saveAll')->with([$visibility], true);
+
+        $this->service->setRevisionVisibility($review, [$revision], $this->user, false);
     }
 
+    /**
+     * @covers ::setRevisionVisibility
+     */
+    public function testSetRevisionVisibilityShouldSkipEmptyRevisions(): void
+    {
+        $review = new CodeReview();
+        $review->setId(123);
+
+        $this->visibilityRepository->expects(self::never())->method('findBy');
+        $this->visibilityRepository->expects(self::never())->method('saveAll');
+
+        $this->service->setRevisionVisibility($review, [], $this->user, false);
+    }
 }
