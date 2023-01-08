@@ -8,13 +8,13 @@ import CommentService from '../service/CommentService';
 
 export default class extends Controller<HTMLElement> {
     public static throttles = ['commentPreviewListener'];
-    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form']
+    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form'];
 
     private readonly commentService = new CommentService();
-    private declare formTarget: HTMLFormElement;
-    private declare textareaTarget: HTMLTextAreaElement;
-    private declare mentionSuggestionsTarget: HTMLElement;
-    private declare markdownPreviewTarget: HTMLElement;
+    private readonly declare formTarget: HTMLFormElement;
+    private readonly declare textareaTarget: HTMLTextAreaElement;
+    private readonly declare mentionSuggestionsTarget: HTMLElement;
+    private readonly declare markdownPreviewTarget: HTMLElement;
 
     public connect(): void {
         useThrottle(this, {wait: 150});
@@ -30,7 +30,7 @@ export default class extends Controller<HTMLElement> {
         if (commentId === undefined) {
             this.element.remove();
         } else {
-            window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}))
+            window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId}));
         }
     }
 
@@ -53,19 +53,18 @@ export default class extends Controller<HTMLElement> {
         }
     }
 
-    private commentPreviewListener(event: Event | HTMLTextAreaElement) {
-        const target    = event instanceof HTMLTextAreaElement ? event : <HTMLTextAreaElement>event.target;
-        const previewEl = this.markdownPreviewTarget!;
-        const comment   = target.value.trim();
+    private commentPreviewListener(event: Event | HTMLTextAreaElement): void {
+        const target  = event instanceof HTMLTextAreaElement ? event : event.target as HTMLTextAreaElement;
+        const comment = target.value.trim();
 
         if (comment.length === 0) {
-            previewEl.innerHTML = '';
+            this.markdownPreviewTarget.innerHTML = '';
             return;
         }
 
         this.commentService
             .getMarkdownPreview(comment)
-            .then(html => previewEl.innerHTML = html)
+            .then(html => this.markdownPreviewTarget.innerHTML = html)
             .catch(Errors.catch);
     }
 }

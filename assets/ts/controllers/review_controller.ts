@@ -8,12 +8,12 @@ export default class extends Controller {
     public static targets           = ['revisionFile', 'commentForm'];
     public static values            = {addCommentUrl: String};
     private readonly commentService = new CommentService();
-    private declare revisionFileTarget: HTMLElement;
-    private declare commentFormTargets: HTMLElement[];
-    private declare addCommentUrlValue: string;
+    private readonly declare revisionFileTarget: HTMLElement;
+    private readonly declare commentFormTargets: HTMLElement[];
+    private readonly declare addCommentUrlValue: string;
 
     public addComment(event: Event): void {
-        const line = Elements.closestRole(<HTMLElement>event.target, 'diff-line');
+        const line = Elements.closestRole(event.target as HTMLElement, 'diff-line');
         this.commentService
             .getAddCommentForm(
                 this.addCommentUrlValue,
@@ -24,7 +24,7 @@ export default class extends Controller {
             )
             .then(form => {
                 this.commentFormTargets.forEach(el => el.remove());
-                Elements.siblingRole(line, 'add-comment-inserter').after(form)
+                Elements.siblingRole(line, 'add-comment-inserter').after(form);
             })
             .catch(Errors.catch);
     }

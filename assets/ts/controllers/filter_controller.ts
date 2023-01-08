@@ -6,9 +6,9 @@ export default class extends Controller {
     public static targets = ['filterList', 'filterTemplate'];
     public static values  = {count: Number};
 
-    declare filterListTarget: HTMLElement;
-    declare filterTemplateTarget: HTMLTemplateElement;
-    declare countValue: number;
+    private readonly declare filterListTarget: HTMLElement;
+    private readonly declare filterTemplateTarget: HTMLTemplateElement;
+    private declare countValue: number;
 
     public addFilter(event: Event): void {
         Events.stop(event);
@@ -30,6 +30,6 @@ export default class extends Controller {
 
     public deleteFilter(event: Event): void {
         Events.stop(event);
-        (<HTMLElement>event.target).closest('[data-role="filter"]')?.remove();
+        (event.target as HTMLElement).closest('[data-role="filter"]')?.remove();
     }
 }

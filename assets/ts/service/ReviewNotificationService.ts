@@ -1,6 +1,4 @@
-interface Subscriptions {
-    [key: string]: {reviewId: number; userId?: number; callback: (event: Event) => void}[]
-}
+type Subscriptions = Record<string, Array<{reviewId: number; userId?: number; callback: (event: Event) => void}>>;
 
 export default class ReviewNotificationService {
     private subscriptions: Subscriptions = {};
@@ -23,7 +21,7 @@ export default class ReviewNotificationService {
     }
 
     public onEvent(event: Event): void {
-        const data      = (<CustomEvent>event).detail;
+        const data      = (event as CustomEvent).detail;
         const eventName = data.eventName;
 
         const subscriptions = this.subscriptions[eventName];

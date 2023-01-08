@@ -8,8 +8,8 @@ export default class extends Controller<HTMLElement> {
     public static values = {id: Number, url: String};
 
     private readonly commentService = new CommentService();
-    private declare idValue: number;
-    private declare urlValue: string;
+    private readonly declare idValue: number;
+    private readonly declare urlValue: string;
 
     public commentUpdated(event: CustomEvent): void {
         Events.stop(event);
@@ -21,13 +21,13 @@ export default class extends Controller<HTMLElement> {
 
     public editComment(event: Event): void {
         Events.stop(event);
-        this.updateCommentThread('edit-comment:' + this.idValue);
+        this.updateCommentThread('edit-comment:' + String(this.idValue));
     }
 
     public deleteComment(event: Event): void {
         Events.stop(event);
 
-        const message = DataSet.string(<HTMLElement>event.currentTarget, 'confirmMessage');
+        const message = DataSet.string(event.currentTarget as HTMLElement, 'confirmMessage');
         if (confirm(message) === false) {
             return;
         }
@@ -40,17 +40,17 @@ export default class extends Controller<HTMLElement> {
 
     public replyToComment(event: Event): void {
         Events.stop(event);
-        this.updateCommentThread('add-reply:' + this.idValue);
+        this.updateCommentThread('add-reply:' + String(this.idValue));
     }
 
     public editReplyComment(event: Event): void {
         Events.stop(event);
-        this.updateCommentThread('edit-reply:' + (<HTMLElement>event.currentTarget).dataset.replyId);
+        this.updateCommentThread('edit-reply:' + String((event.currentTarget as HTMLElement).dataset.replyId));
     }
 
     public deleteReplyComment(event: Event): void {
         Events.stop(event);
-        const target  = <HTMLElement>event.currentTarget;
+        const target  = event.currentTarget as HTMLElement;
         const message = DataSet.string(target, 'confirmMessage');
         if (confirm(message) === false) {
             return;
@@ -64,7 +64,7 @@ export default class extends Controller<HTMLElement> {
 
     public resolveComment(event: Event): void {
         Events.stop(event);
-        const target  = <HTMLElement>event.currentTarget;
+        const target  = event.currentTarget as HTMLElement;
 
         this.commentService
             .changeCommentState(DataSet.string(target, 'url'), DataSet.string(target, 'state'))

@@ -6,6 +6,7 @@
 
 /config.xml
 /docker/db
+/.eslintcache
 
 ###> symfony/framework-bundle ###
 /.env.local

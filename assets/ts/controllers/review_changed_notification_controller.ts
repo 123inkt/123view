@@ -1,10 +1,10 @@
 import {Controller} from '@hotwired/stimulus';
 
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
     public static values = {userId: Number, reviewId: Number};
 
-    declare userIdValue: number;
-    declare reviewIdValue: number;
+    private readonly declare userIdValue: number;
+    private readonly declare reviewIdValue: number;
 
     public connect(): void {
         document.addEventListener('notification', this.handleNotification.bind(this));
@@ -12,13 +12,13 @@ export default class extends Controller {
 
     public reload(event: Event): void {
         event.preventDefault();
-        location.reload()
+        location.reload();
     }
 
     private handleNotification(event: Event): void {
         const userId   = this.userIdValue;
         const reviewId = this.reviewIdValue;
-        const data     = (<CustomEvent>event).detail;
+        const data     = (event as CustomEvent).detail;
 
         // notification for different review
         if (data.reviewId !== reviewId) {
@@ -30,6 +30,6 @@ export default class extends Controller {
             return;
         }
 
-        (<HTMLElement>this.element).style.display = 'block';
+        this.element.style.display = 'block';
     }
 }

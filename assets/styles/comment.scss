@@ -1,7 +1,7 @@
 .comment__comment-thread {
     background: var(--comment-background-color);
-    font-size: 0.9rem;
     border-bottom: 1px solid var(--comment-border-color);
+    font-size: 0.9rem;
 }
 
 .comment__detached-comment {
@@ -25,8 +25,8 @@
 
 .comment__comment .comment__author,
 .comment__reply .comment__author {
-    font-weight: bold;
     font-size: 0.8rem;
+    font-weight: bold;
 }
 
 .comment__comment .comment__datetime,
@@ -37,13 +37,14 @@
 
 .comment__comment-thread.comment__state_resolved,
 .comment__comment-thread.comment__state_resolved .comment__author,
-.comment__comment-thread.comment__state_resolved .comment__author,
 .comment__comment-thread.comment__state_resolved .comment__datetime,
 .comment__comment-thread.comment__state_resolved .comment__edit *,
 .comment__comment-thread.comment__state_resolved .comment__state *,
 .comment__comment-thread.comment__state_resolved .comment__message *,
 .comment__comment-thread.comment__state_resolved .comment__toolbar * {
+    /* stylelint-disable */
     color: var(--comment-secondary-color) !important;
+    /* stylelint-enable */
 }
 
 .comment__comment-thread.comment__state_resolved .comment__message img {
@@ -69,14 +70,14 @@
 }
 
 .comment__toolbar {
-    padding-left: 20px;
     padding-bottom: 5px;
+    padding-left: 20px;
 }
 
 .comment__action-button {
     display: inline-block;
-    width: 20px;
     height: 20px;
     line-height: 20px;
     text-align: center;
+    width: 20px;
 }

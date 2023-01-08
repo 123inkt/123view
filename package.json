@@ -13,10 +13,19 @@
         "@hotwired/stimulus": "^3.2.1",
         "@symfony/stimulus-bridge": "^3.2.1",
         "@symfony/webpack-encore": "^4.2.0",
+        "@typescript-eslint/eslint-plugin": "^5.48.0",
         "core-js": "^3.26.1",
+        "eslint": "^8.31.0",
+        "eslint-config-standard-with-typescript": "^26.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-n": "^15.6.0",
+        "eslint-plugin-promise": "^6.1.1",
         "regenerator-runtime": "^0.13.11",
         "sass": "^1.57.1",
         "sass-loader": "^13.2.0",
+        "stylelint": "^14.16.1",
+        "stylelint-config-sass-guidelines": "^9.0.1",
+        "stylelint-config-standard": "^29.0.0",
         "ts-loader": "^9.4.2",
         "ts-node": "^10.9.1",
         "typescript": "^4.9.4",
@@ -27,6 +36,9 @@
     "scripts": {
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "stylelint": "stylelint \"assets/**/*.scss\"",
+        "stylelint-fix": "stylelint \"assets/**/*.scss\" --fix",
+        "eslint": "eslint \"assets/**/*.ts\" --report-unused-disable-directives"
     }
 }

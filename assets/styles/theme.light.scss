@@ -1,28 +1,27 @@
 :root {
     --comment-secondary-color: #999999;
-    --comment-background-color: #FFFEE0;
-    --comment-border-color: #E5E4C9;
+    --comment-background-color: #fffee0;
+    --comment-border-color: #e5e4c9;
     --review-add-reviewer-placeholder-color: #999999;
     --review-file-tree-directory-color: #999999;
     --review-file-tree-file-color: #000000;
-
     --review-file-tree-status-color: #008000;
     --review-diff-directory-name-color: #999999;
     --review-diff-file-name-color: #999999;
-    --review-diff-border-color: #E9E9E9;
-    --review-diff-spacer-bg-color: #F8F8F8;
-    --review-diff-spacer-fg-color: #AAAAAA;
-    --review-diff-spacer-hover-bg-color: #E8E8E8;
+    --review-diff-border-color: #e9e9e9;
+    --review-diff-spacer-bg-color: #f8f8f8;
+    --review-diff-spacer-fg-color: #aaaaaa;
+    --review-diff-spacer-hover-bg-color: #e8e8e8;
     --review-diff-spacer-hover-fg-color: #666666;
-    --review-diff-line-fg-color: #0C0C0D;
-    --review-diff-gutter-border-color: #CCCCCC;
+    --review-diff-line-fg-color: #0c0c0d;
+    --review-diff-gutter-border-color: #cccccc;
     --review-diff-gutter-fg-color: rgba(0, 0, 0, 0.3);
-    --review-diff-add-comment-bg-color: #FFFEE0;
-    --review-diff-add-comment-fg-color: #FF008C;
-    --review-diff-line-added-bg-color: #EAFFEA;
-    --review-diff-line-removed-bg-color: #FFECEC;
-    --review-diff-line-changed-bg-color: #EAF0FE;
-    --review-diff-line-hover-bg-color: #FFFEE0;
-    --review-diff-change-added-bg-color: #A6F3A6;
-    --review-diff-change-removed-bg-color: #F8CBCB;
+    --review-diff-add-comment-bg-color: #fffee0;
+    --review-diff-add-comment-fg-color: #ff008c;
+    --review-diff-line-added-bg-color: #eaffea;
+    --review-diff-line-removed-bg-color: #ffecec;
+    --review-diff-line-changed-bg-color: #eaf0fe;
+    --review-diff-line-hover-bg-color: #fffee0;
+    --review-diff-change-added-bg-color: #a6f3a6;
+    --review-diff-change-removed-bg-color: #f8cbcb;
 }

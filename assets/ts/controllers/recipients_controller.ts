@@ -6,9 +6,9 @@ export default class extends Controller {
     public static targets = ['recipientList', 'recipientTemplate'];
     public static values  = {count: Number};
 
-    declare recipientListTarget: HTMLElement;
-    declare recipientTemplateTarget: HTMLTemplateElement;
-    declare countValue: number;
+    private readonly declare recipientListTarget: HTMLElement;
+    private readonly declare recipientTemplateTarget: HTMLTemplateElement;
+    private declare countValue: number;
 
     public addRecipient(event: Event): void {
         Events.stop(event);
@@ -28,8 +28,8 @@ export default class extends Controller {
         this.recipientListTarget.appendChild(element);
     }
 
-    public deleteRecipient(event: Event) : void{
+    public deleteRecipient(event: Event): void {
         Events.stop(event);
-        (<HTMLElement>event.target).closest('[data-role="recipient"]')?.remove();
+        (event.target as HTMLElement).closest('[data-role="recipient"]')?.remove();
     }
 }

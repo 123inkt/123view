@@ -1,13 +1,11 @@
 import type User from './User';
 
 export default class MentionsDropdown {
-    private dropdown: HTMLElement;
-    private visible: boolean                    = false;
-    private users: User[] = [];
-    private selected: number                    = 0;
+    private visible: boolean = false;
+    private users: User[]    = [];
+    private selected: number = 0;
 
-    constructor(dropdown: HTMLElement) {
-        this.dropdown = dropdown;
+    constructor(private readonly dropdown: HTMLElement) {
     }
 
     public setUsers(users: User[]): void {
@@ -21,7 +19,7 @@ export default class MentionsDropdown {
         this.dropdown.style.display = 'block';
     }
 
-    hide() {
+    public hide(): void {
         this.visible                = false;
         this.dropdown.style.display = '';
         this.dropdown.innerHTML     = '';

@@ -1,5 +1,4 @@
 export default class DataSet {
-
     public static string(element: HTMLElement, key: string, defaultValue: string | null = null): string {
         const value = DataSet.stringOrNull(element, key, defaultValue);
         if (value === null) {

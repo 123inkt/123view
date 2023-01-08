@@ -1,15 +1,15 @@
 .review-revision--grid {
     display: grid;
-    grid-template-columns: auto 1fr 50px;
     grid-column-gap: 5px;
+    grid-template-columns: auto 1fr 50px;
 }
 
 .review-revision--author-time {
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 
 .review-revision--commit-hash {
-    font-size: .7rem;
+    font-size: 0.7rem;
 }
 
 .review-revision--header {
@@ -17,13 +17,13 @@
 }
 
 .review-revision--selection .form-check {
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 .review-revision--selection .form-check-input {
-    margin-right: 0;
     margin-left: 3px;
+    margin-right: 0;
 }
 
 .review-revision-list--title {
