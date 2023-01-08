@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Revision;
 
+use Doctrine\Common\Collections\Collection;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
@@ -11,7 +12,7 @@ use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 
 class RevisionVisibilityService
 {
-    public function __construct(private readonly ?User $user, readonly RevisionVisibilityRepository $visibilityRepository)
+    public function __construct(private readonly ?User $user, private readonly RevisionVisibilityRepository $visibilityRepository)
     {
     }
 
@@ -22,7 +23,7 @@ class RevisionVisibilityService
      */
     public function getVisibleRevisions(CodeReview $review, iterable $revisions): array
     {
-        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => $this->user->getId()]);
+        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->user?->getId()]);
 
         $result = [];
         foreach ($revisions as $revision) {
@@ -71,9 +72,9 @@ class RevisionVisibilityService
     }
 
     /**
-     * @param Revision[] $revisions
+     * @param array<Revision>|Collection<int, Revision> $revisions
      */
-    public function setRevisionVisibility(CodeReview $review, iterable $revisions, User $user, bool $visible): void
+    public function setRevisionVisibility(CodeReview $review, array|Collection $revisions, User $user, bool $visible): void
     {
         if (count($revisions) === 0) {
             return;

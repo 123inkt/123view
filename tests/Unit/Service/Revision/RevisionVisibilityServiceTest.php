@@ -20,6 +20,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
 {
     private RevisionVisibilityRepository&MockObject $visibilityRepository;
     private RevisionVisibilityService               $service;
+    private User                                    $user;
 
     protected function setUp(): void
     {

@@ -11,6 +11,7 @@ use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use DR\Review\Utility\Assert;
 
 class CodeReviewService
 {
@@ -44,7 +45,7 @@ class CodeReviewService
             }
             $reviewer->setState(CodeReviewerStateType::OPEN);
             $this->reviewerRepository->save($reviewer, true);
-            $this->visibilityService->setRevisionVisibility($review, $previousRevisions, $reviewer->getUser(), false);
+            $this->visibilityService->setRevisionVisibility($review, $previousRevisions, Assert::notNull($reviewer->getUser()), false);
         }
     }
 }
