@@ -17,6 +17,9 @@
         "regenerator-runtime": "^0.13.11",
         "sass": "^1.57.1",
         "sass-loader": "^13.2.0",
+        "stylelint": "^14.16.1",
+        "stylelint-config-sass-guidelines": "^9.0.1",
+        "stylelint-config-standard": "^29.0.0",
         "ts-loader": "^9.4.2",
         "ts-node": "^10.9.1",
         "typescript": "^4.9.4",
@@ -27,6 +30,8 @@
     "scripts": {
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "stylelint": "stylelint \"assets/**/*.scss\"",
+        "stylelint-fix": "stylelint \"assets/**/*.scss\" --fix"
     }
 }

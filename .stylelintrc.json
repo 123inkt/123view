@@ -1,0 +1,33 @@
+{
+    "extends": ["stylelint-config-standard", "stylelint-config-sass-guidelines"],
+    "rules": {
+        "alpha-value-notation": "number",
+        "color-function-notation": "legacy",
+        "color-hex-length": "long",
+        "declaration-colon-newline-after": null,
+        "declaration-no-important": true,
+        "function-no-unknown": [true, {"ignoreFunctions": ["unquote", "darken"]}],
+        "font-weight-notation": "named-where-possible",
+        "indentation": [4, {"ignore": ["inside-parens", "param", "value"]}],
+        "max-nesting-depth": 5,
+        "max-line-length": 150,
+        "no-descending-specificity": null,
+        "order/order": [
+            "dollar-variables",
+            "custom-properties",
+            "declarations",
+            "rules"
+        ],
+        "property-no-vendor-prefix": null,
+        "scss/at-mixin-pattern": "[a-z][a-z0-9_-]+",
+        "selector-class-pattern": "[a-z][a-z0-9_-]+",
+        "selector-list-comma-newline-after": null,
+        "selector-max-compound-selectors": 5,
+        "selector-max-type": 0,
+        "selector-no-vendor-prefix": null,
+        "selector-no-qualifying-type": [true, {"ignore": ["attribute", "class"]}],
+        "selector-type-no-unknown": [true, {"ignore": "custom-elements"}],
+        "shorthand-property-no-redundant-values": null,
+        "value-no-vendor-prefix": null
+    }
+}
