@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review;
 
 use DR\Review\Utility\Assert;
+use Locale;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -20,6 +21,7 @@ class Kernel extends BaseKernel
     {
         parent::boot();
         date_default_timezone_set(Assert::isString($this->getContainer()->getParameter('timezone')));
+        Locale::setDefault(Assert::isString($this->getContainer()->getParameter('locale')));
     }
 
     protected function configureContainer(ContainerConfigurator $container): void

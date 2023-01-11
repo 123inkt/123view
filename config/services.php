@@ -50,6 +50,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 
 return static function (ContainerConfigurator $container): void {
     $container->parameters()->set('timezone', '%env(APP_TIMEZONE)%');
+    $container->parameters()->set('locale', '%env(APP_LOCALE)%');
     $services = $container->services();
 
     $services
