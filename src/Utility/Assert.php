@@ -44,6 +44,12 @@ class Assert
 
     /**
      * Assert value is int
+     * @template       T
+     * @phpstan-assert int $value
+     *
+     * @param T $value
+     *
+     * @return T&int
      */
     public static function isInt(mixed $value): int
     {
@@ -56,6 +62,12 @@ class Assert
 
     /**
      * Assert value is a string
+     * @template       T
+     * @phpstan-assert string $value
+     *
+     * @param T $value
+     *
+     * @return T&string
      */
     public static function isString(mixed $value): string
     {
