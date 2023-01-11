@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Utility;
 
-use DR\Review\Entity\Notification\Rule;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Assert;
 use RuntimeException;
+use stdClass;
 
 /**
  * @coversDefaultClass \DR\Review\Utility\Assert
@@ -28,7 +28,7 @@ class AssertTest extends AbstractTestCase
      */
     public function testNotNullSuccess(): void
     {
-        $rule = new Rule();
+        $rule = new stdClass();
         static::assertSame($rule, Assert::notNull($rule));
     }
 
@@ -39,7 +39,7 @@ class AssertTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be an array');
-        Assert::isArray('foobar');
+        Assert::isArray('foobar'); // @phpstan-ignore-line
     }
 
     /**
@@ -47,7 +47,7 @@ class AssertTest extends AbstractTestCase
      */
     public function testIsArray(): void
     {
-        $rules = [new Rule()];
+        $rules = [new stdClass()];
         static::assertSame($rules, Assert::isArray($rules));
     }
 
@@ -66,7 +66,7 @@ class AssertTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be an int');
-        Assert::isInt('string');
+        Assert::isInt('string'); // @phpstan-ignore-line
     }
 
     /**
@@ -76,7 +76,7 @@ class AssertTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be a string');
-        Assert::isString(123);
+        Assert::isString(123); // @phpstan-ignore-line
     }
 
     /**
@@ -102,7 +102,7 @@ class AssertTest extends AbstractTestCase
      */
     public function testNotFalseSuccess(): void
     {
-        $rule = new Rule();
+        $rule = new stdClass();
         static::assertSame($rule, Assert::notFalse($rule));
     }
 }

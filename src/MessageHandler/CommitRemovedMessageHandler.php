@@ -8,6 +8,7 @@ use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -22,6 +23,7 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
         private readonly RevisionRepository $revisionRepository,
+        private readonly RevisionVisibilityRepository $visibilityRepository,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly ReviewEventService $eventService
     ) {
@@ -55,6 +57,10 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
             $this->reviewRepository->save($review, true);
             $this->eventService->revisionRemovedFromReview($review, $revision, $reviewState);
         }
+
+        // remove all visibilities for this revision
+        $this->visibilityRepository->removeAll($this->visibilityRepository->findBy(['revision' => $revision->getId()]));
+
         $this->revisionRepository->remove($revision, true);
 
         $this->logger?->info("MessageHandler: revision removed {hash}", ['hash' => $message->commitHash]);

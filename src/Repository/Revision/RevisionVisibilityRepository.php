@@ -33,4 +33,17 @@ class RevisionVisibilityRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @param RevisionVisibility[] $entities
+     */
+    public function removeAll(iterable $entities, bool $flush = false): void
+    {
+        foreach ($entities as $visibility) {
+            $this->remove($visibility);
+        }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }
