@@ -19,8 +19,3 @@ parameters:
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with null will always evaluate to true\\.$#"
 			count: 2
 			path: tests/Unit/Utility/ArraysTest.php
-
-		-
-			message: "#^Return type of call to static method DR\\\\Review\\\\Utility\\\\Assert\\:\\:isArray\\(\\) contains unresolvable type\\.$#"
-			count: 1
-			path: tests/Unit/Utility/AssertTest.php
