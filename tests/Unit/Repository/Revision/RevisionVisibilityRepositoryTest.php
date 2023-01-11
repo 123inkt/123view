@@ -22,6 +22,7 @@ class RevisionVisibilityRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
      * @covers ::saveAll
+     * @covers ::removeAll
      * @throws Exception
      */
     public function testSaveAll(): void
@@ -42,6 +43,10 @@ class RevisionVisibilityRepositoryTest extends AbstractRepositoryTestCase
 
         // fetch
         static::assertCount(1, $repository->findAll());
+
+        // remove
+        $repository->removeAll([$visibility], true);
+        static::assertCount(0, $repository->findAll());
     }
 
     /**
