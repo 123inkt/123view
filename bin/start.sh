@@ -31,7 +31,7 @@ fi
 ##
 # Stop current containers
 #
-docker-compose down
+docker compose down
 
 ##
 # setup network
@@ -59,7 +59,7 @@ if [ "$mode" == 'prod' ]; then
     cp ${SSL_CERTIFICATE_KEY} ./docker/ssl/production/production.key
 
     if [ "$REBUILD" == 'yes' ]; then
-        DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+        DOCKER_BUILDKIT=1 docker compose -f docker-compose.yml -f docker-compose.production.yml build
     fi
     docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
     docker compose logs --tail=5 --follow
@@ -74,7 +74,7 @@ elif [ "$mode" == 'dev' ]; then
     set +o allexport
 
     if [ "$REBUILD" == 'yes' ]; then
-        DOCKER_BUILDKIT=1 docker-compose build
+        DOCKER_BUILDKIT=1 docker compose build
     fi
     docker compose up -d --remove-orphans
     docker compose logs --tail=5 --follow
