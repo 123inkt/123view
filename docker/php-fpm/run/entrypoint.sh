@@ -13,9 +13,9 @@ else
 fi
 
 ##
-# warmup cache
+# clear caches
 #
-php bin/console cache:clear
+php bin/console cache:pool:clear cache.system_clearer
 
 ##
 # run doctrine migrations
