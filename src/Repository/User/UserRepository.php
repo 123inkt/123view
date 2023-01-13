@@ -77,6 +77,8 @@ class UserRepository extends ServiceEntityRepository
     public function findUsersWithExclusion(array $userIds): array
     {
         $builder = $this->createQueryBuilder('u');
+        $builder->select(['u', 's']);
+        $builder->leftJoin('u.setting', 's');
         if (count($userIds) > 0) {
             $builder->where($builder->expr()->notIn('u.id', $userIds));
         }
