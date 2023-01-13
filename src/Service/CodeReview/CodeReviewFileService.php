@@ -34,25 +34,27 @@ class CodeReviewFileService
     {
         $cacheKey = $this->getReviewCacheKey($review, $revisions);
 
-        // generate small diff for common usage
-        $reducedFiles = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(0, true));
+        // generate diff files
+        $files = $this->diffService->getDiffFiles(
+            Assert::notNull($review->getRepository()),
+            $revisions,
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
+        );
 
-        $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $reducedFiles, $cacheKey): DirectoryTreeNode {
-            // generate full size files for diff
-            $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(9999999));
+        $fileTree = $this->revisionCache->get($cacheKey, function () use ($files, $cacheKey): DirectoryTreeNode {
             // add full size diff files to cache
             foreach ($files as $diffFile) {
                 $this->revisionCache->get($this->getDiffFileCacheKey($cacheKey, $diffFile), static fn() => $diffFile);
             }
 
             // generate file tree
-            return $this->treeGenerator->generate($reducedFiles)
+            return $this->treeGenerator->generate($files)
                 ->flatten()
                 ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename()));
         });
 
         // get selected file (if any)
-        $selectedFile = $this->diffFinder->findFileByPath($reducedFiles, $filePath);
+        $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);
 
         // get full file from cache
         if ($selectedFile !== null) {
