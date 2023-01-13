@@ -71,11 +71,9 @@ class CodeReviewFileServiceTest extends AbstractTestCase
                 new ReturnCallback(static fn($repository, $callback) => $callback()),
                 new ReturnCallback(static fn($repository, $callback) => $diffFileA)
             );
-        $this->diffService->expects(self::exactly(2))->method('getDiffFiles')
-            ->withConsecutive(
-                [$repository, [$revision], new FileDiffOptions(0, true)],
-                [$repository, [$revision], new FileDiffOptions(9999999)]
-            )->willReturn([$diffFileA], [$diffFileB]);
+        $this->diffService->expects(self::once())->method('getDiffFiles')
+            ->with($repository, [$revision], new FileDiffOptions(9999999))
+            ->willReturn([$diffFileA], [$diffFileB]);
 
         $this->treeGenerator->expects(self::once())->method('generate')->with([$diffFileA])->willReturn($tree);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
