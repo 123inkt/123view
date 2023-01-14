@@ -7,6 +7,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Service\CodeHighlight\HighlightedFileService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
@@ -38,7 +39,7 @@ class CodeReviewFileService
         $files = $this->diffService->getDiffFiles(
             Assert::notNull($review->getRepository()),
             $revisions,
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, 6, HighlightedFileService::MAX_LINE_COUNT)
         );
 
         $fileTree = $this->revisionCache->get($cacheKey, function () use ($files, $cacheKey): DirectoryTreeNode {

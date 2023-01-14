@@ -11,7 +11,7 @@ use Highlight\Highlighter;
 class HighlightedFileService
 {
     /** To ensure performance, skip highlighting for files larger than */
-    private const MAX_LINE_COUNT = 3000;
+    public const MAX_LINE_COUNT = 3000;
 
     public function __construct(
         private readonly FilenameToLanguageTranslator $translator,

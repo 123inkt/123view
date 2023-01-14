@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
@@ -22,8 +23,11 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
     /**
      * @param Traversable<ReviewDiffStrategyInterface> $reviewDiffStrategies
      */
-    public function __construct(private readonly GitDiffService $diffService, private readonly Traversable $reviewDiffStrategies)
-    {
+    public function __construct(
+        private readonly GitDiffService $diffService,
+        private readonly Traversable $reviewDiffStrategies,
+        private readonly DiffFileUpdater $diffFileUpdater,
+    ) {
     }
 
     /**
@@ -37,13 +41,17 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
 
         if (count($revisions) === 1) {
             // get the diff for the single revision
-            return $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
+            $files = $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
+
+            return $this->diffFileUpdater->update($files, $options);
         }
 
         /** @var ReviewDiffStrategyInterface $strategy */
         foreach ($this->reviewDiffStrategies as $strategy) {
             try {
-                return $strategy->getDiffFiles($repository, $revisions, $options);
+                $files = $strategy->getDiffFiles($repository, $revisions, $options);
+
+                return $this->diffFileUpdater->update($files, $options);
             } catch (Throwable $exception) {
                 $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
                 continue;

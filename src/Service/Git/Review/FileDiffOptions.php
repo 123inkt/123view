@@ -7,12 +7,15 @@ class FileDiffOptions
 {
     public const DEFAULT_LINE_DIFF = 9999999;
 
-    public function __construct(public readonly int $unifiedDiffLines, public readonly bool $minimal = false)
-    {
+    public function __construct(
+        public readonly int $unifiedDiffLines,
+        public readonly ?int $visibleDiffLines = null,
+        public readonly ?int $maxInvisibleLines = null
+    ) {
     }
 
     public function __toString(): string
     {
-        return sprintf('fdo-%s-%s', $this->unifiedDiffLines, $this->minimal ? 1 : 0);
+        return sprintf('fdo-%s-%s-%s', $this->unifiedDiffLines, $this->visibleDiffLines, $this->maxInvisibleLines);
     }
 }

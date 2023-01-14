@@ -26,6 +26,7 @@ class GitDiffService implements LoggerAwareInterface
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $builderFactory,
         private readonly GitDiffCommandFactory $commandFactory,
+        private readonly DiffFileUpdater $diffFileUpdater,
         private readonly DiffParser $parser
     ) {
     }
@@ -75,7 +76,7 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output, $options?->minimal ?? false);
+        return $this->parser->parse($output);
     }
 
     /**
@@ -97,6 +98,6 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output, $options?->minimal ?? false);
+        return $this->parser->parse($output);
     }
 }

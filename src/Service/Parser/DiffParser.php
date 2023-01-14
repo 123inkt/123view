@@ -24,7 +24,7 @@ class DiffParser
      * @return DiffFile[]
      * @throws ParseException
      */
-    public function parse(string $patch, bool $minimal = false): array
+    public function parse(string $patch): array
     {
         $files = [];
 
@@ -50,11 +50,8 @@ class DiffParser
 
             $diffFile = $this->fileParser->parse($patchFile, $diffFile);
 
-            if ($minimal) {
-                $diffFile->getNrOfLinesAdded();
-                $diffFile->getNrOfLinesRemoved();
-                $diffFile->removeBlocks();
-            }
+            // warmup internal counters
+            $diffFile->getTotalNrOfLines();
 
             $files[] = $diffFile;
         }
