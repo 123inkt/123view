@@ -136,7 +136,7 @@ return [
     'review.no.authors'                           => 'No authors',
     'review.no.files'                             => 'No files',
     'review.no.revisions'                         => 'No revisions',
-    'review.search.hint'                          => 'Search any review, or for a id: <code>id:12345</code>, for state: <code>state:open|closed</code>, for author: <code>author:me|&lt;email&gt;|&lt;name&gt;</code>.',
+    'review.search.hint'                          => 'Search for id: <code>id:12345</code>, for state: <code>state:open|closed</code>, for author: <code>author:me|&lt;email&gt;|&lt;name&gt;</code>, for reviewer: <code>reviewer:me|&lt;email&gt;|&lt;name&gt;</code>.',
     'review.was.updated'                          => 'The review was updated',
     'reviewer'                                    => 'Reviewer',
     'reviewers'                                   => 'Reviewers',
@@ -205,4 +205,7 @@ return [
     'users'                                       => 'Users',
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
     'you'                                         => 'You',
+    'rejected'                                    => 'Rejected',
+    'accepted'                                    => 'Accepted',
+    'in.review'                                   => 'In review'
 ];

@@ -21,8 +21,10 @@ class CodeReviewQueryBuilder
     public function prepare(int $repositoryId): self
     {
         $this->queryBuilder
-            ->select('r', 'rv')
+            ->select('r', 'rv', 'rvwr', 'u')
             ->leftJoin('r.revisions', 'rv')
+            ->leftJoin('r.reviewers', 'rvwr')
+            ->leftJoin('rvwr.user', 'u')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
             ->orderBy('r.id', 'DESC');
@@ -59,6 +61,18 @@ class CodeReviewQueryBuilder
             } else {
                 $this->queryBuilder->andWhere('rv.authorEmail LIKE :searchAuthor OR rv.authorName LIKE :searchAuthor');
                 $this->queryBuilder->setParameter('searchAuthor', '%' . addcslashes($matches[1], '%_') . '%');
+            }
+            $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
+        }
+
+        if (preg_match('/reviewer:(\S+)/', $searchQuery, $matches) === 1) {
+            // search for current user
+            if ($matches[1] === 'me') {
+                $this->queryBuilder->andWhere('u.email = :reviewerEmail');
+                $this->queryBuilder->setParameter('reviewerEmail', (string)$user->getEmail());
+            } else {
+                $this->queryBuilder->andWhere('u.email LIKE :searchReviewer OR u.name LIKE :searchReviewer');
+                $this->queryBuilder->setParameter('searchReviewer', '%' . addcslashes($matches[1], '%_') . '%');
             }
             $searchQuery = trim(str_replace($matches[0], '', $searchQuery));
         }
