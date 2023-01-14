@@ -80,6 +80,20 @@ class DirectoryTreeNode
     }
 
     /**
+     * @return T[]
+     */
+    public function getFilesRecursive(): array
+    {
+        $files = [$this->files];
+
+        foreach ($this->directories as $directory) {
+            $files[] = $directory->getFilesRecursive();
+        }
+
+        return array_merge(...$files);
+    }
+
+    /**
      * @return DirectoryTreeNode<T>
      */
     public function flatten(): self

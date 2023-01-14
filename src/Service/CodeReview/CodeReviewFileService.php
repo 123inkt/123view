@@ -35,14 +35,15 @@ class CodeReviewFileService
     {
         $cacheKey = $this->getReviewCacheKey($review, $revisions);
 
-        // generate diff files
-        $files = $this->diffService->getDiffFiles(
-            Assert::notNull($review->getRepository()),
-            $revisions,
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, 6, HighlightedFileService::MAX_LINE_COUNT)
-        );
+        /** @var DirectoryTreeNode<DiffFile> $fileTree */
+        $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $cacheKey): DirectoryTreeNode {
+            // generate diff files
+            $files = $this->diffService->getDiffFiles(
+                Assert::notNull($review->getRepository()),
+                $revisions,
+                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, 6, HighlightedFileService::MAX_LINE_COUNT)
+            );
 
-        $fileTree = $this->revisionCache->get($cacheKey, function () use ($files, $cacheKey): DirectoryTreeNode {
             // add full size diff files to cache
             foreach ($files as $diffFile) {
                 $this->revisionCache->get($this->getDiffFileCacheKey($cacheKey, $diffFile), static fn() => $diffFile);
@@ -55,7 +56,7 @@ class CodeReviewFileService
         });
 
         // get selected file (if any)
-        $selectedFile = $this->diffFinder->findFileByPath($files, $filePath);
+        $selectedFile = $this->diffFinder->findFileByPath($fileTree->getFilesRecursive(), $filePath);
 
         // get full file from cache
         if ($selectedFile !== null) {
