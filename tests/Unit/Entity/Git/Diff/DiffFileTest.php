@@ -33,6 +33,20 @@ class DiffFileTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::addBlocks
+     * @covers ::getBlocks
+     */
+    public function testAddBlocks(): void
+    {
+        $file = new DiffFile();
+        static::assertCount(0, $file->getBlocks());
+
+        $block = new DiffBlock();
+        $file->addBlocks([$block]);
+        static::assertSame([$block], $file->getBlocks());
+    }
+
+    /**
      * @covers ::getFileMode
      */
     public function testGetFileMode(): void
