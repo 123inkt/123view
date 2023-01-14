@@ -18,6 +18,6 @@ class FileDiffOptionsTest extends AbstractTestCase
     public function testToString(): void
     {
         $options = new FileDiffOptions(5);
-        static::assertSame('fdo-5-0', (string)$options);
+        static::assertSame('fdo-5', (string)$options);
     }
 }

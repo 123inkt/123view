@@ -7,6 +7,8 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Service\CodeHighlight\HighlightedFileService;
+use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
@@ -20,6 +22,7 @@ class CodeReviewFileService
         private readonly CacheInterface $revisionCache,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly FileTreeGenerator $treeGenerator,
+        private readonly DiffFileUpdater $diffFileUpdater,
         private readonly DiffFinder $diffFinder
     ) {
     }
@@ -34,25 +37,31 @@ class CodeReviewFileService
     {
         $cacheKey = $this->getReviewCacheKey($review, $revisions);
 
-        // generate small diff for common usage
-        $reducedFiles = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(0, true));
+        /** @var DirectoryTreeNode<DiffFile> $fileTree */
+        $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $cacheKey): DirectoryTreeNode {
+            // generate diff files
+            $files = $this->diffService->getDiffFiles(
+                Assert::notNull($review->getRepository()),
+                $revisions,
+                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
+            );
 
-        $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $reducedFiles, $cacheKey): DirectoryTreeNode {
-            // generate full size files for diff
-            $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, new FileDiffOptions(9999999));
-            // add full size diff files to cache
+            // prune large diff files
+            $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);
+
+            // add file diff to cache
             foreach ($files as $diffFile) {
                 $this->revisionCache->get($this->getDiffFileCacheKey($cacheKey, $diffFile), static fn() => $diffFile);
             }
 
             // generate file tree
-            return $this->treeGenerator->generate($reducedFiles)
+            return $this->treeGenerator->generate($files)
                 ->flatten()
                 ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename()));
         });
 
         // get selected file (if any)
-        $selectedFile = $this->diffFinder->findFileByPath($reducedFiles, $filePath);
+        $selectedFile = $this->diffFinder->findFileByPath($fileTree->getFilesRecursive(), $filePath);
 
         // get full file from cache
         if ($selectedFile !== null) {

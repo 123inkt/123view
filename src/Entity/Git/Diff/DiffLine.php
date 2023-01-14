@@ -12,6 +12,7 @@ class DiffLine
 
     public ?int                 $lineNumberBefore = null;
     public ?int                 $lineNumberAfter  = null;
+    public bool                 $visible          = true;
     public int                  $state;
     public DiffChangeCollection $changes;
 

@@ -43,6 +43,9 @@ COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.c
 ## Copy composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+## Setup home
+RUN mkdir -p /home/123view && chmod a+rwx /home/123view
+
 ###################################################################################
 # FINAL STAGES                                                                    #
 ###################################################################################

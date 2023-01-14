@@ -135,9 +135,6 @@
             "phpunit --coverage-clover coverage.xml",
             "phpfci inspect coverage.xml php://stdout --exit-code-on-failure"
         ],
-        "auto-scripts": {"cache:clear --no-warmup": "symfony-cmd"},
-        "post-install-cmd": ["@auto-scripts"],
-        "post-update-cmd": ["@auto-scripts"],
         "cache:destroy": [
             "@php bin/console cache:clear --env=prod --no-debug",
             "@php bin/console cache:clear --env=dev  --no-debug",

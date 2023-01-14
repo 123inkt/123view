@@ -37,7 +37,7 @@ class UpdateFileSeenStatusController extends AbstractController
         $files      = $this->diffService->getDiffFiles(
             Assert::notNull($review->getRepository()),
             $review->getRevisions()->toArray(),
-            new FileDiffOptions(0)
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
         );
 
         // find filepath in files

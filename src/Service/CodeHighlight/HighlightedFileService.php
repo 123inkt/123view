@@ -11,7 +11,7 @@ use Highlight\Highlighter;
 class HighlightedFileService
 {
     /** To ensure performance, skip highlighting for files larger than */
-    private const MAX_LINE_COUNT = 3000;
+    public const MAX_LINE_COUNT = 3000;
 
     public function __construct(
         private readonly FilenameToLanguageTranslator $translator,
@@ -23,16 +23,15 @@ class HighlightedFileService
     /**
      * @throws Exception
      */
-    public function fromDiffFile(DiffFile $diffFile): HighlightedFile
+    public function fromDiffFile(DiffFile $diffFile): ?HighlightedFile
     {
         $languageName = $this->translator->translate($diffFile->getPathname());
-        $lines        = $diffFile->getLines();
-
-        if ($languageName !== null && count($lines) > 0 && count($lines) < self::MAX_LINE_COUNT) {
-            $lines = $this->splitter->split($this->highlighter->highlight($languageName, implode("\n", $lines))->value);
-        } else {
-            $lines = array_map(static fn($line) => htmlspecialchars($line, ENT_QUOTES), $lines);
+        if ($languageName === null || $diffFile->getTotalNrOfLines() >= self::MAX_LINE_COUNT || count($diffFile->getBlocks()) > 1) {
+            return null;
         }
+
+        $lines = $diffFile->getLines();
+        $lines = $this->splitter->split($this->highlighter->highlight($languageName, implode("\n", $lines))->value);
 
         return new HighlightedFile($diffFile->getPathname(), $lines);
     }

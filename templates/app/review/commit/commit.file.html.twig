@@ -52,6 +52,11 @@
             <div class="diff-file__file-diff">
                 {%- for block in file.blocks -%}
                     {%- include 'app/review/commit/commit.block.html.twig' -%}
+
+                    {%- if not loop.last -%}
+                        {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
+                    {%- endif -%}
+
                 {%- endfor -%}
             </div>
         {% else %}

@@ -33,6 +33,20 @@ class DiffFileTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::addBlocks
+     * @covers ::getBlocks
+     */
+    public function testAddBlocks(): void
+    {
+        $file = new DiffFile();
+        static::assertCount(0, $file->getBlocks());
+
+        $block = new DiffBlock();
+        $file->addBlocks([$block]);
+        static::assertSame([$block], $file->getBlocks());
+    }
+
+    /**
      * @covers ::getFileMode
      */
     public function testGetFileMode(): void
@@ -208,6 +222,7 @@ class DiffFileTest extends AbstractTestCase
     /**
      * @covers ::getNrOfLinesAdded
      * @covers ::getNrOfLinesRemoved
+     * @covers ::getTotalNrOfLines
      * @covers ::updateLinesChanged
      */
     public function testGetNrOfLinesAdded(): void
@@ -229,6 +244,10 @@ class DiffFileTest extends AbstractTestCase
         $file = new DiffFile();
         $file->addBlock($block);
         static::assertSame(2, $file->getNrOfLinesRemoved());
+
+        $file = new DiffFile();
+        $file->addBlock($block);
+        static::assertSame(4, $file->getTotalNrOfLines());
     }
 
     /**

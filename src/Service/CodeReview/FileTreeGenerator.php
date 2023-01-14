@@ -18,7 +18,11 @@ class FileTreeGenerator
         /** @var DirectoryTreeNode<DiffFile> $node */
         $node = new DirectoryTreeNode('root');
         foreach ($diffFiles as $file) {
-            $filepath = explode('/', trim((string)$file->getFile()?->getPathname(), '/'));
+            // create shallow copy of the file diff
+            $fileClone = clone $file;
+            $fileClone->removeBlocks();
+
+            $filepath = explode('/', trim((string)$fileClone->getFile()?->getPathname(), '/'));
 
             $node->addNode($filepath, $file);
         }

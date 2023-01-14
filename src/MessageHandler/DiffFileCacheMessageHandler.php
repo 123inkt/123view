@@ -53,11 +53,13 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        // fetch minimum review differences
-        $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray(), new FileDiffOptions(0));
-
         // fetch diff files for current review and trigger cache refresh
-        $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions->toArray(), new FileDiffOptions(9999999));
+        $this->diffService->getDiffFiles(
+            Assert::notNull($review->getRepository()),
+            $revisions->toArray(),
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
+        );
+
         $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);
     }
 }

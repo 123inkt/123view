@@ -25,6 +25,7 @@ services:
             dockerfile: ./docker/php-fpm/Dockerfile
         environment:
             PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
+            HOME: /home/123view
         depends_on:
             mysql:
                 condition: service_healthy
