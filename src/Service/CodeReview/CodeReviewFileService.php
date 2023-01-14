@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeHighlight\HighlightedFileService;
+use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
@@ -21,6 +22,7 @@ class CodeReviewFileService
         private readonly CacheInterface $revisionCache,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly FileTreeGenerator $treeGenerator,
+        private readonly DiffFileUpdater $diffFileUpdater,
         private readonly DiffFinder $diffFinder
     ) {
     }
@@ -41,10 +43,13 @@ class CodeReviewFileService
             $files = $this->diffService->getDiffFiles(
                 Assert::notNull($review->getRepository()),
                 $revisions,
-                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, 6, HighlightedFileService::MAX_LINE_COUNT)
+                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
             );
 
-            // add full size diff files to cache
+            // prune large diff files
+            $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);
+
+            // add file diff to cache
             foreach ($files as $diffFile) {
                 $this->revisionCache->get($this->getDiffFileCacheKey($cacheKey, $diffFile), static fn() => $diffFile);
             }

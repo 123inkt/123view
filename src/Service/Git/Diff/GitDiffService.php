@@ -26,7 +26,6 @@ class GitDiffService implements LoggerAwareInterface
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $builderFactory,
         private readonly GitDiffCommandFactory $commandFactory,
-        private readonly DiffFileUpdater $diffFileUpdater,
         private readonly DiffParser $parser
     ) {
     }

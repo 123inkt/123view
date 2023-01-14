@@ -44,20 +44,15 @@ class HighlightedFileServiceTest extends AbstractTestCase
      */
     public function testGetHighlightedFileUnknownLanguage(): void
     {
-        $lineA               = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'highlighted')]);
-        $lineB               = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'data')]);
-        $block               = new DiffBlock();
-        $block->lines        = [$lineA, $lineB];
         $file                = new DiffFile();
         $file->filePathAfter = '';
-        $file->addBlock($block);
 
         $this->translator->expects(self::once())->method('translate')->with('')->willReturn(null);
 
         $this->highlighter->expects(self::never())->method('highlight');
         $this->splitter->expects(self::never())->method('split');
 
-        static::assertSame(["highlighted", "data"], $this->service->fromDiffFile($file)->lines);
+        static::assertNull($this->service->fromDiffFile($file));
     }
 
     /**

@@ -23,11 +23,8 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
     /**
      * @param Traversable<ReviewDiffStrategyInterface> $reviewDiffStrategies
      */
-    public function __construct(
-        private readonly GitDiffService $diffService,
-        private readonly Traversable $reviewDiffStrategies,
-        private readonly DiffFileUpdater $diffFileUpdater,
-    ) {
+    public function __construct(private readonly GitDiffService $diffService, private readonly Traversable $reviewDiffStrategies)
+    {
     }
 
     /**
@@ -41,17 +38,13 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
 
         if (count($revisions) === 1) {
             // get the diff for the single revision
-            $files = $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
-
-            return $this->diffFileUpdater->update($files, $options);
+            return $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
         }
 
         /** @var ReviewDiffStrategyInterface $strategy */
         foreach ($this->reviewDiffStrategies as $strategy) {
             try {
-                $files = $strategy->getDiffFiles($repository, $revisions, $options);
-
-                return $this->diffFileUpdater->update($files, $options);
+                return $strategy->getDiffFiles($repository, $revisions, $options);
             } catch (Throwable $exception) {
                 $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
                 continue;

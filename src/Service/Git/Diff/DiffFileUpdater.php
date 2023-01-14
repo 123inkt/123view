@@ -6,7 +6,6 @@ namespace DR\Review\Service\Git\Diff;
 use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
-use DR\Review\Service\Git\Review\FileDiffOptions;
 
 class DiffFileUpdater
 {
@@ -15,20 +14,16 @@ class DiffFileUpdater
      *
      * @return  DiffFile[]
      */
-    public function update(array $files, ?FileDiffOptions $options): array
+    public function update(array $files, int $visibleDiffLines, int $maxInvisibleLines): array
     {
-        if ($options === null || $options->visibleDiffLines === null) {
-            return $files;
-        }
-
         foreach ($files as $file) {
             $blocks = $file->getBlocks();
             $file->removeBlocks();
 
             foreach ($blocks as $block) {
-                $this->updateBlockVisibility($block, $options->visibleDiffLines);
+                $this->updateBlockVisibility($block, $visibleDiffLines);
 
-                if ($options->maxInvisibleLines !== null && $file->getTotalNrOfLines() >= $options->maxInvisibleLines) {
+                if ($file->getTotalNrOfLines() >= $maxInvisibleLines) {
                     $file->addBlocks($this->removeInvisibleLines($block));
                 } else {
                     $file->addBlock($block);
