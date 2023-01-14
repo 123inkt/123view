@@ -62,15 +62,30 @@
 
                 <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
 
-                {# authors #}
-                {% set authors = reviewsModel.authors(review.revisions) %}
-                {% if authors|length > 0 %}
-                    <span class="list-group-item__authors d-block text-secondary fs-">
-                        {% for author in authors %}
-                            <small class="list-group-item__author">{{ author }}{% if not loop.last %},{% endif %}</small>
-                        {% endfor %}
-                    </span>
-                {% endif %}
+                <div>
+                    {# authors #}
+                    {% set authors = reviewsModel.authors(review.revisions) %}
+                    {% if authors|length > 0 %}
+                        <span class="text-secondary">
+                            <small>{{ 'author'|trans }}:
+                                {% for author in authors %}
+                                    {{ author }}{% if not loop.last %},{% endif %}
+                                {% endfor %}
+                            </small>
+                        </span>
+                    {% endif %}
+
+                    {# reviewers #}
+                    {% if review.reviewers|length > 0 %}
+                        <span class="ms-3 text-secondary">
+                            <small>{{ 'reviewer'|trans }}:
+                            {% for reviewer in review.reviewers %}
+                                {{ reviewer.user.name }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                            </small>
+                        </span>
+                    {% endif %}
+                </div>
             </a>
         {%- endfor -%}
     </div>

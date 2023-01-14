@@ -21,9 +21,10 @@ class CodeReviewQueryBuilder
     public function prepare(int $repositoryId): self
     {
         $this->queryBuilder
-            ->select('r', 'rv', 'rvwr')
+            ->select('r', 'rv', 'rvwr', 'u')
             ->leftJoin('r.revisions', 'rv')
             ->leftJoin('r.reviewers', 'rvwr')
+            ->leftJoin('rvwr.user', 'u')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
             ->orderBy('r.id', 'DESC');
