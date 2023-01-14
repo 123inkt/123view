@@ -167,7 +167,7 @@ class DiffFile
             $this->updateLinesChanged();
         }
 
-        return $this->linesTotal;
+        return $this->linesTotal ?? 0;
     }
 
     /**

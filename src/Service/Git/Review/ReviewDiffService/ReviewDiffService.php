@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
