@@ -25,6 +25,7 @@ class CommentPreviewController extends AbstractController
         $message = $request->getMessage();
         $message = $this->mentionService->replaceMentionedUsers($message, $this->mentionService->getMentionedUsers($message));
         $message = $this->converter->convert($message)->getContent();
+        $message = (string)preg_replace('/(<ul>|<\\/li>)\s*<br>/i', '$1', $message);
 
         return (new Response($message, 200, ['Content-Type' => 'text/html']))
             ->setMaxAge(86400)
