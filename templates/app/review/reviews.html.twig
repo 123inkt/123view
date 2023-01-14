@@ -10,8 +10,7 @@
                 <a class="nav-link active" href="#">{{ 'reviews'|trans }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"
-                   href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
+                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
                     {{ 'revisions'|trans }}
                 </a>
             </li>
@@ -20,11 +19,8 @@
 
     <form method="get">
         <div class="input-group">
-            <input type="search"
-                   name="search"
-                   value="{{ reviewsModel.searchQuery }} "
-                   class="form-control"
-                   {{ stimulus_controller('search-field') }}
+            <input type="search" name="search" value="{{ reviewsModel.searchQuery }} " class="form-control"
+                    {{ stimulus_controller('search-field') }}
                    placeholder="{{ 'search.review'|trans }}"/>
             {% if reviewsModel.searchQuery != '' %}
                 <a href="?search=" class="btn btn-secondary">&times;</a>
@@ -41,12 +37,28 @@
 
     <div class="list-group">
         {%- for review in reviewsModel.reviews -%}
-            <a class="list-group-item list-group-item-action"
-               href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}">
+            <a class="list-group-item list-group-item-action" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}">
 
-                <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
-                    {{ review.state|trans }}
-                </span>
+                {% if review.reviewers|length > 0 %}
+                    {% set reviewerState = review.getReviewersState() %}
+                    {% if reviewerState == 'open' %}
+                        <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+                            {{ 'in.review'|trans }}
+                        </span>
+                    {% elseif reviewerState == 'accepted' %}
+                        <span class="d-inline-flex px-1 text-success bg-success bg-opacity-10 border border-success border-opacity-100 rounded-2 float-end">
+                            {{ 'accepted'|trans }}
+                        </span>
+                    {% else %}
+                        <span class="d-inline-flex px-1 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-100 rounded-2 float-end">
+                            {{ 'rejected'|trans }}
+                        </span>
+                    {% endif %}
+                {% else %}
+                    <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+                        {{ review.state|trans }}
+                    </span>
+                {% endif %}
 
                 <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
 
