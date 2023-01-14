@@ -23,6 +23,9 @@ class MarkdownExtension extends AbstractExtension
 
     public function convert(string $string): string
     {
-        return $this->converter->convert($string)->getContent();
+        $result = $this->converter->convert($string)->getContent();
+
+        // strip <br> after <ul> and <li>
+        return preg_replace('/(<ul>|<\\/li>)\s*<br>/i', '$1', $result);
     }
 }
