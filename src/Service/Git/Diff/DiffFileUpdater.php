@@ -43,7 +43,7 @@ class DiffFileUpdater
 
             // line is visible if close enough to previously changed line
             if ($line->state === DiffLine::STATE_UNCHANGED) {
-                if ($changedLineNr !== null && $index - $changedLineNr < $visibleDiffLines) {
+                if ($changedLineNr !== null && $index - $changedLineNr <= $visibleDiffLines) {
                     $line->visible = true;
                 }
                 continue;
@@ -54,7 +54,7 @@ class DiffFileUpdater
             $line->visible = true;
 
             // mark all previously unchanged lines as visible
-            for ($i = 1; $i < $visibleDiffLines; $i++) {
+            for ($i = 1; $i <= $visibleDiffLines; $i++) {
                 $prevLine = $block->lines[$index - $i] ?? null;
                 if ($prevLine?->state !== DiffLine::STATE_UNCHANGED) {
                     break;
