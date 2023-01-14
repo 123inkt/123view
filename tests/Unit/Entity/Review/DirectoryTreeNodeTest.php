@@ -168,6 +168,20 @@ class DirectoryTreeNodeTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::getFilesRecursive
+     */
+    public function testGetFilesRecursive(): void
+    {
+        $objA = new stdClass();
+        $objB = new stdClass();
+
+        $node = new DirectoryTreeNode('root', [], []);
+        $node->addNode(['one'], $objA);
+        $node->addNode(['one', 'two'], $objB);
+        static::assertSame([$objA, $objB], $node->getFilesRecursive());
+    }
+
+    /**
      * @covers ::getFirstFileInTree
      */
     public function testGetFirstFileInTree(): void
