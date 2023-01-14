@@ -24,7 +24,7 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
     /**
      * @throws Exception|InvalidArgumentException
      */
-    public function fromDiffFile(Repository $repository, DiffFile $diffFile): HighlightedFile
+    public function fromDiffFile(Repository $repository, DiffFile $diffFile): ?HighlightedFile
     {
         $filePath = $diffFile->getPathname();
         $hashes   = $diffFile->hashStart . $diffFile->hashEnd;
