@@ -72,6 +72,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $diffFileB = new DiffFile();
         /** @var DirectoryTreeNode<DiffFile> $tree */
         $tree = new DirectoryTreeNode('node');
+        $tree->addNode(['file'], $diffFileA);
 
         $this->cache->expects(self::exactly(3))
             ->method('get')
@@ -80,9 +81,10 @@ class CodeReviewFileServiceTest extends AbstractTestCase
                 new ReturnCallback(static fn($repository, $callback) => $callback()),
                 new ReturnCallback(static fn($repository, $callback) => $diffFileA)
             );
+        $this->diffFileUpdater->expects(self::once())->method('update')->with([$diffFileA])->willReturn([$diffFileA]);
         $this->diffService->expects(self::once())->method('getDiffFiles')
             ->with($repository, [$revision], new FileDiffOptions(9999999))
-            ->willReturn([$diffFileA], [$diffFileB]);
+            ->willReturn([$diffFileA]);
 
         $this->treeGenerator->expects(self::once())->method('generate')->with([$diffFileA])->willReturn($tree);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
