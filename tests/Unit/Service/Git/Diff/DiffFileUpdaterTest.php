@@ -24,6 +24,7 @@ class DiffFileUpdaterTest extends AbstractTestCase
 
     /**
      * @covers ::update
+     * @covers ::updateBlockVisibility
      */
     public function testUpdateVisibleLines(): void
     {
@@ -47,6 +48,7 @@ class DiffFileUpdaterTest extends AbstractTestCase
 
     /**
      * @covers ::update
+     * @covers ::updateBlockVisibility
      */
     public function testUpdateVisibleLinesWithMultipleChanges(): void
     {
@@ -70,6 +72,7 @@ class DiffFileUpdaterTest extends AbstractTestCase
 
     /**
      * @covers ::update
+     * @covers ::removeInvisibleLines
      */
     public function testUpdateRemoveInvisibleLines(): void
     {
