@@ -48,6 +48,29 @@ class DiffFileUpdaterTest extends AbstractTestCase
     /**
      * @covers ::update
      */
+    public function testUpdateVisibleLinesWithMultipleChanges(): void
+    {
+        $lineA        = new DiffLine(DiffLine::STATE_ADDED, []);
+        $lineB        = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineC        = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineD        = new DiffLine(DiffLine::STATE_UNCHANGED, []);
+        $lineE        = new DiffLine(DiffLine::STATE_ADDED, []);
+        $block        = new DiffBlock();
+        $block->lines = [$lineA, $lineB, $lineC, $lineD, $lineE];
+        $file         = new DiffFile();
+        $file->addBlock($block);
+
+        $this->updater->update([$file], 1, 1000);
+        static::assertTrue($lineA->visible);
+        static::assertTrue($lineB->visible);
+        static::assertFalse($lineC->visible);
+        static::assertTrue($lineD->visible);
+        static::assertTrue($lineE->visible);
+    }
+
+    /**
+     * @covers ::update
+     */
     public function testUpdateRemoveInvisibleLines(): void
     {
         $lineA        = new DiffLine(DiffLine::STATE_UNCHANGED, []);
