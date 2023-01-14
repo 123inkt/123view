@@ -1,18 +1,11 @@
 {# invisible_lines:      int #}
 {# lineNrLengthBefore:   int #}
 {# lineNrLengthAfter:    int #}
-<div class="diff-file__block-spacer diff-file__block-spacer--clickable clearfix"
-        {{ stimulus_controller('line-expander') }}
-        {{ stimulus_action('line-expander', 'expand', 'click') }}
->
+<div class="diff-file__block-spacer diff-file__block-spacer--not-clickable clearfix" title="{{ 'file.too.large'|trans }}">
     <div class="diff-file__block-spacer-line-nr float-start">
         {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
     </div>
 
-    <div class="diff-file__line-expander float-start">
-        <i class="indicator indicator-up">&#9650;</i>
-        <i class="indicator indicator-down">&#9660;</i>
-    </div>
     <div class="diff-file_line-expander-lines float-start">
         {{- 'diff.lines.hidden'|trans({lines: invisible_lines}) -}}
     </div>

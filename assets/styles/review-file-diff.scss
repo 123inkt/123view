@@ -41,9 +41,13 @@
     padding-left: 4px;
 }
 
-.diff-file__block-spacer:hover {
+.diff-file__block-spacer--clickable:hover {
     background-color: var(--review-diff-spacer-hover-bg-color);
     color: var(--review-diff-spacer-hover-fg-color);
+}
+
+.diff-file__block-spacer--not-clickable {
+    cursor: not-allowed;
 }
 
 .diff-file__block-spacer-line-nr {

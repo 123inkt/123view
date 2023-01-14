@@ -25,6 +25,7 @@ class DiffFile
 
     private ?int $linesAdded   = null;
     private ?int $linesRemoved = null;
+    private ?int $nrOfLines    = null;
 
     /**
      * @return DiffBlock[]
@@ -148,6 +149,25 @@ class DiffFile
         }
 
         return $this->linesRemoved ?? 0;
+    }
+
+    public function getTotalNrOfLines(): int
+    {
+        if ($this->nrOfLines !== null) {
+            return $this->nrOfLines;
+        }
+
+        $this->nrOfLines = 0;
+        foreach ($this->blocks as $block) {
+            foreach ($block->lines as $line) {
+                if ($line->state === DiffLine::STATE_REMOVED) {
+                    continue;
+                }
+                ++$this->nrOfLines;
+            }
+        }
+
+        return $this->nrOfLines;
     }
 
     /**

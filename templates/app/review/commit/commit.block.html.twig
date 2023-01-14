@@ -1,9 +1,10 @@
 {%- set prev_line_visible = null -%}
 
 <div class="diff-file__diff-block">
-    {%- set line_number     = 1 -%}
-    {%- set line_offset     = 0 -%}
-    {%- set invisible_lines = 0 -%}
+    {%- set line_number          = 1 -%}
+    {%- set line_offset          = 0 -%}
+    {%- set invisible_lines      = 0 -%}
+    {%- set show_invisible_lines = file.totalNrOfLines < 5000 %}
 
     {%- for line_index, line in block.lines -%}
         {#- determine line_number and line_number offset -#}
@@ -17,7 +18,11 @@
         {%- set line_visible = block.isLineVisible(line_index, 8) -%}
 
         {%- if prev_line_visible is same as (false) and line_visible is same as (true) -%}
-            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {% if show_invisible_lines %}
+                {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {% else %}
+                {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' with {invisible_lines} -%}
+            {% endif %}
         {%- endif -%}
 
         {#- keep track of the amount of invisible lines -#}
@@ -25,7 +30,9 @@
         {%- set prev_line_visible = line_visible -%}
 
         {#- line of code -#}
-        {%- include 'app/review/commit/commit.line.html.twig' -%}
+        {% if line_visible or show_invisible_lines %}
+            {%- include 'app/review/commit/commit.line.html.twig' -%}
+        {% endif %}
 
         {#- comments -#}
         {%- for comment in commentsViewModel.getComments(line) -%}
@@ -36,7 +43,11 @@
 
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}
-            {%- include 'app/review/commit/commit.block.spacer.html.twig'-%}
+            {% if show_invisible_lines %}
+                {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {% else %}
+                {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' with {invisible_lines} -%}
+            {% endif %}
         {%- endif -%}
 
     {%- endfor -%}
