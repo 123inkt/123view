@@ -11,6 +11,7 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\CodeReview\FileTreeGenerator;
+use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
@@ -28,6 +29,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
     private CacheInterface&MockObject             $cache;
     private ReviewDiffServiceInterface&MockObject $diffService;
     private FileTreeGenerator&MockObject          $treeGenerator;
+    private DiffFileUpdater&MockObject            $diffFileUpdater;
     private DiffFinder&MockObject                 $diffFinder;
     private CodeReviewFileService                 $service;
 
@@ -36,10 +38,17 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         parent::setUp();
         $this->cache = $this->createMock(CacheInterface::class);
 
-        $this->diffService   = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->treeGenerator = $this->createMock(FileTreeGenerator::class);
-        $this->diffFinder    = $this->createMock(DiffFinder::class);
-        $this->service       = new CodeReviewFileService($this->cache, $this->diffService, $this->treeGenerator, $this->diffFinder);
+        $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->treeGenerator   = $this->createMock(FileTreeGenerator::class);
+        $this->diffFileUpdater = $this->createMock(DiffFileUpdater::class);
+        $this->diffFinder      = $this->createMock(DiffFinder::class);
+        $this->service         = new CodeReviewFileService(
+            $this->cache,
+            $this->diffService,
+            $this->treeGenerator,
+            $this->diffFileUpdater,
+            $this->diffFinder
+        );
     }
 
     /**
