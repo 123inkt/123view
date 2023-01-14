@@ -11,7 +11,6 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Git\Diff\DiffFileUpdater
- * @covers ::__construct
  */
 class DiffFileUpdaterTest extends AbstractTestCase
 {
