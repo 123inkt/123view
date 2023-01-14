@@ -222,6 +222,7 @@ class DiffFileTest extends AbstractTestCase
     /**
      * @covers ::getNrOfLinesAdded
      * @covers ::getNrOfLinesRemoved
+     * @covers ::getTotalNrOfLines
      * @covers ::updateLinesChanged
      */
     public function testGetNrOfLinesAdded(): void
@@ -243,6 +244,8 @@ class DiffFileTest extends AbstractTestCase
         $file = new DiffFile();
         $file->addBlock($block);
         static::assertSame(2, $file->getNrOfLinesRemoved());
+
+        static::assertSame(4, $file->getTotalNrOfLines());
     }
 
     /**
