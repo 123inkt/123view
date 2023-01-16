@@ -18,16 +18,20 @@ class CodeReviewQueryBuilder
         $this->queryBuilder = $em->createQueryBuilder()->select($alias)->from(CodeReview::class, $alias);
     }
 
-    public function prepare(int $repositoryId): self
+    public function prepare(?int $repositoryId): self
     {
         $this->queryBuilder
             ->select('r', 'rv', 'rvwr', 'u')
             ->leftJoin('r.revisions', 'rv')
             ->leftJoin('r.reviewers', 'rvwr')
             ->leftJoin('rvwr.user', 'u')
-            ->where('r.repository = :repositoryId')
-            ->setParameter('repositoryId', $repositoryId)
             ->orderBy('r.id', 'DESC');
+
+        if ($repositoryId !== null) {
+            $this->queryBuilder
+                ->where('r.repository = :repositoryId')
+                ->setParameter('repositoryId', $repositoryId);
+        }
 
         return $this;
     }
