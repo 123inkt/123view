@@ -66,7 +66,7 @@ class CodeReviewRepository extends ServiceEntityRepository
     /**
      * @return Paginator<CodeReview>
      */
-    public function getPaginatorForSearchQuery(User $user, int $repositoryId, int $page, string $searchQuery): Paginator
+    public function getPaginatorForSearchQuery(User $user, ?int $repositoryId, int $page, string $searchQuery): Paginator
     {
         $queryBuilder = (new CodeReviewQueryBuilder('r', $this->getEntityManager()))
             ->prepare($repositoryId)

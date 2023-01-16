@@ -16,7 +16,7 @@ class ReviewsViewModel
      * @param PaginatorViewModel<CodeReview> $paginator
      */
     public function __construct(
-        public readonly Repository $repository,
+        public readonly ?Repository $repository,
         private readonly Paginator $reviews,
         public readonly PaginatorViewModel $paginator,
         public readonly string $searchQuery

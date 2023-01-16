@@ -53,6 +53,22 @@
 
                         <div class="navbar-nav d-flex">
                             <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <form class="d-flex me-5"
+                                          method="get"
+                                          action="{{ path('DR\\Review\\Controller\\App\\Review\\SearchReviewsController') }}">
+                                        <div class="input-group">
+                                            <input type="search"
+                                                   name="search"
+                                                   required
+                                                   class="form-control bg-dark border-secondary text-light"
+                                                   placeholder="{{ 'search'|trans }}">
+                                            <button class="btn btn-outline-secondary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </li>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <li class="nav-item">
                                         <a class="nav-link"
