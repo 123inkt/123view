@@ -28,7 +28,7 @@ class SearchReviewsController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array
     {
-        $searchQuery = trim($request->query->get('search'));
+        $searchQuery = trim($request->query->get('search', ''));
         $page        = $request->query->getInt('page', 1);
         $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), null, $page, $searchQuery);
 
