@@ -13,7 +13,7 @@
         "@hotwired/stimulus": "^3.2.1",
         "@symfony/stimulus-bridge": "^3.2.1",
         "@symfony/webpack-encore": "^4.2.0",
-        "@typescript-eslint/eslint-plugin": "^5.48.1",
+        "@typescript-eslint/eslint-plugin": "^5.48.2",
         "core-js": "^3.26.1",
         "eslint": "^8.31.0",
         "eslint-config-standard-with-typescript": "^26.0.0",
