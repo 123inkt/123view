@@ -32,7 +32,7 @@ class GitCleanCommandBuilder implements GitCommandBuilderInterface
 
     public function skipIgnoreRules(): self
     {
-        $this->arguments['recurse-directories'] = '-x';
+        $this->arguments['ignore-rules'] = '-x';
 
         return $this;
     }
