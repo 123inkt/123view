@@ -15,7 +15,7 @@ export default class extends Controller<HTMLElement> {
     private readonly declare textareaTarget: HTMLTextAreaElement;
     private readonly declare mentionSuggestionsTarget: HTMLElement;
     private readonly declare markdownPreviewTarget: HTMLElement;
-    private submitting: boolean = false;
+    private submitting: boolean     = false;
 
     public connect(): void {
         useThrottle(this, {wait: 300});
@@ -40,22 +40,26 @@ export default class extends Controller<HTMLElement> {
         if (this.submitting) {
             return;
         }
-
+        this.submitting     = true;
         const commentThread = this.element.closest<HTMLElement>('[data-controller="comment-thread"]') !== null;
 
         if (commentThread) {
             this.commentService
                 .submitCommentForm(this.formTarget)
                 .then(commentId => window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId})))
-                .catch(Errors.catch)
-                .finally(() => this.submitting = false);
+                .catch(err => {
+                    this.submitting = false;
+                    Errors.catch(err);
+                });
         } else {
             this.commentService
                 .submitAddCommentForm(this.formTarget)
                 .then(commentUrl => this.commentService.getCommentThread(commentUrl))
                 .then(commentThread => this.element.replaceWith(commentThread))
-                .catch(Errors.catch)
-                .finally(() => this.submitting = false);
+                .catch(err => {
+                    this.submitting = false;
+                    Errors.catch(err);
+                });
         }
     }
 
