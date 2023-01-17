@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\ViewModelProvider;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\UserProfileFormType;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\UserViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -50,5 +51,29 @@ class UserViewModelProviderTest extends AbstractTestCase
         $viewModel = $this->provider->getUsersViewModel();
         static::assertSame([$user], $viewModel->users);
         static::assertSame([123 => $formView], $viewModel->forms);
+    }
+
+    /**
+     * @covers ::getUsersViewModel
+     */
+    public function testGetUsersViewModelWithSortedUsers(): void
+    {
+        $userA = new User();
+        $userA->setId(123);
+        $userA->setRoles([Roles::ROLE_BANNED]);
+        $userB = new User();
+        $userB->setId(123);
+        $userB->setRoles([Roles::ROLE_USER]);
+        $userC = new User();
+        $userC->setId(123);
+
+        $this->userRepository->expects(self::once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([$userA, $userB, $userC]);
+
+        $form = $this->createMock(FormInterface::class);
+        $form->method('createView')->willReturn($this->createMock(FormView::class));
+        $this->formFactory->method('create')->willReturn($form);
+
+        $viewModel = $this->provider->getUsersViewModel();
+        static::assertSame([$userC, $userB, $userA], $viewModel->users);
     }
 }
