@@ -56,7 +56,7 @@ class GitShowServiceTest extends AbstractTestCase
         $commandBuilder->expects(self::once())->method('format')->with('pattern')->willReturnSelf();
         $this->patternFactory->expects(self::once())->method('createPattern')->willReturn('pattern');
         $this->builderFactory->expects(self::once())->method('createShow')->willReturn($commandBuilder);
-        $this->repositoryService->expects(self::once())->method('getRepository')->with('url')->willReturn($gitRepository);
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects(self::once())->method('parse')->with($repository, 'output')->willReturn([$commit]);
 

@@ -7,6 +7,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareTrait;
 
 class GitDiffTreeService
@@ -26,15 +27,13 @@ class GitDiffTreeService
     public function getFilesInRevision(Revision $revision): array
     {
         // clone or pull the repository for the given rule.
-        $repository = $this->repositoryService->getRepository((string)$revision->getRepository()?->getUrl());
+        $repository = $this->repositoryService->getRepository(Assert::notNull($revision->getRepository()));
 
         $commandBuilder = $this->builderFactory->createDiffTree()
             ->noCommitId()
             ->nameOnly()
             ->recurseSubTree()
             ->hash((string)$revision->getCommitHash());
-
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $revision->getRepository()?->getName()));
 
         // create `git log ...` command and execute.
         $output = $repository->execute($commandBuilder);

@@ -47,7 +47,7 @@ class GitBranchServiceTest extends AbstractTestCase
 
         $git = $this->createMock(GitRepository::class);
         $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
 
         $this->service->deleteBranch($repository, $path);
     }
@@ -67,7 +67,7 @@ class GitBranchServiceTest extends AbstractTestCase
 
         $git = $this->createMock(GitRepository::class);
         $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
 
         static::assertTrue($this->service->tryDeleteBranch($repository, $path));
     }

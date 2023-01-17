@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitRepository;
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
@@ -36,18 +37,20 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithoutCache(): void
     {
-        $url        = 'http://my.repository.com';
-        $repository = $this->createMock(GitRepository::class);
+        $repository = new Repository();
+        $repository->setId(123);
+        $repository->setUrl('http://my.repository.com');
+        $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->willReturn($repository);
+        $this->git->expects(static::once())->method('cloneRepository')->willReturn($gitRepository);
 
         // first call should invoke parent method
-        $firstRepository = $this->service->getRepository($url);
+        $firstRepository = $this->service->getRepository($repository);
 
         // second call should be from cache
-        $secondRepository = $this->service->getRepository($url);
+        $secondRepository = $this->service->getRepository($repository);
         static::assertSame($firstRepository, $secondRepository);
     }
 }

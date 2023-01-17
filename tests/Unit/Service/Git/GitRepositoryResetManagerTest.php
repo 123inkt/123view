@@ -7,6 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Clean\GitCleanService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Tests\AbstractTestCase;
@@ -21,6 +22,7 @@ class GitRepositoryResetManagerTest extends AbstractTestCase
     private GitCheckoutService&MockObject $checkoutService;
     private GitResetService&MockObject    $resetService;
     private GitBranchService&MockObject   $branchService;
+    private GitCleanService&MockObject    $cleanService;
     private GitRepositoryResetManager     $service;
 
     public function setUp(): void
@@ -29,7 +31,13 @@ class GitRepositoryResetManagerTest extends AbstractTestCase
         $this->checkoutService = $this->createMock(GitCheckoutService::class);
         $this->resetService    = $this->createMock(GitResetService::class);
         $this->branchService   = $this->createMock(GitBranchService::class);
-        $this->service         = new GitRepositoryResetManager($this->checkoutService, $this->resetService, $this->branchService);
+        $this->cleanService    = $this->createMock(GitCleanService::class);
+        $this->service         = new GitRepositoryResetManager(
+            $this->checkoutService,
+            $this->resetService,
+            $this->branchService,
+            $this->cleanService
+        );
     }
 
     /**
@@ -42,6 +50,7 @@ class GitRepositoryResetManagerTest extends AbstractTestCase
         $branchName = 'branch';
 
         $this->resetService->expects(self::once())->method('resetHard')->with($repository);
+        $this->cleanService->expects(self::once())->method('forceClean')->with($repository);
         $this->checkoutService->expects(self::once())->method('checkout')->with($repository, 'master');
         $this->branchService->expects(self::once())->method('tryDeleteBranch')->with($repository, $branchName);
 

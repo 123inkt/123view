@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Git;
 
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -13,8 +15,12 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class GitRepository
 {
-    public function __construct(private readonly ?StopWatch $stopWatch, private readonly string $repositoryPath)
-    {
+    public function __construct(
+        private readonly ?LoggerInterface $logger,
+        private readonly Repository $repository,
+        private readonly ?StopWatch $stopWatch,
+        private readonly string $repositoryPath
+    ) {
     }
 
     /**
@@ -23,6 +29,8 @@ class GitRepository
      */
     public function execute(string|GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
     {
+        $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $this->repository->getName()));
+
         $command = is_string($commandBuilder) ? $commandBuilder : implode(' ', $commandBuilder->build());
         $action  = is_string($commandBuilder) ? 'manual' : $commandBuilder->command();
 

@@ -31,6 +31,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
      * @covers ::createDiff
      * @covers ::createDiffTree
      * @covers ::createReset
+     * @covers ::createClean
      */
     public function testCreate(): void
     {
@@ -44,6 +45,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createBranch();
         $this->factory->createShow();
         $this->factory->createReset();
+        $this->factory->createClean();
         $this->addToAssertionCount(1);
     }
 }

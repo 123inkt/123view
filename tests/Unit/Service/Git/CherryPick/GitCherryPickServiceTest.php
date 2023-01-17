@@ -54,7 +54,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
 
         $git = $this->createMock(GitRepository::class);
         $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
 
         static::assertTrue($this->service->tryCherryPickRevisions([$revision]));
     }
@@ -92,7 +92,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
 
         $git = $this->createMock(GitRepository::class);
         $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://url/')->willReturn($git);
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
 
         $this->service->cherryPickAbort($repository);
     }

@@ -40,11 +40,9 @@ class GitDiffService implements LoggerAwareInterface
         }
 
         // clone or pull the repository for the given rule.
-        $repository = $this->repositoryService->getRepository((string)$commit->repository->getUrl());
+        $repository = $this->repositoryService->getRepository($commit->repository);
 
         $commandBuilder = $this->commandFactory->diffHashes($rule, $commit->parentHash, end($commit->commitHashes));
-
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $commit->repository->getName()));
 
         // create `git log ...` command and execute.
         $output = $repository->execute($commandBuilder);
@@ -70,9 +68,7 @@ class GitDiffService implements LoggerAwareInterface
             ->unified($options?->unifiedDiffLines ?? 10)
             ->startPoint((string)$revision->getCommitHash());
 
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
-
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
         return $this->parser->parse($output);
@@ -92,9 +88,7 @@ class GitDiffService implements LoggerAwareInterface
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol();
 
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
-
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
         return $this->parser->parse($output);

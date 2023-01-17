@@ -7,6 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Clean\GitCleanService;
 use DR\Review\Service\Git\Reset\GitResetService;
 
 class GitRepositoryResetManager
@@ -15,6 +16,7 @@ class GitRepositoryResetManager
         private readonly GitCheckoutService $checkoutService,
         private readonly GitResetService $resetService,
         private readonly GitBranchService $branchService,
+        private readonly GitCleanService $cleanService
     ) {
     }
 
@@ -33,6 +35,9 @@ class GitRepositoryResetManager
         } finally {
             // reset the repository again
             $this->resetService->resetHard($repository);
+
+            // cleanup any local changes
+            $this->cleanService->forceClean($repository);
 
             // checkout master
             $this->checkoutService->checkout($repository, $repository->getMainBranchName());

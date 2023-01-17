@@ -7,6 +7,7 @@ use DR\Review\Service\Git\Add\GitAddCommandBuilder;
 use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
+use DR\Review\Service\Git\Clean\GitCleanCommandBuilder;
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
@@ -71,5 +72,10 @@ class GitCommandBuilderFactory
     public function createReset(): GitResetCommandBuilder
     {
         return new GitResetCommandBuilder($this->git);
+    }
+
+    public function createClean(): GitCleanCommandBuilder
+    {
+        return new GitCleanCommandBuilder($this->git);
     }
 }

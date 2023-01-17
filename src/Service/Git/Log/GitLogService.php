@@ -41,12 +41,10 @@ class GitLogService implements LoggerAwareInterface
         foreach ($rule->getRepositories() as $repositoryConfig) {
             $output = $this->lockManager->start($repositoryConfig, function () use ($ruleConfig, $repositoryConfig) {
                 // clone or pull the repository for the given rule.
-                $repository = $this->cachedRepositoryService->getRepository((string)$repositoryConfig->getUrl());
+                $repository = $this->cachedRepositoryService->getRepository($repositoryConfig);
 
                 // create command
                 $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
-
-                $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
 
                 // execute `git log ...` command
                 return $repository->execute($commandBuilder);
@@ -74,10 +72,8 @@ class GitLogService implements LoggerAwareInterface
             ->remotes()
             ->format(FormatPattern::COMMIT_HASH);
 
-        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
-
         // get repository and execute command
-        $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        $output = $this->cachedRepositoryService->getRepository($repository)->execute($command);
 
         // cleanup output of any unwanted characters
         $output = (string)preg_replace("/[^\na-zA-Z0-9]+/", '', $output);
@@ -96,10 +92,8 @@ class GitLogService implements LoggerAwareInterface
             ->hashRange($fromReference, $toReference)
             ->format($this->formatPatternFactory->createPattern());
 
-        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
-
         // fetch revisions for range
-        $output = $this->cachedRepositoryService->getRepository((string)$repository->getUrl())->execute($command);
+        $output = $this->cachedRepositoryService->getRepository($repository)->execute($command);
 
         // get commits
         return $this->logParser->parse($repository, $output);

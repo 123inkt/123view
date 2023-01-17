@@ -36,9 +36,7 @@ class GitShowService implements LoggerAwareInterface
             ->noPatch()
             ->format($this->formatPatternFactory->createPattern());
 
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
-
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // get first commit
         return Arrays::firstOrNull($this->logParser->parse($repository, $output));

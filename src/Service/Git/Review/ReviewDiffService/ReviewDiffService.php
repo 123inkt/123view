@@ -40,16 +40,23 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
             return $this->diffService->getDiffFromRevision(Arrays::first($revisions), $options);
         }
 
+        $finalException = null;
+
         /** @var ReviewDiffStrategyInterface $strategy */
         foreach ($this->reviewDiffStrategies as $strategy) {
             try {
                 return $strategy->getDiffFiles($repository, $revisions, $options);
             } catch (Throwable $exception) {
                 $this->logger?->notice($exception->getMessage(), ['exception' => $exception]);
+                $finalException = $exception;
                 continue;
             }
         }
 
-        throw new RuntimeException('Failed to fetch diff for revisions. All strategies exhausted');
+        throw new RuntimeException(
+            'Failed to fetch diff for revisions. All strategies exhausted. Final error: ' . ($finalException?->getMessage() ?? 'unknown'),
+            0,
+            $finalException
+        );
     }
 }
