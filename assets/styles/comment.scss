@@ -10,12 +10,17 @@
     padding-bottom: 2px;
 }
 
+.comment__comment {
+    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 35px);
+}
+
 .comment__comment,
 .comment__reply {
     padding: 5px 5px 5px 20px;
 }
 
 .comment__reply {
+    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 75px);
     padding-left: 40px;
 }
 
@@ -49,14 +54,6 @@
 
 .comment__comment-thread.comment__state_resolved .comment__message img {
     filter: grayscale(1);
-}
-
-.comment__message {
-    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 55px);
-}
-
-.comment__reply .comment__message {
-    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 75px);
 }
 
 .comment__comment .comment__edit,
