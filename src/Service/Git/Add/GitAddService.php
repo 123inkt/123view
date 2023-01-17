@@ -27,8 +27,6 @@ class GitAddService implements LoggerAwareInterface
     {
         $commandBuilder = $this->commandFactory->createAdd()->setPath($path);
 
-        $this->logger?->info('Executing: ' . $commandBuilder);
-
         // create branch
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 

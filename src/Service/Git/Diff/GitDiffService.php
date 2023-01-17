@@ -44,8 +44,6 @@ class GitDiffService implements LoggerAwareInterface
 
         $commandBuilder = $this->commandFactory->diffHashes($rule, $commit->parentHash, end($commit->commitHashes));
 
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $commit->repository->getName()));
-
         // create `git log ...` command and execute.
         $output = $repository->execute($commandBuilder);
 
@@ -70,8 +68,6 @@ class GitDiffService implements LoggerAwareInterface
             ->unified($options?->unifiedDiffLines ?? 10)
             ->startPoint((string)$revision->getCommitHash());
 
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
-
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
@@ -91,8 +87,6 @@ class GitDiffService implements LoggerAwareInterface
             ->unified($options?->unifiedDiffLines ?? 10)
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol();
-
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 

@@ -35,8 +35,6 @@ class GitDiffTreeService
             ->recurseSubTree()
             ->hash((string)$revision->getCommitHash());
 
-        $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $revision->getRepository()?->getName()));
-
         // create `git log ...` command and execute.
         $output = $repository->execute($commandBuilder);
 

@@ -77,6 +77,6 @@ class GitRepositoryService implements LoggerAwareInterface
             $this->stopwatch?->stop('repository.clone');
         }
 
-        return new GitRepository($this->stopwatch, $repositoryDir);
+        return new GitRepository($this->logger, $repository, $this->stopwatch, $repositoryDir);
     }
 }

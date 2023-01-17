@@ -46,8 +46,6 @@ class GitLogService implements LoggerAwareInterface
                 // create command
                 $commandBuilder = $this->commandFactory->fromRule($ruleConfig);
 
-                $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $repositoryConfig->getName()));
-
                 // execute `git log ...` command
                 return $repository->execute($commandBuilder);
             });
@@ -74,8 +72,6 @@ class GitLogService implements LoggerAwareInterface
             ->remotes()
             ->format(FormatPattern::COMMIT_HASH);
 
-        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
-
         // get repository and execute command
         $output = $this->cachedRepositoryService->getRepository($repository)->execute($command);
 
@@ -95,8 +91,6 @@ class GitLogService implements LoggerAwareInterface
         $command->noMerges()
             ->hashRange($fromReference, $toReference)
             ->format($this->formatPatternFactory->createPattern());
-
-        $this->logger?->info(sprintf('Executing `%s` for `%s`', $command, $repository->getName()));
 
         // fetch revisions for range
         $output = $this->cachedRepositoryService->getRepository($repository)->execute($command);
