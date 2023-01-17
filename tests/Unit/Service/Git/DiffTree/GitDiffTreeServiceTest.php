@@ -50,7 +50,7 @@ class GitDiffTreeServiceTest extends AbstractTestCase
         $this->builderFactory->expects(self::once())->method('createDiffTree')->willReturn($commandBuilder);
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn("foo\nbar\n  ");
-        $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $files = $this->service->getFilesInRevision($revision);
         static::assertSame(['foo', 'bar'], $files);

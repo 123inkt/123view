@@ -58,7 +58,7 @@ class GitFetchServiceTest extends AbstractTestCase
         $fetchBuilder->expects(self::once())->method('prune')->willReturnSelf();
 
         $this->commandBuilderFactory->expects(self::once())->method('createFetch')->willReturn($fetchBuilder);
-        $this->repositoryService->expects(self::once())->method('getRepository')->with('https://www.example.com')->willReturn($gitRepository);
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $gitRepository->expects(self::once())->method('execute')->with($fetchBuilder, true)->willReturn('output');
         $this->fetchParser->expects(self::once())->method('parse')->with('output')->willReturn([$change]);
 

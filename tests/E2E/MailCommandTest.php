@@ -64,7 +64,7 @@ class MailCommandTest extends AbstractKernelTestCase
 
         // setup repository mocks
         $repository = $this->createMock(GitRepository::class);
-        $this->repositoryService->method('getRepository')->with('https://example.com/detectives/sherlock.git')->willReturn($repository);
+        $this->repositoryService->method('getRepository')->willReturn($repository);
         $repository->method('execute')->willReturn($this->getFileContents('git-log-commits.txt'));
 
         // start application and find the `mail`-command

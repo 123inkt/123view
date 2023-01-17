@@ -66,7 +66,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $commit->commitHashes = ['hash1', 'hash2', 'hash3'];
 
         // setup mocks
-        $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($repository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($repository);
         $this->commandFactory->expects(static::once())->method('diffHashes')->with($rule, 'parentHash', 'hash3')->willReturn($commandBuilder);
         $repository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('foobar');
         $this->parser->expects(static::once())->method('parse')->with('foobar')->willReturn($files);
@@ -112,7 +112,7 @@ class GitDiffServiceTest extends AbstractTestCase
 
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('foobar');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects(self::once())->method('parse')->with('foobar');
 
         $this->diffService->getDiffFromRevision($revision, new FileDiffOptions(5));
@@ -137,7 +137,7 @@ class GitDiffServiceTest extends AbstractTestCase
 
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('foobar');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with('http://foobar.com')->willReturn($gitRepository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects(self::once())->method('parse')->with('foobar');
 
         $this->diffService->getBundledDiffFromRevisions($repository, new FileDiffOptions(15));
