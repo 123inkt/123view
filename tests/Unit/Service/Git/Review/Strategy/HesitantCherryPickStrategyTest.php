@@ -80,7 +80,9 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $this->resetManager->expects(self::once())
             ->method('start')
             ->with($repository, 'branchName')
+            // phpcs:disable
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
+        // phpcs:enable
         $this->cherryPickStrategy->expects(self::once())->method('getDiffFiles')->with($repository, $revisions)->willReturn([$diffFile]);
 
         static::assertSame([$diffFile], $this->strategy->getDiffFiles($repository, $revisions));
