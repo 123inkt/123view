@@ -34,3 +34,6 @@ services:
         build:
             target: prod
         restart: unless-stopped
+
+    mail:
+        restart: unless-stopped
