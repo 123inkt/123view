@@ -7,6 +7,7 @@ use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
 use CzProject\GitPhp\RunnerResult;
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
@@ -41,15 +42,17 @@ class GitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithoutCache(): void
     {
-        $url        = 'http://my.repository.com';
-        $repository = $this->createMock(GitRepository::class);
+        $repository = new Repository();
+        $repository->setId(123);
+        $repository->setUrl('http://my.repository.com');
+        $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->willReturn($repository);
+        $this->git->expects(static::once())->method('cloneRepository')->willReturn($gitRepository);
 
-        $this->service->getRepository($url);
+        $this->service->getRepository($repository);
     }
 
     /**
@@ -59,14 +62,16 @@ class GitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithCache(): void
     {
-        $url = 'http://my.repository.com';
+        $repository = new Repository();
+        $repository->setId(123);
+        $repository->setUrl('http://my.repository.com');
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
         $this->filesystem->expects(static::once())->method('exists')->willReturn(true);
         $this->git->expects(static::never())->method('cloneRepository');
 
-        $this->service->getRepository($url);
+        $this->service->getRepository($repository);
     }
 
     /**
@@ -76,7 +81,9 @@ class GitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithGitException(): void
     {
-        $url          = 'http://my.repository.com';
+        $repository = new Repository();
+        $repository->setId(123);
+        $repository->setUrl('http://my.repository.com');
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
@@ -86,7 +93,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
 
         $this->expectException(RepositoryException::class);
         $this->expectExceptionMessage('failure');
-        $this->service->getRepository($url);
+        $this->service->getRepository($repository);
     }
 
     /**
@@ -96,7 +103,9 @@ class GitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithException(): void
     {
-        $url = 'http://my.repository.com';
+        $repository = new Repository();
+        $repository->setId(123);
+        $repository->setUrl('http://my.repository.com');
 
         // setup mocks
         $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
@@ -105,6 +114,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
 
         $this->expectException(RepositoryException::class);
         $this->expectExceptionMessage('foobar');
-        $this->service->getRepository($url);
+        $this->service->getRepository($repository);
     }
 }

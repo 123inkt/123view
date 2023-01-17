@@ -73,7 +73,7 @@ class GitLogServiceTest extends AbstractTestCase
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
 
         // setup mocks
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($repository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repositoryConfig)->willReturn($repository);
         $this->commandFactory->expects(static::once())->method('fromRule')->with($config)->willReturn($commandBuilder);
         $repository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects(static::once())->method('parse')->with($repositoryConfig, 'output')->willReturn($commits);

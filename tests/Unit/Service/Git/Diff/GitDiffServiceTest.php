@@ -66,7 +66,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $commit->commitHashes = ['hash1', 'hash2', 'hash3'];
 
         // setup mocks
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($repository);
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repositoryConfig)->willReturn($repository);
         $this->commandFactory->expects(static::once())->method('diffHashes')->with($rule, 'parentHash', 'hash3')->willReturn($commandBuilder);
         $repository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('foobar');
         $this->parser->expects(static::once())->method('parse')->with('foobar')->willReturn($files);
