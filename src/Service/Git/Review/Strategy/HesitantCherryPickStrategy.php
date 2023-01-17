@@ -6,11 +6,10 @@ namespace DR\Review\Service\Git\Review\Strategy;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Checkout\GitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
-use DR\Review\Service\Git\Reset\GitResetService;
+use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Utility\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -28,8 +27,7 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
         private readonly GitCheckoutService $checkoutService,
         private readonly GitCherryPickService $cherryPickService,
         private readonly GitDiffService $diffService,
-        private readonly GitResetService $resetService,
-        private readonly GitBranchService $branchService,
+        private readonly GitRepositoryResetManager $resetManager,
         private readonly BasicCherryPickStrategy $basicCherryPickStrategy,
     ) {
     }
@@ -67,22 +65,20 @@ class HesitantCherryPickStrategy implements ReviewDiffStrategyInterface
      */
     private function tryCherryPick(Repository $repository, array $revisions): array
     {
-        $pickable   = [];
         $branchName = $this->checkoutService->checkoutRevision(Arrays::first($revisions));
 
-        foreach ($revisions as $revision) {
-            try {
-                $this->cherryPickService->cherryPickRevisions([$revision]);
-                $pickable[] = $revision;
-            } catch (RepositoryException|ProcessFailedException) {
-                break;
+        return $this->resetManager->start($repository, $branchName, function () use ($revisions) {
+            $pickable = [];
+            foreach ($revisions as $revision) {
+                try {
+                    $this->cherryPickService->cherryPickRevisions([$revision]);
+                    $pickable[] = $revision;
+                } catch (RepositoryException|ProcessFailedException) {
+                    break;
+                }
             }
-        }
 
-        $this->resetService->resetHard($repository);
-        $this->checkoutService->checkout($repository, $repository->getMainBranchName());
-        $this->branchService->tryDeleteBranch($repository, $branchName);
-
-        return $pickable;
+            return $pickable;
+        });
     }
 }
