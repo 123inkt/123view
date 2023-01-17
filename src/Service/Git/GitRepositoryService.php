@@ -6,8 +6,10 @@ namespace DR\Review\Service\Git;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\Helpers;
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
+use DR\Review\Utility\Assert;
 use DR\Review\Utility\CircuitBreaker;
 use League\Uri\Http;
 use Psr\Log\LoggerAwareInterface;
@@ -39,10 +41,10 @@ class GitRepositoryService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
-    public function getRepository(string $repositoryUrl): GitRepository
+    public function getRepository(Repository $repository): GitRepository
     {
         try {
-            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repositoryUrl));
+            return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repository));
         } catch (GitException $exception) {
             $message = $exception->getMessage() . ': ';
             if ($exception->getRunnerResult() !== null) {
@@ -58,11 +60,12 @@ class GitRepositoryService implements LoggerAwareInterface
     /**
      * @throws GitException
      */
-    private function tryGetRepository(string $repositoryUrl): GitRepository
+    private function tryGetRepository(Repository $repository): GitRepository
     {
         // create cache directory
         $this->filesystem->mkdir($this->cacheDirectory);
 
+        $repositoryUrl  = Assert::notNull($repository->getUrl());
         $repositoryName = Helpers::extractRepositoryNameFromUrl($repositoryUrl);
         $repositoryDir  = $this->cacheDirectory . $repositoryName . '-' . hash('sha1', $repositoryUrl) . '/';
 

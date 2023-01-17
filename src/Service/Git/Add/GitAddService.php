@@ -30,7 +30,7 @@ class GitAddService implements LoggerAwareInterface
         $this->logger?->info('Executing: ' . $commandBuilder);
 
         // create branch
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         $this->logger?->info($output);
     }

@@ -42,7 +42,7 @@ class GitBranchService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createBranch()->delete($ref);
 
         // delete branch
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         $this->logger?->info($output);
     }

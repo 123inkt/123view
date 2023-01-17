@@ -31,7 +31,7 @@ class GitCheckoutService implements LoggerAwareInterface
         $this->logger?->info('Executing: ' . $commandBuilder);
 
         // create branch
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         $this->logger?->info($output);
     }
@@ -53,7 +53,7 @@ class GitCheckoutService implements LoggerAwareInterface
         $this->logger?->info('Executing: ' . $commandBuilder);
 
         // checkout revisions
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         if ($output !== '') {
             $this->logger?->info($output);

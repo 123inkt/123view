@@ -40,7 +40,7 @@ class GitDiffService implements LoggerAwareInterface
         }
 
         // clone or pull the repository for the given rule.
-        $repository = $this->repositoryService->getRepository((string)$commit->repository->getUrl());
+        $repository = $this->repositoryService->getRepository($commit->repository);
 
         $commandBuilder = $this->commandFactory->diffHashes($rule, $commit->parentHash, end($commit->commitHashes));
 
@@ -72,7 +72,7 @@ class GitDiffService implements LoggerAwareInterface
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
         return $this->parser->parse($output);
@@ -94,7 +94,7 @@ class GitDiffService implements LoggerAwareInterface
 
         $this->logger?->debug(sprintf('Executing `%s` for `%s`', $commandBuilder, $repository->getName()));
 
-        $output = $this->repositoryService->getRepository((string)$repository->getUrl())->execute($commandBuilder);
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
         return $this->parser->parse($output);
