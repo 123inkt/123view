@@ -54,9 +54,14 @@ class Comment
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: false)]
     private Collection $replies;
 
+    /** @phpstan-var Collection<int, UserMention> */
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: UserMention::class, cascade: ['persist', 'remove'], fetch: 'LAZY', orphanRemoval: false)]
+    private Collection $mentions;
+
     public function __construct()
     {
-        $this->replies = new ArrayCollection();
+        $this->replies  = new ArrayCollection();
+        $this->mentions = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -185,6 +190,24 @@ class Comment
     public function setReplies(Collection $replies): self
     {
         $this->replies = $replies;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserMention>
+     */
+    public function getMentions(): Collection
+    {
+        return $this->mentions;
+    }
+
+    /**
+     * @param Collection<int, UserMention> $mentions
+     */
+    public function setMentions(Collection $mentions): self
+    {
+        $this->mentions = $mentions;
 
         return $this;
     }

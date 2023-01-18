@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\Repository\Review;
+
+use Doctrine\Persistence\ManagerRegistry;
+use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Entity\Review\UserMention;
+
+/**
+ * @extends ServiceEntityRepository<UserMention>
+ * @method UserMention|null find($id, $lockMode = null, $lockVersion = null)
+ * @method UserMention|null findOneBy(array $criteria, array $orderBy = null)
+ * @method UserMention[]    findAll()
+ * @method UserMention[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class UserMentionRepository extends ServiceEntityRepository
+{
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserMention::class);
+    }
+}
