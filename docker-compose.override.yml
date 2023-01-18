@@ -39,4 +39,4 @@ services:
     mercure:
         build:
             target: dev
-        command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
+        command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev
