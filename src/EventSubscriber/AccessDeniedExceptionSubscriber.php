@@ -6,6 +6,7 @@ namespace DR\Review\EventSubscriber;
 use DR\Review\Controller\Auth\LoginController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,7 +29,10 @@ class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $request->getSession()->getFlashBag()->add('error', 'redirect.access.denied.session.expired');
+        $session = $request->getSession();
+        if ($session instanceof FlashBagAwareSessionInterface) {
+            $session->getFlashBag()->add('error', 'redirect.access.denied.session.expired');
+        }
 
         $url = $this->urlGenerator->generate(LoginController::class, ['next' => $request->getRequestUri()]);
 

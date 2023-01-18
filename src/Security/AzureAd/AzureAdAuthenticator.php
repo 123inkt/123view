@@ -12,6 +12,7 @@ use JsonException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -73,7 +74,10 @@ class AzureAdAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $request->getSession()->getFlashBag()->add('error', $exception->getMessage());
+        $session = $request->getSession();
+        if ($session instanceof FlashBagAwareSessionInterface) {
+            $session->getFlashBag()->add('error', $exception->getMessage());
+        }
 
         // redirect to login page
         return new RedirectResponse($this->urlGenerator->generate(LoginController::class));
