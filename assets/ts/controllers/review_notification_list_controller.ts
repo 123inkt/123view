@@ -44,7 +44,9 @@ export default class extends Controller {
             return;
         }
 
-        this.element.appendChild(this.createItem(data.message));
+        if (this.notification.isEnabled() === false) {
+            this.element.appendChild(this.createItem(data.message));
+        }
         this.notification.publish(document.title, data.message);
     }
 
