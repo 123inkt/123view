@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Page;
 
 use DR\Review\Controller\App\Review\ReviewController;
-use DR\Review\Controller\App\Review\ReviewsController;
+use DR\Review\Controller\App\Reviews\ReviewsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\Page\BreadcrumbFactory;

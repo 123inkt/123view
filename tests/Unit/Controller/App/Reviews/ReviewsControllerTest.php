@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Reviews;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Review\ReviewsController;
+use DR\Review\Controller\App\Reviews\ReviewsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Page\Breadcrumb;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\Review\Controller\App\Review\ReviewsController
+ * @coversDefaultClass \DR\Review\Controller\App\Reviews\ReviewsController
  * @covers ::__construct
  */
 class ReviewsControllerTest extends AbstractControllerTestCase

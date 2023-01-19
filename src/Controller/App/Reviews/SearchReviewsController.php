@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\App\Review;
+namespace DR\Review\Controller\App\Reviews;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
@@ -25,7 +25,7 @@ class SearchReviewsController extends AbstractController
      * @return array<string, string|object>
      */
     #[Route('app/search', name: self::class, methods: 'GET')]
-    #[Template('app/review/reviews.search.html.twig')]
+    #[Template('app/reviews/reviews.search.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array
     {
