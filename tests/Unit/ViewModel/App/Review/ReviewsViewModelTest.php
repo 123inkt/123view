@@ -31,7 +31,7 @@ class ReviewsViewModelTest extends AbstractTestCase
         $paginatorVm = $this->createMock(PaginatorViewModel::class);
         $searchQuery = 'foobar';
 
-        $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery);
+        $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery, '');
 
         static::assertSame($reviews, $viewModel->getReviews());
     }
@@ -46,7 +46,7 @@ class ReviewsViewModelTest extends AbstractTestCase
         $paginator  = $this->createMock(Paginator::class);
         $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
         $paginatorVm = $this->createMock(PaginatorViewModel::class);
-        $viewModel   = new ReviewsViewModel($repository, $paginator, $paginatorVm, '');
+        $viewModel   = new ReviewsViewModel($repository, $paginator, $paginatorVm, '', '');
 
         $revisionA = new Revision();
         $revisionB = new Revision();

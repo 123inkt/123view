@@ -153,7 +153,9 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revisionRepository->save($revisionA, true);
         $revisionRepository->save($revisionB, true);
 
-        $result = iterator_to_array($this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, ''));
+        $result = iterator_to_array(
+            $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, '')
+        );
         static::assertCount(1, $result);
 
         /** @var CodeReview $review */
