@@ -7,6 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Page\BreadcrumbFactory;
@@ -32,9 +33,16 @@ class ReviewsController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] Repository $repository): array
     {
-        $searchQuery = trim($request->query->get('search', 'state:open '));
-        $page        = $request->query->getInt('page', 1);
-        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), (int)$repository->getId(), $page, $searchQuery);
+        $searchQuery   = trim($request->query->get('search', 'state:open '));
+        $searchOrderBy = trim($request->query->get('order-by', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP));
+        $page          = $request->query->getInt('page', 1);
+        $paginator     = $this->reviewRepository->getPaginatorForSearchQuery(
+            $this->getUser(),
+            (int)$repository->getId(),
+            $page,
+            $searchQuery,
+            $searchOrderBy
+        );
 
         /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
@@ -42,7 +50,7 @@ class ReviewsController extends AbstractController
         return [
             'page_title'   => ucfirst((string)$repository->getDisplayName()),
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
-            'reviewsModel' => new ReviewsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery)
+            'reviewsModel' => new ReviewsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery, $searchOrderBy)
         ];
     }
 }

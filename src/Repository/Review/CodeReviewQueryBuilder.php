@@ -11,6 +11,9 @@ use DR\Review\Entity\User\User;
 
 class CodeReviewQueryBuilder
 {
+    public const ORDER_CREATE_TIMESTAMP = 'create-timestamp';
+    public const ORDER_UPDATE_TIMESTAMP = 'update-timestamp';
+
     private readonly QueryBuilder $queryBuilder;
 
     public function __construct(string $alias, EntityManagerInterface $em)
@@ -24,13 +27,23 @@ class CodeReviewQueryBuilder
             ->select('r', 'rv', 'rvwr', 'u')
             ->leftJoin('r.revisions', 'rv')
             ->leftJoin('r.reviewers', 'rvwr')
-            ->leftJoin('rvwr.user', 'u')
-            ->orderBy('r.id', 'DESC');
+            ->leftJoin('rvwr.user', 'u');
 
         if ($repositoryId !== null) {
             $this->queryBuilder
                 ->where('r.repository = :repositoryId')
                 ->setParameter('repositoryId', $repositoryId);
+        }
+
+        return $this;
+    }
+
+    public function orderBy(string $orderBy): self
+    {
+        if ($orderBy === self::ORDER_UPDATE_TIMESTAMP) {
+            $this->queryBuilder->orderBy('r.updateTimestamp', 'DESC');
+        } else {
+            $this->queryBuilder->orderBy('r.id', 'DESC');
         }
 
         return $this;

@@ -209,4 +209,6 @@ return [
     'users'                                       => 'Users',
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
     'you'                                         => 'You',
+    'creation.date'                               => 'Creation date',
+    'last.updated'                                => 'Last updated',
 ];

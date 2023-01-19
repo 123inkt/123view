@@ -16,6 +16,8 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
 #[ORM\Index(['repository_id', 'state'], name: 'IDX_REPOSITORY_STATE')]
+#[ORM\Index(['create_timestamp', 'repository_id'], name: 'IDX_CREATE_TIMESTAMP_REPOSITORY')]
+#[ORM\Index(['update_timestamp', 'repository_id'], name: 'IDX_UPDATE_TIMESTAMP_REPOSITORY')]
 #[ORM\UniqueConstraint('IDX_REFERENCE_ID_REPOSITORY_ID', ['reference_id', 'repository_id'])]
 #[ORM\UniqueConstraint('IDX_REPOSITORY_ID_PROJECT_ID', ['project_id', 'repository_id'])]
 class CodeReview
@@ -43,6 +45,9 @@ class CodeReview
 
     #[ORM\Column]
     private ?int $createTimestamp = null;
+
+    #[ORM\Column]
+    private ?int $updateTimestamp = null;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
@@ -148,6 +153,18 @@ class CodeReview
     public function setCreateTimestamp(?int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
+
+        return $this;
+    }
+
+    public function getUpdateTimestamp(): ?int
+    {
+        return $this->updateTimestamp;
+    }
+
+    public function setUpdateTimestamp(?int $updateTimestamp): self
+    {
+        $this->updateTimestamp = $updateTimestamp;
 
         return $this;
     }

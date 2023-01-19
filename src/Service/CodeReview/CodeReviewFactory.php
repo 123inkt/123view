@@ -17,6 +17,7 @@ class CodeReviewFactory
     {
         $review = new CodeReview();
         $review->setCreateTimestamp(time());
+        $review->setUpdateTimestamp(time());
         $review->setReferenceId($referenceId);
         $review->setTitle($this->titleNormalizer->normalize((string)$revision->getTitle()));
         $review->setDescription($revision->getDescription());

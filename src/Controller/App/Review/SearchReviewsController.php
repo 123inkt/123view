@@ -5,6 +5,7 @@ namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
@@ -28,15 +29,16 @@ class SearchReviewsController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array
     {
-        $searchQuery = trim($request->query->get('search', ''));
-        $page        = $request->query->getInt('page', 1);
-        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), null, $page, $searchQuery);
+        $searchQuery   = trim($request->query->get('search', ''));
+        $searchOrderBy = trim($request->query->get('order-by', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP));
+        $page          = $request->query->getInt('page', 1);
+        $paginator     = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), null, $page, $searchQuery, $searchOrderBy);
 
         /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
         return [
-            'reviewsModel' => new ReviewsViewModel(null, $paginator, $paginatorViewModel, $searchQuery)
+            'reviewsModel' => new ReviewsViewModel(null, $paginator, $paginatorViewModel, $searchQuery, $searchOrderBy)
         ];
     }
 }
