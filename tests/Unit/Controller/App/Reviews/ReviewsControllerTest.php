@@ -9,12 +9,13 @@ use DR\Review\Controller\App\Reviews\ReviewsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Request\Reviews\SearchReviewsRequest;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Reviews\ReviewsController
@@ -47,11 +48,16 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->reviewRepository->expects(self::once())
             ->method('getPaginatorForSearchQuery')
-            ->with($user, 123, 5, 'search')
+            ->with($user, 123, 5, 'search', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
         $this->breadcrumbFactory->expects(self::once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
 
-        $result = ($this->controller)(new Request(['search' => 'search', 'page' => 5]), $repository);
+        $request = $this->createMock(SearchReviewsRequest::class);
+        $request->method('getPage')->willReturn(5);
+        $request->method('getOrderBy')->willReturn(CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP);
+        $request->method('getSearchQuery')->willReturn('search');
+
+        $result = ($this->controller)($request, $repository);
         static::assertSame('Repository', $result['page_title']);
         static::assertSame([$breadcrumb], $result['breadcrumbs']);
 
