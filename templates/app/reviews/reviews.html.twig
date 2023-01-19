@@ -3,30 +3,26 @@
 {% block page_content %}
 
     <div class="mt-2 pb-2 clearfix">
-        <h2 class="float-start pe-3 mb-0">{{ 'search'|trans }}</h2>
+        <h2 class="float-start pe-3 mb-0">{{ reviewsModel.repository.displayName }}</h2>
+
+        <ul class="nav nav-pills float-start">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">{{ 'reviews'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
+                    {{ 'revisions'|trans }}
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <form method="get">
-        <div class="input-group">
-            <input type="search" name="search" value="{{ reviewsModel.searchQuery }} " class="form-control"
-                    {{ stimulus_controller('search-field') }}
-                   placeholder="{{ 'search.review'|trans }}"/>
-            {% if reviewsModel.searchQuery != '' %}
-                <a href="?search=" class="btn btn-secondary">&times;</a>
-            {% endif %}
-        </div>
-    </form>
-
-    <div class="quick-links form-text d-block mb-3">
-        <span>{{ 'review.search.hint'|trans|raw }}</span>
-        <a href="?search=state%3Aclosed" class="ms-1 form-text d-inline-block float-end">{{ 'closed.reviews'|trans }}</a>
-        <a href="?search=state%3Aopen" class="ms-1 form-text d-inline-block float-end">{{ 'open.reviews'|trans }}</a>
-        <a href="?search=" class="ms-1 form-text d-inline-block float-end">{{ 'all.reviews'|trans }}</a>
-    </div>
+    {% include 'app/reviews/reviews.search.form.html.twig' %}
 
     <div class="list-group">
         {%- for review in reviewsModel.reviews -%}
             <a class="list-group-item list-group-item-action" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}">
+
                 {% if review.reviewers|length > 0 %}
                     {% set reviewerState = review.getReviewersState() %}
                     {% if reviewerState == 'open' %}
@@ -51,10 +47,6 @@
                 <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
 
                 <div>
-                    <span class="badge rounded-pill text-bg-primary">
-                        {{ review.repository.displayName }}
-                    </span>
-
                     {# authors #}
                     {% set authors = reviewsModel.authors(review.revisions) %}
                     {% if authors|length > 0 %}
@@ -71,9 +63,9 @@
                     {% if review.reviewers|length > 0 %}
                         <span class="ms-3 text-secondary">
                             <small>{{ 'reviewer'|trans }}:
-                            {% for reviewer in review.reviewers %}
-                                {{ reviewer.user.name }}{% if not loop.last %},{% endif %}
-                            {% endfor %}
+                                {% for reviewer in review.reviewers %}
+                                    {{ reviewer.user.name }}{% if not loop.last %},{% endif %}
+                                {% endfor %}
                             </small>
                         </span>
                     {% endif %}

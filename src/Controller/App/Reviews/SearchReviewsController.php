@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\App\Review;
+namespace DR\Review\Controller\App\Reviews;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Request\Reviews\SearchReviewsRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -24,19 +24,23 @@ class SearchReviewsController extends AbstractController
      * @return array<string, string|object>
      */
     #[Route('app/search', name: self::class, methods: 'GET')]
-    #[Template('app/review/reviews.search.html.twig')]
+    #[Template('app/reviews/reviews.search.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(Request $request): array
+    public function __invoke(SearchReviewsRequest $request): array
     {
-        $searchQuery = trim($request->query->get('search', ''));
-        $page        = $request->query->getInt('page', 1);
-        $paginator   = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), null, $page, $searchQuery);
+        $paginator = $this->reviewRepository->getPaginatorForSearchQuery(
+            $this->getUser(),
+            null,
+            $request->getPage(),
+            $request->getSearchQuery(),
+            $request->getOrderBy()
+        );
 
         /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
-        $paginatorViewModel = new PaginatorViewModel($paginator, $page);
+        $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
 
         return [
-            'reviewsModel' => new ReviewsViewModel(null, $paginator, $paginatorViewModel, $searchQuery)
+            'reviewsModel' => new ReviewsViewModel(null, $paginator, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy())
         ];
     }
 }
