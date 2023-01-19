@@ -28,6 +28,7 @@ class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
         $review->setReferenceId('reference');
         $review->setDescription('description');
         $review->setCreateTimestamp(12346789);
+        $review->setUpdateTimestamp(12346789);
         $review->setRepository($repository);
         $manager->persist($review);
         $manager->flush();

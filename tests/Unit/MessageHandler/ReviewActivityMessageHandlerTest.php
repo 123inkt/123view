@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\MessageHandler;
 
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\MessageHandler\ReviewActivityMessageHandler;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use DR\Review\Tests\AbstractTestCase;
@@ -23,6 +25,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
     private CodeReviewActivityProvider&MockObject   $activityProvider;
     private CodeReviewActivityRepository&MockObject $activityRepository;
     private CodeReviewActivityPublisher&MockObject  $activityPublisher;
+    private CodeReviewRepository&MockObject         $reviewRepository;
     private ReviewActivityMessageHandler            $messageHandler;
 
     public function setUp(): void
@@ -31,7 +34,13 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
         $this->activityProvider   = $this->createMock(CodeReviewActivityProvider::class);
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
         $this->activityPublisher  = $this->createMock(CodeReviewActivityPublisher::class);
-        $this->messageHandler     = new ReviewActivityMessageHandler($this->activityProvider, $this->activityRepository, $this->activityPublisher);
+        $this->reviewRepository   = $this->createMock(CodeReviewRepository::class);
+        $this->messageHandler     = new ReviewActivityMessageHandler(
+            $this->activityProvider,
+            $this->activityRepository,
+            $this->reviewRepository,
+            $this->activityPublisher
+        );
     }
 
     /**
@@ -54,9 +63,12 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
     {
         $event = new ReviewCreated(123, 456);
 
+        $review   = new CodeReview();
         $activity = new CodeReviewActivity();
+        $activity->setReview($review);
         $this->activityProvider->expects(self::once())->method('fromEvent')->with($event)->willReturn($activity);
         $this->activityRepository->expects(self::once())->method('save')->with($activity, true);
+        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
         $this->activityPublisher->expects(self::once())->method('publish')->with($activity);
         ($this->messageHandler)($event);
     }
