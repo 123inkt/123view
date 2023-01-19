@@ -30,7 +30,7 @@ class SearchReviewsController extends AbstractController
     public function __invoke(Request $request): array
     {
         $searchQuery   = trim($request->query->get('search', ''));
-        $searchOrderBy = trim($request->query->get('order-by', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP));
+        $searchOrderBy = trim($request->query->get('order-by', CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP));
         $page          = $request->query->getInt('page', 1);
         $paginator     = $this->reviewRepository->getPaginatorForSearchQuery($this->getUser(), null, $page, $searchQuery, $searchOrderBy);
 
