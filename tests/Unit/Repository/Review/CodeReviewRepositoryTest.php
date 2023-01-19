@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\CodeReviewQueryBuilder as QueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
@@ -111,6 +112,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revisionRepository->save($revision, true);
 
         static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, ''));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, '', QueryBuilder::ORDER_CREATE_TIMESTAMP));
 
         static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'id:' . $review->getProjectId()));
         static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'id:0'));
