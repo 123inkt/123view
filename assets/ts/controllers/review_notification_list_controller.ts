@@ -1,12 +1,14 @@
 import {Controller} from '@hotwired/stimulus';
+import BrowserNotification from '../lib/BrowserNotification';
 
 export default class extends Controller {
     public static targets = ['template'];
-    public static values = {userId: Number, reviewId: Number};
+    public static values  = {userId: Number, reviewId: Number};
 
-    declare templateTarget: HTMLTemplateElement;
-    declare userIdValue: number;
-    declare reviewIdValue: number;
+    private readonly notification = new BrowserNotification();
+    private readonly declare templateTarget: HTMLTemplateElement;
+    private readonly declare userIdValue: number;
+    private readonly declare reviewIdValue: number;
 
     private readonly events = [
         'review-accepted',
@@ -43,6 +45,7 @@ export default class extends Controller {
         }
 
         this.element.appendChild(this.createItem(data.message));
+        this.notification.publish(document.title, data.message);
     }
 
     private createItem(message: string): HTMLElement {
