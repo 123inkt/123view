@@ -1,0 +1,25 @@
+<form method="get">
+    <div class="input-group">
+        <input type="search" name="search" value="{{ reviewsModel.searchQuery }} " class="reviews-list__search-input form-control"
+                {{ stimulus_controller('search-field') }}
+               placeholder="{{ 'search.review'|trans }}"/>
+        <select name="order-by" class="form-control" {{ stimulus_controller('form-submitter') }}>
+            <option value="create-timestamp" {{ reviewsModel.searchOrderBy == 'create-timestamp' ? 'selected' : '' }}>
+                {{ 'creation.date'|trans }}
+            </option>
+            <option value="update-timestamp" {{ reviewsModel.searchOrderBy == 'update-timestamp' ? 'selected' : '' }}>
+                {{ 'last.updated'|trans }}
+            </option>
+        </select>
+        {% if reviewsModel.searchQuery != '' %}
+            <a href="?search=" class="btn btn-secondary">&times;</a>
+        {% endif %}
+    </div>
+</form>
+
+<div class="quick-links form-text d-block mb-3">
+    <span>{{ 'review.search.hint'|trans|raw }}</span>
+    <a href="?search=state%3Aclosed" class="ms-1 form-text d-inline-block float-end">{{ 'closed.reviews'|trans }}</a>
+    <a href="?search=state%3Aopen" class="ms-1 form-text d-inline-block float-end">{{ 'open.reviews'|trans }}</a>
+    <a href="?search=" class="ms-1 form-text d-inline-block float-end">{{ 'all.reviews'|trans }}</a>
+</div>
