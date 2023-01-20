@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview\Comment;
 
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\UserMention;
 use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\UserMentionRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Utility\Arrays;
 
@@ -12,8 +15,25 @@ class CommentMentionService
     /** @var array<int, User>|null */
     private ?array $users = null;
 
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(private readonly UserRepository $userRepository, private readonly UserMentionRepository $mentionRepository)
     {
+    }
+
+    public function updateMentions(Comment $comment): void
+    {
+        // fetch all user mentions from message
+        $mentions = [$this->getMentionedUsers($comment->getMessage())];
+        foreach ($comment->getReplies() as $reply) {
+            $mentions[] = $this->getMentionedUsers($reply->getMessage());
+        }
+        $mentions = count($mentions) === 0 ? [] : array_merge(...$mentions);
+
+        // create new mention on comment
+        $userMentions = [];
+        foreach ($mentions as $user) {
+            $userMentions[] = (new UserMention())->setUser($user)->setComment($comment);
+        }
+        $this->mentionRepository->saveAll($comment, $userMentions);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace DR\Review\Repository\Review;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\UserMention;
 
 /**
@@ -22,5 +23,25 @@ class UserMentionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserMention::class);
+    }
+
+    /**
+     * @param UserMention[] $mentions
+     */
+    public function saveAll(Comment $comment, array $mentions): void
+    {
+        $em = $this->getEntityManager();
+        $em->wrapInTransaction(function () use ($comment, $mentions): void {
+            foreach ($comment->getMentions() as $mention) {
+                $this->remove($mention);
+            }
+
+            $this->getEntityManager()->flush();
+            foreach ($mentions as $mention) {
+                $this->save($mention);
+            }
+
+            $this->getEntityManager()->flush();
+        });
     }
 }
