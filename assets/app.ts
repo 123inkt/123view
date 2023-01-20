@@ -4,6 +4,7 @@ import 'bootstrap-icons/font/bootstrap-icons.scss';
 import './styles/app.scss';
 import './styles/icon.checkbox.scss';
 import './styles/login.scss';
+import './styles/reviews.scss';
 import './styles/review.scss';
 import './styles/review-file-diff.scss';
 import './styles/review.revisions.scss';

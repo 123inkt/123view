@@ -19,7 +19,8 @@ class ReviewsViewModel
         public readonly ?Repository $repository,
         private readonly Paginator $reviews,
         public readonly PaginatorViewModel $paginator,
-        public readonly string $searchQuery
+        public readonly string $searchQuery,
+        public readonly string $searchOrderBy,
     ) {
     }
 

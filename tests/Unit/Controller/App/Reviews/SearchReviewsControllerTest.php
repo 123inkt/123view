@@ -1,20 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Reviews;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Review\SearchReviewsController;
+use DR\Review\Controller\App\Reviews\SearchReviewsController;
 use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Request\Reviews\SearchReviewsRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\Review\Controller\App\Review\SearchReviewsController
+ * @coversDefaultClass \DR\Review\Controller\App\Reviews\SearchReviewsController
  * @covers ::__construct
  */
 class SearchReviewsControllerTest extends AbstractControllerTestCase
@@ -38,10 +39,15 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->reviewRepository->expects(self::once())
             ->method('getPaginatorForSearchQuery')
-            ->with($user, null, 5, 'search')
+            ->with($user, null, 5, 'search', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
 
-        $result = ($this->controller)(new Request(['search' => 'search', 'page' => 5]));
+        $request = $this->createMock(SearchReviewsRequest::class);
+        $request->method('getPage')->willReturn(5);
+        $request->method('getOrderBy')->willReturn(CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP);
+        $request->method('getSearchQuery')->willReturn('search');
+
+        $result = ($this->controller)($request);
 
         /** @var ReviewsViewModel $viewModel */
         $viewModel = $result['reviewsModel'];
