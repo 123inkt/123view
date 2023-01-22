@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
+use DR\Review\Repository\Review\UserMentionRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Tests\AbstractTestCase;
@@ -15,14 +18,48 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class CommentMentionServiceTest extends AbstractTestCase
 {
-    private UserRepository&MockObject $userRepository;
-    private CommentMentionService     $mentionService;
+    private UserRepository&MockObject        $userRepository;
+    private UserMentionRepository&MockObject $mentionRepository;
+    private CommentMentionService            $mentionService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = $this->createMock(UserRepository::class);
-        $this->mentionService = new CommentMentionService($this->userRepository);
+        $this->userRepository    = $this->createMock(UserRepository::class);
+        $this->mentionRepository = $this->createMock(UserMentionRepository::class);
+        $this->mentionService    = new CommentMentionService($this->userRepository, $this->mentionRepository);
+    }
+
+    /**
+     * @covers ::updateMentions
+     */
+    public function testUpdateMentions(): void
+    {
+        $comment = new Comment();
+        $comment->setMessage('foobar @user:123[Holmes] foobar');
+
+        $reply = new CommentReply();
+        $reply->setMessage('foobar @user:456[Watson] @user:123[Holmes] foobar');
+        $comment->getReplies()->add($reply);
+
+        $userA = new User();
+        $userA->setId(123);
+        $userB = new User();
+        $userB->setId(456);
+
+        $this->userRepository->expects(self::once())->method('findAll')->willReturn([$userA, $userB]);
+        $this->mentionRepository->expects(self::once())
+            ->method('saveAll')
+            ->with(
+                $comment,
+                self::callback(static function ($mentions) {
+                    static::assertCount(2, $mentions);
+
+                    return true;
+                })
+            );
+
+        $this->mentionService->updateMentions($comment);
     }
 
     /**
