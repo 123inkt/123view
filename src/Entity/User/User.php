@@ -68,6 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reviewers = new ArrayCollection();
         $this->comments  = new ArrayCollection();
         $this->replies   = new ArrayCollection();
+        $this->mentions  = new ArrayCollection();
     }
 
     public function setId(int $id): self
