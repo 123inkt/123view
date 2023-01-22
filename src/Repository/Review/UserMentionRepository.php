@@ -17,9 +17,6 @@ use DR\Review\Entity\Review\UserMention;
  */
 class UserMentionRepository extends ServiceEntityRepository
 {
-    /**
-     * @codeCoverageIgnore
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserMention::class);
