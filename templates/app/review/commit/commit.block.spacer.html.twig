@@ -1,7 +1,9 @@
 {# invisible_lines:      int #}
+{# line_number: int      int #}
 {# lineNrLengthBefore:   int #}
 {# lineNrLengthAfter:    int #}
 <div class="diff-file__block-spacer diff-file__block-spacer--clickable clearfix"
+     data-line-number="{{ line_number|default('0') }}"
         {{ stimulus_controller('line-expander') }}
         {{ stimulus_action('line-expander', 'expand', 'click') }}
 >

@@ -39,7 +39,7 @@
 
 {%- macro gutter_single(lineNumber, lineNrLength) -%}
     {%- apply spaceless -%}
-        <span class="diff-file__line-gutter" data-action="click->review#addComment">
+        <span class="diff-file__line-gutter">
             {#- line number -#}
             <span class="diff-file__line-numbers">
                 {{- lineNumber|strpad(lineNrLength) -}}

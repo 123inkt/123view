@@ -17,7 +17,7 @@
         {%- set line_visible = line.visible -%}
 
         {%- if prev_line_visible is same as (false) and line_visible is same as (true) -%}
-            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
         {%- endif -%}
 
         {#- keep track of the amount of invisible lines -#}
@@ -29,7 +29,7 @@
 
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}
-            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
         {%- endif -%}
 
     {%- endfor -%}
