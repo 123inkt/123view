@@ -43,12 +43,14 @@
         </div>
     </div>
 
-    <div style="display: grid;grid-template-columns: 1fr 1fr; overflow-y: auto">
-        <div style="overflow: auto">
+    <div style="display: grid;grid-template-columns: 1fr 1fr; overflow-y: auto; border: 1px solid var(--review-diff-border-color);"
+            {{ stimulus_controller('component--simultaneous-scroll') }}
+    >
+        <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
 
             {%- if file.blocks -%}
                 {% set isLineBefore = true %}
-                <div class="diff-file__file-diff">
+                <div>
                     {%- for block in file.blocks -%}
                         {%- include 'app/review/commit/commit.block.html.twig' -%}
 
@@ -61,11 +63,11 @@
             {%- endif -%}
 
         </div>
-        <div style="overflow: auto">
+        <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
             {% set isLineBefore = false %}
 
             {%- if file.blocks -%}
-                <div class="diff-file__file-diff">
+                <div>
                     {%- for block in file.blocks -%}
                         {%- include 'app/review/commit/commit.block.html.twig' -%}
 
