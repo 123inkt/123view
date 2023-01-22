@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Entity\User;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Notification\Rule;
-use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Entity\User\UserSetting;
 use DR\Review\Tests\AbstractTestCase;
@@ -119,10 +118,10 @@ class UserTest extends AbstractTestCase
     {
         $collection = new ArrayCollection();
 
-        $comment = new Comment();
-        static::assertInstanceOf(ArrayCollection::class, $comment->getMentions());
+        $user = new User();
+        static::assertInstanceOf(ArrayCollection::class, $user->getMentions());
 
-        $comment->setMentions($collection);
-        static::assertSame($collection, $comment->getMentions());
+        $user->setMentions($collection);
+        static::assertSame($collection, $user->getMentions());
     }
 }
