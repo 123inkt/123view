@@ -11,6 +11,7 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\UserMention;
 use DR\Review\Repository\User\UserRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -57,12 +58,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $replies;
 
+    /** @phpstan-var Collection<int, UserMention> */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserMention::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $mentions;
+
     public function __construct()
     {
         $this->rules     = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
         $this->comments  = new ArrayCollection();
         $this->replies   = new ArrayCollection();
+        $this->mentions  = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -241,6 +247,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setReplies(Collection $replies): self
     {
         $this->replies = $replies;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserMention>
+     */
+    public function getMentions(): Collection
+    {
+        return $this->mentions;
+    }
+
+    /**
+     * @param Collection<int, UserMention> $mentions
+     */
+    public function setMentions(Collection $mentions): self
+    {
+        $this->mentions = $mentions;
 
         return $this;
     }

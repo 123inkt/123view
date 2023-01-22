@@ -21,7 +21,7 @@ class CommentTest extends AbstractTestCase
      */
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['setReplies', 'setLineReference']);
+        $config = (new ConstraintConfig())->setExcludedMethods(['setReplies', 'setLineReference', 'setMentions']);
         static::assertAccessorPairs(Comment::class, $config);
     }
 
@@ -68,5 +68,20 @@ class CommentTest extends AbstractTestCase
 
         $comment->setReplies($collection);
         static::assertSame($collection, $comment->getReplies());
+    }
+
+    /**
+     * @covers ::getMentions
+     * @covers ::setMentions
+     */
+    public function testMentions(): void
+    {
+        $collection = new ArrayCollection();
+
+        $comment = new Comment();
+        static::assertInstanceOf(ArrayCollection::class, $comment->getMentions());
+
+        $comment->setMentions($collection);
+        static::assertSame($collection, $comment->getMentions());
     }
 }
