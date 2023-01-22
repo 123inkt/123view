@@ -22,11 +22,11 @@ class CommentMentionService
     public function updateMentions(Comment $comment): void
     {
         // fetch all user mentions from message
-        $mentions = [$this->getMentionedUsers($comment->getMessage())];
+        $mentions = [$this->getMentionedUsers((string)$comment->getMessage())];
         foreach ($comment->getReplies() as $reply) {
-            $mentions[] = $this->getMentionedUsers($reply->getMessage());
+            $mentions[] = $this->getMentionedUsers((string)$reply->getMessage());
         }
-        $mentions = count($mentions) === 0 ? [] : array_merge(...$mentions);
+        $mentions = array_merge(...$mentions);
 
         // create new mention on comment
         $userMentions = [];

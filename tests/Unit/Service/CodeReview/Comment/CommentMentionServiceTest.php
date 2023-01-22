@@ -33,6 +33,19 @@ class CommentMentionServiceTest extends AbstractTestCase
     /**
      * @covers ::updateMentions
      */
+    public function testUpdateMentionsCommentWithoutMentions(): void
+    {
+        $comment = new Comment();
+        $comment->setMessage('foobar');
+
+        $this->mentionRepository->expects(self::once())->method('saveAll')->with($comment, []);
+
+        $this->mentionService->updateMentions($comment);
+    }
+
+    /**
+     * @covers ::updateMentions
+     */
     public function testUpdateMentions(): void
     {
         $comment = new Comment();

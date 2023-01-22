@@ -6,6 +6,7 @@ namespace DR\Review\EventSubscriber;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
@@ -28,16 +29,25 @@ class CommentEventSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $args
+     */
     public function postPersist(LifecycleEventArgs $args): void
     {
         $this->update($args);
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $args
+     */
     public function postUpdate(LifecycleEventArgs $args): void
     {
         $this->update($args);
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $args
+     */
     private function update(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
