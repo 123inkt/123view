@@ -4,13 +4,11 @@
 {%- set commentsViewModel    = fileDiffViewModel.commentsViewModel -%}
 {%- set file                 = fileDiffViewModel.selectedFile -%}
 
-<div class="!review-grid-code" style="display: grid; grid-template-rows: auto 1fr; overflow-y: auto">
+<div class="diff-side-by-side--grid-code">
     {% include 'app/review/commit/commit.header.html.twig' %}
 
-    <div style="display: grid;grid-template-columns: 1fr 1fr; overflow-y: auto; border: 1px solid var(--review-diff-border-color);"
-            {{ stimulus_controller('component--simultaneous-scroll') }}
-    >
-        <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
+    <div class="diff-side-by-side--two-column-layout" {{ stimulus_controller('component--simultaneous-scroll') }} >
+        <div class="diff-side-by-side--column-layout" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
 
             {%- if fileDiffViewModel.leftSideFile.blocks -%}
                 {% set isLineBefore = true %}
@@ -26,7 +24,7 @@
             {%- endif -%}
         </div>
 
-        <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
+        <div class="diff-side-by-side--column-layout" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
             {% set isLineBefore = false %}
             {%- if file.blocks -%}
 
