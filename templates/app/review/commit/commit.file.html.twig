@@ -50,34 +50,31 @@
 
             {%- if fileDiffViewModel.leftSideFile.blocks -%}
                 {% set isLineBefore = true %}
-                <div>
-                    {%- for block in fileDiffViewModel.leftSideFile.blocks -%}
-                        {%- include 'app/review/commit/commit.block.html.twig' -%}
 
-                        {%- if not loop.last -%}
-                            {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
-                        {%- endif -%}
+                {%- for block in fileDiffViewModel.leftSideFile.blocks -%}
+                    {%- include 'app/review/commit/commit.block.html.twig' -%}
 
-                    {%- endfor -%}
-                </div>
+                    {%- if not loop.last -%}
+                        {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
+                    {%- endif -%}
+
+                {%- endfor -%}
             {%- endif -%}
         </div>
 
         <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
             {% set isLineBefore = false %}
             {%- if file.blocks -%}
-                <div>
-                    {%- for block in file.blocks -%}
-                        {%- include 'app/review/commit/commit.block.html.twig' -%}
 
-                        {%- if not loop.last -%}
-                            {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
-                        {%- endif -%}
+                {%- for block in file.blocks -%}
+                    {%- include 'app/review/commit/commit.block.html.twig' -%}
 
-                    {%- endfor -%}
-                </div>
+                    {%- if not loop.last -%}
+                        {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
+                    {%- endif -%}
+
+                {%- endfor -%}
             {%- endif -%}
-
         </div>
     </div>
 </div>
