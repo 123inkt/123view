@@ -31,6 +31,6 @@ class FileDiffViewModelTest extends AbstractTestCase
     public function testGetDiffModes(): void
     {
         $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE);
-        static::assertSame(['unified', 'inline'], $file->getDiffModes());
+        static::assertSame(['side-by-side', 'unified', 'inline'], $file->getDiffModes());
     }
 }

@@ -48,6 +48,7 @@ return [
     'diff.lines.hidden'                           => '{lines} lines hidden',
     'diff.split'                                  => 'Split',
     'diff.unified'                                => 'Unified',
+    'diff.side-by-side'                           => 'Side-by-side',
     'diff.whitespace.options'                     => 'Diff whitespace options',
     'discussion.points.to.modified.code'          => 'Discussion is pointing towards a modified code fragment. Comment was originally at line {line}.',
     'edit.comment'                                => 'Edit comment',

@@ -1,0 +1,36 @@
+{%- set prev_line_visible = null -%}
+
+<div class="diff-side-by-side__diff-block">
+    {%- set line_number          = 1 -%}
+    {%- set line_offset          = 0 -%}
+    {%- set invisible_lines      = 0 -%}
+
+    {%- for line_index, line in block.lines -%}
+        {#- determine line_number and line_number offset -#}
+        {%- if line.lineNumberBefore == null -%}
+            {%- set line_offset = line_offset + 1 -%}
+        {%- else -%}
+            {%- set line_number = line.lineNumberBefore %}
+            {%- set line_offset = 0 -%}
+        {%- endif -%}
+
+        {%- set line_visible = line.visible -%}
+
+        {%- if prev_line_visible is same as (false) and line_visible is same as (true) -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
+        {%- endif -%}
+
+        {#- keep track of the amount of invisible lines -#}
+        {%- set invisible_lines   = line_visible is same as (false) ? invisible_lines + 1 : 0 -%}
+        {%- set prev_line_visible = line_visible -%}
+
+        {#- line of code -#}
+        {%- include 'app/review/commit/side-by-side/commit.line.html.twig' -%}
+
+        {#- last line, and not eof -#}
+        {%- if loop.last and line_visible is same as (false) -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
+        {%- endif -%}
+
+    {%- endfor -%}
+</div>

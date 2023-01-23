@@ -16,6 +16,6 @@ class ReviewDiffModeEnumTest extends AbstractTestCase
      */
     public function testValues(): void
     {
-        static::assertSame(['unified', 'inline'], ReviewDiffModeEnum::values());
+        static::assertSame(['side-by-side', 'unified', 'inline'], ReviewDiffModeEnum::values());
     }
 }

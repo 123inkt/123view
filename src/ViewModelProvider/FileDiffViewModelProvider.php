@@ -10,6 +10,7 @@ use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
+use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -25,6 +26,7 @@ class FileDiffViewModelProvider
         private readonly CacheableHighlightedFileService $hfService,
         private readonly UnifiedDiffBundler $bundler,
         private readonly UnifiedDiffEmphasizer $emphasizer,
+        private readonly UnifiedDiffSplitter $splitter,
     ) {
     }
 
@@ -53,6 +55,9 @@ class FileDiffViewModelProvider
             $this->bundler->bundleFile($selectedFile);
         } elseif ($diffMode === ReviewDiffModeEnum::UNIFIED) {
             $this->emphasizer->emphasizeFile($selectedFile);
+        } elseif ($diffMode === ReviewDiffModeEnum::SIDE_BY_SIDE) {
+            $this->emphasizer->emphasizeFile($selectedFile);
+            $viewModel->leftSideFile = $this->splitter->splitFile($selectedFile);
         }
 
         // setup action form

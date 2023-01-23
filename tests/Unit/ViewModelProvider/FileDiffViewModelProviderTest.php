@@ -12,6 +12,7 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
+use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
@@ -29,6 +30,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     private CacheableHighlightedFileService&MockObject $highlightedFileService;
     private UnifiedDiffBundler&MockObject              $bundler;
     private UnifiedDiffEmphasizer&MockObject           $emphasizer;
+    private UnifiedDiffSplitter&MockObject             $splitter;
     private FileDiffViewModelProvider                  $provider;
 
     public function setUp(): void
@@ -38,11 +40,13 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->highlightedFileService = $this->createMock(CacheableHighlightedFileService::class);
         $this->bundler                = $this->createMock(UnifiedDiffBundler::class);
         $this->emphasizer             = $this->createMock(UnifiedDiffEmphasizer::class);
+        $this->splitter               = $this->createMock(UnifiedDiffSplitter::class);
         $this->provider               = new FileDiffViewModelProvider(
             $this->commentModelProvider,
             $this->highlightedFileService,
             $this->bundler,
-            $this->emphasizer
+            $this->emphasizer,
+            $this->splitter
         );
     }
 
@@ -87,6 +91,30 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->emphasizer->expects(self::once())->method('emphasizeFile')->with($file);
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::UNIFIED);
+        static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
+    }
+
+    /**
+     * @covers ::getFileDiffViewModel
+     * @throws Throwable
+     */
+    public function testGetFileDiffViewModelSideBySide(): void
+    {
+        $file                = new DiffFile();
+        $file->filePathAfter = 'filepath';
+        $repository          = new Repository();
+        $review              = new CodeReview();
+        $review->setRepository($repository);
+        $highlightedFile = new HighlightedFile('filepath', []);
+
+        $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
+        $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
+        $this->bundler->expects(self::never())->method('bundleFile');
+        $this->emphasizer->expects(self::once())->method('emphasizeFile')->with($file);
+        $this->splitter->expects(self::once())->method('splitFile')->with($file);
+
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::SIDE_BY_SIDE);
+        static::assertNotNull($viewModel->leftSideFile);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
 

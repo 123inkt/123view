@@ -17,11 +17,13 @@
         diff-file__line-change-removed
     {%- elseif line.state == 3 -%}
         diff-file__line-change-changed
+    {%- elseif line.state == 5 -%}
+        diff-file__line-change-empty
     {%- endif -%}
     {{- line_visible ? '' : ' diff-file__diff-line-hidden' -}}
 {%- endmacro -%}
 
-{%- macro gutter(line, lineNrLengthBefore, lineNrLengthAfter) -%}
+{%- macro gutter_double(line, lineNrLengthBefore, lineNrLengthAfter) -%}
     {%- apply spaceless -%}
         <span class="diff-file__line-gutter" data-action="click->review#addComment">
             {#- add comments -#}
@@ -32,6 +34,17 @@
                 {{- line.lineNumberBefore|strpad(lineNrLengthBefore) -}}
                 &nbsp;
                 {{- line.lineNumberAfter|strpad(lineNrLengthAfter) -}}
+            </span>
+        </span>
+    {%- endapply -%}
+{%- endmacro -%}
+
+{%- macro gutter_single(lineNumber, lineNrLength) -%}
+    {%- apply spaceless -%}
+        <span class="diff-file__line-gutter">
+            {#- line number -#}
+            <span class="diff-file__line-numbers">
+                {{- lineNumber|strpad(lineNrLength) -}}
             </span>
         </span>
     {%- endapply -%}

@@ -4,6 +4,7 @@
 {#- line_visible:       bool              -#}
 {#- lineNrLengthBefore: int               -#}
 {#- lineNrLengthAfter:  int               -#}
+{#- isLineBefore:       bool              -#}
 <div class="diff-file__diff-line {{ macro.line_style(line, line_visible) }}"
      data-role="diff-line"
      data-line="{{ line_number }}"
@@ -11,7 +12,11 @@
      data-line-after="{{ line.lineNumberAfter|default('0') }}"
 >
     {#- gutter -#}
-    {{ macro.gutter_double(line, lineNrLengthBefore, lineNrLengthAfter) }}
+    {%- if isLineBefore -%}
+        {{- macro.gutter_single(line.lineNumberBefore, lineNrLengthBefore) -}}
+    {%- else -%}
+        {{- macro.gutter_single(line.lineNumberAfter, lineNrLengthAfter) -}}
+    {%- endif -%}
 
     {#- line state -#}
     <span class="diff-file__diff-change-state">{{ macro.line_modifier(line) }}</span>

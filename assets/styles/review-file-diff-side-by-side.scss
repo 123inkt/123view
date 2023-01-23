@@ -1,0 +1,21 @@
+.diff-side-by-side--grid-code {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow-y: auto;
+}
+
+.diff-side-by-side--two-column-layout {
+    border: 1px solid var(--review-diff-border-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: auto;
+}
+
+.diff-side-by-side--column-layout {
+    overflow: auto;
+}
+
+.diff-side-by-side__diff-block {
+    min-width: 100%;
+    width: max-content;
+}

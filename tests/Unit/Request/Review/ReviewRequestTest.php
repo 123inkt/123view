@@ -10,7 +10,6 @@ use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
-use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -79,8 +78,8 @@ class ReviewRequestTest extends AbstractRequestTestCase
             [
                 'query' => [
                     'filePath' => 'string|filled',
-                    'tab'      => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
-                    'diff'     => 'string|in:unified,inline',
+                    'tab'      => 'string|in:revisions,overview',
+                    'diff'     => 'string|in:side-by-side,unified,inline',
                     'action'   => 'string'
                 ]
             ]
