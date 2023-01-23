@@ -4,7 +4,7 @@
 {%- set commentsViewModel    = fileDiffViewModel.commentsViewModel -%}
 {%- set file                 = fileDiffViewModel.selectedFile -%}
 
-<div class="review-grid-code">
+<div class="!review-grid-code" style="display: grid; grid-template-rows: auto 1fr; overflow-y: auto">
     <div class="diff-file__file-revision-info clearfix pb-2">
         <div class="float-start">
             <div>
@@ -43,26 +43,37 @@
         </div>
     </div>
 
-    <div class="diff-file__file-revision-scrollpane" {{ stimulus_controller('scroll-positioner') }}>
-        <div class="diff-file__file-revision-file" {{ stimulus_target('review', 'revisionFile') }}
-             data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
-            {%- if file.blocks -%}
-                {%- for detachedComment in commentsViewModel.detachedComments -%}
-                    {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
+    <div style="display: grid;grid-template-columns: 1fr 1fr; overflow-y: auto; border: 1px solid var(--review-diff-border-color);"
+            {{ stimulus_controller('component--simultaneous-scroll') }}
+    >
+        <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
+
+            {%- if fileDiffViewModel.leftSideFile.blocks -%}
+                {% set isLineBefore = true %}
+
+                {%- for block in fileDiffViewModel.leftSideFile.blocks -%}
+                    {%- include 'app/review/commit/side-by-side/commit.block.html.twig' -%}
+
+                    {%- if not loop.last -%}
+                        {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
+                    {%- endif -%}
+
                 {%- endfor -%}
+            {%- endif -%}
+        </div>
 
-                <div class="diff-file__file-diff">
-                    {%- for block in file.blocks -%}
-                        {%- include 'app/review/commit/commit.block.html.twig' -%}
+        <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
+            {% set isLineBefore = false %}
+            {%- if file.blocks -%}
 
-                        {%- if not loop.last -%}
-                            {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
-                        {%- endif -%}
+                {%- for block in file.blocks -%}
+                    {%- include 'app/review/commit/side-by-side/commit.block.html.twig' -%}
 
-                    {%- endfor -%}
-                </div>
-            {% else %}
-                <br><br>
+                    {%- if not loop.last -%}
+                        {%- include 'app/review/commit/commit.block.spacer.blocked.html.twig' -%}
+                    {%- endif -%}
+
+                {%- endfor -%}
             {%- endif -%}
         </div>
     </div>

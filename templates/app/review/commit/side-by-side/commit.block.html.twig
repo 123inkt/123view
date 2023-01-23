@@ -1,6 +1,6 @@
 {%- set prev_line_visible = null -%}
 
-<div class="diff-file__diff-block">
+<div style="width: max-content">
     {%- set line_number          = 1 -%}
     {%- set line_offset          = 0 -%}
     {%- set invisible_lines      = 0 -%}
@@ -17,7 +17,7 @@
         {%- set line_visible = line.visible -%}
 
         {%- if prev_line_visible is same as (false) and line_visible is same as (true) -%}
-            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
         {%- endif -%}
 
         {#- keep track of the amount of invisible lines -#}
@@ -25,18 +25,11 @@
         {%- set prev_line_visible = line_visible -%}
 
         {#- line of code -#}
-        {%- include 'app/review/commit/commit.line.html.twig' -%}
-
-        {#- comments -#}
-        {%- for comment in commentsViewModel.getComments(line) -%}
-            {%- include 'app/review/comment/comment.html.twig' -%}
-        {%- endfor -%}
-
-        <div data-role="add-comment-inserter"></div>
+        {%- include 'app/review/commit/side-by-side/commit.line.html.twig' -%}
 
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}
-            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines} -%}
+            {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
         {%- endif -%}
 
     {%- endfor -%}

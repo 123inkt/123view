@@ -23,7 +23,11 @@
                 {%- include 'app/review/review.timeline.html.twig' with {timelineViewModel: reviewModel.timelineViewModel} %}
             </div>
         {%- elseif reviewModel.fileDiffViewModel is not same as (null) -%}
-            {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
+            {% if reviewModel.fileDiffViewModel.diffMode.value == 'side-by-side' %}
+                {%- include 'app/review/commit/side-by-side/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
+            {% else %}
+                {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
+            {% endif %}
         {%- endif -%}
     </div>
 
