@@ -32,12 +32,16 @@ class UserMentionRepository extends ServiceEntityRepository
             foreach ($comment->getMentions() as $mention) {
                 $this->remove($mention);
             }
-
+            $comment->getMentions()->clear();
+            $this->getEntityManager()->persist($comment);
             $this->getEntityManager()->flush();
+
             foreach ($mentions as $mention) {
+                $comment->getMentions()->add($mention);
                 $this->save($mention);
             }
 
+            $this->getEntityManager()->persist($comment);
             $this->getEntityManager()->flush();
         });
     }

@@ -11,12 +11,12 @@ use DR\Review\Repository\Review\UserMentionRepository;
 class UserMention
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'mentions')]
+    #[ORM\ManyToOne(targetEntity: Comment::class, cascade: ['persist'], inversedBy: 'mentions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Comment $comment = null;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'mentions')]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'mentions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
