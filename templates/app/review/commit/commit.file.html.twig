@@ -48,10 +48,10 @@
     >
         <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
 
-            {%- if file.blocks -%}
+            {%- if fileDiffViewModel.leftSideFile.blocks -%}
                 {% set isLineBefore = true %}
                 <div>
-                    {%- for block in file.blocks -%}
+                    {%- for block in fileDiffViewModel.leftSideFile.blocks -%}
                         {%- include 'app/review/commit/commit.block.html.twig' -%}
 
                         {%- if not loop.last -%}
@@ -61,11 +61,10 @@
                     {%- endfor -%}
                 </div>
             {%- endif -%}
-
         </div>
+
         <div style="overflow: auto" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
             {% set isLineBefore = false %}
-
             {%- if file.blocks -%}
                 <div>
                     {%- for block in file.blocks -%}

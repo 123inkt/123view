@@ -10,6 +10,8 @@ use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 
 class FileDiffViewModel
 {
+    /** @var DiffFile|null in side-by-side mode the file on the left side */
+    public ?DiffFile               $leftSideFile      = null;
     private ?CommentsViewModel     $commentsViewModel = null;
     private ?ReplyCommentViewModel $replyCommentForm  = null;
     private ?HighlightedFile       $highlightedFile   = null;
