@@ -98,6 +98,30 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
      * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
+    public function testGetFileDiffViewModelSideBySide(): void
+    {
+        $file                = new DiffFile();
+        $file->filePathAfter = 'filepath';
+        $repository          = new Repository();
+        $review              = new CodeReview();
+        $review->setRepository($repository);
+        $highlightedFile = new HighlightedFile('filepath', []);
+
+        $this->commentModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
+        $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
+        $this->bundler->expects(self::never())->method('bundleFile');
+        $this->emphasizer->expects(self::once())->method('emphasizeFile')->with($file);
+        $this->splitter->expects(self::once())->method('splitFile')->with($file);
+
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::SIDE_BY_SIDE);
+        static::assertNotNull($viewModel->leftSideFile);
+        static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
+    }
+
+    /**
+     * @covers ::getFileDiffViewModel
+     * @throws Throwable
+     */
     public function testGetFileDiffViewModelNoHighlightIfFileIsDeleted(): void
     {
         $file                 = new DiffFile();

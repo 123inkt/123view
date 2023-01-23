@@ -11,7 +11,6 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Git\Diff\UnifiedDiffSplitter
- * @covers ::__construct
  */
 class UnifiedDiffSplitterTest extends AbstractTestCase
 {
