@@ -42,11 +42,11 @@ class UnifiedDiffSplitterTest extends AbstractTestCase
 
         $leftBlocks = $leftFile->getBlocks();
         static::assertCount(1, $leftBlocks);
-        static::assertLines([DiffLine::STATE_EMPTY, DiffLine::STATE_UNCHANGED, DiffLine::STATE_REMOVED, DiffLine::STATE_UNCHANGED], $leftBlocks[0]);
+        self::assertLines([DiffLine::STATE_EMPTY, DiffLine::STATE_UNCHANGED, DiffLine::STATE_REMOVED, DiffLine::STATE_UNCHANGED], $leftBlocks[0]);
 
         $rightBlocks = $rightFile->getBlocks();
         static::assertCount(1, $rightBlocks);
-        static::assertLines([DiffLine::STATE_ADDED, DiffLine::STATE_UNCHANGED, DiffLine::STATE_EMPTY, DiffLine::STATE_UNCHANGED], $rightBlocks[0]);
+        self::assertLines([DiffLine::STATE_ADDED, DiffLine::STATE_UNCHANGED, DiffLine::STATE_EMPTY, DiffLine::STATE_UNCHANGED], $rightBlocks[0]);
     }
 
     /**
