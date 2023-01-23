@@ -14,7 +14,7 @@ class FileDiffViewModel
     private ?ReplyCommentViewModel $replyCommentForm  = null;
     private ?HighlightedFile       $highlightedFile   = null;
 
-    public function __construct(public readonly ?DiffFile $selectedFile, public readonly ReviewDiffModeEnum $diffMode)
+    public function __construct(public readonly DiffFile $selectedFile, public readonly ReviewDiffModeEnum $diffMode)
     {
     }
 
