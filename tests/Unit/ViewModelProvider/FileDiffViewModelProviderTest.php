@@ -12,6 +12,7 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
+use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
@@ -29,6 +30,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     private CacheableHighlightedFileService&MockObject $highlightedFileService;
     private UnifiedDiffBundler&MockObject              $bundler;
     private UnifiedDiffEmphasizer&MockObject           $emphasizer;
+    private UnifiedDiffSplitter&MockObject             $splitter;
     private FileDiffViewModelProvider                  $provider;
 
     public function setUp(): void
@@ -38,11 +40,13 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->highlightedFileService = $this->createMock(CacheableHighlightedFileService::class);
         $this->bundler                = $this->createMock(UnifiedDiffBundler::class);
         $this->emphasizer             = $this->createMock(UnifiedDiffEmphasizer::class);
+        $this->splitter               = $this->createMock(UnifiedDiffSplitter::class);
         $this->provider               = new FileDiffViewModelProvider(
             $this->commentModelProvider,
             $this->highlightedFileService,
             $this->bundler,
-            $this->emphasizer
+            $this->emphasizer,
+            $this->splitter
         );
     }
 
