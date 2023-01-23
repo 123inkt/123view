@@ -17,6 +17,8 @@
         diff-file__line-change-removed
     {%- elseif line.state == 3 -%}
         diff-file__line-change-changed
+    {%- elseif line.state == 5 -%}
+        diff-file__line-change-empty
     {%- endif -%}
     {{- line_visible ? '' : ' diff-file__diff-line-hidden' -}}
 {%- endmacro -%}
