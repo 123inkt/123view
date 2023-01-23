@@ -5,6 +5,7 @@ namespace DR\Review\ViewModel\App\Review;
 
 enum ReviewDiffModeEnum: string
 {
+    case SIDE_BY_SIDE = 'side-by-side';
     case UNIFIED = 'unified';
     case INLINE = 'inline';
 
