@@ -67,13 +67,13 @@ class GitLogParserTest extends AbstractTestCase
     {
         // commit
         $commitLog  = FormatPatternFactory::COMMIT_DELIMITER;
-        $commitLog  .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commit-part%d', 8));
+        $commitLog  .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commit-part%d', 9));
         $repository = new Repository();
         $files      = [new DiffFile()];
         $commit     = $this->createCommit(null, $files);
 
         // prepare mocks
-        $this->diffParser->expects(static::once())->method('parse')->with('commit-part8')->willReturn($files);
+        $this->diffParser->expects(static::once())->method('parse')->with('commit-part9')->willReturn($files);
         $this->hydrator->expects(static::once())
             ->method('hydrate')
             ->with($repository, static::callback(static fn($value) => is_array($value)), $files)
