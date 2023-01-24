@@ -29,6 +29,7 @@ trait TestTrait
             $author ?? new Author('name', 'email'),
             Carbon::now(),
             'subject',
+            'body',
             'refs',
             $files
         );

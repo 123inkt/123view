@@ -17,6 +17,7 @@ class FormatPatternFactory
         FormatPattern::AUTHOR_EMAIL,
         FormatPattern::AUTHOR_DATE_ISO8601,
         FormatPattern::SUBJECT,
+        FormatPattern::BODY,
         FormatPattern::REF_NAMES
     ];
     // intentionally two-part string to avoid this commit to match output

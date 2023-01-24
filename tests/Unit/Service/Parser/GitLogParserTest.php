@@ -67,13 +67,13 @@ class GitLogParserTest extends AbstractTestCase
     {
         // commit
         $commitLog  = FormatPatternFactory::COMMIT_DELIMITER;
-        $commitLog  .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commit-part%d', 8));
+        $commitLog  .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commit-part%d', 9));
         $repository = new Repository();
         $files      = [new DiffFile()];
         $commit     = $this->createCommit(null, $files);
 
         // prepare mocks
-        $this->diffParser->expects(static::once())->method('parse')->with('commit-part8')->willReturn($files);
+        $this->diffParser->expects(static::once())->method('parse')->with('commit-part9')->willReturn($files);
         $this->hydrator->expects(static::once())
             ->method('hydrate')
             ->with($repository, static::callback(static fn($value) => is_array($value)), $files)
@@ -92,9 +92,9 @@ class GitLogParserTest extends AbstractTestCase
     {
         // commit
         $commitLog = FormatPatternFactory::COMMIT_DELIMITER;
-        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitA-part%d', 8));
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitA-part%d', 9));
         $commitLog .= FormatPatternFactory::COMMIT_DELIMITER;
-        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitB-part%d', 8));
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitB-part%d', 9));
 
         $repository    = new Repository();
         $commitA       = $this->createCommit();
@@ -103,7 +103,7 @@ class GitLogParserTest extends AbstractTestCase
         $commitB->refs = null;
 
         // prepare mocks
-        $this->diffParser->expects(static::exactly(2))->method('parse')->withConsecutive(['commitA-part8'], ['commitB-part8'])->willReturn([]);
+        $this->diffParser->expects(static::exactly(2))->method('parse')->withConsecutive(['commitA-part9'], ['commitB-part9'])->willReturn([]);
         $this->hydrator->expects(static::exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
 
         // test it
@@ -120,14 +120,14 @@ class GitLogParserTest extends AbstractTestCase
     {
         // commit
         $commitLog = FormatPatternFactory::COMMIT_DELIMITER;
-        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitA-part%d', 8));
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitA-part%d', 9));
         $commitLog .= FormatPatternFactory::COMMIT_DELIMITER;
-        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitB-part%d', 8));
+        $commitLog .= implode(FormatPatternFactory::PARTS_DELIMITER, self::generateData('commitB-part%d', 9));
 
         $commit = $this->createCommit();
 
         // prepare mocks
-        $this->diffParser->expects(static::once())->method('parse')->with('commitA-part8')->willReturn([]);
+        $this->diffParser->expects(static::once())->method('parse')->with('commitA-part9')->willReturn([]);
         $this->hydrator->expects(static::once())->method('hydrate')->willReturn($commit);
 
         // test it

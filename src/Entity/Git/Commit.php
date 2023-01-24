@@ -17,6 +17,7 @@ class Commit
     public Author  $author;
     public Carbon  $date;
     public string  $subject;
+    public string  $body;
     public ?string $refs;
     /** @var DiffFile[] */
     public array $files;
@@ -34,6 +35,7 @@ class Commit
         Author $author,
         Carbon $date,
         string $subject,
+        string $body,
         ?string $refs,
         array $files
     ) {
@@ -43,6 +45,7 @@ class Commit
         $this->author       = $author;
         $this->date         = $date;
         $this->subject      = $subject;
+        $this->body         = $body;
         $this->refs         = $refs;
         $this->files        = $files;
     }
@@ -55,22 +58,6 @@ class Commit
         $repository = (string)preg_replace('/\.git$/', '', (string)$this->repository->getUrl());
 
         return basename($repository);
-    }
-
-    /**
-     * Get the first line (if any) of the commit subject
-     */
-    public function getSubjectLine(): string
-    {
-        return explode("\n", $this->subject)[0] ?? '';
-    }
-
-    /**
-     * Get the commit message excluding the first line
-     */
-    public function getCommitMessage(): string
-    {
-        return trim(implode("\n", array_slice(explode("\n", $this->subject), 1)));
     }
 
     public function getRemoteRef(): ?string

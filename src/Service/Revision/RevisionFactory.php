@@ -22,8 +22,8 @@ class RevisionFactory
             $revision->setAuthorName($commit->author->name);
             $revision->setCreateTimestamp($commit->date->getTimestamp());
             $revision->setCommitHash($hash);
-            $revision->setTitle(mb_substr(trim($commit->getSubjectLine()), 0, 255));
-            $revision->setDescription(mb_substr($commit->getCommitMessage(), 0, 255));
+            $revision->setTitle(mb_substr(trim($commit->subject), 0, 255));
+            $revision->setDescription(mb_substr($commit->body, 0, 255));
         }
 
         return $revisions;

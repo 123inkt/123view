@@ -34,7 +34,7 @@ class DiffLineIteratorTest extends AbstractTestCase
         $file = new DiffFile();
         $file->addBlock($block);
 
-        $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), Carbon::now(), 'subject', 'refs', [$file]);
+        $commit = new Commit(new Repository(), 'parent-hash', 'hash', new Author('name', 'email'), Carbon::now(), 'subject', 'body', 'refs', [$file]);
 
         // execute iterator
         $result = iterator_to_array(new DiffLineIterator([$commit]));
