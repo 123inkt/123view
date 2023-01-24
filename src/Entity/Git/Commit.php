@@ -17,6 +17,7 @@ class Commit
     public Author  $author;
     public Carbon  $date;
     public string  $subject;
+    public string  $body;
     public ?string $refs;
     /** @var DiffFile[] */
     public array $files;
