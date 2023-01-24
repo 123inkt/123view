@@ -58,6 +58,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     /**
      * @covers ::bundleLines
      * @covers ::isBundleable
+     * @covers ::emphasizeDiff
      */
     public function testBundle(): void
     {
@@ -80,6 +81,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     /**
      * @covers ::bundleLines
      * @covers ::isBundleable
+     * @covers ::emphasizeDiff
      */
     public function testBundleAdditionsOnly(): void
     {
@@ -99,6 +101,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     /**
      * @covers ::bundleLines
      * @covers ::isBundleable
+     * @covers ::emphasizeDiff
      */
     public function testBundleRemovalsOnly(): void
     {
@@ -118,6 +121,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     /**
      * @covers ::bundleLines
      * @covers ::isBundleable
+     * @covers ::emphasizeDiff
      */
     public function testBundleWhitespaceOnly(): void
     {
@@ -138,6 +142,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
     /**
      * @covers ::bundleLines
      * @covers ::isBundleable
+     * @covers ::emphasizeDiff
      */
     public function testBundleNotBundleable(): void
     {

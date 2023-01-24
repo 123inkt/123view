@@ -55,11 +55,9 @@ class UnifiedDiffBundler
                     continue;
                 }
 
+                // emphasize changes in all pairs
+                $this->emphasizeDiff($pairs);
                 // in a set of multiple pairs, if one of the pairs is not bundleable, skip the whole set
-                if (count($pairs) === 1) {
-                    // single pair and large difference, emphasize changes in both lines
-                    $this->differ->diff($pair->removed, $pair->added);
-                }
                 continue 2;
             }
 
@@ -76,6 +74,17 @@ class UnifiedDiffBundler
         }
 
         return $collection->toArray();
+    }
+
+    /**
+     * @param DiffLinePair[] $pairs
+     */
+    private function emphasizeDiff(array $pairs): void
+    {
+        foreach ($pairs as $pairDiff) {
+            // single pair and large difference, emphasize changes in both lines
+            $this->differ->diff($pairDiff->removed, $pairDiff->added);
+        }
     }
 
     private function isBundleable(DiffLineCompareResult $compareResult): bool
