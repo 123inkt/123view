@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import axios, {type AxiosRequestConfig, type AxiosResponse} from 'axios';
 
 export default class HttpClient {
     private abortController: AbortController | null = null;
