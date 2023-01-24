@@ -9,7 +9,7 @@
     {% include 'app/flash/flashes.html.twig' %}
 
     {% if reviewModel.descriptionVisible and review.description|length > 0 %}
-        <div class="mb-2 me-2 bg-primary bg-opacity-10 rounded-2 p-2 review--description">
+        <div class="mt-2 me-2 bg-primary bg-opacity-10 rounded-2 p-2 review--description">
             {{- review.description|markdown -}}
         </div>
     {% endif %}
