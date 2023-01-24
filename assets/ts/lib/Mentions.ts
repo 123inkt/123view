@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Function from './Function';
-import MentionsDropdown from './MentionsDropdown';
+import type MentionsDropdown from './MentionsDropdown';
 import type User from './User';
 
 export default class Mentions {
