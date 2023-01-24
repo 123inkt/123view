@@ -47,7 +47,7 @@ class ReviewRequest extends AbstractValidatedRequest
 
         $this->request->getSession()->set(SessionKeys::REVIEW_DIFF_MODE->value, $mode);
 
-        return ReviewDiffModeEnum::from($mode);
+        return ReviewDiffModeEnum::from((string)$mode);
     }
 
     public function getAction(): ?AbstractReviewAction
