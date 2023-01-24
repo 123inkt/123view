@@ -59,10 +59,10 @@ class UpsourceIntegration implements EventSubscriberInterface
             return;
         }
 
-        $reviewId = $this->api->getReviewId($projectId, $commit->getSubjectLine());
+        $reviewId = $this->api->getReviewId($projectId, $commit->subject);
         if ($reviewId === null) {
             $this->log->debug(
-                sprintf('UpsourceIntegration: no review found for `%s` in %s', $commit->getSubjectLine(), $commit->repository->getName())
+                sprintf('UpsourceIntegration: no review found for `%s` in %s', $commit->subject, $commit->repository->getName())
             );
 
             return;

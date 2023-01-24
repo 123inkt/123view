@@ -82,7 +82,7 @@ class UpsourceIntegrationTest extends AbstractTestCase
         $commit->repository = $repository;
 
         // setup mock
-        $this->api->expects(static::once())->method('getReviewId')->with("foobar", $commit->getSubjectLine())->willReturn(null);
+        $this->api->expects(static::once())->method('getReviewId')->with("foobar", $commit->subject)->willReturn(null);
 
         $this->integration->onCommitEvent(new CommitEvent($commit));
         static::assertEmpty($commit->integrationLinks);
@@ -123,7 +123,7 @@ class UpsourceIntegrationTest extends AbstractTestCase
         // setup mock
         $this->api->expects(static::once())
             ->method('getReviewId')
-            ->with("foobar", $commit->getSubjectLine())
+            ->with("foobar", $commit->subject)
             ->willReturn('cr-12345');
 
         $this->integration->onCommitEvent(new CommitEvent($commit));

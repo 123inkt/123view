@@ -25,10 +25,11 @@ class CommitTest extends AbstractTestCase
         $this->date = Carbon::now();
         $refs       = 'refs/remotes/origin/foobar';
         $files      = [new DiffFile()];
-        $subject    = "line1\nline2\nline3\n\n";
+        $subject    = "line1";
+        $body       = "line2\nline3";
         $repository = $this->createRepository('example', 'http://example.com/my/repository.git');
 
-        $this->commit = new Commit($repository, 'parent-hash', 'commit-hash', $author, $this->date, $subject, $refs, $files);
+        $this->commit = new Commit($repository, 'parent-hash', 'commit-hash', $author, $this->date, $subject, $body, $refs, $files);
     }
 
     /**
@@ -39,7 +40,8 @@ class CommitTest extends AbstractTestCase
         static::assertSame(['commit-hash'], $this->commit->commitHashes);
         static::assertSame('name', $this->commit->author->name);
         static::assertSame($this->date, $this->commit->date);
-        static::assertSame("line1\nline2\nline3\n\n", $this->commit->subject);
+        static::assertSame("line1", $this->commit->subject);
+        static::assertSame("line2\nline3", $this->commit->body);
         static::assertNotEmpty($this->commit->files);
     }
 
@@ -63,21 +65,5 @@ class CommitTest extends AbstractTestCase
 
         $this->commit->refs = 'foobar';
         static::assertNull($this->commit->getRemoteRef());
-    }
-
-    /**
-     * @covers ::getSubjectLine
-     */
-    public function testGetSubjectLine(): void
-    {
-        static::assertSame('line1', $this->commit->getSubjectLine());
-    }
-
-    /**
-     * @covers ::getCommitMessage
-     */
-    public function testGetCommitMessage(): void
-    {
-        static::assertSame("line2\nline3", $this->commit->getCommitMessage());
     }
 }

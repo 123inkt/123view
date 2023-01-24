@@ -24,7 +24,7 @@ class RevisionFactoryTest extends AbstractTestCase
         $date       = new DateTime();
         $repository = new Repository();
         $author     = new Author('Sherlock', 'holmes@example.com');
-        $commit     = new Commit($repository, 'parent', 'commit', $author, Carbon::now(), "subject\nmessage", null, []);
+        $commit     = new Commit($repository, 'parent', 'commit', $author, Carbon::now(), "subject", "message", null, []);
 
         $factory   = new RevisionFactory();
         $revisions = $factory->createFromCommit($commit);

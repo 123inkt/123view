@@ -67,6 +67,6 @@ class CommitBundler
         return $commitA->repository === $commitB->repository
             && $commitA->author->email === $commitB->author->email
             && $commitA->getRemoteRef() === $commitB->getRemoteRef()
-            && $commitA->getSubjectLine() === $commitB->getSubjectLine();
+            && $commitA->subject === $commitB->subject;
     }
 }

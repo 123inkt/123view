@@ -32,6 +32,7 @@ class CommitHydrator
             $author,
             $authorDate,
             (string)$data[FormatPattern::SUBJECT],
+            trim((string)$data[FormatPattern::BODY]),
             $refs === '' ? null : $refs,
             $files,
         );
