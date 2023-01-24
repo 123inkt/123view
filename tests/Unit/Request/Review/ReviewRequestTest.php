@@ -7,10 +7,12 @@ use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Review\ReviewRequest;
+use DR\Review\Security\SessionKeys;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @extends AbstractRequestTestCase<ReviewRequest>
@@ -62,10 +64,32 @@ class ReviewRequestTest extends AbstractRequestTestCase
      */
     public function testGetDiffMode(): void
     {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
         static::assertSame(ReviewDiffModeEnum::INLINE, $this->validatedRequest->getDiffMode());
 
         $this->request->query->set('diff', 'unified');
         static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
+    }
+
+    /**
+     * @covers ::getDiffMode
+     */
+    public function testGetDiffModeFromSession(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        $session->expects(self::once())
+            ->method('get')
+            ->with(SessionKeys::REVIEW_DIFF_MODE->value)
+            ->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE->value);
+        $session->expects(self::once())
+            ->method('set')
+            ->with(SessionKeys::REVIEW_DIFF_MODE->value, ReviewDiffModeEnum::SIDE_BY_SIDE->value);
+
+        static::assertSame(ReviewDiffModeEnum::SIDE_BY_SIDE, $this->validatedRequest->getDiffMode());
     }
 
     /**

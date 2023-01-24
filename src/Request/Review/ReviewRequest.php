@@ -7,6 +7,7 @@ use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFactory;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\Security\SessionKeys;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
@@ -36,7 +37,17 @@ class ReviewRequest extends AbstractValidatedRequest
 
     public function getDiffMode(): ReviewDiffModeEnum
     {
-        return ReviewDiffModeEnum::from($this->request->query->get('diff', ReviewDiffModeEnum::INLINE->value));
+        $mode = $this->request->query->get('diff');
+        if ($mode === null && $this->request->hasSession()) {
+            $mode = $this->request->getSession()->get(SessionKeys::REVIEW_DIFF_MODE->value);
+        }
+        if ($mode === null) {
+            return ReviewDiffModeEnum::INLINE;
+        }
+
+        $this->request->getSession()->set(SessionKeys::REVIEW_DIFF_MODE->value, $mode);
+
+        return ReviewDiffModeEnum::from($mode);
     }
 
     public function getAction(): ?AbstractReviewAction
