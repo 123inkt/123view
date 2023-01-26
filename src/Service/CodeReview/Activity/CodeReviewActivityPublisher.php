@@ -4,18 +4,27 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
-use JsonException;
+use DR\Review\Repository\User\UserRepository;
+use Nette\Utils\Json;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use Throwable;
 
-class CodeReviewActivityPublisher
+class CodeReviewActivityPublisher implements LoggerAwareInterface
 {
-    public function __construct(private readonly CodeReviewActivityFormatter $activityFormatter, private readonly HubInterface $mercureHub)
-    {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private readonly CodeReviewActivityFormatter $activityFormatter,
+        private readonly UserRepository $userRepository,
+        private readonly HubInterface $mercureHub
+    ) {
     }
 
     /**
-     * @throws JsonException
+     * @throws Throwable
      */
     public function publish(CodeReviewActivity $activity): void
     {
@@ -24,19 +33,29 @@ class CodeReviewActivityPublisher
             return;
         }
 
+        $reviewId = (int)$activity->getReview()?->getId();
+        $userId   = (int)$activity->getUser()?->getId();
+
+        // gather topics
+        $topics = [sprintf('/review/%d', $reviewId)];
+        foreach ($this->userRepository->getActors($reviewId) as $actor) {
+            if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent($activity->getEventName())) {
+                $topics[] = [sprintf('/user/%d', (int)$actor->getId())];
+            }
+        }
+
+        // create the payload
         $payload = [
-            'userId'    => (int)$activity->getUser()?->getId(),
+            'userId'    => $userId,
             'reviewId'  => (int)$activity->getReview()?->getId(),
             'eventName' => $activity->getEventName(),
             'message'   => $message
         ];
 
+        $this->logger->info('Mercure publish: `' . implode(' ', $topics) . '` with message: ' . $message);
+
         // publish to mercure
-        $update = new Update(
-            sprintf('/review/%d', (int)$activity->getReview()?->getId()),
-            json_encode($payload, JSON_THROW_ON_ERROR),
-            true
-        );
+        $update = new Update($topics, Json::encode($payload), true);
         $this->mercureHub->publish($update);
     }
 }

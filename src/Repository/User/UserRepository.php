@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Repository\User;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -87,5 +88,36 @@ class UserRepository extends ServiceEntityRepository
         $result = $builder->orderBy('u.name', 'ASC')->getQuery()->getResult();
 
         return $result;
+    }
+
+    /**
+     * @return User[]
+     * @throws Exception
+     */
+    public function getActors(int $reviewId): array
+    {
+        // get all users ids for:
+        //    authors, reviewers, commenters, repliers and user mentions
+        $connection = $this->getEntityManager()->getConnection();
+        $query      = $connection->prepare(
+            "SELECT `actor`.user_id
+             FROM (
+              ( SELECT u.id AS user_id FROM revision INNER JOIN `user` u ON revision.author_email=u.email WHERE revision.review_id=:reviewId )
+              UNION
+              ( SELECT reviewer.user_id FROM code_reviewer reviewer WHERE reviewer.review_id=:reviewId )
+              UNION
+              ( SELECT comment.user_id FROM `comment` WHERE comment.review_id=:reviewId )
+              UNION
+              ( SELECT reply.user_id FROM `comment_reply` rply INNER JOIN `comment` ON rply.comment_id=comment.id WHERE comment.review_id=:reviewId )
+              UNION
+              ( SELECT um.user_id FROM `user_mention` um INNER JOIN `comment` ON um.comment_id=comment.id WHERE comment.review_id=:reviewId )
+             ) AS `actor`
+             WHERE `actor`.user_id IS NOT NULL
+             GROUP BY `actor`.user_id"
+        );
+        $query->bindValue('reviewId', $reviewId);
+        $userIds = $query->executeQuery()->fetchFirstColumn();
+
+        return count($userIds) === 0 ? [] : $this->findBy(['id' => $userIds]);
     }
 }

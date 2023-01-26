@@ -105,6 +105,11 @@ class UserSetting
         return $this;
     }
 
+    public function hasBrowserNotificationEvent(string $event): bool
+    {
+        return in_array($event, $this->getBrowserNotificationEvents(), true);
+    }
+
     /**
      * @return string[]
      */
