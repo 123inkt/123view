@@ -120,9 +120,16 @@
 
 {%- block page %}{% endblock -%}
 
-{% if is_granted('ROLE_USER') %}
-    <div {{ stimulus_controller('server-event') }} data-url="{{ mercure('/review/{id}', { subscribe: '/review/{id}' }) }}"></div>
-{% endif %}
+{%- block mercure -%}
+    {% if is_granted('ROLE_USER') %}
+        {% set topics = ['/user/' ~ app.user.id] %}
+        <div {{ stimulus_controller('server-event') }} data-url="{{ mercure(topics, { subscribe: topics }) }}"></div>
+    {% endif %}
+{%- endblock -%}
+
+{%- if is_granted('ROLE_USER') -%}
+    <div {{ stimulus_controller('browser-notification') }} data-browser-notification-user-id-value="{{ app.user.id }}"></div>
+{%- endif -%}
 
 </body>
 </html>

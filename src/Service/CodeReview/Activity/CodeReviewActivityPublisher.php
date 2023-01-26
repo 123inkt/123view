@@ -36,14 +36,6 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
         $reviewId = (int)$activity->getReview()?->getId();
         $userId   = (int)$activity->getUser()?->getId();
 
-        // gather topics
-        $topics = [sprintf('/review/%d', $reviewId)];
-        foreach ($this->userRepository->getActors($reviewId) as $actor) {
-            if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent($activity->getEventName())) {
-                $topics[] = [sprintf('/user/%d', (int)$actor->getId())];
-            }
-        }
-
         // create the payload
         $payload = [
             'userId'    => $userId,
@@ -52,10 +44,19 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
             'message'   => $message
         ];
 
-        $this->logger->info('Mercure publish: `' . implode(' ', $topics) . '` with message: ' . $message);
+        // gather topics
+        $topics = [sprintf('/review/%d', $reviewId)];
+        foreach ($this->userRepository->getActors($reviewId) as $actor) {
+            if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent($activity->getEventName())) {
+                $topics[] = sprintf('/user/%d', (int)$actor->getId());
+            }
+        }
 
-        // publish to mercure
-        $update = new Update($topics, Json::encode($payload), true);
-        $this->mercureHub->publish($update);
+        foreach ($topics as $topic) {
+            $this->logger->info('Mercure publish: `' . $topic . '` with message: ' . $message);
+
+            // publish to mercure
+            $this->mercureHub->publish(new Update($topic, Json::encode(['topic' => $topic] + $payload), true));
+        }
     }
 }

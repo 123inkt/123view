@@ -98,8 +98,7 @@ class UserRepository extends ServiceEntityRepository
     {
         // get all users ids for:
         //    authors, reviewers, commenters, repliers and user mentions
-        $connection = $this->getEntityManager()->getConnection();
-        $query      = $connection->prepare(
+        $query = $this->getEntityManager()->getConnection()->prepare(
             "SELECT `actor`.user_id
              FROM (
               ( SELECT u.id AS user_id FROM revision INNER JOIN `user` u ON revision.author_email=u.email WHERE revision.review_id=:reviewId )
@@ -108,7 +107,7 @@ class UserRepository extends ServiceEntityRepository
               UNION
               ( SELECT comment.user_id FROM `comment` WHERE comment.review_id=:reviewId )
               UNION
-              ( SELECT reply.user_id FROM `comment_reply` rply INNER JOIN `comment` ON rply.comment_id=comment.id WHERE comment.review_id=:reviewId )
+              ( SELECT rply.user_id FROM `comment_reply` rply INNER JOIN `comment` ON rply.comment_id=comment.id WHERE comment.review_id=:reviewId )
               UNION
               ( SELECT um.user_id FROM `user_mention` um INNER JOIN `comment` ON um.comment_id=comment.id WHERE comment.review_id=:reviewId )
              ) AS `actor`
