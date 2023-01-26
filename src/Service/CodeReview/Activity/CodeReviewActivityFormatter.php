@@ -109,6 +109,11 @@ class CodeReviewActivityFormatter
             }
         }
 
+        // add message
+        if ($activity->getEventName() === CommentReplyAdded::NAME) {
+            $params[] = new Variable('message', (string)$activity->getDataValue('message'));
+        }
+
         return $params;
     }
 
