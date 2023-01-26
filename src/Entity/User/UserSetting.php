@@ -27,8 +27,8 @@ class UserSetting
     #[ORM\Column]
     private bool $mailCommentReplied = true;
 
-    #[ORM\Column(length: 10000, options: ['default' => '*'])]
-    private string $browserNotificationEvents = '*';
+    #[ORM\Column(length: 10000, options: ['default' => ''])]
+    private string $browserNotificationEvents = '';
 
     #[ORM\OneToOne(inversedBy: 'setting', targetEntity: User::class)]
     private ?User $user = null;

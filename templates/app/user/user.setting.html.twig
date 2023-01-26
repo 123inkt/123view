@@ -11,6 +11,22 @@
 
     {{ form_widget(settingViewModel.form.setting.colorTheme) }}
 
+    <div {{ stimulus_controller('browser-notification-settings') }}>
+        <h3 class="mb-4 mt-4">
+            {{ 'browser.notification.settings'|trans }}
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    {{ stimulus_target('browser-notification-settings', 'button') }}
+                    {{ stimulus_action('browser-notification-settings', 'enable', 'click') }}
+            >{{ 'enable'|trans }}</button>
+        </h3>
+
+        {{ form_widget(settingViewModel.form.setting.browserNotificationEvents) }}
+        <small class="text-secondary">
+            {{ 'browser.notification.explanation.text'|trans }}
+        </small>
+    </div>
+
     <h3 class="mb-4 mt-4">{{ 'mail.settings'|trans }}</h3>
 
     {{ form_rest(settingViewModel.form) }}
