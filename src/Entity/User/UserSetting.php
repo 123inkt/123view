@@ -27,6 +27,9 @@ class UserSetting
     #[ORM\Column]
     private bool $mailCommentReplied = true;
 
+    #[ORM\Column(length: 10000, options: ['default' => '*'])]
+    private string $browserNotificationEvents = '*';
+
     #[ORM\OneToOne(inversedBy: 'setting', targetEntity: User::class)]
     private ?User $user = null;
 
@@ -98,6 +101,24 @@ class UserSetting
     public function setMailCommentReplied(bool $mailCommentReplied): self
     {
         $this->mailCommentReplied = $mailCommentReplied;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getBrowserNotificationEvents(): array
+    {
+        return explode(',', $this->browserNotificationEvents);
+    }
+
+    /**
+     * @param string[] $browserNotificationEvents
+     */
+    public function setBrowserNotificationEvents(array $browserNotificationEvents): self
+    {
+        $this->browserNotificationEvents = implode(',', $browserNotificationEvents);
 
         return $this;
     }
