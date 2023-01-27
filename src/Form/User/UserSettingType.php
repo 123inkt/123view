@@ -7,6 +7,7 @@ use DR\Review\Doctrine\Type\ColorThemeType;
 use DR\Review\Entity\User\UserSetting;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
 use DR\Review\Message\Review\ReviewRejected;
@@ -51,6 +52,7 @@ class UserSettingType extends AbstractType
                 'choices'     => [
                     'notification.comment.added'       => CommentAdded::NAME,
                     'notification.comment.reply.added' => CommentReplyAdded::NAME,
+                    'notification.comment.resolved'    => CommentResolved::NAME,
                     'notification.reviewer.added'      => ReviewerAdded::NAME,
                     'notification.reviewer.removed'    => ReviewerRemoved::NAME,
                     'notification.review.accepted'     => ReviewAccepted::NAME,
