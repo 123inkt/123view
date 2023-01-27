@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview\Activity;
 
+use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Utility\Assert;
 use Nette\Utils\Json;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
 
 class CodeReviewActivityPublisher implements LoggerAwareInterface
@@ -19,6 +22,7 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
     public function __construct(
         private readonly CodeReviewActivityFormatter $activityFormatter,
         private readonly UserRepository $userRepository,
+        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly HubInterface $mercureHub
     ) {
     }
@@ -33,20 +37,23 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
             return;
         }
 
-        $reviewId = (int)$activity->getReview()?->getId();
-        $userId   = (int)$activity->getUser()?->getId();
+        $review     = Assert::notNull($activity->getReview());
+        $repository = Assert::notNull($review->getRepository());
+        $userId     = (int)$activity->getUser()?->getId();
 
         // create the payload
         $payload = [
             'userId'    => $userId,
-            'reviewId'  => (int)$activity->getReview()?->getId(),
+            'reviewId'  => $review->getId(),
             'eventName' => $activity->getEventName(),
-            'message'   => $message
+            'title'     => sprintf('CR-%s - %s', $review->getProjectId(), $repository->getDisplayName()),
+            'message'   => $message,
+            'url'       => $this->urlGenerator->generate(ReviewController::class, ['review' => $review])
         ];
 
         // gather topics
-        $topics = [sprintf('/review/%d', $reviewId)];
-        foreach ($this->userRepository->getActors($reviewId) as $actor) {
+        $topics = [sprintf('/review/%d', $review->getId())];
+        foreach ($this->userRepository->getActors((int)$review->getId()) as $actor) {
             if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent($activity->getEventName())) {
                 $topics[] = sprintf('/user/%d', (int)$actor->getId());
             }

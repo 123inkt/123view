@@ -13,6 +13,6 @@ export default class extends Controller {
 
     private handleNotification(event: Event): void {
         const data = (event as CustomEvent).detail;
-        this.notification.publish(document.title, data.message);
+        this.notification.publish(data.title, data.message, data.url);
     }
 }

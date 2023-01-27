@@ -3,7 +3,7 @@ export default class BrowserNotification {
         return 'Notification' in window && window.Notification.permission === 'granted';
     }
 
-    public publish(title: string, message: string): void {
+    public publish(title: string, message: string, url?: string): void {
         if (this.isEnabled() === false) {
             return;
         }
@@ -13,8 +13,10 @@ export default class BrowserNotification {
         el.innerHTML = message.replace(/(<([^>]+)>)/gi, '');
         message      = el.innerText;
 
-        // eslint-disable-next-line no-new
-        new Notification(title, {body: message});
+        const notification = new Notification(title, {body: message});
+        if (url !== undefined) {
+            notification.addEventListener('click', () => window.location.href = url);
+        }
     }
 
     public requestAccess(): Promise<NotificationPermission> {
