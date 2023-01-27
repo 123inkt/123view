@@ -32,7 +32,7 @@ class UserSettingTest extends AbstractTestCase
         static::assertFalse($setting->hasBrowserNotificationEvent('foobar'));
 
         $setting->setBrowserNotificationEvents(['foo', 'bar']);
-        static::assertFalse($setting->hasBrowserNotificationEvent('foo'));
+        static::assertTrue($setting->hasBrowserNotificationEvent('foo'));
 
         static::assertSame(['foo', 'bar'], $setting->getBrowserNotificationEvents());
     }

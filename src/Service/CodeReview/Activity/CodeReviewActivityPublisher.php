@@ -43,6 +43,7 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
 
         // create the payload
         $payload = [
+            'eventId'   => $activity->getId(),
             'userId'    => $userId,
             'reviewId'  => $review->getId(),
             'eventName' => $activity->getEventName(),
@@ -60,7 +61,7 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
         }
 
         foreach ($topics as $topic) {
-            $this->logger->info('Mercure publish: `' . $topic . '` with message: ' . $message);
+            $this->logger?->info('Mercure publish: `' . $topic . '` with message: ' . $message);
 
             // publish to mercure
             $this->mercureHub->publish(new Update($topic, Json::encode(['topic' => $topic] + $payload), true));

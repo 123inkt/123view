@@ -24,7 +24,7 @@ class UserSettingTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(4))
+        $builder->expects(self::exactly(5))
             ->method('add')
             ->withConsecutive(
                 ['colorTheme', ChoiceType::class],
