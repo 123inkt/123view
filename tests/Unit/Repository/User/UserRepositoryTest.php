@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Repository\User;
 
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractRepositoryTestCase;
+use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
+use DR\Review\Tests\DataFixtures\CommentFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Review\Utility\Assert;
 use Exception;
@@ -77,10 +80,24 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @covers ::getActors
+     * @throws Exception
+     */
+    public function testGetActors(): void
+    {
+        $review     = self::getService(CodeReviewRepository::class)->findOneBy(['title' => 'title']);
+        $repository = self::getService(UserRepository::class);
+
+        $result = $repository->getActors($review->getId());
+        static::assertCount(1, $result);
+        static::assertSame('sherlock@example.com', $result[0]->getEmail());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array
     {
-        return [UserFixtures::class];
+        return [UserFixtures::class, CodeReviewFixtures::class, CommentFixtures::class];
     }
 }
