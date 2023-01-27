@@ -20,7 +20,7 @@ final class Version20230126173724 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user_setting ADD browser_notification_events VARCHAR(10000) DEFAULT \'*\' NOT NULL');
+        $this->addSql('ALTER TABLE user_setting ADD browser_notification_events VARCHAR(10000) DEFAULT \'\' NOT NULL');
     }
 
     public function down(Schema $schema): void
