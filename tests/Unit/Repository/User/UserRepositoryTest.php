@@ -85,10 +85,11 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
      */
     public function testGetActors(): void
     {
-        $review     = self::getService(CodeReviewRepository::class)->findOneBy(['title' => 'title']);
+        $review = self::getService(CodeReviewRepository::class)->findOneBy(['title' => 'title']);
+        static::assertNotNull($review);
         $repository = self::getService(UserRepository::class);
 
-        $result = $repository->getActors($review->getId());
+        $result = $repository->getActors((int)$review->getId());
         static::assertCount(1, $result);
         static::assertSame('sherlock@example.com', $result[0]->getEmail());
     }
