@@ -8,6 +8,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentRemoved;
+use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Review\ReviewAccepted;
@@ -45,6 +46,7 @@ class CodeReviewActivityFormatter
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
         CommentAdded::NAME                       => 'timeline.comment.added',
+        CommentReplyAdded::NAME                  => 'timeline.comment.reply.added',
         CommentRemoved::NAME                     => 'timeline.comment.removed',
         CommentResolved::NAME                    => 'timeline.comment.resolved',
         CommentUnresolved::NAME                  => 'timeline.comment.unresolved',
@@ -105,6 +107,11 @@ class CodeReviewActivityFormatter
             } else {
                 $params[] = $this->variableFactory->createFromComment($comment);
             }
+        }
+
+        // add message
+        if ($activity->getEventName() === CommentReplyAdded::NAME) {
+            $params[] = new Variable('message', (string)$activity->getDataValue('message'));
         }
 
         return $params;

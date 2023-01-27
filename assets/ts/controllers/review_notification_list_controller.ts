@@ -1,11 +1,9 @@
 import {Controller} from '@hotwired/stimulus';
-import BrowserNotification from '../lib/BrowserNotification';
 
 export default class extends Controller {
     public static targets = ['template'];
     public static values  = {userId: Number, reviewId: Number};
 
-    private readonly notification = new BrowserNotification();
     private readonly declare templateTarget: HTMLTemplateElement;
     private readonly declare userIdValue: number;
     private readonly declare reviewIdValue: number;
@@ -21,21 +19,14 @@ export default class extends Controller {
     ];
 
     public connect(): void {
-        document.addEventListener('notification', this.handleNotification.bind(this));
+        document.addEventListener('/review/' + String(this.reviewIdValue), this.handleNotification.bind(this));
     }
 
     private handleNotification(event: Event): void {
-        const userId   = this.userIdValue;
-        const reviewId = this.reviewIdValue;
-        const data     = (event as CustomEvent).detail;
-
-        // notification for different review
-        if (data.reviewId !== reviewId) {
-            return;
-        }
+        const data = (event as CustomEvent).detail;
 
         // skip notifications from me
-        if (data.userId === userId) {
+        if (data.userId === this.userIdValue) {
             return;
         }
 
@@ -44,10 +35,7 @@ export default class extends Controller {
             return;
         }
 
-        if (this.notification.isEnabled() === false) {
-            this.element.appendChild(this.createItem(data.message));
-        }
-        this.notification.publish(document.title, data.message);
+        this.element.appendChild(this.createItem(data.message));
     }
 
     private createItem(message: string): HTMLElement {

@@ -1,9 +1,9 @@
 {% extends 'app/app.wide.base.html.twig' %}
 
-{%- block page_content -%}
-    {% set review = reviewModel.review %}
-    {% set reviewer = reviewModel.getReviewer(app.user) %}
+{% set review = reviewModel.review %}
+{% set reviewer = reviewModel.getReviewer(app.user) %}
 
+{%- block page_content -%}
     <div class="review-reload-required bg-primary text-white rounded-bottom ps-2 pe-2 pt-1 pb-1"
             {{ stimulus_controller('review-changed-notification') }}
          data-review-changed-notification-review-id-value="{{ review.id }}" data-review-changed-notification-user-id-value="{{ app.user.id }}">
@@ -32,4 +32,9 @@
     </div>
 
     {%- include 'app/review/notification/review.notifications.html.twig' -%}
+{%- endblock -%}
+
+{%- block mercure -%}
+    {% set topics = ['/user/' ~ app.user.id, '/review/' ~ review.id] %}
+    <div {{ stimulus_controller('server-event') }} data-url="{{ mercure(topics, { subscribe: topics }) }}"></div>
 {%- endblock -%}

@@ -5,6 +5,15 @@ namespace DR\Review\Form\User;
 
 use DR\Review\Doctrine\Type\ColorThemeType;
 use DR\Review\Entity\User\UserSetting;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Review\ReviewClosed;
+use DR\Review\Message\Review\ReviewRejected;
+use DR\Review\Message\Review\ReviewResumed;
+use DR\Review\Message\Reviewer\ReviewerAdded;
+use DR\Review\Message\Reviewer\ReviewerRemoved;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -35,6 +44,27 @@ class UserSettingType extends AbstractType
         $builder->add('mailCommentAdded', CheckboxType::class, ['required' => false, 'label' => 'form.label.mail.comment.added']);
         $builder->add('mailCommentReplied', CheckboxType::class, ['required' => false, 'label' => 'form.label.mail.comment.replied']);
         $builder->add('mailCommentResolved', CheckboxType::class, ['required' => false, 'label' => 'form.label.mail.comment.resolved']);
+        $builder->add(
+            'browserNotificationEvents',
+            ChoiceType::class,
+            [
+                'label'       => false,
+                'choices'     => [
+                    'notification.comment.added'       => CommentAdded::NAME,
+                    'notification.comment.reply.added' => CommentReplyAdded::NAME,
+                    'notification.comment.resolved'    => CommentResolved::NAME,
+                    'notification.reviewer.added'      => ReviewerAdded::NAME,
+                    'notification.reviewer.removed'    => ReviewerRemoved::NAME,
+                    'notification.review.accepted'     => ReviewAccepted::NAME,
+                    'notification.review.rejected'     => ReviewRejected::NAME,
+                    'notification.review.closed'       => ReviewClosed::NAME,
+                    'notification.review.resumed'      => ReviewResumed::NAME
+                ],
+                'choice_attr' => static fn() => ['data-role' => 'notification-event', 'disabled' => true],
+                'expanded'    => true,
+                'multiple'    => true,
+            ]
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
