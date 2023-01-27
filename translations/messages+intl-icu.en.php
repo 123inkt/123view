@@ -110,6 +110,7 @@ return [
     'name'                                        => 'Name',
     'notification.comment.added'                  => 'Comment added to review',
     'notification.comment.reply.added'            => 'Comment replied',
+    'notification.comment.resolved'               => 'Comment resolved',
     'notification.review.accepted'                => 'Review accepted',
     'notification.review.closed'                  => 'Review closed',
     'notification.review.rejected'                => 'Review rejected',
