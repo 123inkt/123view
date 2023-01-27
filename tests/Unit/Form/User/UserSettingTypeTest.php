@@ -31,6 +31,7 @@ class UserSettingTypeTest extends AbstractTestCase
                 ['mailCommentAdded', CheckboxType::class],
                 ['mailCommentReplied', CheckboxType::class],
                 ['mailCommentResolved', CheckboxType::class],
+                ['browserNotificationEvents', ChoiceType::class],
             )->willReturnSelf();
 
         $type = new UserSettingType();
