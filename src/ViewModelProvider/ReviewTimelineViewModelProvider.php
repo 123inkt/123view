@@ -6,6 +6,7 @@ namespace DR\Review\ViewModelProvider;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
@@ -30,7 +31,7 @@ class ReviewTimelineViewModelProvider
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
             $message = $this->activityFormatter->format($activity, $this->user);
-            if ($message === null) {
+            if ($message === null || $activity->getEventName() === CommentReplyAdded::NAME) {
                 continue;
             }
             $comment = null;
