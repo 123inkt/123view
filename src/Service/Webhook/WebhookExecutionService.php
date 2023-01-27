@@ -7,6 +7,7 @@ use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Entity\Webhook\WebhookActivity;
 use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Repository\Webhook\WebhookActivityRepository;
+use Nette\Utils\Json;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpClient\RetryableHttpClient;
@@ -57,7 +58,7 @@ class WebhookExecutionService implements LoggerAwareInterface
         // setup request body
         $requestBody = ['name' => $event->getName(), 'payload' => $event->getPayload()];
         $activity->setRequestHeaders(['Authorization' => ''] + $webhook->getHeaders());
-        $activity->setRequest(json_encode($requestBody, JSON_THROW_ON_ERROR));
+        $activity->setRequest(Json::encode($requestBody));
 
         // setup request options
         $options = [

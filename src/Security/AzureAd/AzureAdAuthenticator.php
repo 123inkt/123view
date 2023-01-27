@@ -8,7 +8,7 @@ use DR\Review\Controller\App\User\UserApprovalPendingController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Utility\Assert;
-use JsonException;
+use Nette\Utils\Json;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Throwable;
 
 class AzureAdAuthenticator extends AbstractAuthenticator
 {
@@ -52,7 +53,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
 
     /**
      * @inheritDoc
-     * @throws JsonException
+     * @throws Throwable
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
@@ -62,7 +63,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
 
         $url = null;
         if ($request->query->has('state')) {
-            $url = Assert::isArray(json_decode($request->query->get('state'), true, 512, JSON_THROW_ON_ERROR))['next'] ?? null;
+            $url = Assert::isArray(Json::decode($request->query->get('state'), Json::FORCE_ARRAY))['next'] ?? null;
         }
         $url ??= $this->urlGenerator->generate(ProjectsController::class);
 
