@@ -34,7 +34,7 @@ class CodeReviewActivityRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'r')
             ->innerJoin('a.review', 'r')
-            ->where('a.user != :userId')
+            ->where('(a.user != :userId OR a.user IS NULL)')
             ->andWhere('JSON_CONTAINS(r.actors, :userId) = 1')
             ->setParameter('userId', (string)$userId)
             ->orderBy('a.createTimestamp', 'DESC')
