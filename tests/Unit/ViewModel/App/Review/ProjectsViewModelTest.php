@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModel\App\Review\ProjectsViewModel
@@ -12,8 +14,27 @@ use DR\Review\ViewModel\App\Review\ProjectsViewModel;
  */
 class ProjectsViewModelTest extends AbstractTestCase
 {
-    public function testAccessorPairs(): void
+    private TimelineViewModel $viewModel;
+
+    protected function setUp(): void
     {
-        static::assertAccessorPairs(ProjectsViewModel::class);
+        parent::setUp();
+        $this->viewModel = $this->createMock(TimelineViewModel::class);
+    }
+
+    /**
+     * @covers ::getFavoriteRepositories
+     * @covers ::getRegularRepositories
+     */
+    public function testGetRepositories(): void
+    {
+        $repositoryA = new Repository();
+        $repositoryA->setFavorite(true);
+        $repositoryB = new Repository();
+        $repositoryB->setFavorite(false);
+
+        $viewModel = new ProjectsViewModel([$repositoryA, $repositoryB], [], $this->viewModel);
+        static::assertSame([$repositoryA], $viewModel->getFavoriteRepositories());
+        static::assertSame([$repositoryB], $viewModel->getRegularRepositories());
     }
 }

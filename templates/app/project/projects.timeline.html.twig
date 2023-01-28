@@ -1,0 +1,30 @@
+{# timelineViewModel: TimelineViewModel #}
+
+<div>
+    {%- for entry in timelineViewModel.entries -%}
+        {%- set activity = entry.activities|first -%}
+
+        <div class="review-timeline__entry  pb-3">
+            <div>{{- entry.message|raw -}}</div>
+
+
+            {% if entry.comment is not same as (null) %}
+                {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
+            {% endif %}
+
+            <div class="text-secondary small clearfix">
+                <span class="pe-1 small">
+                    {{ activity.review.repository.displayName ~ ':' }}
+                </span>
+                <a class="small" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: activity.review}) }}">
+                    {{ 'CR-' ~ activity.review.projectId }}
+                </a>
+
+                <span class="small float-end">
+                    {{ activity.createTimestamp|format_datetime('short', 'short') }}
+                </span>
+            </div>
+        </div>
+
+    {%- endfor -%}
+</div>

@@ -20,8 +20,19 @@ use Throwable;
 class RevisionRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
+     * @covers ::getRepositoryRevisionCount
+     * @throws Throwable
+     */
+    public function testGetRepositoryRevisionCount(): void
+    {
+        $repository    = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $revisionCount = self::getService(RevisionRepository::class)->getRepositoryRevisionCount();
+
+        static::assertSame([(int)$repository->getId() => 2], $revisionCount);
+    }
+
+    /**
      * @covers ::saveAll
-     * @throws Exception
      * @throws Throwable
      */
     public function testSaveAll(): void

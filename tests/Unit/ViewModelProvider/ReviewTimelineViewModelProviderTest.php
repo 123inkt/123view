@@ -8,7 +8,9 @@ use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
@@ -22,6 +24,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 {
     private CodeReviewActivityRepository&MockObject $activityRepository;
     private CodeReviewActivityFormatter&MockObject  $activityFormatter;
+    private CommentRepository&MockObject            $commentRepository;
     private ReviewTimelineViewModelProvider         $provider;
     private User                                    $user;
 
@@ -31,7 +34,13 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $this->user               = new User();
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
         $this->activityFormatter  = $this->createMock(CodeReviewActivityFormatter::class);
-        $this->provider           = new ReviewTimelineViewModelProvider($this->activityRepository, $this->activityFormatter, $this->user);
+        $this->commentRepository  = $this->createMock(CommentRepository::class);
+        $this->provider           = new ReviewTimelineViewModelProvider(
+            $this->activityRepository,
+            $this->activityFormatter,
+            $this->commentRepository,
+            $this->user
+        );
     }
 
     /**
@@ -89,5 +98,38 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 
         $timeline = $viewModel->entries[0];
         static::assertSame($comment, $timeline->comment);
+    }
+
+    /**
+     * @covers ::getTimelineViewModelForUser
+     */
+    public function testGetTimelineViewModelForUser(): void
+    {
+        $user = new User();
+        $user->setId(789);
+        $activityA = new CodeReviewActivity();
+        $activityA->setEventName(CommentAdded::NAME);
+        $activityA->setData(['commentId' => 456]);
+        $activityB = new CodeReviewActivity();
+        $activityC = new CodeReviewActivity();
+        $activityC->setEventName(ReviewAccepted::NAME);
+        $review = new CodeReview();
+        $review->setId(123);
+
+        $this->activityRepository->expects(self::once())
+            ->method('findForUser')
+            ->with(789, [CommentAdded::NAME])
+            ->willReturn([$activityA, $activityB, $activityC]);
+        $this->activityFormatter->expects(self::exactly(3))
+            ->method('format')
+            ->withConsecutive([$activityA, $user], [$activityB, $user])
+            ->willReturn('activityA', null, 'activityC');
+        $this->commentRepository->expects(self::once())
+            ->method('find')
+            ->with(456)
+            ->willReturn(null);
+
+        $viewModel = $this->provider->getTimelineViewModelForUser($user, [CommentAdded::NAME]);
+        static::assertCount(1, $viewModel->entries);
     }
 }

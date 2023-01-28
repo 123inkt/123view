@@ -103,15 +103,10 @@ class CodeReviewActivityFormatter
         if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME, CommentUnresolved::NAME], true)) {
             $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
             if ($comment === null) {
-                $params[] = new Variable('file', (string)$activity->getDataValue('file'));
+                $params[] = new Variable('file', basename((string)$activity->getDataValue('file')));
             } else {
                 $params[] = $this->variableFactory->createFromComment($comment);
             }
-        }
-
-        // add message
-        if ($activity->getEventName() === CommentReplyAdded::NAME) {
-            $params[] = new Variable('message', (string)$activity->getDataValue('message'));
         }
 
         return $params;

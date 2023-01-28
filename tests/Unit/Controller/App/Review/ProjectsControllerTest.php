@@ -5,9 +5,9 @@ namespace DR\Review\Tests\Unit\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ProjectsController;
-use DR\Review\Entity\Repository\Repository;
-use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -17,13 +17,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ProjectsControllerTest extends AbstractControllerTestCase
 {
-    private RepositoryRepository&MockObject $repositoryRepository;
-    private TranslatorInterface&MockObject  $translator;
+    private ProjectsViewModelProvider&MockObject $viewModelProvider;
+    private TranslatorInterface&MockObject       $translator;
 
     public function setUp(): void
     {
-        $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
-        $this->translator           = $this->createMock(TranslatorInterface::class);
+        $this->viewModelProvider = $this->createMock(ProjectsViewModelProvider::class);
+        $this->translator        = $this->createMock(TranslatorInterface::class);
         parent::setUp();
     }
 
@@ -32,24 +32,18 @@ class ProjectsControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $repositoryA = new Repository();
-        $repositoryB = new Repository();
+        $viewModel = $this->createMock(ProjectsViewModel::class);
 
-        $this->repositoryRepository->expects(self::exactly(2))
-            ->method('findBy')
-            ->withConsecutive(
-                [['active' => 1, 'favorite' => 1], ['name' => 'ASC']],
-                [['active' => 1, 'favorite' => 0], ['name' => 'ASC']]
-            )
-            ->willReturn([$repositoryA], [$repositoryB]);
+        $this->viewModelProvider->expects(self::once())->method('getProjectsViewModel')->willReturn($viewModel);
         $this->translator->expects(self::once())->method('trans')->with('projects')->willReturn('Projects');
 
         $result = ($this->controller)();
         static::assertSame('Projects', $result['page_title']);
+        static::assertSame($viewModel, $result['projectsModel']);
     }
 
     public function getController(): AbstractController
     {
-        return new ProjectsController($this->repositoryRepository, $this->translator);
+        return new ProjectsController($this->viewModelProvider, $this->translator);
     }
 }

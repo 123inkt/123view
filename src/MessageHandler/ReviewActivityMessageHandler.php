@@ -6,6 +6,7 @@ namespace DR\Review\MessageHandler;
 use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use Psr\Log\LoggerAwareInterface;
@@ -21,6 +22,7 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
         private readonly CodeReviewActivityProvider $activityProvider,
         private readonly CodeReviewActivityRepository $activityRepository,
         private readonly CodeReviewRepository $reviewRepository,
+        private readonly UserRepository $userRepository,
         private readonly CodeReviewActivityPublisher $activityPublisher,
     ) {
     }
@@ -43,6 +45,8 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
 
         $review = $activity->getReview();
         if ($review !== null) {
+            $actorUserIds = array_map(static fn($user) => (int)$user->getId(), $this->userRepository->getActors((int)$review->getId()));
+            $review->setActors($actorUserIds);
             $review->setUpdateTimestamp(time());
             $this->reviewRepository->save($review, true);
         }

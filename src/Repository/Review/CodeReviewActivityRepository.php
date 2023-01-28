@@ -23,4 +23,30 @@ class CodeReviewActivityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CodeReviewActivity::class);
     }
+
+    /**
+     * @param string[] $events
+     *
+     * @return CodeReviewActivity[]
+     */
+    public function findForUser(int $userId, array $events = []): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a', 'r')
+            ->innerJoin('a.review', 'r')
+            ->where('(a.user != :userId OR a.user IS NULL)')
+            ->andWhere('JSON_CONTAINS(r.actors, :userId) = 1')
+            ->setParameter('userId', (string)$userId)
+            ->orderBy('a.createTimestamp', 'DESC')
+            ->setMaxResults(30);
+
+        if (count($events) > 0) {
+            $qb->andWhere('a.eventName IN (:events)')->setParameter('events', $events);
+        }
+
+        /** @var CodeReviewActivity[] $result */
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
 }

@@ -1,0 +1,43 @@
+{% extends 'app/app.base.html.twig' %}
+
+{%- macro projectColumns(projectsModel, repositories) -%}
+    {%- if repositories|length > 0 -%}
+        {% set columnSize = (repositories|length / 3)|round(1, 'ceil') %}
+        {% set batches    = repositories|batch(columnSize) %}
+
+        <div class="projects-repository-grid mb-5">
+            {%- for batch in batches -%}
+                <div class="list-group">
+                    {%- for repository in batch -%}
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: repository.id}) }}">
+                            {{- repository.displayName -}}
+
+                            <small class="d-block text-secondary">
+                                {{ projectsModel.revisionCount[repository.id]|format_number }} {{ 'revisions'|trans|lower }}
+                            </small>
+                        </a>
+                    {%- endfor -%}
+                </div>
+            {%- endfor -%}
+        </div>
+    {%- endif -%}
+
+{%- endmacro -%}
+{%- from _self import projectColumns -%}
+
+
+{% block page_content %}
+
+
+    <div class="projects-grid mt-2">
+        <h1>{{ 'projects'|trans }}</h1>
+        <h3 class="mt-2">{{ 'news.feed'|trans }}</h3>
+        <div>
+            {{ projectColumns(projectsModel, projectsModel.favoriteRepositories) }}
+            {{ projectColumns(projectsModel, projectsModel.regularRepositories) }}
+        </div>
+        {% include 'app/project/projects.timeline.html.twig' with {timelineViewModel: projectsModel.timeline} %}
+    </div>
+
+{% endblock %}
