@@ -44,7 +44,7 @@ class CodeReview
     private string $state = CodeReviewStateType::OPEN;
 
     /** @var int[] */
-    #[ORM\Column(type: 'json', options: ['default' => '{}'])]
+    #[ORM\Column(type: 'json', options: ['default' => '[]'])]
     private array $actors = [];
 
     #[ORM\Column]

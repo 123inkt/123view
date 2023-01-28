@@ -12,6 +12,7 @@ use DR\Review\Doctrine\Type\FrequencyType;
 use DR\Review\Doctrine\Type\MailThemeType;
 use DR\Review\Doctrine\Type\NotificationStatusType;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
@@ -52,4 +53,6 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
         ->dir('%kernel.project_dir%/src/Entity')
         ->prefix('DR\Review\Entity')
         ->alias('DR\Review');
+
+    $em->dql()->stringFunction('JSON_CONTAINS', JsonContains::class);
 };

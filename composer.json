@@ -44,6 +44,7 @@
         "league/uri": "^6.8",
         "nesbot/carbon": "^2.64",
         "nette/utils": "^3.2",
+        "scienta/doctrine-json-functions": "^5.2",
         "scrivo/highlight.php": "^9.18",
         "spatie/commonmark-highlighter": "^3.0",
         "symfony/amqp-messenger": "^6.2",

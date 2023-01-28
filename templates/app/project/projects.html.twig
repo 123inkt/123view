@@ -30,8 +30,12 @@
 {% block page_content %}
     <h1 class="mt-2">{{ 'projects'|trans }}</h1>
 
-    {{ projectColumns(projectsModel, projectsModel.favoriteRepositories) }}
-
-    {{ projectColumns(projectsModel, projectsModel.repositories) }}
+    <div style="display: grid; grid-template-columns: 70% 30%; grid-column-gap: 10px">
+        <div>
+            {{ projectColumns(projectsModel, projectsModel.favoriteRepositories) }}
+            {{ projectColumns(projectsModel, projectsModel.regularRepositories) }}
+        </div>
+        {% include 'app/project/projects.timeline.html.twig' with {timelineViewModel: projectsModel.timeline} %}
+    </div>
 
 {% endblock %}
