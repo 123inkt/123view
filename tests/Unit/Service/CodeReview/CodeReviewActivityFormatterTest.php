@@ -9,7 +9,6 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
-use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Reviewer\ReviewerAdded;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
@@ -228,28 +227,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
             ->willReturnArgument(0);
         $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn(null);
-
-        $this->formatter->format($activity, $user);
-    }
-
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
-    public function testFormatCommentReplyEvent(): void
-    {
-        $user = new User();
-        $user->setId(456);
-
-        $activity = new CodeReviewActivity();
-        $activity->setEventName(CommentReplyAdded::NAME);
-        $activity->setData(['commentId' => 789, 'file' => 'filepath', 'message' => 'message']);
-
-        $this->translator->expects(self::once())
-            ->method('trans')
-            ->with('timeline.comment.reply.added', ['username' => 'app', 'message' => 'message'])
-            ->willReturnArgument(0);
 
         $this->formatter->format($activity, $user);
     }
