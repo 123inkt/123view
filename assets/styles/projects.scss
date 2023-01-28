@@ -1,9 +1,8 @@
-
 .projects-grid {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-column-gap: 10px;
     grid-template-columns: 70% 30%;
-    grid-column-gap: 10px
+    grid-template-rows: auto 1fr;
 }
 
 .projects-repository-grid {

@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Repository\Review;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Utility\Assert;
@@ -23,7 +22,6 @@ class CodeReviewActivityRepositoryTest extends AbstractRepositoryTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->userRepository     = static::getService(UserRepository::class);
         $this->activityRepository = static::getService(CodeReviewActivityRepository::class);
         $this->reviewRepository   = static::getService(CodeReviewRepository::class);
     }
