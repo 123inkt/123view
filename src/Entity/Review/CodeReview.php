@@ -43,6 +43,10 @@ class CodeReview
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     private string $state = CodeReviewStateType::OPEN;
 
+    /** @var int[] */
+    #[ORM\Column(type: 'json', options: ['default' => '{}'])]
+    private array $actors = [];
+
     #[ORM\Column]
     private ?int $createTimestamp = null;
 
@@ -253,6 +257,24 @@ class CodeReview
         }
 
         return null;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getActors(): array
+    {
+        return $this->actors;
+    }
+
+    /**
+     * @param int[] $actors
+     */
+    public function setActors(array $actors): self
+    {
+        $this->actors = $actors;
+
+        return $this;
     }
 
     /**
