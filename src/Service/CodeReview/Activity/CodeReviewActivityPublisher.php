@@ -53,10 +53,13 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
         ];
 
         // gather topics
-        $topics = [sprintf('/review/%d', $review->getId())];
-        foreach ($this->userRepository->getActors((int)$review->getId()) as $actor) {
-            if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent((string)$activity->getEventName())) {
-                $topics[] = sprintf('/user/%d', (int)$actor->getId());
+        $topics   = [sprintf('/review/%d', $review->getId())];
+        $actorIds = $activity->getRelevantToUsers() ?? [];
+        if (count($actorIds) > 0) {
+            foreach ($this->userRepository->findBy(['id' => $actorIds]) as $actor) {
+                if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent((string)$activity->getEventName())) {
+                    $topics[] = sprintf('/user/%d', (int)$actor->getId());
+                }
             }
         }
 

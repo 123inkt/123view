@@ -30,6 +30,10 @@ class CodeReviewActivity
     #[ORM\Column(type: 'json', nullable: true)]
     private array $data = [];
 
+    /** @var int[] */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $relevantToUsers = null;
+
     #[ORM\Column]
     private ?int $createTimestamp = null;
 
@@ -100,6 +104,24 @@ class CodeReviewActivity
     public function setData(array $data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return int[]|null
+     */
+    public function getRelevantToUsers(): ?array
+    {
+        return $this->relevantToUsers;
+    }
+
+    /**
+     * @param int[]|null $relevantToUsers
+     */
+    public function setRelevantToUsers(?array $relevantToUsers): self
+    {
+        $this->relevantToUsers = $relevantToUsers;
 
         return $this;
     }
