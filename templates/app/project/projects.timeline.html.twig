@@ -6,6 +6,12 @@
 
         <div class="review-timeline__entry  pb-3">
             <div>{{- entry.message|raw -}}</div>
+
+
+            {% if entry.comment is not same as (null) %}
+                {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
+            {% endif %}
+
             <div class="text-secondary small clearfix">
                 <span class="pe-1 small">
                     {{ activity.review.repository.displayName ~ ':' }}
@@ -19,10 +25,6 @@
                 </span>
             </div>
         </div>
-
-        {% if entry.comment is not same as (null) %}
-            {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
-        {% endif %}
 
     {%- endfor -%}
 </div>
