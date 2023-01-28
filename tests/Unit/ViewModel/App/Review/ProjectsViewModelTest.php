@@ -12,6 +12,9 @@ use DR\Review\ViewModel\App\Review\ProjectsViewModel;
  */
 class ProjectsViewModelTest extends AbstractTestCase
 {
+    /**
+     * @covers ::<public>
+     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(ProjectsViewModel::class);
