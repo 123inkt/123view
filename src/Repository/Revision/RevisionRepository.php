@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Repository\Revision;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
@@ -22,6 +23,21 @@ class RevisionRepository extends ServiceEntityRepository
     public function __construct(private readonly ManagerRegistry $registry)
     {
         parent::__construct($registry, Revision::class);
+    }
+
+    /**
+     * @return array<int, int>
+     * @throws Exception
+     */
+    public function getRepositoryRevisionCount(): array
+    {
+        /** @var array<int, int> $result */
+        $result = $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery('SELECT repository_id, COUNT(1) FROM revision GROUP BY repository_id')
+            ->fetchAllKeyValue();
+
+        return $result;
     }
 
     /**

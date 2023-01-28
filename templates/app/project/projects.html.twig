@@ -1,8 +1,8 @@
 {% extends 'app/app.base.html.twig' %}
 
-{%- macro projectColumns(repositories) -%}
+{%- macro projectColumns(projectsModel, repositories) -%}
     {%- if repositories|length > 0 -%}
-        {% set columnSize = repositories|length / 4 %}
+        {% set columnSize = (repositories|length / 3)|round(1, 'ceil') %}
         {% set batches    = repositories|batch(columnSize) %}
 
         <div class="grid-display mb-5">
@@ -12,6 +12,10 @@
                         <a class="list-group-item list-group-item-action"
                            href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: repository.id}) }}">
                             {{- repository.displayName -}}
+
+                            <small class="d-block text-secondary">
+                                {{ projectsModel.revisionCount[repository.id]|format_number }} {{ 'commits'|trans }}
+                            </small>
                         </a>
                     {%- endfor -%}
                 </div>
@@ -26,8 +30,8 @@
 {% block page_content %}
     <h1 class="mt-2">{{ 'projects'|trans }}</h1>
 
-    {{ projectColumns(projectsModel.favoriteRepositories) }}
+    {{ projectColumns(projectsModel, projectsModel.favoriteRepositories) }}
 
-    {{ projectColumns(projectsModel.repositories) }}
+    {{ projectColumns(projectsModel, projectsModel.repositories) }}
 
 {% endblock %}
