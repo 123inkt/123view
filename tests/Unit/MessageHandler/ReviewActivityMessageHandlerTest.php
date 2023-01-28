@@ -74,11 +74,15 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
         $review->setId(948);
         $activity = new CodeReviewActivity();
         $activity->setReview($review);
+
+        // setup mocks
         $this->activityProvider->expects(self::once())->method('fromEvent')->with($event)->willReturn($activity);
         $this->activityRepository->expects(self::once())->method('save')->with($activity, true);
         $this->userRepository->expects(self::once())->method('getActors')->with(948)->willReturn([$user]);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
         $this->activityPublisher->expects(self::once())->method('publish')->with($activity);
+
+        // execute test
         ($this->messageHandler)($event);
 
         static::assertSame([135], $review->getActors());
