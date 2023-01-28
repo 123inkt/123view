@@ -14,7 +14,7 @@
                             {{- repository.displayName -}}
 
                             <small class="d-block text-secondary">
-                                {{ projectsModel.revisionCount[repository.id]|format_number }} {{ 'revisions'|trans }}
+                                {{ projectsModel.revisionCount[repository.id]|format_number }} {{ 'revisions'|trans|lower }}
                             </small>
                         </a>
                     {%- endfor -%}
