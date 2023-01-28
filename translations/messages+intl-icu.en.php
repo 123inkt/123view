@@ -108,6 +108,7 @@ return [
     'mail.unsubscribe.footer'                     => 'If you don\'t want to receive these emails from {app_name} in the future, please unsubscribe.',
     'mail.updated.comment.subject'                => '[Updated discussion] {reviewId}: {reviewTitle}',
     'name'                                        => 'Name',
+    'news.feed'                                   => 'News feed',
     'notification.comment.added'                  => 'Comment added to review',
     'notification.comment.reply.added'            => 'Comment replied',
     'notification.comment.resolved'               => 'Comment resolved',

@@ -5,7 +5,7 @@
         {% set columnSize = (repositories|length / 3)|round(1, 'ceil') %}
         {% set batches    = repositories|batch(columnSize) %}
 
-        <div class="grid-display mb-5">
+        <div class="projects-repository-grid mb-5">
             {%- for batch in batches -%}
                 <div class="list-group">
                     {%- for repository in batch -%}
@@ -28,9 +28,11 @@
 
 
 {% block page_content %}
-    <h1 class="mt-2">{{ 'projects'|trans }}</h1>
 
-    <div style="display: grid; grid-template-columns: 70% 30%; grid-column-gap: 10px">
+
+    <div class="projects-grid mt-2">
+        <h1>{{ 'projects'|trans }}</h1>
+        <h3 class="mt-2">{{ 'news.feed'|trans }}</h3>
         <div>
             {{ projectColumns(projectsModel, projectsModel.favoriteRepositories) }}
             {{ projectColumns(projectsModel, projectsModel.regularRepositories) }}

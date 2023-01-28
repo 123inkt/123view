@@ -1,0 +1,13 @@
+
+.projects-grid {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 70% 30%;
+    grid-column-gap: 10px
+}
+
+.projects-repository-grid {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+}

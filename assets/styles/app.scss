@@ -51,9 +51,3 @@ ul {
 .repository-columns > * {
     column-count: 6;
 }
-
-.grid-display {
-    display: grid;
-    grid-column-gap: 10px;
-    grid-template-columns: 1fr 1fr 1fr;
-}
