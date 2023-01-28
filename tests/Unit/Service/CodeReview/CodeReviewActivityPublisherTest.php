@@ -65,7 +65,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         $actor = (new User())->setId(987);
         $actor->getSetting()->setBrowserNotificationEvents(['event']);
         $repository = (new Repository())->setId(789)->setDisplayName('RP');
-        $review     = (new CodeReview())->setId(456)->setProjectId(321)->setRepository($repository);
+        $review     = (new CodeReview())->setId(456)->setProjectId(321)->setActors([567])->setRepository($repository);
         $activity   = new CodeReviewActivity();
         $activity->setId(135);
         $activity->setEventName('event');
@@ -107,7 +107,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         );
 
         $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn('message');
-        $this->userRepository->expects(self::once())->method('getActors')->with(456)->willReturn([$actor]);
+        $this->userRepository->expects(self::once())->method('findBy')->with(['id' => [567]])->willReturn([$actor]);
         $this->urlGenerator->expects(self::once())->method('generate')->with(ReviewController::class, ['review' => $review])->willReturn('url');
         $this->mercureHub->expects(self::exactly(2))->method('publish')->withConsecutive([$reviewUpdate], [$userUpdate]);
 
