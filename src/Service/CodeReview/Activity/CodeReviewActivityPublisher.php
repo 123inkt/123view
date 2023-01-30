@@ -45,7 +45,12 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
             'userId'    => $userId,
             'reviewId'  => $review->getId(),
             'eventName' => $activity->getEventName(),
-            'title'     => sprintf('CR-%s - %s', $review->getProjectId(), $repository->getDisplayName()),
+            'title'     => sprintf(
+                'CR-%s - %s - %s',
+                $review->getProjectId(),
+                $repository->getDisplayName(),
+                mb_substr((string)$review->getTitle(), 0, 100)
+            ),
             'message'   => $message,
             'url'       => $this->urlGenerator->generate($activity)
         ];

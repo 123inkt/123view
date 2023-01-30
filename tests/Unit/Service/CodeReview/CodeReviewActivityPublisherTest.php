@@ -64,7 +64,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         $actor = (new User())->setId(987);
         $actor->getSetting()->setBrowserNotificationEvents(['event']);
         $repository = (new Repository())->setId(789)->setDisplayName('RP');
-        $review     = (new CodeReview())->setId(456)->setProjectId(321)->setActors([567])->setRepository($repository);
+        $review     = (new CodeReview())->setId(456)->setProjectId(321)->setActors([567])->setTitle('title')->setRepository($repository);
         $activity   = new CodeReviewActivity();
         $activity->setId(135);
         $activity->setEventName('event');
@@ -80,7 +80,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
                     'userId'    => 123,
                     'reviewId'  => 456,
                     'eventName' => 'event',
-                    'title'     => 'CR-321 - RP',
+                    'title'     => 'CR-321 - RP - title',
                     'message'   => 'message',
                     'url'       => 'url',
                 ]
@@ -97,7 +97,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
                     'userId'    => 123,
                     'reviewId'  => 456,
                     'eventName' => 'event',
-                    'title'     => 'CR-321 - RP',
+                    'title'     => 'CR-321 - RP - title',
                     'message'   => 'message',
                     'url'       => 'url',
                 ]
