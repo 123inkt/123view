@@ -41,7 +41,7 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
     public function testGenerateDefaultActivity(): void
     {
         $review = new CodeReview();
-        $review->SetId(123);
+        $review->setId(123);
 
         $activity = new CodeReviewActivity();
         $activity->setReview($review);
@@ -61,7 +61,7 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
     public function testGenerateCommentActivity(): void
     {
         $review = new CodeReview();
-        $review->SetId(123);
+        $review->setId(123);
 
         $activity = new CodeReviewActivity();
         $activity->setReview($review);
