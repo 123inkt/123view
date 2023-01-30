@@ -10,6 +10,7 @@ use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
@@ -19,6 +20,7 @@ class ReviewTimelineViewModelProvider
         private readonly CodeReviewActivityRepository $activityRepository,
         private readonly CodeReviewActivityFormatter $activityFormatter,
         private readonly CommentRepository $commentRepository,
+        private readonly CodeReviewActivityUrlGenerator $urlGenerator,
         private readonly User $user
     ) {
     }
@@ -40,7 +42,7 @@ class ReviewTimelineViewModelProvider
             if ($activity->getEventName() === CommentAdded::NAME) {
                 $comment = $comments->get((int)$activity->getDataValue('commentId'));
             }
-            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment);
+            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, $this->urlGenerator->generate($activity));
         }
 
         return new TimelineViewModel($timelineEntries);
@@ -67,7 +69,7 @@ class ReviewTimelineViewModelProvider
                     continue;
                 }
             }
-            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment);
+            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, $this->urlGenerator->generate($activity));
         }
 
         return new TimelineViewModel($timelineEntries);

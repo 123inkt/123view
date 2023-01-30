@@ -16,7 +16,7 @@
                 <span class="pe-1 small">
                     {{ activity.review.repository.displayName ~ ':' }}
                 </span>
-                <a class="small" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: activity.review}) }}">
+                <a class="small" href="{{ entry.url }}">
                     {{ 'CR-' ~ activity.review.projectId }}
                 </a>
 
