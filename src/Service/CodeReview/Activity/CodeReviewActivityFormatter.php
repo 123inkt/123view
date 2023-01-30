@@ -23,7 +23,6 @@ use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Model\Review\ActivityVariable as Variable;
-use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -56,7 +55,6 @@ class CodeReviewActivityFormatter
         private readonly TranslatorInterface $translator,
         private readonly UserRepository $userRepository,
         private readonly RevisionRepository $revisionRepository,
-        private readonly CommentRepository $commentRepository,
         private readonly CodeReviewActivityVariableFactory $variableFactory,
         private string $applicationName
     ) {
@@ -101,7 +99,7 @@ class CodeReviewActivityFormatter
 
         // add filepath the comment was added to
         if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME, CommentUnresolved::NAME], true)) {
-            $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
+            $comment = $activity->getReview()?->getComments()?->get((int)$activity->getDataValue('commentId'));
             if ($comment === null) {
                 $params[] = new Variable('file', basename((string)$activity->getDataValue('file')));
             } else {

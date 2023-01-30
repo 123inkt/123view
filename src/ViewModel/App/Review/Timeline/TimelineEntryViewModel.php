@@ -13,7 +13,11 @@ class TimelineEntryViewModel
      *
      * @param non-empty-array<CodeReviewActivity> $activities
      */
-    public function __construct(public readonly array $activities, public readonly string $message, public readonly ?Comment $comment)
-    {
+    public function __construct(
+        public readonly array $activities,
+        public readonly string $message,
+        public readonly ?Comment $comment,
+        public readonly ?string $url
+    ) {
     }
 }

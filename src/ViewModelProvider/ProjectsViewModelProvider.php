@@ -37,7 +37,7 @@ class ProjectsViewModelProvider
     {
         $repositories      = $this->repositoryRepository->findBy(['active' => 1], ['displayName' => 'ASC']);
         $revisionCount     = $this->revisionRepository->getRepositoryRevisionCount();
-        $timelineViewModel = $this->timelineViewModelProvider->getTimelineViewModelForUser($this->user, self::FEED_EVENTS);
+        $timelineViewModel = $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->user, self::FEED_EVENTS);
 
         return new ProjectsViewModel($repositories, $revisionCount, $timelineViewModel);
     }
