@@ -14,7 +14,6 @@ use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Reviewer\ReviewerAdded;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
-use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
@@ -33,7 +32,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
     private TranslatorInterface&MockObject $translator;
     private UserRepository&MockObject      $userRepository;
     private RevisionRepository&MockObject  $revisionRepository;
-    private CommentRepository&MockObject   $commentRepository;
     private CodeReviewActivityFormatter    $formatter;
 
     public function setUp(): void
@@ -42,14 +40,12 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->translator         = $this->createMock(TranslatorInterface::class);
         $this->userRepository     = $this->createMock(UserRepository::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $this->commentRepository  = $this->createMock(CommentRepository::class);
         $urlGenerator             = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')->willReturn('url');
         $this->formatter = new CodeReviewActivityFormatter(
             $this->translator,
             $this->userRepository,
             $this->revisionRepository,
-            $this->commentRepository,
             new CodeReviewActivityVariableFactory($urlGenerator),
             'app'
         );
@@ -191,20 +187,22 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
 
         $review = new CodeReview();
         $review->setId(123);
+
         $comment = new Comment();
-        $comment->setId(832);
+        $comment->setId(789);
         $comment->setReview($review);
         $comment->setFilePath('filepath');
+        $review->getComments()->set(789, $comment);
 
         $activity = new CodeReviewActivity();
+        $activity->setReview($review);
         $activity->setEventName(CommentAdded::NAME);
         $activity->setData(['commentId' => 789]);
 
         $this->translator->expects(self::once())
             ->method('trans')
-            ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#focus:comment:832">filepath</a>'])
+            ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#focus:comment:789">filepath</a>'])
             ->willReturnArgument(0);
-        $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn($comment);
 
         $this->formatter->format($activity, $user);
     }
@@ -227,7 +225,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
             ->willReturnArgument(0);
-        $this->commentRepository->expects(self::once())->method('find')->with(789)->willReturn(null);
 
         $this->formatter->format($activity, $user);
     }
