@@ -12,6 +12,7 @@ use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
+use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,11 +23,12 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 {
-    private CodeReviewActivityRepository&MockObject $activityRepository;
-    private CodeReviewActivityFormatter&MockObject  $activityFormatter;
-    private CommentRepository&MockObject            $commentRepository;
-    private ReviewTimelineViewModelProvider         $provider;
-    private User                                    $user;
+    private CodeReviewActivityRepository&MockObject   $activityRepository;
+    private CodeReviewActivityFormatter&MockObject    $activityFormatter;
+    private CommentRepository&MockObject              $commentRepository;
+    private CodeReviewActivityUrlGenerator&MockObject $urlGenerator;
+    private ReviewTimelineViewModelProvider           $provider;
+    private User                                      $user;
 
     public function setUp(): void
     {
@@ -35,10 +37,12 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
         $this->activityFormatter  = $this->createMock(CodeReviewActivityFormatter::class);
         $this->commentRepository  = $this->createMock(CommentRepository::class);
+        $this->urlGenerator       = $this->createMock(CodeReviewActivityUrlGenerator::class);
         $this->provider           = new ReviewTimelineViewModelProvider(
             $this->activityRepository,
             $this->activityFormatter,
             $this->commentRepository,
+            $this->urlGenerator,
             $this->user
         );
     }
@@ -103,7 +107,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     /**
      * @covers ::getTimelineViewModelForFeed
      */
-    public function testGetTimelineViewModelForUser(): void
+    public function testGetTimelineViewModelForFeed(): void
     {
         $user = new User();
         $user->setId(789);
@@ -124,10 +128,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->method('format')
             ->withConsecutive([$activityA, $user], [$activityB, $user])
             ->willReturn('activityA', null, 'activityC');
-        $this->commentRepository->expects(self::once())
-            ->method('find')
-            ->with(456)
-            ->willReturn(null);
+        $this->commentRepository->expects(self::once())->method('find')->with(456)->willReturn(null);
+        $this->urlGenerator->expects(self::once())->method('generate')->withConsecutive([$activityC])->willReturn('url');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(1, $viewModel->entries);
