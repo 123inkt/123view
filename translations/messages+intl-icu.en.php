@@ -188,7 +188,7 @@ return [
     'theme'                                       => 'Theme',
     'timeline.comment.added'                      => '<span class="text-primary">{username}</span> added a comment to <code>{file}</code>.',
     'timeline.comment.removed'                    => '<span class="text-primary">{username}</span> removed a comment on <code>{file}</code>.',
-    'timeline.comment.reply.added'                => '<span class="text-primary">{username}</span> replied with <code>{message}</code> on <code>{file}</code>.',
+    'timeline.comment.reply.added'                => '<span class="text-primary">{username}</span> replied with <code>{message}</code>.',
     'timeline.comment.resolved'                   => '<span class="text-primary">{username}</span> resolved a comment on <code>{file}</code>.',
     'timeline.comment.unresolved'                 => '<span class="text-primary">{username}</span> unresolved a comment on <code>{file}</code>.',
     'timeline.review'                             => 'Review timeline',
