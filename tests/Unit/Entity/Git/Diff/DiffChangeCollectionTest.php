@@ -120,21 +120,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::merge
-     */
-    public function testMerge(): void
-    {
-        $changeA = new DiffChange(DiffChange::ADDED, 'foo');
-        $changeB = new DiffChange(DiffChange::ADDED, 'bar');
-
-        $collectionA = new DiffChangeCollection([$changeA]);
-        $collectionB = new DiffChangeCollection([$changeB]);
-
-        $result = DiffChangeCollection::merge($collectionA, $collectionB);
-        static::assertSame([$changeA, $changeB], $result->toArray());
-    }
-
-    /**
      * @covers ::count
      */
     public function testCount(): void
