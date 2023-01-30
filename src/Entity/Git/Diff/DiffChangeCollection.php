@@ -53,6 +53,14 @@ class DiffChangeCollection implements Countable, IteratorAggregate
             return $change;
         }
 
+        // if last change is the same as the adding change, just concat
+        $tail = $this->lastOrNull();
+        if ($tail !== null && $tail->type === $change->type) {
+            $tail->code .= $change->code;
+
+            return $change;
+        }
+
         $this->changes[] = $change;
 
         return $change;

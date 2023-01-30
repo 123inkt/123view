@@ -72,4 +72,18 @@ class DiffChangeBundlerTest extends AbstractTestCase
         $changes = $this->bundler->bundle(new DiffChange(DiffChange::REMOVED, 'was-removed'), new DiffChange(DiffChange::ADDED, ''));
         static::assertEquals($expected, $changes->toArray());
     }
+
+    public function testMerge(): void
+    {
+        $before = new DiffChange(
+            DiffChange::REMOVED,
+            'public function addAccountRequest(IPAddress $ipAddress, $email, $type, $shoppingCartId = 0): void'
+        );
+        $after  = new DiffChange(
+            DiffChange::ADDED,
+            'public function addAccountRequest(IPAddress $ipAddress, string $email, string $type, int $shoppingCartId = 0): void'
+        );
+
+        $result = $this->bundler->mergeChange($before, $after);
+    }
 }

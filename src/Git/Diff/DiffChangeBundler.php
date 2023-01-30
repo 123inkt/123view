@@ -43,8 +43,9 @@ class DiffChangeBundler
         }
 
         $result->addIfNotEmpty($first);
-        $result->addIfNotEmpty($changeBefore);
-        $result->addIfNotEmpty($changeAfter);
+        foreach ($this->mergeChange($changeBefore, $changeAfter) as $change) {
+            $result->addIfNotEmpty($change);
+        }
         $result->addIfNotEmpty($last);
 
         return $result;
@@ -74,8 +75,10 @@ class DiffChangeBundler
     /**
      * @return DiffChange[]
      */
-    public function mergeChange(DiffChange $before, Diffchange $after): array
+    public function mergeChange(DiffChange $before, Diffchange $after): DiffChangeCollection
     {
+        $result = new DiffChangeCollection();
+
         if (mb_strlen($before->code) < mb_strlen($after->code)) {
             $needles     = Assert::isArray(preg_split('/\s+/', $before->code));
             $occurrences = Strings::findAll($after->code, $needles);
@@ -83,8 +86,35 @@ class DiffChangeBundler
                 return [$before, $after];
             }
 
+            $offset = 0;
+            for ($i = 0, $max = count($occurrences); $i < $max; $i++) {
+                $needle   = $needles[$i];
+                $position = $occurrences[$i];
+                $result->addIfNotEmpty(new DiffChange(DiffChange::ADDED, substr($after->code, $offset, $position - $offset)));
+                $result->addIfNotEmpty(new DiffChange(DiffChange::UNCHANGED, $needle));
+                $offset += $position + strlen($needle);
+            }
 
+            $result->addIfNotEmpty(new DiffChange(DiffChange::ADDED, substr($after->code, $offset)));
         } else {
+            $needles     = Assert::isArray(preg_split('/\s+/', $after->code));
+            $occurrences = Strings::findAll($before->code, $needles);
+            if (count($occurrences) !== count($needles)) {
+                return [$before, $after];
+            }
+
+            $offset = 0;
+            for ($i = 0, $max = count($occurrences); $i < $max; $i++) {
+                $needle   = $needles[$i];
+                $position = $occurrences[$i];
+                $result->addIfNotEmpty(new DiffChange(DiffChange::REMOVED, substr($before->code, $offset, $position - $offset)));
+                $result->addIfNotEmpty(new DiffChange(DiffChange::UNCHANGED, $needle));
+                $offset += $position + strlen($needle);
+            }
+
+            $result->addIfNotEmpty(new DiffChange(DiffChange::REMOVED, substr($before->code, $offset)));
         }
+
+        return $result;
     }
 }
