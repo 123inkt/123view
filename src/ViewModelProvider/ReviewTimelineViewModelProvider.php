@@ -30,8 +30,6 @@ class ReviewTimelineViewModelProvider
         $activities      = $this->activityRepository->findBy(['review' => $review->getId()], ['createTimestamp' => 'ASC']);
         $timelineEntries = [];
 
-        $comments = $review->getComments();
-
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
             $message = $this->activityFormatter->format($activity, $this->user);
@@ -40,7 +38,7 @@ class ReviewTimelineViewModelProvider
             }
             $comment = null;
             if ($activity->getEventName() === CommentAdded::NAME) {
-                $comment = $comments->get((int)$activity->getDataValue('commentId'));
+                $comment = $review->getComments()->get((int)$activity->getDataValue('commentId'));
             }
             $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, $this->urlGenerator->generate($activity));
         }
