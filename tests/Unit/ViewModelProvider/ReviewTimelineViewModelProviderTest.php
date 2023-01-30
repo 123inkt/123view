@@ -101,7 +101,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getTimelineViewModelForUser
+     * @covers ::getTimelineViewModelForFeed
      */
     public function testGetTimelineViewModelForUser(): void
     {
@@ -129,7 +129,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->with(456)
             ->willReturn(null);
 
-        $viewModel = $this->provider->getTimelineViewModelForUser($user, [CommentAdded::NAME]);
+        $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(1, $viewModel->entries);
     }
 }

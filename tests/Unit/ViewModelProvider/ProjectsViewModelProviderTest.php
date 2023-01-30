@@ -55,7 +55,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
             ->with(['active' => 1], ['displayName' => 'ASC'])
             ->willReturn([$repository]);
         $this->revisionRepository->expects(self::once())->method('getRepositoryRevisionCount')->willReturn([5 => 6]);
-        $this->viewModelProvider->expects(self::once())->method('getTimelineViewModelForUser')->with($this->user)->willReturn($timeline);
+        $this->viewModelProvider->expects(self::once())->method('getTimelineViewModelForFeed')->with($this->user)->willReturn($timeline);
 
         $viewModel = $this->provider->getProjectsViewModel();
         static::assertSame([$repository], $viewModel->repositories);

@@ -40,7 +40,7 @@ class ReviewTimelineViewModelProvider
             if ($activity->getEventName() === CommentAdded::NAME) {
                 $comment = $review->getComments()->get((int)$activity->getDataValue('commentId'));
             }
-            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, $this->urlGenerator->generate($activity));
+            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, null);
         }
 
         return new TimelineViewModel($timelineEntries);
@@ -49,7 +49,7 @@ class ReviewTimelineViewModelProvider
     /**
      * @param string[] $events
      */
-    public function getTimelineViewModelForUser(User $user, array $events): TimelineViewModel
+    public function getTimelineViewModelForFeed(User $user, array $events): TimelineViewModel
     {
         $activities      = $this->activityRepository->findForUser((int)$user->getId(), $events);
         $timelineEntries = [];
