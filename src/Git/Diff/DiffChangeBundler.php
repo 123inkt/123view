@@ -5,6 +5,7 @@ namespace DR\Review\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Utility\Assert;
 use DR\Review\Utility\Strings;
 
 /**
@@ -50,7 +51,7 @@ class DiffChangeBundler
     }
 
     /**
-     * Subtract the common prefix from `change` and `next` and add it to `previous`
+     * Subtract the common prefix from `before` and `after` and add it to `first`
      */
     private function mergePrefix(string $prefix, DiffChange $first, DiffChange $changeBefore, DiffChange $changeAfter): void
     {
@@ -60,7 +61,7 @@ class DiffChangeBundler
     }
 
     /**
-     * Subtract the common suffix from `change` and `next` and add it to `nextNext`
+     * Subtract the common suffix from `before` and `after` and add it to `last`
      */
     private function mergeSuffix(string $suffix, DiffChange $changeBefore, DiffChange $changeAfter, DiffChange $last): void
     {
@@ -68,5 +69,22 @@ class DiffChangeBundler
         $changeBefore->code = Strings::replaceSuffix($changeBefore->code, $suffix);
         $changeAfter->code  = Strings::replaceSuffix($changeAfter->code, $suffix);
         $last->code         = $suffix . $last->code;
+    }
+
+    /**
+     * @return DiffChange[]
+     */
+    public function mergeChange(DiffChange $before, Diffchange $after): array
+    {
+        if (mb_strlen($before->code) < mb_strlen($after->code)) {
+            $needles     = Assert::isArray(preg_split('/\s+/', $before->code));
+            $occurrences = Strings::findAll($after->code, $needles);
+            if (count($occurrences) !== count($needles)) {
+                return [$before, $after];
+            }
+
+
+        } else {
+        }
     }
 }

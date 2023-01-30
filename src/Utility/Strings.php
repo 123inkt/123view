@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Utility;
 
-use InvalidArgumentException;
-
 class Strings
 {
     /**
@@ -58,12 +56,26 @@ class Strings
         return (string)preg_replace('#' . preg_quote($suffix, '#') . '$#', '', $string);
     }
 
-    public static function string(mixed $value): string
+    /**
+     * Find all occurrences of "search" in string
+     *
+     * @param string[] $needles
+     *
+     * @return array<int, int> returns the position of every occurrence found
+     */
+    public static function findAll(string $string, array $needles): array
     {
-        if (is_string($value) === false) {
-            throw new InvalidArgumentException('Expecting value to be `string`, received: ' . gettype($value));
+        $offset = 0;
+        $result = [];
+
+        foreach ($needles as $index => $needle) {
+            $position = strpos($string, $needle, $offset);
+            if ($position === false) {
+                continue;
+            }
+            $offset = $result[$index] = $position;
         }
 
-        return $value;
+        return $result;
     }
 }
