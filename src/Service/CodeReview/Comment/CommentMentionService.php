@@ -31,7 +31,7 @@ class CommentMentionService
         // create new mention on comment
         $userMentions = [];
         foreach ($mentions as $user) {
-            $userMentions[] = (new UserMention())->setUser($user)->setComment($comment);
+            $userMentions[] = (new UserMention())->setUserId((int)$user->getId())->setComment($comment);
         }
         $this->mentionRepository->saveAll($comment, $userMentions);
     }
