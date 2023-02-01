@@ -5,15 +5,12 @@ namespace DR\Review\Service\Git\Diff\Bundle;
 
 class DiffLineCompareResult
 {
-    public int $removals;
-    public int $additions;
-    public int $whitespace;
-
-    public function __construct(int $removals, int $additions, int $whitespace)
-    {
-        $this->removals   = $removals;
-        $this->additions  = $additions;
-        $this->whitespace = $whitespace;
+    public function __construct(
+        public readonly int $removals,
+        public readonly int $additions,
+        public readonly int $whitespace,
+        public readonly int $levenshtein
+    ) {
     }
 
     public function isWhitespaceOnly(): bool

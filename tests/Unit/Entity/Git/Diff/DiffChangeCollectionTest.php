@@ -31,6 +31,22 @@ class DiffChangeCollectionTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::addIfNotEmpty
+     * @covers ::toArray
+     */
+    public function testAddIfNotEmptyConcatSimilar(): void
+    {
+        $changeA = new DiffChange(DiffChange::ADDED, 'foo');
+        $changeB = new DiffChange(DiffChange::ADDED, 'bar');
+
+        $collection = new DiffChangeCollection();
+        $collection->addIfNotEmpty($changeA);
+        $collection->addIfNotEmpty($changeB);
+
+        static::assertEquals([new DiffChange(DiffChange::ADDED, 'foobar')], $collection->toArray());
+    }
+
+    /**
      * @covers ::lastOrNull
      */
     public function testLastOrNull(): void
@@ -120,21 +136,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::merge
-     */
-    public function testMerge(): void
-    {
-        $changeA = new DiffChange(DiffChange::ADDED, 'foo');
-        $changeB = new DiffChange(DiffChange::ADDED, 'bar');
-
-        $collectionA = new DiffChangeCollection([$changeA]);
-        $collectionB = new DiffChangeCollection([$changeB]);
-
-        $result = DiffChangeCollection::merge($collectionA, $collectionB);
-        static::assertSame([$changeA, $changeB], $result->toArray());
-    }
-
-    /**
      * @covers ::count
      */
     public function testCount(): void
@@ -146,6 +147,20 @@ class DiffChangeCollectionTest extends AbstractTestCase
 
         $collection->add($change);
         static::assertCount(1, $collection);
+    }
+
+    /**
+     * @covers ::clear
+     */
+    public function testClear(): void
+    {
+        $change     = new DiffChange(DiffChange::ADDED, 'foobar');
+        $collection = new DiffChangeCollection([$change]);
+
+        static::assertCount(1, $collection);
+
+        $collection->clear();
+        static::assertCount(0, $collection);
     }
 
     /**

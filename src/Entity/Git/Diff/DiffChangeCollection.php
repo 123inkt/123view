@@ -26,19 +26,6 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         $this->changes = $changes;
     }
 
-    public static function merge(DiffChangeCollection ...$collections): DiffChangeCollection
-    {
-        $result = new DiffChangeCollection();
-
-        foreach ($collections as $collection) {
-            foreach ($collection->changes as $change) {
-                $result->add($change);
-            }
-        }
-
-        return $result;
-    }
-
     public function get(int $index): DiffChange
     {
         if (isset($this->changes[$index]) === false) {
@@ -60,9 +47,17 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         return $change;
     }
 
-    public function addIfNotEmpty(DiffChange $change): DiffChange
+    public function addIfNotEmpty(?DiffChange $change): ?DiffChange
     {
-        if ($change->code === '') {
+        if ($change === null || $change->code === '') {
+            return $change;
+        }
+
+        // if last change is the same as the adding change, just concat
+        $tail = $this->lastOrNull();
+        if ($tail !== null && $tail->type === $change->type) {
+            $tail->code .= $change->code;
+
             return $change;
         }
 
@@ -92,6 +87,11 @@ class DiffChangeCollection implements Countable, IteratorAggregate
     public function lastOrNull(): ?DiffChange
     {
         return count($this->changes) === 0 ? null : end($this->changes);
+    }
+
+    public function clear(): void
+    {
+        $this->changes = [];
     }
 
     /**

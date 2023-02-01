@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Utility;
 
-use InvalidArgumentException;
-
 class Strings
 {
     /**
@@ -56,14 +54,5 @@ class Strings
     public static function replaceSuffix(string $string, string $suffix): string
     {
         return (string)preg_replace('#' . preg_quote($suffix, '#') . '$#', '', $string);
-    }
-
-    public static function string(mixed $value): string
-    {
-        if (is_string($value) === false) {
-            throw new InvalidArgumentException('Expecting value to be `string`, received: ' . gettype($value));
-        }
-
-        return $value;
     }
 }

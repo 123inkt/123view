@@ -3,106 +3,84 @@ declare(strict_types=1);
 
 namespace DR\Review\Git\Diff;
 
+use cogpowered\FineDiff\Diff;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Utility\Strings;
 
 /**
- * As --word-diff-regex gives some unexpected behaviour, optimize consecutive DiffChange blocks that have similar starting and ending strings
- * For example:
- *    removed: 'DiffChanceBundler.php'
- *    added:   'DiffChangeBundler.php'
- * Optimize to:
- *    changed: 'DiffChan'
- *    removed: 'c'
- *    added:   'g'
- *    changed: 'eBundler.php
- * @link https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---word-diff-regexltregexgt
+ * Use cogpowered\FineDiff to calculate the word diff for a string without the common prefix and suffix
  */
 class DiffChangeBundler
 {
-    public function bundle(DiffChangeCollection $changes): DiffChangeCollection
+    public function __construct(private readonly Diff $diff, private readonly DiffOpcodeTransformer $opcodeTransformer)
+    {
+    }
+
+    public function bundle(DiffChange $changeBefore, DiffChange $changeAfter): DiffChangeCollection
     {
         $result = new DiffChangeCollection();
-        $length = count($changes);
+        $first  = null;
+        $last   = null;
 
-        for ($index = 0; $index < $length; $index++) {
-            $change = $changes->get($index);
-            if ($change->type !== DiffChange::REMOVED) {
-                $result->add($change);
-                continue;
-            }
-
-            $next = $changes->getOrNull($index + 1);
-            if ($next === null || $next->type !== DiffChange::ADDED) {
-                $result->add($change);
-                continue;
-            }
-
-            // jump over the next two entries
-            $index    += 2;
-            $nextNext = $this->getNextNext($changes->getOrNull($index));
-
-            $prefix = Strings::findPrefix($change->code, $next->code);
-            if ($prefix !== '') {
-                // subtract from current and next change
-                $this->mergePrefix($prefix, $this->getPrevious($result), $change, $next);
-            }
-
-            $suffix = Strings::findSuffix($change->code, $next->code);
-            if ($suffix !== '') {
-                // subtract from current and next change
-                $this->mergeSuffix($suffix, $change, $next, $nextNext);
-            }
-
-            $result->addIfNotEmpty($change);
-            $result->addIfNotEmpty($next);
-            $result->addIfNotEmpty($nextNext);
+        // find common prefix and split it off
+        $prefix = Strings::findPrefix($changeBefore->code, $changeAfter->code);
+        if ($prefix !== '') {
+            // subtract from current and next change
+            $first = new DiffChange(DiffChange::UNCHANGED, '');
+            $this->mergePrefix($prefix, $first, $changeBefore, $changeAfter);
         }
+
+        // find common suffix and split it off
+        $suffix = Strings::findSuffix($changeBefore->code, $changeAfter->code);
+        if ($suffix !== '') {
+            // subtract from current and next change
+            $last = new DiffChange(DiffChange::UNCHANGED, '');
+            $this->mergeSuffix($suffix, $changeBefore, $changeAfter, $last);
+        }
+
+        $result->addIfNotEmpty($first);
+
+        $opcodes = $this->diff->getOpcodes($changeBefore->code, $changeAfter->code)->generate();
+        $changes = $this->opcodeTransformer->transform($changeBefore->code, $opcodes);
+        foreach ($changes as $change) {
+            $result->addIfNotEmpty($change);
+        }
+
+        $result->addIfNotEmpty($last);
 
         return $result;
     }
 
     /**
-     * Fetch the previous change from the collection, or create and add a new unchanged change
+     * Subtract the common prefix from `before` and `after` and add it to `first`
      */
-    private function getPrevious(DiffChangeCollection $collection): DiffChange
+    private function mergePrefix(string $prefix, DiffChange $first, DiffChange $changeBefore, DiffChange $changeAfter): void
     {
-        $previous = $collection->lastOrNull();
-        if ($previous === null || $previous->type !== DiffChange::UNCHANGED) {
-            $previous = $collection->add(new DiffChange(DiffChange::UNCHANGED, ''));
-        }
-
-        return $previous;
-    }
-
-    private function getNextNext(?DiffChange $nextNext): DiffChange
-    {
-        if ($nextNext === null || $nextNext->type !== DiffChange::UNCHANGED) {
-            $nextNext = new DiffChange(DiffChange::UNCHANGED, '');
-        }
-
-        return $nextNext;
+        $first->code        .= $prefix;
+        $changeBefore->code = Strings::replacePrefix($changeBefore->code, $prefix);
+        $changeAfter->code  = Strings::replacePrefix($changeAfter->code, $prefix);
     }
 
     /**
-     * Subtract the common prefix from `change` and `next` and add it to `previous`
+     * Subtract the common suffix from `before` and `after` and add it to `last`
      */
-    private function mergePrefix(string $prefix, DiffChange $previous, DiffChange $change, DiffChange $next): void
+    private function mergeSuffix(string $suffix, DiffChange $changeBefore, DiffChange $changeAfter, DiffChange $last): void
     {
-        $previous->code .= $prefix;
-        $change->code   = Strings::replacePrefix($change->code, $prefix);
-        $next->code     = Strings::replacePrefix($next->code, $prefix);
-    }
+        $suffixLength = strlen($suffix);
 
-    /**
-     * Subtract the common suffix from `change` and `next` and add it to `nextNext`
-     */
-    private function mergeSuffix(string $suffix, DiffChange $change, DiffChange $next, DiffChange $nextNext): void
-    {
+        // if first character of the suffix is delimiter, avoid concat
+        if ($suffixLength !== 0
+            && $suffixLength !== strlen($changeBefore->code)
+            && $suffixLength !== strlen($changeAfter->code)
+            && in_array($suffix[0], [' ', ',', ';', '-', '=', '>'], true)) {
+            $suffix = substr($suffix, 1);
+        }
+
         // subtract from current and next change
-        $change->code   = Strings::replaceSuffix($change->code, $suffix);
-        $next->code     = Strings::replaceSuffix($next->code, $suffix);
-        $nextNext->code = $suffix . $nextNext->code;
+        $changeBefore->code = Strings::replaceSuffix($changeBefore->code, $suffix);
+        $changeAfter->code  = Strings::replaceSuffix($changeAfter->code, $suffix);
+        $last->code         = $suffix . $last->code;
     }
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Diff;
 
-use DR\Review\Entity\Git\Diff\DiffChangeCollection;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
@@ -68,7 +67,7 @@ class UnifiedDiffBundler
 
                 // merge changes into first line, and remove the second line
                 $pair->removed->state   = DiffLine::STATE_CHANGED;
-                $pair->removed->changes = $this->changeBundler->bundle(DiffChangeCollection::merge($pair->removed->changes, $pair->added->changes));
+                $pair->removed->changes = $this->changeBundler->bundle($pair->removed->changes->first(), $pair->added->changes->first());
                 $collection->remove($pair->added);
             }
         }
@@ -98,6 +97,10 @@ class UnifiedDiffBundler
         }
 
         if ($compareResult->isWhitespaceOnly()) {
+            return true;
+        }
+
+        if ($compareResult->levenshtein <= 20) {
             return true;
         }
 

@@ -17,13 +17,13 @@ class DiffLineCompareResultTest extends AbstractTestCase
      */
     public function testIsAdditionsOnly(): void
     {
-        $result = new DiffLineCompareResult(0, 5, 0);
+        $result = new DiffLineCompareResult(0, 5, 0, 0);
         static::assertTrue($result->isAdditionsOnly());
 
-        $result = new DiffLineCompareResult(5, 5, 0);
+        $result = new DiffLineCompareResult(5, 5, 0, 0);
         static::assertFalse($result->isAdditionsOnly());
 
-        $result = new DiffLineCompareResult(0, 5, 5);
+        $result = new DiffLineCompareResult(0, 5, 5, 0);
         static::assertTrue($result->isAdditionsOnly());
     }
 
@@ -32,13 +32,13 @@ class DiffLineCompareResultTest extends AbstractTestCase
      */
     public function testIsRemovalOnly(): void
     {
-        $result = new DiffLineCompareResult(5, 0, 0);
+        $result = new DiffLineCompareResult(5, 0, 0, 0);
         static::assertTrue($result->isRemovalOnly());
 
-        $result = new DiffLineCompareResult(5, 5, 0);
+        $result = new DiffLineCompareResult(5, 5, 0, 0);
         static::assertFalse($result->isRemovalOnly());
 
-        $result = new DiffLineCompareResult(5, 0, 5);
+        $result = new DiffLineCompareResult(5, 0, 5, 0);
         static::assertTrue($result->isRemovalOnly());
     }
 
@@ -47,16 +47,16 @@ class DiffLineCompareResultTest extends AbstractTestCase
      */
     public function testIsWhitespaceOnly(): void
     {
-        $result = new DiffLineCompareResult(0, 0, 5);
+        $result = new DiffLineCompareResult(0, 0, 5, 0);
         static::assertTrue($result->isWhitespaceOnly());
 
-        $result = new DiffLineCompareResult(0, 0, 0);
+        $result = new DiffLineCompareResult(0, 0, 0, 0);
         static::assertFalse($result->isWhitespaceOnly());
 
-        $result = new DiffLineCompareResult(0, 5, 5);
+        $result = new DiffLineCompareResult(0, 5, 5, 0);
         static::assertFalse($result->isWhitespaceOnly());
 
-        $result = new DiffLineCompareResult(5, 0, 5);
+        $result = new DiffLineCompareResult(5, 0, 5, 0);
         static::assertFalse($result->isWhitespaceOnly());
     }
 }

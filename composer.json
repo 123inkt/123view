@@ -42,6 +42,7 @@
         "doctrine/orm": "^2.12",
         "league/commonmark": "^2.3",
         "league/uri": "^6.8",
+        "lolli42/finediff": "^1.0",
         "nesbot/carbon": "^2.64",
         "nette/utils": "^3.2",
         "scienta/doctrine-json-functions": "^5.2",

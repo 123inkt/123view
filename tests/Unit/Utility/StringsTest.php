@@ -5,7 +5,6 @@ namespace DR\Review\Tests\Unit\Utility;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Strings;
-use InvalidArgumentException;
 
 /**
  * @coversDefaultClass \DR\Review\Utility\Strings
@@ -74,23 +73,5 @@ class StringsTest extends AbstractTestCase
         static::assertSame("foo", Strings::replaceSuffix("foobar", "bar"));
         static::assertSame("foobar", Strings::replaceSuffix("foobar", "foo"));
         static::assertSame("foobar", Strings::replaceSuffix("foobar", ""));
-    }
-
-    /**
-     * @covers ::string
-     */
-    public function testString(): void
-    {
-        static::assertSame('foobar', Strings::string('foobar'));
-    }
-
-    /**
-     * @covers ::string
-     */
-    public function testStringNonStringValue(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expecting value to be `string`, received');
-        static::assertSame('foobar', Strings::string(123));
     }
 }

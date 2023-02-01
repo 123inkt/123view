@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Git\Diff\DiffGranularity;
 use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
@@ -23,6 +25,7 @@ use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\GitRepositoryService;
@@ -106,6 +109,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
     $services->set(DiffChangeBundler::class);
+    $services->set(DiffOpcodeTransformer::class);
+    $services->set(Diff::class)->arg('$granularity', inline_service(DiffGranularity::class));
     $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(Highlighter::class);

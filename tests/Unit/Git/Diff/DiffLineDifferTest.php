@@ -4,22 +4,28 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffChangeCollection;
 use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Git\Diff\DiffChangeBundler;
 use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\Review\Git\Diff\DiffLineDiffer
+ * @covers ::__construct
  */
 class DiffLineDifferTest extends AbstractTestCase
 {
-    private DiffLineDiffer $differ;
+    private DiffChangeBundler&MockObject $changeBundler;
+    private DiffLineDiffer               $differ;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->differ = new DiffLineDiffer();
+        $this->changeBundler = $this->createMock(DiffChangeBundler::class);
+        $this->differ        = new DiffLineDiffer($this->changeBundler);
     }
 
     /**
@@ -37,103 +43,20 @@ class DiffLineDifferTest extends AbstractTestCase
     /**
      * @covers ::diff
      */
-    public function testDiffSkipDifferIfOnlyWhiteSpaceChanges(): void
+    public function testDiff(): void
     {
         $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'foobar')]);
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, ' foobar ')]);
 
-        $this->differ->diff($lineA, $lineB);
-        static::assertSame('foobar', $lineA->changes->first()->code);
-        static::assertSame(' foobar ', $lineB->changes->first()->code);
-    }
+        $changeA = new DiffChange(DiffChange::UNCHANGED, 'unchanged');
+        $changeB = new DiffChange(DiffChange::REMOVED, 'removed');
+        $changeC = new DiffChange(DiffChange::ADDED, 'added');
+        $changes = [$changeA, $changeB, $changeC];
 
-    /**
-     * @covers ::diff
-     */
-    public function testDiffShouldShouldSkipAbsentSuffix(): void
-    {
-        $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'prefix foo')]);
-        $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'prefix bar')]);
+        $this->changeBundler->expects(self::once())->method('bundle')->willReturn(new DiffChangeCollection($changes));
 
         $this->differ->diff($lineA, $lineB);
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'prefix '),
-            new DiffChange(DiffChange::REMOVED, 'foo')
-        ];
-        static::assertEquals($expected, $lineA->changes->toArray());
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'prefix '),
-            new DiffChange(DiffChange::ADDED, 'bar')
-        ];
-        static::assertEquals($expected, $lineB->changes->toArray());
-    }
-
-    /**
-     * @covers ::diff
-     */
-    public function testDiffShouldSplitSimilarPrefixAndSuffix(): void
-    {
-        $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'prefix foo suffix')]);
-        $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'prefix bar suffix')]);
-
-        $this->differ->diff($lineA, $lineB);
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'prefix '),
-            new DiffChange(DiffChange::REMOVED, 'foo'),
-            new DiffChange(DiffChange::UNCHANGED, ' suffix')
-        ];
-        static::assertEquals($expected, $lineA->changes->toArray());
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'prefix '),
-            new DiffChange(DiffChange::ADDED, 'bar'),
-            new DiffChange(DiffChange::UNCHANGED, ' suffix')
-        ];
-        static::assertEquals($expected, $lineB->changes->toArray());
-    }
-
-    /**
-     * @covers ::diff
-     */
-    public function testPrefixAndSuffixOverlapWithAddition(): void
-    {
-        $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'FactoryInterface $factory)')]);
-        $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'FactoryInterface $factory, Repository $repository)')]);
-
-        $this->differ->diff($lineA, $lineB);
-
-        $expected = [new DiffChange(DiffChange::REMOVED, 'FactoryInterface $factory)')];
-        static::assertEquals($expected, $lineA->changes->toArray());
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'FactoryInterface $factory'),
-            new DiffChange(DiffChange::ADDED, ', Repository $repository'),
-            new DiffChange(DiffChange::UNCHANGED, ')'),
-        ];
-        static::assertEquals($expected, $lineB->changes->toArray());
-    }
-
-    /**
-     * @covers ::diff
-     */
-    public function testPrefixAndSuffixOverlapWithRemoval(): void
-    {
-        $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'FactoryInterface $factory, Repository $repository)')]);
-        $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'FactoryInterface $factory)')]);
-
-        $this->differ->diff($lineA, $lineB);
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'FactoryInterface $factory'),
-            new DiffChange(DiffChange::REMOVED, ', Repository $repository'),
-            new DiffChange(DiffChange::UNCHANGED, ')'),
-        ];
-        static::assertEquals($expected, $lineA->changes->toArray());
-
-        $expected = [new DiffChange(DiffChange::ADDED, 'FactoryInterface $factory)')];
-        static::assertEquals($expected, $lineB->changes->toArray());
+        static::assertEquals([$changeA, $changeB], $lineA->changes->toArray());
+        static::assertEquals([$changeA, $changeC], $lineB->changes->toArray());
     }
 }

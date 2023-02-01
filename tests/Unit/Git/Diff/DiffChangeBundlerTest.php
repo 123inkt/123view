@@ -3,137 +3,57 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Git\Diff;
 
+use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Parser\OpcodesInterface;
 use DR\Review\Entity\Git\Diff\DiffChange;
-use DR\Review\Entity\Git\Diff\DiffChangeCollection;
 use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\Review\Git\Diff\DiffChangeBundler
+ * @covers ::__construct
  */
 class DiffChangeBundlerTest extends AbstractTestCase
 {
-    private DiffChangeBundler $bundler;
+    private DiffOpcodeTransformer&MockObject $opcodeTransformer;
+    private DiffChangeBundler                $bundler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->bundler = new DiffChangeBundler();
+        $opcodes = $this->createMock(OpcodesInterface::class);
+        $opcodes->method('generate')->willReturn('opcodes');
+        $diff = $this->createMock(Diff::class);
+        $diff->method('getOpcodes')->willReturn($opcodes);
+        $this->opcodeTransformer = $this->createMock(DiffOpcodeTransformer::class);
+        $this->bundler           = new DiffChangeBundler($diff, $this->opcodeTransformer);
     }
 
     /**
      * @covers ::bundle
      * @covers ::mergePrefix
      * @covers ::mergeSuffix
-     * @covers ::getPrevious
-     * @covers ::getNextNext
-     */
-    public function testBundleSingleChange(): void
-    {
-        $changes  = [new DiffChange(DiffChange::REMOVED, 'This-was-unchanged')];
-        $expected = $changes;
-
-        $changes = $this->bundler->bundle(new DiffChangeCollection($changes));
-        static::assertEquals($expected, $changes->toArray());
-    }
-
-    /**
-     * @covers ::bundle
-     * @covers ::mergePrefix
-     * @covers ::mergeSuffix
-     * @covers ::getPrevious
-     * @covers ::getNextNext
      */
     public function testBundleAddedRemovedWithoutUnchanged(): void
     {
-        $changes = [
-            new DiffChange(DiffChange::REMOVED, 'This-was-removed!'),
-            new DiffChange(DiffChange::ADDED, 'This-was-added!')
-        ];
-
         $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'This-was-'),
-            new DiffChange(DiffChange::REMOVED, 'remov'),
-            new DiffChange(DiffChange::ADDED, 'add'),
-            new DiffChange(DiffChange::UNCHANGED, 'ed!')
+            new DiffChange(DiffChange::UNCHANGED, 'My '),
+            new DiffChange(DiffChange::REMOVED, 'very first '),
+            new DiffChange(DiffChange::ADDED, 'long '),
+            new DiffChange(DiffChange::UNCHANGED, 'line')
         ];
 
-        $changes = $this->bundler->bundle(new DiffChangeCollection($changes));
-        static::assertEquals($expected, $changes->toArray());
-    }
+        $this->opcodeTransformer->expects(self::once())
+            ->method('transform')
+            ->with('very first ', 'opcodes')
+            ->willReturn([new DiffChange(DiffChange::REMOVED, 'very first '), new DiffChange(DiffChange::ADDED, 'long ')]);
 
-    /**
-     * @covers ::bundle
-     * @covers ::mergePrefix
-     * @covers ::mergeSuffix
-     * @covers ::getPrevious
-     * @covers ::getNextNext
-     */
-    public function testBundleAddedRemovedWithUnchanged(): void
-    {
-        $changes = [
-            new DiffChange(DiffChange::UNCHANGED, 'This'),
-            new DiffChange(DiffChange::REMOVED, '-was-removed!'),
-            new DiffChange(DiffChange::ADDED, '-was-added!')
-        ];
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'This-was-'),
-            new DiffChange(DiffChange::REMOVED, 'remov'),
-            new DiffChange(DiffChange::ADDED, 'add'),
-            new DiffChange(DiffChange::UNCHANGED, 'ed!')
-        ];
-
-        $changes = $this->bundler->bundle(new DiffChangeCollection($changes));
-        static::assertEquals($expected, $changes->toArray());
-    }
-
-    /**
-     * @covers ::bundle
-     * @covers ::mergePrefix
-     * @covers ::mergeSuffix
-     * @covers ::getPrevious
-     * @covers ::getNextNext
-     */
-    public function testBundleAddedRemovedWithTrailingUnchanged(): void
-    {
-        $changes = [
-            new DiffChange(DiffChange::UNCHANGED, 'This'),
-            new DiffChange(DiffChange::REMOVED, '-was-removed'),
-            new DiffChange(DiffChange::ADDED, '-was-added'),
-            new DiffChange(DiffChange::UNCHANGED, '!'),
-        ];
-
-        $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'This-was-'),
-            new DiffChange(DiffChange::REMOVED, 'remov'),
-            new DiffChange(DiffChange::ADDED, 'add'),
-            new DiffChange(DiffChange::UNCHANGED, 'ed!')
-        ];
-
-        $changes = $this->bundler->bundle(new DiffChangeCollection($changes));
-        static::assertEquals($expected, $changes->toArray());
-    }
-
-    /**
-     * @covers ::bundle
-     * @covers ::mergePrefix
-     * @covers ::mergeSuffix
-     * @covers ::getPrevious
-     * @covers ::getNextNext
-     */
-    public function testBundleRemovedEntireLine(): void
-    {
-        $changes = [
-            new DiffChange(DiffChange::REMOVED, 'was-removed'),
-            new DiffChange(DiffChange::ADDED, ''),
-        ];
-
-        $expected = [
-            new DiffChange(DiffChange::REMOVED, 'was-removed')
-        ];
-
-        $changes = $this->bundler->bundle(new DiffChangeCollection($changes));
+        $changes = $this->bundler->bundle(
+            new DiffChange(DiffChange::REMOVED, 'My very first line'),
+            new DiffChange(DiffChange::ADDED, 'My first long line')
+        );
         static::assertEquals($expected, $changes->toArray());
     }
 }
