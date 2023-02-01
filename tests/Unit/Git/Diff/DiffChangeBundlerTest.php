@@ -13,6 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\Review\Git\Diff\DiffChangeBundler
+ * @covers ::__construct
  */
 class DiffChangeBundlerTest extends AbstractTestCase
 {
