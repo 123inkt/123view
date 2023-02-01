@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Entity\Review;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\UserMentionRepository;
 
 #[ORM\Entity(repositoryClass: UserMentionRepository::class)]
@@ -16,9 +15,8 @@ class UserMention
     private ?Comment $comment = null;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'mentions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\Column(nullable: false)]
+    private ?int $userId = null;
 
     public function getComment(): ?Comment
     {
@@ -32,14 +30,14 @@ class UserMention
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUserId(): ?int
     {
-        return $this->user;
+        return $this->userId;
     }
 
-    public function setUser(?User $user): self
+    public function setUserId(int $userId): self
     {
-        $this->user = $user;
+        $this->userId = $userId;
 
         return $this;
     }

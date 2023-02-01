@@ -54,7 +54,7 @@ export default class Mentions {
     private onInput(): void {
         if (this.dropdown.isVisible()) {
             const mention = this.getMentionFromTextarea();
-            if (mention === null) {
+            if (mention === null || mention.includes(' ')) {
                 this.dropdown.hide();
                 return;
             }
@@ -94,6 +94,7 @@ export default class Mentions {
 
         // update textarea content
         this.textarea.value = textBeforeMention + replacement + ' ' + textAfterCaret;
+        this.textarea.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}));
 
         // set cursor position
         this.textarea.selectionEnd = textBeforeMention.length + replacement.length;

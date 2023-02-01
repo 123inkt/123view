@@ -29,7 +29,7 @@ class UserMentionRepositoryTest extends AbstractRepositoryTestCase
         $comment = Assert::notNull(static::getService(CommentRepository::class)->findOneBy(['message' => 'message']));
 
         $mention = new UserMention();
-        $mention->setUser($user);
+        $mention->setUserId((int)$user->getId());
         $mention->setComment($comment);
 
         $mentionRepository = static::getService(UserMentionRepository::class);
