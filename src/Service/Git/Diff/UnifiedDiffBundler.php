@@ -100,6 +100,10 @@ class UnifiedDiffBundler
             return true;
         }
 
+        if ($compareResult->levenshtein <= 20) {
+            return true;
+        }
+
         return $compareResult->additions + $compareResult->removals + $compareResult->whitespace < 40;
     }
 }

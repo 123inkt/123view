@@ -3,25 +3,21 @@ declare(strict_types=1);
 
 namespace DR\Review\Git\Diff;
 
+use cogpowered\FineDiff\Diff;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
-use DR\Review\Utility\Assert;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Utility\Strings;
 
 /**
- * As --word-diff-regex gives some unexpected behaviour, optimize consecutive DiffChange blocks that have similar starting and ending strings
- * For example:
- *    removed: 'DiffChanceBundler.php'
- *    added:   'DiffChangeBundler.php'
- * Optimize to:
- *    changed: 'DiffChan'
- *    removed: 'c'
- *    added:   'g'
- *    changed: 'eBundler.php
- * @link https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---word-diff-regexltregexgt
+ * Use
  */
 class DiffChangeBundler
 {
+    public function __construct(private readonly Diff $diff, private readonly DiffOpcodeTransformer $opcodeTransformer)
+    {
+    }
+
     public function bundle(DiffChange $changeBefore, DiffChange $changeAfter): DiffChangeCollection
     {
         $result = new DiffChangeCollection();
@@ -43,9 +39,13 @@ class DiffChangeBundler
         }
 
         $result->addIfNotEmpty($first);
-        foreach ($this->mergeChange($changeBefore, $changeAfter) as $change) {
+
+        $opcodes = $this->diff->getOpcodes($changeBefore->code, $changeAfter->code)->generate();
+        $changes = $this->opcodeTransformer->transform($changeBefore->code, $opcodes);
+        foreach ($changes as $change) {
             $result->addIfNotEmpty($change);
         }
+
         $result->addIfNotEmpty($last);
 
         return $result;
@@ -70,51 +70,5 @@ class DiffChangeBundler
         $changeBefore->code = Strings::replaceSuffix($changeBefore->code, $suffix);
         $changeAfter->code  = Strings::replaceSuffix($changeAfter->code, $suffix);
         $last->code         = $suffix . $last->code;
-    }
-
-    /**
-     * @return DiffChange[]
-     */
-    public function mergeChange(DiffChange $before, Diffchange $after): DiffChangeCollection
-    {
-        $result = new DiffChangeCollection();
-
-        if (mb_strlen($before->code) < mb_strlen($after->code)) {
-            $needles     = Assert::isArray(preg_split('/\s+/', $before->code));
-            $occurrences = Strings::findAll($after->code, $needles);
-            if (count($occurrences) !== count($needles)) {
-                return [$before, $after];
-            }
-
-            $offset = 0;
-            for ($i = 0, $max = count($occurrences); $i < $max; $i++) {
-                $needle   = $needles[$i];
-                $position = $occurrences[$i];
-                $result->addIfNotEmpty(new DiffChange(DiffChange::ADDED, substr($after->code, $offset, $position - $offset)));
-                $result->addIfNotEmpty(new DiffChange(DiffChange::UNCHANGED, $needle));
-                $offset += $position + strlen($needle);
-            }
-
-            $result->addIfNotEmpty(new DiffChange(DiffChange::ADDED, substr($after->code, $offset)));
-        } else {
-            $needles     = Assert::isArray(preg_split('/\s+/', $after->code));
-            $occurrences = Strings::findAll($before->code, $needles);
-            if (count($occurrences) !== count($needles)) {
-                return [$before, $after];
-            }
-
-            $offset = 0;
-            for ($i = 0, $max = count($occurrences); $i < $max; $i++) {
-                $needle   = $needles[$i];
-                $position = $occurrences[$i];
-                $result->addIfNotEmpty(new DiffChange(DiffChange::REMOVED, substr($before->code, $offset, $position - $offset)));
-                $result->addIfNotEmpty(new DiffChange(DiffChange::UNCHANGED, $needle));
-                $offset += $position + strlen($needle);
-            }
-
-            $result->addIfNotEmpty(new DiffChange(DiffChange::REMOVED, substr($before->code, $offset)));
-        }
-
-        return $result;
     }
 }

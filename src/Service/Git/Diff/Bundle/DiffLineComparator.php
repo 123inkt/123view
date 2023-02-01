@@ -14,12 +14,12 @@ class DiffLineComparator
         $codeB = $lineB->getLine();
 
         // calculate the levenshtein without whitespace
-        [$removals, $additions] = $this->similarity($codeA, $codeB);
+        [$removals, $additions, $levenshtein] = $this->similarity($codeA, $codeB);
 
         // calculate the whitespace difference
         $whitespace = abs(strlen((string)preg_replace('/\S/', '', $codeA)) - strlen((string)preg_replace('/\S/', '', $codeB)));
 
-        return new DiffLineCompareResult($removals, $additions, $whitespace);
+        return new DiffLineCompareResult($removals, $additions, $whitespace, $levenshtein);
     }
 
     /**
@@ -41,6 +41,6 @@ class DiffLineComparator
         $lineA  = Strings::replaceSuffix($lineA, $suffix);
         $lineB  = Strings::replaceSuffix($lineB, $suffix);
 
-        return [strlen($lineA), strlen($lineB)];
+        return [strlen($lineA), strlen($lineB), levenshtein($lineA, $lineB)];
     }
 }

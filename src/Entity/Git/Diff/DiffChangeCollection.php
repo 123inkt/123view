@@ -89,6 +89,11 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         return count($this->changes) === 0 ? null : end($this->changes);
     }
 
+    public function clear(): void
+    {
+        $this->changes = [];
+    }
+
     /**
      * @return DiffChange[]
      */
