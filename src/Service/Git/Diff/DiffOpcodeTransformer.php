@@ -23,7 +23,9 @@ class DiffOpcodeTransformer
             if ($length !== 0) {
                 $opcodesOffset += mb_strlen((string)$length);
             } else {
+                // @codeCoverageIgnoreStart
                 $length = 1;
+                // @codeCoverageIgnoreEnd
             }
 
             switch ($opcode) {
