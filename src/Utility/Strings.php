@@ -55,27 +55,4 @@ class Strings
     {
         return (string)preg_replace('#' . preg_quote($suffix, '#') . '$#', '', $string);
     }
-
-    /**
-     * Find all occurrences of "search" in string
-     *
-     * @param string[] $needles
-     *
-     * @return array<int, int> returns the position of every occurrence found
-     */
-    public static function findAll(string $string, array $needles): array
-    {
-        $offset = 0;
-        $result = [];
-
-        foreach ($needles as $index => $needle) {
-            $position = strpos($string, $needle, $offset);
-            if ($position === false) {
-                continue;
-            }
-            $offset = $result[$index] = $position;
-        }
-
-        return $result;
-    }
 }
