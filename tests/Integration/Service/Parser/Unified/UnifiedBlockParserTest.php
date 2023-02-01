@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Integration\Service\Parser\Unified;
 
+use cogpowered\FineDiff\Diff;
 use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Git\Diff\DiffGranularity;
 use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\Git\LineReader;
 use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
@@ -23,8 +26,9 @@ class UnifiedBlockParserTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $bundler       = new DiffChangeBundler(new Diff(new DiffGranularity()), new DiffOpcodeTransformer());
         $this->parser  = new UnifiedBlockParser(new UnifiedLineParser());
-        $this->bundler = new UnifiedDiffBundler(new DiffLineComparator(), new DiffChangeBundler(), new DiffLineDiffer());
+        $this->bundler = new UnifiedDiffBundler(new DiffLineComparator(), $bundler, new DiffLineDiffer($bundler));
     }
 
     public function testParseAdditionsAndDeletions(): void

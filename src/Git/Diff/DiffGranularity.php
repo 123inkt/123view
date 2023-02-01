@@ -9,12 +9,17 @@ use cogpowered\FineDiff\Granularity\Granularity;
 class DiffGranularity extends Granularity
 {
     /**
-     * @var array<int, array<int, string>>
+     * @codeCoverageIgnore
      */
-    protected $delimiters = [
-        Delimiters::WORD,
-        [' ', ',', ';', '.', '?', '$'],
-        [' ', '/', '=', '-', '>', '$'],
-        ['[', ']', '(', ')', '{', '}']
-    ];
+    public function __construct()
+    {
+        $this->setDelimiters(
+            [
+                Delimiters::WORD,
+                [' ', ',', ';', '.', '?', '$'],
+                [' ', '/', '=', '-', '>', '$'],
+                ['[', ']', '(', ')', '{', '}']
+            ]
+        );
+    }
 }
