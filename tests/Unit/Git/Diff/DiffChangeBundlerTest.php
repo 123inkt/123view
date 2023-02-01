@@ -39,25 +39,21 @@ class DiffChangeBundlerTest extends AbstractTestCase
     public function testBundleAddedRemovedWithoutUnchanged(): void
     {
         $expected = [
-            new DiffChange(DiffChange::UNCHANGED, 'This-was-'),
-            new DiffChange(DiffChange::REMOVED, 'remov'),
-            new DiffChange(DiffChange::ADDED, 'add'),
-            new DiffChange(DiffChange::UNCHANGED, 'ed!')
+            new DiffChange(DiffChange::UNCHANGED, 'My '),
+            new DiffChange(DiffChange::REMOVED, 'very first '),
+            new DiffChange(DiffChange::ADDED, 'long '),
+            new DiffChange(DiffChange::UNCHANGED, 'line')
         ];
 
         $this->opcodeTransformer->expects(self::once())
             ->method('transform')
-            ->with('remov', 'opcodes')
-            ->willReturn([new DiffChange(DiffChange::REMOVED, 'remov'), new DiffChange(DiffChange::ADDED, 'add')]);
+            ->with('very first ', 'opcodes')
+            ->willReturn([new DiffChange(DiffChange::REMOVED, 'very first '), new DiffChange(DiffChange::ADDED, 'long ')]);
 
         $changes = $this->bundler->bundle(
-            new DiffChange(DiffChange::REMOVED, 'This-was-removed!'),
-            new DiffChange(DiffChange::ADDED, 'This-was-added!')
+            new DiffChange(DiffChange::REMOVED, 'My very first line'),
+            new DiffChange(DiffChange::ADDED, 'My first long line')
         );
         static::assertEquals($expected, $changes->toArray());
-    }
-
-    public function testTest(): void
-    {
     }
 }
