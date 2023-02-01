@@ -3,21 +3,31 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Git\Diff;
 
+use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Parser\OpcodesInterface;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Git\Diff\DiffChangeBundler;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\Review\Git\Diff\DiffChangeBundler
  */
 class DiffChangeBundlerTest extends AbstractTestCase
 {
-    private DiffChangeBundler $bundler;
+    private DiffOpcodeTransformer&MockObject $opcodeTransformer;
+    private DiffChangeBundler                $bundler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->bundler = new DiffChangeBundler();
+        $opcodes = $this->createMock(OpcodesInterface::class);
+        $opcodes->method('generate')->willReturn('opcodes');
+        $diff = $this->createMock(Diff::class);
+        $diff->method('getOpcodes')->willReturn($opcodes);
+        $this->opcodeTransformer = $this->createMock(DiffOpcodeTransformer::class);
+        $this->bundler           = new DiffChangeBundler($diff, $this->opcodeTransformer);
     }
 
     /**
@@ -34,56 +44,15 @@ class DiffChangeBundlerTest extends AbstractTestCase
             new DiffChange(DiffChange::UNCHANGED, 'ed!')
         ];
 
+        $this->opcodeTransformer->expects(self::once())
+            ->method('transform')
+            ->with('remov', 'opcodes')
+            ->willReturn([new DiffChange(DiffChange::REMOVED, 'remov'), new DiffChange(DiffChange::ADDED, 'add')]);
+
         $changes = $this->bundler->bundle(
             new DiffChange(DiffChange::REMOVED, 'This-was-removed!'),
             new DiffChange(DiffChange::ADDED, 'This-was-added!')
         );
         static::assertEquals($expected, $changes->toArray());
-    }
-
-    /**
-     * @covers ::bundle
-     * @covers ::mergePrefix
-     * @covers ::mergeSuffix
-     */
-    public function testBundleAddedRemovedWithUnchanged(): void
-    {
-        $expected = [
-            new DiffChange(DiffChange::REMOVED, 'is-remov'),
-            new DiffChange(DiffChange::ADDED, 'was-add'),
-            new DiffChange(DiffChange::UNCHANGED, 'ed!')
-        ];
-
-        $changes = $this->bundler->bundle(new DiffChange(DiffChange::REMOVED, 'is-removed!'), new DiffChange(DiffChange::ADDED, 'was-added!'));
-        static::assertEquals($expected, $changes->toArray());
-    }
-
-    /**
-     * @covers ::bundle
-     * @covers ::mergePrefix
-     * @covers ::mergeSuffix
-     */
-    public function testBundleRemovedEntireLine(): void
-    {
-        $expected = [
-            new DiffChange(DiffChange::REMOVED, 'was-removed')
-        ];
-
-        $changes = $this->bundler->bundle(new DiffChange(DiffChange::REMOVED, 'was-removed'), new DiffChange(DiffChange::ADDED, ''));
-        static::assertEquals($expected, $changes->toArray());
-    }
-
-    public function testMerge(): void
-    {
-        $before = new DiffChange(
-            DiffChange::REMOVED,
-            'public function addAccountRequest(IPAddress $ipAddress, $email, $type, $shoppingCartId = 0): void'
-        );
-        $after  = new DiffChange(
-            DiffChange::ADDED,
-            'public function addAccountRequest(IPAddress $ipAddress, string $email, string $type, int $shoppingCartId = 0): void'
-        );
-
-        $result = $this->bundler->mergeChange($before, $after);
     }
 }
