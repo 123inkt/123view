@@ -14,6 +14,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\Review\Git\Diff\DiffLineDiffer
+ * @covers ::__construct
  */
 class DiffLineDifferTest extends AbstractTestCase
 {
