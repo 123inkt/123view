@@ -10,7 +10,7 @@ use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Utility\Strings;
 
 /**
- * Use
+ * Use cogpowered\FineDiff to calculate the word diff for a string without the common prefix and suffix
  */
 class DiffChangeBundler
 {
@@ -24,6 +24,7 @@ class DiffChangeBundler
         $first  = null;
         $last   = null;
 
+        // find common prefix and split it off
         $prefix = Strings::findPrefix($changeBefore->code, $changeAfter->code);
         if ($prefix !== '') {
             // subtract from current and next change
@@ -31,6 +32,7 @@ class DiffChangeBundler
             $this->mergePrefix($prefix, $first, $changeBefore, $changeAfter);
         }
 
+        // find common suffix and split it off
         $suffix = Strings::findSuffix($changeBefore->code, $changeAfter->code);
         if ($suffix !== '') {
             // subtract from current and next change
