@@ -56,4 +56,8 @@ class DiffChangeBundlerTest extends AbstractTestCase
         );
         static::assertEquals($expected, $changes->toArray());
     }
+
+    public function testTest(): void
+    {
+    }
 }

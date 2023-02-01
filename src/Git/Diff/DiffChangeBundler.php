@@ -68,6 +68,16 @@ class DiffChangeBundler
      */
     private function mergeSuffix(string $suffix, DiffChange $changeBefore, DiffChange $changeAfter, DiffChange $last): void
     {
+        $suffixLength = strlen($suffix);
+
+        // if first character of the suffix is delimiter, avoid concat
+        if ($suffixLength !== 0
+            && $suffixLength !== strlen($changeBefore->code)
+            && $suffixLength !== strlen($changeAfter->code)
+            && in_array($suffix[0], [' ', ',', ';', '-', '=', '>'], true)) {
+            $suffix = substr($suffix, 1);
+        }
+
         // subtract from current and next change
         $changeBefore->code = Strings::replaceSuffix($changeBefore->code, $suffix);
         $changeAfter->code  = Strings::replaceSuffix($changeAfter->code, $suffix);
