@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\App\User;
+namespace DR\Review\Controller\App\Admin;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\User\User;
@@ -20,7 +20,7 @@ class ChangeUserProfileController extends AbstractController
     {
     }
 
-    #[Route('/app/users/{id<\d+>}/profile', self::class, methods: 'POST')]
+    #[Route('/app/admin/users/{id<\d+>}/profile', self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(Request $request, #[MapEntity] User $user): RedirectResponse
     {
