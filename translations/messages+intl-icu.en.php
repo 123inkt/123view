@@ -232,4 +232,5 @@ return [
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'repository.successful.saved'                 => 'Repository successfully saved',
 ];

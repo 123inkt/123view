@@ -1,0 +1,9 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set form = editRepositoryModel.form %}
+
+    <div class="pb-5">
+        {{ form(form) }}
+    </div>
+{% endblock %}

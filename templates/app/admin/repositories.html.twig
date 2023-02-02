@@ -27,10 +27,10 @@
                 <td>{{ (repository.favorite ? 'yes' : 'no')|trans }}</td>
                 <td>{{ repository.mainBranchName }}</td>
                 <td>
-{#                    <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleController', {id: rule.id}) }}"#}
-{#                       class="btn btn-success">#}
-{#                        <i class="bi-pencil-square"></i>#}
-{#                    </a>#}
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoryController', {id: repository.id}) }}"
+                       class="btn btn-success">
+                        <i class="bi-pencil-square"></i>
+                    </a>
                 </td>
             </tr>
         {%- endfor -%}
