@@ -12,8 +12,9 @@
             <th scope="col">{{ 'name'|trans }}</th>
             <th scope="col">{{ 'display.name'|trans }}</th>
             <th scope="col">{{ 'active'|trans }}</th>
-            <th scope="col">{{ 'favorite'|trans|capitalize }}</th>
+            <th scope="col">{{ 'favorite'|trans }}</th>
             <th scope="col">{{ 'main.branch'|trans }}</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -25,6 +26,12 @@
                 <td>{{ (repository.active ? 'yes' : 'no')|trans }}</td>
                 <td>{{ (repository.favorite ? 'yes' : 'no')|trans }}</td>
                 <td>{{ repository.mainBranchName }}</td>
+                <td>
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleController', {id: rule.id}) }}"
+                       class="btn btn-success">
+                        <i class="bi-pencil-square"></i>
+                    </a>
+                </td>
             </tr>
         {%- endfor -%}
         <tbody>

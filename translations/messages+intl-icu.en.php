@@ -228,5 +228,6 @@ return [
     'you'                                         => 'You',
     'main.branch'                                 => 'Main branch',
     'display.name'                                => 'Display name',
-    'repository.id'                               => 'id',
+    'repository.id'                               => 'Id',
+    'favorite'                                    => 'Favorite',
 ];
