@@ -1,0 +1,32 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1 class="mb-4 mt-2">{{ 'repositories'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'repository.id'|trans }}</th>
+            <th scope="col">{{ 'name'|trans }}</th>
+            <th scope="col">{{ 'display.name'|trans }}</th>
+            <th scope="col">{{ 'active'|trans }}</th>
+            <th scope="col">{{ 'favorite'|trans|capitalize }}</th>
+            <th scope="col">{{ 'main.branch'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%- for repository in repositoriesViewModel.repositories -%}
+            <tr>
+                <td>{{ repository.id }}</td>
+                <td>{{ repository.name }}</td>
+                <td>{{ repository.displayName }}</td>
+                <td>{{ (repository.active ? 'yes' : 'no')|trans }}</td>
+                <td>{{ (repository.favorite ? 'yes' : 'no')|trans }}</td>
+                <td>{{ repository.mainBranchName }}</td>
+            </tr>
+        {%- endfor -%}
+        <tbody>
+    </table>
+{% endblock %}

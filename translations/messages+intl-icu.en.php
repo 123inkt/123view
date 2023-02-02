@@ -226,4 +226,7 @@ return [
     'users'                                       => 'Users',
     'users.new.user.waiting.for.approval'         => '{count} user(s) is/are waiting for approval',
     'you'                                         => 'You',
+    'main.branch'                                 => 'Main branch',
+    'display.name'                                => 'Display name',
+    'repository.id'                               => 'id',
 ];
