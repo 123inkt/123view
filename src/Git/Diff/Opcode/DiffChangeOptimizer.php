@@ -52,11 +52,10 @@ class DiffChangeOptimizer
         }
 
         $suffix = Strings::findSuffix($changeBefore->code, $changeAfter->code);
-        if ($suffix === '') {
-            return;
+        if ($suffix === '') { // phpcs:ignore
+            $changeBefore->code = substr($changeBefore->code, 0, -strlen($suffix));
+            $changeAfter->code  = substr($changeAfter->code, 0, -strlen($suffix));
+            $last->code         = $suffix . $last->code;
         }
-        $changeBefore->code = substr($changeBefore->code, 0, -strlen($suffix));
-        $changeAfter->code  = substr($changeAfter->code, 0, -strlen($suffix));
-        $last->code         = $suffix . $last->code;
     }
 }
