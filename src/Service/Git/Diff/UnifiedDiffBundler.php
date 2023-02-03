@@ -68,7 +68,6 @@ class UnifiedDiffBundler
                 // merge changes into first line, and remove the second line
                 $pair->removed->state   = DiffLine::STATE_CHANGED;
                 $pair->removed->changes = $this->changeBundler->bundle($pair->removed->changes->first(), $pair->added->changes->first());
-                $pair->removed->changes->bundle();
                 $collection->remove($pair->added);
             }
         }

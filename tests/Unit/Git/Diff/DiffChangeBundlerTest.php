@@ -7,7 +7,7 @@ use cogpowered\FineDiff\Diff;
 use cogpowered\FineDiff\Parser\OpcodesInterface;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Git\Diff\DiffChangeBundler;
-use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
+use DR\Review\Git\Diff\LineDiffer;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -17,8 +17,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class DiffChangeBundlerTest extends AbstractTestCase
 {
-    private DiffOpcodeTransformer&MockObject $opcodeTransformer;
-    private DiffChangeBundler                $bundler;
+    private LineDiffer&MockObject $opcodeTransformer;
+    private DiffChangeBundler     $bundler;
 
     protected function setUp(): void
     {
@@ -27,7 +27,7 @@ class DiffChangeBundlerTest extends AbstractTestCase
         $opcodes->method('generate')->willReturn('opcodes');
         $diff = $this->createMock(Diff::class);
         $diff->method('getOpcodes')->willReturn($opcodes);
-        $this->opcodeTransformer = $this->createMock(DiffOpcodeTransformer::class);
+        $this->opcodeTransformer = $this->createMock(LineDiffer::class);
         $this->bundler           = new DiffChangeBundler($diff, $this->opcodeTransformer);
     }
 
@@ -46,7 +46,7 @@ class DiffChangeBundlerTest extends AbstractTestCase
         ];
 
         $this->opcodeTransformer->expects(self::once())
-            ->method('transform')
+            ->method('diff')
             ->with('very first ', 'opcodes')
             ->willReturn([new DiffChange(DiffChange::REMOVED, 'very first '), new DiffChange(DiffChange::ADDED, 'long ')]);
 
