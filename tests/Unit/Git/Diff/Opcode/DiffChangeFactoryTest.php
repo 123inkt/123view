@@ -21,9 +21,9 @@ class DiffChangeFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::transform
+     * @covers ::createFromOpcodes
      */
-    public function testTransform(): void
+    public function testCreateFromOpcodes(): void
     {
         $lineBefore = 'my first greatest line';
         // $lineAfter  = 'my very first line';

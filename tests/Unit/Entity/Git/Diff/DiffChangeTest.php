@@ -27,7 +27,7 @@ class DiffChangeTest extends AbstractTestCase
     public function testAppend(): void
     {
         $change = new DiffChange(DiffChange::UNCHANGED, 'change ');
-        $change->append(new DiffChange(DiffChange::UNCHANGED, 'foo '), new DiffChange(DiffChange::UNCHANGED, 'foo '));
+        $change->append(new DiffChange(DiffChange::UNCHANGED, 'foo '), new DiffChange(DiffChange::UNCHANGED, 'bar'));
         static::assertSame('change foo bar', $change->code);
     }
 }
