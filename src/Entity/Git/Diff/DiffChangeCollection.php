@@ -47,10 +47,10 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         return $change;
     }
 
-    public function addIfNotEmpty(?DiffChange $change): ?DiffChange
+    public function addIfNotEmpty(?DiffChange $change): void
     {
         if ($change === null || $change->code === '') {
-            return $change;
+            return;
         }
 
         // if last change is the same as the adding change, just concat
@@ -58,12 +58,26 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         if ($tail !== null && $tail->type === $change->type) {
             $tail->code .= $change->code;
 
-            return $change;
+            return;
+        }
+
+        // check granularity. if there is a sequence Added-Unchanged-Added (or removed) and unchanged is letters/numbers only, merge the
+        // sequence together as a single change
+        $length   = count($this->changes);
+        $prev     = $this->getOrNull($length - 1);
+        $prevPrev = $this->getOrNull($length - 2);
+        if ($prev !== null
+            && $prevPrev !== null
+            && $prev->type === DiffChange::UNCHANGED
+            && $prevPrev->type === $change->type
+            && preg_match('/^[a-zA-Z0-9]+$/', $prev->code) === 1) {
+            $prevPrev->code .= $prev->code . $change->code;
+            unset($this->changes[$length - 1]);
+
+            return;
         }
 
         $this->changes[] = $change;
-
-        return $change;
     }
 
     public function first(): DiffChange
