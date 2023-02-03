@@ -5,10 +5,10 @@ namespace DR\Review\Tests\Integration\Service\Parser\Unified;
 
 use cogpowered\FineDiff\Diff;
 use DR\Review\Git\Diff\DiffChangeBundler;
-use DR\Review\Git\Diff\DiffGranularity;
 use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\Git\Diff\Opcode\DiffChangeFactory;
 use DR\Review\Git\Diff\Opcode\DiffChangeOptimizer;
+use DR\Review\Git\Diff\Opcode\DiffGranularity;
 use DR\Review\Git\LineReader;
 use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
