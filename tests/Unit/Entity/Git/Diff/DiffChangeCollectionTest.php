@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Git\Diff;
 
+use cogpowered\FineDiff\Diff;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
+use DR\Review\Git\Diff\DiffGranularity;
+use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
 use DR\Review\Tests\AbstractTestCase;
 use LogicException;
 
@@ -14,6 +17,17 @@ use LogicException;
  */
 class DiffChangeCollectionTest extends AbstractTestCase
 {
+    public function testTest(): void
+    {
+        $diff        = new Diff(new DiffGranularity());
+        $transformer = new DiffOpcodeTransformer();
+
+        $before  = "S\Lib\Invoice\Enum\PaymentStatus";
+        $after   = "Core\Lib\Intl\Money\MoneyFloatTransformer";
+        $opcodes = $diff->getOpcodes($before, $after)->generate();
+        $list    = $transformer->transform($before, $opcodes);
+    }
+
     /**
      * @covers ::add
      * @covers ::toArray

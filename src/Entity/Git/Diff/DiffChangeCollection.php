@@ -87,29 +87,29 @@ class DiffChangeCollection implements Countable, IteratorAggregate
 
     public function bundle(): self
     {
-        $result = [];
-
-        for ($i = 0, $length = count($this->changes); $i < $length; $i++) {
-            $current  = $this->changes[$i];
-            $next     = $this->changes[$i + 1] ?? null;
-            $nextNext = $this->changes[$i + 2] ?? null;
-            $result[] = $current;
-
-            // check granularity. if there is a sequence Added-Unchanged-Added (or removed) and unchanged is letters/numbers only, merge the
-            // sequence together as a single change
-            if ($next === null
-                || $nextNext === null
-                || $next->type !== DiffChange::UNCHANGED
-                || $current->type !== $nextNext->type
-                || preg_match('/^[a-zA-Z0-9]+$/', $next->code) !== 1) {
-                continue;
-            }
-
-            $current->append($next, $nextNext);
-            $i += 2;
-        }
-
-        $this->changes = $result;
+        //$result = [];
+        //
+        //for ($i = 0, $length = count($this->changes); $i < $length; $i++) {
+        //    $current  = $this->changes[$i];
+        //    $next     = $this->changes[$i + 1] ?? null;
+        //    $nextNext = $this->changes[$i + 2] ?? null;
+        //    $result[] = $current;
+        //
+        //    // check granularity. if there is a sequence Added-Unchanged-Added (or removed) and unchanged is letters/numbers only, merge the
+        //    // sequence together as a single change
+        //    if ($next === null
+        //        || $nextNext === null
+        //        || $next->type !== DiffChange::UNCHANGED
+        //        || $current->type !== $nextNext->type
+        //        || preg_match('/^[a-zA-Z0-9]+$/', $next->code) !== 1) {
+        //        continue;
+        //    }
+        //
+        //    $current->append($next, $nextNext);
+        //    $i += 2;
+        //}
+        //
+        //$this->changes = $result;
 
         return $this;
     }
