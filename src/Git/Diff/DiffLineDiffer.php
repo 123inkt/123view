@@ -43,5 +43,8 @@ class DiffLineDiffer
                 $added->changes->add(clone $change);
             }
         }
+
+        $added->changes->bundle();
+        $removed->changes->bundle();
     }
 }

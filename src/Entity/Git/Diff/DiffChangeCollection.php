@@ -54,22 +54,6 @@ class DiffChangeCollection implements Countable, IteratorAggregate
             return;
         }
 
-        // check granularity. if there is a sequence Added-Unchanged-Added (or removed) and unchanged is letters/numbers only, merge the
-        // sequence together as a single change
-        $length   = count($this->changes);
-        $prev     = $this->getOrNull($length - 1); // get last item
-        $prevPrev = $this->getOrNull($length - 2); // get second to last item
-        if ($prev !== null
-            && $prevPrev !== null
-            && $prev->type === DiffChange::UNCHANGED
-            && $prevPrev->type === $change->type
-            && preg_match('/^[a-zA-Z0-9]+$/', $prev->code) === 1) {
-            $prevPrev->code .= $prev->code . $change->code;
-            unset($this->changes[$length - 1]);
-
-            return;
-        }
-
         $this->changes[] = $change;
     }
 
@@ -99,6 +83,35 @@ class DiffChangeCollection implements Countable, IteratorAggregate
     public function clear(): void
     {
         $this->changes = [];
+    }
+
+    public function bundle(): self
+    {
+        $result = [];
+
+        for ($i = 0, $length = count($this->changes); $i < $length; $i++) {
+            $current  = $this->changes[$i];
+            $next     = $this->changes[$i + 1] ?? null;
+            $nextNext = $this->changes[$i + 2] ?? null;
+            $result[] = $current;
+
+            // check granularity. if there is a sequence Added-Unchanged-Added (or removed) and unchanged is letters/numbers only, merge the
+            // sequence together as a single change
+            if ($next === null
+                || $nextNext === null
+                || $next->type !== DiffChange::UNCHANGED
+                || $current->type !== $nextNext->type
+                || preg_match('/^[a-zA-Z0-9]+$/', $next->code) !== 1) {
+                continue;
+            }
+
+            $current->append($next, $nextNext);
+            $i += 2;
+        }
+
+        $this->changes = $result;
+
+        return $this;
     }
 
     /**
