@@ -15,10 +15,10 @@ class DiffGranularity extends Granularity
     {
         $this->setDelimiters(
             [
+                Delimiters::PARAGRAPH,
+                Delimiters::SENTENCE,
                 Delimiters::WORD,
-                [' ', ',', ';', '.', '?', '$'],
-                [' ', '/', '=', '-', '>', '$'],
-                ['[', ']', '(', ')', '{', '}']
+                Delimiters::CHARACTER,
             ]
         );
     }

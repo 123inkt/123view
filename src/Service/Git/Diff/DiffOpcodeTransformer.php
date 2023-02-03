@@ -31,17 +31,17 @@ class DiffOpcodeTransformer
             switch ($opcode) {
                 case 'c':
                     // copy n characters from source
-                    $result []  = new DiffChange(DiffChange::UNCHANGED, mb_substr($beforeChange, $fromOffset, $length));
+                    $result[]   = new DiffChange(DiffChange::UNCHANGED, mb_substr($beforeChange, $fromOffset, $length));
                     $fromOffset += $length;
                     break;
                 case 'd':
                     // delete n characters from source
-                    $result []  = new DiffChange(DiffChange::REMOVED, mb_substr($beforeChange, $fromOffset, $length));
+                    $result[]   = new DiffChange(DiffChange::REMOVED, mb_substr($beforeChange, $fromOffset, $length));
                     $fromOffset += $length;
                     break;
                 default:
                     // insert n characters from opcodes
-                    $result []     = new DiffChange(DiffChange::ADDED, mb_substr($opcodes, $opcodesOffset + 1, $length));
+                    $result[]      = new DiffChange(DiffChange::ADDED, mb_substr($opcodes, $opcodesOffset + 1, $length));
                     $opcodesOffset += 1 + $length;
                     break;
             }
