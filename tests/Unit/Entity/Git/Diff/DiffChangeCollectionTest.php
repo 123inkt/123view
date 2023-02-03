@@ -15,33 +15,33 @@ use LogicException;
 class DiffChangeCollectionTest extends AbstractTestCase
 {
     /**
-     * @covers ::addIfNotEmpty
+     * @covers ::add
      * @covers ::toArray
      */
-    public function testAddIfNotEmpty(): void
+    public function testAdd(): void
     {
         $emptyChange = new DiffChange(DiffChange::ADDED, '');
         $change      = new DiffChange(DiffChange::ADDED, 'foobar');
 
         $collection = new DiffChangeCollection();
-        $collection->addIfNotEmpty($emptyChange);
-        $collection->addIfNotEmpty($change);
+        $collection->add($emptyChange);
+        $collection->add($change);
 
         static::assertSame([$change], $collection->toArray());
     }
 
     /**
-     * @covers ::addIfNotEmpty
+     * @covers ::add
      * @covers ::toArray
      */
-    public function testAddIfNotEmptyConcatSimilar(): void
+    public function testAddConcatSimilar(): void
     {
         $changeA = new DiffChange(DiffChange::ADDED, 'foo');
         $changeB = new DiffChange(DiffChange::ADDED, 'bar');
 
         $collection = new DiffChangeCollection();
-        $collection->addIfNotEmpty($changeA);
-        $collection->addIfNotEmpty($changeB);
+        $collection->add($changeA);
+        $collection->add($changeB);
 
         static::assertEquals([new DiffChange(DiffChange::ADDED, 'foobar')], $collection->toArray());
     }
@@ -61,29 +61,13 @@ class DiffChangeCollectionTest extends AbstractTestCase
     public function testLastOrNullWithValue(): void
     {
         $changeA = new DiffChange(DiffChange::ADDED, 'foo');
-        $changeB = new DiffChange(DiffChange::ADDED, 'bar');
+        $changeB = new DiffChange(DiffChange::REMOVED, 'bar');
 
         $collection = new DiffChangeCollection();
         $collection->add($changeA);
         $collection->add($changeB);
 
         static::assertSame($changeB, $collection->lastOrNull());
-    }
-
-    /**
-     * @covers ::add
-     * @covers ::toArray
-     */
-    public function testAdd(): void
-    {
-        $emptyChange = new DiffChange(DiffChange::ADDED, '');
-        $change      = new DiffChange(DiffChange::ADDED, 'foobar');
-
-        $collection = new DiffChangeCollection();
-        $collection->add($emptyChange);
-        $collection->add($change);
-
-        static::assertSame([$emptyChange, $change], $collection->toArray());
     }
 
     /**

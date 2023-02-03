@@ -18,4 +18,11 @@ class DiffChange
         $this->type = $type;
         $this->code = $code;
     }
+
+    public function append(DiffChange ...$items): void
+    {
+        foreach ($items as $item) {
+            $this->code .= $item->code;
+        }
+    }
 }

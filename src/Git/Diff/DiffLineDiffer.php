@@ -35,12 +35,12 @@ class DiffLineDiffer
 
         foreach ($changes as $change) {
             if ($change->type === DiffChange::ADDED) {
-                $added->changes->addIfNotEmpty($change);
+                $added->changes->add($change);
             } elseif ($change->type === DiffChange::REMOVED) {
-                $removed->changes->addIfNotEmpty($change);
+                $removed->changes->add($change);
             } else {
-                $removed->changes->addIfNotEmpty($change);
-                $added->changes->addIfNotEmpty(clone $change);
+                $removed->changes->add($change);
+                $added->changes->add(clone $change);
             }
         }
     }

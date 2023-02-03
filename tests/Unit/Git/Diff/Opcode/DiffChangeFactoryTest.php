@@ -1,29 +1,29 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Service\Git\Diff;
+namespace DR\Review\Tests\Unit\Git\Diff\Opcode;
 
 use DR\Review\Entity\Git\Diff\DiffChange;
-use DR\Review\Service\Git\Diff\DiffOpcodeTransformer;
+use DR\Review\Git\Diff\Opcode\DiffChangeFactory;
 use DR\Review\Tests\AbstractTestCase;
 
 /**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\DiffOpcodeTransformer
+ * @coversDefaultClass \DR\Review\Git\Diff\Opcode\DiffChangeFactory
  */
-class DiffOpcodeTransformerTest extends AbstractTestCase
+class DiffChangeFactoryTest extends AbstractTestCase
 {
-    private DiffOpcodeTransformer $transformer;
+    private DiffChangeFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->transformer = new DiffOpcodeTransformer();
+        $this->factory = new DiffChangeFactory();
     }
 
     /**
-     * @covers ::transform
+     * @covers ::createFromOpcodes
      */
-    public function testTransform(): void
+    public function testCreateFromOpcodes(): void
     {
         $lineBefore = 'my first greatest line';
         // $lineAfter  = 'my very first line';
@@ -37,6 +37,6 @@ class DiffOpcodeTransformerTest extends AbstractTestCase
             new DiffChange(DiffChange::UNCHANGED, 'line'),
         ];
 
-        static::assertEquals($expected, $this->transformer->transform($lineBefore, $opcodes));
+        static::assertEquals($expected, $this->factory->createFromOpcodes($lineBefore, $opcodes));
     }
 }
