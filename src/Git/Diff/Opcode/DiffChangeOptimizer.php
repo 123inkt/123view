@@ -12,6 +12,8 @@ class DiffChangeOptimizer
     /**
      * The granularity of FineDiff was difficult to fine-tune. A secondary approach worked better to iterate over the changes from FineDiff
      * and subtract the common prefix and suffix.
+     *
+     * @param DiffChange[] $changes
      */
     public function optimize(array $changes): DiffChangeCollection
     {

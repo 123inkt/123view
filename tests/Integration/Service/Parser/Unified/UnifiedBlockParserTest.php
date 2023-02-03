@@ -8,6 +8,8 @@ use DR\Review\Git\Diff\DiffChangeBundler;
 use DR\Review\Git\Diff\DiffGranularity;
 use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\Git\Diff\LineDiffer;
+use DR\Review\Git\Diff\Opcode\DiffChangeFactory;
+use DR\Review\Git\Diff\Opcode\DiffChangeOptimizer;
 use DR\Review\Git\LineReader;
 use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
@@ -26,7 +28,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $bundler       = new DiffChangeBundler(new Diff(new DiffGranularity()), new LineDiffer());
+        $bundler       = new DiffChangeBundler(new Diff(new DiffGranularity()), new DiffChangeFactory(), new DiffChangeOptimizer());
         $this->parser  = new UnifiedBlockParser(new UnifiedLineParser());
         $this->bundler = new UnifiedDiffBundler(new DiffLineComparator(), $bundler, new DiffLineDiffer($bundler));
     }
