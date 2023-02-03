@@ -9,7 +9,6 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Git\Diff\Opcode\DiffChangeFactory
- * @covers ::__construct
  */
 class DiffChangeFactoryTest extends AbstractTestCase
 {
