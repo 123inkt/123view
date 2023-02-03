@@ -40,15 +40,15 @@ class DiffChangeBundler
             $this->mergeSuffix($suffix, $changeBefore, $changeAfter, $last);
         }
 
-        $result->addIfNotEmpty($first);
+        $result->add($first);
 
         $opcodes = $this->diff->getOpcodes($changeBefore->code, $changeAfter->code)->generate();
         $changes = $this->opcodeTransformer->transform($changeBefore->code, $opcodes);
         foreach ($changes as $change) {
-            $result->addIfNotEmpty($change);
+            $result->add($change);
         }
 
-        $result->addIfNotEmpty($last);
+        $result->add($last);
 
         return $result;
     }

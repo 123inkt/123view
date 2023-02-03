@@ -15,7 +15,7 @@ use LogicException;
 class DiffChangeCollectionTest extends AbstractTestCase
 {
     /**
-     * @covers ::addIfNotEmpty
+     * @covers ::add
      * @covers ::toArray
      */
     public function testAddIfNotEmpty(): void
@@ -24,14 +24,14 @@ class DiffChangeCollectionTest extends AbstractTestCase
         $change      = new DiffChange(DiffChange::ADDED, 'foobar');
 
         $collection = new DiffChangeCollection();
-        $collection->addIfNotEmpty($emptyChange);
-        $collection->addIfNotEmpty($change);
+        $collection->add($emptyChange);
+        $collection->add($change);
 
         static::assertSame([$change], $collection->toArray());
     }
 
     /**
-     * @covers ::addIfNotEmpty
+     * @covers ::add
      * @covers ::toArray
      */
     public function testAddIfNotEmptyConcatSimilar(): void
@@ -40,8 +40,8 @@ class DiffChangeCollectionTest extends AbstractTestCase
         $changeB = new DiffChange(DiffChange::ADDED, 'bar');
 
         $collection = new DiffChangeCollection();
-        $collection->addIfNotEmpty($changeA);
-        $collection->addIfNotEmpty($changeB);
+        $collection->add($changeA);
+        $collection->add($changeB);
 
         static::assertEquals([new DiffChange(DiffChange::ADDED, 'foobar')], $collection->toArray());
     }
@@ -68,22 +68,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         $collection->add($changeB);
 
         static::assertSame($changeB, $collection->lastOrNull());
-    }
-
-    /**
-     * @covers ::add
-     * @covers ::toArray
-     */
-    public function testAdd(): void
-    {
-        $emptyChange = new DiffChange(DiffChange::ADDED, '');
-        $change      = new DiffChange(DiffChange::ADDED, 'foobar');
-
-        $collection = new DiffChangeCollection();
-        $collection->add($emptyChange);
-        $collection->add($change);
-
-        static::assertSame([$emptyChange, $change], $collection->toArray());
     }
 
     /**

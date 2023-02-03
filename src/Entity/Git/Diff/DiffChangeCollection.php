@@ -40,14 +40,7 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         return $this->changes[$index] ?? null;
     }
 
-    public function add(DiffChange $change): DiffChange
-    {
-        $this->changes[] = $change;
-
-        return $change;
-    }
-
-    public function addIfNotEmpty(?DiffChange $change): void
+    public function add(?DiffChange $change): void
     {
         if ($change === null || $change->code === '') {
             return;
@@ -64,8 +57,8 @@ class DiffChangeCollection implements Countable, IteratorAggregate
         // check granularity. if there is a sequence Added-Unchanged-Added (or removed) and unchanged is letters/numbers only, merge the
         // sequence together as a single change
         $length   = count($this->changes);
-        $prev     = $this->getOrNull($length - 1);
-        $prevPrev = $this->getOrNull($length - 2);
+        $prev     = $this->getOrNull($length - 1); // get last item
+        $prevPrev = $this->getOrNull($length - 2); // get second to last item
         if ($prev !== null
             && $prevPrev !== null
             && $prev->type === DiffChange::UNCHANGED
