@@ -10,7 +10,7 @@ use DR\Review\Git\Diff\Opcode\DiffChangeFactory;
 use DR\Review\Git\Diff\Opcode\DiffChangeOptimizer;
 
 /**
- * Use cogpowered\FineDiff to calculate the word diff for a string without the common prefix and suffix
+ * Use cogpowered\FineDiff to calculate the word diff for a string. Optimize the diff block with subtracting common prefix and suffix.
  */
 class DiffChangeBundler
 {
