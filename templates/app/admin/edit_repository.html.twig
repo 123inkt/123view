@@ -1,9 +1,58 @@
 {% extends 'app/app.base.html.twig' %}
 
+{%- macro checkboxFieldRow(formField) -%}
+<div class="form-group row mb-2">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+        {{ form_widget(formField) }}
+    </div>
+</div>
+{%- endmacro -%}
+
+{%- macro inputFieldRow(formField) -%}
+    <div class="row mb-3">
+        {{ form_label(formField, null, {label_attr: {class: 'col-sm-2 col-form-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(formField) }}
+            {{ form_errors(formField) }}
+        </div>
+    </div>
+{%- endmacro -%}
+{%- from _self import inputFieldRow -%}
+{%- from _self import checkboxFieldRow -%}
+
 {% block page_content %}
     {% set form = editRepositoryModel.form %}
 
-    <div class="pb-5">
-        {{ form(form) }}
+    <h1 class="mb-4 mt-2">
+        {% if editRepositoryModel.repository.id is same as null %}
+            {{ 'add.repository'|trans }}
+        {% else %}
+            {{ 'edit.repository'|trans }} #{{ editRepositoryModel.repository.id }}
+        {% endif %}
+    </h1>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ checkboxFieldRow(form.repository.active) }}
+    {{ checkboxFieldRow(form.repository.favorite) }}
+
+    {{ inputFieldRow(form.repository.name) }}
+    {{ inputFieldRow(form.repository.displayName) }}
+    {{ inputFieldRow(form.repository.mainBranchName) }}
+    {{ inputFieldRow(form.repository.updateRevisionsInterval) }}
+    {{ inputFieldRow(form.repository.validateRevisionsInterval) }}
+
+    <div>
+        {{ form_widget(form.save) }}
+
+        <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}" class="btn btn-outline-primary">
+            {{ 'cancel'|trans }}
+        </a>
     </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
 {% endblock %}

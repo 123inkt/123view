@@ -233,4 +233,8 @@ return [
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
     'repository.successful.saved'                 => 'Repository successfully saved',
+    'update.revisions.interval'                   => 'Update revisions interval',
+    'validate.revisions.interval'                 => 'Validate revisions interval',
+    'add.repository'                              => 'Add repository',
+    'edit.repository'                             => 'Edit repository'
 ];

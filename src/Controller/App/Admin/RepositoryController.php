@@ -40,7 +40,7 @@ class RepositoryController extends AbstractController
         $form = $this->createForm(EditRepositoryFormType::class, ['repository' => $repository]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['editRepositoryModel' => new EditRepositoryViewModel($form->createView())];
+            return ['editRepositoryModel' => new EditRepositoryViewModel($repository, $form->createView())];
         }
 
         $this->repositoryRepository->save($repository, true);
