@@ -18,11 +18,12 @@ class RepositoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->add('active', CheckboxType::class, ['label' => 'active', 'required' => false]);
+        $builder->add('favorite', CheckboxType::class, ['label' => 'favorite', 'required' => false]);
         $builder->add('name', TextType::class, ['label' => 'name', 'required' => true, 'attr' => ['maxlength' => 255]]);
         $builder->add('displayName', TextType::class, ['label' => 'display.name', 'required' => true, 'attr' => ['maxlength' => 255]]);
         $builder->add('mainBranchName', TextType::class, ['label' => 'main.branch', 'required' => true, 'attr' => ['maxlength' => 255]]);
-        $builder->add('active', CheckboxType::class, ['label' => 'active', 'required' => false]);
-        $builder->add('favorite', CheckboxType::class, ['label' => 'favorite', 'required' => false]);
+        $builder->add('url', RepositoryUrlType::class, ['label' => false, 'required' => true]);
         $builder->add(
             'updateRevisionsInterval',
             IntegerType::class,
