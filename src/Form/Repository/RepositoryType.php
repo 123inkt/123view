@@ -5,14 +5,10 @@ namespace DR\Review\Form\Repository;
 
 use DR\Review\Entity\Repository\Repository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Event\PostSetDataEvent;
-use Symfony\Component\Form\Event\PostSubmitEvent;
-use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RepositoryType extends AbstractType
@@ -38,25 +34,6 @@ class RepositoryType extends AbstractType
             IntegerType::class,
             ['label' => 'validate.revisions.interval', 'required' => true, 'attr' => ['min' => 0]]
         );
-
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'onPostSetData']);
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
-    }
-
-    public function onPostSetData(PostSetDataEvent $event): void
-    {
-        $test = true;
-    }
-
-    public function onPreSubmit(PreSubmitEvent $event): void
-    {
-        $test = true;
-    }
-
-    public function onPostSubmit(PostSubmitEvent $event): void
-    {
-        $test = true;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

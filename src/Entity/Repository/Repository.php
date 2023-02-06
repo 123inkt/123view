@@ -11,6 +11,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
 use League\Uri\Uri;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]
@@ -25,12 +26,16 @@ class Repository
     private bool $active = true;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\Regex('/^[a-z][a-z0-9-]*[a-z0-9]$/')]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max: 255)]
     private ?string $displayName = null;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
+    #[Assert\Length(max: 255)]
     private string $mainBranchName = 'master';
 
     #[ORM\Column(type: UriType::TYPE, length: 255)]
@@ -40,13 +45,15 @@ class Repository
     private bool $favorite = false;
 
     #[ORM\Column(type: 'integer', options: ['default' => 900])]
-    private ?int $updateRevisionsInterval = 900;
+    #[Assert\Length(min: 0)]
+    private int $updateRevisionsInterval = 900;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $updateRevisionsTimestamp = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 3600])]
-    private ?int $validateRevisionsInterval = 3600;
+    #[Assert\Length(min: 0)]
+    private int $validateRevisionsInterval = 3600;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $validateRevisionsTimestamp = null;
@@ -155,7 +162,7 @@ class Repository
         return $this;
     }
 
-    public function getUpdateRevisionsInterval(): ?int
+    public function getUpdateRevisionsInterval(): int
     {
         return $this->updateRevisionsInterval;
     }
@@ -175,7 +182,7 @@ class Repository
         $this->updateRevisionsTimestamp = $updateRevisionsTimestamp;
     }
 
-    public function getValidateRevisionsInterval(): ?int
+    public function getValidateRevisionsInterval(): int
     {
         return $this->validateRevisionsInterval;
     }
