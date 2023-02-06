@@ -236,5 +236,7 @@ return [
     'update.revisions.interval'                   => 'Update revisions interval',
     'validate.revisions.interval'                 => 'Validate revisions interval',
     'add.repository'                              => 'Add repository',
-    'edit.repository'                             => 'Edit repository'
+    'edit.repository'                             => 'Edit repository',
+    'url'                                         => 'Url',
+    'user.name'                                   => 'Username'
 ];
