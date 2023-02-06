@@ -10,7 +10,6 @@ use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Utility\UriUtil;
 use League\Uri\Uri;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
@@ -139,10 +138,7 @@ class Repository
 
     public function setUrl(Uri $url): self
     {
-        [, $password] = UriUtil::credentials($this->url);
-        [$username, $newPassword] = UriUtil::credentials($url);
-
-        $this->url = $url->withUserInfo($username, $newPassword ?? $password);
+        $this->url = $url;
 
         return $this;
     }
