@@ -6,9 +6,12 @@ namespace DR\Review\Entity\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Utility\UriUtil;
+use League\Uri\Uri;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]
@@ -31,8 +34,8 @@ class Repository
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
     private string $mainBranchName = 'master';
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $url = null;
+    #[ORM\Column(type: UriType::TYPE, length: 255)]
+    private ?Uri $url = null;
 
     #[ORM\Column]
     private bool $favorite = false;
@@ -129,14 +132,17 @@ class Repository
         return $this;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): ?Uri
     {
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(Uri $url): self
     {
-        $this->url = $url;
+        [, $password] = UriUtil::credentials($this->url);
+        [$username, $newPassword] = UriUtil::credentials($url);
+
+        $this->url = $url->withUserInfo($username, $newPassword ?? $password);
 
         return $this;
     }

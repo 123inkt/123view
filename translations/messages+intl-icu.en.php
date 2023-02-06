@@ -238,5 +238,6 @@ return [
     'add.repository'                              => 'Add repository',
     'edit.repository'                             => 'Edit repository',
     'url'                                         => 'Url',
-    'user.name'                                   => 'Username'
+    'user.name'                                   => 'Username',
+    'update.frequency'                            => 'Update frequency',
 ];

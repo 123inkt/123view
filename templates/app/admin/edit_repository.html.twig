@@ -42,14 +42,18 @@
     {{ inputFieldRow(form.repository.displayName) }}
     {{ inputFieldRow(form.repository.mainBranchName) }}
 
+    <h4>Git</h4>
+    <hr>
     {{ inputFieldRow(form.repository.url.url) }}
     {{ inputFieldRow(form.repository.url.username) }}
     {{ inputFieldRow(form.repository.url.password) }}
 
+    <h4>{{ 'update.frequency'|trans }}</h4>
+    <hr>
     {{ inputFieldRow(form.repository.updateRevisionsInterval) }}
     {{ inputFieldRow(form.repository.validateRevisionsInterval) }}
 
-    <div>
+    <div class="pt-3">
         {{ form_widget(form.save) }}
 
         <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}" class="btn btn-outline-primary">

@@ -25,7 +25,6 @@ class EditRepositoryFormType extends AbstractType
         $data = $options['data'];
 
         $builder->setAction($this->urlGenerator->generate(RepositoryController::class, ['id' => $data['repository']?->getId()]));
-        $builder->setAction('url');
         $builder->setMethod('POST');
         $builder->add('repository', RepositoryType::class);
         $builder->add('save', SubmitType::class, ['label' => 'save']);

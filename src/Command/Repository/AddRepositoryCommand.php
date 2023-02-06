@@ -9,6 +9,7 @@ use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Input\AddRepositoryInput;
 use DR\Review\Repository\Config\RepositoryRepository;
 use Exception;
+use League\Uri\Uri;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -41,7 +42,7 @@ class AddRepositoryCommand extends Command
 
         $repository = new Repository();
         $repository->setCreateTimestamp(time());
-        $repository->setUrl($validatedInput->getRepository());
+        $repository->setUrl(Uri::createFromString($validatedInput->getRepository()));
 
         // determine name
         $name = $validatedInput->getName();
