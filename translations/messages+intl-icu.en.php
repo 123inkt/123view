@@ -39,6 +39,7 @@ return [
     'comment.save.quick.key'                      => 'Ctrl+Enter to save',
     'comment.was.deleted.meanwhile'               => 'The comment no longer exists, refresh the page to receive the latest updates',
     'commit.notification.rules'                   => 'Commit notification rules',
+    'confirm.accept.review'                       => 'Are you sure you want to accept the review with {count} open comment(s)?',
     'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'confirm.delete.reply'                        => 'Are you sure you want to delete this comment?',
     'create.new.account'                          => 'Create a new account',
