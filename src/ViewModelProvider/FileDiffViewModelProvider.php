@@ -41,9 +41,6 @@ class FileDiffViewModelProvider
     ): FileDiffViewModel {
         $viewModel = new FileDiffViewModel($selectedFile, $diffMode);
 
-        // gather comments view model
-        $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));
-
         // create highlighted file
         if ($selectedFile->isDeleted() === false) {
             $highlightedFile = $this->hfService->fromDiffFile(Assert::notNull($review->getRepository()), $selectedFile);
@@ -59,6 +56,9 @@ class FileDiffViewModelProvider
             $this->emphasizer->emphasizeFile($selectedFile);
             $viewModel->leftSideFile = $this->splitter->splitFile($selectedFile);
         }
+
+        // gather comments view model
+        $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));
 
         // setup action form
         if ($reviewAction instanceof AddCommentReplyAction) {
