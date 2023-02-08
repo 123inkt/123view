@@ -12,6 +12,7 @@ use DR\Review\Service\Parser\GitLogParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use ValueError;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Parser\GitLogParser
@@ -54,8 +55,8 @@ class GitLogParserTest extends AbstractTestCase
         $repository = new Repository();
 
         // test it
-        $this->expectError();
-        $this->expectErrorMessage('array_combine');
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage('array_combine');
         $this->parser->parse($repository, $commitLog);
     }
 
@@ -103,7 +104,9 @@ class GitLogParserTest extends AbstractTestCase
         $commitB->refs = null;
 
         // prepare mocks
-        $this->diffParser->expects(static::exactly(2))->method('parse')->withConsecutive(['commitA-part9'], ['commitB-part9'])->willReturn([]);
+        $this->diffParser->expects(static::exactly(2))->method('parse')
+            ->will(static::onConsecutiveCalls(['commitA-part9'], ['commitB-part9']))
+            ->willReturn([]);
         $this->hydrator->expects(static::exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
 
         // test it

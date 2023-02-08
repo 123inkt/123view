@@ -66,9 +66,11 @@ class ValidateRevisionsCommandTest extends AbstractTestCase
         $this->logService->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn($remoteHashes);
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->withConsecutive(
-                [new CommitAddedMessage(123, 'new-hash')],
-                [new CommitRemovedMessage(123, 'old-hash')],
+            ->will(
+                static::onConsecutiveCalls(
+                    [new CommitAddedMessage(123, 'new-hash')],
+                    [new CommitRemovedMessage(123, 'old-hash')],
+                )
             )
             ->willReturn($this->envelope);
 

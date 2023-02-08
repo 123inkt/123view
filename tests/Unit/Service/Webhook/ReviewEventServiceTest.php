@@ -103,10 +103,12 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(3))
             ->method('dispatch')
-            ->withConsecutive(
-                [new ReviewRejected(123, 5)],
-                [new ReviewAccepted(123, 5)],
-                [new ReviewResumed(123, 5)],
+            ->will(
+                static::onConsecutiveCalls(
+                    [new ReviewRejected(123, 5)],
+                    [new ReviewAccepted(123, 5)],
+                    [new ReviewResumed(123, 5)],
+                )
             )
             ->willReturn($this->envelope);
 
@@ -159,9 +161,11 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->withConsecutive(
-                [new ReviewOpened(123, 5)],
-                [new ReviewClosed(123, 5)],
+            ->will(
+                static::onConsecutiveCalls(
+                    [new ReviewOpened(123, 5)],
+                    [new ReviewClosed(123, 5)],
+                )
             )
             ->willReturn($this->envelope);
 
@@ -192,9 +196,11 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->withConsecutive(
-                [new ReviewRevisionAdded(123, 456, 5, 'title')],
-                [new ReviewRevisionAdded(123, 789, 5, 'title')],
+            ->will(
+                static::onConsecutiveCalls(
+                    [new ReviewRevisionAdded(123, 456, 5, 'title')],
+                    [new ReviewRevisionAdded(123, 789, 5, 'title')],
+                )
             )
             ->willReturn($this->envelope);
 
@@ -218,9 +224,11 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->withConsecutive(
-                [new ReviewRevisionRemoved(123, 456, 5, 'title')],
-                [new ReviewRevisionRemoved(123, 789, 5, 'title')],
+            ->will(
+                static::onConsecutiveCalls(
+                    [new ReviewRevisionRemoved(123, 456, 5, 'title')],
+                    [new ReviewRevisionRemoved(123, 789, 5, 'title')],
+                )
             )
             ->willReturn($this->envelope);
 
@@ -241,11 +249,13 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(4))
             ->method('dispatch')
-            ->withConsecutive(
-                [new Envelope(new ReviewCreated(123, 456))],
-                [new Envelope(new ReviewOpened(123, null))],
-                [new Envelope(new ReviewResumed(123, null))],
-                [new Envelope(new ReviewRevisionAdded(123, 456, null, 'title'))],
+            ->will(
+                static::onConsecutiveCalls(
+                    [new Envelope(new ReviewCreated(123, 456))],
+                    [new Envelope(new ReviewOpened(123, null))],
+                    [new Envelope(new ReviewResumed(123, null))],
+                    [new Envelope(new ReviewRevisionAdded(123, 456, null, 'title'))],
+                )
             )
             ->willReturn($this->envelope);
 
@@ -286,9 +296,11 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->withConsecutive(
-                [new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title'))],
-                [new Envelope(new ReviewClosed(123, null))]
+            ->will(
+                static::onConsecutiveCalls(
+                    [new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title'))],
+                    [new Envelope(new ReviewClosed(123, null))]
+                )
             )
             ->willReturn($this->envelope);
 

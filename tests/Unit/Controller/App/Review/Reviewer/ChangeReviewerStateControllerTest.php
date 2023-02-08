@@ -58,7 +58,7 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->reviewerService->expects(self::once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
 
-        $this->objectManager->expects(self::exactly(2))->method('persist')->withConsecutive([$review], [$reviewer]);
+        $this->objectManager->expects(self::exactly(2))->method('persist')->will(static::onConsecutiveCalls([$review], [$reviewer]));
         $this->objectManager->expects(self::once())->method('flush');
 
         $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, false);
@@ -89,7 +89,7 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         $this->reviewerService->expects(self::once())->method('addReviewer')->with($review, $user)->willReturn($reviewer);
         $this->reviewerService->expects(self::once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
 
-        $this->objectManager->expects(self::exactly(2))->method('persist')->withConsecutive([$review], [$reviewer]);
+        $this->objectManager->expects(self::exactly(2))->method('persist')->will(static::onConsecutiveCalls([$review], [$reviewer]));
         $this->objectManager->expects(self::once())->method('flush');
 
         $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 456, true);

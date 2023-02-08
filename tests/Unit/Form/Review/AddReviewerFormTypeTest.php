@@ -80,23 +80,25 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                [
-                    'user',
-                    ChoiceType::class,
-                    static::callback(function ($options) use ($user) {
-                        static::assertFalse($options['required']);
-                        static::assertSame('add.reviewer', $options['placeholder']);
-                        static::assertFalse($options['label']);
-                        static::assertFalse($options['choice_translation_domain']);
-                        static::assertSame([$user], $options['choices']);
-                        static::assertSame([$this->user], $options['preferred_choices']);
-                        static::assertFalse($options['multiple']);
-                        static::assertFalse($options['expanded']);
+            ->will(
+                static::onConsecutiveCalls(
+                    [
+                        'user',
+                        ChoiceType::class,
+                        static::callback(function ($options) use ($user) {
+                            static::assertFalse($options['required']);
+                            static::assertSame('add.reviewer', $options['placeholder']);
+                            static::assertFalse($options['label']);
+                            static::assertFalse($options['choice_translation_domain']);
+                            static::assertSame([$user], $options['choices']);
+                            static::assertSame([$this->user], $options['preferred_choices']);
+                            static::assertFalse($options['multiple']);
+                            static::assertFalse($options['expanded']);
 
-                        return true;
-                    })
-                ],
+                            return true;
+                        })
+                    ],
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['review' => $review]);

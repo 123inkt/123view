@@ -66,9 +66,11 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['rev456', CheckboxType::class],
-                ['detach', SubmitType::class, ['label' => 'detach.revisions']],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['rev456', CheckboxType::class],
+                    ['detach', SubmitType::class, ['label' => 'detach.revisions']],
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['reviewId' => 123, 'revisions' => [$revision]]);

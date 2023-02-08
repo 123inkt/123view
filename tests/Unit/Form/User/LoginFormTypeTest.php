@@ -44,11 +44,13 @@ class LoginFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(4))
             ->method('add')
-            ->withConsecutive(
-                ['_username', EmailType::class],
-                ['_password', PasswordType::class],
-                ['_target_path', HiddenType::class],
-                ['loginBtn', SubmitType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['_username', EmailType::class],
+                    ['_password', PasswordType::class],
+                    ['_target_path', HiddenType::class],
+                    ['loginBtn', SubmitType::class],
+                )
             )
             ->willReturnSelf();
 
@@ -65,10 +67,12 @@ class LoginFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(3))
             ->method('add')
-            ->withConsecutive(
-                ['_username', EmailType::class],
-                ['_password', PasswordType::class],
-                ['loginBtn', SubmitType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['_username', EmailType::class],
+                    ['_password', PasswordType::class],
+                    ['loginBtn', SubmitType::class],
+                )
             )
             ->willReturnSelf();
 

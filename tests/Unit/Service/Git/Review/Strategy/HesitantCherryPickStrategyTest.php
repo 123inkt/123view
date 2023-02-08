@@ -76,7 +76,9 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $diffFile   = new DiffFile();
 
         $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revisionA)->willReturn('branchName');
-        $this->cherryPickService->expects(self::exactly(2))->method('cherryPickRevisions')->withConsecutive([[$revisionA]], [[$revisionB]]);
+        $this->cherryPickService->expects(self::exactly(2))
+            ->method('cherryPickRevisions')
+            ->will(static::onConsecutiveCalls([[$revisionA]], [[$revisionB]]));
         $this->resetManager->expects(self::once())
             ->method('start')
             ->with($repository, 'branchName')

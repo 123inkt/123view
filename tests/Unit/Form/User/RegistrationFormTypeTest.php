@@ -42,11 +42,13 @@ class RegistrationFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(4))
             ->method('add')
-            ->withConsecutive(
-                ['name', TextType::class],
-                ['email', EmailType::class],
-                ['plainPassword', PasswordType::class],
-                ['register', SubmitType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['name', TextType::class],
+                    ['email', EmailType::class],
+                    ['plainPassword', PasswordType::class],
+                    ['register', SubmitType::class],
+                )
             )
             ->willReturnSelf();
 

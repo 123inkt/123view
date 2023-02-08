@@ -82,7 +82,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
         $this->mentionService->expects(self::exactly(2))
             ->method('getMentionedUsers')
-            ->withConsecutive(['comment2'], ['comment1'])
+            ->will(static::onConsecutiveCalls(['comment2'], ['comment1']))
             ->willReturn([$user], [$user]);
         $this->mailService->expects(self::never())->method('sendNewCommentReplyMail');
 
@@ -104,7 +104,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
         $this->mentionService->expects(self::exactly(2))
             ->method('getMentionedUsers')
-            ->withConsecutive(['comment2'], ['comment1'])
+            ->will(static::onConsecutiveCalls(['comment2'], ['comment1']))
             ->willReturn([$user], []);
         $this->mailService->expects(self::once())->method('sendNewCommentMail')->with($review, $comment, [$user]);
 

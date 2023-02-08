@@ -228,7 +228,7 @@ class DiffFileParserTest extends AbstractTestCase
 
         // prepare mocks
         $this->blockParser->expects(static::exactly(2))->method('parse')
-            ->withConsecutive([29, 30], [60, 71])
+            ->will(static::onConsecutiveCalls([29, 30], [60, 71]))
             ->willReturn($blockA, $blockB);
 
         $result = $this->parser->parse($contents, $file);

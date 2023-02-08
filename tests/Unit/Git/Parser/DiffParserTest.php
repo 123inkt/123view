@@ -92,7 +92,7 @@ class DiffParserTest extends AbstractTestCase
 
         // setup mocks
         $this->fileParser->expects(static::exactly(2))->method('parse')
-            ->withConsecutive(["foobar A"], ["foobar B\n"])
+            ->will(static::onConsecutiveCalls(["foobar A"], ["foobar B\n"]))
             ->willReturn($fileA, $fileB);
 
         $diffs = $this->parser->parse($input);

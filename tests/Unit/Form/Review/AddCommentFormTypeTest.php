@@ -69,10 +69,12 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(3))
             ->method('add')
-            ->withConsecutive(
-                ['lineReference', HiddenType::class],
-                ['message', CommentType::class],
-                ['save', SubmitType::class, ['label' => 'add.comment']],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['lineReference', HiddenType::class],
+                    ['message', CommentType::class],
+                    ['save', SubmitType::class, ['label' => 'add.comment']],
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['review' => $review, 'lineReference' => $lineReference]);

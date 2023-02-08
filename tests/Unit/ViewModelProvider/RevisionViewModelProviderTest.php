@@ -81,9 +81,11 @@ class RevisionViewModelProviderTest extends AbstractTestCase
             ->willReturn([$visibility]);
         $this->formFactory->expects(self::exactly(2))
             ->method('create')
-            ->withConsecutive(
-                [DetachRevisionsFormType::class, null, ['reviewId' => 123, 'revisions' => [$revision]]],
-                [RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123]],
+            ->will(
+                static::onConsecutiveCalls(
+                    [DetachRevisionsFormType::class, null, ['reviewId' => 123, 'revisions' => [$revision]]],
+                    [RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123]],
+                )
             );
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
