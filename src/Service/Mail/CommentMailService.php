@@ -138,7 +138,7 @@ class CommentMailService implements LoggerAwareInterface
 
         /** @var User $recipient */
         foreach ($recipients as $recipient) {
-            if ($recipient->getSetting()->isMailCommentResolved() === false) {
+            if ($recipient->getSetting()->isMailCommentResolved() === false || $recipient->getEmail() === $resolvedBy->getEmail()) {
                 continue;
             }
 
