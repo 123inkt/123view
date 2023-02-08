@@ -8,6 +8,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
@@ -18,6 +19,7 @@ class ProjectsViewModelProvider
     private const FEED_EVENTS = [
         ReviewAccepted::NAME,
         ReviewRejected::NAME,
+        ReviewOpened::NAME,
         CommentAdded::NAME,
         CommentResolved::NAME,
     ];
