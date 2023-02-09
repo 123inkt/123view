@@ -11,14 +11,12 @@ docker exec -ti 123view-php /bin/bash
 php bin/console git:repository:add https://<user>:<password>gitlab.com/name/of/your/repository --name="my-repo"
 ```
 
-## Adding upsource and/or gitlab integration
+## Adding gitlab integration
 
 ```shell
-php bin/console git:repository:add https://<user>:<password>@gitlab.com/name/of/your/repository --name="my-repo" --gitlab=196 --upsource="myrepo"
+php bin/console git:repository:add https://<user>:<password>@gitlab.com/name/of/your/repository --name="my-repo" --gitlab=196
 ```
 `--gitlab` should receive the gitlab project id of this repository, and a link to the merge request will be added.
-
-`--upsource` should receive the upsource project name of for this repository, and a link to the upsource review will be added.
 
 ## List available repositories
 

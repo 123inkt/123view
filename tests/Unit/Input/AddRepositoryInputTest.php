@@ -29,7 +29,6 @@ class AddRepositoryInputTest extends AbstractTestCase
             [
                 new InputArgument('repository', InputArgument::REQUIRED),
                 new InputOption('name'),
-                new InputOption('upsource'),
                 new InputOption('gitlab'),
             ]
         );
@@ -37,7 +36,6 @@ class AddRepositoryInputTest extends AbstractTestCase
             [
                 'repository' => 'repository',
                 '--name'     => 'name',
-                '--upsource' => 'upsource',
                 '--gitlab'   => '123'
             ],
             $definition
@@ -53,7 +51,6 @@ class AddRepositoryInputTest extends AbstractTestCase
      * @covers ::getRepository
      * @covers ::getName
      * @covers ::getGitlabId
-     * @covers ::getUpsourceId
      */
     public function testGetRepositoryGetNameFromRepository(): void
     {
@@ -61,7 +58,6 @@ class AddRepositoryInputTest extends AbstractTestCase
             [
                 new InputArgument('repository', InputArgument::REQUIRED),
                 new InputOption('name'),
-                new InputOption('upsource'),
                 new InputOption('gitlab'),
             ]
         );

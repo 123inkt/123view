@@ -29,7 +29,6 @@ class AddRepositoryCommand extends Command
     {
         $this->addArgument('repository', InputArgument::REQUIRED, 'The url to the git repository');
         $this->addOption('name', '', InputOption::VALUE_REQUIRED, 'The name of the repository, if absent will the the basename of the url.');
-        $this->addOption('upsource', '', InputOption::VALUE_REQUIRED, 'The upsource project id this repository is related to.');
         $this->addOption('gitlab', '', InputOption::VALUE_REQUIRED, 'The gitlab project id this repository is related to.');
     }
 

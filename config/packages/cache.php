@@ -10,7 +10,6 @@ return static function (FrameworkConfig $framework): void {
     $cache->directory('%kernel.cache_dir%/pools');
 
     // application caches
-    $cache->pool('upsource.cache')->defaultLifetime(3600);
     $cache->pool('gitlab.cache')->defaultLifetime(3600);
     $cache->pool('revision.cache')->defaultLifetime(2628000); // 1 month
 

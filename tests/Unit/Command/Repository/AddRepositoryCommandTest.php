@@ -103,7 +103,6 @@ class AddRepositoryCommandTest extends AbstractTestCase
         $repository->setUrl(Uri::createFromString('http://my/foobar'));
         $repository->setName('name');
         $repository->setDisplayName('Name');
-        $repository->addRepositoryProperty(new RepositoryProperty('upsource-project-id', 'upsource'));
         $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'name'])->willReturn(null);
@@ -123,7 +122,6 @@ class AddRepositoryCommandTest extends AbstractTestCase
             [
                 'repository' => 'http://my/foobar',
                 '--name'     => 'name',
-                '--upsource' => 'upsource',
                 '--gitlab'   => 123
             ]
         );
