@@ -23,7 +23,7 @@ class RepositoryUrlTransformer implements DataTransformerInterface
         }
 
         if ($value instanceof Uri === false) {
-            new TransformationFailedException('Unable to transform value');
+            throw new TransformationFailedException('Unable to transform value');
         }
 
         [$username,] = UriUtil::credentials($value);
@@ -45,7 +45,7 @@ class RepositoryUrlTransformer implements DataTransformerInterface
         }
 
         if (is_array($value) === false) {
-            new TransformationFailedException('Unable to transform value');
+            throw new TransformationFailedException('Unable to transform value');
         }
 
         return Uri::createFromString($value['url'])->withUserInfo($value['username'], $value['password']);
