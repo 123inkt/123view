@@ -240,4 +240,5 @@ return [
     'url'                                         => 'Url',
     'user.name'                                   => 'Username',
     'update.frequency'                            => 'Update frequency',
+    'last.validated'                              => 'Last validated',
 ];
