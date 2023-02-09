@@ -27,22 +27,24 @@ class DiffChangeBundlerTest extends AbstractKernelTestCase
 
     /**
      * @dataProvider dataProvider
+     *
+     * @param string[] $expected
      */
-    public function testBundle(string $before, string $after, string $expected): void
+    public function testBundle(string $before, string $after, array $expected): void
     {
         $changeBefore = new DiffChange(DiffChange::REMOVED, $before);
         $changeAfter  = new DiffChange(DiffChange::ADDED, $after);
         $changes      = $this->bundler->bundle($changeBefore, $changeAfter);
 
         // format to string
-        $actual = '';
+        $actual = [];
         foreach ($changes as $change) {
             if ($change->type === DiffChange::REMOVED) {
-                $actual .= ' -`' . $change->code . '`';
+                $actual[] = '-' . $change->code;
             } elseif ($change->type === DiffChange::ADDED) {
-                $actual .= ' +`' . $change->code . '`';
+                $actual[] = '+' . $change->code;
             } else {
-                $actual .= $change->code;
+                $actual[] = $change->code;
             }
         }
 
@@ -57,7 +59,7 @@ class DiffChangeBundlerTest extends AbstractKernelTestCase
         yield [
             'public function getter($modelId, $timestamp)',
             'public function getter(int $modelId, int $timestamp): ?array',
-            'public function getter( +`int `$modelId,  +`int `$timestamp) +`: ?array`'
+            ['public function getter(', '+int ', '$modelId, ', '+int ', '$timestamp)', '+: ?array']
         ];
     }
 }
