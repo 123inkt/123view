@@ -10,6 +10,7 @@ use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -99,7 +100,7 @@ class AddRepositoryCommandTest extends AbstractTestCase
     public function testExecuteFullArguments(): void
     {
         $repository = new Repository();
-        $repository->setUrl('http://my/foobar');
+        $repository->setUrl(Uri::createFromString('http://my/foobar'));
         $repository->setName('name');
         $repository->setDisplayName('Name');
         $repository->addRepositoryProperty(new RepositoryProperty('upsource-project-id', 'upsource'));

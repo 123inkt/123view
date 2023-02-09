@@ -11,6 +11,7 @@ use DR\Review\Service\Git\Add\GitAddService;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -38,7 +39,7 @@ class GitAddServiceTest extends AbstractTestCase
     public function testAdd(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitAddCommandBuilder::class);

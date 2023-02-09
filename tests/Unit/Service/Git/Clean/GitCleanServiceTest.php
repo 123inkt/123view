@@ -11,6 +11,7 @@ use DR\Review\Service\Git\Clean\GitCleanCommandBuilder;
 use DR\Review\Service\Git\Clean\GitCleanService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -38,7 +39,7 @@ class GitCleanServiceTest extends AbstractTestCase
     public function testForceClean(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://example.com');
+        $repository->setUrl(Uri::createFromString('https://example.com'));
 
         $builder = $this->createMock(GitCleanCommandBuilder::class);
         $builder->expects(self::once())->method('force')->willReturnSelf();

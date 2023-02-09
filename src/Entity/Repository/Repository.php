@@ -10,7 +10,7 @@ use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
@@ -39,7 +39,7 @@ class Repository
     private string $mainBranchName = 'master';
 
     #[ORM\Column(type: UriType::TYPE, length: 255)]
-    private ?Uri $url = null;
+    private ?UriInterface $url = null;
 
     #[ORM\Column]
     private bool $favorite = false;
@@ -140,12 +140,12 @@ class Repository
         return $this;
     }
 
-    public function getUrl(): ?Uri
+    public function getUrl(): ?UriInterface
     {
         return $this->url;
     }
 
-    public function setUrl(Uri $url): self
+    public function setUrl(UriInterface $url): self
     {
         $this->url = $url;
 

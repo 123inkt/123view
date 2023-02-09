@@ -67,7 +67,7 @@ class GitRepositoryService implements LoggerAwareInterface
 
         $repositoryUrl  = Assert::notNull($repository->getUrl());
         $repositoryName = Helpers::extractRepositoryNameFromUrl((string)$repositoryUrl);
-        $repositoryDir  = $this->cacheDirectory . $repositoryName . '-' . hash('sha1', $repositoryUrl) . '/';
+        $repositoryDir  = $this->cacheDirectory . $repositoryName . '-' . hash('sha1', (string)$repositoryUrl) . '/';
 
         if ($this->filesystem->exists($repositoryDir . '.git') === false) {
             // is new repository

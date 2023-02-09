@@ -6,6 +6,7 @@ namespace DR\Review\Doctrine\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
+use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri;
 
 class UriType extends Type
@@ -29,7 +30,7 @@ class UriType extends Type
             return null;
         }
 
-        if ($value instanceof Uri === false) {
+        if ($value instanceof UriInterface === false) {
             throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'Uri']);
         }
 
@@ -39,7 +40,7 @@ class UriType extends Type
     /**
      * @inheritDoc
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Uri
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?UriInterface
     {
         if ($value === null) {
             return null;
