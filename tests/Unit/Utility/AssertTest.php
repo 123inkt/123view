@@ -123,7 +123,8 @@ class AssertTest extends AbstractTestCase
      */
     public function testInstanceOfSuccess(): void
     {
-        static::assertSame($this, Assert::instanceOf(AbstractTestCase::Class, $this));
-        static::assertSame($this, Assert::instanceOf(TestCase::Class, $this));
+        static::assertSame($this, Assert::instanceOf(self::class, $this));
+        static::assertSame($this, Assert::instanceOf(AbstractTestCase::class, $this));
+        static::assertSame($this, Assert::instanceOf(TestCase::class, $this));
     }
 }
