@@ -241,7 +241,7 @@ return [
     'user.name'                                   => 'Username',
     'update.frequency'                            => 'Update frequency',
     'last.validated'                              => 'Last validated',
-    'repository.name.help'                        => 'Name used in urls, alpha-numeric characters only',
-    'repository.update.interval.help'             => 'The frequency in which new revisions are automatically pulled from the remote',
-    'repository.validation.interval.help'         => 'The frequency in which local revisions are compared against the remote. Note: this is a heavy operation for large repositories',
+    'repository.name.help'                        => 'Name used in urls, alpha-numeric characters only.',
+    'repository.update.interval.help'             => 'The frequency in which new revisions are automatically pulled from the remote.',
+    'repository.validation.interval.help'         => 'The frequency in which local revisions are compared against the remote. Note: this is a heavy operation for large repositories.',
 ];
