@@ -35,7 +35,7 @@ class RepositoryController extends AbstractController
             throw new NotFoundHttpException('Repository not found');
         }
 
-        $repository ??= new Repository();
+        $repository ??= (new Repository())->setCreateTimestamp(time());
 
         $form = $this->createForm(EditRepositoryFormType::class, ['repository' => $repository]);
         $form->handleRequest($request);

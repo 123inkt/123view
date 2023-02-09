@@ -45,14 +45,14 @@ class Repository
     private bool $favorite = false;
 
     #[ORM\Column(type: 'integer', options: ['default' => 900])]
-    #[Assert\Length(min: 0)]
+    #[Assert\Range(min: 0)]
     private int $updateRevisionsInterval = 900;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $updateRevisionsTimestamp = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 3600])]
-    #[Assert\Length(min: 0)]
+    #[Assert\Range(min: 0)]
     private int $validateRevisionsInterval = 3600;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -97,9 +97,11 @@ class Repository
         return $this->active;
     }
 
-    public function setActive(bool $active): void
+    public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
     }
 
     public function getName(): ?string

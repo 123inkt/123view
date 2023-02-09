@@ -48,4 +48,10 @@
         {%- endfor -%}
         <tbody>
     </table>
+
+    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoryController') }}" class="btn btn-outline-primary mb-3">
+        <i class="bi-plus"></i>
+        {{ 'repository.new'|trans }}
+    </a>
+
 {% endblock %}

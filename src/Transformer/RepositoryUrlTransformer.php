@@ -9,15 +9,19 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
- * @implements DataTransformerInterface<Uri, string[]>
+ * @implements DataTransformerInterface<Uri|null, string[]|null>
  */
 class RepositoryUrlTransformer implements DataTransformerInterface
 {
     /**
      * @inheritDoc
      */
-    public function transform(mixed $value): array
+    public function transform(mixed $value): ?array
     {
+        if ($value === null) {
+            return null;
+        }
+
         if ($value instanceof Uri === false) {
             new TransformationFailedException('Unable to transform value');
         }
@@ -34,8 +38,12 @@ class RepositoryUrlTransformer implements DataTransformerInterface
     /**
      * @inheritDoc
      */
-    public function reverseTransform(mixed $value): Uri
+    public function reverseTransform(mixed $value): ?Uri
     {
+        if ($value === null) {
+            return null;
+        }
+
         if (is_array($value) === false) {
             new TransformationFailedException('Unable to transform value');
         }

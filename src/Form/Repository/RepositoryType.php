@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class RepositoryType extends AbstractType
 {
@@ -24,13 +23,7 @@ class RepositoryType extends AbstractType
         $builder->add(
             'name',
             TextType::class,
-            [
-                'label'       => 'name',
-                'help'        => 'repository.name.help',
-                'required'    => true,
-                'attr'        => ['maxlength' => 255],
-                'constraints' => [new Assert\Regex('/^[\w+-]+$/')]
-            ]
+            ['label' => 'name', 'help' => 'repository.name.help', 'required' => true, 'attr' => ['maxlength' => 255]]
         );
         $builder->add('displayName', TextType::class, ['label' => 'display.name', 'required' => true, 'attr' => ['maxlength' => 255]]);
         $builder->add('mainBranchName', TextType::class, ['label' => 'main.branch', 'required' => true, 'attr' => ['maxlength' => 255]]);
@@ -38,24 +31,12 @@ class RepositoryType extends AbstractType
         $builder->add(
             'updateRevisionsInterval',
             IntegerType::class,
-            [
-                'label'       => 'update.revisions.interval',
-                'help'        => 'repository.update.interval.help',
-                'required'    => true,
-                'attr'        => ['min' => 0],
-                'constraints' => [new Assert\Range(min: 0)]
-            ]
+            ['label' => 'update.revisions.interval', 'help' => 'repository.update.interval.help', 'required' => true, 'attr' => ['min' => 0],]
         );
         $builder->add(
             'validateRevisionsInterval',
             IntegerType::class,
-            [
-                'label'       => 'validate.revisions.interval',
-                'help'        => 'repository.validation.interval.help',
-                'required'    => true,
-                'attr'        => ['min' => 0],
-                'constraints' => [new Assert\Range(min: 0)]
-            ]
+            ['label' => 'validate.revisions.interval', 'help' => 'repository.validation.interval.help', 'required' => true, 'attr' => ['min' => 0],]
         );
     }
 
