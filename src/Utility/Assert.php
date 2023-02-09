@@ -105,7 +105,7 @@ class Assert
      */
     public static function instanceOf(string $classString, mixed $value): object
     {
-        if (is_subclass_of($value, $classString)) {
+        if (is_subclass_of($value, $classString) === false) {
             throw new RuntimeException('Expecting value to be instance of ' . $classString);
         }
 

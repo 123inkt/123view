@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Utility;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Assert;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use stdClass;
 
@@ -104,5 +105,25 @@ class AssertTest extends AbstractTestCase
     {
         $rule = new stdClass();
         static::assertSame($rule, Assert::notFalse($rule));
+    }
+
+    /**
+     * @covers ::instanceOf
+     */
+    public function testInstanceOfFailure(): void
+    {
+        $object = new stdClass();
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be instance of RuntimeException');
+        Assert::instanceOf(RuntimeException::class, $object);
+    }
+
+    /**
+     * @covers ::instanceOf
+     */
+    public function testInstanceOfSuccess(): void
+    {
+        static::assertSame($this, Assert::instanceOf(AbstractTestCase::Class, $this));
+        static::assertSame($this, Assert::instanceOf(TestCase::Class, $this));
     }
 }
