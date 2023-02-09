@@ -94,4 +94,21 @@ class Assert
 
         return $value;
     }
+
+    /**
+     * Assert value is object and of type class-string
+     * @template T of object
+     *
+     * @param class-string<T> $classString
+     *
+     * @return T
+     */
+    public static function instanceOf(string $classString, ?object $value): object
+    {
+        if ($value === null || $value instanceof $classString === false) {
+            throw new RuntimeException('Expecting value to be instance of ' . $classString);
+        }
+
+        return $value;
+    }
 }
