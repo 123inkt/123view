@@ -60,11 +60,6 @@ class AddRepositoryCommand extends Command
         $repository->setName($name);
         $repository->setDisplayName(ucfirst($name));
 
-        // set upsource project id
-        if ($validatedInput->getUpsourceId() !== null) {
-            $repository->addRepositoryProperty(new RepositoryProperty('upsource-project-id', $validatedInput->getUpsourceId()));
-        }
-
         // set gitlab project id
         if ($validatedInput->getGitlabId() !== null) {
             $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', (string)$validatedInput->getGitlabId()));

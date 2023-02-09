@@ -22,7 +22,6 @@ class AddRepositoryInputTest extends AbstractTestCase
      * @covers ::getRepository
      * @covers ::getName
      * @covers ::getGitlabId
-     * @covers ::getUpsourceId
      */
     public function testGetRepository(): void
     {
@@ -47,7 +46,6 @@ class AddRepositoryInputTest extends AbstractTestCase
 
         static::assertSame('repository', $validatedInput->getRepository());
         static::assertSame('name', $validatedInput->getName());
-        static::assertSame('upsource', $validatedInput->getUpsourceId());
         static::assertSame(123, $validatedInput->getGitlabId());
     }
 

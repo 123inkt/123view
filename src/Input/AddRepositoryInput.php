@@ -29,14 +29,6 @@ class AddRepositoryInput extends AbstractValidatedInput
         return $name;
     }
 
-    public function getUpsourceId(): ?string
-    {
-        /** @var ?string $upsourceId */
-        $upsourceId = $this->input->getOption('upsource');
-
-        return $upsourceId;
-    }
-
     public function getGitlabId(): ?int
     {
         /** @var ?string $gitlabId */

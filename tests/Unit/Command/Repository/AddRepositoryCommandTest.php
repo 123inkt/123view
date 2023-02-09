@@ -79,7 +79,7 @@ class AddRepositoryCommandTest extends AbstractTestCase
             ->method('save')
             ->with(
                 static::callback(static function (Repository $repository) {
-                    static::assertSame('http://my/foobar', $repository->getUrl());
+                    static::assertSame('http://my/foobar', (string)$repository->getUrl());
                     static::assertSame('foobar', $repository->getName());
                     static::assertSame('Foobar', $repository->getDisplayName());
 
