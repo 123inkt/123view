@@ -52,7 +52,7 @@ class DiffChangeBundlerTest extends AbstractKernelTestCase
     }
 
     /**
-     * @return Generator<array<string[]>>
+     * @return Generator<array<string|string[]>>
      */
     public function dataProvider(): Generator
     {

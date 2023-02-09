@@ -97,15 +97,15 @@ class Assert
 
     /**
      * Assert value is object and of type class-string
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $classString
      *
      * @return T
      */
-    public static function instanceOf(string $classString, mixed $value): object
+    public static function instanceOf(string $classString, ?object $value): object
     {
-        if (is_subclass_of($value, $classString) === false) {
+        if ($value === null || is_subclass_of($value, $classString) === false) {
             throw new RuntimeException('Expecting value to be instance of ' . $classString);
         }
 
