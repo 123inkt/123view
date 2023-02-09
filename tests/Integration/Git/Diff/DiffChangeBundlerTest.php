@@ -57,7 +57,7 @@ class DiffChangeBundlerTest extends AbstractKernelTestCase
         yield [
             'public function getter($modelId, $timestamp)',
             'public function getter(int $modelId, int $timestamp): ?array',
-            'public function getter( +`int `$modelId,  -`$timestamp)` +`int $timestamp): ?array`'
+            'public function getter( +`int `$modelId,  +`int `$timestamp) +`: ?array`'
         ];
     }
 }

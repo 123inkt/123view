@@ -33,8 +33,7 @@ class DiffChangeOptimizer
             $prev     = new DiffChange(DiffChange::UNCHANGED, '');
             $nextNext = $changes[$i + 2] ?? new DiffChange(DiffChange::UNCHANGED, '');
             $this->extractCommonPreSuffix($prev, $current, $next, $nextNext);
-            $collection->add($prev);
-            $collection->add(...$this->extractCommonInfix($current, $next));
+            $collection->add($prev, ...$this->extractCommonInfix($current, $next));
             $collection->add($nextNext);
             $i += 2;
         }
