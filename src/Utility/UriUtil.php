@@ -17,7 +17,7 @@ class UriUtil
         }
 
         $credentials = (string)$uri->getUserInfo();
-        if (preg_match('/^(.*?)(?::(.*))?$/', $credentials, $matches) !== 1) {
+        if (preg_match('/^(.+?)(?::(.*))?$/', $credentials, $matches) !== 1) {
             return [null, null];
         }
 
