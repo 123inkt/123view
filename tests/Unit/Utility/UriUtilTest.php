@@ -9,7 +9,6 @@ use League\Uri\Uri;
 
 /**
  * @coversDefaultClass \DR\Review\Utility\UriUtil
- * @covers ::__construct
  */
 class UriUtilTest extends AbstractTestCase
 {

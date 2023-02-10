@@ -14,7 +14,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @coversDefaultClass \DR\Review\Input\AddRepositoryInput
- * @covers ::__construct
  */
 class AddRepositoryInputTest extends AbstractTestCase
 {
@@ -79,6 +78,6 @@ class AddRepositoryInputTest extends AbstractTestCase
         static::assertArrayHasKey('arguments', $definitions);
         static::assertArrayHasKey('options', $definitions);
         static::assertCount(1, $definitions['arguments']);
-        static::assertCount(3, $definitions['options']);
+        static::assertCount(2, $definitions['options']);
     }
 }
