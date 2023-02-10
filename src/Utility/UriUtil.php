@@ -16,15 +16,15 @@ class UriUtil
             return [null, null];
         }
 
-        $credentials = urldecode((string)$uri->getUserInfo());
+        $credentials = (string)$uri->getUserInfo();
         if (preg_match('/^(.*?)(?::(.*))?$/', $credentials, $matches) !== 1) {
             return [null, null];
         }
 
-        $username = $matches[1] ?? null;
-        $username = $username === '' ? null : $username;
+        $username = $matches[1] ? urldecode($matches[1]) : null;
+        $username = $username === '' ? null : urldecode($username);
 
-        $password = $matches[2] ?? null;
+        $password = $matches[2] ? urldecode($matches[2]) : null;
         $password = $password === '' ? null : $password;
 
         return [$username, $password];

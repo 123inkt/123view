@@ -43,5 +43,8 @@ class UriUtilTest extends AbstractTestCase
     public function testCredentialsUriWithCredentials(): void
     {
         static::assertSame(['sherlock', 'passw*rd'], UriUtil::credentials(Uri::createFromString('https://sherlock:passw%2Ard@example.com')));
+
+        // with special character
+        static::assertSame(['sher:lock', 'passw*rd'], UriUtil::credentials(Uri::createFromString('https://sher%3Alock:passw%2Ard@example.com')));
     }
 }
