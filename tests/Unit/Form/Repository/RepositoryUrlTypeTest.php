@@ -17,7 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Repository\RepositoryUrlType
- * @covers ::__construct
  */
 class RepositoryUrlTypeTest extends AbstractTestCase
 {
