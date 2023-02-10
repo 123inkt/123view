@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\Admin;
 
+use DR\Review\Controller\AbstractController;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Admin\RepositoriesViewModel;
@@ -11,7 +12,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class RepositoriesController
+class RepositoriesController extends AbstractController
 {
     public function __construct(private readonly RepositoryRepository $repositoryRepository)
     {
