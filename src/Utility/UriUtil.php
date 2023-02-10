@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Utility;
 
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 
 class UriUtil
 {
     /**
      * @return array{0: ?string, 1: ?string}
      */
-    public static function credentials(?Uri $uri): array
+    public static function credentials(?UriInterface $uri): array
     {
         if ($uri === null) {
             return [null, null];
@@ -22,7 +22,7 @@ class UriUtil
         }
 
         $username = isset($matches[1]) ? urldecode($matches[1]) : null;
-        $username = $username === '' ? null : urldecode($username);
+        $username = $username === '' ? null : $username;
 
         $password = isset($matches[2]) ? urldecode($matches[2]) : null;
         $password = $password === '' ? null : $password;

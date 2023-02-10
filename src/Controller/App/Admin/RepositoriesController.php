@@ -7,7 +7,6 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Admin\RepositoriesViewModel;
-use DR\Review\ViewModel\App\User\UsersViewModel;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -19,7 +18,7 @@ class RepositoriesController extends AbstractController
     }
 
     /**
-     * @return array<string, UsersViewModel>
+     * @return array<string, RepositoriesViewModel>
      */
     #[Route('/app/admin/repositories', self::class, methods: 'GET')]
     #[Template('app/admin/repositories.html.twig')]

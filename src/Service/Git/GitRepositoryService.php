@@ -11,7 +11,6 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Utility\Assert;
 use DR\Review\Utility\CircuitBreaker;
-use League\Uri\Http;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
@@ -72,8 +71,8 @@ class GitRepositoryService implements LoggerAwareInterface
         if ($this->filesystem->exists($repositoryDir . '.git') === false) {
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
-            $this->logger?->info(sprintf('git: clone repository `%s`.', Http::createFromString($repositoryUrl)->withUserInfo('', '')));
-            $this->git->cloneRepository($repositoryUrl, $repositoryDir);
+            $this->logger?->info(sprintf('git: clone repository `%s`.', $repositoryUrl->withUserInfo(null)));
+            $this->git->cloneRepository((string)$repositoryUrl, $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
         }
 

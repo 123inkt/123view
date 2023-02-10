@@ -36,7 +36,7 @@ class RepositoryUrlTransformerTest extends AbstractTestCase
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Unable to transform value');
-        $this->transformer->transform('foobar');
+        $this->transformer->transform('foobar'); // @phpstan-ignore-line
     }
 
     /**
@@ -73,6 +73,6 @@ class RepositoryUrlTransformerTest extends AbstractTestCase
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Unable to transform value');
-        $this->transformer->reverseTransform('foobar');
+        $this->transformer->reverseTransform('foobar'); // @phpstan-ignore-line
     }
 }
