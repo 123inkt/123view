@@ -103,7 +103,7 @@ class AddRepositoryCommandTest extends AbstractTestCase
         $repository->setUrl(Uri::createFromString('http://my/foobar'));
         $repository->setName('name');
         $repository->setDisplayName('Name');
-        $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
+        $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'name'])->willReturn(null);
         $this->repositoryRepository->expects(self::once())

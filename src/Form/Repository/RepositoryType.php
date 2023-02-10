@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Form\Repository;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Form\Repository\Property\GitlabProjectIdType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -13,6 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RepositoryType extends AbstractType
 {
+    public function __construct(private string $gitlabApiUrl)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -31,13 +36,17 @@ class RepositoryType extends AbstractType
         $builder->add(
             'updateRevisionsInterval',
             IntegerType::class,
-            ['label' => 'update.revisions.interval', 'help' => 'repository.update.interval.help', 'required' => true, 'attr' => ['min' => 0],]
+            ['label' => 'update.revisions.interval', 'help' => 'repository.update.interval.help', 'required' => true, 'attr' => ['min' => 0]]
         );
         $builder->add(
             'validateRevisionsInterval',
             IntegerType::class,
-            ['label' => 'validate.revisions.interval', 'help' => 'repository.validation.interval.help', 'required' => true, 'attr' => ['min' => 0],]
+            ['label' => 'validate.revisions.interval', 'help' => 'repository.validation.interval.help', 'required' => true, 'attr' => ['min' => 0]]
         );
+
+        if ($this->gitlabApiUrl !== '') {
+            $builder->add('gitlabProjectId', GitlabProjectIdType::class);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

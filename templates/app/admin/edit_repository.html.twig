@@ -1,12 +1,12 @@
 {% extends 'app/app.base.html.twig' %}
 
 {%- macro checkboxFieldRow(formField) -%}
-<div class="form-group row mb-2">
-    <label class="col-sm-2 col-form-label"></label>
-    <div class="col-sm-10">
-        {{ form_widget(formField) }}
+    <div class="form-group row mb-2">
+        <label class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            {{ form_widget(formField) }}
+        </div>
     </div>
-</div>
 {%- endmacro -%}
 
 {%- macro inputFieldRow(formField) -%}
@@ -55,6 +55,13 @@
     <hr>
     {{ inputFieldRow(form.repository.updateRevisionsInterval) }}
     {{ inputFieldRow(form.repository.validateRevisionsInterval) }}
+
+    {% if form.repository.gitlabProjectId %}
+        <h4>{{ 'integrations'|trans }}</h4>
+        <hr>
+        {{ inputFieldRow(form.repository.gitlabProjectId) }}
+    {% endif %}
+
 
     <div class="pt-3">
         {{ form_widget(form.save) }}

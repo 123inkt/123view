@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Form\Repository;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Form\Repository\Property\GitlabProjectIdType;
 use DR\Review\Form\Repository\RepositoryType;
 use DR\Review\Form\Repository\RepositoryUrlType;
 use DR\Review\Tests\AbstractTestCase;
@@ -26,7 +27,7 @@ class RepositoryTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(8))
+        $builder->expects(self::exactly(9))
             ->method('add')
             ->withConsecutive(
                 ['active', CheckboxType::class],
@@ -37,9 +38,10 @@ class RepositoryTypeTest extends AbstractTestCase
                 ['url', RepositoryUrlType::class],
                 ['updateRevisionsInterval', IntegerType::class],
                 ['validateRevisionsInterval', IntegerType::class],
+                ['gitlabProjectId', GitlabProjectIdType::class],
             )->willReturnSelf();
 
-        $type = new RepositoryType();
+        $type = new RepositoryType('gitlab');
         $type->buildForm($builder, []);
     }
 
@@ -51,7 +53,7 @@ class RepositoryTypeTest extends AbstractTestCase
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
-        $type = new RepositoryType();
+        $type = new RepositoryType('gitlab');
         $type->configureOptions($resolver);
 
         static::assertSame(Repository::class, $introspector->getDefault('data_class'));

@@ -61,7 +61,7 @@ class AddRepositoryCommand extends Command
 
         // set gitlab project id
         if ($validatedInput->getGitlabId() !== null) {
-            $repository->addRepositoryProperty(new RepositoryProperty('gitlab-project-id', (string)$validatedInput->getGitlabId()));
+            $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', (string)$validatedInput->getGitlabId()));
         }
 
         // save

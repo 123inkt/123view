@@ -62,7 +62,13 @@ class Repository
     private ?int $createTimestamp = null;
 
     /** @phpstan-var Collection<int, RepositoryProperty> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy     : 'repository',
+        targetEntity : RepositoryProperty::class,
+        cascade      : ['persist', 'remove'],
+        orphanRemoval: true,
+        indexBy      : 'name'
+    )]
     private Collection $repositoryProperties;
 
     /** @phpstan-var Collection<int, Revision> */
@@ -222,14 +228,7 @@ class Repository
 
     public function getRepositoryProperty(string $name): ?string
     {
-        /** @var RepositoryProperty $property */
-        foreach ($this->repositoryProperties as $property) {
-            if ($property->getName() === $name) {
-                return $property->getValue();
-            }
-        }
-
-        return null;
+        return $this->repositoryProperties->get($name)?->getValue();
     }
 
     /**
@@ -240,27 +239,17 @@ class Repository
         return $this->repositoryProperties;
     }
 
-    public function addRepositoryProperty(RepositoryProperty $repositoryProperty): self
+    public function setRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $exists = $this->repositoryProperties->exists(
-            static fn($key, RepositoryProperty $property) => $repositoryProperty->getName() === $property->getName()
-        );
-        if ($exists === false) {
-            $this->repositoryProperties[] = $repositoryProperty;
-            $repositoryProperty->setRepository($this);
-        }
+        $repositoryProperty->setRepository($this);
+        $this->repositoryProperties->set($repositoryProperty->getName(), $repositoryProperty);
 
         return $this;
     }
 
     public function removeRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        if ($this->repositoryProperties->removeElement($repositoryProperty)) {
-            // set the owning side to null (unless already changed)
-            if ($repositoryProperty->getRepository() === $this) {
-                $repositoryProperty->setRepository(null);
-            }
-        }
+        $this->repositoryProperties->remove($repositoryProperty->getName());
 
         return $this;
     }

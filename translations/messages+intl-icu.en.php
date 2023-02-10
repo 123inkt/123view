@@ -244,5 +244,7 @@ return [
     'repository.name.help'                        => 'Name used in urls, alpha-numeric characters only.',
     'repository.update.interval.help'             => 'The frequency in which new revisions are automatically pulled from the remote.',
     'repository.validation.interval.help'         => 'The frequency in which local revisions are compared against the remote. Note: this is a heavy operation for large repositories.',
-    'repository.new'                              => 'New repository'
+    'repository.new'                              => 'New repository',
+    'integrations'                                => 'Integrations',
+    'gitlab.project.id'                           => 'Gitlab project id',
 ];
