@@ -2,5 +2,35 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "local>123inkt/.github:renovate-config"
+    ],
+    "packageRules": [
+        {
+            "groupName": "stylelint packages",
+            "groupSlug": "stylelint",
+            "matchPackagePrefixes": [
+                "stylelint"
+            ]
+        },
+        {
+            "groupName": "sass packages",
+            "groupSlug": "sass",
+            "matchPackagePrefixes": [
+                "sass"
+            ]
+        },
+        {
+            "groupName": "eslint packages",
+            "groupSlug": "eslint",
+            "matchPackagePrefixes": [
+                "eslint"
+            ]
+        },
+        {
+            "groupName": "webpack packages",
+            "groupSlug": "webpack",
+            "matchPackagePrefixes": [
+                "webpack"
+            ]
+        }
     ]
 }
