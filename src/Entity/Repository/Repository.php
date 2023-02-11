@@ -241,8 +241,13 @@ class Repository
 
     public function setRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $repositoryProperty->setRepository($this);
-        $this->repositoryProperties->set($repositoryProperty->getName(), $repositoryProperty);
+        $currentProperty = $this->repositoryProperties->get($repositoryProperty->getName());
+        if ($currentProperty !== null) {
+            $currentProperty->setValue($repositoryProperty->getValue());
+        } else {
+            $repositoryProperty->setRepository($this);
+            $this->repositoryProperties->set($repositoryProperty->getName(), $repositoryProperty);
+        }
 
         return $this;
     }
