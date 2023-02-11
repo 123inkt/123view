@@ -23,7 +23,7 @@
         "regenerator-runtime": "^0.13.11",
         "sass": "^1.58.0",
         "sass-loader": "^13.2.0",
-        "stylelint": "^14.16.1",
+        "stylelint": "^15.0.0",
         "stylelint-config-sass-guidelines": "^9.0.1",
         "stylelint-config-standard": "^29.0.0",
         "ts-loader": "^9.4.2",
