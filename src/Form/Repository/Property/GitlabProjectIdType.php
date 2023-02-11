@@ -17,6 +17,7 @@ class GitlabProjectIdType extends AbstractType
         $resolver->setDefaults(
             [
                 'label'       => 'gitlab.project.id',
+                'help'        => 'gitlab.project.id.help',
                 'required'    => false,
                 'attr'        => ['min' => 1],
                 'constraints' => new Assert\Range(min: 1),
@@ -26,9 +27,11 @@ class GitlabProjectIdType extends AbstractType
         );
     }
 
-    public function getProperty(Repository $repository): int
+    public function getProperty(Repository $repository): ?int
     {
-        return (int)$repository->getRepositoryProperty('gitlab-project-id');
+        $value = $repository->getRepositoryProperty('gitlab-project-id');
+
+        return $value === null ? null : (int)$value;
     }
 
     public function setProperty(Repository $repository, ?int $value): void

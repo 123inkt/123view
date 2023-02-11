@@ -247,4 +247,5 @@ return [
     'repository.new'                              => 'New repository',
     'integrations'                                => 'Integrations',
     'gitlab.project.id'                           => 'Gitlab project id',
+    'gitlab.project.id.help'                      => 'The <code>project id</code> in gitlab for this repository. Allows to show merge requests in notification mails and reviews.'
 ];
