@@ -11,11 +11,6 @@ return static function (FrameworkConfig $framework): void {
         ->verifyHost(env('HTTP_CLIENT_VERIFY_HOST')->bool())
         ->verifyPeer(env('HTTP_CLIENT_VERIFY_PEER')->bool());
 
-    $httpClient->scopedClient('upsource.client')
-        ->authBasic('%env(UPSOURCE_BASIC_AUTH)%')
-        ->baseUri('%env(UPSOURCE_API_URL)%~rpc/')
-        ->scope('upsource');
-
     $httpClient->scopedClient('gitlab.client')
         ->baseUri('%env(GITLAB_API_URL)%api/v4/')
         ->header('PRIVATE-TOKEN', '%env(GITLAB_ACCESS_TOKEN)%')

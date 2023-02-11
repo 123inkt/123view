@@ -6,9 +6,13 @@ namespace DR\Review\Entity\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Utility\Assert;
+use League\Uri\Contracts\UriInterface;
+use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]
@@ -23,28 +27,34 @@ class Repository
     private bool $active = true;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Constraint\Regex('/^[a-z][a-z0-9-]*[a-z0-9]$/')]
+    #[Constraint\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Constraint\Length(max: 255)]
     private ?string $displayName = null;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
+    #[Constraint\Length(max: 255)]
     private string $mainBranchName = 'master';
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $url = null;
+    #[ORM\Column(type: UriType::TYPE, length: 255)]
+    private ?UriInterface $url = null;
 
     #[ORM\Column]
     private bool $favorite = false;
 
     #[ORM\Column(type: 'integer', options: ['default' => 900])]
-    private ?int $updateRevisionsInterval = 900;
+    #[Constraint\Range(min: 0)]
+    private int $updateRevisionsInterval = 900;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $updateRevisionsTimestamp = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 3600])]
-    private ?int $validateRevisionsInterval = 3600;
+    #[Constraint\Range(min: 0)]
+    private int $validateRevisionsInterval = 3600;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $validateRevisionsTimestamp = null;
@@ -52,8 +62,14 @@ class Repository
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $createTimestamp = null;
 
-    /** @phpstan-var Collection<int, RepositoryProperty> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: RepositoryProperty::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    /** @phpstan-var Collection<string, RepositoryProperty> */
+    #[ORM\OneToMany(
+        mappedBy     : 'repository',
+        targetEntity : RepositoryProperty::class,
+        cascade      : ['persist', 'remove'],
+        orphanRemoval: true,
+        indexBy      : 'name'
+    )]
     private Collection $repositoryProperties;
 
     /** @phpstan-var Collection<int, Revision> */
@@ -88,9 +104,11 @@ class Repository
         return $this->active;
     }
 
-    public function setActive(bool $active): void
+    public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -129,12 +147,12 @@ class Repository
         return $this;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): ?UriInterface
     {
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(UriInterface $url): self
     {
         $this->url = $url;
 
@@ -153,7 +171,7 @@ class Repository
         return $this;
     }
 
-    public function getUpdateRevisionsInterval(): ?int
+    public function getUpdateRevisionsInterval(): int
     {
         return $this->updateRevisionsInterval;
     }
@@ -173,7 +191,7 @@ class Repository
         $this->updateRevisionsTimestamp = $updateRevisionsTimestamp;
     }
 
-    public function getValidateRevisionsInterval(): ?int
+    public function getValidateRevisionsInterval(): int
     {
         return $this->validateRevisionsInterval;
     }
@@ -211,32 +229,25 @@ class Repository
 
     public function getRepositoryProperty(string $name): ?string
     {
-        /** @var RepositoryProperty $property */
-        foreach ($this->repositoryProperties as $property) {
-            if ($property->getName() === $name) {
-                return $property->getValue();
-            }
-        }
-
-        return null;
+        return $this->repositoryProperties->get($name)?->getValue();
     }
 
     /**
-     * @return Collection<int, RepositoryProperty>
+     * @return Collection<string, RepositoryProperty>
      */
     public function getRepositoryProperties(): Collection
     {
         return $this->repositoryProperties;
     }
 
-    public function addRepositoryProperty(RepositoryProperty $repositoryProperty): self
+    public function setRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $exists = $this->repositoryProperties->exists(
-            static fn($key, RepositoryProperty $property) => $repositoryProperty->getName() === $property->getName()
-        );
-        if ($exists === false) {
-            $this->repositoryProperties[] = $repositoryProperty;
+        $currentProperty = $this->repositoryProperties->get(Assert::isString($repositoryProperty->getName()));
+        if ($currentProperty !== null) {
+            $currentProperty->setValue(Assert::isString($repositoryProperty->getValue()));
+        } else {
             $repositoryProperty->setRepository($this);
+            $this->repositoryProperties->set(Assert::isString($repositoryProperty->getName()), $repositoryProperty);
         }
 
         return $this;
@@ -244,12 +255,7 @@ class Repository
 
     public function removeRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        if ($this->repositoryProperties->removeElement($repositoryProperty)) {
-            // set the owning side to null (unless already changed)
-            if ($repositoryProperty->getRepository() === $this) {
-                $repositoryProperty->setRepository(null);
-            }
-        }
+        $this->repositoryProperties->remove(Assert::isString($repositoryProperty->getName()));
 
         return $this;
     }

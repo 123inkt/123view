@@ -12,6 +12,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -44,7 +45,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl('http://my.repository.com');
+        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
@@ -64,7 +65,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl('http://my.repository.com');
+        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');
@@ -83,7 +84,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl('http://my.repository.com');
+        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
@@ -105,7 +106,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl('http://my.repository.com');
+        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
 
         // setup mocks
         $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY . '/git/');

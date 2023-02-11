@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\User;
 
-use DR\Review\Controller\App\User\ChangeUserProfileController;
+use DR\Review\Controller\App\Admin\ChangeUserProfileController;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Transformer\UserProfileRoleTransformer;

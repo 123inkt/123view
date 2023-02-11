@@ -12,6 +12,7 @@ use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -40,7 +41,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     {
         $hash       = '123acbedf';
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash($hash);
@@ -67,7 +68,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     {
         $hash       = '123acbedf';
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash($hash);
@@ -84,7 +85,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     public function testCherryAbort(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
 
         $builder = $this->createMock(GitCherryPickCommandBuilder::class);
         $builder->expects(self::once())->method('abort')->willReturnSelf();

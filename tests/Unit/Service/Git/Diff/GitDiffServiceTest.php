@@ -19,6 +19,7 @@ use DR\Review\Service\Git\Show\GitShowCommandBuilder;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -98,7 +99,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetDiffFromRevision(): void
     {
         $repository = new Repository();
-        $repository->setUrl('http://foobar.com');
+        $repository->setUrl(Uri::createFromString('http://foobar.com'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('commit-hash');
@@ -125,7 +126,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetBundledDiffFromRevisions(): void
     {
         $repository = new Repository();
-        $repository->setUrl('http://foobar.com');
+        $repository->setUrl(Uri::createFromString('http://foobar.com'));
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);
         $builder->expects(self::once())->method('hash')->with('HEAD')->willReturnSelf();

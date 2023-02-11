@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Controller\App\User;
+namespace DR\Review\Tests\Unit\Controller\App\Admin;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\User\ChangeUserProfileController;
-use DR\Review\Controller\App\User\UsersController;
+use DR\Review\Controller\App\Admin\ChangeUserProfileController;
+use DR\Review\Controller\App\Admin\UsersController;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\UserProfileFormType;
 use DR\Review\Repository\User\UserRepository;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversDefaultClass \DR\Review\Controller\App\User\ChangeUserProfileController
+ * @coversDefaultClass \DR\Review\Controller\App\Admin\ChangeUserProfileController
  * @covers ::__construct
  */
 class ChangeUserProfileControllerTest extends AbstractControllerTestCase

@@ -6,6 +6,7 @@ namespace DR\Review\Tests\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Repository\Repository;
+use League\Uri\Uri;
 
 class RepositoryFixtures extends Fixture
 {
@@ -16,7 +17,7 @@ class RepositoryFixtures extends Fixture
         $repository->setFavorite(true);
         $repository->setName('repository');
         $repository->setDisplayName('displayName');
-        $repository->setUrl('url');
+        $repository->setUrl(Uri::createFromString('url'));
         $repository->setCreateTimestamp(12345678);
         $repository->setUpdateRevisionsInterval(500);
         $repository->setUpdateRevisionsTimestamp(23456789);

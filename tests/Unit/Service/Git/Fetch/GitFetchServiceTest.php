@@ -13,6 +13,7 @@ use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Parser\Fetch\GitFetchParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -47,7 +48,7 @@ class GitFetchServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl('https://www.example.com');
+        $repository->setUrl(Uri::createFromString('https://www.example.com'));
         $change = new BranchUpdate('from', 'to', 'oldBranch', 'newBranch');
 
         $gitRepository = $this->createMock(GitRepository::class);

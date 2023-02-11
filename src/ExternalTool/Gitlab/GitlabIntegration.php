@@ -33,7 +33,7 @@ class GitlabIntegration implements EventSubscriberInterface
         try {
             $this->tryAddLink($event->commit);
         } catch (Throwable $e) {
-            $this->log->error('UpsourceIntegration: failed to add integration link: ' . $e->getMessage(), ['exception' => $e]);
+            $this->log->error('GitlabIntegration: failed to add integration link: ' . $e->getMessage(), ['exception' => $e]);
         }
     }
 

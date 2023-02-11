@@ -32,26 +32,31 @@ class RepositoryTest extends AbstractTestCase
     public function testGetRepositoryProperty(): void
     {
         $repository = new Repository();
-        $repository->addRepositoryProperty((new RepositoryProperty())->setName('property')->setValue('value'));
+        $repository->setRepositoryProperty((new RepositoryProperty())->setName('property')->setValue('value'));
 
         static::assertNull($repository->getRepositoryProperty('foobar'));
         static::assertSame('value', $repository->getRepositoryProperty('property'));
     }
 
     /**
-     * @covers ::addRepositoryProperty
+     * @covers ::setRepositoryProperty
      * @covers ::getRepositoryProperties
      * @covers ::removeRepositoryProperty
      */
     public function testRepositoryPropertyAccessors(): void
     {
-        $property = new RepositoryProperty();
+        $propertyA = new RepositoryProperty('property', '5');
+        $propertyB = new RepositoryProperty('property', '10');
 
         $repository = new Repository();
-        $repository->addRepositoryProperty($property);
-        static::assertSame([$property], $repository->getRepositoryProperties()->getValues());
+        $repository->setRepositoryProperty($propertyA);
+        static::assertSame([$propertyA], $repository->getRepositoryProperties()->getValues());
 
-        $repository->removeRepositoryProperty($property);
+        $repository->setRepositoryProperty($propertyB);
+        static::assertSame([$propertyA], $repository->getRepositoryProperties()->getValues());
+        static::assertSame('10', $propertyA->getValue());
+
+        $repository->removeRepositoryProperty($propertyA);
         static::assertCount(0, $repository->getRepositoryProperties());
     }
 

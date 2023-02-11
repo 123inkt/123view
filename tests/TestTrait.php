@@ -8,6 +8,7 @@ use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
+use League\Uri\Uri;
 use SplFileInfo;
 
 trait TestTrait
@@ -39,7 +40,7 @@ trait TestTrait
     {
         $repository = new Repository();
         $repository->setName($name);
-        $repository->setUrl($url);
+        $repository->setUrl(Uri::createFromString($url));
 
         return $repository;
     }

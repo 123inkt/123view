@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\App\User;
+namespace DR\Review\Controller\App\Admin;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
@@ -20,8 +20,8 @@ class UsersController extends AbstractController
     /**
      * @return array<string, UsersViewModel>
      */
-    #[Route('/app/users', self::class, methods: 'GET')]
-    #[Template('app/user/users.html.twig')]
+    #[Route('/app/admin/users', self::class, methods: 'GET')]
+    #[Template('app/admin/users.html.twig')]
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(): array
     {
