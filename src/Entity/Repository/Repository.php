@@ -10,8 +10,9 @@ use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Utility\Assert;
 use League\Uri\Contracts\UriInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]
@@ -26,16 +27,16 @@ class Repository
     private bool $active = true;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Assert\Regex('/^[a-z][a-z0-9-]*[a-z0-9]$/')]
-    #[Assert\Length(min: 2, max: 255)]
+    #[Constraint\Regex('/^[a-z][a-z0-9-]*[a-z0-9]$/')]
+    #[Constraint\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255)]
+    #[Constraint\Length(max: 255)]
     private ?string $displayName = null;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
-    #[Assert\Length(max: 255)]
+    #[Constraint\Length(max: 255)]
     private string $mainBranchName = 'master';
 
     #[ORM\Column(type: UriType::TYPE, length: 255)]
@@ -45,14 +46,14 @@ class Repository
     private bool $favorite = false;
 
     #[ORM\Column(type: 'integer', options: ['default' => 900])]
-    #[Assert\Range(min: 0)]
+    #[Constraint\Range(min: 0)]
     private int $updateRevisionsInterval = 900;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $updateRevisionsTimestamp = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 3600])]
-    #[Assert\Range(min: 0)]
+    #[Constraint\Range(min: 0)]
     private int $validateRevisionsInterval = 3600;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -61,7 +62,7 @@ class Repository
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $createTimestamp = null;
 
-    /** @phpstan-var Collection<int, RepositoryProperty> */
+    /** @phpstan-var Collection<string, RepositoryProperty> */
     #[ORM\OneToMany(
         mappedBy     : 'repository',
         targetEntity : RepositoryProperty::class,
@@ -232,7 +233,7 @@ class Repository
     }
 
     /**
-     * @return Collection<int, RepositoryProperty>
+     * @return Collection<string, RepositoryProperty>
      */
     public function getRepositoryProperties(): Collection
     {
@@ -241,12 +242,12 @@ class Repository
 
     public function setRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $currentProperty = $this->repositoryProperties->get($repositoryProperty->getName());
+        $currentProperty = $this->repositoryProperties->get(Assert::isString($repositoryProperty->getName()));
         if ($currentProperty !== null) {
-            $currentProperty->setValue($repositoryProperty->getValue());
+            $currentProperty->setValue(Assert::isString($repositoryProperty->getValue()));
         } else {
             $repositoryProperty->setRepository($this);
-            $this->repositoryProperties->set($repositoryProperty->getName(), $repositoryProperty);
+            $this->repositoryProperties->set(Assert::isString($repositoryProperty->getName()), $repositoryProperty);
         }
 
         return $this;
@@ -254,7 +255,7 @@ class Repository
 
     public function removeRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $this->repositoryProperties->remove($repositoryProperty->getName());
+        $this->repositoryProperties->remove(Assert::isString($repositoryProperty->getName()));
 
         return $this;
     }
