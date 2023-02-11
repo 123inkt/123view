@@ -13,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Repository\Property\GitlabProjectIdType
- * @covers ::__construct
  */
 class GitlabProjectIdTypeTest extends AbstractTestCase
 {
