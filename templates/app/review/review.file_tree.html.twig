@@ -24,6 +24,9 @@
                     {%- if fileTreeModel.fileSelected(file) %}{{ stimulus_target('review-file-tree', 'activeFile') }}{% endif %}
                 >
                     <a href="?filePath={{ file|review_file_path|e('url') }}"
+                       data-role="file-tree-url"
+                       data-selected="{{ fileTreeModel.fileSelected(file) ? 1 : 0 }}"
+                       data-unseen="{{ isFileSeen ? 0 : 1 }}"
                        class="review-file-tree--file-link text-decoration-none text-nowrap text-truncate me-2">
                         {%- if file.rename -%}
                             <span class="diff-file__file-change-state text-primary">↗</span>
