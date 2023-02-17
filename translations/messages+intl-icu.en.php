@@ -43,6 +43,7 @@ return [
     'confirm.accept.review'                       => 'Are you sure you want to accept the review with {count} unresolved comment(s)?',
     'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'confirm.delete.reply'                        => 'Are you sure you want to delete this comment?',
+    'copy.title.to.clipboard'                     => 'Copy title to clipboard',
     'create.new.account'                          => 'Create a new account',
     'creation.date'                               => 'Creation date',
     'darcula'                                     => 'Darcula',
