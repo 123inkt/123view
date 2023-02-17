@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
@@ -36,11 +37,13 @@ class ReviewTimelineViewModelProvider
             if ($message === null || $activity->getEventName() === CommentReplyAdded::NAME) {
                 continue;
             }
-            $comment = null;
+
+            $timelineEntries[] = $entry = new TimelineEntryViewModel([$activity], $message, null);
             if ($activity->getEventName() === CommentAdded::NAME) {
-                $comment = $review->getComments()->get((int)$activity->getDataValue('commentId'));
+                $entry->setComment($review->getComments()->get((int)$activity->getDataValue('commentId')));
+            } elseif ($activity->getEventName() === ReviewRevisionAdded::NAME) {
+                $entry->setRevision($review->getRevisions()->get((int)$activity->getDataValue('revisionId')));
             }
-            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, null);
         }
 
         return new TimelineViewModel($timelineEntries);
@@ -60,14 +63,14 @@ class ReviewTimelineViewModelProvider
             if ($message === null) {
                 continue;
             }
-            $comment = null;
+            $entry = new TimelineEntryViewModel([$activity], $message, $this->urlGenerator->generate($activity));
             if ($activity->getEventName() === CommentAdded::NAME) {
-                $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
-                if ($comment === null) {
+                $entry->setComment($this->commentRepository->find((int)$activity->getDataValue('commentId')));
+                if ($entry->getComment() === null) {
                     continue;
                 }
             }
-            $timelineEntries[] = new TimelineEntryViewModel([$activity], $message, $comment, $this->urlGenerator->generate($activity));
+            $timelineEntries[] = $entry;
         }
 
         return new TimelineViewModel($timelineEntries);
