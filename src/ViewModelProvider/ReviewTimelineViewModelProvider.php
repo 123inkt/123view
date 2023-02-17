@@ -63,14 +63,14 @@ class ReviewTimelineViewModelProvider
             if ($message === null) {
                 continue;
             }
-            $entry = new TimelineEntryViewModel([$activity], $message, $this->urlGenerator->generate($activity));
+            $comment = null;
             if ($activity->getEventName() === CommentAdded::NAME) {
-                $entry->setComment($this->commentRepository->find((int)$activity->getDataValue('commentId')));
-                if ($entry->getComment() === null) {
+                $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
+                if ($comment === null) {
                     continue;
                 }
             }
-            $timelineEntries[] = $entry;
+            $timelineEntries[] = (new TimelineEntryViewModel([$activity], $message, $this->urlGenerator->generate($activity)))->setComment($comment);
         }
 
         return new TimelineViewModel($timelineEntries);
