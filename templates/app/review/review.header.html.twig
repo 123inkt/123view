@@ -5,7 +5,7 @@
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
 
         <span title="{{ review.title }}">
-            {{ 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links }}
+            {{- 'CR-' ~ review.projectId ~ ' ' }} {{ review.title|external_links -}}
         </span>
 
         <button class="btn btn-outline-primary btn-sm border-0"
