@@ -70,6 +70,7 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\Controller\\', '../src/Controller/**/*Controller.php')->tag('controller.service_arguments');
 
     // auto-wire commands, services and twig-extensions
+    $services->load('DR\Review\ApiPlatform\Provider\\', __DIR__ . '/../src/ApiPlatform/Provider');
     $services->load('DR\Review\Command\\', __DIR__ . '/../src/Command');
     $services->load('DR\Review\EventSubscriber\\', __DIR__ . '/../src/EventSubscriber');
     $services->load('DR\Review\Form\\', __DIR__ . '/../src/Form');

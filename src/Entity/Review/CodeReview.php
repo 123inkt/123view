@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Output\CodeReviewOutput;
+use DR\Review\ApiPlatform\Provider\CodeReviewProvider;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
@@ -18,7 +22,21 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 #[ApiResource(
     operations: [
         new GetCollection()
-    ]
+    ],
+    output    : CodeReviewOutput::class,
+    order     : ['updateTimestamp' => 'DESC'],
+    provider  : CodeReviewProvider::class
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        'id',
+        'title',
+        'repository.id',
+        'createTimestamp',
+        'updateTimestamp'
+    ],
+    arguments : ['orderParameterName' => 'order']
 )]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
