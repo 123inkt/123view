@@ -12,16 +12,20 @@ return static function (ApiPlatformConfig $config): void {
 
     $config->mapping()->paths(['%kernel.project_dir%/src/Entity']);
 
-    $config->swagger()->versions([3])->apiKeys('foo')->name('Authorization')->type('header');
-
-    $config->oauth()->enabled(true)->flow('password')->tokenUrl('/oauth/v2/token');
+    $config->swagger()->versions([3])->apiKeys('Bearer')->name('Authorization')->type('header');
 
     $config->openapi()->contact()->name('')->url('')->email('');
+
+    $config->mercure()->enabled(false);
+    $config->messenger()->enabled(false);
 
     $config->formats('json')->mimeTypes(['application/json']);
     $config->formats('html')->mimeTypes(['text/html']);
 
     $config->defaults()
+        // allow custom pagination parameters client side
+        ->paginationClientEnabled(false)
+        ->paginationClientItemsPerPage(true)
         // The default number of items per page
         ->paginationItemsPerPage(30)
         // The default maximum number of items per page
