@@ -3,16 +3,46 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
+use DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 
 #[ApiResource(
     operations: [
         new GetCollection()
+    ],
+    output    : CodeReviewActivityOutput::class,
+    order     : ['createTimestamp' => 'DESC'],
+    provider  : CodeReviewActivityProvider::class
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'id'            => 'exact',
+        'user.id'       => 'exact',
+        'repository.id' => 'exact',
+        'eventName'     => 'exact',
     ]
+)]
+#[ApiFilter(DateFilter::class, properties: ['createTimestamp'])]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        'id',
+        'user.id',
+        'repository.id',
+        'eventName',
+        'createTimestamp',
+    ],
+    arguments : ['orderParameterName' => 'order']
 )]
 #[ORM\Entity(repositoryClass: CodeReviewActivityRepository::class)]
 class CodeReviewActivity
