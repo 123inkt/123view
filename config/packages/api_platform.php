@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Symfony\Config\ApiPlatformConfig;
 
 return static function (ApiPlatformConfig $config): void {
-    $config->title('123view API')
+    $config->title('%env(APP_NAME)% API')
         ->version('1.0.0')
         ->showWebby(false)
         ->pathSegmentNameGenerator('api_platform.path_segment_name_generator.dash');
@@ -13,8 +13,6 @@ return static function (ApiPlatformConfig $config): void {
     $config->mapping()->paths(['%kernel.project_dir%/src/Entity']);
 
     $config->swagger()->versions([3])->apiKeys('Bearer')->name('Authorization')->type('header');
-
-    $config->openapi()->contact()->name('')->url('')->email('');
 
     $config->mercure()->enabled(false);
     $config->messenger()->enabled(false);
