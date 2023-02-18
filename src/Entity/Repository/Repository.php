@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Repository;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,8 +17,19 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Utility\Assert;
 use League\Uri\Contracts\UriInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
 
+#[ApiResource(
+    operations          : [
+        new GetCollection()
+    ],
+    normalizationContext: [
+        'groups' => ['repository:read'],
+    ]
+)]
+#[ApiFilter(BooleanFilter::class, properties: ['active'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'createTimestamp'], arguments: ['orderParameterName' => 'order'])]
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]
 class Repository
@@ -21,18 +37,22 @@ class Repository
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['repository:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
+    #[Groups(['repository:read'])]
     private bool $active = true;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Constraint\Regex('/^[a-z][a-z0-9-]*[a-z0-9]$/')]
     #[Constraint\Length(min: 2, max: 255)]
+    #[Groups(['repository:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Constraint\Length(max: 255)]
+    #[Groups(['repository:read'])]
     private ?string $displayName = null;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
@@ -60,6 +80,7 @@ class Repository
     private ?int $validateRevisionsTimestamp = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['repository:read'])]
     private ?int $createTimestamp = null;
 
     /** @phpstan-var Collection<string, RepositoryProperty> */

@@ -3,10 +3,17 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 
+#[ApiResource(
+    operations: [
+        new GetCollection()
+    ]
+)]
 #[ORM\Entity(repositoryClass: CodeReviewActivityRepository::class)]
 class CodeReviewActivity
 {

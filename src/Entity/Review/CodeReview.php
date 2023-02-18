@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +15,11 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 
+#[ApiResource(
+    operations: [
+        new GetCollection()
+    ]
+)]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
 #[ORM\Index(['repository_id', 'state'], name: 'IDX_REPOSITORY_STATE')]

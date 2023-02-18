@@ -25,7 +25,5 @@ return static function (ApiPlatformConfig $config): void {
         // The default number of items per page
         ->paginationItemsPerPage(30)
         // The default maximum number of items per page
-        ->paginationMaximumItemsPerPage(50)
-        // The default cache headers
-        ->cacheHeaders(['etag' => false]);
+        ->paginationMaximumItemsPerPage(100);
 };
