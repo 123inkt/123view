@@ -7,6 +7,9 @@ class CodeReviewOutput
 {
     /**
      * @codeCoverageIgnore
+     *
+     * @param UserOutput[] $authors
+     * @param UserOutput[] $reviewers
      */
     public function __construct(
         public readonly int $id,
@@ -17,6 +20,8 @@ class CodeReviewOutput
         public readonly string $url,
         public readonly string $state,
         public readonly string $reviewerState,
+        public readonly array $authors,
+        public readonly array $reviewers,
         public readonly int $createTimestamp,
         public readonly int $updateTimestamp,
     ) {
