@@ -14,6 +14,9 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\User\UserService;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
+/**
+ * @implements ProviderInterface<CodeReviewOutput>
+ */
 class CodeReviewProvider implements ProviderInterface
 {
     public function __construct(
@@ -25,6 +28,7 @@ class CodeReviewProvider implements ProviderInterface
 
     /**
      * @inheritDoc
+     * @return CodeReviewOutput[]
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array
     {
@@ -44,18 +48,18 @@ class CodeReviewProvider implements ProviderInterface
             }
 
             $results[] = new CodeReviewOutput(
-                $review->getId(),
+                (int)$review->getId(),
                 (int)$review->getRepository()?->getId(),
                 'cr-' . $review->getProjectId(),
-                $review->getTitle(),
-                $review->getDescription(),
+                (string)$review->getTitle(),
+                (string)$review->getDescription(),
                 $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL),
-                $review->getState(),
+                (string)$review->getState(),
                 $review->getReviewersState(),
                 $authors,
                 $reviewers,
-                $review->getCreateTimestamp(),
-                $review->getUpdateTimestamp(),
+                (int)$review->getCreateTimestamp(),
+                (int)$review->getUpdateTimestamp(),
             );
         }
 

@@ -9,9 +9,9 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
-use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Mail\MailRecipientService;
+use DR\Review\Service\User\UserService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -21,16 +21,16 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class MailRecipientServiceTest extends AbstractTestCase
 {
-    private UserRepository&MockObject        $userRepository;
+    private UserService&MockObject           $userService;
     private CommentMentionService&MockObject $mentionService;
     private MailRecipientService             $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = $this->createMock(UserRepository::class);
+        $this->userService    = $this->createMock(UserService::class);
         $this->mentionService = $this->createMock(CommentMentionService::class);
-        $this->service        = new MailRecipientService($this->userRepository, $this->mentionService);
+        $this->service        = new MailRecipientService($this->userService, $this->mentionService);
     }
 
     /**
@@ -81,7 +81,6 @@ class MailRecipientServiceTest extends AbstractTestCase
 
     /**
      * @covers ::getUsersForReview
-     * @covers ::getUsersForRevisions
      */
     public function testGetUsersForReview(): void
     {
@@ -102,34 +101,9 @@ class MailRecipientServiceTest extends AbstractTestCase
         $review->getReviewers()->add($reviewerB);
         $review->getRevisions()->add($revision);
 
-        $this->userRepository->expects(self::once())->method('findBy')->with(['email' => ['sherlock@example.com']])->willReturn([$userC]);
+        $this->userService->expects(self::once())->method('getUsersForRevisions')->with([$revision])->willReturn([$userC]);
 
         $users = $this->service->getUsersForReview($review);
         static::assertSame([$userC, $userA, $userB], $users);
-    }
-
-    /**
-     * @covers ::getUsersForRevisions
-     */
-    public function testGetUsersForRevisions(): void
-    {
-        $userA    = new User();
-        $revision = new Revision();
-        $revision->setAuthorEmail('sherlock@example.com');
-
-        $this->userRepository->expects(self::once())->method('findBy')->with(['email' => ['sherlock@example.com']])->willReturn([$userA]);
-
-        $users = $this->service->getUsersForRevisions([$revision]);
-        static::assertSame([$userA], $users);
-    }
-
-    /**
-     * @covers ::getUsersForRevisions
-     */
-    public function testGetUsersForRevisionsWithoutEmail(): void
-    {
-        $this->userRepository->expects(self::never())->method('findBy');
-
-        static::assertSame([], $this->service->getUsersForRevisions([]));
     }
 }

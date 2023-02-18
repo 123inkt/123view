@@ -9,6 +9,9 @@ use ApiPlatform\State\ProviderInterface;
 use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\Entity\Review\CodeReviewActivity;
 
+/**
+ * @implements ProviderInterface<CodeReviewActivityOutput>
+ */
 class CodeReviewActivityProvider implements ProviderInterface
 {
     public function __construct(private readonly CollectionProvider $collectionProvider)
@@ -17,6 +20,7 @@ class CodeReviewActivityProvider implements ProviderInterface
 
     /**
      * @inheritDoc
+     * @return CodeReviewActivityOutput[]
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array
     {
