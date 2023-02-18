@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\Provider\\\\CodeReviewActivityProvider\\:\\:provide\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiPlatform/Provider/CodeReviewActivityProvider.php
+
+		-
+			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\Provider\\\\CodeReviewActivityProvider\\:\\:provide\\(\\) has parameter \\$uriVariables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiPlatform/Provider/CodeReviewActivityProvider.php
+
+		-
+			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\Provider\\\\CodeReviewProvider\\:\\:provide\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiPlatform/Provider/CodeReviewProvider.php
+
+		-
+			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\Provider\\\\CodeReviewProvider\\:\\:provide\\(\\) has parameter \\$uriVariables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiPlatform/Provider/CodeReviewProvider.php
+
+		-
 			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
