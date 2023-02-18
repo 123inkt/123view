@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
@@ -27,6 +29,17 @@ use DR\Review\Repository\Review\CodeReviewRepository;
     order     : ['updateTimestamp' => 'DESC'],
     provider  : CodeReviewProvider::class
 )]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'id'            => 'exact',
+        'title'         => 'partial',
+        'repository.id' => 'exact',
+        'state'         => 'exact',
+        'reviewerState' => 'exact'
+    ]
+)]
+#[ApiFilter(DateFilter::class, properties: ['createTimestamp', 'updateTimestamp'])]
 #[ApiFilter(
     OrderFilter::class,
     properties: [
