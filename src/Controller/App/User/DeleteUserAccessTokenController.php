@@ -33,6 +33,6 @@ class DeleteUserAccessTokenController extends AbstractController
 
         $this->addFlash('success', 'access.token.deletion.success');
 
-        return $this->redirectToRoute(UserSettingController::class);
+        return $this->redirectToRoute(UserAccessTokenController::class);
     }
 }

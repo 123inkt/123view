@@ -24,6 +24,7 @@
                 <th scope="col">{{ 'name'|trans }}</th>
                 <th scope="col">{{ 'token'|trans }}</th>
                 <th scope="col">{{ 'created.at'|trans }}</th>
+                <th scope="col">{{ 'usages'|trans }}</th>
                 <th scope="col">{{ 'last.used.at'|trans }}</th>
                 <th scope="col"></th>
             </tr>
@@ -41,12 +42,19 @@
                         {% endif %}
                     </td>
                     <td>{{ accessToken.createTimestamp|format_datetime('short', 'short') }}</td>
-                    <td>{{ accessToken.useTimestamp|format_datetime('short', 'short') }}</td>
+                    <td>{{ accessToken.usages }}</td>
+                    <td>
+                        {% if accessToken.useTimestamp == null %}
+                            {{ 'never'|trans }}
+                        {% else %}
+                            {{ accessToken.useTimestamp|format_datetime('short', 'short') }}
+                        {% endif %}
+                    </td>
                     <td>
                         <form method="POST"
                               class="d-inline-block"
                               action="{{ path('DR\\Review\\Controller\\App\\User\\DeleteUserAccessTokenController', {id: accessToken.id}) }}"
-                              {{ stimulus_controller('component--confirm-submit') }}
+                                {{ stimulus_controller('component--confirm-submit') }}
                               data-confirm-message="{{ 'are.you.sure.you.want.to.delete.this'|trans }}">
                             <input type="hidden" name="_method" value="DELETE"/>
                             <button type="submit" class="btn btn-danger btn-sm">

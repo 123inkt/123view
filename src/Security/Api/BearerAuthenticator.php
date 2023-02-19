@@ -47,14 +47,19 @@ class BearerAuthenticator extends AbstractAuthenticator
     {
         $identifier = preg_replace('/^Bearer /', '', (string)$request->headers->get('authorization'));
 
-        $user = $this->accessTokenRepository->findOneBy(['token' => $identifier])?->getUser();
-        if ($user === null) {
+        $token = $this->accessTokenRepository->findOneBy(['token' => $identifier]);
+        $user  = $token?->getUser();
+        if ($token === null || $user === null) {
             throw new AuthenticationException('Access denied');
         }
 
         if (in_array(Roles::ROLE_USER, $user->getRoles(), true) === false) {
             throw new AuthenticationException('Access denied');
         }
+
+        $token->setUsages($token->getUsages() + 1);
+        $token->setUseTimestamp(time());
+        $this->accessTokenRepository->save($token, true);
 
         return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier(), static fn() => $user));
     }

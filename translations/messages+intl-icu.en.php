@@ -267,4 +267,6 @@ return [
     'user.account'                                => 'Account',
     'visit.the.api.at'                            => 'Visit the API documentation at',
     'last.used.at'                                => 'Last used at',
+    'never'                                       => 'Never',
+    'usages'                                      => 'Usages',
 ];
