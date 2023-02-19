@@ -6,6 +6,7 @@ use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
+use DR\Review\ApiPlatform\OpenApiFactory;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\Git\Diff\DiffChangeBundler;
@@ -90,6 +91,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set(UserChecker::class);
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
+
+    // Configure ApiPlatform
+    $services->set(OpenApiFactory::class)
+        ->decorate('api_platform.openapi.factory')
+        ->args([service('.inner')])
+        ->autoconfigure(false);
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)
