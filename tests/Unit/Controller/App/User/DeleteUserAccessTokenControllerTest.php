@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\User;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\User\DeleteUserAccessTokenController;
-use DR\Review\Controller\App\User\UserSettingController;
+use DR\Review\Controller\App\User\UserAccessTokenController;
 use DR\Review\Entity\User\UserAccessToken;
 use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Security\Voter\UserAccessTokenVoter;
@@ -36,7 +36,7 @@ class DeleteUserAccessTokenControllerTest extends AbstractControllerTestCase
         $this->expectDenyAccessUnlessGranted(UserAccessTokenVoter::DELETE, $token);
         $this->tokenRepository->expects(self::once())->method('remove')->with($token, true);
         $this->expectAddFlash('success', 'access.token.deletion.success');
-        $this->expectRedirectToRoute(UserSettingController::class)->willReturn('url');
+        $this->expectRedirectToRoute(UserAccessTokenController::class)->willReturn('url');
 
         ($this->controller)($token);
     }

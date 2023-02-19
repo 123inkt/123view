@@ -118,13 +118,18 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $user = new User();
         $user->setRoles([Roles::ROLE_USER]);
         $token = new UserAccessToken();
+        $token->setUsages(5);
         $token->setUser($user);
 
         $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
+        $this->tokenRepository->expects(self::once())->method('save')->with($token, true);
 
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);
         static::assertSame($user, $passport->getUser());
+
+        static::assertSame(6, $token->getUsages());
+        static::assertNotNull($token->getUseTimestamp());
     }
 
     /**
