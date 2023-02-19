@@ -20,6 +20,9 @@ class BearerAuthenticator extends AbstractAuthenticator
     {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function supports(Request $request): ?bool
     {
         if ($request->getPathInfo() === '/api/docs') {
@@ -37,6 +40,9 @@ class BearerAuthenticator extends AbstractAuthenticator
         return str_starts_with((string)$request->headers->get('authorization'), 'Bearer ');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function authenticate(Request $request): Passport
     {
         $identifier = preg_replace('/^Bearer /', '', (string)$request->headers->get('authorization'));
@@ -53,11 +59,17 @@ class BearerAuthenticator extends AbstractAuthenticator
         return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier(), static fn() => $user));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         return null;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return null;
