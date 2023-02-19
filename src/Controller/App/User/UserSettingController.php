@@ -33,13 +33,13 @@ class UserSettingController extends AbstractController
         $form = $this->createForm(UserSettingFormType::class, ['setting' => $user->getSetting()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['settingViewModel' => $this->viewModelProvider->getUserSettingViewModel($user, $form)];
+            return ['settingViewModel' => $this->viewModelProvider->getUserSettingViewModel($form)];
         }
 
         $this->userRepository->save($user, true);
 
         $this->addFlash('success', 'settings.save.successfully');
 
-        return ['settingViewModel' => $this->viewModelProvider->getUserSettingViewModel($user, $form)];
+        return ['settingViewModel' => $this->viewModelProvider->getUserSettingViewModel($form)];
     }
 }

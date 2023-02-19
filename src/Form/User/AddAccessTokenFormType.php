@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\User;
 
-use DR\Review\Controller\App\User\AddUserAccessTokenController;
+use DR\Review\Controller\App\User\UserAccessTokenController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,7 +22,7 @@ class AddAccessTokenFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->setAction($this->urlGenerator->generate(AddUserAccessTokenController::class));
+        $builder->setAction($this->urlGenerator->generate(UserAccessTokenController::class));
         $builder->setMethod('POST');
         $builder->add(
             'name',
