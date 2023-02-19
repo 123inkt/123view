@@ -41,18 +41,18 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $formView = $this->createMock(FormView::class);
+        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])
             ->handleRequest($request)
-            ->isSubmittedWillReturn(false)
-            ->createViewWillReturn($formView);
+            ->isSubmittedWillReturn(false);
+        $this->provider->expects(self::once())->method('getUserSettingViewModel')->willReturn($viewModel);
 
         $this->userRepository->expects(self::never())->method('save');
 
         $result = ($this->controller)($request);
-        static::assertEquals(['settingViewModel' => new UserSettingViewModel($formView)], $result);
+        static::assertEquals(['settingViewModel' => $viewModel], $result);
     }
 
     /**
@@ -64,20 +64,20 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $formView = $this->createMock(FormView::class);
+        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
-            ->isValidWillReturn(true)
-            ->createViewWillReturn($formView);
+            ->isValidWillReturn(true);
+        $this->provider->expects(self::once())->method('getUserSettingViewModel')->willReturn($viewModel);
 
         $this->userRepository->expects(self::once())->method('save')->with($user, true);
         $this->expectAddFlash('success', 'settings.save.successfully');
 
         $result = ($this->controller)($request);
-        static::assertEquals(['settingViewModel' => new UserSettingViewModel($formView)], $result);
+        static::assertEquals(['settingViewModel' => $viewModel], $result);
     }
 
     public function getController(): AbstractController

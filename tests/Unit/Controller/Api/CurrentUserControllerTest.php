@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\Api\CurrentUserController
- * @covers ::__construct
  */
 class CurrentUserControllerTest extends AbstractControllerTestCase
 {
