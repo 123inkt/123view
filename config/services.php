@@ -22,6 +22,7 @@ use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
 use DR\Review\Router\ReviewRouter;
+use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
@@ -92,11 +93,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
 
-    // Configure ApiPlatform
+    // Configure Api
     $services->set(OpenApiFactory::class)
         ->decorate('api_platform.openapi.factory')
         ->args([service('.inner')])
         ->autoconfigure(false);
+    $services->set(BearerAuthenticator::class);
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)

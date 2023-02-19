@@ -15,15 +15,14 @@ use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Utility\Assert;
 use League\Uri\Contracts\UriInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ApiResource(
-    operations          : [
-        new GetCollection()
-    ],
+    operations          : [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '")')],
     normalizationContext: [
         'groups' => ['repository:read'],
     ]

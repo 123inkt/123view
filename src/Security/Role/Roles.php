@@ -10,6 +10,7 @@ class Roles
     public const PROFILE_ADMIN  = 'admin';
     public const PROFILE_BANNED = 'ban';
 
+    public const ROLE_API    = 'ROLE_API';
     public const ROLE_USER   = 'ROLE_USER';
     public const ROLE_ADMIN  = 'ROLE_ADMIN';
     public const ROLE_BANNED = 'ROLE_BANNED';

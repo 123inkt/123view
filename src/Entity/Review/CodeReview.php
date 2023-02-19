@@ -20,11 +20,10 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Security\Role\Roles;
 
 #[ApiResource(
-    operations: [
-        new GetCollection()
-    ],
+    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '")')],
     output    : CodeReviewOutput::class,
     order     : ['updateTimestamp' => 'DESC'],
     provider  : CodeReviewProvider::class

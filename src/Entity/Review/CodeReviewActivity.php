@@ -14,11 +14,10 @@ use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
+use DR\Review\Security\Role\Roles;
 
 #[ApiResource(
-    operations: [
-        new GetCollection()
-    ],
+    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '")')],
     output    : CodeReviewActivityOutput::class,
     order     : ['createTimestamp' => 'DESC'],
     provider  : CodeReviewActivityProvider::class
