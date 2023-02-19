@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\ApiPlatform\Provider;
 
 use ApiPlatform\Api\UrlGeneratorInterface;
-use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use DR\Review\ApiPlatform\Output\CodeReviewOutput;
@@ -13,6 +13,7 @@ use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\User\UserService;
 use DR\Review\Utility\Assert;
+use InvalidArgumentException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 class CodeReviewProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly CollectionProvider $collectionProvider,
+        private readonly ProviderInterface $collectionProvider,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly UserService $userService
     ) {
@@ -33,6 +34,10 @@ class CodeReviewProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array
     {
+        if ($operation instanceof GetCollection === false) {
+            throw new InvalidArgumentException('Only GetCollection operation is supported');
+        }
+
         /** @var CodeReview[] $reviews */
         $reviews = $this->collectionProvider->provide($operation, $uriVariables, $context);
         $results = [];
