@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace DR\Review\ApiPlatform\Provider;
 
-use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\Entity\Review\CodeReviewActivity;
+use InvalidArgumentException;
 
 /**
  * @implements ProviderInterface<CodeReviewActivityOutput>
  */
 class CodeReviewActivityProvider implements ProviderInterface
 {
-    public function __construct(private readonly CollectionProvider $collectionProvider)
+    public function __construct(private readonly ProviderInterface $collectionProvider)
     {
     }
 
@@ -24,6 +25,10 @@ class CodeReviewActivityProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array
     {
+        if ($operation instanceof GetCollection === false) {
+            throw new InvalidArgumentException('Only GetCollection operation is supported');
+        }
+
         /** @var CodeReviewActivity[] $activities */
         $activities = $this->collectionProvider->provide($operation, $uriVariables, $context);
         $results    = [];

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\State\ProviderInterface;
 use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
@@ -67,7 +69,8 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
-        ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%');
+        ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
+        ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
 
     // Register controllers
     $services->load('DR\Review\Controller\\', '../src/Controller/**/*Controller.php')->tag('controller.service_arguments');
