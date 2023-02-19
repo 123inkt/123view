@@ -18,6 +18,11 @@ fi
 php bin/console cache:pool:clear cache.system_clearer
 
 ##
+# install assets
+#
+php bin/console assets:install
+
+##
 # run doctrine migrations
 #
 php bin/console doctrine:migrations:migrate --no-interaction
