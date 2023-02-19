@@ -17,7 +17,7 @@ use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Security\Role\Roles;
 
 #[ApiResource(
-    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '")')],
+    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '") and is_granted("' . Roles::ROLE_USER . '")')],
     output    : CodeReviewActivityOutput::class,
     order     : ['createTimestamp' => 'DESC'],
     provider  : CodeReviewActivityProvider::class
