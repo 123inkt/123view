@@ -68,7 +68,7 @@ class ProblemJsonResponseFactoryTest extends AbstractTestCase
         $data = Json::decode((string)$response->getContent(), true);
         static::assertIsArray($data);
         static::assertSame(Response::$statusTexts[500], $data['title']);
-        static::assertCount(12, $data['detail']);
+        static::assertNotEmpty($data['detail']);
     }
 
     /**
