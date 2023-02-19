@@ -26,7 +26,7 @@ class OpenApiFactory implements OpenApiFactoryInterface
         /** @var SecurityScheme|null $scheme */
         $scheme = $schemes['Bearer'] ?? null;
         if ($scheme !== null) {
-            $schemes['Bearer'] = $scheme->withDescription($scheme->getDescription() . ' Must be prefixed with `Bearer`.');
+            $schemes['Bearer'] = $scheme->withDescription($scheme->getDescription() . ' Format: `Bearer <token>`.');
         }
 
         return $openApi;
