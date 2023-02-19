@@ -18,13 +18,13 @@ use RuntimeException;
 class UserAccessTokenGeneratorTest extends AbstractTestCase
 {
     private UserAccessTokenRepository&MockObject $tokenRepository;
-    private UserAccessTokenGenerator             $service;
+    private UserAccessTokenGenerator             $generator;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->tokenRepository = $this->createMock(UserAccessTokenRepository::class);
-        $this->service         = new UserAccessTokenGenerator($this->tokenRepository);
+        $this->generator       = new UserAccessTokenGenerator($this->tokenRepository);
     }
 
     /**
@@ -37,7 +37,7 @@ class UserAccessTokenGeneratorTest extends AbstractTestCase
             ->method('findOneBy')
             ->willReturn(null);
 
-        $identifier = $this->service->generate();
+        $identifier = $this->generator->generate();
         static::assertSame(80, strlen($identifier));
     }
 
@@ -55,6 +55,6 @@ class UserAccessTokenGeneratorTest extends AbstractTestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to generate access token');
-        $this->service->generate();
+        $this->generator->generate();
     }
 }
