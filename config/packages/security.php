@@ -6,6 +6,7 @@ use DR\Review\Controller\App\Review\ProjectsController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
+use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\UserChecker;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -23,6 +24,16 @@ return static function (SecurityConfig $security): void {
     $security->firewall('dev')
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
         ->security(false);
+
+    $security->firewall('api_docs')
+        ->pattern('^/api/docs')
+        ->stateless(true)
+        ->security(false);
+
+    $security->firewall('api')
+        ->pattern('^/api')
+        ->stateless(true)
+        ->customAuthenticators([BearerAuthenticator::class]);
 
     $security->firewall('main')
         ->lazy(true)

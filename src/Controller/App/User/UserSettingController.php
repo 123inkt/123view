@@ -8,6 +8,7 @@ use DR\Review\Form\User\UserSettingFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\UserSettingViewModel;
+use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserSettingController extends AbstractController
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(private readonly UserRepository $userRepository, private readonly UserSettingViewModelProvider $viewModelProvider)
     {
     }
 
@@ -32,13 +33,13 @@ class UserSettingController extends AbstractController
         $form = $this->createForm(UserSettingFormType::class, ['setting' => $user->getSetting()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['settingViewModel' => new UserSettingViewModel($form->createView())];
+            return ['settingViewModel' => $this->viewModelProvider->getUserSettingViewModel($form)];
         }
 
         $this->userRepository->save($user, true);
 
-        $this->addFlash('success', 'mail.settings.save.successfully');
+        $this->addFlash('success', 'settings.save.successfully');
 
-        return ['settingViewModel' => new UserSettingViewModel($form->createView())];
+        return ['settingViewModel' => $this->viewModelProvider->getUserSettingViewModel($form)];
     }
 }

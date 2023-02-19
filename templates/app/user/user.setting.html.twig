@@ -1,27 +1,35 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <h1 class="mb-4 mt-2">{{ 'user.settings'|trans }}</h1>
+    <h1 class="mb-4 mt-2">{{ 'user.account'|trans }}</h1>
 
     {% include 'app/flash/flashes.html.twig' %}
 
-    {{ form_start(settingViewModel.form) }}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">{{ 'settings'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserAccessTokenController') }}">{{ 'access.tokens'|trans }}</a>
+        </li>
+    </ul>
+
+    {{ form_start(settingViewModel.settingForm) }}
 
     <h3 class="mb-4 mt-2">{{ 'user.color.theme'|trans }}</h3>
 
-    {{ form_widget(settingViewModel.form.setting.colorTheme) }}
+    {{ form_widget(settingViewModel.settingForm.setting.colorTheme) }}
 
     <div {{ stimulus_controller('browser-notification-settings') }}>
         <h3 class="mb-4 mt-4">
             {{ 'browser.notification.settings'|trans }}
-            <button type="button"
-                    class="btn btn-sm btn-outline-primary"
+            <button type="button" class="btn btn-sm btn-outline-primary"
                     {{ stimulus_target('browser-notification-settings', 'button') }}
                     {{ stimulus_action('browser-notification-settings', 'enable', 'click') }}
             >{{ 'enable'|trans }}</button>
         </h3>
 
-        {{ form_widget(settingViewModel.form.setting.browserNotificationEvents) }}
+        {{ form_widget(settingViewModel.settingForm.setting.browserNotificationEvents) }}
         <small class="text-secondary">
             {{ 'browser.notification.explanation.text'|trans }}
         </small>
@@ -29,6 +37,7 @@
 
     <h3 class="mb-4 mt-4">{{ 'mail.settings'|trans }}</h3>
 
-    {{ form_rest(settingViewModel.form) }}
-    {{ form_end(settingViewModel.form) }}
+    {{ form_rest(settingViewModel.settingForm) }}
+    {{ form_end(settingViewModel.settingForm) }}
+
 {% endblock %}

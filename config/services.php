@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\State\ProviderInterface;
 use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
+use DR\Review\ApiPlatform\OpenApiFactory;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\Git\Diff\DiffChangeBundler;
@@ -20,7 +23,9 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
+use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
+use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
@@ -64,12 +69,14 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
-        ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%');
+        ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
+        ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
 
     // Register controllers
     $services->load('DR\Review\Controller\\', '../src/Controller/**/*Controller.php')->tag('controller.service_arguments');
 
     // auto-wire commands, services and twig-extensions
+    $services->load('DR\Review\ApiPlatform\Provider\\', __DIR__ . '/../src/ApiPlatform/Provider');
     $services->load('DR\Review\Command\\', __DIR__ . '/../src/Command');
     $services->load('DR\Review\EventSubscriber\\', __DIR__ . '/../src/EventSubscriber');
     $services->load('DR\Review\Form\\', __DIR__ . '/../src/Form');
@@ -89,6 +96,14 @@ return static function (ContainerConfigurator $container): void {
     $services->set(UserChecker::class);
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
+    $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
+
+    // Configure Api
+    $services->set(OpenApiFactory::class)
+        ->decorate('api_platform.openapi.factory')
+        ->args([service('.inner')])
+        ->autoconfigure(false);
+    $services->set(BearerAuthenticator::class);
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)

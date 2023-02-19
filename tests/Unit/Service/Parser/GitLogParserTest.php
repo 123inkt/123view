@@ -12,6 +12,7 @@ use DR\Review\Service\Parser\GitLogParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use ValueError;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Parser\GitLogParser
@@ -54,8 +55,8 @@ class GitLogParserTest extends AbstractTestCase
         $repository = new Repository();
 
         // test it
-        $this->expectError();
-        $this->expectErrorMessage('array_combine');
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage('array_combine');
         $this->parser->parse($repository, $commitLog);
     }
 
