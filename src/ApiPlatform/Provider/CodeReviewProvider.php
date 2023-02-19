@@ -12,6 +12,7 @@ use DR\Review\ApiPlatform\Output\UserOutput;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\User\UserService;
+use DR\Review\Utility\Assert;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
@@ -39,12 +40,13 @@ class CodeReviewProvider implements ProviderInterface
         foreach ($reviews as $review) {
             $reviewers = [];
             foreach ($review->getReviewers() as $reviewer) {
-                $reviewers[] = new UserOutput((int)$reviewer->getUser()?->getId(), (string)$reviewer->getUser()?->getEmail());
+                $user        = Assert::notNull($reviewer->getUser());
+                $reviewers[] = new UserOutput((int)$user->getId(), (string)$user->getName(), (string)$user->getEmail());
             }
 
             $authors = [];
             foreach ($this->userService->getUsersForRevisions($review->getRevisions()->toArray()) as $user) {
-                $authors[] = new UserOutput((int)$user->getId(), (string)$user->getEmail());
+                $authors[] = new UserOutput((int)$user->getId(), (string)$user->getName(), (string)$user->getEmail());
             }
 
             $results[] = new CodeReviewOutput(

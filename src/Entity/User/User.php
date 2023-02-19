@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Output\UserOutput;
 use DR\Review\Controller\Api\CurrentUserController;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\Review\Entity\Notification\Rule;
@@ -28,7 +29,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
             openapiContext: ['summary' => "Get the current user", 'description' => "Get the current user"],
             security      : 'is_granted("' . Roles::ROLE_USER . '")',
         )
-    ]
+    ],
+    output    : UserOutput::class
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'user.email.already.exists')]
