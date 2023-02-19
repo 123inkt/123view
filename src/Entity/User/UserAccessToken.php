@@ -10,7 +10,7 @@ use DR\Review\Repository\User\UserAccessTokenRepository;
 class UserAccessToken
 {
     #[ORM\Id]
-    #[ORM\Column(length: 80)]
+    #[ORM\Column(length: 80, options: ['fixed' => true])]
     private ?string $identifier = null;
 
     #[ORM\Column(length: 100)]

@@ -5,23 +5,22 @@
 
     {% include 'app/flash/flashes.html.twig' %}
 
-    {{ form_start(settingViewModel.form) }}
+    {{ form_start(settingViewModel.settingForm) }}
 
     <h3 class="mb-4 mt-2">{{ 'user.color.theme'|trans }}</h3>
 
-    {{ form_widget(settingViewModel.form.setting.colorTheme) }}
+    {{ form_widget(settingViewModel.settingForm.setting.colorTheme) }}
 
     <div {{ stimulus_controller('browser-notification-settings') }}>
         <h3 class="mb-4 mt-4">
             {{ 'browser.notification.settings'|trans }}
-            <button type="button"
-                    class="btn btn-sm btn-outline-primary"
+            <button type="button" class="btn btn-sm btn-outline-primary"
                     {{ stimulus_target('browser-notification-settings', 'button') }}
                     {{ stimulus_action('browser-notification-settings', 'enable', 'click') }}
             >{{ 'enable'|trans }}</button>
         </h3>
 
-        {{ form_widget(settingViewModel.form.setting.browserNotificationEvents) }}
+        {{ form_widget(settingViewModel.settingForm.setting.browserNotificationEvents) }}
         <small class="text-secondary">
             {{ 'browser.notification.explanation.text'|trans }}
         </small>
@@ -29,6 +28,35 @@
 
     <h3 class="mb-4 mt-4">{{ 'mail.settings'|trans }}</h3>
 
-    {{ form_rest(settingViewModel.form) }}
-    {{ form_end(settingViewModel.form) }}
+    {{ form_rest(settingViewModel.settingForm) }}
+    {{ form_end(settingViewModel.settingForm) }}
+
+
+    <h3 class="mb-4 mt-5">{{ 'access.tokens'|trans }}</h3>
+
+    {% if settingViewModel.accessTokens|length > 0 %}
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'name'|trans }}</th>
+                <th scope="col">{{ 'token'|trans }}</th>
+                <th scope="col">{{ 'created.at'|trans }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for accessToken in settingViewModel.accessTokens %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {{ form(settingViewModel.addTokenForm) }}
+
 {% endblock %}

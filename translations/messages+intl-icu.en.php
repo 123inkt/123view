@@ -117,7 +117,7 @@ return [
     'mail.new.comment.subject'                    => '[New comments] {reviewId}: {reviewTitle}',
     'mail.new.reply.by.user.on'                   => 'New reply by {userName} on',
     'mail.settings'                               => 'Mail notification settings',
-    'mail.settings.save.successfully'             => 'Settings successfully saved',
+    'settings.save.successfully'                  => 'Settings successfully saved',
     'mail.subject'                                => 'Mail subject',
     'mail.theme'                                  => 'Mail theme',
     'mail.unsubscribe.footer'                     => 'If you don\'t want to receive these emails from {app_name} in the future, please unsubscribe.',
@@ -255,4 +255,8 @@ return [
     'validate.revisions.interval'                 => 'Validate revisions interval',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'access.token.creation.failed'                => 'Access token creation failed',
+    'access.token.creation.success'               => 'Access token created',
+    'access.tokens'                               => 'Access tokens',
+    'create.token'                                => 'Create token',
 ];
