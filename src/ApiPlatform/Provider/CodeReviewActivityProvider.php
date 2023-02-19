@@ -39,7 +39,7 @@ class CodeReviewActivityProvider implements ProviderInterface
                 (int)$activity->getUser()?->getId(),
                 (int)$activity->getReview()?->getId(),
                 (string)$activity->getEventName(),
-                $activity->getData(),
+                array_filter($activity->getData(), static fn($val) => $val !== null),
                 (int)$activity->getCreateTimestamp()
             );
         }
