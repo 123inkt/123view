@@ -11,6 +11,7 @@ use DR\Review\Form\User\UserSettingFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\User\UserSettingViewModel;
+use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +22,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserSettingControllerTest extends AbstractControllerTestCase
 {
-    private UserRepository&MockObject $userRepository;
+    private UserSettingViewModelProvider&MockObject $provider;
+    private UserRepository&MockObject               $userRepository;
 
     public function setUp(): void
     {
+        $this->provider       = $this->createMock(UserSettingViewModelProvider::class);
         $this->userRepository = $this->createMock(UserRepository::class);
         parent::setUp();
     }
@@ -79,6 +82,6 @@ class UserSettingControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UserSettingController($this->userRepository);
+        return new UserSettingController($this->userRepository, $this->provider);
     }
 }

@@ -42,7 +42,10 @@ class UserAccessTokenController extends AbstractController
             return ['accessTokenModel' => $this->viewModelProvider->getUserAccessTokenViewModel($form)];
         }
 
-        $this->accessTokenIssuer->issue($this->getUser(), (string)$form->getData()['name']);
+        /** @var array{name: string} $data */
+        $data = $form->getData();
+
+        $this->accessTokenIssuer->issue($this->getUser(), $data['name']);
 
         $this->addFlash('success', 'access.token.creation.success');
 

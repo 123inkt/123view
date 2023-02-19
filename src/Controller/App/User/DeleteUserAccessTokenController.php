@@ -10,7 +10,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\UserAccessTokenVoter;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -25,7 +25,7 @@ class DeleteUserAccessTokenController extends AbstractController
      */
     #[Route('/app/user/access-token/{id<\d+>}', self::class, methods: ['DELETE'])]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(#[MapEntity] UserAccessToken $token): array|Response
+    public function __invoke(#[MapEntity] UserAccessToken $token): RedirectResponse
     {
         $this->denyAccessUnlessGranted(UserAccessTokenVoter::DELETE, $token);
 
