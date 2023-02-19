@@ -25,8 +25,7 @@ class UserAccessTokenIssuer
             ->setToken($this->generator->generate())
             ->setName($name)
             ->setUser($user)
-            ->setCreateTimestamp(time())
-            ->setUseTimestamp(time());
+            ->setCreateTimestamp(time());
 
         $this->accessTokenRepository->save($token, true);
     }

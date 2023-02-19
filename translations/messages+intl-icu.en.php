@@ -265,4 +265,6 @@ return [
     'created.at'                                  => 'Created at',
     'are.you.sure.you.want.to.delete.this'        => 'Are you sure you want to delete this?',
     'user.account'                                => 'Account',
+    'visit.the.api.at'                            => 'Visit the API documentation at',
+    'last.used.at'                                => 'Last used at',
 ];

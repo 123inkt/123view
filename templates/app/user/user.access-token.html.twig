@@ -14,7 +14,8 @@
         </li>
     </ul>
 
-    <h3 class="mb-4 mt-2">{{ 'access.tokens'|trans }}</h3>
+    <h3 class="mt-2">{{ 'access.tokens'|trans }}</h3>
+    <div class="mb-4">{{ 'visit.the.api.at'|trans }} <a href="/api/docs">/api/docs</a>.</div>
 
     {% if accessTokenModel.accessTokens|length > 0 %}
         <table class="table table-sm">
@@ -23,6 +24,7 @@
                 <th scope="col">{{ 'name'|trans }}</th>
                 <th scope="col">{{ 'token'|trans }}</th>
                 <th scope="col">{{ 'created.at'|trans }}</th>
+                <th scope="col">{{ 'last.used.at'|trans }}</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -39,6 +41,7 @@
                         {% endif %}
                     </td>
                     <td>{{ accessToken.createTimestamp|format_datetime('short', 'short') }}</td>
+                    <td>{{ accessToken.useTimestamp|format_datetime('short', 'short') }}</td>
                     <td>
                         <form method="POST"
                               class="d-inline-block"

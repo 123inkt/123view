@@ -26,10 +26,13 @@ class UserAccessToken
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(options: ['default' => 0])]
+    private ?int $usages = 0;
+
     #[ORM\Column]
     private ?int $createTimestamp = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $useTimestamp = null;
 
     public function getId(): ?int
@@ -76,6 +79,18 @@ class UserAccessToken
     public function setUser(?User $user): UserAccessToken
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUsages(): ?int
+    {
+        return $this->usages;
+    }
+
+    public function setUsages(?int $usages): UserAccessToken
+    {
+        $this->usages = $usages;
 
         return $this;
     }
