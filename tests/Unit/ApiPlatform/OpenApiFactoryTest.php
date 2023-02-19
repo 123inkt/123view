@@ -38,19 +38,20 @@ class OpenApiFactoryTest extends AbstractTestCase
      */
     public function testInvoke(): void
     {
-        $context        = ['context' => true];
-        $securityScheme = new SecurityScheme();
-        $components     = new Components(securitySchemes: new ArrayObject(['Bearer' => $securityScheme]));
-        $openApi        = new OpenApi(new Info('title', '1.0.0'), [], new Paths(), $components);
+        $context         = ['context' => true];
+        $securityScheme  = new SecurityScheme();
+        $securitySchemes = new ArrayObject(['Bearer' => $securityScheme]);
+        $components      = new Components(securitySchemes: $securitySchemes);
+        $openApi         = new OpenApi(new Info('title', '1.0.0'), [], new Paths(), $components);
 
         $this->openApiFactory->expects(self::once())->method('__invoke')->with($context)->willReturn($openApi);
         $this->urlGenerator->expects(self::once())->method('generate')->willReturn('url');
 
-        $schemes = $components->getSecuritySchemes();
-        static::assertNotNull($schemes);
-        static::assertInstanceOf(SecurityScheme::class, $schemes['Bearer']);
-        static::assertSame('', $schemes['Bearer']->getDescription());
-
+        // run test
         ($this->factory)($context);
+
+        // assert
+        static::assertInstanceOf(SecurityScheme::class, $securitySchemes['Bearer']);
+        static::assertStringContainsString('Bearer &lt;token&gt;', $securitySchemes['Bearer']->getDescription());
     }
 }
