@@ -52,6 +52,15 @@ class BearerAuthenticatorTest extends AbstractTestCase
     /**
      * @covers ::supports
      */
+    public function testSupportsShouldSkipNonApiRequests(): void
+    {
+        $request = new Request(server: ['REQUEST_URI' => '/app/test']);
+        static::assertFalse($this->authenticator->supports($request));
+    }
+
+    /**
+     * @covers ::supports
+     */
     public function testSupportsShouldSkipAbsentAuthHeader(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/api/test']);
