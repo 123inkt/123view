@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ApiResource(
-    operations          : [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '") and is_granted("' . Roles::ROLE_USER . '")')],
+    operations          : [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '")')],
     normalizationContext: [
         'groups' => ['repository:read'],
     ]

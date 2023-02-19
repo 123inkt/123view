@@ -23,7 +23,7 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 
 #[ApiResource(
-    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '") and is_granted("' . Roles::ROLE_USER . '")')],
+    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_API . '")')],
     output    : CodeReviewOutput::class,
     order     : ['updateTimestamp' => 'DESC'],
     provider  : CodeReviewProvider::class
