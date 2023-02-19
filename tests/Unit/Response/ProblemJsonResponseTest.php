@@ -17,10 +17,10 @@ class ProblemJsonResponseTest extends AbstractTestCase
      */
     public function testConstruct(): void
     {
-        $response = new ProblemJsonResponse(['foobar'], 300, ['foo' => 'bar'], false);
+        $response = new ProblemJsonResponse(['foobar' => 'foobar'], 300, ['foo' => 'bar'], false);
         static::assertSame('application/problem+json', $response->headers->get('content-type'));
         static::assertSame('bar', $response->headers->get('foo'));
         static::assertSame(300, $response->getStatusCode());
-        static::assertSame('["foobar"]', $response->getContent());
+        static::assertSame('{"foobar":"foobar"}', $response->getContent());
     }
 }

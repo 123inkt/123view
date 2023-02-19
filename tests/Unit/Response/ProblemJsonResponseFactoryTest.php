@@ -65,7 +65,8 @@ class ProblemJsonResponseFactoryTest extends AbstractTestCase
         $response  = $factory->createFromThrowable($throwable);
 
         static::assertSame(500, $response->getStatusCode());
-        $data = Json::decode($response->getContent(), true);
+        $data = Json::decode((string)$response->getContent(), true);
+        static::assertIsArray($data);
         static::assertSame(Response::$statusTexts[500], $data['title']);
         static::assertCount(12, $data['detail']);
     }

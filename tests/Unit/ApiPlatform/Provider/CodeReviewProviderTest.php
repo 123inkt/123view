@@ -29,6 +29,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  */
 class CodeReviewProviderTest extends AbstractTestCase
 {
+    /** @var MockObject&ProviderInterface<CodeReview> */
     private ProviderInterface&MockObject     $collectionProvider;
     private UrlGeneratorInterface&MockObject $urlGenerator;
     private UserService&MockObject           $userService;

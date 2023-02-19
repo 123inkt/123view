@@ -21,6 +21,9 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  */
 class CodeReviewProvider implements ProviderInterface
 {
+    /**
+     * @param ProviderInterface<CodeReview> $collectionProvider
+     */
     public function __construct(
         private readonly ProviderInterface $collectionProvider,
         private readonly UrlGeneratorInterface $urlGenerator,

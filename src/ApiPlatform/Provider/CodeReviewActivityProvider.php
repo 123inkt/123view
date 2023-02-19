@@ -15,6 +15,9 @@ use InvalidArgumentException;
  */
 class CodeReviewActivityProvider implements ProviderInterface
 {
+    /**
+     * @param ProviderInterface<CodeReviewActivity> $collectionProvider
+     */
     public function __construct(private readonly ProviderInterface $collectionProvider)
     {
     }

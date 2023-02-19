@@ -22,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class CodeReviewActivityProviderTest extends AbstractTestCase
 {
+    /** @var MockObject&ProviderInterface<CodeReviewActivity> */
     private ProviderInterface&MockObject $collectionProvider;
     private CodeReviewActivityProvider   $activityProvider;
 
@@ -58,7 +59,7 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $activity->setEventName('event');
         $activity->setReview($review);
         $activity->setUser($user);
-        $activity->setData(['data']);
+        $activity->setData(['data' => 'data']);
         $activity->setCreateTimestamp(135);
 
         $this->collectionProvider->expects(self::once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$activity]));
@@ -66,7 +67,7 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $result = $this->activityProvider->provide(new GetCollection());
         static::assertCount(1, $result);
 
-        $expected = new CodeReviewActivityOutput(789, 123, 456, 'event', ['data'], 135);
+        $expected = new CodeReviewActivityOutput(789, 123, 456, 'event', ['data' => 'data'], 135);
         static::assertEquals($expected, $result[0]);
     }
 }
