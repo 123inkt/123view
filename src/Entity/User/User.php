@@ -3,19 +3,33 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\User;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\Controller\Api\CurrentUserController;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate   : '/users/me',
+            routeName     : CurrentUserController::class,
+            openapiContext: ['summary' => "Get the current user", 'description' => "Get the current user"],
+            security      : 'is_granted("' . Roles::ROLE_USER . '")',
+        )
+    ]
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'user.email.already.exists')]
 #[ORM\UniqueConstraint('EMAIL', ['email'])]
