@@ -25,7 +25,7 @@ class UserAccessTokenGenerator
             // results in an 80 character length string
             $identifier = bin2hex(random_bytes(self::IDENTIFIER_LENGTH));
 
-            if ($this->accessTokenRepository->find($identifier) === null) {
+            if ($this->accessTokenRepository->findOneBy(['token' => $identifier]) === null) {
                 return $identifier;
             }
         }

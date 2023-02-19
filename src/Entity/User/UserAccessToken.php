@@ -7,16 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Repository\User\UserAccessTokenRepository;
 
 #[ORM\Entity(repositoryClass: UserAccessTokenRepository::class)]
+#[ORM\Index(['user_id'], name: 'IDX_USER_ID')]
+#[ORM\UniqueConstraint('IDX_TOKEN', ['token'])]
 class UserAccessToken
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
     #[ORM\Column(length: 80, options: ['fixed' => true])]
-    private ?string $identifier = null;
+    private ?string $token = null;
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column]
@@ -25,14 +32,26 @@ class UserAccessToken
     #[ORM\Column]
     private ?int $useTimestamp = null;
 
-    public function getIdentifier(): ?string
+    public function getId(): ?int
     {
-        return $this->identifier;
+        return $this->id;
     }
 
-    public function setIdentifier(string $identifier): self
+    public function setId(?int $id): self
     {
-        $this->identifier = $identifier;
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

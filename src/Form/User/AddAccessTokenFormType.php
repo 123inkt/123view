@@ -24,7 +24,15 @@ class AddAccessTokenFormType extends AbstractType
     {
         $builder->setAction($this->urlGenerator->generate(AddUserAccessTokenController::class));
         $builder->setMethod('POST');
-        $builder->add('name', TextType::class, ['label' => false, 'attr' => ['maxlength' => 100], 'constraints' => [new Length(max: 100)]]);
+        $builder->add(
+            'name',
+            TextType::class,
+            [
+                'label' => false,
+                'attr' => ['maxlength' => 100, 'autocomplete' => 'off', 'placeholder' => 'name'],
+                'constraints' => [new Length(max: 100)]
+            ]
+        );
         $builder->add('create', SubmitType::class, ['label' => 'create.token']);
     }
 }

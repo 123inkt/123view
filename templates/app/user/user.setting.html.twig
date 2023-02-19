@@ -47,16 +47,41 @@
             <tbody>
             {% for accessToken in settingViewModel.accessTokens %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <th scope="row">{{ accessToken.name }}</th>
+                    <td>
+                        {% if date().timestamp - accessToken.createTimestamp <= 300 %}
+                            <code>{{ accessToken.token }}</code>
+                            <div class="small text-secondary">{{ 'access.token.visibility.duration'|trans }}</div>
+                        {% else %}
+                            <code>********************************************************************************</code>
+                        {% endif %}
+                    </td>
+                    <td>{{ accessToken.createTimestamp|format_datetime('short', 'short') }}</td>
+                    <td>
+                        <form method="POST"
+                              class="d-inline-block"
+                              action="{{ path('DR\\Review\\Controller\\App\\User\\DeleteUserAccessTokenController', {id: accessToken.id}) }}"
+                              {{ stimulus_controller('component--confirm-submit') }}
+                              data-confirm-message="{{ 'are.you.sure.you.want.to.delete.this'|trans }}">
+                            <input type="hidden" name="_method" value="DELETE"/>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     {% endif %}
 
-    {{ form(settingViewModel.addTokenForm) }}
+    {{ form_start(settingViewModel.addTokenForm) }}
+    <div class="user-access-token-grid mb-5">
+        {{ form_widget(settingViewModel.addTokenForm.name) }}
+        {{ form_widget(settingViewModel.addTokenForm.create) }}
+    </div>
+    {{ form_rest(settingViewModel.addTokenForm) }}
+    {{ form_end(settingViewModel.addTokenForm) }}
+
 
 {% endblock %}

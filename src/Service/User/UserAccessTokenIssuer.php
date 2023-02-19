@@ -22,7 +22,7 @@ class UserAccessTokenIssuer
     public function issue(User $user, string $name): void
     {
         $token = (new UserAccessToken())
-            ->setIdentifier($this->generator->generate())
+            ->setToken($this->generator->generate())
             ->setName($name)
             ->setUser($user)
             ->setCreateTimestamp(time())
