@@ -74,7 +74,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
             ->createViewWillReturn($formView);
 
         $this->userRepository->expects(self::once())->method('save')->with($user, true);
-        $this->expectAddFlash('success', 'mail.settings.save.successfully');
+        $this->expectAddFlash('success', 'settings.save.successfully');
 
         $result = ($this->controller)($request);
         static::assertEquals(['settingViewModel' => new UserSettingViewModel($formView)], $result);
