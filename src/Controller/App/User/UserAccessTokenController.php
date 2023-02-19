@@ -27,7 +27,7 @@ class UserAccessTokenController extends AbstractController
      * @return array<string, UserAccessTokenViewModel>
      * @throws Exception
      */
-    #[Route('/app/user/access-token', self::class, methods: ['GET', 'POST'])]
+    #[Route('/app/user/access-tokens', self::class, methods: ['GET', 'POST'])]
     #[Template('app/user/user.access-token.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array

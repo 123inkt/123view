@@ -264,4 +264,5 @@ return [
     'token'                                       => 'Token',
     'created.at'                                  => 'Created at',
     'are.you.sure.you.want.to.delete.this'        => 'Are you sure you want to delete this?',
+    'user.account'                                => 'Account',
 ];
