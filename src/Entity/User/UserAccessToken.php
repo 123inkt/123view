@@ -27,7 +27,7 @@ class UserAccessToken
     private ?User $user = null;
 
     #[ORM\Column(options: ['default' => 0])]
-    private ?int $usages = 0;
+    private int $usages = 0;
 
     #[ORM\Column]
     private ?int $createTimestamp = null;
@@ -83,12 +83,12 @@ class UserAccessToken
         return $this;
     }
 
-    public function getUsages(): ?int
+    public function getUsages(): int
     {
         return $this->usages;
     }
 
-    public function setUsages(?int $usages): UserAccessToken
+    public function setUsages(int $usages): UserAccessToken
     {
         $this->usages = $usages;
 
