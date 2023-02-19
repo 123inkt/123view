@@ -50,12 +50,7 @@ class BearerAuthenticator extends AbstractAuthenticator
             throw new AuthenticationException('Access denied');
         }
 
-        return new SelfValidatingPassport(
-            new UserBadge(
-                $user->getUserIdentifier(),
-                static fn() => $user->addRole(Roles::ROLE_API)
-            )
-        );
+        return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier(), static fn() => $user));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
