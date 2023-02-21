@@ -9,6 +9,7 @@ import './styles/reviews.scss';
 import './styles/review.scss';
 import './styles/review-file-diff.scss';
 import './styles/review-file-diff-side-by-side.scss';
+import './styles/review-timeline.scss';
 import './styles/review.revisions.scss';
 import './styles/review.notifications.scss';
 import './styles/markdown.scss';
