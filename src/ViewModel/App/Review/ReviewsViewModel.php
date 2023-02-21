@@ -8,6 +8,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
 class ReviewsViewModel
 {
@@ -21,6 +22,7 @@ class ReviewsViewModel
         public readonly PaginatorViewModel $paginator,
         public readonly string $searchQuery,
         public readonly string $searchOrderBy,
+        public readonly TimelineViewModel $timelineViewModel
     ) {
     }
 
