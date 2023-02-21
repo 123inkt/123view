@@ -21,6 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ReviewsViewModelProviderTest extends AbstractTestCase
 {
+    private User                                       $user;
     private CodeReviewRepository&MockObject            $reviewRepository;
     private ReviewTimelineViewModelProvider&MockObject $timelineViewModelProvider;
     private ReviewsViewModelProvider                   $provider;
