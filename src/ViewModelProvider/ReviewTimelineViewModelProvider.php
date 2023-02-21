@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
@@ -52,9 +53,9 @@ class ReviewTimelineViewModelProvider
     /**
      * @param string[] $events
      */
-    public function getTimelineViewModelForFeed(User $user, array $events): TimelineViewModel
+    public function getTimelineViewModelForFeed(User $user, array $events, ?Repository $repository = null): TimelineViewModel
     {
-        $activities      = $this->activityRepository->findForUser((int)$user->getId(), $events);
+        $activities      = $this->activityRepository->findForUser((int)$user->getId(), $events, $repository);
         $timelineEntries = [];
 
         // create TimelineEntryViewModel entries

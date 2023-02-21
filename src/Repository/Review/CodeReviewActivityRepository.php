@@ -5,6 +5,7 @@ namespace DR\Review\Repository\Review;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReviewActivity;
 
 /**
@@ -29,7 +30,7 @@ class CodeReviewActivityRepository extends ServiceEntityRepository
      *
      * @return CodeReviewActivity[]
      */
-    public function findForUser(int $userId, array $events = []): array
+    public function findForUser(int $userId, array $events = [], ?Repository $repository = null): array
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'r')
@@ -42,6 +43,10 @@ class CodeReviewActivityRepository extends ServiceEntityRepository
 
         if (count($events) > 0) {
             $qb->andWhere('a.eventName IN (:events)')->setParameter('events', $events);
+        }
+
+        if ($repository !== null) {
+            $qb->andWhere('r.repository = :repositoryId')->setParameter('repositoryId', (int)$repository->getId());
         }
 
         /** @var CodeReviewActivity[] $result */
