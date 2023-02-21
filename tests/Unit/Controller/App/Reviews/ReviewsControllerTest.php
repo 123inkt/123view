@@ -10,11 +10,11 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Page\Breadcrumb;
 use DR\Review\Repository\Review\CodeReviewQueryBuilder;
-use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
+use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -23,12 +23,12 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ReviewsControllerTest extends AbstractControllerTestCase
 {
-    private CodeReviewRepository&MockObject $reviewRepository;
-    private BreadcrumbFactory&MockObject    $breadcrumbFactory;
+    private ReviewsViewModelProvider&MockObject $reviewRepository;
+    private BreadcrumbFactory&MockObject        $breadcrumbFactory;
 
     public function setUp(): void
     {
-        $this->reviewRepository  = $this->createMock(CodeReviewRepository::class);
+        $this->reviewRepository  = $this->createMock(ReviewsViewModelProvider::class);
         $this->breadcrumbFactory = $this->createMock(BreadcrumbFactory::class);
         parent::setUp();
     }
