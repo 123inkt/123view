@@ -40,7 +40,7 @@ class SearchReviewsController extends AbstractController
         $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
 
         return [
-            'reviewsModel' => new ReviewsViewModel(null, $paginator, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy())
+            'reviewsModel' => new ReviewsViewModel(null, $paginator, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy(), null)
         ];
     }
 }

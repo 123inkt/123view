@@ -22,7 +22,7 @@ class ReviewsViewModel
         public readonly PaginatorViewModel $paginator,
         public readonly string $searchQuery,
         public readonly string $searchOrderBy,
-        public readonly TimelineViewModel $timeline
+        public readonly ?TimelineViewModel $timeline
     ) {
     }
 
