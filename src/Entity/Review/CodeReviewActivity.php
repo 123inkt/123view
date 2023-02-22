@@ -9,6 +9,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider;
@@ -28,12 +29,13 @@ use DR\Review\Security\Role\Roles;
         'id'            => 'exact',
         'user.id'       => 'exact',
         'review.id'     => 'exact',
-        'review.slug'   => 'exact',
         'review.title'  => 'partial',
+        'review.state'  => 'exact',
         'repository.id' => 'exact',
         'eventName'     => 'exact',
     ]
 )]
+#[ApiFilter(PropertyFilter::class, arguments: [])]
 #[ApiFilter(DateFilter::class, properties: ['createTimestamp'])]
 #[ApiFilter(
     OrderFilter::class,
