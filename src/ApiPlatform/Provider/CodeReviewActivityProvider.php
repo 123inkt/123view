@@ -6,6 +6,7 @@ namespace DR\Review\ApiPlatform\Provider;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use DR\Review\ApiPlatform\Factory\CodeReviewActivityOutputFactory;
 use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use InvalidArgumentException;
@@ -18,8 +19,10 @@ class CodeReviewActivityProvider implements ProviderInterface
     /**
      * @param ProviderInterface<CodeReviewActivity> $collectionProvider
      */
-    public function __construct(private readonly ProviderInterface $collectionProvider)
-    {
+    public function __construct(
+        private readonly ProviderInterface $collectionProvider,
+        private readonly CodeReviewActivityOutputFactory $activityOutputFactory
+    ) {
     }
 
     /**
@@ -34,17 +37,10 @@ class CodeReviewActivityProvider implements ProviderInterface
 
         /** @var CodeReviewActivity[] $activities */
         $activities = $this->collectionProvider->provide($operation, $uriVariables, $context);
-        $results    = [];
 
+        $results = [];
         foreach ($activities as $activity) {
-            $results[] = new CodeReviewActivityOutput(
-                (int)$activity->getId(),
-                (int)$activity->getUser()?->getId(),
-                (int)$activity->getReview()?->getId(),
-                (string)$activity->getEventName(),
-                array_filter($activity->getData(), static fn($val) => $val !== null),
-                (int)$activity->getCreateTimestamp()
-            );
+            $results[] = $this->activityOutputFactory->create($activity);
         }
 
         return $results;
