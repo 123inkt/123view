@@ -23,16 +23,15 @@ class OpenApiFactory implements OpenApiFactoryInterface
     {
         $openApi = ($this->decorated)($context);
 
-        // Add additional explanation to the OpenApi authorization dialog description
+        // Change scheme to bearer+http and add explanation to the OpenApi authorization dialog description.
+        // @see https://swagger.io/docs/specification/authentication/bearer-authentication/
         $schemes = Assert::notNull($openApi->getComponents()->getSecuritySchemes());
         /** @var SecurityScheme|null $scheme */
         $scheme = $schemes['Bearer'] ?? null;
         if ($scheme !== null) {
-            $description       = '**Header**: Authorization';
-            $description       .= '<br>**Format**: Bearer &lt;token&gt;.';
-            $description       .= '<br>**Token**: [Create here](' . $this->urlGenerator->generate(UserAccessTokenController::class) . ').';
-            $description       .= '<br><br>';
-            $schemes['Bearer'] = $scheme->withDescription($description);
+            $url               = $this->urlGenerator->generate(UserAccessTokenController::class);
+            $description       = '**Header**: Authorization: Bearer &lt;[Token](' . $url . ')&gt;.';
+            $schemes['Bearer'] = $scheme->withDescription($description)->withScheme("bearer")->withType('http');
         }
 
         return $openApi;
