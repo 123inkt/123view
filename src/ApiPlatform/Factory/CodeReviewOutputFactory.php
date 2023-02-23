@@ -22,10 +22,17 @@ class CodeReviewOutputFactory
      * @param CodeReviewer[] $reviewers
      * @param User[]         $authors
      */
-    public function create(CodeReview $review, array $reviewers = [], array $authors = []): CodeReviewOutput
+    public function create(CodeReview $review, ?array $reviewers = null, ?array $authors = null): CodeReviewOutput
     {
-        $reviewersOutput = array_map(fn($reviewer) => $this->userOutputFactory->create(Assert::notNull($reviewer->getUser())), $reviewers);
-        $authorOutput    = array_map(fn($user) => $this->userOutputFactory->create($user), $authors);
+        $reviewersOutput = null;
+        $authorOutput    = null;
+
+        if ($reviewers !== null) {
+            $reviewersOutput = array_map(fn($reviewer) => $this->userOutputFactory->create(Assert::notNull($reviewer->getUser())), $reviewers);
+        }
+        if ($authors !== null) {
+            $authorOutput = array_map(fn($user) => $this->userOutputFactory->create($user), $authors);
+        }
 
         return new CodeReviewOutput(
             (int)$review->getId(),

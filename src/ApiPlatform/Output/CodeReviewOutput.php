@@ -21,8 +21,8 @@ class CodeReviewOutput
         public readonly string $url,
         public readonly string $state,
         public readonly string $reviewerState,
-        public readonly array $authors,
-        public readonly array $reviewers,
+        public readonly ?array $authors,
+        public readonly ?array $reviewers,
         public readonly int $createTimestamp,
         public readonly int $updateTimestamp,
     ) {
