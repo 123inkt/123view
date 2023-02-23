@@ -75,7 +75,9 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         static::assertSame('url', $output->url);
         static::assertSame('open', $output->state);
         static::assertSame('open', $output->reviewerState);
+        static::assertNotNull($output->reviewers);
         static::assertCount(1, $output->reviewers);
+        static::assertNotNull($output->authors);
         static::assertCount(1, $output->authors);
         static::assertSame(1000, $output->createTimestamp);
         static::assertSame(2000, $output->updateTimestamp);
