@@ -24,15 +24,8 @@ class CodeReviewOutputFactory
      */
     public function create(CodeReview $review, array $reviewers = [], array $authors = []): CodeReviewOutput
     {
-        $reviewersOutput = [];
-        foreach ($reviewers as $reviewer) {
-            $reviewersOutput[] = $this->userOutputFactory->create(Assert::notNull($reviewer->getUser()));
-        }
-
-        $authorOutput = [];
-        foreach ($authors ?? [] as $user) {
-            $authorOutput[] = $this->userOutputFactory->create($user);
-        }
+        $reviewersOutput = array_map(fn($reviewer) => $this->userOutputFactory->create(Assert::notNull($reviewer->getUser())), $reviewers);
+        $authorOutput    = array_map(fn($user) => $this->userOutputFactory->create($user), $authors);
 
         return new CodeReviewOutput(
             (int)$review->getId(),

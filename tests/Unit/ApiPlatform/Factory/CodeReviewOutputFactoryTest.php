@@ -11,7 +11,6 @@ use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
-use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -45,7 +44,6 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         $userB      = (new User())->setId(234)->setName('name B')->setEmail('email B');
         $reviewer   = (new CodeReviewer())->setUser($userA);
         $repository = (new Repository())->setId(789);
-        $revision   = new Revision();
 
         // setup review
         $review = new CodeReview();
