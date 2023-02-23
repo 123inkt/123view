@@ -9,7 +9,6 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\ApiPlatform\Factory\UserOutputFactory
- * @covers ::__construct
  */
 class UserOutputFactoryTest extends AbstractTestCase
 {
