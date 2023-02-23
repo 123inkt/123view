@@ -27,6 +27,9 @@ use DR\Review\Security\Role\Roles;
     properties: [
         'id'            => 'exact',
         'user.id'       => 'exact',
+        'review.id'     => 'exact',
+        'review.title'  => 'partial',
+        'review.state'  => 'exact',
         'repository.id' => 'exact',
         'eventName'     => 'exact',
     ]

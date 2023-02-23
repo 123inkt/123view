@@ -7,11 +7,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\State\ProviderInterface;
 use ArrayIterator;
+use DR\Review\ApiPlatform\Factory\CodeReviewActivityOutputFactory;
 use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider;
-use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
-use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,14 +22,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 class CodeReviewActivityProviderTest extends AbstractTestCase
 {
     /** @var MockObject&ProviderInterface<CodeReviewActivity> */
-    private ProviderInterface&MockObject $collectionProvider;
-    private CodeReviewActivityProvider   $activityProvider;
+    private ProviderInterface&MockObject               $collectionProvider;
+    private CodeReviewActivityOutputFactory&MockObject $outputFactory;
+    private CodeReviewActivityProvider                 $activityProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->collectionProvider = $this->createMock(ProviderInterface::class);
-        $this->activityProvider   = new CodeReviewActivityProvider($this->collectionProvider);
+        $this->outputFactory      = $this->createMock(CodeReviewActivityOutputFactory::class);
+        $this->activityProvider   = new CodeReviewActivityProvider($this->collectionProvider, $this->outputFactory);
     }
 
     /**
@@ -49,25 +50,14 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
     public function testProvide(): void
     {
         $operation = new GetCollection();
+        $activity  = new CodeReviewActivity();
 
-        $user = new User();
-        $user->setId(123);
-        $review = new CodeReview();
-        $review->setId(456);
-        $activity = new CodeReviewActivity();
-        $activity->setId(789);
-        $activity->setEventName('event');
-        $activity->setReview($review);
-        $activity->setUser($user);
-        $activity->setData(['data' => 'data']);
-        $activity->setCreateTimestamp(135);
+        $output = $this->createMock(CodeReviewActivityOutput::class);
 
         $this->collectionProvider->expects(self::once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$activity]));
+        $this->outputFactory->expects(self::once())->method('create')->with($activity)->willReturn($output);
 
         $result = $this->activityProvider->provide(new GetCollection());
-        static::assertCount(1, $result);
-
-        $expected = new CodeReviewActivityOutput(789, 123, 456, 'event', ['data' => 'data'], 135);
-        static::assertEquals($expected, $result[0]);
+        static::assertSame([$output], $result);
     }
 }

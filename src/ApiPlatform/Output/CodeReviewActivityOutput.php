@@ -12,8 +12,8 @@ class CodeReviewActivityOutput
      */
     public function __construct(
         public readonly int $id,
-        public readonly int $userId,
-        public readonly int $reviewId,
+        public readonly ?UserOutput $user,
+        public readonly CodeReviewOutput $review,
         public readonly string $eventName,
         public readonly array $data,
         public readonly int $createTimestamp

@@ -52,6 +52,8 @@ class OpenApiFactoryTest extends AbstractTestCase
 
         // assert
         static::assertInstanceOf(SecurityScheme::class, $securitySchemes['Bearer']);
-        static::assertStringContainsString('Bearer &lt;token&gt;', $securitySchemes['Bearer']->getDescription());
+        static::assertStringContainsString('**Header**: Authorization: Bearer', $securitySchemes['Bearer']->getDescription());
+        static::assertSame('bearer', $securitySchemes['Bearer']->getScheme());
+        static::assertSame('http', $securitySchemes['Bearer']->getType());
     }
 }

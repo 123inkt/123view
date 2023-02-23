@@ -5,6 +5,7 @@ namespace DR\Review\Entity\User;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,10 +25,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource(
     operations: [
         new Get(
-            uriTemplate   : '/users/me',
-            routeName     : CurrentUserController::class,
-            openapiContext: ['summary' => "Get the current user", 'description' => "Get the current user"],
-            security      : 'is_granted("' . Roles::ROLE_USER . '")',
+            uriTemplate: '/users/me',
+            routeName  : CurrentUserController::class,
+            openapi    : new OpenApiOperation(summary: "Get the current user", description: "Get the current user"),
+            security   : 'is_granted("' . Roles::ROLE_USER . '")',
         )
     ],
     output    : UserOutput::class
