@@ -8,7 +8,8 @@ use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
-use DR\Review\ApiPlatform\OpenApiFactory;
+use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
+use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\Git\Diff\DiffChangeBundler;
@@ -100,6 +101,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
 
     // Configure Api
+    $services->set(OperationParameterDocumentor::class);
     $services->set(OpenApiFactory::class)
         ->decorate('api_platform.openapi.factory')
         ->args([service('.inner')])

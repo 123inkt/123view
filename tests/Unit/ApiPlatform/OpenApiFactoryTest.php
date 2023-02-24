@@ -10,13 +10,13 @@ use ApiPlatform\OpenApi\Model\Paths;
 use ApiPlatform\OpenApi\Model\SecurityScheme;
 use ApiPlatform\OpenApi\OpenApi;
 use ArrayObject;
-use DR\Review\ApiPlatform\OpenApiFactory;
+use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @coversDefaultClass \DR\Review\ApiPlatform\OpenApiFactory
+ * @coversDefaultClass \DR\Review\ApiPlatform\OpenApi\OpenApiFactory
  * @covers ::__construct
  */
 class OpenApiFactoryTest extends AbstractTestCase
