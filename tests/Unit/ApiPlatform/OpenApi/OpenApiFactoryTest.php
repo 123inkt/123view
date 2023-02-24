@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\ApiPlatform;
+namespace DR\Review\Tests\Unit\ApiPlatform\OpenApi;
 
 use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\OpenApi\Model\Components;
