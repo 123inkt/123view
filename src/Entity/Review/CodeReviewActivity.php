@@ -47,6 +47,10 @@ use DR\Review\Security\Role\Roles;
     arguments : ['orderParameterName' => 'order']
 )]
 #[ORM\Entity(repositoryClass: CodeReviewActivityRepository::class)]
+#[ORM\Index(['create_timestamp', 'user_id', 'event_name'], name: 'IDX_CREATE_TIMESTAMP_USER_EVENT')]
+#[ORM\Index(['review_id'], name: 'IDX_REVIEW_ID')]
+#[ORM\Index(['event_name'], name: 'IDX_EVENT_REPOSITORY')]
+#[ORM\Index(['user_id'], name: 'IDX_USER_ID')]
 class CodeReviewActivity
 {
     #[ORM\Id]
