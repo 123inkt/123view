@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
-use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -38,7 +38,7 @@ use DR\Review\Security\Role\Roles;
         'reviewerState' => 'exact'
     ]
 )]
-#[ApiFilter(DateFilter::class, properties: ['createTimestamp', 'updateTimestamp'])]
+#[ApiFilter(RangeFilter::class, properties: ['createTimestamp', 'updateTimestamp'])]
 #[ApiFilter(
     OrderFilter::class,
     properties: [
