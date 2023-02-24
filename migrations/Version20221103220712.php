@@ -12,15 +12,12 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20221103220712 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE file_seen_status (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, review_id INT DEFAULT NULL, file_path VARCHAR(255) NOT NULL, create_timestamp INT NOT NULL, INDEX IDX_D5F89FCBA76ED395 (user_id), INDEX IDX_D5F89FCB3E2E969B (review_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql(
+            'CREATE TABLE file_seen_status (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, review_id INT DEFAULT NULL, file_path VARCHAR(255) NOT NULL, create_timestamp INT NOT NULL, INDEX IDX_D5F89FCBA76ED395 (user_id), INDEX IDX_D5F89FCB3E2E969B (review_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'
+        );
         $this->addSql('ALTER TABLE file_seen_status ADD CONSTRAINT FK_D5F89FCBA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE file_seen_status ADD CONSTRAINT FK_D5F89FCB3E2E969B FOREIGN KEY (review_id) REFERENCES code_review (id)');
     }
