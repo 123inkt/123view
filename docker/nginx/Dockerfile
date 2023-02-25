@@ -3,12 +3,7 @@ ARG APPLICATION_IMAGE
 
 FROM nginx:${VERSION}-alpine as base
 
-# https://github.com/nginxinc/docker-nginx/issues/657
 RUN apk del freetype nginx-module-image-filter
-
-# CVE-2022-1586 & CVE-2022-1587 see: https://avd.aquasec.com/nvd/cve-2022-1586 and https://avd.aquasec.com/nvd/cve-2022-1587
-RUN apk --no-cache --virtual add pcre2=10.40-r0
-
 RUN apk update && apk upgrade && apk add bash
 
 # Copy nginx config

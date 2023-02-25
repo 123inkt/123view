@@ -13,22 +13,25 @@ export default class extends Controller<HTMLElement> {
     private readonly fileTreeService     = new ReviewFileTreeService();
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
+    private reviewId: number = 0;
 
     public connect(): void {
+        this.reviewId = DataSet.int(this.element, 'reviewId');
+
         if (this.hasActiveFileTarget) {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
         document.addEventListener('keyup', this.onNavigate.bind(this));
-        document.addEventListener('notification', this.notificationService.onEvent);
+        document.addEventListener('/review/' + String(this.reviewId), this.notificationService.onEvent);
         this.notificationService.subscribe(
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
             this.updateReviewFileTree.bind(this),
-            DataSet.int(this.element, 'reviewId')
+            this.reviewId
         );
     }
 
     public disconnect(): void {
-        document.removeEventListener('notification', this.notificationService.onEvent);
+        document.removeEventListener('/review/' + String(this.reviewId), this.notificationService.onEvent);
     }
 
     public updateReviewFileTree(): void {
