@@ -25,7 +25,7 @@ class FilenameToLanguageTranslatorTest extends AbstractTestCase
     /**
      * @return array<string, array<string|null>>
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             "dockerfile"  => ["/path/to/Dockerfile", "dockerfile"],

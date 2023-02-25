@@ -34,7 +34,7 @@ class DiffLineComparatorTest extends AbstractTestCase
     /**
      * @return array<string, array<string|int>>
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             'equals strings'          => [' this line is equal ', ' this line is equal ', 0, 0, 0, 0],

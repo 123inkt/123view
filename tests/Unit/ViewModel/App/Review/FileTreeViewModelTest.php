@@ -77,7 +77,7 @@ class FileTreeViewModelTest extends AbstractTestCase
         static::assertSame($selected, $viewModel->isFileSelected($file));
     }
 
-    public function fileSelectedDataProvider(): Generator
+    public static function fileSelectedDataProvider(): Generator
     {
         yield [null, new DiffFile(), false];
         yield [new DiffFile(), new DiffFile(), true];

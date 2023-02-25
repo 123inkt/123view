@@ -26,7 +26,7 @@ class RuleTest extends AbstractTestCase
      * @covers ::setRuleOptions
      * @covers ::getRuleOptions
      * @covers ::setActive
-     * @covers ::getActive
+     * @covers ::isActive
      */
     public function testAccessorPairs(): void
     {

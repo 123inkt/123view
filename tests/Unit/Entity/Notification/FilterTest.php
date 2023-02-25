@@ -19,7 +19,7 @@ class FilterTest extends AbstractTestCase
      * @covers ::setType
      * @covers ::getType
      * @covers ::setInclusion
-     * @covers ::getInclusion
+     * @covers ::isInclusion
      */
     public function testAccessorPairs(): void
     {
