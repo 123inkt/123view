@@ -53,6 +53,8 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     {
         $repository = self::getService(UserRepository::class);
         $user       = Assert::notNull($repository->findOneBy(['email' => 'sherlock@example.com']));
+        $user->setRoles([]);
+        $repository->save($user, true);
 
         // find one new user
         static::assertSame(1, $repository->getNewUserCount());
@@ -71,7 +73,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     public function testGetUserCount(): void
     {
         $repository = self::getService(UserRepository::class);
-        $user       = Assert::notNull($repository->findOneBy(['email' => 'sherlock@example.com']));
+        $user       = Assert::notNull($repository->findOneBy(['name' => 'Sherlock Holmes']));
 
         static::assertSame(1, $repository->getUserCount());
 

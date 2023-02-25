@@ -25,6 +25,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v3
+            -   name: Use Node.js 18.x
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 18.x
 
             # Docs: https://github.com/shivammathur/setup-php
             -   name: Setup PHP
@@ -48,14 +52,19 @@ jobs:
             -   name: Install Composer dependencies
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+            -   name: Install npm dependencies
+                run: npm ci && npm run build
+
             -   name: Run Migration
                 run: |
-                    php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+                    php bin/console doctrine:migrations:migrate --no-interaction || echo "No migrations found or migration failed"
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
-            -   name: Run E2E and integration test suite
-                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite e2e,integration
+            -   name: Run functional and integration test suite
+                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite functional,integration
+                env:
+                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
             -   name: Run unit test suite
                 run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml

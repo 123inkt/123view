@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\E2E;
+namespace DR\Review\Tests\Functional\Command;
 
 use DR\Review\Git\GitRepository;
 use DR\Review\Repository\Config\ExternalLinkRepository;
