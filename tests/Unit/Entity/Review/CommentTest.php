@@ -17,7 +17,30 @@ use DR\Review\Tests\AbstractTestCase;
 class CommentTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getFilePath
+     * @covers ::setFilePath
+     * @covers ::getLineReference
+     * @covers ::setLineReference
+     * @covers ::getState
+     * @covers ::setState
+     * @covers ::getMessage
+     * @covers ::setMessage
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
+     * @covers ::getUpdateTimestamp
+     * @covers ::setUpdateTimestamp
+     * @covers ::getNotificationStatus
+     * @covers ::setNotificationStatus
+     * @covers ::getReview
+     * @covers ::setReview
+     * @covers ::getUser
+     * @covers ::setUser
+     * @covers ::getReplies
+     * @covers ::setReplies
+     * @covers ::getMentions
+     * @covers ::setMentions
      */
     public function testAccessorPairs(): void
     {

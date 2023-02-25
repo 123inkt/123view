@@ -15,7 +15,30 @@ use DR\Review\Tests\AbstractTestCase;
 class RepositoryTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::isActive
+     * @covers ::setActive
+     * @covers ::getName
+     * @covers ::setName
+     * @covers ::getDisplayName
+     * @covers ::setDisplayName
+     * @covers ::getMainBranchName
+     * @covers ::setMainBranchName
+     * @covers ::getUrl
+     * @covers ::setUrl
+     * @covers ::isFavorite
+     * @covers ::setFavorite
+     * @covers ::getUpdateRevisionsInterval
+     * @covers ::setUpdateRevisionsInterval
+     * @covers ::getUpdateRevisionsTimestamp
+     * @covers ::setUpdateRevisionsTimestamp
+     * @covers ::getValidateRevisionsInterval
+     * @covers ::setValidateRevisionsInterval
+     * @covers ::getValidateRevisionsTimestamp
+     * @covers ::setValidateRevisionsTimestamp
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
      */
     public function testAccessorPairs(): void
     {

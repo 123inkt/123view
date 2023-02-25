@@ -12,7 +12,27 @@ use DR\Review\Tests\AbstractTestCase;
 class RuleOptionsTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getId
+     * @covers ::getRule
+     * @covers ::setRule
+     * @covers ::getFrequency
+     * @covers ::setFrequency
+     * @covers ::getDiffAlgorithm
+     * @covers ::setDiffAlgorithm
+     * @covers ::isIgnoreSpaceAtEol
+     * @covers ::setIgnoreSpaceAtEol
+     * @covers ::isIgnoreSpaceChange
+     * @covers ::setIgnoreSpaceChange
+     * @covers ::isIgnoreAllSpace
+     * @covers ::setIgnoreAllSpace
+     * @covers ::isIgnoreBlankLines
+     * @covers ::setIgnoreBlankLines
+     * @covers ::isExcludeMergeCommits
+     * @covers ::setExcludeMergeCommits
+     * @covers ::getSubject
+     * @covers ::setSubject
+     * @covers ::getTheme
+     * @covers ::setTheme
      */
     public function testAccessorPairs(): void
     {

@@ -12,7 +12,13 @@ use DR\Review\Tests\AbstractTestCase;
 class RecipientTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getId
+     * @covers ::getName
+     * @covers ::setName
+     * @covers ::getEmail
+     * @covers ::setEmail
+     * @covers ::getRule
+     * @covers ::setRule
      */
     public function testAccessorPairs(): void
     {

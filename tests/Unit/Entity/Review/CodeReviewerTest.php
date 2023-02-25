@@ -12,7 +12,16 @@ use DR\Review\Tests\AbstractTestCase;
 class CodeReviewerTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getState
+     * @covers ::setState
+     * @covers ::getStateTimestamp
+     * @covers ::setStateTimestamp
+     * @covers ::getReview
+     * @covers ::setReview
+     * @covers ::getUser
+     * @covers ::setUser
      */
     public function testAccessorPairs(): void
     {
