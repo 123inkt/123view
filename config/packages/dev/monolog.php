@@ -17,6 +17,12 @@ return static function (MonologConfig $monolog) {
         ->includeStacktraces(true)
         ->channels()->elements(["!event"]);
 
+    $monolog->handler('doctrine')
+        ->type('stream')
+        ->path('%kernel.logs_dir%/doctrine.%kernel.environment%.log')
+        ->level('debug')
+        ->channels()->elements(["doctrine"]);
+
     $monolog->handler('app')
         ->type('stream')
         ->path('%kernel.logs_dir%/app.%kernel.environment%.log')

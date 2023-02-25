@@ -6,9 +6,11 @@ namespace DR\Review\Tests\Unit\ViewModelProvider;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
@@ -101,7 +103,37 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         static::assertCount(1, $viewModel->entries);
 
         $timeline = $viewModel->entries[0];
-        static::assertSame($comment, $timeline->comment);
+        static::assertSame($comment, $timeline->getComment());
+    }
+
+    /**
+     * @covers ::getTimelineViewModel
+     */
+    public function testGetTimelineViewModelWithRevision(): void
+    {
+        $activity = new CodeReviewActivity();
+        $activity->setEventName(ReviewRevisionAdded::NAME);
+        $activity->setData(['revisionId' => 456]);
+        $revision = new Revision();
+        $revision->setId(456);
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->getRevisions()->set(456, $revision);
+
+        $this->activityRepository->expects(self::once())
+            ->method('findBy')
+            ->with(['review' => 123], ['createTimestamp' => 'ASC'])
+            ->willReturn([$activity]);
+        $this->activityFormatter->expects(self::once())
+            ->method('format')
+            ->with($activity, $this->user)
+            ->willReturn('message');
+
+        $viewModel = $this->provider->getTimelineViewModel($review);
+        static::assertCount(1, $viewModel->entries);
+
+        $timeline = $viewModel->entries[0];
+        static::assertSame($revision, $timeline->getRevision());
     }
 
     /**

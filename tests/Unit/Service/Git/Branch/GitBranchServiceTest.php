@@ -11,6 +11,7 @@ use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -38,7 +39,7 @@ class GitBranchServiceTest extends AbstractTestCase
     public function testDeleteBranch(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
@@ -58,7 +59,7 @@ class GitBranchServiceTest extends AbstractTestCase
     public function testTryDeleteBranch(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
@@ -78,7 +79,7 @@ class GitBranchServiceTest extends AbstractTestCase
     public function testTryDeleteBranchCaptureException(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $path = '/foo/bar/';
 
         $this->builderFactory->expects(self::once())->method('createBranch')->willThrowException(new RepositoryException());

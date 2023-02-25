@@ -13,6 +13,7 @@ use DR\Review\Service\Git\Show\GitShowService;
 use DR\Review\Service\Parser\GitLogParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -48,7 +49,7 @@ class GitShowServiceTest extends AbstractTestCase
 
         $repository = new Repository();
         $repository->setName('name');
-        $repository->setUrl('url');
+        $repository->setUrl(Uri::createFromString('url'));
         $commit = $this->createCommit();
 
         $commandBuilder->expects(self::once())->method('startPoint')->with('hash')->willReturnSelf();

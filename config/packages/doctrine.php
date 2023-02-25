@@ -12,6 +12,7 @@ use DR\Review\Doctrine\Type\FrequencyType;
 use DR\Review\Doctrine\Type\MailThemeType;
 use DR\Review\Doctrine\Type\NotificationStatusType;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
+use DR\Review\Doctrine\Type\UriType;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
@@ -27,6 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     'enum' => 'string'
                 ],
                 'types'          => [
+                    UriType::TYPE                       => UriType::class,
                     FrequencyType::TYPE                 => FrequencyType::class,
                     DiffAlgorithmType::TYPE             => DiffAlgorithmType::class,
                     MailThemeType::TYPE                 => MailThemeType::class,

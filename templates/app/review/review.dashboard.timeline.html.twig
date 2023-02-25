@@ -1,0 +1,28 @@
+{# timelineViewModel: TimelineViewModel #}
+
+<h5>{{ 'timeline.review'|trans }}</h5>
+
+{%- for entry in timelineViewModel.entries -%}
+    {%- set activity = entry.activities|first -%}
+
+    <div class="review-timeline__entry clearfix">
+        <img src="{{ asset('assets/images/timeline-indicator.svg') }}" width="20" height="20" alt="time-point" class="float-start pt-1"/>
+        <span class="float-start">
+            <span class=" text-secondary small ps-2 pe-2">{{ activity.createTimestamp|format_datetime('short', 'short') }}</span>
+            {{- entry.message|raw -}}
+        </span>
+    </div>
+
+    {% if entry.comment is not same as (null) %}
+        {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
+    {% endif %}
+
+    {% if entry.revision is not same as (null) and entry.revision.description %}
+        <div class="mb-2 review-timeline__entry-revision">
+            <div class="bg-primary bg-opacity-10 rounded-2 pb-1 pt-1 ps-2 pe-2 small d-inline-block">
+                {{ entry.revision.description|markdown }}
+            </div>
+        </div>
+    {% endif %}
+
+{%- endfor -%}

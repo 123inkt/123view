@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormView;
  */
 class UserSettingViewModel
 {
-    public function __construct(public readonly FormView $form)
+    public function __construct(public readonly FormView $settingForm)
     {
     }
 }

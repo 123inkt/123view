@@ -3,16 +3,53 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Output\CodeReviewOutput;
+use DR\Review\ApiPlatform\Provider\CodeReviewProvider;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Security\Role\Roles;
 
+#[ApiResource(
+    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_USER . '")')],
+    output    : CodeReviewOutput::class,
+    order     : ['updateTimestamp' => 'DESC'],
+    provider  : CodeReviewProvider::class
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'id'            => 'exact',
+        'title'         => 'partial',
+        'repository.id' => 'exact',
+        'state'         => 'exact',
+        'reviewerState' => 'exact'
+    ]
+)]
+#[ApiFilter(RangeFilter::class, properties: ['createTimestamp', 'updateTimestamp'])]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        'id',
+        'title',
+        'repository.id',
+        'createTimestamp',
+        'updateTimestamp'
+    ],
+    arguments : ['orderParameterName' => 'order']
+)]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
 #[ORM\Index(['repository_id', 'state'], name: 'IDX_REPOSITORY_STATE')]
@@ -58,7 +95,7 @@ class CodeReview
     private ?Repository $repository = null;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false, indexBy: 'id')]
     #[ORM\OrderBy(["createTimestamp" => "ASC"])]
     private Collection $revisions;
 

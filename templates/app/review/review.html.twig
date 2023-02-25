@@ -20,7 +20,7 @@
 
         {%- if reviewModel.timelineViewModel is not same as (null) -%}
             <div class="review-grid-code">
-                {%- include 'app/review/review.timeline.html.twig' with {timelineViewModel: reviewModel.timelineViewModel} %}
+                {%- include 'app/review/review.dashboard.html.twig' with {timelineViewModel: reviewModel.timelineViewModel} %}
             </div>
         {%- elseif reviewModel.fileDiffViewModel is not same as (null) -%}
             {% if reviewModel.fileDiffViewModel.diffMode.value == 'side-by-side' %}

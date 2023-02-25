@@ -22,6 +22,7 @@ use DR\Review\Service\Parser\GitLogParser;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\Helper\MockGitRepositoryLockManager;
 use Exception;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -90,7 +91,7 @@ class GitLogServiceTest extends AbstractTestCase
     public function testGetCommitHashes(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://example.com');
+        $repository->setUrl(Uri::createFromString('https://example.com'));
 
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);
@@ -114,7 +115,7 @@ class GitLogServiceTest extends AbstractTestCase
     {
         $commits    = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
         $repository = new Repository();
-        $repository->setUrl('https://example.com');
+        $repository->setUrl(Uri::createFromString('https://example.com'));
 
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);

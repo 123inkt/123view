@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Repository\Review;
 
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -44,6 +45,29 @@ class CodeReviewActivityRepositoryTest extends AbstractRepositoryTestCase
 
         $result = $this->activityRepository->findForUser(456, ['event']);
         static::assertCount(1, $result);
+    }
+
+    /**
+     * @covers ::findForUser
+     */
+    public function testFindForUserForRepository(): void
+    {
+        $actorId = 456;
+        $review  = Assert::notNull($this->reviewRepository->findOneBy(['title' => 'title']));
+        $review->setActors([$actorId]);
+        $this->reviewRepository->save($review, true);
+
+        $activity = new CodeReviewActivity();
+        $activity->setEventName('event');
+        $activity->setReview($review);
+        $activity->setCreateTimestamp(time());
+        $this->activityRepository->save($activity, true);
+
+        // expect to find 1 result for this repository
+        static::assertCount(1, $this->activityRepository->findForUser(456, ['event'], $review->getRepository()));
+
+        // expect to find 0 result for zero repository
+        static::assertCount(0, $this->activityRepository->findForUser(456, ['event'], (new Repository())->setId(0)));
     }
 
     /**

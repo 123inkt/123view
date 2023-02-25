@@ -12,6 +12,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewsViewModel
@@ -29,9 +30,10 @@ class ReviewsViewModelTest extends AbstractTestCase
         $paginator  = $this->createMock(Paginator::class);
         $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
         $paginatorVm = $this->createMock(PaginatorViewModel::class);
+        $timeline    = $this->createMock(TimelineViewModel::class);
         $searchQuery = 'foobar';
 
-        $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery, '');
+        $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery, '', $timeline);
 
         static::assertSame($reviews, $viewModel->getReviews());
     }
@@ -46,7 +48,8 @@ class ReviewsViewModelTest extends AbstractTestCase
         $paginator  = $this->createMock(Paginator::class);
         $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
         $paginatorVm = $this->createMock(PaginatorViewModel::class);
-        $viewModel   = new ReviewsViewModel($repository, $paginator, $paginatorVm, '', '');
+        $timeline    = $this->createMock(TimelineViewModel::class);
+        $viewModel   = new ReviewsViewModel($repository, $paginator, $paginatorVm, '', '', $timeline);
 
         $revisionA = new Revision();
         $revisionB = new Revision();

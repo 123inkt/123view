@@ -64,6 +64,22 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
     /**
      * @covers ::onKernelException
      */
+    public function testOnKernelExceptionShouldSkipApiCalls(): void
+    {
+        $this->urlGenerator->expects(self::never())->method('generate');
+
+        $event = new ExceptionEvent(
+            $this->createMock(HttpKernelInterface::class),
+            new Request(server: ['REQUEST_URI' => '/api/test']),
+            HttpKernelInterface::MAIN_REQUEST,
+            new AccessDeniedException('access-denied')
+        );
+        $this->subscriber->onKernelException($event);
+    }
+
+    /**
+     * @covers ::onKernelException
+     */
     public function testOnKernelExceptionShouldRedirect(): void
     {
         $this->urlGenerator

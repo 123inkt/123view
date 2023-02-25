@@ -1,0 +1,57 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1 class="mb-4 mt-2">{{ 'repositories'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'repository.id'|trans }}</th>
+            <th scope="col"></th>
+            <th scope="col">{{ 'name'|trans }}</th>
+            <th scope="col">{{ 'display.name'|trans }}</th>
+            <th scope="col">{{ 'main.branch'|trans }}</th>
+            <th scope="col">{{ 'last.updated'|trans }}</th>
+            <th scope="col">{{ 'last.validated'|trans }}</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {%- for repository in repositoriesViewModel.repositories -%}
+            <tr>
+                <td>{{ repository.id }}</td>
+                <td>
+                    {% if repository.active %}
+                        <i class="bi bi-check-circle-fill text-success" title="{{ 'active'|trans }}"></i>
+                    {% else %}
+                        <i class="bi bi-check-circle-fill text-secondary" title="{{ 'active'|trans }}"></i>
+                    {% endif %}
+
+                    {% if repository.favorite %}
+                        <i class="bi bi-star-fill text-warning" title="{{ 'favorite'|trans }}"></i>
+                    {% endif %}
+                </td>
+                <td>{{ repository.name }}</td>
+                <td>{{ repository.displayName }}</td>
+                <td>{{ repository.mainBranchName }}</td>
+                <td>{{ repository.updateRevisionsTimestamp|format_datetime('short', 'short') }}</td>
+                <td>{{ repository.validateRevisionsTimestamp|format_datetime('short', 'short') }}</td>
+                <td>
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoryController', {id: repository.id}) }}"
+                       class="btn btn-success btn-sm">
+                        <i class="bi-pencil-square"></i>
+                    </a>
+                </td>
+            </tr>
+        {%- endfor -%}
+        <tbody>
+    </table>
+
+    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoryController') }}" class="btn btn-outline-primary mb-3">
+        <i class="bi-plus"></i>
+        {{ 'repository.new'|trans }}
+    </a>
+
+{% endblock %}

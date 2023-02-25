@@ -9,6 +9,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -39,7 +40,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl('http://my.repository.com');
+        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks

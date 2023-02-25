@@ -2,6 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
 import Assert from '../lib/Assert';
 import DataSet from '../lib/DataSet';
+import Events from '../lib/Events';
 import Function from '../lib/Function';
 import ReviewFileTreeService from '../service/ReviewFileTreeService';
 import ReviewNotificationService from '../service/ReviewNotificationService';
@@ -17,6 +18,7 @@ export default class extends Controller<HTMLElement> {
         if (this.hasActiveFileTarget) {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
+        document.addEventListener('keyup', this.onNavigate.bind(this));
         document.addEventListener('notification', this.notificationService.onEvent);
         this.notificationService.subscribe(
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
@@ -58,5 +60,28 @@ export default class extends Controller<HTMLElement> {
                 {headers: {'Content-Type': 'multipart/form-data'}}
             )
             .catch(Function.empty);
+    }
+
+    public onNavigate(event: KeyboardEvent): void {
+        if (event.altKey === false || event.shiftKey || ['ArrowUp', 'ArrowDown'].includes(event.key) === false) {
+            return;
+        }
+
+        const selected = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]');
+        let files      = Array.from(this.element.querySelectorAll<HTMLElement>('[data-role="file-tree-url"]'));
+        if (event.key === 'ArrowUp') {
+            files = files.reverse();
+        }
+
+        Events.stop(event);
+        let i = selected === null ? 0 : (files.indexOf(selected) + 1);
+
+        for (; i < files.length; i++) {
+            const file = files[i];
+            if (file !== undefined && (event.ctrlKey === false || file.dataset.unseen === '1')) {
+                window.location.href = String(file.getAttribute('href'));
+                break;
+            }
+        }
     }
 }

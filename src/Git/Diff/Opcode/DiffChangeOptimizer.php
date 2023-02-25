@@ -19,6 +19,7 @@ class DiffChangeOptimizer
     {
         $collection = new DiffChangeCollection();
 
+        /** @noinspection ForeachInvariantsInspection */
         for ($i = 0, $len = count($changes); $i < $len; $i++) {
             $current = $changes[$i];
             $next    = $changes[$i + 1] ?? null;
@@ -32,7 +33,8 @@ class DiffChangeOptimizer
             $prev     = new DiffChange(DiffChange::UNCHANGED, '');
             $nextNext = $changes[$i + 2] ?? new DiffChange(DiffChange::UNCHANGED, '');
             $this->extractCommonPreSuffix($prev, $current, $next, $nextNext);
-            $collection->add($prev, $current, $next, $nextNext);
+            $collection->add($prev, ...$this->extractCommonInfix($current, $next));
+            $collection->add($nextNext);
             $i += 2;
         }
 
@@ -57,5 +59,31 @@ class DiffChangeOptimizer
             $changeAfter->code  = substr($changeAfter->code, 0, -strlen($suffix));
             $last->code         = $suffix . $last->code;
         }
+    }
+
+    /**
+     * Test if the change before/after is contained within the other. Extract the common infix
+     * @return DiffChange[]
+     */
+    private function extractCommonInfix(DiffChange $changeBefore, DiffChange $changeAfter): array
+    {
+        $beforeLength = strlen($changeBefore->code);
+        $afterLength  = strlen($changeAfter->code);
+        if ($beforeLength === 0 || $afterLength === 0) {
+            return [$changeBefore, $changeAfter];
+        }
+
+        $needle   = $beforeLength < $afterLength ? $changeBefore : $changeAfter;
+        $haystack = $beforeLength < $afterLength ? $changeAfter : $changeBefore;
+        $position = strpos($haystack->code, $needle->code);
+        if ($position === false) {
+            return [$changeBefore, $changeAfter];
+        }
+
+        return [
+            new DiffChange($haystack->type, substr($haystack->code, 0, $position)),
+            new DiffChange(DiffChange::UNCHANGED, $needle->code),
+            new DiffChange($haystack->type, substr($haystack->code, $position + strlen($needle->code)))
+        ];
     }
 }

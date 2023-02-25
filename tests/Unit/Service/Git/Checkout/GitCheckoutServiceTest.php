@@ -12,6 +12,7 @@ use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\Review\Service\Git\Checkout\GitCheckoutService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -39,7 +40,7 @@ class GitCheckoutServiceTest extends AbstractTestCase
     public function testCheckout(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $hash = '123abcdef';
 
         $builder = $this->createMock(GitCheckoutCommandBuilder::class);
@@ -62,7 +63,7 @@ class GitCheckoutServiceTest extends AbstractTestCase
         $hash       = '123abcdef';
         $repository = new Repository();
         $repository->setId(5);
-        $repository->setUrl('https://url/');
+        $repository->setUrl(Uri::createFromString('https://url/'));
         $revision = new Revision();
         $revision->setId(6);
         $revision->setRepository($repository);

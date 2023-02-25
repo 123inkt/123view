@@ -6,16 +6,15 @@ namespace DR\Review\Service\Mail;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
-use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
-use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\User\UserService;
 use DR\Review\Utility\Arrays;
 use DR\Review\Utility\Assert;
 
 class MailRecipientService
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly CommentMentionService $mentionService)
+    public function __construct(private readonly UserService $userService, private readonly CommentMentionService $mentionService)
     {
     }
 
@@ -24,7 +23,7 @@ class MailRecipientService
      */
     public function getUsersForReview(CodeReview $review): array
     {
-        $users = $this->getUsersForRevisions($review->getRevisions()->toArray());
+        $users = $this->userService->getUsersForRevisions($review->getRevisions()->toArray());
         foreach ($review->getReviewers() as $reviewer) {
             $users[] = Assert::notNull($reviewer->getUser());
         }
@@ -62,24 +61,5 @@ class MailRecipientService
         }
 
         return $subscribers;
-    }
-
-    /**
-     * @param Revision[] $revisions
-     *
-     * @return User[]
-     */
-    public function getUsersForRevisions(array $revisions): array
-    {
-        $emails = [];
-        foreach ($revisions as $revision) {
-            $emails[] = $revision->getAuthorEmail();
-        }
-
-        if (count($emails) === 0) {
-            return [];
-        }
-
-        return $this->userRepository->findBy(['email' => array_unique($emails)]);
     }
 }

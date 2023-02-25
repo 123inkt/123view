@@ -78,7 +78,7 @@ class GitlabIntegrationTest extends AbstractTestCase
     public function testOnCommitEventShouldSkipOnNoUrl(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->addRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
+        $repository->setRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;
@@ -106,7 +106,7 @@ class GitlabIntegrationTest extends AbstractTestCase
     public function testOnCommitEventShouldSkipOnHttpClientException(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->addRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
+        $repository->setRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;
@@ -127,7 +127,7 @@ class GitlabIntegrationTest extends AbstractTestCase
     public function testOnCommitEvent(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
-        $repository->addRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
+        $repository->setRepositoryProperty(new RepositoryProperty("gitlab-project-id", "123"));
 
         $commit             = $this->createCommit();
         $commit->repository = $repository;

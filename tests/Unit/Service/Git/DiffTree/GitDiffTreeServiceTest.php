@@ -12,6 +12,7 @@ use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -39,7 +40,7 @@ class GitDiffTreeServiceTest extends AbstractTestCase
     public function testGetFilesInRevision(): void
     {
         $repository = new Repository();
-        $repository->setUrl('http://foobar.com');
+        $repository->setUrl(Uri::createFromString('http://foobar.com'));
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $revision->setRepository($repository);

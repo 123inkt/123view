@@ -12,11 +12,6 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20221023112216 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -30,6 +25,8 @@ final class Version20221023112216 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE code_review DROP reference_id');
         $this->addSql('ALTER TABLE webhook_activity DROP FOREIGN KEY FK_528E8F725C9BA60B');
-        $this->addSql('ALTER TABLE webhook_activity ADD CONSTRAINT FK_528E8F725C9BA60B FOREIGN KEY (webhook_id) REFERENCES webhook_activity (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
+        $this->addSql(
+            'ALTER TABLE webhook_activity ADD CONSTRAINT FK_528E8F725C9BA60B FOREIGN KEY (webhook_id) REFERENCES webhook_activity (id) ON UPDATE NO ACTION ON DELETE NO ACTION'
+        );
     }
 }

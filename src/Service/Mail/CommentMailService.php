@@ -138,12 +138,19 @@ class CommentMailService implements LoggerAwareInterface
 
         /** @var User $recipient */
         foreach ($recipients as $recipient) {
-            if ($recipient->getSetting()->isMailCommentResolved() === false) {
+            if ($recipient->getSetting()->isMailCommentResolved() === false || $recipient->getEmail() === $resolvedBy->getEmail()) {
                 continue;
             }
 
             $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
-            $this->logger?->info(sprintf('Sending mail to %s for resolved comment %d.', $recipient->getEmail(), $comment->getId()));
+            $this->logger?->info(
+                sprintf(
+                    'Sending mail to %s for resolved comment %d resolved by %s',
+                    $recipient->getEmail(),
+                    $comment->getId(),
+                    $resolvedBy->getEmail()
+                )
+            );
         }
         $this->mailer->send($email);
     }

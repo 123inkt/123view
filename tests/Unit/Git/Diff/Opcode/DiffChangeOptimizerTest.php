@@ -23,6 +23,7 @@ class DiffChangeOptimizerTest extends AbstractTestCase
     /**
      * @covers ::optimize
      * @covers ::extractCommonPreSuffix
+     * @covers ::extractCommonInfix
      */
     public function testOptimizeWithoutUnchanged(): void
     {
@@ -56,5 +57,58 @@ class DiffChangeOptimizerTest extends AbstractTestCase
         static::assertSame('aaa', $collection->get(1)->code);
         static::assertSame('bbb', $collection->get(2)->code);
         static::assertSame(' end last', $collection->get(3)->code);
+    }
+
+    /**
+     * @covers ::optimize
+     * @covers ::extractCommonPreSuffix
+     * @covers ::extractCommonInfix
+     */
+    public function testOptimizeShouldSkipInfixExtraction(): void
+    {
+        $changeA = new DiffChange(DiffChange::REMOVED, 'foo bar');
+        $changeB = new DiffChange(DiffChange::ADDED, 'bar');
+
+        $collection = $this->optimizer->optimize([$changeA, $changeB]);
+        static::assertCount(2, $collection);
+
+        static::assertSame('foo ', $collection->get(0)->code);
+        static::assertSame('bar', $collection->get(1)->code);
+    }
+
+    /**
+     * @covers ::optimize
+     * @covers ::extractCommonPreSuffix
+     * @covers ::extractCommonInfix
+     */
+    public function testOptimizeShouldExtractInfixForReduction(): void
+    {
+        $changeA = new DiffChange(DiffChange::REMOVED, 'foo bar foo');
+        $changeB = new DiffChange(DiffChange::ADDED, 'bar');
+
+        $collection = $this->optimizer->optimize([$changeA, $changeB]);
+        static::assertCount(3, $collection);
+
+        static::assertSame('foo ', $collection->get(0)->code);
+        static::assertSame('bar', $collection->get(1)->code);
+        static::assertSame(' foo', $collection->get(2)->code);
+    }
+
+    /**
+     * @covers ::optimize
+     * @covers ::extractCommonPreSuffix
+     * @covers ::extractCommonInfix
+     */
+    public function testOptimizeShouldExtractInfixForAddition(): void
+    {
+        $changeA = new DiffChange(DiffChange::REMOVED, 'bar');
+        $changeB = new DiffChange(DiffChange::ADDED, 'foo bar foo');
+
+        $collection = $this->optimizer->optimize([$changeA, $changeB]);
+        static::assertCount(3, $collection);
+
+        static::assertSame('foo ', $collection->get(0)->code);
+        static::assertSame('bar', $collection->get(1)->code);
+        static::assertSame(' foo', $collection->get(2)->code);
     }
 }

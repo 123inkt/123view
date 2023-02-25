@@ -11,6 +11,7 @@ use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -38,7 +39,7 @@ class GitResetServiceTest extends AbstractTestCase
     public function testResetHard(): void
     {
         $repository = new Repository();
-        $repository->setUrl('https://example.com');
+        $repository->setUrl(Uri::createFromString('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
         $builder->expects(self::once())->method('hard')->willReturnSelf();

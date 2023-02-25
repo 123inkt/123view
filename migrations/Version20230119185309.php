@@ -12,11 +12,6 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20230119185309 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
