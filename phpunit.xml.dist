@@ -16,6 +16,7 @@
         <ini name="error_reporting" value="24575"/> <!-- E_ALL^E_DEPRECATED -->
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
         <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value="false"/>
     </php>
 
     <testsuites>

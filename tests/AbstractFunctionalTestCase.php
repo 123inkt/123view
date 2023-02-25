@@ -6,8 +6,6 @@ namespace DR\Review\Tests;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\User\User;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
@@ -70,19 +68,19 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
     }
 
     /**
-     * @template T of EntityRepository
+     * @template T of object
      *
-     * @param class-string<T> $repositoryClassName
+     * @param class-string<T> $serviceId
      *
-     * @return EntityRepository<T>
+     * @return T
      * @throws \Exception
      */
-    protected function getRepository(string $repositoryClassName): object
+    protected static function getService(string $serviceId, ?string $alias = null): object
     {
-        /** @var EntityRepository<T> $repository */
-        $repository = self::getContainer()->get(ManagerRegistry::class)->getManager()->getRepository($repositoryClassName);
+        /** @var T $service */
+        $service = self::getContainer()->get($alias ?? $serviceId);
 
-        return $repository;
+        return $service;
     }
 
     /**
