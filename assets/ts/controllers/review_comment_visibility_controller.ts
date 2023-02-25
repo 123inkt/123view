@@ -8,10 +8,13 @@ export default class extends Controller<HTMLElement> {
     private readonly declare commentTargets: HTMLElement[];
     private reviewId: number = 0;
 
-    public connect(): void {
-        this.dropdownTarget.addEventListener('change', this.onSelect.bind(this));
+    public initialize(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');
         this.restore();
+    }
+
+    public connect(): void {
+        this.dropdownTarget.addEventListener('change', this.onSelect.bind(this));
     }
 
     public onSelect(event: Event): void {
