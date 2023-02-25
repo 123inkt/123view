@@ -54,11 +54,11 @@
                 <!-- methods -->
                 <element value="public methods, public final methods"/>
                 <element value="public static methods, public static final methods"/>
+                <element value="magic methods"/>
                 <element value="protected methods, protected final methods"/>
                 <element value="protected static methods, protected static final methods"/>
                 <element value="private methods"/>
                 <element value="private static methods"/>
-                <element value="magic methods"/>
             </property>
         </properties>
         <exclude-pattern>*/tests/</exclude-pattern>

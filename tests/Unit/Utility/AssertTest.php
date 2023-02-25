@@ -53,6 +53,25 @@ class AssertTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::isCallable
+     */
+    public function testIsCallable(): void
+    {
+        $callable = [$this, 'testIsCallable'];
+        static::assertSame($callable, Assert::isCallable($callable));
+    }
+
+    /**
+     * @covers ::isCallable
+     */
+    public function testIsCallableFailure(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be `callable');
+        Assert::isCallable('string');
+    }
+
+    /**
      * @covers ::isInt
      */
     public function testIsInt(): void
