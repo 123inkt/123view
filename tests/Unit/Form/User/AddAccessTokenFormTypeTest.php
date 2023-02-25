@@ -45,9 +45,11 @@ class AddAccessTokenFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['name', TextType::class],
-                ['create', SubmitType::class]
+            ->will(
+                self::onConsecutiveCalls(
+                    ['name', TextType::class],
+                    ['create', SubmitType::class]
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, []);

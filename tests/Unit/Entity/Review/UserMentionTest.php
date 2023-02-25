@@ -12,7 +12,10 @@ use DR\Review\Tests\AbstractTestCase;
 class UserMentionTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getComment
+     * @covers ::setComment
+     * @covers ::getUserId
+     * @covers ::setUserId
      */
     public function testAccessorPairs(): void
     {

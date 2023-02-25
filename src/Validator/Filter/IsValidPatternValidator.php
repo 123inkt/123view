@@ -9,6 +9,9 @@ use RuntimeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @codeCoverageIgnore until Symfony 6.3
+ */
 class IsValidPatternValidator extends ConstraintValidator
 {
     /**

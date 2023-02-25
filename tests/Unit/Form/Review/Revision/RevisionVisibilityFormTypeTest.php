@@ -65,9 +65,11 @@ class RevisionVisibilityFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['hidden', HiddenType::class],
-                ['visibilities', CollectionType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['hidden', HiddenType::class],
+                    ['visibilities', CollectionType::class],
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['reviewId' => 123]);

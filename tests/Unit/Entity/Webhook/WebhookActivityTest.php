@@ -12,7 +12,22 @@ use DR\Review\Tests\AbstractTestCase;
 class WebhookActivityTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getRequest
+     * @covers ::setRequest
+     * @covers ::getRequestHeaders
+     * @covers ::setRequestHeaders
+     * @covers ::getStatusCode
+     * @covers ::setStatusCode
+     * @covers ::getResponse
+     * @covers ::setResponse
+     * @covers ::getResponseHeaders
+     * @covers ::setResponseHeaders
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
+     * @covers ::getWebhook
+     * @covers ::setWebhook
      */
     public function testAccessorPairs(): void
     {

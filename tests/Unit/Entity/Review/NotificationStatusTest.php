@@ -13,7 +13,10 @@ use DR\Review\Tests\AbstractTestCase;
 class NotificationStatusTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::hasStatus
+     * @covers ::addStatus
+     * @covers ::removeStatus
+     * @covers ::getStatus
      */
     public function testAccessorPairs(): void
     {

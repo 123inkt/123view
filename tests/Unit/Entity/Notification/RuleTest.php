@@ -17,7 +17,16 @@ use DR\Review\Tests\AbstractTestCase;
 class RuleTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::setName
+     * @covers ::getName
+     * @covers ::setUser
+     * @covers ::getUser
+     * @covers ::setRuleOptions
+     * @covers ::getRuleOptions
+     * @covers ::setActive
+     * @covers ::isActive
      */
     public function testAccessorPairs(): void
     {

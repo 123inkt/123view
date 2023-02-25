@@ -18,7 +18,13 @@ class FileDiffViewModelTest extends AbstractTestCase
     use AccessorPairAsserter;
 
     /**
-     * @covers ::<public>
+     * @covers ::getDiffModes
+     * @covers ::getCommentsViewModel
+     * @covers ::setCommentsViewModel
+     * @covers ::getReplyCommentForm
+     * @covers ::setReplyCommentForm
+     * @covers ::getHighlightedFile
+     * @covers ::setHighlightedFile
      */
     public function testAccessorPairs(): void
     {

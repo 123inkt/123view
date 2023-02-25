@@ -136,7 +136,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->method('findBy')
             ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
             ->willReturn([$statusA, $statusB]);
-        $this->statusRepository->expects(self::exactly(2))->method('remove')->withConsecutive([$statusA, false], [$statusB, true]);
+        $this->statusRepository->expects(self::exactly(2))->method('remove')->will(static::onConsecutiveCalls([$statusA, false], [$statusB, true]));
 
         $this->service->markAllAsUnseen($review, $revision);
     }

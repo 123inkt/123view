@@ -37,7 +37,7 @@ class HtmlMailExtensionTest extends AbstractTestCase
     /**
      * @return array<string[]>
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             ['<ul><li>foo</li></ul>', '&#9679; foo<br>'],

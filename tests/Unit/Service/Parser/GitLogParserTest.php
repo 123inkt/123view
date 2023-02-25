@@ -104,7 +104,9 @@ class GitLogParserTest extends AbstractTestCase
         $commitB->refs = null;
 
         // prepare mocks
-        $this->diffParser->expects(static::exactly(2))->method('parse')->withConsecutive(['commitA-part9'], ['commitB-part9'])->willReturn([]);
+        $this->diffParser->expects(static::exactly(2))->method('parse')
+            ->will(static::onConsecutiveCalls(['commitA-part9'], ['commitB-part9']))
+            ->willReturn([]);
         $this->hydrator->expects(static::exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
 
         // test it

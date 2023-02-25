@@ -23,9 +23,11 @@ class InExclusionFilterTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['inclusions', FilterCollectionType::class],
-                ['exclusions', FilterCollectionType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['inclusions', FilterCollectionType::class],
+                    ['exclusions', FilterCollectionType::class],
+                )
             )->willReturnSelf();
         $builder->expects(self::once())->method('addModelTransformer')->with(self::isInstanceOf(FilterCollectionTransformer::class));
 

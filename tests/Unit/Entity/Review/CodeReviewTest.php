@@ -19,12 +19,31 @@ use DR\Review\Tests\AbstractTestCase;
 class CodeReviewTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getProjectId
+     * @covers ::setProjectId
+     * @covers ::getReferenceId
+     * @covers ::setReferenceId
+     * @covers ::getTitle
+     * @covers ::setTitle
+     * @covers ::getDescription
+     * @covers ::setDescription
+     * @covers ::getState
+     * @covers ::setState
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
+     * @covers ::getUpdateTimestamp
+     * @covers ::setUpdateTimestamp
+     * @covers ::getRepository
+     * @covers ::setRepository
+     * @covers ::getActors
+     * @covers ::setActors
      */
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['getWatchers', 'getReviewers', 'getRevisions', 'getComments']);
+        $config->setExcludedMethods(['getReviewers', 'getRevisions', 'getComments']);
         static::assertAccessorPairs(CodeReview::class, $config);
     }
 

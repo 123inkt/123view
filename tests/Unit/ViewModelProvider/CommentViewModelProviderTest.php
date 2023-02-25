@@ -167,7 +167,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
             ->willReturn($comments);
         $this->diffFinder->expects(self::exactly(2))
             ->method('findLineInFile')
-            ->withConsecutive([$file, $commentA->getLineReference()], [$file, $commentB->getLineReference()])
+            ->will(static::onConsecutiveCalls([$file, $commentA->getLineReference()], [$file, $commentB->getLineReference()]))
             ->willReturn($line, null);
 
         $viewModel = $this->provider->getCommentsViewModel($review, $file);

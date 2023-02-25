@@ -12,7 +12,11 @@ use DR\Review\Tests\AbstractTestCase;
 class ExternalLinkTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getId
+     * @covers ::setUrl
+     * @covers ::getUrl
+     * @covers ::setPattern
+     * @covers ::getPattern
      */
     public function testAccessorPairs(): void
     {

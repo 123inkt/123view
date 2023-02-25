@@ -66,7 +66,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
 
         $this->translator->expects(self::exactly(2))
             ->method('trans')
-            ->withConsecutive(['you'], ['timeline.review.accepted'])
+            ->will(static::onConsecutiveCalls(['you'], ['timeline.review.accepted']))
             ->willReturnArgument(0);
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::never())->method('find');

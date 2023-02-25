@@ -12,11 +12,35 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Entity\User\User
+ * @covers ::__construct
  */
 class UserTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getName
+     * @covers ::setName
+     * @covers ::getEmail
+     * @covers ::setEmail
+     * @covers ::getPassword
+     * @covers ::setPassword
+     * @covers ::getSetting
+     * @covers ::setSetting
+     * @covers ::getRules
+     * @covers ::addRule
+     * @covers ::removeRule
+     * @covers ::getUserIdentifier
+     * @covers ::setRoles
+     * @covers ::addRole
+     * @covers ::getRoles
+     * @covers ::eraseCredentials
+     * @covers ::getReviewers
+     * @covers ::setReviewers
+     * @covers ::getComments
+     * @covers ::setComments
+     * @covers ::getReplies
+     * @covers ::setReplies
      */
     public function testAccessorPairs(): void
     {

@@ -16,7 +16,10 @@ use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 class TimelineEntryViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getComment
+     * @covers ::setComment
+     * @covers ::getRevision
+     * @covers ::setRevision
      */
     public function testAccessorPairs(): void
     {

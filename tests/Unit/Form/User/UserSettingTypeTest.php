@@ -26,12 +26,14 @@ class UserSettingTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(5))
             ->method('add')
-            ->withConsecutive(
-                ['colorTheme', ChoiceType::class],
-                ['mailCommentAdded', CheckboxType::class],
-                ['mailCommentReplied', CheckboxType::class],
-                ['mailCommentResolved', CheckboxType::class],
-                ['browserNotificationEvents', ChoiceType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['colorTheme', ChoiceType::class],
+                    ['mailCommentAdded', CheckboxType::class],
+                    ['mailCommentReplied', CheckboxType::class],
+                    ['mailCommentResolved', CheckboxType::class],
+                    ['browserNotificationEvents', ChoiceType::class],
+                )
             )->willReturnSelf();
 
         $type = new UserSettingType();

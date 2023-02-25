@@ -12,7 +12,19 @@ use DR\Review\Tests\AbstractTestCase;
 class CodeReviewActivityTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getId
+     * @covers ::setId
+     * @covers ::getUser
+     * @covers ::setUser
+     * @covers ::getReview
+     * @covers ::setReview
+     * @covers ::getEventName
+     * @covers ::setEventName
+     * @covers ::getData
+     * @covers ::getDataValue
+     * @covers ::setData
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
      */
     public function testAccessorPairs(): void
     {

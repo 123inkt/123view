@@ -13,7 +13,20 @@ use DR\Review\Tests\AbstractTestCase;
 class CommentReplyTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getMessage
+     * @covers ::setMessage
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
+     * @covers ::getUpdateTimestamp
+     * @covers ::setUpdateTimestamp
+     * @covers ::getNotificationStatus
+     * @covers ::setNotificationStatus
+     * @covers ::getComment
+     * @covers ::setComment
+     * @covers ::getUser
+     * @covers ::setUser
      */
     public function testAccessorPairs(): void
     {

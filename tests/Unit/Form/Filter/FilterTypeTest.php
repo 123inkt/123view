@@ -26,9 +26,11 @@ class FilterTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['type', ChoiceType::class],
-                ['pattern', TextType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['type', ChoiceType::class],
+                    ['pattern', TextType::class],
+                )
             )->willReturnSelf();
 
         $type = new FilterType();

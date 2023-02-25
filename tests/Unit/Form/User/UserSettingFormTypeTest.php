@@ -45,9 +45,11 @@ class UserSettingFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['setting', UserSettingType::class],
-                ['save', SubmitType::class, ['label' => 'save']],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['setting', UserSettingType::class],
+                    ['save', SubmitType::class, ['label' => 'save']],
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, []);

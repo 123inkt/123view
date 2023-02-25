@@ -108,7 +108,10 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn('message');
         $this->userRepository->expects(self::once())->method('findBy')->with(['id' => [567]])->willReturn([$actor]);
         $this->urlGenerator->expects(self::once())->method('generate')->with($activity)->willReturn('url');
-        $this->mercureHub->expects(self::exactly(2))->method('publish')->withConsecutive([$reviewUpdate], [$userUpdate]);
+        $this->mercureHub->expects(self::exactly(2))
+            ->method('publish')
+            ->will(static::onConsecutiveCalls([$reviewUpdate], [$userUpdate]))
+            ->willReturn('success');
 
         $this->service->publish($activity);
     }

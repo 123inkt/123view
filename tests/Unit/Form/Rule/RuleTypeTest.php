@@ -32,13 +32,15 @@ class RuleTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(6))
             ->method('add')
-            ->withConsecutive(
-                ['name', TextType::class],
-                ['active', CheckboxType::class],
-                ['ruleOptions', RuleOptionsType::class],
-                ['recipients', RecipientCollectionType::class],
-                ['repositories', RepositoryChoiceType::class],
-                ['filters', InExclusionFilterType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['name', TextType::class],
+                    ['active', CheckboxType::class],
+                    ['ruleOptions', RuleOptionsType::class],
+                    ['recipients', RecipientCollectionType::class],
+                    ['repositories', RepositoryChoiceType::class],
+                    ['filters', InExclusionFilterType::class],
+                )
             )->willReturnSelf();
 
         $type = new RuleType(true);
@@ -54,12 +56,14 @@ class RuleTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(5))
             ->method('add')
-            ->withConsecutive(
-                ['name', TextType::class],
-                ['active', CheckboxType::class],
-                ['ruleOptions', RuleOptionsType::class],
-                ['repositories', RepositoryChoiceType::class],
-                ['filters', InExclusionFilterType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['name', TextType::class],
+                    ['active', CheckboxType::class],
+                    ['ruleOptions', RuleOptionsType::class],
+                    ['repositories', RepositoryChoiceType::class],
+                    ['filters', InExclusionFilterType::class],
+                )
             )->willReturnSelf();
 
         $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();

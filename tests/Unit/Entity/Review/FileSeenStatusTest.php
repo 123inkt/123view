@@ -12,7 +12,16 @@ use DR\Review\Tests\AbstractTestCase;
 class FileSeenStatusTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getFilePath
+     * @covers ::setFilePath
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
+     * @covers ::getUser
+     * @covers ::setUser
+     * @covers ::getReview
+     * @covers ::setReview
      */
     public function testAccessorPairs(): void
     {

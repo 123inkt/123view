@@ -13,7 +13,9 @@ use DR\Review\Tests\AbstractTestCase;
 class LoginSuccessTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::isSuccess
+     * @covers ::getName
+     * @covers ::getEmail
      */
     public function testAccessorPairs(): void
     {

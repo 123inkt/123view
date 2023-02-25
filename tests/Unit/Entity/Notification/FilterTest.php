@@ -12,7 +12,15 @@ use DR\Review\Tests\AbstractTestCase;
 class FilterTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getId
+     * @covers ::setPattern
+     * @covers ::getPattern
+     * @covers ::setRule
+     * @covers ::getRule
+     * @covers ::setType
+     * @covers ::getType
+     * @covers ::setInclusion
+     * @covers ::isInclusion
      */
     public function testAccessorPairs(): void
     {

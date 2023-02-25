@@ -13,7 +13,21 @@ use DR\Review\Tests\AbstractTestCase;
 class UserSettingTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::getUser
+     * @covers ::setUser
+     * @covers ::getColorTheme
+     * @covers ::setColorTheme
+     * @covers ::isMailCommentAdded
+     * @covers ::setMailCommentAdded
+     * @covers ::isMailCommentResolved
+     * @covers ::setMailCommentResolved
+     * @covers ::isMailCommentReplied
+     * @covers ::setMailCommentReplied
+     * @covers ::hasBrowserNotificationEvent
+     * @covers ::getBrowserNotificationEvents
+     * @covers ::setBrowserNotificationEvents
      */
     public function testAccessorPairs(): void
     {

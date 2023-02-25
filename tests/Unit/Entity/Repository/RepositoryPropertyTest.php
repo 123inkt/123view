@@ -8,11 +8,17 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Entity\Repository\RepositoryProperty
+ * @covers ::__construct
  */
 class RepositoryPropertyTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getRepository
+     * @covers ::setRepository
+     * @covers ::getName
+     * @covers ::setName
+     * @covers ::getValue
+     * @covers ::setValue
      */
     public function testAccessorPairs(): void
     {

@@ -30,16 +30,18 @@ class RepositoryTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(9))
             ->method('add')
-            ->withConsecutive(
-                ['active', CheckboxType::class],
-                ['favorite', CheckboxType::class],
-                ['name', TextType::class],
-                ['displayName', TextType::class],
-                ['mainBranchName', TextType::class],
-                ['url', RepositoryUrlType::class],
-                ['updateRevisionsInterval', IntegerType::class],
-                ['validateRevisionsInterval', IntegerType::class],
-                ['gitlabProjectId', GitlabProjectIdType::class],
+            ->will(
+                self::onConsecutiveCalls(
+                    ['active', CheckboxType::class],
+                    ['favorite', CheckboxType::class],
+                    ['name', TextType::class],
+                    ['displayName', TextType::class],
+                    ['mainBranchName', TextType::class],
+                    ['url', RepositoryUrlType::class],
+                    ['updateRevisionsInterval', IntegerType::class],
+                    ['validateRevisionsInterval', IntegerType::class],
+                    ['gitlabProjectId', GitlabProjectIdType::class],
+                )
             )->willReturnSelf();
 
         $type = new RepositoryType('gitlab');

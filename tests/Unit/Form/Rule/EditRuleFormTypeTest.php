@@ -47,9 +47,11 @@ class EditRuleFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['rule', RuleType::class],
-                ['save', SubmitType::class, ['label' => 'save']],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['rule', RuleType::class],
+                    ['save', SubmitType::class, ['label' => 'save']],
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['data' => ['rule' => $rule]]);

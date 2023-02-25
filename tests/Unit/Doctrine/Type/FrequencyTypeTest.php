@@ -52,7 +52,7 @@ class FrequencyTypeTest extends AbstractTestCase
     /**
      * @return array<string, array<string|DateInterval>>
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             FrequencyType::ONCE_PER_HOUR        => [FrequencyType::ONCE_PER_HOUR, new DateInterval("PT1H")],

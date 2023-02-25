@@ -47,9 +47,13 @@ class EditRepositoryFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['repository', RepositoryType::class],
-                ['save', SubmitType::class, ['label' => 'save']],
+            ->will(
+                self::onConsecutiveCalls(
+                    [
+                        ['repository', RepositoryType::class],
+                        ['save', SubmitType::class, ['label' => 'save']],
+                    ]
+                )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['data' => ['repository' => $rule]]);

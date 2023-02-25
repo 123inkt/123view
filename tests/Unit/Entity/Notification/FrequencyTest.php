@@ -31,7 +31,7 @@ class FrequencyTest extends AbstractTestCase
      * @covers ::getPeriod
      * @dataProvider getPeriodDataProvider
      */
-    public function testGetPeriod(string $frequency, DateTimeImmutable $expectedStartTime): void
+    public static function testGetPeriod(string $frequency, DateTimeImmutable $expectedStartTime): void
     {
         $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');
         $period      = Frequency::getPeriod($currentTime, $frequency);
@@ -43,7 +43,7 @@ class FrequencyTest extends AbstractTestCase
     /**
      * @return array<string, array<string|DateTimeImmutable>>
      */
-    public function getPeriodDataProvider(): array
+    public static function getPeriodDataProvider(): array
     {
         return [
             'ONCE_PER_HOUR'        => [Frequency::ONCE_PER_HOUR, new DateTimeImmutable('2021-10-18 21:05:00')],

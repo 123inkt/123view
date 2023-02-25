@@ -27,16 +27,18 @@ class RuleOptionsTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(9))
             ->method('add')
-            ->withConsecutive(
-                ['frequency', ChoiceType::class,],
-                ['theme', ChoiceType::class],
-                ['subject', TextType::class],
-                ['diffAlgorithm', ChoiceType::class],
-                ['ignoreSpaceAtEol', CheckboxType::class],
-                ['ignoreSpaceChange', CheckboxType::class],
-                ['ignoreAllSpace', CheckboxType::class],
-                ['ignoreBlankLines', CheckboxType::class],
-                ['excludeMergeCommits', CheckboxType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['frequency', ChoiceType::class,],
+                    ['theme', ChoiceType::class],
+                    ['subject', TextType::class],
+                    ['diffAlgorithm', ChoiceType::class],
+                    ['ignoreSpaceAtEol', CheckboxType::class],
+                    ['ignoreSpaceChange', CheckboxType::class],
+                    ['ignoreAllSpace', CheckboxType::class],
+                    ['ignoreBlankLines', CheckboxType::class],
+                    ['excludeMergeCommits', CheckboxType::class],
+                )
             )->willReturnSelf();
 
         $type = new RuleOptionsType();

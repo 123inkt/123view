@@ -26,9 +26,11 @@ class RecipientTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->withConsecutive(
-                ['email', EmailType::class],
-                ['name', TextType::class],
+            ->will(
+                static::onConsecutiveCalls(
+                    ['email', EmailType::class],
+                    ['name', TextType::class],
+                )
             )->willReturnSelf();
 
         $type = new RecipientType();

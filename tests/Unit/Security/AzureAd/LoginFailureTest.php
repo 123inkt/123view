@@ -13,7 +13,8 @@ use DR\Review\Tests\AbstractTestCase;
 class LoginFailureTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::isSuccess
+     * @covers ::getMessage
      */
     public function testAccessorPairs(): void
     {
