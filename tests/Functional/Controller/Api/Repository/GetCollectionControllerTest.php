@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Functional\Controller\Api;
+namespace DR\Review\Tests\Functional\Controller\Api\Repository;
 
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
@@ -15,7 +15,7 @@ use Nette\Utils\Json;
 /**
  * @coversNothing
  */
-class GetRepositoriesControllerTest extends AbstractFunctionalTestCase
+class GetCollectionControllerTest extends AbstractFunctionalTestCase
 {
     /**
      * @throws Exception
