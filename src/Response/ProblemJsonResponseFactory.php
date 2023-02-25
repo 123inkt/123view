@@ -16,8 +16,7 @@ class ProblemJsonResponseFactory
 
     public function createFromThrowable(Throwable $throwable): ProblemJsonResponse
     {
-        $this->debug = true;
-        $data        = ['type' => 'about:blank', 'title' => null, 'status' => null, 'detail' => []];
+        $data = ['type' => 'about:blank', 'title' => null, 'status' => null, 'detail' => []];
 
         if ($throwable instanceof HttpExceptionInterface) {
             $data['title']  = $throwable->getMessage();
