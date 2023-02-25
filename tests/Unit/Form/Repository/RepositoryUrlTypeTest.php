@@ -29,10 +29,12 @@ class RepositoryUrlTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(3))
             ->method('add')
-            ->withConsecutive(
-                ['url', UrlType::class],
-                ['username', TextType::class],
-                ['password', PasswordType::class],
+            ->will(
+                self::onConsecutiveCalls(
+                    ['url', UrlType::class],
+                    ['username', TextType::class],
+                    ['password', PasswordType::class],
+                )
             )->willReturnSelf();
         $builder->expects(self::once())->method('addModelTransformer')->with(static::isInstanceOf(RepositoryUrlTransformer::class));
 
