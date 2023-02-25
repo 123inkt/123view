@@ -18,7 +18,25 @@ use DR\Review\ViewModel\App\Review\ReviewViewModel;
 class ReviewViewModelTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::isDescriptionVisible
+     * @covers ::setDescriptionVisible
+     * @covers ::setSidebarTabMode
+     * @covers ::getSidebarTabMode
+     * @covers ::setAddReviewerForm
+     * @covers ::getAddReviewerForm
+     * @covers ::getRevisionViewModel
+     * @covers ::setRevisionViewModel
+     * @covers ::setFileTreeModel
+     * @covers ::getFileTreeModel
+     * @covers ::getFileDiffViewModel
+     * @covers ::setFileDiffViewModel
+     * @covers ::getTimelineViewModel
+     * @covers ::setTimelineViewModel
+     * @covers ::getVisibleRevisionCount
+     * @covers ::setVisibleRevisionCount
+     * @covers ::getOpenComments
+     * @covers ::getAuthors
+     * @covers ::getReviewer
      */
     public function testAccessorPairs(): void
     {

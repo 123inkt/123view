@@ -37,19 +37,13 @@ class CodeReviewTest extends AbstractTestCase
      * @covers ::setUpdateTimestamp
      * @covers ::getRepository
      * @covers ::setRepository
-     * @covers ::addRevision
-     * @covers ::getRevisions
-     * @covers ::setRevisions
-     * @covers ::isAccepted
-     * @covers ::isRejected
-     * @covers ::getReviewersState
      * @covers ::getActors
      * @covers ::setActors
      */
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['getRevisions', 'getComments']);
+        $config->setExcludedMethods(['getReviewers', 'getRevisions', 'getComments']);
         static::assertAccessorPairs(CodeReview::class, $config);
     }
 

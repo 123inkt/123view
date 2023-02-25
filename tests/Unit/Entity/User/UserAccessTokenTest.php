@@ -12,7 +12,20 @@ use DR\Review\Tests\AbstractTestCase;
 class UserAccessTokenTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getId
+     * @covers ::setId
+     * @covers ::getToken
+     * @covers ::setToken
+     * @covers ::getName
+     * @covers ::setName
+     * @covers ::getUser
+     * @covers ::setUser
+     * @covers ::getUsages
+     * @covers ::setUsages
+     * @covers ::getCreateTimestamp
+     * @covers ::setCreateTimestamp
+     * @covers ::getUseTimestamp
+     * @covers ::setUseTimestamp
      */
     public function testAccessorPairs(): void
     {

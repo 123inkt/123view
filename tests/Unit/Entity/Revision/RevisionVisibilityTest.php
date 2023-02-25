@@ -12,7 +12,14 @@ use DR\Review\Tests\AbstractTestCase;
 class RevisionVisibilityTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::getRevision
+     * @covers ::setRevision
+     * @covers ::getReview
+     * @covers ::setReview
+     * @covers ::getUser
+     * @covers ::setUser
+     * @covers ::isVisible
+     * @covers ::setVisible
      */
     public function testAccessorPairs(): void
     {

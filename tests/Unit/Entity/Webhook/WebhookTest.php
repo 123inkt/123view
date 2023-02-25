@@ -15,7 +15,22 @@ use DR\Review\Tests\AbstractTestCase;
 class WebhookTest extends AbstractTestCase
 {
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::isEnabled
+     * @covers ::setEnabled
+     * @covers ::getUrl
+     * @covers ::setUrl
+     * @covers ::getRetries
+     * @covers ::setRetries
+     * @covers ::isVerifySsl
+     * @covers ::setVerifySsl
+     * @covers ::getHeaders
+     * @covers ::setHeaders
+     * @covers ::getRepository
+     * @covers ::setRepository
+     * @covers ::getActivities
+     * @covers ::setActivities
      */
     public function testAccessorPairs(): void
     {
