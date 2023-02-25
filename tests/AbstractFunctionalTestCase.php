@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace DR\Review\Tests;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
-use Doctrine\Persistence\ObjectManager;
-use DR\Review\Entity\User\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use DR\Review\Utility\Assert;
+use Exception;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -15,21 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractFunctionalTestCase extends WebTestCase
 {
-    /** Are the fixtures loaded within database transaction */
-    protected const REQUIRE_TRANSACTION = true;
-
-    protected ?AbstractDatabaseTool $databaseTool;
-    protected ?ObjectManager        $entityManager;
-    protected KernelBrowser         $client;
-
-    protected function getUser(int $userId): User
-    {
-        /** @var User|null $user */
-        $user = $this->entityManager->getRepository(User::class)->find($userId);
-        static::assertNotNull($user);
-
-        return $user;
-    }
+    protected ?AbstractDatabaseTool   $databaseTool;
+    protected ?EntityManagerInterface $entityManager;
+    protected KernelBrowser           $client;
 
     /**
      * @see https://latteandcode.medium.com/symfony-improving-your-tests-with-doctrinefixturesbundle-1a37b704ac05
@@ -39,15 +28,11 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
     {
         parent::setUp();
         $this->client        = static::createClient(['environment' => 'test', 'debug' => 'false']);
-        $this->databaseTool  = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $doctrine            = static::getContainer()->get('doctrine');
-        $this->entityManager = $doctrine->getManager();
+        $this->databaseTool  = Assert::instanceOf(DatabaseToolCollection::class, static::getContainer()->get(DatabaseToolCollection::class))->get();
+        $doctrine            = Assert::instanceOf(ManagerRegistry::class, static::getContainer()->get('doctrine'));
+        $this->entityManager = Assert::instanceOf(EntityManagerInterface::class, $doctrine->getManager());
 
-        if (self::REQUIRE_TRANSACTION) {
-            /** @var Connection $connection */
-            $connection = $doctrine->getConnection();
-            $connection->beginTransaction();
-        }
+        Assert::instanceOf(Connection::class, $doctrine->getConnection())->beginTransaction();
 
         $fixtures = $this->getFixtures();
         if (count($fixtures) > 0) {
@@ -63,7 +48,7 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         // this call will shutdown the kernel and close any open connections. Ensuring the rollback of any transactions.
         parent::tearDown();
         $this->databaseTool = null;
-        $this->entityManager->close();
+        $this->entityManager?->close();
         $this->entityManager = null;
     }
 
@@ -73,7 +58,7 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      * @param class-string<T> $serviceId
      *
      * @return T
-     * @throws \Exception
+     * @throws Exception
      */
     protected static function getService(string $serviceId, ?string $alias = null): object
     {

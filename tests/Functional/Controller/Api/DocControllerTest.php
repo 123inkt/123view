@@ -19,6 +19,7 @@ class DocControllerTest extends AbstractFunctionalTestCase
         self::assertResponseIsSuccessful();
 
         $content = $this->client->getResponse()->getContent();
+        static::assertIsString($content);
         static::assertStringContainsString('swagger-ui', $content);
     }
 
@@ -31,6 +32,7 @@ class DocControllerTest extends AbstractFunctionalTestCase
         self::assertResponseIsSuccessful();
 
         $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
+        static::assertIsArray($data);
         static::assertArrayHasKey('openapi', $data);
     }
 
