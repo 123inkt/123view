@@ -10,7 +10,6 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor
- * @covers ::__construct
  */
 class OperationParameterDocumentorTest extends AbstractTestCase
 {
