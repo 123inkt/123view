@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Functional\Controller\Api\User;
 
 use DR\Review\Repository\User\UserRepository;
-use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Review\Utility\Assert;
@@ -22,7 +21,6 @@ class UserMeControllerTest extends AbstractFunctionalTestCase
     public function testGet(): void
     {
         $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
-        $user->addRole(Roles::ROLE_USER);
 
         $this->client->loginUser($user);
         $this->client->request('GET', '/api/users/me');
