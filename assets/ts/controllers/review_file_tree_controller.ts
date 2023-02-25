@@ -15,15 +15,17 @@ export default class extends Controller<HTMLElement> {
     private readonly declare hasActiveFileTarget: boolean;
 
     public connect(): void {
+        const reviewId = DataSet.int(this.element, 'reviewId');
+
         if (this.hasActiveFileTarget) {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
         document.addEventListener('keyup', this.onNavigate.bind(this));
-        document.addEventListener('notification', this.notificationService.onEvent);
+        document.addEventListener('/review/' + String(reviewId), this.notificationService.onEvent);
         this.notificationService.subscribe(
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
             this.updateReviewFileTree.bind(this),
-            DataSet.int(this.element, 'reviewId')
+            reviewId
         );
     }
 
