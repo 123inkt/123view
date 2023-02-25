@@ -7,9 +7,13 @@ use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\Parameter;
 use ApiPlatform\OpenApi\Model\PathItem;
 use ApiPlatform\OpenApi\OpenApi;
+use DR\Review\Utility\Assert;
 use Generator;
 use IteratorAggregate;
 
+/**
+ * @implements IteratorAggregate<int, array{0: Operation, 1: Parameter}>
+ */
 class OpenApiParameterIterator implements IteratorAggregate
 {
     public function __construct(private readonly OpenApi $openApi)
@@ -22,12 +26,13 @@ class OpenApiParameterIterator implements IteratorAggregate
     public function getIterator(): Generator
     {
         $pathItems = $this->openApi->getPaths()->getPaths();
+        /** @var PathItem $pathItem */
         foreach ($pathItems as $pathItem) {
             foreach (PathItem::$methods as $method) {
-                $getter = 'get' . ucfirst(strtolower($method));
+                $getter = Assert::isCallable([$pathItem, 'get' . ucfirst(strtolower($method))]);
 
-                /** @var Operation $operation */
-                $operation = $pathItem->$getter();
+                /** @var Operation|null $operation */
+                $operation = $getter();
                 if ($operation?->getParameters() === null) {
                     continue;
                 }

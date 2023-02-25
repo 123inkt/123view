@@ -43,6 +43,24 @@ class Assert
     }
 
     /**
+     * Assert value is callable
+     * @template       T
+     * @phpstan-assert callable $value
+     *
+     * @param T $value
+     *
+     * @return T&callable
+     */
+    public static function isCallable(mixed $value): callable
+    {
+        if (is_callable($value) === false) {
+            throw new RuntimeException('Expecting value to be `callable`');
+        }
+
+        return $value;
+    }
+
+    /**
      * Assert value is int
      * @template       T
      * @phpstan-assert int $value

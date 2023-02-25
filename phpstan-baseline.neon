@@ -1,9 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\OpenApiFactory\\:\\:__invoke\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\OpenApi\\\\OpenApiFactory\\:\\:__invoke\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: src/ApiPlatform/OpenApiFactory.php
+			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
 
 		-
 			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\Provider\\\\CodeReviewActivityProvider\\:\\:provide\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
