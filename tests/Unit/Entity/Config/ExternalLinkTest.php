@@ -12,6 +12,7 @@ use DR\Review\Tests\AbstractTestCase;
 class ExternalLinkTest extends AbstractTestCase
 {
     /**
+     * @covers ::getId
      * @covers ::setUrl
      * @covers ::getUrl
      * @covers ::setPattern
