@@ -32,16 +32,6 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
     }
 
     /**
-     * @param Revision[] $revisions
-     */
-    private function dispatchRevisions(array $revisions): void
-    {
-        foreach ($revisions as $revision) {
-            $this->bus->dispatch(new NewRevisionMessage((int)$revision->getId()));
-        }
-    }
-
-    /**
      * @throws Throwable
      */
     #[AsMessageHandler(fromTransport: 'async_revisions')]
@@ -65,5 +55,15 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
             $batch->addAll($this->revisionFactory->createFromCommit($commit));
         }
         $batch->flush();
+    }
+
+    /**
+     * @param Revision[] $revisions
+     */
+    private function dispatchRevisions(array $revisions): void
+    {
+        foreach ($revisions as $revision) {
+            $this->bus->dispatch(new NewRevisionMessage((int)$revision->getId()));
+        }
     }
 }
