@@ -58,7 +58,6 @@
                 <element value="protected static methods, protected static final methods"/>
                 <element value="private methods"/>
                 <element value="private static methods"/>
-                <element value="magic methods"/>
             </property>
         </properties>
         <exclude-pattern>*/tests/</exclude-pattern>

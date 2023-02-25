@@ -23,19 +23,6 @@ class OpenApiFactory implements OpenApiFactoryInterface
     }
 
     /**
-     * @throws Exception
-     */
-    private static function setDescription(Parameter $parameter, mixed $value): void
-    {
-        $reflectionClass    = new ReflectionClass($parameter);
-        $reflectionProperty = $reflectionClass->getProperty('description');
-        if ($reflectionProperty->setAccessible(true) === false) {
-            return;
-        }
-        $reflectionProperty->setValue($parameter, $value);
-    }
-
-    /**
      * @inheritDoc
      * @throws Exception
      */
@@ -57,9 +44,20 @@ class OpenApiFactory implements OpenApiFactoryInterface
         // the description is missing for certain parameters, and the ApiPlatform classes don't allow to hook into the generated descriptions.
         // Unfortunately we have to resort to reflection to set our own description here.
         foreach (new OpenApiParameterIterator($openApi) as [$operation, $parameter]) {
-            self::setDescription($parameter, $this->documentor->getDescription($operation, $parameter));
+            $this->setParameterDescription($parameter, $this->documentor->getDescription($operation, $parameter));
         }
 
         return $openApi;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function setParameterDescription(Parameter $parameter, mixed $value): void
+    {
+        $reflectionProperty = (new ReflectionClass($parameter))->getProperty('description');
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($parameter, $value);
     }
 }
