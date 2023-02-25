@@ -54,7 +54,7 @@ class DiffChangeBundlerTest extends AbstractKernelTestCase
     /**
      * @return Generator<array<string|string[]>>
      */
-    public function dataProvider(): Generator
+    public static function dataProvider(): Generator
     {
         yield [
             'public function getter($modelId, $timestamp)',
