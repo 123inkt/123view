@@ -12,6 +12,7 @@ use DR\Review\Tests\AbstractTestCase;
 class FilterTest extends AbstractTestCase
 {
     /**
+     * @covers ::getId
      * @covers ::setPattern
      * @covers ::getPattern
      * @covers ::setRule

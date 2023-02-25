@@ -8,6 +8,7 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Entity\Repository\RepositoryProperty
+ * @covers ::__construct
  */
 class RepositoryPropertyTest extends AbstractTestCase
 {

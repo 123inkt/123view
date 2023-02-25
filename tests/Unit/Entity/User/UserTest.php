@@ -12,6 +12,7 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Entity\User\User
+ * @covers ::__construct
  */
 class UserTest extends AbstractTestCase
 {

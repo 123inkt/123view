@@ -11,6 +11,7 @@ use DR\Review\Tests\AbstractTestCase;
 
 /**
  * @coversDefaultClass \DR\Review\Entity\Repository\Repository
+ * @covers ::__construct
  */
 class RepositoryTest extends AbstractTestCase
 {

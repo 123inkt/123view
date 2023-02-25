@@ -14,6 +14,7 @@ use DR\Review\ViewModel\App\Review\ReviewViewModel;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewViewModel
+ * @covers ::__construct
  */
 class ReviewViewModelTest extends AbstractTestCase
 {
