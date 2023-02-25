@@ -15,7 +15,16 @@ class AssetTest extends AbstractTestCase
     use AccessorPairAsserter;
 
     /**
-     * @covers ::<public>
+     * @covers ::setId
+     * @covers ::getId
+     * @covers ::setData
+     * @covers ::getData
+     * @covers ::setUser
+     * @covers ::getUser
+     * @covers ::setCreateTimestamp
+     * @covers ::getCreateTimestamp
+     * @covers ::setMimeType
+     * @covers ::getMimeType
      */
     public function testAccessorPairs(): void
     {
