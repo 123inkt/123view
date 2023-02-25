@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         forceCoversAnnotation="true"
+         requireCoverageMetadata="true"
          failOnRisky="true"
          failOnWarning="true"
+         failOnIncomplete="true"
+         failOnEmptyTestSuite="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutResourceUsageDuringSmallTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          executionOrder="defects"
 >
@@ -33,7 +34,8 @@
             <directory suffix=".php">src</directory>
         </include>
     </coverage>
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    </listeners>
+<!-- Restore in Symfony 6.3 -->
+<!--    <listeners>-->
+<!--        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>-->
+<!--    </listeners>-->
 </phpunit>

@@ -20,8 +20,9 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
     protected function setUp(): void
     {
         if (Kernel::VERSION_ID < 60300) {
-            $this->markTestSkipped('Test incompatible with PHPUnit 10');
+            self::markTestSkipped('Symfony 6.2 and lower is not compatible with PHPUnit 10.');
         }
+        parent::setUp();
     }
 
     /**
