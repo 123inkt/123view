@@ -2,8 +2,9 @@ import {Controller} from '@hotwired/stimulus';
 import DataSet from '../lib/DataSet';
 
 export default class extends Controller<HTMLElement> {
-    public static targets    = ['dropdown', 'comment'];
+    public static targets    = ['dropdown', 'icon', 'comment'];
     private readonly declare dropdownTarget: HTMLElement;
+    private readonly declare iconTarget: HTMLElement;
     private readonly declare commentTargets: HTMLElement[];
     private reviewId: number = 0;
 
@@ -40,18 +41,19 @@ export default class extends Controller<HTMLElement> {
     }
 
     private updateCommentVisibility(visibility: string): void {
-        this.commentTargets.forEach((comment) => {
-            switch (visibility) {
-                case 'none':
-                    comment.style.display = 'none';
-                    break;
-                case 'unresolved':
-                    comment.style.display = DataSet.int(comment, 'commentUnresolved') === 1 ? '' : 'none';
-                    break;
-                case 'all':
-                    comment.style.display = '';
-                    break;
-            }
-        });
+        switch (visibility) {
+            case 'none':
+                this.iconTarget.className = 'bi bi-chat';
+                this.commentTargets.forEach(comment => comment.style.display = 'none');
+                break;
+            case 'unresolved':
+                this.iconTarget.className = 'bi bi-chat-dots';
+                this.commentTargets.forEach(comment => comment.style.display = DataSet.int(comment, 'commentUnresolved') === 1 ? '' : 'none');
+                break;
+            case 'all':
+                this.iconTarget.className = 'bi bi-chat-fill';
+                this.commentTargets.forEach(comment => comment.style.display = '');
+                break;
+        }
     }
 }
