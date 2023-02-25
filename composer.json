@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DR\\Review\\Tests\\E2E\\": "tests/E2E",
+            "DR\\Review\\Tests\\Functional\\": "tests/Functional",
             "DR\\Review\\Tests\\Integration\\": "tests/Integration",
             "DR\\Review\\Tests\\Unit\\": "tests/Unit",
             "DR\\Review\\Tests\\": "tests/"
@@ -141,7 +141,7 @@
         "fix": "@fix:phpcbf",
         "fix:phpcbf": "phpcbf src tests",
         "test": "phpunit",
-        "test:e2e": "phpunit --testsuite e2e",
+        "test:functional": "phpunit --testsuite functional",
         "test:integration": "phpunit --testsuite integration",
         "test:unit": "phpunit --testsuite unit",
         "test:coverage": [

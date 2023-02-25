@@ -19,8 +19,8 @@
     </php>
 
     <testsuites>
-        <testsuite name="e2e">
-            <directory>tests/E2E</directory>
+        <testsuite name="functional">
+            <directory>tests/Functional</directory>
         </testsuite>
         <testsuite name="integration">
             <directory>tests/Integration</directory>
