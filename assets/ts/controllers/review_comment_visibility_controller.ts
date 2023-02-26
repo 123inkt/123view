@@ -6,6 +6,7 @@ import CommentService from '../service/CommentService';
 export default class extends Controller<HTMLElement> {
     public static targets = ['dropdown', 'icon', 'comment'];
 
+    private readonly declare hasDropdownTarget: boolean;
     private readonly declare dropdownTarget: HTMLElement;
     private readonly declare iconTarget: HTMLElement;
     private readonly declare commentTargets: HTMLElement[];
@@ -13,7 +14,9 @@ export default class extends Controller<HTMLElement> {
     private readonly commentService = new CommentService();
 
     public connect(): void {
-        this.dropdownTarget.addEventListener('change', this.onSelect.bind(this));
+        if (this.hasDropdownTarget) {
+            this.dropdownTarget.addEventListener('change', this.onSelect.bind(this));
+        }
     }
 
     private onSelect(event: Event): void {
