@@ -9,6 +9,7 @@ use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Tests\AbstractControllerTestCase;
+use DR\Review\Utility\Assert;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,7 +31,7 @@ class GetCommentCountControllerTest extends AbstractControllerTestCase
 
         /** @var JsonResponse $response */
         $response = ($this->controller)($review);
-        static::assertSame(['total' => 2, 'open' => 1, 'resolved' => 1], Json::decode($response->getContent(), true));
+        static::assertSame(['total' => 2, 'open' => 1, 'resolved' => 1], Json::decode(Assert::notFalse($response->getContent()), true));
     }
 
     public function getController(): AbstractController
