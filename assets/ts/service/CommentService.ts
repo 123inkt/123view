@@ -1,4 +1,4 @@
-import CommentCount from '../entity/CommentCount';
+import type CommentCount from '../entity/CommentCount';
 import Elements from '../lib/Elements';
 import HttpClient from '../lib/HttpClient';
 
