@@ -8,7 +8,6 @@ use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
-use DR\Review\Entity\Review\CommentVisibility;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Form\Review\AddCommentReplyFormType;
@@ -18,8 +17,6 @@ use DR\Review\Model\Review\Action\AddCommentAction;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
-use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
@@ -32,25 +29,16 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class CommentViewModelProviderTest extends AbstractTestCase
 {
-    private CommentRepository&MockObject         $commentRepository;
-    private FormFactoryInterface&MockObject      $formFactory;
-    private DiffFinder&MockObject                $diffFinder;
-    private CommentVisibilityProvider&MockObject $visibilityProvider;
-    private CommentViewModelProvider             $provider;
+    private FormFactoryInterface&MockObject $formFactory;
+    private DiffFinder&MockObject           $diffFinder;
+    private CommentViewModelProvider        $provider;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->commentRepository  = $this->createMock(CommentRepository::class);
-        $this->formFactory        = $this->createMock(FormFactoryInterface::class);
-        $this->diffFinder         = $this->createMock(DiffFinder::class);
-        $this->visibilityProvider = $this->createMock(CommentVisibilityProvider::class);
-        $this->provider           = new CommentViewModelProvider(
-            $this->commentRepository,
-            $this->formFactory,
-            $this->diffFinder,
-            $this->visibilityProvider
-        );
+        $this->formFactory = $this->createMock(FormFactoryInterface::class);
+        $this->diffFinder  = $this->createMock(DiffFinder::class);
+        $this->provider    = new CommentViewModelProvider($this->formFactory, $this->diffFinder);
     }
 
     /**
@@ -151,38 +139,5 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $viewModel = $this->provider->getEditCommentReplyViewModel($action);
         static::assertNotNull($viewModel);
         static::assertSame($reply, $viewModel->reply);
-    }
-
-    /**
-     * @covers ::getCommentsViewModel
-     */
-    public function testGetCommentsViewModel(): void
-    {
-        $commentA = new Comment();
-        $commentA->setLineReference(new LineReference('comment-1', 1, 2, 3));
-        $commentB = new Comment();
-        $commentB->setLineReference(new LineReference('comment-2', 4, 5, 6));
-        $comments = [$commentA, $commentB];
-        $review   = new CodeReview();
-        $file     = new DiffFile();
-        $line     = new DiffLine(0, []);
-
-        $file->filePathBefore = '/path/to/fileBefore';
-        $file->filePathAfter  = '/path/to/fileAfter';
-
-        $this->commentRepository->expects(self::once())
-            ->method('findByReview')
-            ->with($review, ['/path/to/fileAfter', '/path/to/fileBefore'])
-            ->willReturn($comments);
-        $this->diffFinder->expects(self::exactly(2))
-            ->method('findLineInFile')
-            ->will(static::onConsecutiveCalls([$file, $commentA->getLineReference()], [$file, $commentB->getLineReference()]))
-            ->willReturn($line, null);
-        $this->visibilityProvider->expects(self::once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
-
-        $viewModel = $this->provider->getCommentsViewModel($review, $file);
-        static::assertSame([$commentA], $viewModel->getComments($line));
-        static::assertSame([$commentB], $viewModel->detachedComments);
-        static::assertSame(CommentVisibility::NONE, $viewModel->commentVisibility);
     }
 }

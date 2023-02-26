@@ -21,7 +21,7 @@ class CommentVisibilityProvider
         }
 
         $value = $request->getSession()->get(SessionKeys::REVIEW_COMMENT_VISIBILITY->value);
-        if ($value === null) {
+        if (is_string($value) === false) {
             return CommentVisibility::ALL;
         }
 
