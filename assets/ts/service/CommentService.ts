@@ -1,3 +1,4 @@
+import CommentCount from '../entity/CommentCount';
 import Elements from '../lib/Elements';
 import HttpClient from '../lib/HttpClient';
 
@@ -51,5 +52,11 @@ export default class CommentService {
 
     public setCommentVisibility(visibility: string): Promise<void> {
         return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+    }
+
+    public getCommentCount(reviewId: number): Promise<CommentCount> {
+        return this.client
+            .get(`/app/reviews/${reviewId}/comment-count`, {headers: {Accept: 'application/json'}})
+            .then(response => response.data as CommentCount);
     }
 }

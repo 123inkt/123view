@@ -7,7 +7,9 @@ export default class ReviewNotificationService {
         this.onEvent = this.onEvent.bind(this);
     }
 
-    public subscribe(events: string | string[], callback: (event: Event) => void, reviewId: number, userId?: number): void {
+    public subscribe(channel: string, events: string | string[], callback: (event: Event) => void, reviewId: number, userId?: number): void {
+        document.addEventListener(channel, this.onEvent);
+
         if (typeof events === 'string') {
             events = [events];
         }
@@ -20,7 +22,11 @@ export default class ReviewNotificationService {
         }
     }
 
-    public onEvent(event: Event): void {
+    public unsubscribe(channel: string): void {
+        document.removeEventListener(channel, this.onEvent);
+    }
+
+    private onEvent(event: Event): void {
         const data      = (event as CustomEvent).detail;
         const eventName = data.eventName;
 
