@@ -1,5 +1,4 @@
 import {Controller} from '@hotwired/stimulus';
-import DataSet from '../lib/DataSet';
 import Elements from '../lib/Elements';
 import Errors from '../lib/Errors';
 import Events from '../lib/Events';
@@ -33,10 +32,7 @@ export default class extends Controller<HTMLButtonElement> {
     }
 
     private load(event: Event): void {
-        const openComments    = DataSet.int(this.element, 'openComments');
-        const confirmQuestion = DataSet.string(this.element, 'confirmQuestion');
-
-        if (openComments > 0 && confirm(confirmQuestion) === false) {
+        if (this.openCommentsValue > 0 && confirm(this.confirmQuestionValue.replace('{count}', String(this.openCommentsValue))) === false) {
             Events.stop(event);
             return;
         }
