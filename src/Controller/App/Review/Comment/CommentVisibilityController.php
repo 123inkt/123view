@@ -19,7 +19,7 @@ class CommentVisibilityController extends AbstractController
     {
         $visibility = $request->getVisibility();
 
-        $request->getRequest()->getSession()->set(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, $visibility);
+        $request->getRequest()->getSession()->set(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, $visibility->value);
 
         return new JsonResponse('ok');
     }

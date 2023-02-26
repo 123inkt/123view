@@ -12,7 +12,7 @@
              data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
             {%- if file.blocks -%}
                 {%- for detachedComment in commentsViewModel.detachedComments -%}
-                    {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true} -%}
+                    {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true, visible: commentsViewModel.isCommentVisible(detachedComment)} -%}
                 {%- endfor -%}
 
                 <div class="diff-file__file-diff">

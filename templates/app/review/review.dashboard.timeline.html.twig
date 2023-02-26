@@ -14,7 +14,7 @@
     </div>
 
     {% if entry.comment is not same as (null) %}
-        {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
+        {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null, visible: true} %}
     {% endif %}
 
     {% if entry.revision is not same as (null) and entry.revision.description %}

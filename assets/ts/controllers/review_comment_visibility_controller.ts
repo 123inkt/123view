@@ -28,13 +28,15 @@ export default class extends Controller<HTMLElement> {
         // update comment visibility
         switch (visibility) {
             case 'none':
-                this.commentTargets.forEach(comment => comment.style.display = 'none');
+                this.commentTargets.forEach(comment => comment.classList.add('d-none'));
                 break;
             case 'unresolved':
-                this.commentTargets.forEach(comment => comment.style.display = DataSet.int(comment, 'commentUnresolved') === 1 ? '' : 'none');
+                this.commentTargets.forEach(
+                    comment => comment.classList[DataSet.int(comment, 'commentUnresolved') === 1 ? 'remove' : 'add']('d-none')
+                );
                 break;
             case 'all':
-                this.commentTargets.forEach(comment => comment.style.display = '');
+                this.commentTargets.forEach(comment => comment.classList.remove('d-none'));
                 break;
         }
 

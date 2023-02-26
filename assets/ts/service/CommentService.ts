@@ -50,6 +50,6 @@ export default class CommentService {
     }
 
     public setCommentVisibility(visibility: string): Promise<void> {
-        return this.client.post('/app/reviews/comment-visibility', {visibility});
+        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
     }
 }

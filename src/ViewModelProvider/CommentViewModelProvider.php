@@ -15,6 +15,7 @@ use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Comment\AddCommentViewModel;
@@ -30,6 +31,7 @@ class CommentViewModelProvider
         private readonly CommentRepository $commentRepository,
         private readonly FormFactoryInterface $formFactory,
         private readonly DiffFinder $diffFinder,
+        private readonly CommentVisibilityProvider $visibilityProvider,
     ) {
     }
 
@@ -90,7 +92,7 @@ class CommentViewModelProvider
         $detachedComments = [];
         $groupedComments  = [];
 
-        // 1) fine the DiffLine for the given LineReference
+        // 1) find the DiffLine for the given LineReference
         // 2) if line exists, assign to grouped comments
         // 3) if not, add to detached comments
         foreach ($comments as $comment) {
@@ -102,6 +104,6 @@ class CommentViewModelProvider
             }
         }
 
-        return new CommentsViewModel($groupedComments, $detachedComments);
+        return new CommentsViewModel($groupedComments, $detachedComments, $this->visibilityProvider->getCommentVisibility());
     }
 }

@@ -29,7 +29,7 @@
 
         {#- comments -#}
         {%- for comment in commentsViewModel.getComments(line) -%}
-            {%- include 'app/review/comment/comment.html.twig' -%}
+            {%- include 'app/review/comment/comment.html.twig' with {visible: commentsViewModel.isCommentVisible(comment)} -%}
         {%- endfor -%}
 
         <div data-role="add-comment-inserter"></div>
