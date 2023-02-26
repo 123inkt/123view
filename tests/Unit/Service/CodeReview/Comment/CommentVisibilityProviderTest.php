@@ -8,23 +8,24 @@ use DR\Review\Security\SessionKeys;
 use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[CoversClass(CommentVisibilityProvider::class)]
 class CommentVisibilityProviderTest extends AbstractTestCase
 {
-    private RequestStack              $requestStack;
-    private Request                   $request;
-    private Session                   $session;
-    private CommentVisibilityProvider $provider;
+    private RequestStack                $requestStack;
+    private Request                     $request;
+    private SessionInterface&MockObject $session;
+    private CommentVisibilityProvider   $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->requestStack = new RequestStack();
-        $this->session      = new Session();
+        $this->session      = $this->createMock(SessionInterface::class);
         $this->request      = new Request();
         $this->request->setSession($this->session);
         $this->provider = new CommentVisibilityProvider($this->requestStack);
@@ -32,19 +33,23 @@ class CommentVisibilityProviderTest extends AbstractTestCase
 
     public function testGetCommentVisibilityDefault(): void
     {
-        static::assertSame(CommentVisibility::ALL->value, $this->provider->getCommentVisibility()->value);
+        static::assertSame(CommentVisibility::ALL, $this->provider->getCommentVisibility());
     }
 
     public function testGetCommentVisibilityRequestWithoutSessionValue(): void
     {
         $this->requestStack->push($this->request);
-        static::assertSame(CommentVisibility::ALL->value, $this->provider->getCommentVisibility()->value);
+        static::assertSame(CommentVisibility::ALL, $this->provider->getCommentVisibility());
     }
 
     public function testGetCommentVisibility(): void
     {
-        $this->session->set(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, CommentVisibility::UNRESOLVED->value);
+        $this->session->expects(self::once())
+            ->method('get')
+            ->with(SessionKeys::REVIEW_COMMENT_VISIBILITY->value)
+            ->willReturn(CommentVisibility::UNRESOLVED->value);
+
         $this->requestStack->push($this->request);
-        static::assertSame(CommentVisibility::UNRESOLVED->value, $this->provider->getCommentVisibility()->value);
+        static::assertSame(CommentVisibility::UNRESOLVED, $this->provider->getCommentVisibility());
     }
 }
