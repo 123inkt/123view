@@ -48,4 +48,8 @@ export default class CommentService {
     public deleteCommentReply(url: string): Promise<void> {
         return this.client.delete(url);
     }
+
+    public setCommentVisibility(visibility: string): Promise<void> {
+        return this.client.post('/app/reviews/comment-visibility', {visibility});
+    }
 }

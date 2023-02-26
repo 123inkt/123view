@@ -29,7 +29,11 @@
             <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                     {{ stimulus_target('component--dropdown-menu', 'button') }}
                     {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
-                <i class="bi bi-chat-fill" {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
+                <i class="bi bi-chat-fill"
+                   data-icon-class-all="bi bi-chat-fill"
+                   data-icon-class-unresolved="bi bi-chat-dots"
+                   data-icon-class-none="bi bi-chat"
+                   {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
             </a>
             <ul class="dropdown-menu"
                     {{ stimulus_target('component--dropdown-menu', 'dropdown') }}

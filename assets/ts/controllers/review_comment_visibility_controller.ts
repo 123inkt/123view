@@ -1,62 +1,44 @@
 import {Controller} from '@hotwired/stimulus';
 import DataSet from '../lib/DataSet';
+import Strings from '../lib/Strings';
+import CommentService from '../service/CommentService';
 
 export default class extends Controller<HTMLElement> {
-    public static targets    = ['dropdown', 'icon', 'comment'];
+    public static targets = ['dropdown', 'icon', 'comment'];
+
     private readonly declare dropdownTarget: HTMLElement;
     private readonly declare iconTarget: HTMLElement;
     private readonly declare commentTargets: HTMLElement[];
-    private reviewId: number = 0;
 
-    public initialize(): void {
-        this.reviewId = DataSet.int(this.element, 'reviewId');
-        this.restore();
-    }
+    private readonly commentService = new CommentService();
 
     public connect(): void {
         this.dropdownTarget.addEventListener('change', this.onSelect.bind(this));
     }
 
     public onSelect(event: Event): void {
-        const value = (event.target as HTMLInputElement).value;
+        const visibility = (event.target as HTMLInputElement).value;
 
         // hide dropdown after selection
         this.dropdownTarget.style.display = '';
 
-        // update visibility
-        this.updateCommentVisibility(value);
+        // update icon class
+        this.iconTarget.className = DataSet.string(this.iconTarget, 'iconClass' + Strings.capitalize(visibility));
 
-        // store value in local storage
-        localStorage.setItem('review-comment-visibility-' + String(this.reviewId), value);
-    }
-
-    private restore(): void {
-        const value = localStorage.getItem('review-comment-visibility-' + String(this.reviewId));
-        if (value === null) {
-            return;
-        }
-
-        const element = this.dropdownTarget.querySelector<HTMLInputElement>(`input[value="${value}"]`);
-        if (element !== null) {
-            element.checked = true;
-        }
-        this.updateCommentVisibility(value);
-    }
-
-    private updateCommentVisibility(visibility: string): void {
+        // update comment visibility
         switch (visibility) {
             case 'none':
-                this.iconTarget.className = 'bi bi-chat';
                 this.commentTargets.forEach(comment => comment.style.display = 'none');
                 break;
             case 'unresolved':
-                this.iconTarget.className = 'bi bi-chat-dots';
                 this.commentTargets.forEach(comment => comment.style.display = DataSet.int(comment, 'commentUnresolved') === 1 ? '' : 'none');
                 break;
             case 'all':
-                this.iconTarget.className = 'bi bi-chat-fill';
                 this.commentTargets.forEach(comment => comment.style.display = '');
                 break;
         }
+
+        // remember choice
+        void this.commentService.setCommentVisibility(visibility);
     }
 }
