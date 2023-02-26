@@ -9,7 +9,7 @@
                 <div>{{- entry.message|raw -}}</div>
 
                 {% if entry.comment is not same as (null) %}
-                    {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null} %}
+                    {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null, visible: true} %}
                 {% endif %}
 
                 <div class="text-secondary small clearfix">

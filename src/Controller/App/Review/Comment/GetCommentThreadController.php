@@ -30,7 +30,7 @@ class GetCommentThreadController extends AbstractController
     #[Template('app/review/comment/comment.html.twig')]
     public function __invoke(GetCommentThreadRequest $request, #[MapEntity] Comment $comment): array
     {
-        $data = ['comment' => $comment];
+        $data = ['comment' => $comment, 'visible' => true];
 
         $action = $request->getAction();
         if ($action instanceof EditCommentAction) {

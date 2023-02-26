@@ -16,7 +16,7 @@ export default class extends Controller<HTMLElement> {
         this.dropdownTarget.addEventListener('change', this.onSelect.bind(this));
     }
 
-    public onSelect(event: Event): void {
+    private onSelect(event: Event): void {
         const visibility = (event.target as HTMLInputElement).value;
 
         // hide dropdown after selection
