@@ -41,7 +41,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         $comment->setId(123);
 
         $result = ($this->controller)($request, $comment);
-        static::assertSame(['comment' => $comment], $result);
+        static::assertSame(['comment' => $comment, 'visible' => true], $result);
     }
 
     /**

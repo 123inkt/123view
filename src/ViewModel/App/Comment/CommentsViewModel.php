@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Comment;
 
+use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentVisibility;
 
 class CommentsViewModel
 {
@@ -12,8 +14,20 @@ class CommentsViewModel
      * @param array<string, Comment[]> $comments
      * @param Comment[]                $detachedComments
      */
-    public function __construct(private readonly array $comments, public readonly array $detachedComments)
+    public function __construct(
+        private readonly array $comments,
+        public readonly array $detachedComments,
+        public readonly CommentVisibility $commentVisibility
+    ) {
+    }
+
+    public function isCommentVisible(Comment $comment): bool
     {
+        return match ($this->commentVisibility) {
+            CommentVisibility::NONE       => false,
+            CommentVisibility::UNRESOLVED => $comment->getState() === CommentStateType::OPEN,
+            default                       => true,
+        };
     }
 
     /**

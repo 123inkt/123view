@@ -1,13 +1,17 @@
 {# comment:          Comment #}
 {# detached:         bool|null #}
+{# visible:          bool #}
 {# editCommentForm:  FormView|null #}
 {# replyCommentform: FormView|null #}
 
 <div class="comment__comment-thread
-    {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}"
+    {%- if comment.state == 'resolved' %} comment__state_resolved{% endif -%}
+    {%- if visible is same as(false) %} d-none{% endif -%}"
      data-comment-id="{{ comment.id }}"
+     data-comment-unresolved="{{ comment.state == 'open' ? 1 : 0 }}"
      data-comment-thread-id-value="{{ comment.id }}"
      data-comment-thread-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetCommentThreadController', {id: comment.id}) }}"
+        {{ stimulus_target('review-comment-visibility', 'comment') }}
         {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
         {{ stimulus_controller('comment-thread') }}
 >

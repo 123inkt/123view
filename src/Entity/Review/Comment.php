@@ -103,9 +103,11 @@ class Comment
         return $this->state;
     }
 
-    public function setState(?string $state): void
+    public function setState(?string $state): self
     {
         $this->state = $state;
+
+        return $this;
     }
 
     public function getMessage(): ?string

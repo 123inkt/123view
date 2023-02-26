@@ -16,13 +16,11 @@ use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use Throwable;
 
-/**
- * @suppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class FileDiffViewModelProvider
 {
     public function __construct(
         private readonly CommentViewModelProvider $commentModelProvider,
+        private readonly CommentsViewModelProvider $commentsModelProvider,
         private readonly CacheableHighlightedFileService $hfService,
         private readonly UnifiedDiffBundler $bundler,
         private readonly UnifiedDiffEmphasizer $emphasizer,
@@ -58,7 +56,7 @@ class FileDiffViewModelProvider
         }
 
         // gather comments view model
-        $viewModel->setCommentsViewModel($this->commentModelProvider->getCommentsViewModel($review, $selectedFile));
+        $viewModel->setCommentsViewModel($this->commentsModelProvider->getCommentsViewModel($review, $selectedFile));
 
         // setup action form
         if ($reviewAction instanceof AddCommentReplyAction) {

@@ -17,7 +17,6 @@ use DR\Review\Model\Review\Action\AddCommentAction;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
-use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
@@ -30,7 +29,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class CommentViewModelProviderTest extends AbstractTestCase
 {
-    private CommentRepository&MockObject    $commentRepository;
     private FormFactoryInterface&MockObject $formFactory;
     private DiffFinder&MockObject           $diffFinder;
     private CommentViewModelProvider        $provider;
@@ -38,10 +36,9 @@ class CommentViewModelProviderTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->formFactory       = $this->createMock(FormFactoryInterface::class);
-        $this->diffFinder        = $this->createMock(DiffFinder::class);
-        $this->provider          = new CommentViewModelProvider($this->commentRepository, $this->formFactory, $this->diffFinder);
+        $this->formFactory = $this->createMock(FormFactoryInterface::class);
+        $this->diffFinder  = $this->createMock(DiffFinder::class);
+        $this->provider    = new CommentViewModelProvider($this->formFactory, $this->diffFinder);
     }
 
     /**
@@ -142,36 +139,5 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $viewModel = $this->provider->getEditCommentReplyViewModel($action);
         static::assertNotNull($viewModel);
         static::assertSame($reply, $viewModel->reply);
-    }
-
-    /**
-     * @covers ::getCommentsViewModel
-     */
-    public function testGetCommentsViewModel(): void
-    {
-        $commentA = new Comment();
-        $commentA->setLineReference(new LineReference('comment-1', 1, 2, 3));
-        $commentB = new Comment();
-        $commentB->setLineReference(new LineReference('comment-2', 4, 5, 6));
-        $comments = [$commentA, $commentB];
-        $review   = new CodeReview();
-        $file     = new DiffFile();
-        $line     = new DiffLine(0, []);
-
-        $file->filePathBefore = '/path/to/fileBefore';
-        $file->filePathAfter  = '/path/to/fileAfter';
-
-        $this->commentRepository->expects(self::once())
-            ->method('findByReview')
-            ->with($review, ['/path/to/fileAfter', '/path/to/fileBefore'])
-            ->willReturn($comments);
-        $this->diffFinder->expects(self::exactly(2))
-            ->method('findLineInFile')
-            ->will(static::onConsecutiveCalls([$file, $commentA->getLineReference()], [$file, $commentB->getLineReference()]))
-            ->willReturn($line, null);
-
-        $viewModel = $this->provider->getCommentsViewModel($review, $file);
-        static::assertSame([$commentA], $viewModel->getComments($line));
-        static::assertSame([$commentB], $viewModel->detachedComments);
     }
 }

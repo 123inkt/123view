@@ -23,15 +23,61 @@
         {%- endif -%}
     </div>
 
-    <div class="btn-group btn-group-sm float-end pe-2">
-        {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
-        {% for diffMode in fileDiffViewModel.diffModes %}
-            <a href="{{ url_query_params({diff: diffMode}) }}"
-               class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
-                    {{ stimulus_controller('button') }}
-            >
-                {{ ('diff.' ~ diffMode)|trans }}
+    <div class="float-end pe-2">
+        <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
+            {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+
+            <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
+                    {{ stimulus_target('component--dropdown-menu', 'button') }}
+                    {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
+
+                {% set iconClassName = 'bi bi-chat-fill' %}
+                {% if commentVisibility == 'none' %}
+                    {% set iconClassName = 'bi bi-chat' %}
+                {% elseif commentVisibility == 'unresolved' %}
+                    {% set iconClassName = 'bi bi-chat-dots' %}
+                {% endif %}
+
+                <i class="{{ iconClassName }}"
+                   data-icon-class-all="bi bi-chat-fill"
+                   data-icon-class-unresolved="bi bi-chat-dots"
+                   data-icon-class-none="bi bi-chat"
+                   {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
             </a>
-        {% endfor %}
+            <ul class="dropdown-menu"
+                    {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
+                    {{ stimulus_target('review-comment-visibility', 'dropdown') }}>
+                <li>
+                    <label class="dropdown-item">
+                        <input type="radio" value="all" name="visibility" data-role="visibility" {{ commentVisibility == 'all' ? 'checked' : '' }}>
+                        {{ 'all.discussions'|trans }}
+                    </label>
+                </li>
+                <li>
+                    <label class="dropdown-item">
+                        <input type="radio" value="unresolved" name="visibility" data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
+                        {{ 'only.unresolved'|trans }}
+                    </label>
+                </li>
+                <li>
+                    <label class="dropdown-item">
+                        <input type="radio" value="none" name="visibility" data-role="visibility" {{ commentVisibility == 'none' ? 'checked' : '' }}>
+                        {{ 'none'|trans }}
+                    </label>
+                </li>
+            </ul>
+        </div>
+
+        <div class="btn-group btn-group-sm">
+            {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
+            {% for diffMode in fileDiffViewModel.diffModes %}
+                <a href="{{ url_query_params({diff: diffMode}) }}"
+                   class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
+                        {{ stimulus_controller('button') }}
+                >
+                    {{ ('diff.' ~ diffMode)|trans }}
+                </a>
+            {% endfor %}
+        </div>
     </div>
 </div>

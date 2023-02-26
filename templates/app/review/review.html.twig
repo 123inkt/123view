@@ -5,13 +5,14 @@
 
 {%- block page_content -%}
     <div class="review-reload-required bg-primary text-white rounded-bottom ps-2 pe-2 pt-1 pb-1"
-            {{ stimulus_controller('review-changed-notification') }}
-         data-review-changed-notification-review-id-value="{{ review.id }}" data-review-changed-notification-user-id-value="{{ app.user.id }}">
+            {{ stimulus_controller('review-changed-notification', {reviewId: review.id, userId: app.user.id}) }}
+    >
         {{ 'review.was.updated'|trans }}.
         <a href="#" class="text-white" data-action="click->review-changed-notification#reload">{{ 'click.to.reload'|trans }}</a>
     </div>
 
-    <div class="review-grid-layout" {{ stimulus_controller('review') }}
+    <div class="review-grid-layout"
+            {{ stimulus_controller('review review-comment-visibility') }}
          data-review-add-comment-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetAddCommentFormController', {id: review.id}) }}">
 
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
