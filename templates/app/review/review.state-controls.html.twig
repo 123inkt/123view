@@ -10,14 +10,11 @@
 
         {% set openComments = reviewModel.openComments %}
         <button type="submit"
-                class="btn btn-outline-success btn-sm" {{ stimulus_controller('review-accept') }}
-                data-open-comments="{{ openComments }}"
-                data-confirm-question="{{ 'confirm.accept.review'|trans({count: openComments}) }}"
-                {% if openComments > 0 %}title="{{ 'accept.open.comments'|trans({count: openComments}) }}"{% endif %}>
+                class="btn btn-outline-success btn-sm"
+                {{ stimulus_controller('review-accept', {reviewId: review.id, openComments: openComments, confirmQuestion: 'confirm.accept.review'|trans, title: 'accept.open.comments'|trans}) }}
+        >
             😃 {{ 'accept'|trans }}
-            {% if openComments > 0 %}
-                ({{ openComments }})
-            {% endif %}
+            <span {{ stimulus_target('review-accept', 'count') }}>{{ openComments > 0 ? '(' ~ openComments ~ ')' : '' }}</span>
         </button>
     </form>
 
