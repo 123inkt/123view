@@ -35,6 +35,8 @@ services:
     nodejs:
         environment:
             APP_ENV: dev
+        ports:
+            - ${HIGHLIGHTJS_PORT}:${HIGHLIGHTJS_PORT}
 
     mercure:
         build:

@@ -73,6 +73,9 @@ services:
         build:
             context: .
             dockerfile: ./docker/nodejs/Dockerfile
+        environment:
+            NODEJS_HOST: ${HIGHLIGHTJS_HOST}
+            NODEJS_PORT: ${HIGHLIGHTJS_PORT}
         volumes:
             - .:/app:rw
 
