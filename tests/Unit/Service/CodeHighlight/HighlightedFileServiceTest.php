@@ -13,6 +13,7 @@ use DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -78,5 +79,23 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $actual = $this->service->fromDiffFile($file);
         static::assertSame($file->filePathAfter, $actual->filePath);
         static::assertSame(['highlighted', 'data'], ($actual->closure)());
+    }
+
+    /**
+     * @covers ::fromDiffFile
+     * @throws Exception
+     */
+    public function testGetHighlightedFileRequestFailure(): void
+    {
+        $block               = new DiffBlock();
+        $block->lines        = [new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'file-data')])];
+        $file                = new DiffFile();
+        $file->filePathAfter = '/path/to/file.xml';
+        $file->addBlock($block);
+
+        $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
+        $this->httpClient->expects(self::once())->method('request')->willThrowException(new RuntimeException('error'));
+
+        static::assertNull($this->service->fromDiffFile($file));
     }
 }
