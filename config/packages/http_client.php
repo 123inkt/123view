@@ -15,4 +15,8 @@ return static function (FrameworkConfig $framework): void {
         ->baseUri('%env(GITLAB_API_URL)%api/v4/')
         ->header('PRIVATE-TOKEN', '%env(GITLAB_ACCESS_TOKEN)%')
         ->scope('gitlab');
+
+    $httpClient->scopedClient('highlightjs.client')
+        ->baseUri('http://%env(HIGHLIGHTJS_HOST)%:%env(HIGHLIGHTJS_PORT)%/')
+        ->scope('highlightjs');
 };
