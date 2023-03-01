@@ -116,10 +116,10 @@ class Assert
     /**
      * Assert value is object and of type class-string
      * @template T of object
-     *
-     * @param class-string<T> $classString
-     *
-     * @return T
+     * @template V of object
+     * @phpstan-param class-string<T> $classString
+     * @phpstan-param V|null          $value
+     * @phpstan-return T&V
      */
     public static function instanceOf(string $classString, ?object $value): object
     {

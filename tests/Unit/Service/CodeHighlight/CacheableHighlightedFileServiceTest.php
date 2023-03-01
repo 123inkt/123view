@@ -11,7 +11,8 @@ use DR\Review\Service\CodeHighlight\HighlightedFileService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\Cache\CacheItem;
 
 /**
  * @coversDefaultClass \DR\Review\Service\CodeHighlight\CacheableHighlightedFileService
@@ -19,14 +20,14 @@ use Symfony\Contracts\Cache\CacheInterface;
  */
 class CacheableHighlightedFileServiceTest extends AbstractTestCase
 {
-    private CacheInterface&MockObject         $cache;
+    private AbstractAdapter&MockObject        $cache;
     private HighlightedFileService&MockObject $fileService;
     private CacheableHighlightedFileService   $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->cache       = $this->createMock(CacheInterface::class);
+        $this->cache       = $this->createMock(AbstractAdapter::class);
         $this->fileService = $this->createMock(HighlightedFileService::class);
         $this->service     = new CacheableHighlightedFileService($this->cache, $this->fileService);
     }
@@ -35,7 +36,7 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
      * @covers ::fromDiffFile
      * @throws InvalidArgumentException
      */
-    public function testGetHighlightedFile(): void
+    public function testGetHighlightedFileCacheHit(): void
     {
         $diffFile                = new DiffFile();
         $diffFile->filePathAfter = 'filePath';
@@ -44,11 +45,69 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
         $repository              = new Repository();
         $repository->setId(123);
         $hash = hash('sha256', 'highlight:fromDiffFile:123-filePath-startend');
-        $file = new HighlightedFile($diffFile->filePathAfter, []);
 
-        $this->cache->expects(self::once())->method('get')->with($hash)->willReturnCallback(static fn($repository, $callback) => $callback());
+        $cacheItem = new CacheItem();
+        $cacheItem->set([5 => 'foobar']);
+
+        $this->cache->expects(self::once())->method('getItem')->with($hash)->willReturn($cacheItem);
+        $this->cache->expects(self::never())->method('get');
+        $this->fileService->expects(self::never())->method('fromDiffFile');
+
+        $actual = $this->service->fromDiffFile($repository, $diffFile);
+        static::assertNotNull($actual);
+        static::assertSame('filePath', $actual->filePath);
+        static::assertSame([5 => 'foobar'], ($actual->closure)());
+    }
+
+    /**
+     * @covers ::fromDiffFile
+     * @throws InvalidArgumentException
+     */
+    public function testGetHighlightedFileCacheMiss(): void
+    {
+        $diffFile                = new DiffFile();
+        $diffFile->filePathAfter = 'filePath';
+        $diffFile->hashStart     = 'start';
+        $diffFile->hashEnd       = 'end';
+        $repository              = new Repository();
+        $repository->setId(123);
+        $hash = hash('sha256', 'highlight:fromDiffFile:123-filePath-startend');
+        $file = new HighlightedFile($diffFile->filePathAfter, static fn() => [5 => 'foobar']);
+
+        $cacheItem = new CacheItem();
+        $cacheItem->set(null);
+
+        $this->cache->expects(self::once())->method('getItem')->with($hash)->willReturn($cacheItem);
         $this->fileService->expects(self::once())->method('fromDiffFile')->with($diffFile)->willReturn($file);
+        $this->cache->expects(self::once())->method('get')->with($hash)->willReturnCallback(static fn($repository, $callback) => $callback());
 
-        static::assertSame($file, $this->service->fromDiffFile($repository, $diffFile));
+        $actual = $this->service->fromDiffFile($repository, $diffFile);
+        static::assertNotNull($actual);
+        static::assertSame('filePath', $actual->filePath);
+        static::assertSame([5 => 'foobar'], ($actual->closure)());
+    }
+
+    /**
+     * @covers ::fromDiffFile
+     * @throws InvalidArgumentException
+     */
+    public function testGetHighlightedFileFailure(): void
+    {
+        $diffFile                = new DiffFile();
+        $diffFile->filePathAfter = 'filePath';
+        $diffFile->hashStart     = 'start';
+        $diffFile->hashEnd       = 'end';
+        $repository              = new Repository();
+        $repository->setId(123);
+        $hash = hash('sha256', 'highlight:fromDiffFile:123-filePath-startend');
+
+        $cacheItem = new CacheItem();
+        $cacheItem->set(null);
+
+        $this->cache->expects(self::once())->method('getItem')->with($hash)->willReturn($cacheItem);
+        $this->fileService->expects(self::once())->method('fromDiffFile')->with($diffFile)->willReturn(null);
+        $this->cache->expects(self::never())->method('get')->with($hash);
+
+        static::assertNull($this->service->fromDiffFile($repository, $diffFile));
     }
 }

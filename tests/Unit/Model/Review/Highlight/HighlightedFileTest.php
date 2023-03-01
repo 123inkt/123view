@@ -17,7 +17,7 @@ class HighlightedFileTest extends AbstractTestCase
      */
     public function testGetLine(): void
     {
-        $file = new HighlightedFile('filepath', [0 => 'line1', 2 => 'line2']);
+        $file = new HighlightedFile('filepath', static fn() => [0 => 'line1', 2 => 'line2']);
         static::assertSame('line2', $file->getLine(3));
     }
 }

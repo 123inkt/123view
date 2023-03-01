@@ -11,14 +11,18 @@ use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheableHighlightedFileService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly CacheInterface $revisionCache, private readonly HighlightedFileService $fileService)
+    private readonly AdapterInterface&CacheInterface $revisionCache;
+
+    public function __construct(CacheInterface $revisionCache, private readonly HighlightedFileService $fileService)
     {
+        $this->revisionCache = Assert::instanceOf(AdapterInterface::class, $revisionCache);
     }
 
     /**
@@ -34,6 +38,18 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
             sprintf('highlight:fromDiffFile:%d-%s-%s', Assert::notNull($repository->getId()), $filePath, $hashes)
         );
 
-        return $this->revisionCache->get($key, fn() => $this->fileService->fromDiffFile($diffFile));
+        // cache hit
+        $cacheItem = $this->revisionCache->getItem($key);
+        if (is_array($cacheItem->get())) {
+            return new HighlightedFile($diffFile->getPathname(), static fn() => $cacheItem->get());
+        }
+
+        // cache miss
+        $highlightedFile = $this->fileService->fromDiffFile($diffFile);
+        if ($highlightedFile === null) {
+            return null;
+        }
+
+        return new HighlightedFile($diffFile->getPathname(), fn() => $this->revisionCache->get($key, $highlightedFile->closure));
     }
 }

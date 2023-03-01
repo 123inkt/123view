@@ -65,7 +65,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $repository          = new Repository();
         $review              = new CodeReview();
         $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', []);
+        $highlightedFile = new HighlightedFile('filepath', static fn() => []);
 
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
@@ -87,7 +87,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $repository          = new Repository();
         $review              = new CodeReview();
         $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', []);
+        $highlightedFile = new HighlightedFile('filepath', static fn() => []);
 
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
@@ -109,7 +109,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $repository          = new Repository();
         $review              = new CodeReview();
         $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', []);
+        $highlightedFile = new HighlightedFile('filepath', static fn() => []);
 
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
@@ -151,7 +151,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $repository          = new Repository();
         $review              = new CodeReview();
         $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', []);
+        $highlightedFile = new HighlightedFile('filepath', static fn() => []);
 
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
