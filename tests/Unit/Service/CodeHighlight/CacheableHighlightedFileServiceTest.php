@@ -13,7 +13,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\CacheItem;
-use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Service\CodeHighlight\CacheableHighlightedFileService
@@ -21,7 +20,7 @@ use Symfony\Contracts\Cache\CacheInterface;
  */
 class CacheableHighlightedFileServiceTest extends AbstractTestCase
 {
-    private CacheInterface&MockObject         $cache;
+    private AbstractAdapter&MockObject        $cache;
     private HighlightedFileService&MockObject $fileService;
     private CacheableHighlightedFileService   $service;
 
@@ -55,6 +54,7 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
         $this->fileService->expects(self::never())->method('fromDiffFile');
 
         $actual = $this->service->fromDiffFile($repository, $diffFile);
+        static::assertNotNull($actual);
         static::assertSame('filePath', $actual->filePath);
         static::assertSame([5 => 'foobar'], ($actual->closure)());
     }
@@ -82,6 +82,7 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
         $this->cache->expects(self::once())->method('get')->with($hash)->willReturnCallback(static fn($repository, $callback) => $callback());
 
         $actual = $this->service->fromDiffFile($repository, $diffFile);
+        static::assertNotNull($actual);
         static::assertSame('filePath', $actual->filePath);
         static::assertSame([5 => 'foobar'], ($actual->closure)());
     }

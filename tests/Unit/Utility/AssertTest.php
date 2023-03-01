@@ -134,7 +134,7 @@ class AssertTest extends AbstractTestCase
         $object = new stdClass();
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be instance of RuntimeException');
-        Assert::instanceOf(RuntimeException::class, $object);
+        Assert::instanceOf(RuntimeException::class, $object); // @phpstan-ignore-line
     }
 
     /**

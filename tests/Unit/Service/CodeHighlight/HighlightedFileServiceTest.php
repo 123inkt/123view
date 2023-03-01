@@ -77,6 +77,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $this->splitter->expects(self::once())->method('split')->with('highlighted-data')->willReturn(['highlighted', 'data']);
 
         $actual = $this->service->fromDiffFile($file);
+        static::assertNotNull($actual);
         static::assertSame($file->filePathAfter, $actual->filePath);
         static::assertSame(['highlighted', 'data'], ($actual->closure)());
     }
