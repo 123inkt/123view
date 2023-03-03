@@ -40,7 +40,7 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
 
         // cache hit
         $cacheItem = $this->revisionCache->getItem($key);
-        if (is_array($cacheItem->get())) {
+        if ($cacheItem->isHit() && is_array($cacheItem->get())) {
             return new HighlightedFile($diffFile->getPathname(), static fn() => $cacheItem->get());
         }
 
