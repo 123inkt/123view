@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\CodeHighlight;
 
+use Closure;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
@@ -46,8 +47,17 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
         $repository->setId(123);
         $hash = hash('sha256', 'highlight:fromDiffFile:123-filePath-startend');
 
-        $cacheItem = new CacheItem();
-        $cacheItem->set([5 => 'foobar']);
+        $cacheItem = Closure::bind(
+            static function () {
+                $item        = new CacheItem();
+                $item->value = [5 => 'foobar'];
+                $item->isHit = true;
+
+                return $item;
+            },
+            null,
+            CacheItem::class
+        )();
 
         $this->cache->expects(self::once())->method('getItem')->with($hash)->willReturn($cacheItem);
         $this->cache->expects(self::never())->method('get');
