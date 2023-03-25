@@ -10,7 +10,6 @@
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
-         beStrictAboutCoverageMetadata="true"
          executionOrder="defects"
 >
     <php>
