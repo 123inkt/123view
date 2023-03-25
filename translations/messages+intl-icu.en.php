@@ -272,4 +272,7 @@ return [
     'visit.the.api.at'                            => 'Visit the API documentation at',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'do.not.ignore.whitespaces'                   => 'Do not ignore whitespaces',
+    'trim.whitespaces'                            => 'Trim whitespaces',
+    'ignore.whitespaces'                          => 'Ignore whitespaces',
 ];
