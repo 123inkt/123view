@@ -47,7 +47,7 @@ class UnifiedDiffBundler
     {
         $collection = new DiffLineCollection($lines);
 
-        foreach ($collection->getChangePairs() as $pairs) {
+        foreach ($collection->getDiffLineSet() as $pairs) {
             /** @var DiffLinePair $pair */
             foreach ($pairs as $pair) {
                 if ($this->isBundleable($this->comparator->compare($pair->removed, $pair->added)) !== false) {

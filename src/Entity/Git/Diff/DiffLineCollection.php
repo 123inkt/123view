@@ -37,9 +37,9 @@ class DiffLineCollection
     }
 
     /**
-     * @return Generator<array<DiffLinePair>>
+     * @return Generator<array<DiffLineChangeSet>>
      */
-    public function getChangePairs(): Generator
+    public function getDiffLineSet(): Generator
     {
         $set     = 0;
         $removed = [];
@@ -55,23 +55,11 @@ class DiffLineCollection
                 ++$set;
             }
         }
-        // iterate over the set
-        for ($s = 0; $s <= $set; $s++) {
-            if (isset($removed[$s], $added[$s]) === false) {
-                continue;
+
+        for ($i = 0; $i <= $set; $i++) {
+            if (isset($added[$i], $removed[$i])) {
+                yield new DiffLineChangeSet($removed[$i] ?? [], $added[$i] ?? []);
             }
-
-            $max = max(count($removed[$s]), count($added[$s]));
-
-            // iterate over the set and let it yield
-            $pairs = [];
-            for ($i = 0; $i < $max; $i++) {
-                if (isset($removed[$s][$i], $added[$s][$i])) {
-                    $pairs[] = new DiffLinePair($removed[$s][$i], $added[$s][$i]);
-                }
-            }
-
-            yield $pairs;
         }
     }
 }
