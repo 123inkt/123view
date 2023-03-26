@@ -16,16 +16,6 @@ class DiffLineCollection
         $this->lines = $lines;
     }
 
-    public function remove(DiffLine $line): self
-    {
-        $index = array_search($line, $this->lines, true);
-        if ($index !== false) {
-            unset($this->lines[$index]);
-        }
-
-        return $this;
-    }
-
     /**
      * @return DiffLine[]
      */

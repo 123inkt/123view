@@ -15,19 +15,6 @@ use DR\Review\Tests\AbstractTestCase;
 class DiffLineCollectionTest extends AbstractTestCase
 {
     /**
-     * @covers ::remove
-     */
-    public function testRemove(): void
-    {
-        $lineA = new DiffLine(DiffLine::STATE_REMOVED, []);
-        $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
-        $lines = new DiffLineCollection([$lineA, $lineB]);
-
-        $lines->remove($lineA);
-        static::assertSame([$lineB], $lines->toArray());
-    }
-
-    /**
      * @covers ::toArray
      */
     public function testToArray(): void
