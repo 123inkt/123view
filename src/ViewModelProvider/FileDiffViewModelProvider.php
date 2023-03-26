@@ -49,7 +49,8 @@ class FileDiffViewModelProvider
 
         // apply diff mode
         if ($diffMode === ReviewDiffModeEnum::INLINE) {
-            $this->bundler->bundleFile($selectedFile, $comparePolicy);
+            // inline diff + trim|ignore whitespace is difficult to keep newlines consistent. Default to standard compare policy
+            $this->bundler->bundleFile($selectedFile, DiffComparePolicy::ALL);
         } elseif ($diffMode === ReviewDiffModeEnum::UNIFIED) {
             $this->emphasizer->emphasizeFile($selectedFile, $comparePolicy);
         } elseif ($diffMode === ReviewDiffModeEnum::SIDE_BY_SIDE) {

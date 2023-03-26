@@ -24,11 +24,13 @@
     </div>
 
     <div class="float-end pe-2">
+        {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+        {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
+        {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
 
         {# whitespace management #}
-        <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
-            {% set comparisonPolicy = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
-
+        {% if currentDiffMode != 'inline' %}
+            <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
             <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                     {{ stimulus_target('component--dropdown-menu', 'button') }}
                     {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
@@ -70,11 +72,10 @@
                 </li>
             </ul>
         </div>
+        {% endif %}
 
         {# comment visibility #}
         <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
-            {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
-
             <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                     {{ stimulus_target('component--dropdown-menu', 'button') }}
                     {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
@@ -121,7 +122,6 @@
         </div>
 
         <div class="btn-group btn-group-sm">
-            {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
             {% for diffMode in fileDiffViewModel.diffModes %}
                 <a href="{{ url_query_params({diff: diffMode}) }}"
                    class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
