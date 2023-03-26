@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Entity\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
-use DR\Review\Entity\Git\Diff\DiffLinePair;
 use DR\Review\Tests\AbstractTestCase;
 
 /**
@@ -48,7 +48,7 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_UNCHANGED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], $lines->getDiffLineSet());
+        static::assertSame([$lineA, $lineB], $lines->getDiffLineSet());
     }
 
     /**
@@ -60,7 +60,9 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], $lines->getDiffLineSet());
+        $expected = new DiffLineChangeSet([], [$lineA, $lineB]);
+
+        static::assertEquals([$expected], $lines->getDiffLineSet());
     }
 
     /**
@@ -72,7 +74,9 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_REMOVED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], $lines->getDiffLineSet());
+        $expected = new DiffLineChangeSet([$lineA, $lineB], []);
+
+        static::assertEquals([$expected], $lines->getDiffLineSet());
     }
 
     /**
@@ -84,10 +88,10 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        $expected = new DiffLinePair($lineA, $lineB);
+        $expected = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $result = iterator_to_array($lines->getDiffLineSet());
-        static::assertEquals([[$expected]], $result);
+        $result = $lines->getDiffLineSet();
+        static::assertEquals([$expected], $result);
     }
 
     /**
@@ -100,10 +104,10 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineC = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB, $lineC]);
 
-        $expected = new DiffLinePair($lineA, $lineC);
+        $expected = new DiffLineChangeSet([$lineA, $lineB], [$lineC]);
 
-        $result = iterator_to_array($lines->getDiffLineSet());
-        static::assertEquals([[$expected]], $result);
+        $result = $lines->getDiffLineSet();
+        static::assertEquals([$expected], $result);
     }
 
     /**
@@ -119,10 +123,10 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineE = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB, $lineC, $lineD, $lineE]);
 
-        $pairOne = new DiffLinePair($lineA, $lineB);
-        $pairTwo = new DiffLinePair($lineD, $lineE);
+        $setOne = new DiffLineChangeSet([$lineA], [$lineB]);
+        $setTwo = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $result = iterator_to_array($lines->getDiffLineSet());
-        static::assertEquals([[$pairOne], [$pairTwo]], $result);
+        $result = $lines->getDiffLineSet();
+        static::assertEquals([$setOne, $lineC, $setTwo], $result);
     }
 }
