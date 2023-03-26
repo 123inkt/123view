@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\ViewModel\App\Comment;
 
 use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentVisibility;
@@ -17,6 +18,7 @@ class CommentsViewModel
     public function __construct(
         private readonly array $comments,
         public readonly array $detachedComments,
+        public readonly DiffComparePolicy $comparisonPolicy,
         public readonly CommentVisibility $commentVisibility
     ) {
     }

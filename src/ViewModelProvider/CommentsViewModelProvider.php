@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\CommentRepository;
@@ -38,6 +39,11 @@ class CommentsViewModelProvider
             }
         }
 
-        return new CommentsViewModel($groupedComments, $detachedComments, $this->visibilityProvider->getCommentVisibility());
+        return new CommentsViewModel(
+            $groupedComments,
+            $detachedComments,
+            DiffComparePolicy::IGNORE,
+            $this->visibilityProvider->getCommentVisibility()
+        );
     }
 }

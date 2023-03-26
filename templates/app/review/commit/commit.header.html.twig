@@ -24,35 +24,54 @@
     </div>
 
     <div class="float-end pe-2">
+
+        {# whitespace management #}
         <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
+            {% set comparisonPolicy = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
+
             <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                     {{ stimulus_target('component--dropdown-menu', 'button') }}
                     {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
-                {{ 'do.not.ignore.whitespaces'|trans }}
+                {% if comparisonPolicy == 'ignore' %}
+                    {{ 'ignore.whitespaces'|trans }}
+                {% elseif comparisonPolicy == 'trim' %}
+                    {{ 'trim.whitespaces'|trans }}
+                {% else %}
+                    {{ 'do.not.ignore.whitespaces'|trans }}
+                {% endif %}
             </a>
 
-            <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
+            <ul class="dropdown-menu"
+                    {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
+                    {{ stimulus_controller('review-comparison-policy') }}
+            >
                 <li>
                     <label class="dropdown-item">
-                        <input type="radio" value="all" name="whitespace" data-role="whitespace" checked>
+                        <input type="radio"
+                               name="whitespace"
+                               data-url="{{ url_query_params({comparisonPolicy: 'all'}) }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
                         {{ 'do.not.ignore.whitespaces'|trans }}
                     </label>
                 </li>
                 <li>
                     <label class="dropdown-item">
-                        <input type="radio" value="trim" name="whitespace" data-role="whitespace" >
+                        <input type="radio"
+                               name="whitespace"
+                               data-url="{{ url_query_params({comparisonPolicy: 'trim'}) }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
                         {{ 'trim.whitespaces'|trans }}
                     </label>
                 </li>
                 <li>
                     <label class="dropdown-item">
-                        <input type="radio" value="ignore" name="whitespace" data-role="whitespace">
+                        <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
+                                {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
                         {{ 'ignore.whitespaces'|trans }}
                     </label>
                 </li>
             </ul>
         </div>
 
+        {# comment visibility #}
         <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
             {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
 
@@ -71,7 +90,7 @@
                    data-icon-class-all="bi bi-chat-fill"
                    data-icon-class-unresolved="bi bi-chat-dots"
                    data-icon-class-none="bi bi-chat"
-                   {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
+                        {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
             </a>
 
             <ul class="dropdown-menu"
@@ -85,7 +104,10 @@
                 </li>
                 <li>
                     <label class="dropdown-item">
-                        <input type="radio" value="unresolved" name="visibility" data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
+                        <input type="radio"
+                               value="unresolved"
+                               name="visibility"
+                               data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
                         {{ 'only.unresolved'|trans }}
                     </label>
                 </li>
