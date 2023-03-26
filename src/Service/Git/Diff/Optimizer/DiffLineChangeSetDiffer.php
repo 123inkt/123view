@@ -9,6 +9,7 @@ use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class DiffLineChangeSetDiffer implements LoggerAwareInterface
 {
@@ -21,7 +22,7 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
         LineBlockTextIterator::TEXT_UNCHANGED_AFTER  => true,
     ];
 
-    public function __construct(private readonly JBDiff $jbdiff)
+    public function __construct(private readonly ?Stopwatch $stopwatch, private readonly JBDiff $jbdiff)
     {
     }
 
@@ -36,12 +37,16 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
         $text2 = $set->getTextAfter();
 
         try {
+            $this->stopwatch?->start('jbdiff');
+
             // compare text
             return $this->jbdiff->compareToIterator($text1, $text2, splitOnNewLines: true);
         } catch (DiffToBigException) {
             $this->logger?->info(sprintf('Diff to big: `%s...` - `%s...`', mb_substr(trim($text1), 0, 50), mb_substr(trim($text2), 0, 50)));
 
             return null;
+        } finally {
+            $this->stopwatch?->stop('jbdiff');
         }
     }
 }
