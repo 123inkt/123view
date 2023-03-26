@@ -6,6 +6,7 @@ namespace DR\Review\Service\Git\Diff\Optimizer;
 use DR\JBDiff\Diff\Util\DiffToBigException;
 use DR\JBDiff\JBDiff;
 use DR\JBDiff\LineBlockTextIterator;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use IteratorAggregate;
 use Psr\Log\LoggerAwareInterface;
@@ -30,7 +31,7 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
     /**
      * @return IteratorAggregate<array{0: LineBlockTextIterator::TEXT_*, 1: string}>|null
      */
-    public function diff(DiffLineChangeSet $set): ?IteratorAggregate
+    public function diff(DiffLineChangeSet $set, DiffComparePolicy $comparePolicy): ?IteratorAggregate
     {
         // only additions or only removals, nothing to optimize
         if (count($set->removed) === 0 || count($set->added) === 0) {
@@ -44,7 +45,7 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
             $this->stopwatch?->start('jbdiff');
 
             // compare text
-            return $this->jbdiff->compareToIterator($text1, $text2, splitOnNewLines: true);
+            return $this->jbdiff->compareToIterator($text1, $text2, $comparePolicy->toComparisonPolicy(), true);
         } catch (DiffToBigException) {
             $this->logger?->info(sprintf('Diff to big: `%s...` - `%s...`', mb_substr(trim($text1), 0, 50), mb_substr(trim($text2), 0, 50)));
 

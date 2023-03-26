@@ -5,6 +5,7 @@ namespace DR\Review\Service\Git\Diff\Optimizer;
 
 use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use Psr\Log\LoggerAwareInterface;
@@ -19,10 +20,10 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
     {
     }
 
-    public function optimize(DiffLineChangeSet $set): DiffLineChangeSet
+    public function optimize(DiffLineChangeSet $set, DiffComparePolicy $comparePolicy): DiffLineChangeSet
     {
         // compare text
-        $iterator = $this->differ->diff($set);
+        $iterator = $this->differ->diff($set, $comparePolicy);
         if ($iterator === null) {
             return $set;
         }

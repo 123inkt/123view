@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
@@ -35,6 +36,7 @@ class FileDiffViewModelProvider
         CodeReview $review,
         DiffFile $selectedFile,
         ?AbstractReviewAction $reviewAction,
+        DiffComparePolicy $comparePolicy,
         ReviewDiffModeEnum $diffMode
     ): FileDiffViewModel {
         $viewModel = new FileDiffViewModel($selectedFile, $diffMode);
@@ -47,11 +49,11 @@ class FileDiffViewModelProvider
 
         // apply diff mode
         if ($diffMode === ReviewDiffModeEnum::INLINE) {
-            $this->bundler->bundleFile($selectedFile);
+            $this->bundler->bundleFile($selectedFile, $comparePolicy);
         } elseif ($diffMode === ReviewDiffModeEnum::UNIFIED) {
-            $this->emphasizer->emphasizeFile($selectedFile);
+            $this->emphasizer->emphasizeFile($selectedFile, $comparePolicy);
         } elseif ($diffMode === ReviewDiffModeEnum::SIDE_BY_SIDE) {
-            $this->emphasizer->emphasizeFile($selectedFile);
+            $this->emphasizer->emphasizeFile($selectedFile, $comparePolicy);
             $viewModel->leftSideFile = $this->splitter->splitFile($selectedFile);
         }
 

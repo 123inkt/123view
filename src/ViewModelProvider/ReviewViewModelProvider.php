@@ -46,7 +46,13 @@ class ReviewViewModelProvider
             $viewModel->setDescriptionVisible(true);
         } else {
             $viewModel->setFileDiffViewModel(
-                $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, $request->getAction(), $request->getDiffMode())
+                $this->fileDiffViewModelProvider->getFileDiffViewModel(
+                    $review,
+                    $selectedFile,
+                    $request->getAction(),
+                    $request->getComparisonPolicy(),
+                    $request->getDiffMode()
+                )
             );
             $viewModel->setDescriptionVisible(false);
         }

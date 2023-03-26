@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Diff;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
@@ -14,10 +15,10 @@ class UnifiedDiffBundler
     {
     }
 
-    public function bundleFile(DiffFile $file): DiffFile
+    public function bundleFile(DiffFile $file, DiffComparePolicy $comparePolicy): DiffFile
     {
         foreach ($file->getBlocks() as $block) {
-            $block->lines = $this->bundleLines($block->lines);
+            $block->lines = $this->bundleLines($block->lines, $comparePolicy);
         }
 
         return $file;
@@ -28,7 +29,7 @@ class UnifiedDiffBundler
      *
      * @return DiffLine[]
      */
-    public function bundleLines(array $lines): array
+    public function bundleLines(array $lines, DiffComparePolicy $comparePolicy): array
     {
         $result = [];
 
@@ -38,7 +39,7 @@ class UnifiedDiffBundler
                 continue;
             }
 
-            $bundledLines = $this->setBundler->bundle($set);
+            $bundledLines = $this->setBundler->bundle($set, $comparePolicy);
             if ($bundledLines === null) {
                 $result[] = $set->removed;
                 $result[] = $set->added;
