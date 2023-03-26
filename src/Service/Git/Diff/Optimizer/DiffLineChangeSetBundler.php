@@ -45,7 +45,7 @@ class DiffLineChangeSetBundler
             }
 
             if ($text === DiffLineChangeSet::NEWLINE) {
-                $lines[] = $this->createDiffLine($changes, $lineNumbers);
+                $lines[] = $this->createDiffLine($changes, $lineNumbers, $type);
                 $lineNumbers->increment(DiffLineChangeSetDiffer::TEXT_ADDITIONS[$type]);
                 $lineNumbers->increment(false, $newlinesBefore);
                 $newlinesBefore = 0;
@@ -61,36 +61,39 @@ class DiffLineChangeSetBundler
         }
 
         if (count($changes) > 0) {
-            $lines[] = $this->createDiffLine($changes, $lineNumbers);
+            $lines[] = $this->createDiffLine($changes, $lineNumbers, null);
         }
 
         return $lines;
     }
 
     /**
-     * @param DiffChange[] $changes
+     * @param DiffChange[]                       $changes
+     * @param LineBlockTextIterator::TEXT_*|null $newLineType
      */
-    private function createDiffLine(array $changes, DiffLineNumberPair $lineNumbers): DiffLine
+    private function createDiffLine(array $changes, DiffLineNumberPair $lineNumbers, ?int $newLineType): DiffLine
     {
         $types = [];
         foreach ($changes as $change) {
             $types[$change->type] = true;
         }
 
-        // determine line type based on changes
         $lineState = DiffLine::STATE_CHANGED;
-        if (count($types) === 1) {
-            switch (key($types)) {
-                case DiffChange::ADDED:
-                    $lineState = DiffLine::STATE_ADDED;
-                    break;
-                case DiffChange::REMOVED:
-                    $lineState = DiffLine::STATE_REMOVED;
-                    break;
-                case DiffChange::UNCHANGED:
-                    $lineState = DiffLine::STATE_UNCHANGED;
-                    break;
-            }
+        if (count($types) === 0 && $newLineType !== null) {
+            // no changes, determine type based on new line type
+            $lineState = match ($newLineType) {
+                LineBlockTextIterator::TEXT_ADDED   => DiffLine::STATE_ADDED,
+                LineBlockTextIterator::TEXT_REMOVED => DiffLine::STATE_REMOVED,
+                default                             => DiffLine::STATE_CHANGED,
+            };
+        } elseif (count($types) === 1) {
+            // determine line type based on changes
+            $lineState = match (key($types)) {
+                DiffChange::ADDED     => DiffLine::STATE_ADDED,
+                DiffChange::REMOVED   => DiffLine::STATE_REMOVED,
+                DiffChange::UNCHANGED => DiffLine::STATE_UNCHANGED,
+                default               => DiffLine::STATE_CHANGED,
+            };
         }
 
         $line                   = new DiffLine($lineState, $changes);
