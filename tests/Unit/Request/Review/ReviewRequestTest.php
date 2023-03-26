@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Security\SessionKeys;
@@ -71,6 +72,25 @@ class ReviewRequestTest extends AbstractRequestTestCase
 
         $this->request->query->set('diff', 'unified');
         static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
+    }
+
+    /**
+     * @covers ::getComparisonPolicy
+     */
+    public function testGetComparePolicyFromSession(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        $session->expects(self::once())
+            ->method('get')
+            ->with(SessionKeys::DIFF_COMPARISON_POLICY->value)
+            ->willReturn(DiffComparePolicy::TRIM->value);
+        $session->expects(self::once())
+            ->method('set')
+            ->with(SessionKeys::DIFF_COMPARISON_POLICY->value, DiffComparePolicy::TRIM->value);
+
+        static::assertSame(DiffComparePolicy::TRIM, $this->validatedRequest->getComparisonPolicy());
     }
 
     /**
