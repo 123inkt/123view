@@ -47,30 +47,31 @@ class UnifiedDiffBundler
     {
         $collection = new DiffLineCollection($lines);
 
-        foreach ($collection->getDiffLineSet() as $pairs) {
-            /** @var DiffLinePair $pair */
-            foreach ($pairs as $pair) {
-                if ($this->isBundleable($this->comparator->compare($pair->removed, $pair->added)) !== false) {
-                    continue;
-                }
-
-                // emphasize changes in all pairs
-                $this->emphasizeDiff($pairs);
-                // in a set of multiple pairs, if one of the pairs is not bundleable, skip the whole set
-                continue 2;
-            }
-
-            // all pairs are bundleable, bundle now
-            foreach ($pairs as $pair) {
-                // copy line number from added to removed
-                $pair->removed->lineNumberAfter = $pair->added->lineNumberAfter;
-
-                // merge changes into first line, and remove the second line
-                $pair->removed->state   = DiffLine::STATE_CHANGED;
-                $pair->removed->changes = $this->changeBundler->bundle($pair->removed->changes->first(), $pair->added->changes->first());
-                $collection->remove($pair->added);
-            }
-        }
+        // TODO
+        //foreach ($collection->getDiffLineSet() as $pairs) {
+        //    /** @var DiffLinePair $pair */
+        //    foreach ($pairs as $pair) {
+        //        if ($this->isBundleable($this->comparator->compare($pair->removed, $pair->added)) !== false) {
+        //            continue;
+        //        }
+        //
+        //        // emphasize changes in all pairs
+        //        $this->emphasizeDiff($pairs);
+        //        // in a set of multiple pairs, if one of the pairs is not bundleable, skip the whole set
+        //        continue 2;
+        //    }
+        //
+        //    // all pairs are bundleable, bundle now
+        //    foreach ($pairs as $pair) {
+        //        // copy line number from added to removed
+        //        $pair->removed->lineNumberAfter = $pair->added->lineNumberAfter;
+        //
+        //        // merge changes into first line, and remove the second line
+        //        $pair->removed->state   = DiffLine::STATE_CHANGED;
+        //        $pair->removed->changes = $this->changeBundler->bundle($pair->removed->changes->first(), $pair->added->changes->first());
+        //        $collection->remove($pair->added);
+        //    }
+        //}
 
         return $collection->toArray();
     }

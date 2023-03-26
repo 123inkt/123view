@@ -15,6 +15,8 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    private const TEXT_ADDITIONS = [LineBlockTextIterator::TEXT_ADDED => true, LineBlockTextIterator::TEXT_UNCHANGED_AFTER => true];
+
     public function __construct(private readonly JBDiff $jbdiff)
     {
     }
@@ -30,6 +32,7 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
         $text2 = $set->getTextAfter();
 
         try {
+            // compare text
             $iterator = $this->jbdiff->compareToIterator($text1, $text2, splitOnNewLines: true);
         } catch (DiffToBigException) {
             $this->logger?->info(sprintf('Diff to big: `%s...` - `%s...`', mb_substr(trim($text1), 0, 50), mb_substr(trim($text2), 0, 50)));
@@ -42,42 +45,36 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
 
         $beforeIndex = 0;
         $afterIndex  = 0;
-        foreach ($iterator as [$type, $multiLineText]) {
-            $added = in_array($type, [LineBlockTextIterator::TEXT_ADDED, LineBlockTextIterator::TEXT_UNCHANGED_AFTER], true);
-            $texts = explode("\n", $multiLineText);
+        foreach ($iterator as [$type, $text]) {
+            $addition = self::TEXT_ADDITIONS[$type] ?? false;
 
-            foreach ($texts as $index => $text) {
-                if ($index > 0) {
-                    if ($added) {
-                        ++$afterIndex;
-                    } else {
-                        ++$beforeIndex;
-                    }
+            // text is newline, move to next DiffLine
+            if ($text === "\n") {
+                if ($addition) {
+                    ++$afterIndex;
+                } else {
+                    ++$beforeIndex;
                 }
-                if ($text === '') {
-                    continue;
-                }
+                continue;
+            }
 
-                $line = $added ? ($set->added[$afterIndex] ?? null) : ($set->removed[$beforeIndex] ?? null);
-                assert($line !== null);
+            $line = $addition ? ($set->added[$afterIndex] ?? null) : ($set->removed[$beforeIndex] ?? null);
+            assert($line !== null);
 
-                switch ($type) {
-                    case LineBlockTextIterator::TEXT_REMOVED:
-                        $line->changes->add(new DiffChange(DiffChange::REMOVED, $text));
-                        break;
-                    case LineBlockTextIterator::TEXT_UNCHANGED_BEFORE:
-                    case LineBlockTextIterator::TEXT_UNCHANGED_AFTER:
-                        $line->changes->add(new DiffChange(DiffChange::UNCHANGED, $text));
-                        break;
-                    case LineBlockTextIterator::TEXT_ADDED:
-                        $line->changes->add(new DiffChange(DiffChange::ADDED, $text));
-                        break;
-                }
+            switch ($type) {
+                case LineBlockTextIterator::TEXT_REMOVED:
+                    $line->changes->add(new DiffChange(DiffChange::REMOVED, $text));
+                    break;
+                case LineBlockTextIterator::TEXT_UNCHANGED_BEFORE:
+                case LineBlockTextIterator::TEXT_UNCHANGED_AFTER:
+                    $line->changes->add(new DiffChange(DiffChange::UNCHANGED, $text));
+                    break;
+                case LineBlockTextIterator::TEXT_ADDED:
+                    $line->changes->add(new DiffChange(DiffChange::ADDED, $text));
+                    break;
             }
         }
-    }
 
-    private static function clearSet(): void
-    {
+        return $set;
     }
 }
