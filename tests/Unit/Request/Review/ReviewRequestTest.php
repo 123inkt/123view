@@ -61,17 +61,17 @@ class ReviewRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getDiffMode
+     * @covers ::getComparisonPolicy
      */
-    public function testGetDiffMode(): void
+    public function testGetComparePolicy(): void
     {
         $session = $this->createMock(Session::class);
         $this->request->setSession($session);
 
-        static::assertSame(ReviewDiffModeEnum::INLINE, $this->validatedRequest->getDiffMode());
+        static::assertSame(DiffComparePolicy::ALL, $this->validatedRequest->getComparisonPolicy());
 
-        $this->request->query->set('diff', 'unified');
-        static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
+        $this->request->query->set('comparisonPolicy', 'ignore');
+        static::assertSame(DiffComparePolicy::IGNORE, $this->validatedRequest->getComparisonPolicy());
     }
 
     /**
@@ -91,6 +91,20 @@ class ReviewRequestTest extends AbstractRequestTestCase
             ->with(SessionKeys::DIFF_COMPARISON_POLICY->value, DiffComparePolicy::TRIM->value);
 
         static::assertSame(DiffComparePolicy::TRIM, $this->validatedRequest->getComparisonPolicy());
+    }
+
+    /**
+     * @covers ::getDiffMode
+     */
+    public function testGetDiffMode(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        static::assertSame(ReviewDiffModeEnum::INLINE, $this->validatedRequest->getDiffMode());
+
+        $this->request->query->set('diff', 'unified');
+        static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
     }
 
     /**
