@@ -7,6 +7,7 @@ use DR\JBDiff\Diff\Util\DiffToBigException;
 use DR\JBDiff\JBDiff;
 use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
+use IteratorAggregate;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -26,7 +27,10 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
     {
     }
 
-    public function diff(DiffLineChangeSet $set): ?LineBlockTextIterator
+    /**
+     * @return IteratorAggregate<array{0: LineBlockTextIterator::TEXT_*, 1: string}>|null
+     */
+    public function diff(DiffLineChangeSet $set): ?IteratorAggregate
     {
         // only additions or only removals, nothing to optimize
         if (count($set->removed) === 0 || count($set->added) === 0) {

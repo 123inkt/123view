@@ -69,8 +69,10 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
             case LineBlockTextIterator::TEXT_ADDED:
                 $line->changes->add(new DiffChange(DiffChange::ADDED, $text));
                 break;
+            // @codeCoverageIgnoreStart
             default:
                 throw new RuntimeException('Unknown LineBlockTextIterator type: ' . $type);
+            // @codeCoverageIgnoreEnd
         }
     }
 }
