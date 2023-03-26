@@ -10,6 +10,7 @@ use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 
 class DiffLineChangeSetOptimizer implements LoggerAwareInterface
 {
@@ -72,6 +73,8 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
                 case LineBlockTextIterator::TEXT_ADDED:
                     $line->changes->add(new DiffChange(DiffChange::ADDED, $text));
                     break;
+                default:
+                    throw new RuntimeException('Unknown LineBlockTextIterator type: ' . $type);
             }
         }
 
