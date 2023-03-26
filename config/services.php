@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
-use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
@@ -13,11 +12,6 @@ use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
-use DR\Review\Git\Diff\DiffChangeBundler;
-use DR\Review\Git\Diff\DiffLineDiffer;
-use DR\Review\Git\Diff\Opcode\DiffChangeFactory;
-use DR\Review\Git\Diff\Opcode\DiffChangeOptimizer;
-use DR\Review\Git\Diff\Opcode\DiffGranularity;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -127,13 +121,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
-    $services->set(DiffChangeBundler::class);
-    $services->set(DiffChangeFactory::class);
-    $services->set(DiffChangeOptimizer::class);
-    // TODO remove
-    $services->set(Diff::class)->arg('$granularity', inline_service(DiffGranularity::class));
     $services->Set(JBDiff::class);
-    $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);

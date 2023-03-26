@@ -48,7 +48,7 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_UNCHANGED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], iterator_to_array($lines->getDiffLineSet()));
+        static::assertSame([], $lines->getDiffLineSet());
     }
 
     /**
@@ -60,7 +60,7 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], iterator_to_array($lines->getDiffLineSet()));
+        static::assertSame([], $lines->getDiffLineSet());
     }
 
     /**
@@ -72,7 +72,7 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_REMOVED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], iterator_to_array($lines->getDiffLineSet()));
+        static::assertSame([], $lines->getDiffLineSet());
     }
 
     /**
