@@ -93,7 +93,13 @@ class DiffFinder
      */
     public function findLineInLines(array $lines, LineReference $lineReference): ?DiffLine
     {
+        $potentialMatch = null;
+
         foreach ($lines as $index => $line) {
+            if ($line->state === DiffLine::STATE_ADDED && $line->lineNumberAfter === $lineReference->lineAfter) {
+                $potentialMatch = $line;
+            }
+
             if ($line->lineNumberBefore !== $lineReference->line) {
                 continue;
             }
@@ -111,7 +117,7 @@ class DiffFinder
             return $line;
         }
 
-        return null;
+        return $potentialMatch;
     }
 
     /**

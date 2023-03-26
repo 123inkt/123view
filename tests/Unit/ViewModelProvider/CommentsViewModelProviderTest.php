@@ -48,14 +48,16 @@ class CommentsViewModelProviderTest extends AbstractTestCase
         $commentA = new Comment();
         $commentA->setLineReference(new LineReference('comment-1', 1, 2, 3));
         $commentB = new Comment();
-        $commentB->setLineReference(new LineReference('comment-2', 4, 5, 6));
-        $comments = [$commentA, $commentB];
-        $review   = new CodeReview();
-        $file     = new DiffFile();
-        $line     = new DiffLine(0, []);
+        $commentB->setLineReference(new LineReference('comment-2', 4, 0, 0));
+        $comments   = [$commentA, $commentB];
+        $review     = new CodeReview();
+        $file       = new DiffFile();
+        $fileBefore = new DiffFile();
+        $line       = new DiffLine(0, []);
 
-        $file->filePathBefore = '/path/to/fileBefore';
-        $file->filePathAfter  = '/path/to/fileAfter';
+        $file->filePathBefore       = '/path/to/fileBefore';
+        $file->filePathAfter        = '/path/to/fileAfter';
+        $fileBefore->filePathBefore = 'fileBefore';
 
         $this->commentRepository->expects(self::once())
             ->method('findByReview')
@@ -63,11 +65,11 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->willReturn($comments);
         $this->diffFinder->expects(self::exactly(2))
             ->method('findLineInFile')
-            ->will(static::onConsecutiveCalls([$file, $commentA->getLineReference()], [$file, $commentB->getLineReference()]))
+            ->will(static::onConsecutiveCalls([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))
             ->willReturn($line, null);
         $this->visibilityProvider->expects(self::once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
 
-        $viewModel = $this->provider->getCommentsViewModel($review, $file);
+        $viewModel = $this->provider->getCommentsViewModel($review, $fileBefore, $file);
         static::assertSame([$commentA], $viewModel->getComments($line));
         static::assertSame([$commentB], $viewModel->detachedComments);
         static::assertSame(CommentVisibility::NONE, $viewModel->commentVisibility);

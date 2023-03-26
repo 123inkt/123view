@@ -1,3 +1,4 @@
+{# isLineBefore: bool #}
 {%- set prev_line_visible = null -%}
 
 <div class="diff-side-by-side__diff-block">
@@ -26,6 +27,14 @@
 
         {#- line of code -#}
         {%- include 'app/review/commit/side-by-side/commit.line.html.twig' -%}
+
+        {#- comments -#}
+        {%- for comment in commentsViewModel.getComments(line) -%}
+            {# left side only shows comments on removed code, right side all the others #}
+            {% if not isLineBefore or comment.lineReference.lineAfter == 0 %}
+                {%- include 'app/review/comment/comment.html.twig' with {visible: commentsViewModel.isCommentVisible(comment)} -%}
+            {% endif %}
+        {%- endfor -%}
 
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}
