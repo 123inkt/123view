@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6e982bdcb93ffc1911346433d6bfa06",
+    "content-hash": "28141942fb49f0cda41a8d66963973fa",
     "packages": [
         {
             "name": "api-platform/core",
@@ -3037,71 +3037,6 @@
                 }
             ],
             "time": "2021-06-28T04:27:21+00:00"
-        },
-        {
-            "name": "lolli42/finediff",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lolli42/FineDiff.git",
-                "reference": "f72cd968b663fc09bc73ef0ab5a3288583d0d59d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lolli42/FineDiff/zipball/f72cd968b663fc09bc73ef0ab5a3288583d0d59d",
-                "reference": "f72cd968b663fc09bc73ef0ab5a3288583d0d59d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "symfony/polyfill-mbstring": "^1.23"
-            },
-            "replace": {
-                "cogpowered/finediff": "*"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.4",
-                "phpstan/phpstan": "^1.6",
-                "phpunit/phpunit": "^8 || ^9"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "cogpowered\\FineDiff\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Raymond Hill"
-                },
-                {
-                    "name": "Rob Crowe",
-                    "email": "rob@cogpowered.com"
-                },
-                {
-                    "name": "Christian Kuhn",
-                    "email": "lolli@schwarzbu.ch",
-                    "role": "maintainer"
-                }
-            ],
-            "description": "PHP implementation of a Fine granularity Diff engine",
-            "homepage": "https://github.com/lolli42/FineDiff",
-            "keywords": [
-                "diff",
-                "finediff",
-                "opcode",
-                "string",
-                "text"
-            ],
-            "support": {
-                "issues": "https://github.com/lolli42/FineDiff/issues",
-                "source": "https://github.com/lolli42/FineDiff/tree/1.0.2"
-            },
-            "time": "2022-05-23T07:44:28+00:00"
         },
         {
             "name": "monolog/monolog",
