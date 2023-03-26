@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Git\Diff;
 
-use Generator;
-
 class DiffLineCollection
 {
     /** @var DiffLine[] */
@@ -37,29 +35,34 @@ class DiffLineCollection
     }
 
     /**
-     * @return Generator<array<DiffLineChangeSet>>
+     * @return array<DiffLine|DiffLineChangeSet>
      */
-    public function getDiffLineSet(): Generator
+    public function getDiffLineSet(): array
     {
-        $set     = 0;
+        $result  = [];
         $removed = [];
         $added   = [];
 
         // gather all the added and removed pairs
         foreach ($this->lines as $line) {
             if ($line->state === DiffLine::STATE_REMOVED) {
-                $removed[$set][] = $line;
+                $removed[] = $line;
             } elseif ($line->state === DiffLine::STATE_ADDED) {
-                $added[$set][] = $line;
+                $added[] = $line;
             } elseif ($line->state === DiffLine::STATE_UNCHANGED) {
-                ++$set;
+                if (count($removed) > 0 || count($added) > 0) {
+                    $result[] = new DiffLineChangeSet($removed, $added);
+                    $added    = [];
+                    $removed  = [];
+                }
+                $result[] = $line;
             }
         }
 
-        for ($i = 0; $i <= $set; $i++) {
-            if (isset($added[$i], $removed[$i])) {
-                yield new DiffLineChangeSet($removed[$i] ?? [], $added[$i] ?? []);
-            }
+        if (count($removed) > 0 || count($added) > 0) {
+            $result[] = new DiffLineChangeSet($removed, $added);
         }
+
+        return $result;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetOptimizer;
 
@@ -21,7 +22,9 @@ class UnifiedDiffEmphasizer
         foreach ($file->getBlocks() as $block) {
             $collection = new DiffLineCollection($block->lines);
             foreach ($collection->getDiffLineSet() as $set) {
-                $this->optimizer->optimize($set);
+                if ($set instanceof DiffLineChangeSet) {
+                    $this->optimizer->optimize($set);
+                }
             }
             $block->lines = $collection->toArray();
         }

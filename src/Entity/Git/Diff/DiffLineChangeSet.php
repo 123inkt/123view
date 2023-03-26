@@ -5,6 +5,8 @@ namespace DR\Review\Entity\Git\Diff;
 
 class DiffLineChangeSet
 {
+    public const NEWLINE = "\n";
+
     /**
      * @param DiffLine[] $removed
      * @param DiffLine[] $added
@@ -13,11 +15,33 @@ class DiffLineChangeSet
     {
     }
 
+    public function getLineNumbers(): ?DiffLineNumberPair
+    {
+        $lineNumberBefore = null;
+        $lineNumberAfter  = null;
+
+        foreach ($this->removed as $line) {
+            $lineNumberBefore = $line->lineNumberBefore;
+            break;
+        }
+
+        foreach ($this->added as $line) {
+            $lineNumberAfter = $line->lineNumberAfter;
+            break;
+        }
+
+        if ($lineNumberBefore === null || $lineNumberAfter === null) {
+            return null;
+        }
+
+        return new DiffLineNumberPair($lineNumberBefore, $lineNumberAfter);
+    }
+
     public function getTextBefore(): string
     {
         $text = '';
         foreach ($this->removed as $line) {
-            $text .= $line->getLine() . "\n";
+            $text .= $line->getLine() . self::NEWLINE;
         }
 
         return $text;
@@ -27,7 +51,7 @@ class DiffLineChangeSet
     {
         $text = '';
         foreach ($this->added as $line) {
-            $text .= $line->getLine() . "\n";
+            $text .= $line->getLine() . self::NEWLINE;
         }
 
         return $text;

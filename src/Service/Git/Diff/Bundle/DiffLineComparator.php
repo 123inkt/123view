@@ -6,6 +6,7 @@ namespace DR\Review\Service\Git\Diff\Bundle;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Utility\Strings;
 
+// TODO remove
 class DiffLineComparator
 {
     public function compare(DiffLine $lineA, DiffLine $lineB): DiffLineCompareResult
