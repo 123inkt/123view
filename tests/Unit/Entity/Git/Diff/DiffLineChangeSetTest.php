@@ -7,11 +7,11 @@ use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineNumberPair;
+use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
 #[CoversClass(DiffLineChangeSet::class)]
-class DiffLineChangeSetTest extends TestCase
+class DiffLineChangeSetTest extends AbstractTestCase
 {
     public function testGetTextBefore(): void
     {
