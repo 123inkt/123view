@@ -9,6 +9,7 @@ use Generator;
 use IteratorAggregate;
 
 /**
+ * TODO remove
  * @implements IteratorAggregate<DiffLine>
  */
 class DiffLineIterator implements IteratorAggregate

@@ -7,6 +7,7 @@ use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
 use DR\Review\Utility\Strings;
 
+// TODO remove
 class DiffChangeOptimizer
 {
     /**
