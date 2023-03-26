@@ -67,7 +67,7 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->willReturn($line, null);
         $this->visibilityProvider->expects(self::once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
 
-        $viewModel = $this->provider->getCommentsViewModel($review, $file);
+        $viewModel = $this->provider->getCommentsViewModel($review, null, $file);
         static::assertSame([$commentA], $viewModel->getComments($line));
         static::assertSame([$commentB], $viewModel->detachedComments);
         static::assertSame(CommentVisibility::NONE, $viewModel->commentVisibility);
