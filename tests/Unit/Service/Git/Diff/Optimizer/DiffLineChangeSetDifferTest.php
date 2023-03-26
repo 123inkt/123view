@@ -45,7 +45,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
 
         $this->jbdiff->expects(self::once())
             ->method('compareToIterator')
-            ->with("bar\n", "foo\n", ComparisonPolicy::DEFAULT, true)
+            ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
             ->willReturn($iterator);
 
         static::assertSame($iterator, $this->differ->diff($set, DiffComparePolicy::IGNORE));
@@ -59,7 +59,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
 
         $this->jbdiff->expects(self::once())
             ->method('compareToIterator')
-            ->with("bar\n", "foo\n", ComparisonPolicy::DEFAULT, true)
+            ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
             ->willThrowException(new DiffToBigException());
 
         static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
