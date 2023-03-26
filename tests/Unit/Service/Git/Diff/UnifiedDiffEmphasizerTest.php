@@ -7,7 +7,6 @@ use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
-use DR\Review\Git\Diff\DiffLineDiffer;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetOptimizer;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Tests\AbstractTestCase;

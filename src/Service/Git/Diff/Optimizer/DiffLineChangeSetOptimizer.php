@@ -5,6 +5,7 @@ namespace DR\Review\Service\Git\Diff\Optimizer;
 
 use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -32,10 +33,10 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
         $beforeIndex = 0;
         $afterIndex  = 0;
         foreach ($iterator as [$type, $text]) {
-            $addition = DiffLineChangeSetDiffer::TEXT_ADDITIONS[$type] ?? false;
+            $addition = DiffLineChangeSetDiffer::TEXT_ADDITIONS[$type];
 
             // text is newline, move to next DiffLine
-            if ($text === "\n") {
+            if ($text === DiffLineChangeSet::NEWLINE) {
                 if ($addition) {
                     ++$afterIndex;
                 } else {
@@ -46,23 +47,30 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
 
             $line = $addition ? ($set->added[$afterIndex] ?? null) : ($set->removed[$beforeIndex] ?? null);
             assert($line !== null);
-
-            switch ($type) {
-                case LineBlockTextIterator::TEXT_REMOVED:
-                    $line->changes->add(new DiffChange(DiffChange::REMOVED, $text));
-                    break;
-                case LineBlockTextIterator::TEXT_UNCHANGED_BEFORE:
-                case LineBlockTextIterator::TEXT_UNCHANGED_AFTER:
-                    $line->changes->add(new DiffChange(DiffChange::UNCHANGED, $text));
-                    break;
-                case LineBlockTextIterator::TEXT_ADDED:
-                    $line->changes->add(new DiffChange(DiffChange::ADDED, $text));
-                    break;
-                default:
-                    throw new RuntimeException('Unknown LineBlockTextIterator type: ' . $type);
-            }
+            self::addChange($line, $type, $text);
         }
 
         return $set;
+    }
+
+    /**
+     * @phpstan-param LineBlockTextIterator::TEXT_* $type
+     */
+    private static function addChange(DiffLine $line, int $type, string $text): void
+    {
+        switch ($type) {
+            case LineBlockTextIterator::TEXT_REMOVED:
+                $line->changes->add(new DiffChange(DiffChange::REMOVED, $text));
+                break;
+            case LineBlockTextIterator::TEXT_UNCHANGED_BEFORE:
+            case LineBlockTextIterator::TEXT_UNCHANGED_AFTER:
+                $line->changes->add(new DiffChange(DiffChange::UNCHANGED, $text));
+                break;
+            case LineBlockTextIterator::TEXT_ADDED:
+                $line->changes->add(new DiffChange(DiffChange::ADDED, $text));
+                break;
+            default:
+                throw new RuntimeException('Unknown LineBlockTextIterator type: ' . $type);
+        }
     }
 }
