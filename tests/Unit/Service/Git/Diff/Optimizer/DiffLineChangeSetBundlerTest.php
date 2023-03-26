@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Diff\Optimizer;
 
+use ArrayObject;
+use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
+use DR\Review\Entity\Git\Diff\DiffLineNumberPair;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
 use DR\Review\Tests\AbstractTestCase;
@@ -25,7 +28,7 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
         $this->bundler = new DiffLineChangeSetBundler($this->differ);
     }
 
-    public function testOptimizeShouldSkipWhenDiffIsNotPossible(): void
+    public function testBundleShouldSkipWhenDiffIsNotPossible(): void
     {
         $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'bar')]);
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
@@ -38,5 +41,36 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
 
     public function testBundle(): void
     {
+        $set     = $this->createMock(DiffLineChangeSet::class);
+        $changes = new ArrayObject(
+            [
+                [LineBlockTextIterator::TEXT_REMOVED, 'removed '],
+                [LineBlockTextIterator::TEXT_UNCHANGED_BEFORE, 'unchanged'],
+                [LineBlockTextIterator::TEXT_UNCHANGED_AFTER, 'unchanged'],
+                [LineBlockTextIterator::TEXT_UNCHANGED_BEFORE, "\n"],
+                [LineBlockTextIterator::TEXT_UNCHANGED_AFTER, "\n"],
+                [LineBlockTextIterator::TEXT_REMOVED, "\n"],
+                [LineBlockTextIterator::TEXT_ADDED, 'added'],
+            ]
+        );
+
+        $set->expects(self::once())->method('getLineNumbers')->willReturn(new DiffLineNumberPair(10, 20));
+        $this->differ->expects(self::once())->method('diff')->with($set)->willReturn($changes);
+
+        $lines = $this->bundler->bundle($set);
+
+        static::assertCount(3, $lines);
+
+        static::assertCount(2, $lines[0]->changes);
+        static::assertSame(10, $lines[0]->lineNumberBefore);
+        static::assertSame(20, $lines[0]->lineNumberAfter);
+
+        static::assertCount(0, $lines[1]->changes);
+        static::assertSame(11, $lines[1]->lineNumberBefore);
+        static::assertSame(21, $lines[1]->lineNumberAfter);
+
+        static::assertCount(1, $lines[2]->changes);
+        static::assertSame(12, $lines[2]->lineNumberBefore);
+        static::assertSame(21, $lines[2]->lineNumberAfter);
     }
 }

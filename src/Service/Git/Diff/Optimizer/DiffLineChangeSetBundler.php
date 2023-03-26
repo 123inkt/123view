@@ -37,7 +37,7 @@ class DiffLineChangeSetBundler
 
         foreach ($iterator as [$type, $text]) {
             if ($type === LineBlockTextIterator::TEXT_UNCHANGED_BEFORE) {
-                // keep track of the new lines before to keep a correct diffline line numbering
+                // keep track of the new lines before to keep a correct DiffLine line numbering
                 if ($text === DiffLineChangeSet::NEWLINE) {
                     ++$newlinesBefore;
                 }
