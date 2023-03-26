@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
@@ -44,7 +45,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
 
         $this->setBundler->expects(self::once())->method('bundle')->willReturn([$line1, $line2]);
 
-        static::assertSame($file, $this->bundler->bundleFile($file));
+        static::assertSame($file, $this->bundler->bundleFile($file, DiffComparePolicy::IGNORE));
     }
 
     /**
@@ -59,7 +60,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
 
         $this->setBundler->expects(self::once())->method('bundle')->willReturn([$line2]);
 
-        $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4]);
+        $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4], DiffComparePolicy::IGNORE);
         static::assertSame([$line1, $line2, $line4], $result);
     }
 
@@ -75,7 +76,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
 
         $this->setBundler->expects(self::once())->method('bundle')->willReturn(null);
 
-        $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4]);
+        $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4], DiffComparePolicy::IGNORE);
         static::assertSame([$line1, $line2, $line3, $line4], $result);
     }
 }

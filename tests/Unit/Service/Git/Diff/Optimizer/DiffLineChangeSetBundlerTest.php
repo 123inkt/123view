@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Diff\Optimizer;
 use ArrayObject;
 use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineNumberPair;
@@ -34,9 +35,9 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $this->differ->expects(self::once())->method('diff')->with($set)->willReturn(null);
+        $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn(null);
 
-        static::assertNull($this->bundler->bundle($set));
+        static::assertNull($this->bundler->bundle($set, DiffComparePolicy::IGNORE));
     }
 
     public function testBundle(): void
@@ -55,9 +56,9 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
         );
 
         $set->expects(self::once())->method('getLineNumbers')->willReturn(new DiffLineNumberPair(10, 20));
-        $this->differ->expects(self::once())->method('diff')->with($set)->willReturn($changes);
+        $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
 
-        $lines = $this->bundler->bundle($set);
+        $lines = $this->bundler->bundle($set, DiffComparePolicy::IGNORE);
 
         static::assertCount(3, $lines);
 

@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetOptimizer;
@@ -45,7 +46,7 @@ class UnifiedDiffEmphasizerTest extends AbstractTestCase
 
         $this->optimizer->expects(self::once())->method('optimize');
 
-        $this->emphasizer->emphasizeFile($file);
+        $this->emphasizer->emphasizeFile($file, DiffComparePolicy::IGNORE);
         static::assertEquals([$line1, $line2, $line3, $line4], $block->lines);
     }
 }

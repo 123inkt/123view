@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -72,7 +73,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->bundler->expects(self::once())->method('bundleFile')->with($file);
         $this->emphasizer->expects(self::never())->method('emphasizeFile');
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::INLINE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
 
@@ -94,7 +95,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->bundler->expects(self::never())->method('bundleFile');
         $this->emphasizer->expects(self::once())->method('emphasizeFile')->with($file);
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::UNIFIED);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::UNIFIED);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
 
@@ -117,7 +118,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->emphasizer->expects(self::once())->method('emphasizeFile')->with($file);
         $this->splitter->expects(self::once())->method('splitFile')->with($file);
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::SIDE_BY_SIDE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::SIDE_BY_SIDE);
         static::assertNotNull($viewModel->leftSideFile);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
@@ -135,7 +136,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, $file);
         $this->highlightedFileService->expects(self::never())->method('fromDiffFile');
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, ReviewDiffModeEnum::INLINE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
         static::assertNull($viewModel->getHighlightedFile());
     }
 
@@ -157,7 +158,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
         $this->commentModelProvider->expects(self::once())->method('getReplyCommentViewModel')->with($action);
 
-        $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, ReviewDiffModeEnum::INLINE);
+        $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
     }
 }

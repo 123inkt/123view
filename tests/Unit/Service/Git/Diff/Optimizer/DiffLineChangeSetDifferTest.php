@@ -8,6 +8,7 @@ use DR\JBDiff\Diff\Util\DiffToBigException;
 use DR\JBDiff\JBDiff;
 use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffChange;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
@@ -31,7 +32,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
     public function testDiffShouldSkipAdditionOrRemovalOnly(): void
     {
         $set = new DiffLineChangeSet([], []);
-        static::assertNull($this->differ->diff($set));
+        static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
 
     public function testDiff(): void
@@ -47,7 +48,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
             ->with("bar\n", "foo\n", ComparisonPolicy::DEFAULT, true)
             ->willReturn($iterator);
 
-        static::assertSame($iterator, $this->differ->diff($set));
+        static::assertSame($iterator, $this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
 
     public function testDiffFailure(): void
@@ -61,6 +62,6 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
             ->with("bar\n", "foo\n", ComparisonPolicy::DEFAULT, true)
             ->willThrowException(new DiffToBigException());
 
-        static::assertNull($this->differ->diff($set));
+        static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
 }

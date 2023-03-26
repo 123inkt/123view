@@ -101,10 +101,11 @@ class ReviewRequestTest extends AbstractRequestTestCase
         $expected = new ValidationRules(
             [
                 'query' => [
-                    'filePath' => 'string|filled',
-                    'tab'      => 'string|in:revisions,overview',
-                    'diff'     => 'string|in:side-by-side,unified,inline',
-                    'action'   => 'string'
+                    'filePath'         => 'string|filled',
+                    'tab'              => 'string|in:revisions,overview',
+                    'diff'             => 'string|in:side-by-side,unified,inline',
+                    'action'           => 'string',
+                    'comparisonPolicy' => 'string|in:all,trim,ignore'
                 ]
             ]
         );
