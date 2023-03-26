@@ -27,6 +27,9 @@
         <div class="diff-side-by-side--column-layout" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
             {% set isLineBefore = false %}
             {%- if file.blocks -%}
+                {%- for detachedComment in commentsViewModel.detachedComments -%}
+                    {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true, visible: commentsViewModel.isCommentVisible(detachedComment)} -%}
+                {%- endfor -%}
 
                 {%- for block in file.blocks -%}
                     {%- include 'app/review/commit/side-by-side/commit.block.html.twig' -%}

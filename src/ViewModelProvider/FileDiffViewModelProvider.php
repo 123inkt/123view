@@ -56,7 +56,7 @@ class FileDiffViewModelProvider
         }
 
         // gather comments view model
-        $viewModel->setCommentsViewModel($this->commentsModelProvider->getCommentsViewModel($review, $selectedFile));
+        $viewModel->setCommentsViewModel($this->commentsModelProvider->getCommentsViewModel($review, $viewModel->leftSideFile, $selectedFile));
 
         // setup action form
         if ($reviewAction instanceof AddCommentReplyAction) {
