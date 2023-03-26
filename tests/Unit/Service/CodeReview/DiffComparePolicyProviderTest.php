@@ -42,7 +42,7 @@ class DiffComparePolicyProviderTest extends AbstractTestCase
         static::assertSame(DiffComparePolicy::ALL, $this->provider->getComparePolicy());
     }
 
-    public function testGetComparyPolicy(): void
+    public function testGetComparePolicy(): void
     {
         $this->session->expects(self::once())
             ->method('get')
