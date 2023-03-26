@@ -49,16 +49,15 @@ class CommentsViewModelProviderTest extends AbstractTestCase
         $commentA->setLineReference(new LineReference('comment-1', 1, 2, 3));
         $commentB = new Comment();
         $commentB->setLineReference(new LineReference('comment-2', 4, 0, 0));
-        $comments                   = [$commentA, $commentB];
-        $review                     = new CodeReview();
-        $file                       = new DiffFile();
-        $file->filePathBefore       = 'file';
-        $fileBefore                 = new DiffFile();
-        $fileBefore->filePathBefore = 'fileBefore';
-        $line                       = new DiffLine(0, []);
+        $comments   = [$commentA, $commentB];
+        $review     = new CodeReview();
+        $file       = new DiffFile();
+        $fileBefore = new DiffFile();
+        $line       = new DiffLine(0, []);
 
-        $file->filePathBefore = '/path/to/fileBefore';
-        $file->filePathAfter  = '/path/to/fileAfter';
+        $file->filePathBefore       = '/path/to/fileBefore';
+        $file->filePathAfter        = '/path/to/fileAfter';
+        $fileBefore->filePathBefore = 'fileBefore';
 
         $this->commentRepository->expects(self::once())
             ->method('findByReview')
