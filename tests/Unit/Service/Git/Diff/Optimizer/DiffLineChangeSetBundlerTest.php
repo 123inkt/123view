@@ -59,7 +59,7 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
         $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
 
         $lines = $this->bundler->bundle($set, DiffComparePolicy::IGNORE);
-
+        static::assertNotNull($lines);
         static::assertCount(3, $lines);
 
         static::assertCount(2, $lines[0]->changes);
