@@ -68,8 +68,9 @@ class DiffLineChangeSetBundler
     }
 
     /**
-     * @param DiffChange[]                       $changes
-     * @param LineBlockTextIterator::TEXT_*|null $newLineType
+     * @param DiffChange[]                               $changes
+     *
+     * @phpstan-param LineBlockTextIterator::TEXT_*|null $newLineType
      */
     private function createDiffLine(array $changes, DiffLineNumberPair $lineNumbers, ?int $newLineType): DiffLine
     {
