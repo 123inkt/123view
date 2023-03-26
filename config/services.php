@@ -8,6 +8,7 @@ use cogpowered\FineDiff\Diff;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
+use DR\JBDiff\JBDiff;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
@@ -129,7 +130,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DiffChangeBundler::class);
     $services->set(DiffChangeFactory::class);
     $services->set(DiffChangeOptimizer::class);
+    // TODO remove
     $services->set(Diff::class)->arg('$granularity', inline_service(DiffGranularity::class));
+    $services->Set(JBDiff::class);
     $services->set(DiffLineDiffer::class);
     $services->set(CssToInlineStyles::class);
     $services->set(Highlighter::class);

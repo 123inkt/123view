@@ -8,8 +8,6 @@ class DiffLineChangeSet
     /**
      * @param DiffLine[] $removed
      * @param DiffLine[] $added
-     *
-     * @codeCoverageIgnore
      */
     public function __construct(public readonly array $removed, public readonly array $added)
     {
@@ -33,5 +31,15 @@ class DiffLineChangeSet
         }
 
         return $text;
+    }
+
+    public function clearChanges(): void
+    {
+        foreach ($this->removed as $line) {
+            $line->changes->clear();
+        }
+        foreach ($this->added as $line) {
+            $line->changes->clear();
+        }
     }
 }

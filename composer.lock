@@ -309,12 +309,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/fine-diff.git",
-                "reference": "7b881a39190ed8623d431ae4fe47164349393298"
+                "reference": "f77b3c76e09ac7ee52f5d52af4033ee229ea5413"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/fine-diff/zipball/7b881a39190ed8623d431ae4fe47164349393298",
-                "reference": "7b881a39190ed8623d431ae4fe47164349393298",
+                "url": "https://api.github.com/repos/frankdekker/fine-diff/zipball/f77b3c76e09ac7ee52f5d52af4033ee229ea5413",
+                "reference": "f77b3c76e09ac7ee52f5d52af4033ee229ea5413",
                 "shasum": ""
             },
             "require": {
@@ -394,7 +394,7 @@
                 "source": "https://github.com/frankdekker/fine-diff/tree/main",
                 "issues": "https://github.com/frankdekker/fine-diff/issues"
             },
-            "time": "2023-03-25T22:13:06+00:00"
+            "time": "2023-03-26T10:02:05+00:00"
         },
         {
             "name": "digitalrevolution/symfony-console-validation",
