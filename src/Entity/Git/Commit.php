@@ -66,10 +66,10 @@ class Commit
             return null;
         }
 
-        if (preg_match('#refs/remotes/origin/([\w.-]+)#', $this->refs, $matches) === 1) {
+        if (preg_match('#(?:refs/remotes/)?origin/([\w.-]+)#', $this->refs, $matches) === 1) {
             return $matches[1];
         }
 
-        return null;
+        return $this->refs;
     }
 }

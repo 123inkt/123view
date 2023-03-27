@@ -19,6 +19,7 @@ class FormatPattern
     public const SUBJECT              = '%s';
     public const BODY                 = '%b';
     public const REF_NAMES            = '%D';
+    public const REF_NAME_SOURCE      = '%S';
 
     // key for defining the `patch` data.
     public const PATCH = 'patch';

@@ -64,6 +64,6 @@ class CommitTest extends AbstractTestCase
         static::assertNull($this->commit->getRemoteRef());
 
         $this->commit->refs = 'foobar';
-        static::assertNull($this->commit->getRemoteRef());
+        static::assertSame('foobar', $this->commit->getRemoteRef());
     }
 }
