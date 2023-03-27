@@ -48,6 +48,7 @@ class CommitHydratorTest extends AbstractTestCase
         static::assertSame([self::DATA[FormatPattern::COMMIT_HASH]], $commit->commitHashes);
         static::assertSame(self::DATA[FormatPattern::AUTHOR_NAME], $commit->author->name);
         static::assertSame(self::DATA[FormatPattern::AUTHOR_EMAIL], $commit->author->email);
+        static::assertSame('origin/foobar', $commit->refs);
         static::assertSame('2019-09-07', $commit->date->format('Y-m-d'));
         static::assertSame(self::DATA[FormatPattern::SUBJECT], $commit->subject);
         static::assertSame($files, $commit->files);
