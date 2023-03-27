@@ -36,6 +36,8 @@
             {% endif %}
         {%- endfor -%}
 
+        <div data-role="add-comment-inserter"></div>
+
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}
             {%- include 'app/review/commit/commit.block.spacer.html.twig' with {invisible_lines, line_number} -%}
