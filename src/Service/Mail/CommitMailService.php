@@ -17,7 +17,7 @@ class CommitMailService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private MailerInterface $mailer, private MailSubjectFormatter $subjectFormatter)
+    public function __construct(private string $applicationName, private MailerInterface $mailer, private MailSubjectFormatter $subjectFormatter)
     {
     }
 
@@ -29,7 +29,7 @@ class CommitMailService implements LoggerAwareInterface
     public function sendCommitsMail(RuleConfiguration $config, array $commits): void
     {
         $rule    = $config->rule;
-        $subject = $rule->getRuleOptions()?->getSubject() ?? '[Commit Notification] New revisions for: {name}';
+        $subject = $rule->getRuleOptions()?->getSubject() ?? sprintf('[%s] New revisions for: {name}', $this->applicationName);
 
         // create ViewModel and TemplateMail
         $email = (new TemplatedEmail())

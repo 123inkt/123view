@@ -33,7 +33,7 @@ class CommitMailServiceTest extends AbstractTestCase
         parent::setUp();
         $this->mailer    = $this->createMock(MailerInterface::class);
         $this->formatter = $this->createMock(MailSubjectFormatter::class);
-        $this->service   = new CommitMailService($this->mailer, $this->formatter);
+        $this->service   = new CommitMailService('foobar', $this->mailer, $this->formatter);
     }
 
     /**
