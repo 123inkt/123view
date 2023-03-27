@@ -28,6 +28,21 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
     /**
      * @covers ::onResponse
      */
+    public function testOnResponseShouldNotOverrideExisting(): void
+    {
+        $response = new Response();
+        $response->headers->set('Content-Security-Policy', '');
+        $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
+        $subscriber = new ContentSecurityPolicyResponseSubscriber('host');
+
+        $subscriber->onResponse($event);
+
+        static::assertSame("", $response->headers->get("Content-Security-Policy"));
+    }
+
+    /**
+     * @covers ::onResponse
+     */
     public function testOnResponse(): void
     {
         $response   = new Response();

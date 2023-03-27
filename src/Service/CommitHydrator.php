@@ -24,6 +24,9 @@ class CommitHydrator
         $author     = new Author((string)$data[FormatPattern::AUTHOR_NAME], (string)$data[FormatPattern::AUTHOR_EMAIL]);
         $authorDate = Carbon::parse((string)$data[FormatPattern::AUTHOR_DATE_ISO8601]);
         $refs       = trim((string)$data[FormatPattern::REF_NAMES]);
+        if ($refs === '') {
+            $refs = trim((string)$data[FormatPattern::REF_NAME_SOURCE]);
+        }
 
         return new Commit(
             $repository,

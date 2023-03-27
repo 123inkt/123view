@@ -1,4 +1,4 @@
-~!---------------------- >8~ ----------------------!~2c468822a5e65bf68ec0b4ef1c556aa69c1e3160~~&>8~#@~8<&~08ed1be9a8a3ffbfa3dd1386d5ea8dc29c452cc4~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T12:03:25+02:00~~&>8~#@~8<&~T12345 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~refs/remotes/origin/B77271_FD_GitMailLog~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~2c468822a5e65bf68ec0b4ef1c556aa69c1e3160~~&>8~#@~8<&~08ed1be9a8a3ffbfa3dd1386d5ea8dc29c452cc4~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T12:03:25+02:00~~&>8~#@~8<&~T12345 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~refs/remotes/origin/B77271_FD_GitMailLog~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/src/Service/Parser/GitLogParser.php b/src/Service/Parser/GitLogParser.php
 index 2692788..f20977c 100644
@@ -21,7 +21,7 @@ index 2692788..f20977c 100644
      {
          $result         = [];
          $pattern        = array_merge([], FormatPatternFactory::PATTERN, [FormatPattern::PATCH]);
-~!---------------------- >8~ ----------------------!~afd07f6b7edb116de9ea48a9ebad1d7c29d84770~~&>8~#@~8<&~2c468822a5e65bf68ec0b4ef1c556aa69c1e3160~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T12:02:05+02:00~~&>8~#@~8<&~T12346 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~afd07f6b7edb116de9ea48a9ebad1d7c29d84770~~&>8~#@~8<&~2c468822a5e65bf68ec0b4ef1c556aa69c1e3160~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T12:02:05+02:00~~&>8~#@~8<&~T12346 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index abc2be3..cddec44 100644
@@ -84,7 +84,7 @@ index abc2be3..cddec44 100644
  lint:
      image: ${CI_REGISTRY}/123/dev-tools/ci-helpers/php-base:${PHP_VERSION}
      stage: codequality
-~!---------------------- >8~ ----------------------!~721fe1628fc78d0edda498affa2d03f5231f1cbc~~&>8~#@~8<&~afd07f6b7edb116de9ea48a9ebad1d7c29d84770~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:49:09+02:00~~&>8~#@~8<&~T12347 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~721fe1628fc78d0edda498affa2d03f5231f1cbc~~&>8~#@~8<&~afd07f6b7edb116de9ea48a9ebad1d7c29d84770~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:49:09+02:00~~&>8~#@~8<&~T12347 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index d119d6f..abc2be3 100644
@@ -98,7 +98,7 @@ index d119d6f..abc2be3 100644
  lint:
      image: ${CI_REGISTRY}/123/dev-tools/ci-helpers/php-base:${PHP_VERSION}
      stage: codequality
-~!---------------------- >8~ ----------------------!~24a6a1dccfe121d34a03d499f0e79161a35b360f~~&>8~#@~8<&~721fe1628fc78d0edda498affa2d03f5231f1cbc~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:46:25+02:00~~&>8~#@~8<&~T12348 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~24a6a1dccfe121d34a03d499f0e79161a35b360f~~&>8~#@~8<&~721fe1628fc78d0edda498affa2d03f5231f1cbc~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:46:25+02:00~~&>8~#@~8<&~T12348 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index 5d21662..d119d6f 100644
@@ -113,7 +113,7 @@ index 5d21662..d119d6f 100644
 
  phpmd:tests:
      extends: .phpmd
-~!---------------------- >8~ ----------------------!~82012605e61170f632f8b80646a988d14035f660~~&>8~#@~8<&~24a6a1dccfe121d34a03d499f0e79161a35b360f~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:43:43+02:00~~&>8~#@~8<&~T12349 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~82012605e61170f632f8b80646a988d14035f660~~&>8~#@~8<&~24a6a1dccfe121d34a03d499f0e79161a35b360f~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:43:43+02:00~~&>8~#@~8<&~T12349 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/src/Service/Parser/GitLogParser.php b/src/Service/Parser/GitLogParser.php
 index 7f9984a..2692788 100644
@@ -127,7 +127,7 @@ index 7f9984a..2692788 100644
      public function parse(string $repository, string $commitLog, Rule $rule): array
      {
          $result         = [];
-~!---------------------- >8~ ----------------------!~91bd912515e81142b2292ddc6c287b6a1707e0d2~~&>8~#@~8<&~82012605e61170f632f8b80646a988d14035f660~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:38:40+02:00~~&>8~#@~8<&~T12355 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~91bd912515e81142b2292ddc6c287b6a1707e0d2~~&>8~#@~8<&~82012605e61170f632f8b80646a988d14035f660~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:38:40+02:00~~&>8~#@~8<&~T12355 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/src/Service/Parser/GitLogParser.php b/src/Service/Parser/GitLogParser.php
 index 2692788..7f9984a 100644
@@ -141,7 +141,7 @@ index 2692788..7f9984a 100644
      public function parse(string $repository, string $commitLog, Rule $rule): array
      {
          $result         = [];
-~!---------------------- >8~ ----------------------!~ef506fb0ef778c5f8f9ce5f6882ddfd62dc4da2f~~&>8~#@~8<&~91bd912515e81142b2292ddc6c287b6a1707e0d2~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:37:38+02:00~~&>8~#@~8<&~T12365 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~ef506fb0ef778c5f8f9ce5f6882ddfd62dc4da2f~~&>8~#@~8<&~91bd912515e81142b2292ddc6c287b6a1707e0d2~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:37:38+02:00~~&>8~#@~8<&~T12365 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/src/Service/Parser/GitLogParser.php b/src/Service/Parser/GitLogParser.php
 index f20977c..2692788 100644
@@ -164,7 +164,7 @@ index f20977c..2692788 100644
      {
          $result         = [];
          $pattern        = array_merge([], FormatPatternFactory::PATTERN, [FormatPattern::PATCH]);
-~!---------------------- >8~ ----------------------!~93d41c07dd80d195be227177efbbc77b3991a37e~~&>8~#@~8<&~ef506fb0ef778c5f8f9ce5f6882ddfd62dc4da2f~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:29:33+02:00~~&>8~#@~8<&~T12375 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~93d41c07dd80d195be227177efbbc77b3991a37e~~&>8~#@~8<&~ef506fb0ef778c5f8f9ce5f6882ddfd62dc4da2f~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:29:33+02:00~~&>8~#@~8<&~T12375 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index 30a4c07..5d21662 100644
@@ -179,7 +179,7 @@ index 30a4c07..5d21662 100644
      after_script:
          - 'echo -e "section_start:`date +%s`:phpunit_coverage[collapsed=true]\r\e[0KPHPUnit coverage"'
          - '[ -f ${REPORTS_DIR}/coverage.txt ] && cat ${REPORTS_DIR}/coverage.txt'
-~!---------------------- >8~ ----------------------!~967062b950491a5549cb51339e2783a8ed44a50a~~&>8~#@~8<&~93d41c07dd80d195be227177efbbc77b3991a37e~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:21:48+02:00~~&>8~#@~8<&~T12385 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~967062b950491a5549cb51339e2783a8ed44a50a~~&>8~#@~8<&~93d41c07dd80d195be227177efbbc77b3991a37e~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:21:48+02:00~~&>8~#@~8<&~T12385 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index 561cae1..30a4c07 100644
@@ -198,7 +198,7 @@ index 561cae1..30a4c07 100644
      coverage: '/^\s*Lines:\s*\d+.\d+\%/'
      artifacts:
          expose_as: "PHPUnit Test Reports"
-~!---------------------- >8~ ----------------------!~9d7b2f31e329213e163db63c5711b756473db45b~~&>8~#@~8<&~967062b950491a5549cb51339e2783a8ed44a50a~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:18:44+02:00~~&>8~#@~8<&~T12945 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~9d7b2f31e329213e163db63c5711b756473db45b~~&>8~#@~8<&~967062b950491a5549cb51339e2783a8ed44a50a~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:18:44+02:00~~&>8~#@~8<&~T12945 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index f8eba30..561cae1 100644
@@ -213,7 +213,7 @@ index f8eba30..561cae1 100644
          EXCLUDES: "--exclude vendor"
      before_script:
          - mkdir -p ${REPORTS_DIR}
-~!---------------------- >8~ ----------------------!~49e30628cb2886cd9256d9b26194d3486b7bb58f~~&>8~#@~8<&~9d7b2f31e329213e163db63c5711b756473db45b~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:17:33+02:00~~&>8~#@~8<&~T13345 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~49e30628cb2886cd9256d9b26194d3486b7bb58f~~&>8~#@~8<&~9d7b2f31e329213e163db63c5711b756473db45b~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:17:33+02:00~~&>8~#@~8<&~T13345 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index 5769864..f8eba30 100644
@@ -228,7 +228,7 @@ index 5769864..f8eba30 100644
      after_script:
          - echo -e "section_start:`date +%s`:my_first_section[collapsed=true]\r\e[0KPHPUnit coverage"
          - cat coverage.txt || true
-~!---------------------- >8~ ----------------------!~e613cc625c5762f5466ae8a74777016e6bccdbe6~~&>8~#@~8<&~49e30628cb2886cd9256d9b26194d3486b7bb58f~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:14:07+02:00~~&>8~#@~8<&~T12445 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~e613cc625c5762f5466ae8a74777016e6bccdbe6~~&>8~#@~8<&~49e30628cb2886cd9256d9b26194d3486b7bb58f~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:14:07+02:00~~&>8~#@~8<&~T12445 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index b23ef28..5769864 100644
@@ -245,7 +245,7 @@ index b23ef28..5769864 100644
      coverage: '/^\s*Lines:\s*\d+.\d+\%/'
      artifacts:
          expose_as: "PHPUnit Test Reports"
-~!---------------------- >8~ ----------------------!~e65bf0f23a6179aa91ed5df88416770384ecb5b3~~&>8~#@~8<&~e613cc625c5762f5466ae8a74777016e6bccdbe6~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:10:51+02:00~~&>8~#@~8<&~T12545 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~
+~!---------------------- >8~ ----------------------!~e65bf0f23a6179aa91ed5df88416770384ecb5b3~~&>8~#@~8<&~e613cc625c5762f5466ae8a74777016e6bccdbe6~~&>8~#@~8<&~Sherlock Holmes~~&>8~#@~8<&~sherlock@example.com~~&>8~#@~8<&~2021-09-25T11:10:51+02:00~~&>8~#@~8<&~T12545 GitMailLog~~&>8~#@~8<&~body~~&>8~#@~8<&~~~&>8~#@~8<&~~~&>8~#@~8<&~
 
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 index af97cdc..b23ef28 100644

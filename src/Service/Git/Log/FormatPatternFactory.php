@@ -18,7 +18,8 @@ class FormatPatternFactory
         FormatPattern::AUTHOR_DATE_ISO8601,
         FormatPattern::SUBJECT,
         FormatPattern::BODY,
-        FormatPattern::REF_NAMES
+        FormatPattern::REF_NAMES,
+        FormatPattern::REF_NAME_SOURCE
     ];
     // intentionally two-part string to avoid this commit to match output
     public const PARTS_DELIMITER  = '~' . '~&>8~#@~8<&~';
