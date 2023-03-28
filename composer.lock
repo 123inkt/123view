@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5212ac3c900ed2bd422f6a167ed7b079",
+    "content-hash": "4660cf7c908caed96eb4443f9b85b464",
     "packages": [
         {
             "name": "api-platform/core",
@@ -9928,16 +9928,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
-            "version": "v1.6.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-file-coverage-inspection.git",
-                "reference": "9dad8f0cdfe91f778de06f9b6d43b98b6d842d7f"
+                "reference": "3708c55022b1b9dbea792a2b584085f317eeb40f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/9dad8f0cdfe91f778de06f9b6d43b98b6d842d7f",
-                "reference": "9dad8f0cdfe91f778de06f9b6d43b98b6d842d7f",
+                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/3708c55022b1b9dbea792a2b584085f317eeb40f",
+                "reference": "3708c55022b1b9dbea792a2b584085f317eeb40f",
                 "shasum": ""
             },
             "require": {
@@ -9977,9 +9977,9 @@
             "description": "Configurable phpunit file coverage inspection",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-file-coverage-inspection/issues",
-                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v1.6.0"
+                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v2.0.0"
             },
-            "time": "2022-07-18T20:35:03+00:00"
+            "time": "2023-03-28T16:29:35+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
