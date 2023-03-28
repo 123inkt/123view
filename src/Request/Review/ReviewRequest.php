@@ -6,6 +6,7 @@ namespace DR\Review\Request\Review;
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\Constraint\RequestConstraintFactory;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Security\SessionKeys;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
@@ -36,6 +37,21 @@ class ReviewRequest extends AbstractValidatedRequest
         return $this->request->query->get('tab', ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
     }
 
+    public function getComparisonPolicy(): DiffComparePolicy
+    {
+        $policy = $this->request->query->get('comparisonPolicy');
+        if ($policy === null && $this->request->hasSession()) {
+            $policy = $this->request->getSession()->get(SessionKeys::DIFF_COMPARISON_POLICY->value);
+        }
+        if ($policy === null) {
+            return DiffComparePolicy::ALL;
+        }
+
+        $this->request->getSession()->set(SessionKeys::DIFF_COMPARISON_POLICY->value, $policy);
+
+        return DiffComparePolicy::from(Assert::isString($policy));
+    }
+
     public function getDiffMode(): ReviewDiffModeEnum
     {
         $mode = $this->request->query->get('diff');
@@ -61,10 +77,11 @@ class ReviewRequest extends AbstractValidatedRequest
         return new ValidationRules(
             [
                 'query' => [
-                    'filePath' => 'string|filled',
-                    'tab'      => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
-                    'diff'     => 'string|in:' . implode(',', ReviewDiffModeEnum::values()),
-                    'action'   => 'string'
+                    'filePath'         => 'string|filled',
+                    'tab'              => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
+                    'comparisonPolicy' => 'string|in:' . implode(',', DiffComparePolicy::values()),
+                    'diff'             => 'string|in:' . implode(',', ReviewDiffModeEnum::values()),
+                    'action'           => 'string'
                 ]
             ]
         );

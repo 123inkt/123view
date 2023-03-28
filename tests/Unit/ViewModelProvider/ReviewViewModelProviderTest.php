@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -88,10 +89,14 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
         $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
         $request->expects(self::once())->method('getAction')->willReturn($action);
+        $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $request->expects(self::once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
 
         $this->fileService->expects(self::once())->method('getFiles')->with($review, [$revision], $filePath)->willReturn([$tree, $file]);
-        $this->fileDiffProvider->expects(self::once())->method('getFileDiffViewModel')->with($review, $file, $action, ReviewDiffModeEnum::INLINE);
+        $this->fileDiffProvider
+            ->expects(self::once())
+            ->method('getFileDiffViewModel')
+            ->with($review, $file, $action, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
         $this->formFactory->expects(self::once())->method('create')->with(AddReviewerFormType::class, null, ['review' => $review]);
         $this->fileTreeModelProvider->expects(self::once())->method('getFileTreeViewModel')->with($review, $tree, $file);
 

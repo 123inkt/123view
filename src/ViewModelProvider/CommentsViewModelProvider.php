@@ -7,6 +7,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
+use DR\Review\Service\CodeReview\DiffComparePolicyProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
@@ -16,6 +17,7 @@ class CommentsViewModelProvider
     public function __construct(
         private readonly CommentRepository $commentRepository,
         private readonly DiffFinder $diffFinder,
+        private readonly DiffComparePolicyProvider $comparePolicyProvider,
         private readonly CommentVisibilityProvider $visibilityProvider,
     ) {
     }
@@ -45,6 +47,11 @@ class CommentsViewModelProvider
             }
         }
 
-        return new CommentsViewModel($groupedComments, $detachedComments, $this->visibilityProvider->getCommentVisibility());
+        return new CommentsViewModel(
+            $groupedComments,
+            $detachedComments,
+            $this->comparePolicyProvider->getComparePolicy(),
+            $this->visibilityProvider->getCommentVisibility()
+        );
     }
 }

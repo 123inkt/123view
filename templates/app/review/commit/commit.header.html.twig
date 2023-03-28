@@ -24,9 +24,58 @@
     </div>
 
     <div class="float-end pe-2">
-        <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
-            {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+        {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+        {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
+        {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
 
+        {# whitespace management #}
+        {% if currentDiffMode != 'inline' %}
+            <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
+            <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
+                    {{ stimulus_target('component--dropdown-menu', 'button') }}
+                    {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
+                {% if comparisonPolicy == 'ignore' %}
+                    {{ 'ignore.whitespaces'|trans }}
+                {% elseif comparisonPolicy == 'trim' %}
+                    {{ 'trim.whitespaces'|trans }}
+                {% else %}
+                    {{ 'do.not.ignore.whitespaces'|trans }}
+                {% endif %}
+            </a>
+
+            <ul class="dropdown-menu"
+                    {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
+                    {{ stimulus_controller('review-comparison-policy') }}
+            >
+                <li>
+                    <label class="dropdown-item">
+                        <input type="radio"
+                               name="whitespace"
+                               data-url="{{ url_query_params({comparisonPolicy: 'all'}) }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
+                        {{ 'do.not.ignore.whitespaces'|trans }}
+                    </label>
+                </li>
+                <li>
+                    <label class="dropdown-item">
+                        <input type="radio"
+                               name="whitespace"
+                               data-url="{{ url_query_params({comparisonPolicy: 'trim'}) }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
+                        {{ 'trim.whitespaces'|trans }}
+                    </label>
+                </li>
+                <li>
+                    <label class="dropdown-item">
+                        <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
+                                {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
+                        {{ 'ignore.whitespaces'|trans }}
+                    </label>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+
+        {# comment visibility #}
+        <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
             <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                     {{ stimulus_target('component--dropdown-menu', 'button') }}
                     {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
@@ -42,8 +91,9 @@
                    data-icon-class-all="bi bi-chat-fill"
                    data-icon-class-unresolved="bi bi-chat-dots"
                    data-icon-class-none="bi bi-chat"
-                   {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
+                        {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
             </a>
+
             <ul class="dropdown-menu"
                     {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
                     {{ stimulus_target('review-comment-visibility', 'dropdown') }}>
@@ -55,7 +105,10 @@
                 </li>
                 <li>
                     <label class="dropdown-item">
-                        <input type="radio" value="unresolved" name="visibility" data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
+                        <input type="radio"
+                               value="unresolved"
+                               name="visibility"
+                               data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
                         {{ 'only.unresolved'|trans }}
                     </label>
                 </li>
@@ -69,7 +122,6 @@
         </div>
 
         <div class="btn-group btn-group-sm">
-            {% set currentDiffMode = fileDiffViewModel.diffMode.value %}
             {% for diffMode in fileDiffViewModel.diffModes %}
                 <a href="{{ url_query_params({diff: diffMode}) }}"
                    class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ViewModel\App\Comment;
 
 use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentVisibility;
@@ -22,7 +23,7 @@ class CommentsViewModelTest extends AbstractTestCase
     public function testGetDetachedComments(): void
     {
         $comment   = new Comment();
-        $viewModel = new CommentsViewModel([], [$comment], CommentVisibility::ALL);
+        $viewModel = new CommentsViewModel([], [$comment], DiffComparePolicy::IGNORE, CommentVisibility::ALL);
         static::assertSame([$comment], $viewModel->detachedComments);
     }
 
@@ -34,7 +35,7 @@ class CommentsViewModelTest extends AbstractTestCase
         $commentA = (new Comment())->setState(CommentStateType::OPEN);
         $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
 
-        $viewModel = new CommentsViewModel([], [], CommentVisibility::ALL);
+        $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibility::ALL);
         static::assertTrue($viewModel->isCommentVisible($commentA));
         static::assertTrue($viewModel->isCommentVisible($commentB));
     }
@@ -47,7 +48,7 @@ class CommentsViewModelTest extends AbstractTestCase
         $commentA = (new Comment())->setState(CommentStateType::OPEN);
         $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
 
-        $viewModel = new CommentsViewModel([], [], CommentVisibility::UNRESOLVED);
+        $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibility::UNRESOLVED);
         static::assertTrue($viewModel->isCommentVisible($commentA));
         static::assertFalse($viewModel->isCommentVisible($commentB));
     }
@@ -60,7 +61,7 @@ class CommentsViewModelTest extends AbstractTestCase
         $commentA = (new Comment())->setState(CommentStateType::OPEN);
         $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
 
-        $viewModel = new CommentsViewModel([], [], CommentVisibility::NONE);
+        $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibility::NONE);
         static::assertFalse($viewModel->isCommentVisible($commentA));
         static::assertFalse($viewModel->isCommentVisible($commentB));
     }
@@ -76,7 +77,7 @@ class CommentsViewModelTest extends AbstractTestCase
         $comment  = new Comment();
         $comments = [spl_object_hash($lineA) => [$comment]];
 
-        $viewModel = new CommentsViewModel($comments, [], CommentVisibility::ALL);
+        $viewModel = new CommentsViewModel($comments, [], DiffComparePolicy::IGNORE, CommentVisibility::ALL);
         static::assertSame([$comment], $viewModel->getComments($lineA));
         static::assertSame([], $viewModel->getComments($lineB));
     }

@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Request\Review;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Security\SessionKeys;
@@ -60,6 +61,39 @@ class ReviewRequestTest extends AbstractRequestTestCase
     }
 
     /**
+     * @covers ::getComparisonPolicy
+     */
+    public function testGetComparePolicy(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        static::assertSame(DiffComparePolicy::ALL, $this->validatedRequest->getComparisonPolicy());
+
+        $this->request->query->set('comparisonPolicy', 'ignore');
+        static::assertSame(DiffComparePolicy::IGNORE, $this->validatedRequest->getComparisonPolicy());
+    }
+
+    /**
+     * @covers ::getComparisonPolicy
+     */
+    public function testGetComparePolicyFromSession(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        $session->expects(self::once())
+            ->method('get')
+            ->with(SessionKeys::DIFF_COMPARISON_POLICY->value)
+            ->willReturn(DiffComparePolicy::TRIM->value);
+        $session->expects(self::once())
+            ->method('set')
+            ->with(SessionKeys::DIFF_COMPARISON_POLICY->value, DiffComparePolicy::TRIM->value);
+
+        static::assertSame(DiffComparePolicy::TRIM, $this->validatedRequest->getComparisonPolicy());
+    }
+
+    /**
      * @covers ::getDiffMode
      */
     public function testGetDiffMode(): void
@@ -101,10 +135,11 @@ class ReviewRequestTest extends AbstractRequestTestCase
         $expected = new ValidationRules(
             [
                 'query' => [
-                    'filePath' => 'string|filled',
-                    'tab'      => 'string|in:revisions,overview',
-                    'diff'     => 'string|in:side-by-side,unified,inline',
-                    'action'   => 'string'
+                    'filePath'         => 'string|filled',
+                    'tab'              => 'string|in:revisions,overview',
+                    'diff'             => 'string|in:side-by-side,unified,inline',
+                    'action'           => 'string',
+                    'comparisonPolicy' => 'string|in:all,trim,ignore'
                 ]
             ]
         );

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Git\Diff;
 
-use Generator;
-
 class DiffLineCollection
 {
     /** @var DiffLine[] */
@@ -18,16 +16,6 @@ class DiffLineCollection
         $this->lines = $lines;
     }
 
-    public function remove(DiffLine $line): self
-    {
-        $index = array_search($line, $this->lines, true);
-        if ($index !== false) {
-            unset($this->lines[$index]);
-        }
-
-        return $this;
-    }
-
     /**
      * @return DiffLine[]
      */
@@ -37,41 +25,34 @@ class DiffLineCollection
     }
 
     /**
-     * @return Generator<array<DiffLinePair>>
+     * @return array<DiffLine|DiffLineChangeSet>
      */
-    public function getChangePairs(): Generator
+    public function getDiffLineSet(): array
     {
-        $set     = 0;
+        $result  = [];
         $removed = [];
         $added   = [];
 
         // gather all the added and removed pairs
         foreach ($this->lines as $line) {
             if ($line->state === DiffLine::STATE_REMOVED) {
-                $removed[$set][] = $line;
+                $removed[] = $line;
             } elseif ($line->state === DiffLine::STATE_ADDED) {
-                $added[$set][] = $line;
+                $added[] = $line;
             } elseif ($line->state === DiffLine::STATE_UNCHANGED) {
-                ++$set;
-            }
-        }
-        // iterate over the set
-        for ($s = 0; $s <= $set; $s++) {
-            if (isset($removed[$s], $added[$s]) === false) {
-                continue;
-            }
-
-            $max = max(count($removed[$s]), count($added[$s]));
-
-            // iterate over the set and let it yield
-            $pairs = [];
-            for ($i = 0; $i < $max; $i++) {
-                if (isset($removed[$s][$i], $added[$s][$i])) {
-                    $pairs[] = new DiffLinePair($removed[$s][$i], $added[$s][$i]);
+                if (count($removed) > 0 || count($added) > 0) {
+                    $result[] = new DiffLineChangeSet($removed, $added);
+                    $added    = [];
+                    $removed  = [];
                 }
+                $result[] = $line;
             }
-
-            yield $pairs;
         }
+
+        if (count($removed) > 0 || count($added) > 0) {
+            $result[] = new DiffLineChangeSet($removed, $added);
+        }
+
+        return $result;
     }
 }

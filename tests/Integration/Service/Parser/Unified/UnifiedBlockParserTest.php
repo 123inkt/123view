@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Integration\Service\Parser\Unified;
 
-use cogpowered\FineDiff\Diff;
-use DR\Review\Git\Diff\DiffChangeBundler;
-use DR\Review\Git\Diff\DiffLineDiffer;
-use DR\Review\Git\Diff\Opcode\DiffChangeFactory;
-use DR\Review\Git\Diff\Opcode\DiffChangeOptimizer;
-use DR\Review\Git\Diff\Opcode\DiffGranularity;
+use DR\JBDiff\JBDiff;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Git\LineReader;
-use DR\Review\Service\Git\Diff\Bundle\DiffLineComparator;
+use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
+use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
@@ -27,9 +24,9 @@ class UnifiedBlockParserTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $bundler       = new DiffChangeBundler(new Diff(new DiffGranularity()), new DiffChangeFactory(), new DiffChangeOptimizer());
+        $differ        = new DiffLineChangeSetDiffer(null, new JBDiff());
         $this->parser  = new UnifiedBlockParser(new UnifiedLineParser());
-        $this->bundler = new UnifiedDiffBundler(new DiffLineComparator(), $bundler, new DiffLineDiffer($bundler));
+        $this->bundler = new UnifiedDiffBundler(new DiffLineChangeSetBundler($differ));
     }
 
     public function testParseAdditionsAndDeletions(): void
@@ -37,7 +34,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
         $reader = new LineReader(explode("\n", $this->getFileContents('additions-and-deletions.txt')));
 
         $block        = $this->parser->parse(10, 12, $reader);
-        $block->lines = $this->bundler->bundleLines($block->lines);
+        $block->lines = $this->bundler->bundleLines($block->lines, DiffComparePolicy::IGNORE);
         static::assertCount(3, $block->lines);
     }
 

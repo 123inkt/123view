@@ -1,4 +1,1 @@
-/**
- * @coversDefaultClass \\${TESTED_NAMESPACE}\\${TESTED_NAME}
- * @covers ::__construct
- */
+#[CoversClass(${TESTED_NAME}::class)]

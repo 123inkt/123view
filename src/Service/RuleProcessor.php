@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service;
 
 use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Notification\Filter;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
@@ -43,7 +44,7 @@ class RuleProcessor
         // bundle similar diff lines
         foreach ($commits as $commit) {
             foreach ($commit->files as $file) {
-                $this->diffBundler->bundleFile($file);
+                $this->diffBundler->bundleFile($file, DiffComparePolicy::ALL);
             }
         }
 

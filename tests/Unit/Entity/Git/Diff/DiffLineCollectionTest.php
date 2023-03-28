@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Entity\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
-use DR\Review\Entity\Git\Diff\DiffLinePair;
 use DR\Review\Tests\AbstractTestCase;
 
 /**
@@ -14,19 +14,6 @@ use DR\Review\Tests\AbstractTestCase;
  */
 class DiffLineCollectionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::remove
-     */
-    public function testRemove(): void
-    {
-        $lineA = new DiffLine(DiffLine::STATE_REMOVED, []);
-        $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
-        $lines = new DiffLineCollection([$lineA, $lineB]);
-
-        $lines->remove($lineA);
-        static::assertSame([$lineB], $lines->toArray());
-    }
-
     /**
      * @covers ::toArray
      */
@@ -40,7 +27,7 @@ class DiffLineCollectionTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getChangePairs
+     * @covers ::getDiffLineSet
      */
     public function testGetChangePairsNoChanges(): void
     {
@@ -48,11 +35,11 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_UNCHANGED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], iterator_to_array($lines->getChangePairs()));
+        static::assertSame([$lineA, $lineB], $lines->getDiffLineSet());
     }
 
     /**
-     * @covers ::getChangePairs
+     * @covers ::getDiffLineSet
      */
     public function testGetChangePairsOnlyAdditions(): void
     {
@@ -60,11 +47,13 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], iterator_to_array($lines->getChangePairs()));
+        $expected = new DiffLineChangeSet([], [$lineA, $lineB]);
+
+        static::assertEquals([$expected], $lines->getDiffLineSet());
     }
 
     /**
-     * @covers ::getChangePairs
+     * @covers ::getDiffLineSet
      */
     public function testGetChangePairsOnlyRemovals(): void
     {
@@ -72,11 +61,13 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_REMOVED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        static::assertSame([], iterator_to_array($lines->getChangePairs()));
+        $expected = new DiffLineChangeSet([$lineA, $lineB], []);
+
+        static::assertEquals([$expected], $lines->getDiffLineSet());
     }
 
     /**
-     * @covers ::getChangePairs
+     * @covers ::getDiffLineSet
      */
     public function testGetChangePairsAdditionAndRemovalShouldBecomePair(): void
     {
@@ -84,14 +75,14 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB]);
 
-        $expected = new DiffLinePair($lineA, $lineB);
+        $expected = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $result = iterator_to_array($lines->getChangePairs());
-        static::assertEquals([[$expected]], $result);
+        $result = $lines->getDiffLineSet();
+        static::assertEquals([$expected], $result);
     }
 
     /**
-     * @covers ::getChangePairs
+     * @covers ::getDiffLineSet
      */
     public function testGetChangePairsUnevenAdditionsAndRemovalsShouldBecomePair(): void
     {
@@ -100,14 +91,14 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineC = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB, $lineC]);
 
-        $expected = new DiffLinePair($lineA, $lineC);
+        $expected = new DiffLineChangeSet([$lineA, $lineB], [$lineC]);
 
-        $result = iterator_to_array($lines->getChangePairs());
-        static::assertEquals([[$expected]], $result);
+        $result = $lines->getDiffLineSet();
+        static::assertEquals([$expected], $result);
     }
 
     /**
-     * @covers ::getChangePairs
+     * @covers ::getDiffLineSet
      */
     public function testGetChangePairsMultipleChangesShouldBecomeMultipleSets(): void
     {
@@ -119,10 +110,10 @@ class DiffLineCollectionTest extends AbstractTestCase
         $lineE = new DiffLine(DiffLine::STATE_ADDED, []);
         $lines = new DiffLineCollection([$lineA, $lineB, $lineC, $lineD, $lineE]);
 
-        $pairOne = new DiffLinePair($lineA, $lineB);
-        $pairTwo = new DiffLinePair($lineD, $lineE);
+        $setOne = new DiffLineChangeSet([$lineA], [$lineB]);
+        $setTwo = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $result = iterator_to_array($lines->getChangePairs());
-        static::assertEquals([[$pairOne], [$pairTwo]], $result);
+        $result = $lines->getDiffLineSet();
+        static::assertEquals([$setOne, $lineC, $setTwo], $result);
     }
 }

@@ -3,46 +3,33 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Diff;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
-use DR\Review\Entity\Git\Diff\DiffLine;
+use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineCollection;
-use DR\Review\Entity\Git\Diff\DiffLinePair;
-use DR\Review\Git\Diff\DiffLineDiffer;
+use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetOptimizer;
 
 /**
- * Highlight the difference of lines next to each other
+ * Emphasize the difference of lines next to each other
  */
 class UnifiedDiffEmphasizer
 {
-    public function __construct(private readonly DiffLineDiffer $differ)
+    public function __construct(private readonly DiffLineChangeSetOptimizer $optimizer)
     {
     }
 
-    public function emphasizeFile(DiffFile $file): DiffFile
+    public function emphasizeFile(DiffFile $file, DiffComparePolicy $comparePolicy): DiffFile
     {
         foreach ($file->getBlocks() as $block) {
-            $block->lines = $this->emphasizeLines($block->lines);
+            $collection = new DiffLineCollection($block->lines);
+            foreach ($collection->getDiffLineSet() as $set) {
+                if ($set instanceof DiffLineChangeSet) {
+                    $this->optimizer->optimize($set, $comparePolicy);
+                }
+            }
+            $block->lines = $collection->toArray();
         }
 
         return $file;
-    }
-
-    /**
-     * @param DiffLine[] $lines
-     *
-     * @return DiffLine[]
-     */
-    public function emphasizeLines(array $lines): array
-    {
-        $collection = new DiffLineCollection($lines);
-
-        foreach ($collection->getChangePairs() as $pairs) {
-            /** @var DiffLinePair $pair */
-            foreach ($pairs as $pair) {
-                $this->differ->diff($pair->removed, $pair->added);
-            }
-        }
-
-        return $collection->toArray();
     }
 }
