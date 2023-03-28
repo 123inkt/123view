@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace DR\Review\Entity\Review;
 
 use InvalidArgumentException;
+use Stringable;
 
-class LineReference
+class LineReference implements Stringable
 {
     public function __construct(
         public readonly string $filePath = '',

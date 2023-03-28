@@ -14,6 +14,10 @@
     max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 35px);
 }
 
+.diff-side-by-side .comment__comment {
+    max-width: calc((100vw - var(--review-sidebar-width) - var(--review-sidebar-gap)) / 2 - 35px);
+}
+
 .comment__comment,
 .comment__reply {
     padding: 5px 5px 5px 20px;
@@ -22,6 +26,10 @@
 .comment__reply {
     max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 75px);
     padding-left: 40px;
+}
+
+.diff-side-by-side .comment__reply {
+    max-width: calc((100vw - var(--review-sidebar-width) - var(--review-sidebar-gap)) / 2 - 35px);
 }
 
 .comment__edit-reply {
