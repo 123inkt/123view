@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28141942fb49f0cda41a8d66963973fa",
+    "content-hash": "5212ac3c900ed2bd422f6a167ed7b079",
     "packages": [
         {
             "name": "api-platform/core",
@@ -305,16 +305,16 @@
         },
         {
             "name": "digitalrevolution/jbdiff",
-            "version": "dev-main",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/frankdekker/fine-diff.git",
-                "reference": "f77b3c76e09ac7ee52f5d52af4033ee229ea5413"
+                "url": "https://github.com/123inkt/jbdiff.git",
+                "reference": "fd7ffd4e95df2936984f5868113c31d6e9f65066"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/fine-diff/zipball/f77b3c76e09ac7ee52f5d52af4033ee229ea5413",
-                "reference": "f77b3c76e09ac7ee52f5d52af4033ee229ea5413",
+                "url": "https://api.github.com/repos/123inkt/jbdiff/zipball/fd7ffd4e95df2936984f5868113c31d6e9f65066",
+                "reference": "fd7ffd4e95df2936984f5868113c31d6e9f65066",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
             },
             "require-dev": {
                 "digitalrevolution/accessorpair-constraint": "^2.1",
-                "digitalrevolution/phpunit-file-coverage-inspection": "^1.6",
+                "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
                 "phpmd/phpmd": "^2.13",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan": "^1.10",
@@ -332,69 +332,22 @@
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.7"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "DR\\JBDiff\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "DR\\JBDiff\\Tests\\Unit\\": "tests/Unit",
-                    "DR\\JBDiff\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "check": [
-                    "@check:phpstan",
-                    "@check:phpmd",
-                    "@check:phpcs"
-                ],
-                "check:phpstan": [
-                    "@php -dxdebug.mode=off vendor/bin/phpstan analyse"
-                ],
-                "check:phpmd": [
-                    "@php -derror_reporting=24575 vendor/bin/phpmd src,tests text phpmd.xml.dist --suffixes=php"
-                ],
-                "check:phpcs": [
-                    "@php vendor/bin/phpcs src tests"
-                ],
-                "fix": [
-                    "@fix:phpcbf"
-                ],
-                "fix:phpcbf": [
-                    "@php vendor/bin/phpcbf src tests"
-                ],
-                "test": [
-                    "phpunit"
-                ],
-                "test:functional": [
-                    "phpunit --testsuite functional"
-                ],
-                "test:integration": [
-                    "phpunit --testsuite integration"
-                ],
-                "test:unit": [
-                    "phpunit --testsuite unit"
-                ],
-                "test:coverage": [
-                    "@php vendor/bin/phpunit --coverage-clover coverage/coverage.xml --coverage-html coverage",
-                    "@php vendor/bin/phpfci inspect coverage/coverage.xml php://stdout --exit-code-on-failure --report=text"
-                ],
-                "example": [
-                    "@php -S localhost:8000 -t example/"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
             "description": "A diff library based on Jetbrains' implementation",
             "support": {
-                "source": "https://github.com/frankdekker/fine-diff/tree/main",
-                "issues": "https://github.com/frankdekker/fine-diff/issues"
+                "issues": "https://github.com/123inkt/jbdiff/issues",
+                "source": "https://github.com/123inkt/jbdiff/tree/v1.0.0"
             },
-            "time": "2023-03-26T10:02:05+00:00"
+            "time": "2023-03-28T17:24:30+00:00"
         },
         {
             "name": "digitalrevolution/symfony-console-validation",
@@ -13736,7 +13689,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "digitalrevolution/jbdiff": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,

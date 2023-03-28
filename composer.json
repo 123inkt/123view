@@ -35,7 +35,7 @@
         "ext-iconv": "*",
         "api-platform/core": "^3.1",
         "czproject/git-php": "^4.0",
-        "digitalrevolution/jbdiff": "dev-main",
+        "digitalrevolution/jbdiff": "^1.0",
         "digitalrevolution/symfony-console-validation": "^1.0",
         "digitalrevolution/symfony-request-validation": "^2.0",
         "doctrine/annotations": "^1.13 || ^2.0.0",
@@ -156,12 +156,6 @@
     "conflict": {
         "symfony/symfony": "*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/frankdekker/fine-diff"
-        }
-    ],
     "extra": {
         "symfony": {
             "allow-contrib": true,
