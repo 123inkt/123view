@@ -9,24 +9,37 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Output\CodeReviewOutput;
 use DR\Review\ApiPlatform\Provider\CodeReviewProvider;
+use DR\Review\ApiPlatform\StateProcessor\CodeReviewProcessor;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\PropertyChangeTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_USER . '")')],
-    output    : CodeReviewOutput::class,
-    order     : ['updateTimestamp' => 'DESC'],
-    provider  : CodeReviewProvider::class
+    operations: [
+        new GetCollection(
+            order   : ['updateTimestamp' => 'DESC'],
+            security: 'is_granted("' . Roles::ROLE_USER . '")',
+            output  : CodeReviewOutput::class,
+            provider: CodeReviewProvider::class
+        ),
+        new Patch(
+            normalizationContext: ['groups' => ['code_review_write']],
+            security            : 'is_granted("' . Roles::ROLE_USER . '")',
+            processor           : CodeReviewProcessor::class
+        )
+    ]
 )]
 #[ApiFilter(
     SearchFilter::class,
@@ -59,6 +72,10 @@ use DR\Review\Security\Role\Roles;
 #[ORM\UniqueConstraint('IDX_REPOSITORY_ID_PROJECT_ID', ['project_id', 'repository_id'])]
 class CodeReview
 {
+    use PropertyChangeTrait;
+
+    public const PROP_STATE = 'state';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -78,6 +95,7 @@ class CodeReview
     private ?string $description = null;
 
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
+    #[Groups(['code_review_write'])]
     private string $state = CodeReviewStateType::OPEN;
 
     /** @var int[] */
@@ -181,7 +199,7 @@ class CodeReview
 
     public function setState(string $state): self
     {
-        $this->state = $state;
+        $this->state = $this->propertyChange(self::PROP_STATE, $this->state, $state);
 
         return $this;
     }
