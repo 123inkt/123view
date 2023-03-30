@@ -29,6 +29,8 @@ class CodeReviewProcessor implements ProcessorInterface
             return $data;
         }
 
+        $data->setUpdateTimestamp(time());
+
         // save changes
         $this->reviewRepository->save($data, true);
 

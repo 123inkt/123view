@@ -35,9 +35,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             provider: CodeReviewProvider::class
         ),
         new Patch(
-            normalizationContext: ['groups' => ['code_review_write']],
-            security            : 'is_granted("' . Roles::ROLE_USER . '")',
-            processor           : CodeReviewProcessor::class
+            normalizationContext  : ['groups' => ['code_review_write']],
+            denormalizationContext: ['groups' => ['code_review_write']],
+            security              : 'is_granted("' . Roles::ROLE_USER . '")',
+            processor             : CodeReviewProcessor::class
         )
     ]
 )]
@@ -89,9 +90,11 @@ class CodeReview
     private ?string $referenceId = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['code_review_write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['code_review_write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
