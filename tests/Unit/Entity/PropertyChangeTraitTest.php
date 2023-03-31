@@ -28,6 +28,11 @@ class PropertyChangeTraitTest extends AbstractTestCase
         static::assertSame('foo', $this->objectWithTrait->getOriginalValue('prop'));
         static::assertSame('bar', $this->objectWithTrait->getChangedValue('prop'));
 
+        $this->objectWithTrait->proxyPropertyChange('prop', 'bar', 'bar');
+        static::assertTrue($this->objectWithTrait->isPropertyChanged('prop'));
+        static::assertSame('foo', $this->objectWithTrait->getOriginalValue('prop'));
+        static::assertSame('bar', $this->objectWithTrait->getChangedValue('prop'));
+
         $this->objectWithTrait->proxyPropertyChange('prop', 'bar', 'changed');
         static::assertTrue($this->objectWithTrait->isPropertyChanged('prop'));
         static::assertSame('foo', $this->objectWithTrait->getOriginalValue('prop'));
