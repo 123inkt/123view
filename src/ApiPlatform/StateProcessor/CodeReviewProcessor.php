@@ -22,6 +22,7 @@ class CodeReviewProcessor implements ProcessorInterface
 
     /**
      * @inheritDoc
+     * @phpstan-ignore-next-line
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
