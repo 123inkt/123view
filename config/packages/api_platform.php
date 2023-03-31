@@ -20,6 +20,8 @@ return static function (ApiPlatformConfig $config): void {
     $config->formats('json')->mimeTypes(['application/json']);
     $config->formats('html')->mimeTypes(['text/html']);
 
+    $config->patchFormats('json')->mimeTypes(['application/merge-patch+json']);
+
     $config->defaults()
         // allow custom pagination parameters client side
         ->paginationClientEnabled(false)
