@@ -90,11 +90,9 @@ class CodeReview
     private ?string $referenceId = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['code_review_write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['code_review_write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
