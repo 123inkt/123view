@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" {% if app.user and app.user.setting.colorTheme == 'dark' %}data-bs-theme="dark"{% endif %}>
+<html lang="en" {% if app.user and app.user.setting.colorTheme == 'dark' %}data-bs-theme="dark"{% else %}data-bs-theme="light"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <title>
@@ -30,7 +30,7 @@
 
 {% apply spaceless %}
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-contrast">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">{{ app_name }}</a>
 
@@ -64,7 +64,7 @@
                                             <input type="search"
                                                    name="search"
                                                    required
-                                                   class="form-control bg-dark border-secondary text-light"
+                                                   class="form-control border-secondary text-light bg-contrast"
                                                    placeholder="{{ 'search'|trans }}">
                                             <button class="btn btn-outline-secondary" type="submit">
                                                 <i class="bi bi-search"></i>

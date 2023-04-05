@@ -26,3 +26,15 @@
     --review-diff-change-added-bg-color: #a6f3a6;
     --review-diff-change-removed-bg-color: #f8cbcb;
 }
+
+[data-bs-theme="light"] .bg-contrast {
+    --bs-navbar-color: rgba(255, 255, 255, 0.55);
+    --bs-navbar-hover-color: rgba(255, 255, 255, 0.75);
+    --bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
+    --bs-navbar-active-color: #fff;
+    --bs-navbar-brand-color: #fff;
+    --bs-navbar-brand-hover-color: #fff;
+    --bs-bg-opacity: 1;
+    --bs-secondary-color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+}

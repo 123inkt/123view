@@ -31,3 +31,8 @@
     --bs-body-bg: #0D1117;
     --bs-tertiary-bg-rgb: 22,27,34;
 }
+
+[data-bs-theme=dark] .bg-contrast {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-tertiary-bg-rgb),var(--bs-bg-opacity));
+}
