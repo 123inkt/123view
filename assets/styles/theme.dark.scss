@@ -27,12 +27,13 @@
     --review-diff-change-removed-bg-color: #542426;
 }
 
-[data-bs-theme=dark] {
+[data-bs-theme="dark"] {
     --bs-body-bg: #0D1117;
     --bs-tertiary-bg-rgb: 22,27,34;
-}
 
-[data-bs-theme=dark] .bg-contrast {
-    --bs-bg-opacity: 1;
-    background-color: rgba(var(--bs-tertiary-bg-rgb),var(--bs-bg-opacity));
+    .bg-contrast {
+        --bs-bg-opacity: 1;
+
+        background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity));
+    }
 }
