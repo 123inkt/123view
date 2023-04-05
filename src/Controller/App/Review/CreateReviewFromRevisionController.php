@@ -40,7 +40,14 @@ class CreateReviewFromRevisionController extends AbstractController
 
         $review = $this->reviewCreationService->createFromRevision($revision);
         $this->reviewService->addRevisions($review, [$revision]);
-        $this->eventService->revisionAddedToReview($review, $revision, true, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
+        $this->eventService->revisionAddedToReview(
+            $review,
+            $revision,
+            true,
+            CodeReviewStateType::OPEN,
+            CodeReviewerStateType::OPEN,
+            $this->getUser()->getId()
+        );
 
         return $this->redirectToRoute(ReviewController::class, ['review' => $review]);
     }

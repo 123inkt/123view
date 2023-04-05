@@ -8,7 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\CodeReview\CodeReviewFactory;
+use DR\Review\Service\CodeReview\CodeReviewCreationService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Revision\RevisionTitleNormalizer;
@@ -21,24 +21,24 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class CodeReviewRevisionMatcherTest extends AbstractTestCase
 {
-    private RevisionTitleNormalizer&MockObject $titleNormalizer;
-    private CodeReviewRepository&MockObject    $reviewRepository;
-    private CodeReviewFactory&MockObject       $reviewFactory;
-    private RevisionPatternMatcher&MockObject  $patternMatcher;
-    private CodeReviewRevisionMatcher          $matcher;
+    private RevisionTitleNormalizer&MockObject   $titleNormalizer;
+    private CodeReviewRepository&MockObject      $reviewRepository;
+    private CodeReviewCreationService&MockObject $reviewCreationService;
+    private RevisionPatternMatcher&MockObject    $patternMatcher;
+    private CodeReviewRevisionMatcher            $matcher;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->titleNormalizer  = $this->createMock(RevisionTitleNormalizer::class);
-        $this->reviewRepository = $this->createMock(CodeReviewRepository::class);
-        $this->reviewFactory    = $this->createMock(CodeReviewFactory::class);
-        $this->patternMatcher   = $this->createMock(RevisionPatternMatcher::class);
-        $this->matcher          = new CodeReviewRevisionMatcher(
+        $this->titleNormalizer       = $this->createMock(RevisionTitleNormalizer::class);
+        $this->reviewRepository      = $this->createMock(CodeReviewRepository::class);
+        $this->reviewCreationService = $this->createMock(CodeReviewCreationService::class);
+        $this->patternMatcher        = $this->createMock(RevisionPatternMatcher::class);
+        $this->matcher               = new CodeReviewRevisionMatcher(
             $this->titleNormalizer,
             $this->reviewRepository,
-            $this->reviewFactory,
             $this->patternMatcher,
+            $this->reviewCreationService,
             'sherlock@example.com'
         );
     }
@@ -128,7 +128,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
         $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
         $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890')->willReturn($review);
-        $this->reviewFactory->expects(self::never())->method('createFromRevision');
+        $this->reviewCreationService->expects(self::never())->method('createFromRevision');
 
         static::assertSame($review, $this->matcher->match($revision));
     }
@@ -148,7 +148,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
         $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
         $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890')->willReturn(null);
-        $this->reviewFactory->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
+        $this->reviewCreationService->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
 
         static::assertSame($review, $this->matcher->match($revision));
     }
