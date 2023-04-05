@@ -275,4 +275,5 @@ return [
     'do.not.ignore.whitespaces'                   => 'Do not ignore whitespaces',
     'trim.whitespaces'                            => 'Trim whitespaces',
     'ignore.whitespaces'                          => 'Ignore whitespaces',
+    'create.review.from.revision'                 => 'Create review from revision',
 ];

@@ -150,7 +150,7 @@ class CodeReview
         return $this->projectId;
     }
 
-    public function setProjectId(?int $projectId): CodeReview
+    public function setProjectId(?int $projectId): self
     {
         $this->projectId = $projectId;
 
@@ -162,7 +162,7 @@ class CodeReview
         return $this->referenceId;
     }
 
-    public function setReferenceId(string $referenceId): CodeReview
+    public function setReferenceId(?string $referenceId): self
     {
         $this->referenceId = $referenceId;
 

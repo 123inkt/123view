@@ -23,6 +23,12 @@
                     <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: revision.review}) }}">
                         CR-{{ revision.review.projectId }}
                     </a>
+                {% else %}
+                    <form method="post" action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateReviewFromRevisionController', {id: revision.id}) }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm" title="{{ 'create.review.from.revision'|trans }}">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </form>
                 {% endif %}
             </td>
         </tr>
