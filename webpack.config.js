@@ -10,6 +10,7 @@ Encore
         .addEntry('app', './assets/app.ts')
         .addEntry('app.dark', './assets/app.dark.ts')
         .addEntry('app.light', './assets/app.light.ts')
+        .addEntry('bs.theme', './assets/bootstrap-theme.ts')
         .enableStimulusBridge('./assets/controllers.json')
         .splitEntryChunks()
         .enableSingleRuntimeChunk()
