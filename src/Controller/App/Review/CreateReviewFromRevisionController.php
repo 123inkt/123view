@@ -49,6 +49,6 @@ class CreateReviewFromRevisionController extends AbstractController
             $this->getUser()->getId()
         );
 
-        return $this->redirectToRoute(ReviewController::class, ['review' => $review]);
+        return $this->redirectToRoute(ReviewController::class, ['review' => $review, 'tab' => 'revisions']);
     }
 }

@@ -63,7 +63,7 @@ class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
             CodeReviewerStateType::OPEN,
             123
         );
-        $this->expectRedirectToRoute(ReviewController::class, ['review' => $review])->willReturn('url');
+        $this->expectRedirectToRoute(ReviewController::class, ['review' => $review, 'tab' => 'revisions'])->willReturn('url');
 
         ($this->controller)($revision);
     }
