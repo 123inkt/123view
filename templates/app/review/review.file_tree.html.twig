@@ -38,19 +38,19 @@
                             <span class="diff-file__file-change-state text-primary">*</span>
                         {%- endif -%}
 
-                        <i class="bi bi-file-earmark-code-fill text-dark"></i>
+                        <i class="bi bi-file-earmark-code-fill text-body-tertiary"></i>
 
                         <span class="review-file-tree--file-name">{{ file.filename }}</span>
                     </a>
 
-                    <span class="review-file-tree--file-status float-end text-nowrap">
+                    <span class="review-file-tree--file-status float-end text-nowrap text-body-tertiary">
                         {% set commentStatus = fileTreeModel.getCommentsForFile(file) %}
                         {% if commentStatus.total > 0 %}
                             <span>
                                 {%- if commentStatus.unresolved > 0 -%}
                                     <span class="fw-bold text-danger">{{ commentStatus.unresolved }}</span>/
                                 {%- endif -%}
-                                <span class="fw-bold">{{- commentStatus.total -}}</span>
+                                <span class="fw-bold ">{{- commentStatus.total -}}</span>
                             </span>
                         {% endif %}
 

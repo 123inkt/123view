@@ -101,15 +101,12 @@
 
 .diff-file__add-comment {
     background: var(--review-diff-add-comment-bg-color);
-    bottom: 0;
     color: var(--review-diff-add-comment-fg-color);
     cursor: pointer;
     display: none;
-    left: 0;
+    inset: 0;
     position: absolute;
-    right: 0;
     text-align: center;
-    top: 0;
 }
 
 .diff-file__line-numbers {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" {% if app.user and app.user.setting.colorTheme == 'dark' %}data-bs-theme="dark"{% else %}data-bs-theme="light"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <title>
@@ -13,6 +13,9 @@
     {%- elseif app.user and app.user.setting.colorTheme == 'light' -%}
         {%- include 'base.head.light.html.twig' -%}
     {%- else -%}
+        {%- for js in encore_entry_js_files('bs.theme') -%}
+            <script src="{{ js }}"></script>
+        {%- endfor -%}
         <meta name="color-scheme" content="light dark">
         {%- include 'base.head.dark.html.twig' with {media: '(prefers-color-scheme: dark)'} -%}
         {%- include 'base.head.light.html.twig' with {media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)'} -%}
@@ -27,7 +30,7 @@
 
 {% apply spaceless %}
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg bg-contrast">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">{{ app_name }}</a>
 
@@ -61,7 +64,7 @@
                                             <input type="search"
                                                    name="search"
                                                    required
-                                                   class="form-control bg-dark border-secondary text-light"
+                                                   class="form-control border-secondary text-light bg-contrast"
                                                    placeholder="{{ 'search'|trans }}">
                                             <button class="btn btn-outline-secondary" type="submit">
                                                 <i class="bi bi-search"></i>
