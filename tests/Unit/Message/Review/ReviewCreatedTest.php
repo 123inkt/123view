@@ -14,8 +14,8 @@ class ReviewCreatedTest extends AbstractMessageEventTestCase
     /**
      * @covers ::__construct
      * @covers ::getName
-     * @covers ::getReviewId
      * @covers ::getUserId
+     * @covers ::getReviewId
      * @covers ::getPayload
      */
     public function testAccessors(): void
