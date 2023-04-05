@@ -110,7 +110,8 @@ class ReviewEventService
         Revision $revision,
         bool $reviewCreated,
         ?string $reviewState,
-        string $reviewersState
+        string $reviewersState,
+        ?int $userId = null
     ): void {
         $events = [];
 
@@ -119,12 +120,12 @@ class ReviewEventService
             $events[] = new ReviewCreated((int)$review->getId(), (int)$revision->getId());
         }
         if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
-            $events[] = new ReviewOpened((int)$review->getId(), null);
+            $events[] = new ReviewOpened((int)$review->getId(), $userId);
         }
         if ($reviewersState !== CodeReviewerStateType::OPEN && $review->getReviewersState() === CodeReviewerStateType::OPEN) {
-            $events[] = new ReviewResumed((int)$review->getId(), null);
+            $events[] = new ReviewResumed((int)$review->getId(), $userId);
         }
-        $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), null, (string)$revision->getTitle());
+        $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $userId, (string)$revision->getTitle());
 
         // dispatch $events
         foreach ($events as $event) {

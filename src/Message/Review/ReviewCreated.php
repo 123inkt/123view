@@ -9,7 +9,7 @@ class ReviewCreated implements AsyncMessageInterface, CodeReviewEventInterface
 {
     public const NAME = 'review-created';
 
-    public function __construct(public readonly int $reviewId, public readonly int $revisionId)
+    public function __construct(public readonly int $reviewId, public readonly int $revisionId, public readonly ?int $userId = null)
     {
     }
 
@@ -25,7 +25,7 @@ class ReviewCreated implements AsyncMessageInterface, CodeReviewEventInterface
 
     public function getUserId(): ?int
     {
-        return null;
+        return $this->userId;
     }
 
     /**
@@ -33,6 +33,6 @@ class ReviewCreated implements AsyncMessageInterface, CodeReviewEventInterface
      */
     public function getPayload(): array
     {
-        return ['reviewId' => $this->reviewId, 'revisionId' => $this->revisionId];
+        return ['reviewId' => $this->reviewId, 'revisionId' => $this->revisionId, 'userId' => $this->userId];
     }
 }

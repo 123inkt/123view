@@ -13,7 +13,7 @@ class CodeReviewFactory
     {
     }
 
-    public function createFromRevision(Revision $revision, string $referenceId): CodeReview
+    public function createFromRevision(Revision $revision, ?string $referenceId): CodeReview
     {
         $review = new CodeReview();
         $review->setCreateTimestamp(time());

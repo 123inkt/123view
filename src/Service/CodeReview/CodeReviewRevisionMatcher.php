@@ -21,11 +21,11 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
     private array $excludeAuthors;
 
     public function __construct(
-        private RevisionTitleNormalizer $titleNormalizer,
-        private CodeReviewRepository $reviewRepository,
-        private CodeReviewFactory $reviewFactory,
-        private RevisionPatternMatcher $patternMatcher,
-        string $codeReviewExcludeAuthors
+        private readonly RevisionTitleNormalizer $titleNormalizer,
+        private readonly CodeReviewRepository $reviewRepository,
+        private readonly RevisionPatternMatcher $patternMatcher,
+        private readonly CodeReviewCreationService $reviewCreationService,
+        readonly string $codeReviewExcludeAuthors
     ) {
         $this->excludeAuthors = $codeReviewExcludeAuthors === '' ? [] : explode(',', $codeReviewExcludeAuthors);
     }
@@ -76,12 +76,6 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
         $review = $this->reviewRepository->findOneByReferenceId((int)Assert::notNull($revision->getRepository())->getId(), $referenceId);
 
         // create new review, and generate project id
-        if ($review === null) {
-            $review = $this->reviewFactory->createFromRevision($revision, $referenceId);
-            $review->setProjectId($this->reviewRepository->getCreateProjectId((int)$revision->getRepository()?->getId()));
-            $this->logger?->info('Created new review CR-' . $review->getProjectId());
-        }
-
-        return $review;
+        return $review ?? $this->reviewCreationService->createFromRevision($revision, $referenceId);
     }
 }
