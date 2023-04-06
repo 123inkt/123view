@@ -305,16 +305,16 @@
         },
         {
             "name": "digitalrevolution/jbdiff",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/jbdiff.git",
-                "reference": "fd7ffd4e95df2936984f5868113c31d6e9f65066"
+                "reference": "05d4b65af36ebeb1572b6bd12692c7a7a2da0e93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/jbdiff/zipball/fd7ffd4e95df2936984f5868113c31d6e9f65066",
-                "reference": "fd7ffd4e95df2936984f5868113c31d6e9f65066",
+                "url": "https://api.github.com/repos/123inkt/jbdiff/zipball/05d4b65af36ebeb1572b6bd12692c7a7a2da0e93",
+                "reference": "05d4b65af36ebeb1572b6bd12692c7a7a2da0e93",
                 "shasum": ""
             },
             "require": {
@@ -345,9 +345,9 @@
             "description": "A diff library based on Jetbrains' implementation",
             "support": {
                 "issues": "https://github.com/123inkt/jbdiff/issues",
-                "source": "https://github.com/123inkt/jbdiff/tree/v1.0.0"
+                "source": "https://github.com/123inkt/jbdiff/tree/v1.0.1"
             },
-            "time": "2023-03-28T17:24:30+00:00"
+            "time": "2023-04-06T19:10:55+00:00"
         },
         {
             "name": "digitalrevolution/symfony-console-validation",
