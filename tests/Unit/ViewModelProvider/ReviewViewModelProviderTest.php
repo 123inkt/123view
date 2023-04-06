@@ -77,8 +77,10 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
-        $file = new DiffFile();
-        $tree = new DirectoryTreeNode('foobar');
+        $file                 = new DiffFile();
+        $file->filePathBefore = 'before';
+        $file->filePathAfter  = 'after';
+        $tree                 = new DirectoryTreeNode('foobar');
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
         $request = $this->createMock(ReviewRequest::class);

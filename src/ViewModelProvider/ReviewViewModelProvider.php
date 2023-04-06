@@ -8,6 +8,7 @@ use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
@@ -51,7 +52,7 @@ class ReviewViewModelProvider
                     $selectedFile,
                     $request->getAction(),
                     $request->getComparisonPolicy(),
-                    $request->getDiffMode()
+                    $selectedFile->isModified() ? $request->getDiffMode() : ReviewDiffModeEnum::INLINE
                 )
             );
             $viewModel->setDescriptionVisible(false);
