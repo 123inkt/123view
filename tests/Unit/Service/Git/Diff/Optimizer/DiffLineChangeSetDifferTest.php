@@ -13,20 +13,25 @@ use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
 use DR\Review\Tests\AbstractTestCase;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 
 #[CoversClass(DiffLineChangeSetDiffer::class)]
 class DiffLineChangeSetDifferTest extends AbstractTestCase
 {
-    private JBDiff&MockObject       $jbdiff;
-    private DiffLineChangeSetDiffer $differ;
+    private LoggerInterface&MockObject $logger;
+    private JBDiff&MockObject          $jbdiff;
+    private DiffLineChangeSetDiffer    $differ;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->logger = $this->createMock(LoggerInterface::class);
         $this->jbdiff = $this->createMock(JBDiff::class);
         $this->differ = new DiffLineChangeSetDiffer(null, $this->jbdiff);
+        $this->differ->setLogger($this->logger);
     }
 
     public function testDiffShouldSkipAdditionOrRemovalOnly(): void
@@ -49,6 +54,22 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
             ->willReturn($iterator);
 
         static::assertSame($iterator, $this->differ->diff($set, DiffComparePolicy::IGNORE));
+    }
+
+    public function testDiffInvalidStringContent(): void
+    {
+        $lineA = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'bar')]);
+        $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
+        $set   = new DiffLineChangeSet([$lineA], [$lineB]);
+
+        $this->jbdiff->expects(self::once())
+            ->method('compareToIterator')
+            ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
+            ->willThrowException(new InvalidArgumentException('foobar'));
+
+        $this->logger->expects(self::once())->method('warning')->with('foobar');
+
+        static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
 
     public function testDiffFailure(): void
