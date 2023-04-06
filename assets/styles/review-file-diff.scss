@@ -39,6 +39,7 @@
     cursor: pointer;
     height: 24px;
     padding-left: 4px;
+    user-select: none;
 }
 
 .diff-file__block-spacer--clickable:hover {
@@ -97,6 +98,7 @@
     color: var(--review-diff-gutter-fg-color);
     display: inline-block;
     position: relative;
+    user-select: none;
 }
 
 .diff-file__add-comment {
@@ -116,6 +118,7 @@
 
 .diff-file__diff-change-state {
     margin: 0 5px;
+    user-select: none;
 }
 
 .diff-file__line-change-added {
