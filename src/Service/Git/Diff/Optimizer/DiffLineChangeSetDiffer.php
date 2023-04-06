@@ -8,6 +8,7 @@ use DR\JBDiff\JBDiff;
 use DR\JBDiff\LineBlockTextIterator;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
+use InvalidArgumentException;
 use IteratorAggregate;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -46,6 +47,10 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
 
             // compare text
             return $this->jbdiff->compareToIterator($text1, $text2, $comparePolicy->toComparisonPolicy(), true);
+        } catch (InvalidArgumentException $e) {
+            $this->logger?->warning($e->getMessage(), ['exception' => $e]);
+
+            return null;
         } catch (DiffToBigException) {
             $this->logger?->info(sprintf('Diff to big: `%s...` - `%s...`', mb_substr(trim($text1), 0, 50), mb_substr(trim($text2), 0, 50)));
 
