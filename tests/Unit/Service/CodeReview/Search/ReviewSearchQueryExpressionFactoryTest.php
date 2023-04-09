@@ -125,7 +125,34 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
         static::assertSame(['reviewerEmail1' => '%sherlock%'], $collection->toArray());
     }
 
-    public function testCreateSearchExpression(): void
+    public function testCreateSearchExpressionShouldNotMatch(): void
     {
+        static::assertNull($this->expressionFactory->createSearchExpression(new MatchFilter('foo', 'bar'), new ArrayCollection()));
+    }
+
+    public function testCreateSearchExpressionShouldMatch(): void
+    {
+        $collection = new ArrayCollection();
+        $expression = $this->expressionFactory->createSearchExpression(new MatchWord('search'), $collection);
+
+        static::assertEquals(new Expr\Comparison('r.title', 'LIKE', ':title2'), $expression);
+        static::assertSame(['title2' => '%search%'], $collection->toArray());
+    }
+
+    public function testCreateSearchExpressionShouldHandleNumericMatch(): void
+    {
+        $collection = new ArrayCollection();
+        $expression = $this->expressionFactory->createSearchExpression(new MatchWord('123'), $collection);
+
+        static::assertEquals(
+            new Expr\Orx(
+                [
+                    new Expr\Comparison('r.projectId', '=', ':projectId1'),
+                    new Expr\Comparison('r.title', 'LIKE', ':title2')
+                ]
+            ),
+            $expression
+        );
+        static::assertSame(['title2' => '%123%', 'projectId1' => '123'], $collection->toArray());
     }
 }
