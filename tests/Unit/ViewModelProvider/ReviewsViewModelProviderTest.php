@@ -53,7 +53,7 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
 
         $this->reviewRepository->expects(self::once())
             ->method('getPaginatorForSearchQuery')
-            ->with($this->user, 123, 5, 'search', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
+            ->with(123, 5, 'search', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
 
         $this->timelineViewModelProvider->expects(self::once())

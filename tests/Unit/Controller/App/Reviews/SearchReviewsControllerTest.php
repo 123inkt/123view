@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Reviews;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Reviews\SearchReviewsController;
-use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
@@ -33,13 +32,11 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $user      = new User();
         $paginator = $this->createMock(Paginator::class);
 
-        $this->expectGetUser($user);
         $this->reviewRepository->expects(self::once())
             ->method('getPaginatorForSearchQuery')
-            ->with($user, null, 5, 'search', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
+            ->with(null, 5, 'search', CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
 
         $request = $this->createMock(SearchReviewsRequest::class);
