@@ -95,7 +95,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
      */
     public function createReviewReviewerExpression(TermInterface $term, Collection $parameters): Expr\Comparison|Expr\Orx|null
     {
-        if ($term instanceof MatchFilter === false || $term->prefix !== 'author') {
+        if ($term instanceof MatchFilter === false || $term->prefix !== 'reviewer') {
             return null;
         }
 
