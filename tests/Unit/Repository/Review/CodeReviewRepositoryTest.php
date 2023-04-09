@@ -27,9 +27,15 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 {
     private CodeReviewRepository $repository;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->user = Assert::notNull(static::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));
+        self::getContainer()->set(User::class, $this->user);
+
         $this->repository = static::getService(CodeReviewRepository::class);
     }
 
@@ -96,7 +102,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     public function testGetPaginatorForSearchQuery(): void
     {
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $user         = Assert::notNull(static::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));
         $repositoryId = (int)$repository->getId();
 
         $revisionRepository = static::getService(RevisionRepository::class);
@@ -105,32 +110,32 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $reviewer           = new CodeReviewer();
         $reviewer->setStateTimestamp(1234);
         $reviewer->setReview($review);
-        $reviewer->setUser($user);
+        $reviewer->setUser($this->user);
         $review->getReviewers()->add($reviewer);
 
         $revision->setReview($review);
         $revisionRepository->save($revision, true);
 
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, ''));
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, '', QueryBuilder::ORDER_CREATE_TIMESTAMP));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, ''));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, '', QueryBuilder::ORDER_CREATE_TIMESTAMP));
 
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'id:' . $review->getProjectId()));
-        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'id:0'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'id:' . $review->getProjectId()));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'id:0'));
 
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'state:closed'));
-        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'state:open'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'state:closed'));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'state:open'));
 
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'author:me'));
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'author:sherlock'));
-        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'author:watson'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'author:me'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'author:sherlock'));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'author:watson'));
 
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'reviewer:me'));
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'reviewer:sherlock'));
-        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'reviewer:watson'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'reviewer:me'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'reviewer:sherlock'));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'reviewer:watson'));
 
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'title'));
-        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, (string)$review->getProjectId()));
-        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, 'foobar'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'title'));
+        static::assertCount(1, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, (string)$review->getProjectId()));
+        static::assertCount(0, $this->repository->getPaginatorForSearchQuery($repositoryId, 1, 'foobar'));
     }
 
     /**
@@ -140,8 +145,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
      */
     public function testGetPaginatorForSearchQueryOneReviewTwoRevisions(): void
     {
-        $user = new User();
-        $user->setEmail('sherlock@example.com');
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
         $repositoryId = (int)$repository->getId();
 
@@ -156,7 +159,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revisionRepository->save($revisionB, true);
 
         $result = iterator_to_array(
-            $this->repository->getPaginatorForSearchQuery($user, $repositoryId, 1, '')
+            $this->repository->getPaginatorForSearchQuery($repositoryId, 1, '')
         );
         static::assertCount(1, $result);
 

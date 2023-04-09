@@ -29,7 +29,6 @@ class SearchReviewsController extends AbstractController
     public function __invoke(SearchReviewsRequest $request): array
     {
         $paginator = $this->reviewRepository->getPaginatorForSearchQuery(
-            $this->getUser(),
             null,
             $request->getPage(),
             $request->getSearchQuery(),
