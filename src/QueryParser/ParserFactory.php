@@ -8,6 +8,7 @@ use DR\Review\QueryParser\Term\Operator\NotOperator;
 use DR\Review\QueryParser\Term\Operator\OrOperator;
 use Exception;
 use Parsica\Parsica\Parser;
+use function Parsica\Parsica\atLeastOne;
 use function Parsica\Parsica\between;
 use function Parsica\Parsica\char;
 use function Parsica\Parsica\choice;
@@ -17,7 +18,6 @@ use function Parsica\Parsica\Expression\leftAssoc;
 use function Parsica\Parsica\Expression\prefix;
 use function Parsica\Parsica\Expression\unaryOperator;
 use function Parsica\Parsica\keepFirst;
-use function Parsica\Parsica\many;
 use function Parsica\Parsica\recursive;
 use function Parsica\Parsica\satisfy;
 use function Parsica\Parsica\skipHSpace;
@@ -71,7 +71,7 @@ class ParserFactory
 
     public static function expressionString(): Parser
     {
-        return many(satisfy(static fn(string $x): bool => in_array($x, [" ", "\t", "(", ")"], true) === false));
+        return atLeastOne(satisfy(static fn(string $x): bool => in_array($x, [" ", "\t", "(", ")"], true) === false));
     }
 
     public static function quotedString(): Parser

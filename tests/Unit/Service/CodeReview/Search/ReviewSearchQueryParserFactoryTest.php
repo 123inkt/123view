@@ -24,6 +24,8 @@ class ReviewSearchQueryParserFactoryTest extends AbstractTestCase
      */
     public function testCreateParser(): void
     {
-        $result = (string)$this->parserFactory->createParser()->tryString("id:123")->output();
+        $result = $this->parserFactory->createParser()->tryString("id:5 and state:open and foobar and test");
+
+        $test = true;
     }
 }
