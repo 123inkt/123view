@@ -6,6 +6,7 @@ namespace DR\Review\QueryParser;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
 use DR\Review\QueryParser\Term\Operator\NotOperator;
 use DR\Review\QueryParser\Term\Operator\OrOperator;
+use DR\Review\QueryParser\Term\TermInterface;
 use Exception;
 use Parsica\Parsica\Parser;
 use function Parsica\Parsica\atLeastOne;
@@ -26,19 +27,26 @@ use function Parsica\Parsica\stringI;
 
 class ParserFactory
 {
+    /**
+     * @return Parser<TermInterface>
+     */
     public static function tokens(Parser $parser): Parser
     {
         return keepFirst($parser, skipHSpace());
     }
 
+    /**
+     * @return Parser<TermInterface>
+     */
     public static function parens(Parser $parser): Parser
     {
         return self::tokens(between(self::tokens(char('(')), self::tokens(char(')')), $parser));
     }
 
     /**
-     * @param callable(): Parser $term
+     * @param callable(): Parser<TermInterface> $term
      *
+     * @return Parser<TermInterface>
      * @throws Exception
      */
     public static function recursiveExpression(callable $term): Parser
@@ -64,16 +72,25 @@ class ParserFactory
         return $expr;
     }
 
+    /**
+     * @return Parser<TermInterface>
+     */
     public static function stringLiteral(): Parser
     {
         return choice(self::quotedString(), self::expressionString());
     }
 
+    /**
+     * @return Parser<TermInterface>
+     */
     public static function expressionString(): Parser
     {
         return atLeastOne(satisfy(static fn(string $x): bool => in_array($x, [" ", "\t", "(", ")"], true) === false));
     }
 
+    /**
+     * @return Parser<TermInterface>
+     */
     public static function quotedString(): Parser
     {
         return between(

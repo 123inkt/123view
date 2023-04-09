@@ -7,6 +7,7 @@ use DR\Review\QueryParser\ParserFactory;
 use DR\Review\QueryParser\Term\Match\MatchFilter;
 use DR\Review\QueryParser\Term\Match\MatchWord;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
+use DR\Review\QueryParser\Term\TermInterface;
 use Exception;
 use Parsica\Parsica\Parser;
 use function Parsica\Parsica\atLeastOne;
@@ -19,6 +20,7 @@ use function Parsica\Parsica\stringI;
 class ReviewSearchQueryParserFactory
 {
     /**
+     * @return Parser<TermInterface>
      * @throws Exception
      */
     public function createParser(): Parser
@@ -39,6 +41,7 @@ class ReviewSearchQueryParserFactory
 
     /**
      * Create term parser with prefix [id, state, author, reviewer] or without prefix
+     * @return Parser<TermInterface>
      */
     private static function terms(): Parser
     {
