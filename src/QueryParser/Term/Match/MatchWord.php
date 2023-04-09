@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Model\Review\QueryParser;
+namespace DR\Review\QueryParser\Term\Match;
 
-use DR\Review\Model\QueryParser\TermInterface;
+use DR\Review\QueryParser\Term\TermInterface;
 
-class SearchWord implements TermInterface
+class MatchWord implements TermInterface
 {
     public readonly string $query;
 
