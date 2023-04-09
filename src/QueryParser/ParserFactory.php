@@ -6,7 +6,6 @@ namespace DR\Review\QueryParser;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
 use DR\Review\QueryParser\Term\Operator\NotOperator;
 use DR\Review\QueryParser\Term\Operator\OrOperator;
-use DR\Review\QueryParser\Term\TermInterface;
 use Exception;
 use Parsica\Parsica\Parser;
 use function Parsica\Parsica\atLeastOne;
@@ -28,29 +27,46 @@ use function Parsica\Parsica\stringI;
 class ParserFactory
 {
     /**
-     * @return Parser<TermInterface>
+     * @template T
+     *
+     * @param Parser<T> $parser
+     *
+     * @return Parser<T>
      */
     public static function tokens(Parser $parser): Parser
     {
-        return keepFirst($parser, skipHSpace());
+        /** @var Parser<T> $resultParser */
+        $resultParser = keepFirst($parser, skipHSpace());
+
+        return $resultParser;
     }
 
     /**
-     * @return Parser<TermInterface>
+     * @template T
+     *
+     * @param Parser<T> $parser
+     *
+     * @return Parser<T>
      */
     public static function parens(Parser $parser): Parser
     {
-        return self::tokens(between(self::tokens(char('(')), self::tokens(char(')')), $parser));
+        /** @var Parser<T> $resultParser */
+        $resultParser = self::tokens(between(self::tokens(char('(')), self::tokens(char(')')), $parser));
+
+        return $resultParser;
     }
 
     /**
-     * @param callable(): Parser<TermInterface> $term
+     * @template T
      *
-     * @return Parser<TermInterface>
+     * @param callable(): Parser<T> $term
+     *
+     * @return Parser<T>
      * @throws Exception
      */
     public static function recursiveExpression(callable $term): Parser
     {
+        /** @var Parser<T> $expr */
         $expr = recursive();
 
         // When the parser encounters NOT, AND, or OR, it returns a NotOperator, AndOperator, or OrOperator object.
@@ -77,7 +93,10 @@ class ParserFactory
      */
     public static function stringLiteral(): Parser
     {
-        return choice(self::quotedString(), self::expressionString());
+        /** @var Parser<string|string[]> $parser */
+        $parser = choice(self::quotedString(), self::expressionString());
+
+        return $parser;
     }
 
     /**
@@ -85,7 +104,10 @@ class ParserFactory
      */
     public static function expressionString(): Parser
     {
-        return atLeastOne(satisfy(static fn(string $x): bool => in_array($x, [" ", "\t", "(", ")"], true) === false));
+        /** @var Parser<string|string[]> $parser */
+        $parser = atLeastOne(satisfy(static fn(string $x): bool => in_array($x, [" ", "\t", "(", ")"], true) === false));
+
+        return $parser;
     }
 
     /**
@@ -93,7 +115,8 @@ class ParserFactory
      */
     public static function quotedString(): Parser
     {
-        return between(
+        /** @var Parser<string|string[]> $parser */
+        $parser = between(
             char('"'),
             char('"'),
             some(
@@ -109,5 +132,7 @@ class ParserFactory
                 )
             )
         );
+
+        return $parser;
     }
 }

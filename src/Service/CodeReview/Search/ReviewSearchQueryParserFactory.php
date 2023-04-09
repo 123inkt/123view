@@ -33,7 +33,7 @@ class ReviewSearchQueryParserFactory
         // ---------------------------------------------------------
         // build query parser without boolean operators and will default to AND ... AND ... AND
         $term  = ParserFactory::tokens(self::terms()->map(static fn($val) => [$val]));
-        $terms = atLeastOne($term)->map(static fn(TermInterface ...$val) => count($val) <= 1 ? $val : AndOperator::create(...$val))->thenEof();
+        $terms = atLeastOne($term)->map(static fn($val) => count($val) <= 1 ? $val : AndOperator::create(...$val))->thenEof();
 
         // ---------------------------------------------------------
         // first try expression parser, if that fails try terms parser
