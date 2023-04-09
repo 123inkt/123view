@@ -111,7 +111,7 @@ class ParserFactory
     }
 
     /**
-     * @return Parser<string|string[]>
+     * @return Parser<string>
      */
     public static function quotedString(): Parser
     {
