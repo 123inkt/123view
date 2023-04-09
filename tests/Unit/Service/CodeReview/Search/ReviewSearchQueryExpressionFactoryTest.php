@@ -100,10 +100,10 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewReviewerExpressionWithMe(): void
     {
+        $this->user->setEmail('email');
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createReviewReviewerExpression(new MatchFilter('reviewer', 'me'), $collection);
 
-        $this->user->setEmail('email');
         static::assertEquals(new Expr\Comparison('u.email', '=', ':reviewerEmail1'), $expression);
         static::assertSame(['reviewerEmail1' => 'email'], $collection->toArray());
     }
