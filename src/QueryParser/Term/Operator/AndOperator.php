@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\QueryParser\Term\Operator;
 
 use DR\Review\QueryParser\Term\TermInterface;
-use DR\Review\Utility\Assert;
+use DR\Review\Utility\Arrays;
 use InvalidArgumentException;
 
 class AndOperator implements TermInterface
@@ -21,7 +21,7 @@ class AndOperator implements TermInterface
 
         $leftTerm = array_shift($terms);
         if (count($terms) === 1) {
-            return new AndOperator($leftTerm, Assert::notFalse(reset($terms)));
+            return new AndOperator($leftTerm, Arrays::first($terms));
         }
 
         return new AndOperator($leftTerm, AndOperator::create(...$terms));

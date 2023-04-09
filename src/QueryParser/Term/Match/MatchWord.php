@@ -19,6 +19,6 @@ class MatchWord implements TermInterface
 
     public function __toString(): string
     {
-        return $this->query;
+        return '"' . $this->query . '"';
     }
 }

@@ -19,6 +19,6 @@ class MatchFilter implements TermInterface
 
     public function __toString(): string
     {
-        return $this->prefix . ':' . $this->author;
+        return $this->prefix . ':"' . $this->author . '"';
     }
 }
