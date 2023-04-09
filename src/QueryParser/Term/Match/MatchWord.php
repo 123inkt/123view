@@ -16,4 +16,9 @@ class MatchWord implements TermInterface
     {
         $this->query = is_array($query) ? implode('', $query) : $query;
     }
+
+    public function __toString(): string
+    {
+        return $this->query;
+    }
 }
