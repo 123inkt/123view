@@ -36,7 +36,6 @@ class ReviewsViewModelProvider
     public function getReviewsViewModel(SearchReviewsRequest $request, Repository $repository): ReviewsViewModel
     {
         $paginator = $this->reviewRepository->getPaginatorForSearchQuery(
-            $this->user,
             (int)$repository->getId(),
             $request->getPage(),
             $request->getSearchQuery(),

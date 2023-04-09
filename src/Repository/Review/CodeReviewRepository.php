@@ -10,7 +10,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\Search\ReviewSearchQueryFactory;
 use Parsica\Parsica\ParserHasFailed;
 
@@ -70,7 +69,6 @@ class CodeReviewRepository extends ServiceEntityRepository
      * @throws ParserHasFailed
      */
     public function getPaginatorForSearchQuery(
-        User $user,
         ?int $repositoryId,
         int $page,
         string $searchQuery,

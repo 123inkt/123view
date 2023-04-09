@@ -33,7 +33,7 @@ class ReviewSearchQueryParserFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @return array<string,array{string,string}>
+     * @return array<array-key,array{string,string}>
      */
     public static function dataProvider(): array
     {
@@ -44,6 +44,8 @@ class ReviewSearchQueryParserFactoryTest extends AbstractTestCase
             ['author:sherlock', 'author:"sherlock"'],
             ['reviewer:sherlock', 'reviewer:"sherlock"'],
             ['search', '"search"'],
+            // not operator
+            ['not id:5', 'NOT (id:"5")'],
             // explicit and operators
             ['id:5 and state:open', '(id:"5") AND (state:"open")'],
             ['id:5 and state:open and author:sherlock', '((id:"5") AND (state:"open")) AND (author:"sherlock")'],
@@ -54,6 +56,7 @@ class ReviewSearchQueryParserFactoryTest extends AbstractTestCase
             ['id:5 and state:open or author:sherlock', '((id:"5") AND (state:"open")) OR (author:"sherlock")'],
             // explicit and, or operators
             ['id:5 and (state:open or author:sherlock)', '(id:"5") AND ((state:"open") OR (author:"sherlock"))'],
+            ['id:5 and not author:sherlock', '(id:"5") AND (NOT (author:"sherlock"))'],
         ];
     }
 }

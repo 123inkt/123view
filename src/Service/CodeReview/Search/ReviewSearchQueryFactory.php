@@ -27,6 +27,8 @@ class ReviewSearchQueryFactory
         [$expression, $parameters] = $this->expressionFactory->createFrom($terms);
 
         $queryBuilder->andWhere($expression);
-        $queryBuilder->setParameters($parameters);
+        foreach ($parameters as $name => $value) {
+            $queryBuilder->setParameter($name, $value);
+        }
     }
 }
