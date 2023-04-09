@@ -115,7 +115,7 @@ class ParserFactory
      */
     public static function quotedString(): Parser
     {
-        /** @var Parser<string|string[]> $parser */
+        /** @var Parser<string> $parser */
         $parser = between(
             char('"'),
             char('"'),
@@ -130,7 +130,7 @@ class ParserFactory
                             )
                         )
                 )
-            )
+            )->map(static fn(array $chars) => implode('', $chars))
         );
 
         return $parser;
