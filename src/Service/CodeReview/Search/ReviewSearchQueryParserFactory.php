@@ -19,7 +19,7 @@ class ReviewSearchQueryParserFactory
     /**
      * @throws Exception
      */
-    public function createParse(): Parser
+    public function createParser(): Parser
     {
         // build query parser either with prefix [id, state, author, reviewer] or without prefix
         $term = static fn(): Parser => ParserFactory::tokens(
