@@ -7,18 +7,18 @@ use DR\Review\QueryParser\Term\TermInterface;
 
 class MatchFilter implements TermInterface
 {
-    public readonly string $author;
+    public readonly string $value;
 
     /**
      * @param string|string[] $value
      */
     public function __construct(public readonly string $prefix, string|array $value)
     {
-        $this->author = is_array($value) ? implode('', $value) : $value;
+        $this->value = is_array($value) ? implode('', $value) : $value;
     }
 
     public function __toString(): string
     {
-        return $this->prefix . ':"' . $this->author . '"';
+        return $this->prefix . ':"' . $this->value . '"';
     }
 }
