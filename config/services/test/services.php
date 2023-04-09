@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\ExternalLinkRepository;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
@@ -13,4 +14,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->get(RuleRepository::class)->public();
     $services->get(ExternalLinkRepository::class)->public();
     $services->get(CacheableGitRepositoryService::class)->public();
+    $services->set(User::class)->public();
 };

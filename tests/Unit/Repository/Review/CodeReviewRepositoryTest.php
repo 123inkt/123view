@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Repository\Review;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewQueryBuilder as QueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -26,9 +27,15 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 {
     private CodeReviewRepository $repository;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->user = Assert::notNull(static::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));
+        self::getContainer()->set(User::class, $this->user);
+
         $this->repository = static::getService(CodeReviewRepository::class);
     }
 
@@ -95,7 +102,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     public function testGetPaginatorForSearchQuery(): void
     {
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $user         = Assert::notNull(static::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));
         $repositoryId = (int)$repository->getId();
 
         $revisionRepository = static::getService(RevisionRepository::class);
@@ -104,7 +110,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $reviewer           = new CodeReviewer();
         $reviewer->setStateTimestamp(1234);
         $reviewer->setReview($review);
-        $reviewer->setUser($user);
+        $reviewer->setUser($this->user);
         $review->getReviewers()->add($reviewer);
 
         $revision->setReview($review);
