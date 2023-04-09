@@ -8,6 +8,7 @@ use DR\Review\QueryParser\Term\Match\MatchFilter;
 use DR\Review\QueryParser\Term\Match\MatchWord;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
 use DR\Review\QueryParser\Term\TermInterface;
+use DR\Review\Utility\Assert;
 use Exception;
 use Parsica\Parsica\Parser;
 use function Parsica\Parsica\atLeastOne;
@@ -32,11 +33,14 @@ class ReviewSearchQueryParserFactory
         // ---------------------------------------------------------
         // build query parser without boolean operators and will default to AND ... AND ... AND
         $term  = ParserFactory::tokens(self::terms()->map(static fn($val) => [$val]));
-        $terms = atLeastOne($term)->map(static fn($val) => count($val) <= 1 ? $val : AndOperator::create(...$val))->thenEof();
+        $terms = atLeastOne($term)->map(static fn(TermInterface ...$val) => count($val) <= 1 ? $val : AndOperator::create(...$val))->thenEof();
 
         // ---------------------------------------------------------
         // first try expression parser, if that fails try terms parser
-        return either($expr, $terms);
+        /** @var Parser<TermInterface> $parser */
+        $parser = either($expr, $terms);
+
+        return $parser;
     }
 
     /**
@@ -45,12 +49,19 @@ class ReviewSearchQueryParserFactory
      */
     private static function terms(): Parser
     {
-        return choice(
-            string('id:')->followedBy(atLeastOne(digitChar()))->map(static fn($val) => new MatchFilter('id', $val)),
-            string('state:')->followedBy(choice(stringI('open'), stringI('closed')))->map(static fn($val) => new MatchFilter('state', $val)),
-            string('author:')->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('author', $val)),
-            string('reviewer:')->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('reviewer', $val)),
+        /** @var Parser<TermInterface> $parser */
+        $parser = choice(
+            string('id:')
+                ->followedBy(atLeastOne(digitChar()))->map(static fn(string $val) => new MatchFilter('id', $val)),
+            string('state:')
+                ->followedBy(choice(stringI('open'), stringI('closed')))->map(static fn($val) => new MatchFilter('state', Assert::isString($val))),
+            string('author:')
+                ->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('author', $val)),
+            string('reviewer:')
+                ->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('reviewer', $val)),
             ParserFactory::stringLiteral()->map(static fn($val) => new MatchWord($val)),
         );
+
+        return $parser;
     }
 }

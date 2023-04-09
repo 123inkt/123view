@@ -73,7 +73,7 @@ class ParserFactory
     }
 
     /**
-     * @return Parser<TermInterface>
+     * @return Parser<string|string[]>
      */
     public static function stringLiteral(): Parser
     {
@@ -81,7 +81,7 @@ class ParserFactory
     }
 
     /**
-     * @return Parser<TermInterface>
+     * @return Parser<string|string[]>
      */
     public static function expressionString(): Parser
     {
@@ -89,7 +89,7 @@ class ParserFactory
     }
 
     /**
-     * @return Parser<TermInterface>
+     * @return Parser<string|string[]>
      */
     public static function quotedString(): Parser
     {
