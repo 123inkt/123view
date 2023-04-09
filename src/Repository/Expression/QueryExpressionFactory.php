@@ -50,7 +50,7 @@ class QueryExpressionFactory
             return new Expr\Orx([$this->createWithParam($expression->leftTerm, $params), $this->createWithParam($expression->rightTerm, $params)]);
         }
         if ($expression instanceof NotOperator) {
-            return new Expr\Func('NOT', $this->createWithParam($expression->term, $params));
+            return new Expr\Func('NOT', [$this->createWithParam($expression->term, $params)]);
         }
 
         foreach ($this->callables as $callable) {
