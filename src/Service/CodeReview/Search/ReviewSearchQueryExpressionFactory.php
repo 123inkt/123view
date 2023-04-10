@@ -18,7 +18,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
 {
     private int $uniqueId = 0;
 
-    public function __construct(private readonly User $user)
+    public function __construct(private readonly ?User $user)
     {
         parent::__construct(
             [
@@ -74,7 +74,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
 
         $key = 'authorEmail' . $this->getNextUniqId();
 
-        if (strcasecmp($term->value, 'me') === 0) {
+        if (strcasecmp($term->value, 'me') === 0 && $this->user !== null) {
             $parameters->set($key, (string)$this->user->getEmail());
 
             return new Expr\Comparison('rv.authorEmail', '=', ':' . $key);
@@ -101,7 +101,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
 
         $key = 'reviewerEmail' . $this->getNextUniqId();
 
-        if (strcasecmp($term->value, 'me') === 0) {
+        if (strcasecmp($term->value, 'me') === 0 && $this->user !== null) {
             $parameters->set($key, (string)$this->user->getEmail());
 
             return new Expr\Comparison('u.email', '=', ':' . $key);
