@@ -16,7 +16,7 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly DiffLineChangeSetDiffer $differ)
+    public function __construct(private readonly DiffLineChangeSetDiffer $differ, private readonly DiffLineStateDeterminator $stateDeterminator)
     {
     }
 
@@ -25,6 +25,12 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
         // compare text
         $iterator = $this->differ->diff($set, $comparePolicy);
         if ($iterator === null) {
+            return $set;
+        }
+
+        if ($iterator->hasChanges() === false) {
+            $set->setUnchanged();
+
             return $set;
         }
 
@@ -57,7 +63,7 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
     /**
      * @phpstan-param LineBlockTextIterator::TEXT_* $type
      */
-    private static function addChange(DiffLine $line, int $type, string $text): void
+    private function addChange(DiffLine $line, int $type, string $text): void
     {
         switch ($type) {
             case LineBlockTextIterator::TEXT_REMOVED:

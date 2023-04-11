@@ -32,7 +32,7 @@ class DiffLineChangeSetDiffer implements LoggerAwareInterface
     /**
      * @return IteratorAggregate<array{0: LineBlockTextIterator::TEXT_*, 1: string}>|null
      */
-    public function diff(DiffLineChangeSet $set, DiffComparePolicy $comparePolicy): ?IteratorAggregate
+    public function diff(DiffLineChangeSet $set, DiffComparePolicy $comparePolicy): ?LineBlockTextIterator
     {
         // only additions or only removals, nothing to optimize
         if (count($set->removed) === 0 || count($set->added) === 0) {
