@@ -26,9 +26,11 @@ class ReviewSearchQueryTermFactory
             return new EmptyMatch();
         }
 
+        // too many final classes
+        // @codeCoverageIgnoreStart
         $result = $this->parserFactory->createParser()->run(new StringStream($searchQuery));
         if ($result->isFail()) {
-            /** @var Fail $result */
+            /** @var Fail<TermInterface> $result */
             throw new InvalidQueryException(new ParserHasFailed($result));
         }
 
@@ -36,5 +38,6 @@ class ReviewSearchQueryTermFactory
         $terms = $result->output();
 
         return $terms;
+        // @codeCoverageIgnoreEnd
     }
 }
