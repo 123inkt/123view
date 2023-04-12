@@ -16,7 +16,7 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly DiffLineChangeSetDiffer $differ, private readonly DiffLineStateDeterminator $stateDeterminator)
+    public function __construct(private readonly DiffLineChangeSetDiffer $differ)
     {
     }
 

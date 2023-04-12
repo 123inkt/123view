@@ -8,6 +8,7 @@ use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Git\LineReader;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
+use DR\Review\Service\Git\Diff\Optimizer\DiffLineStateDeterminator;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
@@ -26,7 +27,7 @@ class UnifiedBlockParserTest extends AbstractTestCase
         parent::setUp();
         $differ        = new DiffLineChangeSetDiffer(null, new JBDiff());
         $this->parser  = new UnifiedBlockParser(new UnifiedLineParser());
-        $this->bundler = new UnifiedDiffBundler(new DiffLineChangeSetBundler($differ));
+        $this->bundler = new UnifiedDiffBundler(new DiffLineChangeSetBundler($differ, new DiffLineStateDeterminator()));
     }
 
     public function testParseAdditionsAndDeletions(): void
