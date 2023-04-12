@@ -34,6 +34,25 @@ class ReviewsViewModelProvider
     ) {
     }
 
+    public function getSearchReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms): ReviewsViewModel
+    {
+        $paginator          = null;
+        $paginatorViewModel = null;
+
+        if ($terms !== null) {
+            $paginator = $this->reviewRepository->getPaginatorForSearchQuery(
+                null,
+                $request->getPage(),
+                $terms,
+                $request->getOrderBy()
+            );
+            /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
+            $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
+        }
+
+        return new ReviewsViewModel(null, $paginator, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy(), null);
+    }
+
     public function getReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms, Repository $repository): ReviewsViewModel
     {
         $paginator          = null;
