@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Reviews;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Page\Breadcrumb;
+use DR\Review\QueryParser\InvalidQueryException;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
 use DR\Review\Security\Role\Roles;
@@ -13,7 +14,6 @@ use DR\Review\Service\CodeReview\Search\ReviewSearchQueryTermFactory;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use Exception;
-use Parsica\Parsica\ParserHasFailed;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +40,7 @@ class ReviewsController extends AbstractController
     {
         try {
             $terms = $this->termFactory->getSearchTerms($request->getSearchQuery());
-        } catch (ParserHasFailed $error) {
+        } catch (InvalidQueryException $error) {
             $this->addFlash('error', $this->parseFailFormatter->format($error));
             $terms = null;
         }

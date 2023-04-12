@@ -5,7 +5,6 @@ namespace DR\Review\QueryParser;
 
 use Parsica\Parsica\Internal\Ascii;
 use Parsica\Parsica\Internal\EndOfStream;
-use Parsica\Parsica\ParserHasFailed;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ParserHasFailedFormatter
@@ -14,7 +13,7 @@ class ParserHasFailedFormatter
     {
     }
 
-    public function format(ParserHasFailed $failure): string
+    public function format(InvalidQueryException $failure): string
     {
         $parseResult = $failure->parseResult();
         try {
