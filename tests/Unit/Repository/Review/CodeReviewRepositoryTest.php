@@ -10,7 +10,6 @@ use DR\Review\Entity\User\User;
 use DR\Review\QueryParser\Term\EmptyMatch;
 use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewQueryBuilder as QueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
@@ -176,24 +175,21 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @throws Exception
+     * @inheritDoc
      */
-    private function getPaginatorForSearchQuery(
-        int $repositoryId,
-        string $query,
-        string $orderBy = CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP
-    ): Paginator {
-        $terms = $query === '' ? new EmptyMatch() : $this->parser->tryString($query)->output();
-
-        return $this->repository->getPaginatorForSearchQuery($repositoryId, 1, $terms, $orderBy);
+    protected function getFixtures(): array
+    {
+        return [UserFixtures::class, CodeReviewFixtures::class, RevisionFixtures::class];
     }
 
     /**
-     * @inheritDoc
+     * @return Paginator<CodeReview>
+     * @throws Exception
      */
-    protected
-    function getFixtures(): array
+    private function getPaginatorForSearchQuery(int $repositoryId, string $query, string $orderBy = QueryBuilder::ORDER_UPDATE_TIMESTAMP): Paginator
     {
-        return [UserFixtures::class, CodeReviewFixtures::class, RevisionFixtures::class];
+        $terms = $query === '' ? new EmptyMatch() : $this->parser->tryString($query)->output();
+
+        return $this->repository->getPaginatorForSearchQuery($repositoryId, 1, $terms, $orderBy);
     }
 }
