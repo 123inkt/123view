@@ -7,6 +7,9 @@ use Exception;
 use Parsica\Parsica\Internal\Fail;
 use Parsica\Parsica\ParserHasFailed;
 
+/**
+ * @codeCoverageIgnore
+ */
 class InvalidQueryException extends Exception
 {
     public function __construct(private readonly ParserHasFailed $exception)
