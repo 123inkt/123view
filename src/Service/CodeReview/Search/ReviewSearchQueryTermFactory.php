@@ -30,7 +30,7 @@ class ReviewSearchQueryTermFactory
         // @codeCoverageIgnoreStart
         $result = $this->parserFactory->createParser()->run(new StringStream($searchQuery));
         if ($result->isFail()) {
-            /** @var Fail<TermInterface> $result */
+            /** @var Fail<TermInterface> $result */ // @phpcs:ignore
             throw new InvalidQueryException(new ParserHasFailed($result));
         }
 
