@@ -10,8 +10,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Service\CodeReview\Search\ReviewSearchQueryFactory;
-use Parsica\Parsica\ParserHasFailed;
+use DR\Review\QueryParser\Term\TermInterface;
+use DR\Review\Service\CodeReview\Search\ReviewSearchQueryExpressionFactory;
 
 /**
  * @extends ServiceEntityRepository<CodeReview>
@@ -22,7 +22,7 @@ use Parsica\Parsica\ParserHasFailed;
  */
 class CodeReviewRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry, private readonly ReviewSearchQueryFactory $searchQueryFactory)
+    public function __construct(ManagerRegistry $registry, private readonly ReviewSearchQueryExpressionFactory $expressionFactory)
     {
         parent::__construct($registry, CodeReview::class);
     }
@@ -66,15 +66,14 @@ class CodeReviewRepository extends ServiceEntityRepository
 
     /**
      * @return Paginator<CodeReview>
-     * @throws ParserHasFailed
      */
     public function getPaginatorForSearchQuery(
         ?int $repositoryId,
         int $page,
-        string $searchQuery,
+        TermInterface $searchQuery,
         string $searchOrderBy = CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP
     ): Paginator {
-        $queryBuilder = (new CodeReviewQueryBuilder('r', $this->getEntityManager(), $this->searchQueryFactory))
+        $queryBuilder = (new CodeReviewQueryBuilder('r', $this->getEntityManager(), $this->expressionFactory))
             ->prepare($repositoryId)
             ->paginate($page, 50)
             ->orderBy($searchOrderBy)

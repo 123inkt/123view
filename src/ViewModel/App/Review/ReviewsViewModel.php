@@ -13,13 +13,13 @@ use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 class ReviewsViewModel
 {
     /**
-     * @param Paginator<CodeReview>          $reviews
-     * @param PaginatorViewModel<CodeReview> $paginator
+     * @param Paginator<CodeReview>|null          $reviews
+     * @param PaginatorViewModel<CodeReview>|null $paginator
      */
     public function __construct(
         public readonly ?Repository $repository,
-        private readonly Paginator $reviews,
-        public readonly PaginatorViewModel $paginator,
+        private readonly ?Paginator $reviews,
+        public readonly ?PaginatorViewModel $paginator,
         public readonly string $searchQuery,
         public readonly string $searchOrderBy,
         public readonly ?TimelineViewModel $timeline
@@ -27,11 +27,11 @@ class ReviewsViewModel
     }
 
     /**
-     * @return CodeReview[]
+     * @return CodeReview[]|null
      */
-    public function getReviews(): array
+    public function getReviews(): ?array
     {
-        return iterator_to_array($this->reviews);
+        return $this->reviews === null ? null : iterator_to_array($this->reviews);
     }
 
     /**
