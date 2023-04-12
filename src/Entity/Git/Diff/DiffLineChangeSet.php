@@ -57,18 +57,6 @@ class DiffLineChangeSet
         return $text;
     }
 
-    public function setUnchanged(): void
-    {
-        foreach ($this->removed as $line) {
-            $line->state           = DiffLine::STATE_UNCHANGED;
-            $line->lineNumberAfter = $line->lineNumberBefore;
-        }
-        foreach ($this->added as $line) {
-            $line->state            = DiffLine::STATE_UNCHANGED;
-            $line->lineNumberBefore = $line->lineNumberAfter;
-        }
-    }
-
     public function clearChanges(): void
     {
         foreach ($this->removed as $line) {

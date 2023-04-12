@@ -28,12 +28,6 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
             return $set;
         }
 
-        if ($iterator->hasChanges() === false) {
-            $set->setUnchanged();
-
-            return $set;
-        }
-
         // remove all changes from the current set
         $set->clearChanges();
 
