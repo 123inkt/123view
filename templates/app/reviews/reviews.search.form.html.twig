@@ -1,6 +1,9 @@
 <form method="get">
     <div class="input-group">
-        <input type="search" name="search" value="{{ reviewsModel.searchQuery }} " class="reviews-list__search-input form-control"
+        <input type="search"
+               name="search"
+               value="{{ reviewsModel.searchQuery }}{{ reviewsModel.searchQuery|last == ' ' ? '' : ' ' }}"
+               class="reviews-list__search-input form-control"
                 {{ stimulus_controller('search-field') }}
                placeholder="{{ 'search.review'|trans }}"/>
         <select name="order-by" class="form-control" {{ stimulus_controller('form-submitter') }}>

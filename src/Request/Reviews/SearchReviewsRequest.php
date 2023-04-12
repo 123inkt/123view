@@ -11,7 +11,7 @@ class SearchReviewsRequest extends AbstractValidatedRequest
 {
     public function getSearchQuery(): string
     {
-        return $this->request->query->get('search', 'state:open ');
+        return trim($this->request->query->get('search', 'state:open'));
     }
 
     public function getOrderBy(): string
