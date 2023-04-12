@@ -16,7 +16,7 @@ class DiffLineChangeSetBundler
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly DiffLineChangeSetDiffer $differ)
+    public function __construct(private readonly DiffLineChangeSetDiffer $differ, private readonly DiffLineStateDeterminator $stateDeterminator)
     {
     }
 
@@ -90,12 +90,7 @@ class DiffLineChangeSetBundler
             };
         } elseif (count($types) === 1) {
             // determine line type based on changes
-            $lineState = match (key($types)) {
-                DiffChange::ADDED     => DiffLine::STATE_ADDED,
-                DiffChange::REMOVED   => DiffLine::STATE_REMOVED,
-                DiffChange::UNCHANGED => DiffLine::STATE_UNCHANGED,
-                default               => DiffLine::STATE_CHANGED,
-            };
+            $lineState = $this->stateDeterminator->determineState($changes);
         }
 
         $line                   = new DiffLine($lineState, $changes);

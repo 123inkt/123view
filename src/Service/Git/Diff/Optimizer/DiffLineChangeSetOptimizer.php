@@ -57,7 +57,7 @@ class DiffLineChangeSetOptimizer implements LoggerAwareInterface
     /**
      * @phpstan-param LineBlockTextIterator::TEXT_* $type
      */
-    private static function addChange(DiffLine $line, int $type, string $text): void
+    private function addChange(DiffLine $line, int $type, string $text): void
     {
         switch ($type) {
             case LineBlockTextIterator::TEXT_REMOVED:

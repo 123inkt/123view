@@ -12,6 +12,7 @@ use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineNumberPair;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
+use DR\Review\Service\Git\Diff\Optimizer\DiffLineStateDeterminator;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -26,7 +27,7 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
     {
         parent::setUp();
         $this->differ  = $this->createMock(DiffLineChangeSetDiffer::class);
-        $this->bundler = new DiffLineChangeSetBundler($this->differ);
+        $this->bundler = new DiffLineChangeSetBundler($this->differ, new DiffLineStateDeterminator());
     }
 
     public function testBundleShouldSkipWhenDiffIsNotPossible(): void
