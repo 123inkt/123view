@@ -1,70 +1,78 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-
     <div class="mt-2 pb-2 clearfix">
         <h2 class="float-start pe-3 mb-0">{{ 'search'|trans }}</h2>
     </div>
 
-    {% include 'app/reviews/reviews.search.form.html.twig' %}
-
-    <div class="list-group">
-        {%- for review in reviewsModel.reviews -%}
-            <a class="list-group-item list-group-item-action" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}">
-                {% if review.reviewers|length > 0 %}
-                    {% set reviewerState = review.getReviewersState() %}
-                    {% if reviewerState == 'open' %}
-                        <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
-                            {{ 'in.review'|trans }}
-                        </span>
-                    {% elseif reviewerState == 'accepted' %}
-                        <span class="d-inline-flex px-1 text-success bg-success bg-opacity-10 border border-success border-opacity-100 rounded-2 float-end">
-                            {{ 'accepted'|trans }}
-                        </span>
-                    {% else %}
-                        <span class="d-inline-flex px-1 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-100 rounded-2 float-end">
-                            {{ 'rejected'|trans }}
-                        </span>
-                    {% endif %}
-                {% else %}
-                    <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
-                        {{ review.state|trans }}
-                    </span>
-                {% endif %}
-
-                <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
-
-                <div>
-                    <span class="badge rounded-pill text-bg-primary">
-                        {{ review.repository.displayName }}
-                    </span>
-
-                    {# authors #}
-                    {% set authors = reviewsModel.authors(review.revisions) %}
-                    {% if authors|length > 0 %}
-                        <span class="text-secondary">
-                            <small>{{ 'author'|trans }}:
-                                {% for author in authors %}
-                                    {{ author }}{% if not loop.last %},{% endif %}
-                                {% endfor %}
-                            </small>
-                        </span>
-                    {% endif %}
-
-                    {# reviewers #}
-                    {% if review.reviewers|length > 0 %}
-                        <span class="ms-3 text-secondary">
-                            <small>{{ 'reviewer'|trans }}:
-                            {% for reviewer in review.reviewers %}
-                                {{ reviewer.user.name }}{% if not loop.last %},{% endif %}
-                            {% endfor %}
-                            </small>
-                        </span>
-                    {% endif %}
-                </div>
-            </a>
-        {%- endfor -%}
+    <div class="pt-2">
+        {% include 'app/flash/flashes.html.twig' %}
     </div>
 
-    {% include 'app/paginator/paginator.html.twig' with {paginatorModel: reviewsModel.paginator} %}
+    {% include 'app/reviews/reviews.search.form.html.twig' %}
+
+    {% if reviewsModel.reviews %}
+        <div class="list-group">
+            {%- for review in reviewsModel.reviews -%}
+                <a class="list-group-item list-group-item-action"
+                   href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review}) }}">
+                    {% if review.reviewers|length > 0 %}
+                        {% set reviewerState = review.getReviewersState() %}
+                        {% if reviewerState == 'open' %}
+                            <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+                                {{ 'in.review'|trans }}
+                            </span>
+                        {% elseif reviewerState == 'accepted' %}
+                            <span class="d-inline-flex px-1 text-success bg-success bg-opacity-10 border border-success border-opacity-100 rounded-2 float-end">
+                                {{ 'accepted'|trans }}
+                            </span>
+                        {% else %}
+                            <span class="d-inline-flex px-1 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-100 rounded-2 float-end">
+                                {{ 'rejected'|trans }}
+                            </span>
+                        {% endif %}
+                    {% else %}
+                        <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+                            {{ review.state|trans }}
+                        </span>
+                    {% endif %}
+
+                    <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
+
+                    <div>
+                        <span class="badge rounded-pill text-bg-primary">
+                            {{ review.repository.displayName }}
+                        </span>
+
+                        {# authors #}
+                        {% set authors = reviewsModel.authors(review.revisions) %}
+                        {% if authors|length > 0 %}
+                            <span class="text-secondary">
+                                <small>{{ 'author'|trans }}:
+                                    {% for author in authors %}
+                                        {{ author }}{% if not loop.last %},{% endif %}
+                                    {% endfor %}
+                                </small>
+                            </span>
+                        {% endif %}
+
+                        {# reviewers #}
+                        {% if review.reviewers|length > 0 %}
+                            <span class="ms-3 text-secondary">
+                                <small>{{ 'reviewer'|trans }}:
+                                    {% for reviewer in review.reviewers %}
+                                        {{ reviewer.user.name }}{% if not loop.last %},{% endif %}
+                                    {% endfor %}
+                                </small>
+                            </span>
+                        {% endif %}
+                    </div>
+                </a>
+            {%- endfor -%}
+        </div>
+    {% endif %}
+
+    {% if reviewsModel.paginator %}
+        {% include 'app/paginator/paginator.html.twig' with {paginatorModel: reviewsModel.paginator} %}
+    {% endif %}
 {% endblock %}

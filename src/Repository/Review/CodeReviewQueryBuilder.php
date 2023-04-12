@@ -7,8 +7,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Service\CodeReview\Search\ReviewSearchQueryFactory;
-use Parsica\Parsica\ParserHasFailed;
+use DR\Review\QueryParser\Term\EmptyMatch;
+use DR\Review\QueryParser\Term\TermInterface;
+use DR\Review\Service\CodeReview\Search\ReviewSearchQueryExpressionFactory;
 
 class CodeReviewQueryBuilder
 {
@@ -17,7 +18,7 @@ class CodeReviewQueryBuilder
 
     private readonly QueryBuilder $queryBuilder;
 
-    public function __construct(string $alias, EntityManagerInterface $em, private readonly ReviewSearchQueryFactory $searchQueryFactory)
+    public function __construct(string $alias, EntityManagerInterface $em, private readonly ReviewSearchQueryExpressionFactory $expressionFactory)
     {
         $this->queryBuilder = $em->createQueryBuilder()->select($alias)->from(CodeReview::class, $alias);
     }
@@ -59,16 +60,18 @@ class CodeReviewQueryBuilder
         return $this;
     }
 
-    /**
-     * @throws ParserHasFailed
-     */
-    public function search(string $searchQuery): self
+    public function search(TermInterface $searchQuery): self
     {
-        if (trim($searchQuery) === "") {
+        if ($searchQuery instanceof EmptyMatch) {
             return $this;
         }
 
-        $this->searchQueryFactory->addSearchQuery($this->queryBuilder, $searchQuery);
+        [$expression, $parameters] = $this->expressionFactory->createFrom($searchQuery);
+
+        $this->queryBuilder->andWhere($expression);
+        foreach ($parameters as $name => $value) {
+            $this->queryBuilder->setParameter($name, $value);
+        }
 
         return $this;
     }

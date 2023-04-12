@@ -19,6 +19,7 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
+use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
 use DR\Review\Security\Api\BearerAuthenticator;
@@ -122,11 +123,12 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
-    $services->Set(JBDiff::class);
+    $services->set(JBDiff::class);
     $services->set(CssToInlineStyles::class);
     $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+    $services->set(ParserHasFailedFormatter::class);
 
     // custom register cache dir
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");

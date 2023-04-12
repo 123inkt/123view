@@ -59,7 +59,7 @@ class ReviewSearchQueryParserFactory
                 ->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('author', $val)),
             string('reviewer:')
                 ->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('reviewer', $val)),
-            ParserFactory::stringLiteral()->map(static fn($val) => new MatchWord($val))->label('`search word`'),
+            ParserFactory::stringLiteral()->map(static fn($val) => new MatchWord($val))->label("'search word'"),
         );
 
         return $parser;

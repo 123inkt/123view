@@ -277,4 +277,6 @@ return [
     'ignore.whitespaces'                          => 'Ignore whitespaces',
     'create.review.from.revision'                 => 'Create review from revision',
     'read.more'                                   => 'Read more',
+    'unexpected'                                  => 'Unexpected',
+    'expecting'                                   => 'Expecting',
 ];
