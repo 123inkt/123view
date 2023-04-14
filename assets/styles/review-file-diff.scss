@@ -162,6 +162,14 @@
     padding: 10px 10px 5px 10px;
 }
 
+.diff-file__comment_form_max_size {
+    max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 55px);
+}
+
+.diff-side-by-side .diff-file__comment_form_max_size {
+    max-width: calc((100vw - var(--review-sidebar-width) - var(--review-sidebar-gap)) / 2 - 55px);
+}
+
 .diff-file__comment-mention {
     left: 4px;
     top: -15px;
