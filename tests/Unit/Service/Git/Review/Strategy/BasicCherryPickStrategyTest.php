@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Review\Strategy;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
@@ -63,7 +64,7 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
         $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision]);
         $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository)->willReturn([$diffFile]);
 
-        $this->strategy->getDiffFiles($repository, [$revision], new FileDiffOptions(20));
+        $this->strategy->getDiffFiles($repository, [$revision], new FileDiffOptions(20, DiffComparePolicy::IGNORE));
     }
 
     /**
