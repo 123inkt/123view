@@ -33,6 +33,8 @@ class GitShowCommandBuilderTest extends AbstractTestCase
      * @covers ::unified
      * @covers ::ignoreSpaceAtEol
      * @covers ::ignoreCrAtEol
+     * @covers ::ignoreSpaceChange
+     * @covers ::ignoreAllSpace
      * @covers ::noPatch
      * @covers ::format
      * @covers ::file
@@ -41,7 +43,19 @@ class GitShowCommandBuilderTest extends AbstractTestCase
     public function testBuild(): void
     {
         static::assertSame(
-            ['git', 'show', 'foobar', '--unified=5', '--no-patch', '--format="format"', 'hash:file', '--ignore-space-at-eol', '--ignore-cr-at-eol'],
+            [
+                'git',
+                'show',
+                'foobar',
+                '--unified=5',
+                '--no-patch',
+                '--format="format"',
+                'hash:file',
+                '--ignore-space-at-eol',
+                '--ignore-cr-at-eol',
+                '--ignore-space-change',
+                '--ignore-all-space'
+            ],
             $this->builder->startPoint('foobar')
                 ->unified(5)
                 ->noPatch()
@@ -49,6 +63,8 @@ class GitShowCommandBuilderTest extends AbstractTestCase
                 ->file('hash', 'file')
                 ->ignoreSpaceAtEol()
                 ->ignoreCrAtEol()
+                ->ignoreSpaceChange()
+                ->ignoreAllSpace()
                 ->build()
         );
     }
