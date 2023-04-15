@@ -58,6 +58,20 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function ignoreSpaceChange(): self
+    {
+        $this->arguments['ignore-space-change'] = '--ignore-space-change';
+
+        return $this;
+    }
+
+    public function ignoreAllSpace(): self
+    {
+        $this->arguments['ignore-all-space'] = '--ignore-all-space';
+
+        return $this;
+    }
+
     public function file(string $hash, string $filePath): self
     {
         $this->arguments['file'] = sprintf('%s:%s', $hash, $filePath);
