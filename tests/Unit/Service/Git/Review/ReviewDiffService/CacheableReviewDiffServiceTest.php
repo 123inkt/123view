@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
@@ -54,11 +55,11 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
 
         $this->cache->expects(self::once())
             ->method('get')
-            ->with('diff-files-123-hash-fdo-20')
+            ->with('diff-files-123-hash-fdo-20-trim')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFile]);
 
