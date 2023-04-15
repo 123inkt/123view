@@ -29,7 +29,7 @@
         {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
 
         {# whitespace management #}
-        {% if currentDiffMode != 'inline' and file.modified %}
+        {% if file.modified %}
             <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
                 <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                         {{ stimulus_target('component--dropdown-menu', 'button') }}
