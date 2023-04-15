@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\CodeReview;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -83,13 +84,13 @@ class CodeReviewFileServiceTest extends AbstractTestCase
             );
         $this->diffFileUpdater->expects(self::once())->method('update')->with([$diffFileA])->willReturn([$diffFileA]);
         $this->diffService->expects(self::once())->method('getDiffFiles')
-            ->with($repository, [$revision], new FileDiffOptions(9999999))
+            ->with($repository, [$revision], new FileDiffOptions(9999999, DiffComparePolicy::IGNORE))
             ->willReturn([$diffFileA]);
 
         $this->treeGenerator->expects(self::once())->method('generate')->with([$diffFileA])->willReturn($tree);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
-        $result = $this->service->getFiles($review, [$revision], 'filepath');
+        $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);
         static::assertSame([$tree, $diffFileA], $result);
     }
 }

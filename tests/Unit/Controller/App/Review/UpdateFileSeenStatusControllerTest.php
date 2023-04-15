@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\UpdateFileSeenStatusController;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -13,6 +14,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +27,13 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 {
     private FileSeenStatusService&MockObject      $statusService;
     private ReviewDiffServiceInterface&MockObject $diffService;
+    private ReviewSessionService&MockObject       $sessionService;
 
     public function setUp(): void
     {
-        $this->statusService = $this->createMock(FileSeenStatusService::class);
-        $this->diffService   = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->statusService  = $this->createMock(FileSeenStatusService::class);
+        $this->diffService    = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->sessionService = $this->createMock(ReviewSessionService::class);
         parent::setUp();
     }
 
@@ -56,6 +60,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
 
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFileA, $diffFileB]);
+        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
         $this->statusService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFileA);
 
         /** @var Response $response */
@@ -86,6 +91,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
 
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFileA, $diffFileB]);
+        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
         $this->statusService->expects(self::once())->method('markAsUnseen')->with($review, $user, $diffFileA);
 
         /** @var Response $response */
@@ -111,6 +117,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $diffFile = new DiffFile();
 
         $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFile]);
+        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
 
         /** @var Response $response */
         $response = ($this->controller)($request, $review);
@@ -119,6 +126,6 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UpdateFileSeenStatusController($this->statusService, $this->diffService);
+        return new UpdateFileSeenStatusController($this->statusService, $this->diffService, $this->sessionService);
     }
 }

@@ -10,6 +10,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Utility\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,8 @@ class UpdateFileSeenStatusController extends AbstractController
 {
     public function __construct(
         private readonly FileSeenStatusService $fileSeenStatusService,
-        private readonly ReviewDiffServiceInterface $diffService
+        private readonly ReviewDiffServiceInterface $diffService,
+        private readonly ReviewSessionService $sessionService
     ) {
     }
 
@@ -37,7 +39,7 @@ class UpdateFileSeenStatusController extends AbstractController
         $files      = $this->diffService->getDiffFiles(
             Assert::notNull($review->getRepository()),
             $review->getRevisions()->toArray(),
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $this->sessionService->getDiffComparePolicyForUser())
         );
 
         // find filepath in files

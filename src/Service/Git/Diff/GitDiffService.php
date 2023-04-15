@@ -5,6 +5,7 @@ namespace DR\Review\Service\Git\Diff;
 
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Entity\Git\Commit;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Repository\Repository;
@@ -68,6 +69,12 @@ class GitDiffService implements LoggerAwareInterface
             ->unified($options?->unifiedDiffLines ?? 10)
             ->startPoint((string)$revision->getCommitHash());
 
+        if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
+            $commandBuilder->ignoreSpaceChange();
+        } elseif ($options?->comparePolicy === DiffComparePolicy::IGNORE) {
+            $commandBuilder->ignoreAllSpace();
+        }
+
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
@@ -87,6 +94,12 @@ class GitDiffService implements LoggerAwareInterface
             ->unified($options?->unifiedDiffLines ?? 10)
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol();
+
+        if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
+            $commandBuilder->ignoreSpaceChange();
+        } elseif ($options?->comparePolicy === DiffComparePolicy::IGNORE) {
+            $commandBuilder->ignoreAllSpace();
+        }
 
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 

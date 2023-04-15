@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
@@ -57,7 +58,7 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
         $this->diffService->getDiffFiles(
             Assert::notNull($review->getRepository()),
             $revisions->toArray(),
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF)
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL)
         );
 
         $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);

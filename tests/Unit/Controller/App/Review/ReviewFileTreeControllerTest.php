@@ -5,11 +5,13 @@ namespace DR\Review\Tests\Unit\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewFileTreeController;
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
@@ -24,11 +26,13 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 {
     private FileTreeViewModelProvider&MockObject $viewModelProvider;
     private CodeReviewFileService&MockObject     $fileService;
+    private ReviewSessionService&MockObject      $sessionService;
 
     protected function setUp(): void
     {
         $this->viewModelProvider = $this->createMock(FileTreeViewModelProvider::class);
         $this->fileService       = $this->createMock(CodeReviewFileService::class);
+        $this->sessionService    = $this->createMock(ReviewSessionService::class);
         parent::setUp();
     }
 
@@ -47,7 +51,11 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
         $selectedFile = new DiffFile();
         $viewModel    = $this->createMock(FileTreeViewModel::class);
 
-        $this->fileService->expects(self::once())->method('getFiles')->with($review, [$revision], 'filePath')->willReturn([$treeNode, $selectedFile]);
+        $this->fileService->expects(self::once())
+            ->method('getFiles')
+            ->with($review, [$revision], 'filePath', DiffComparePolicy::ALL)
+            ->willReturn([$treeNode, $selectedFile]);
+        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
         $this->viewModelProvider->expects(self::once())
             ->method('getFileTreeViewModel')
             ->with($review, $treeNode, $selectedFile)
@@ -59,6 +67,6 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new ReviewFileTreeController($this->viewModelProvider, $this->fileService);
+        return new ReviewFileTreeController($this->viewModelProvider, $this->fileService, $this->sessionService);
     }
 }

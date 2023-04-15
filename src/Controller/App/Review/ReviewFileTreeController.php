@@ -7,6 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -18,8 +19,11 @@ use Throwable;
 
 class ReviewFileTreeController extends AbstractController
 {
-    public function __construct(private readonly FileTreeViewModelProvider $viewModelProvider, private readonly CodeReviewFileService $fileService)
-    {
+    public function __construct(
+        private readonly FileTreeViewModelProvider $viewModelProvider,
+        private readonly CodeReviewFileService $fileService,
+        private readonly ReviewSessionService $sessionService
+    ) {
     }
 
     /**
@@ -32,7 +36,12 @@ class ReviewFileTreeController extends AbstractController
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): array
     {
         // get diff files for review
-        [$fileTree, $selectedFile] = $this->fileService->getFiles($review, $review->getRevisions()->toArray(), $request->query->get('filePath'));
+        [$fileTree, $selectedFile] = $this->fileService->getFiles(
+            $review,
+            $review->getRevisions()->toArray(),
+            $request->query->get('filePath'),
+            $this->sessionService->getDiffComparePolicyForUser()
+        );
 
         return ['fileTreeModel' => $this->viewModelProvider->getFileTreeViewModel($review, $fileTree, $selectedFile)];
     }

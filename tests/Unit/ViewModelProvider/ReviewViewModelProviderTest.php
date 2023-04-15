@@ -91,7 +91,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
         $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
         $request->expects(self::once())->method('getAction')->willReturn($action);
-        $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $request->expects(self::exactly(2))->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $request->expects(self::once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
 
         $this->fileService->expects(self::once())->method('getFiles')->with($review, [$revision], $filePath)->willReturn([$tree, $file]);
@@ -132,7 +132,11 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             ->method('getVisibleRevisions')
             ->with($review, [$revision])
             ->willReturnArgument(1);
-        $this->fileService->expects(self::once())->method('getFiles')->with($review, [$revision], $filePath)->willReturn([$tree, null]);
+        $this->fileService->expects(self::once())
+            ->method('getFiles')
+            ->with($review, [$revision], $filePath, DiffComparePolicy::IGNORE)
+            ->willReturn([$tree, null]);
+        $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $this->timelineViewModelProvider->expects(self::once())->method('getTimelineViewModel')->with($review);
         $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');
         $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
