@@ -85,8 +85,11 @@ class MailRecipientServiceTest extends AbstractTestCase
     public function testGetUsersForReview(): void
     {
         $userA = new User();
+        $userA->setId(123);
         $userB = new User();
+        $userB->setId(456);
         $userC = new User();
+        $userC->setId(789);
 
         $reviewerA = new CodeReviewer();
         $reviewerA->setUser($userA);
