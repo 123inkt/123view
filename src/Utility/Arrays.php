@@ -177,9 +177,9 @@ class Arrays
         return array_udiff(
             $itemsA,
             $itemsB,
-            static function ($itemA, $itemB) {
-                if ($itemA instanceof EquatableInterface) {
-                    return $itemA->equalsTo($itemB) ? 0 : 1;
+            static function ($itemA, $itemB): int {
+                if ($itemA instanceof ComparableInterface) {
+                    return $itemA->compareTo($itemB);
                 }
 
                 $keyA = is_object($itemA) ? spl_object_hash($itemA) : (string)$itemA;
