@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Utility;
 
+use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Arrays;
 use RuntimeException;
@@ -99,11 +100,34 @@ class ArraysTest extends AbstractTestCase
     {
         $objA  = new stdClass();
         $objB  = new stdClass();
+        $userA = (new User())->setId(5);
+        $userB = (new User())->setId(6);
         $array = [$objA, $objB];
 
         static::assertSame([1 => $objB], Arrays::remove($array, $objA));
         static::assertSame([0 => $objA], Arrays::remove($array, $objB));
         static::assertSame($array, Arrays::remove($array, 'foobar'));
+        static::assertSame([$userA], Arrays::remove([$userA, $userB], $userB));
+        static::assertSame([$userA, $userB], Arrays::remove([$userA, $userB], 'foobar'));
+    }
+
+    /**
+     * @covers ::search
+     */
+    public function testSearch(): void
+    {
+        $objA  = new stdClass();
+        $objB  = new stdClass();
+        $userA = (new User())->setId(5);
+        $userB = (new User())->setId(6);
+
+        static::assertFalse(Arrays::search(['foobar'], 'unknown'));
+        static::assertSame(0, Arrays::search(['foobar'], 'foobar'));
+        static::assertSame('foo', Arrays::search(['foo' => 'bar'], 'bar'));
+        static::assertSame(0, Arrays::search([$objA, $objB], $objA));
+        static::assertSame(1, Arrays::search([$objA, $objB], $objB));
+        static::assertSame(0, Arrays::search([$userA, $userB], $userA));
+        static::assertFalse(Arrays::search([$userA, $userB], $objA));
     }
 
     /**
@@ -111,8 +135,10 @@ class ArraysTest extends AbstractTestCase
      */
     public function testUnique(): void
     {
-        $objA = new stdClass();
-        $objB = new stdClass();
+        $objA  = new stdClass();
+        $objB  = new stdClass();
+        $userA = (new User())->setId(5);
+        $userB = (new User())->setId(6);
 
         static::assertSame(['foobar'], Arrays::unique(['foobar', 'foobar']));
         static::assertSame(['foo', 'bar'], Arrays::unique(['foo', 'bar']));
@@ -120,6 +146,7 @@ class ArraysTest extends AbstractTestCase
         static::assertSame([1, '1'], Arrays::unique([1, '1']));
         static::assertSame([$objA, $objB], Arrays::unique([$objA, $objB]));
         static::assertSame([$objA], Arrays::unique([$objA, $objA]));
+        static::assertSame([0 => $userA, 2 => $userB], Arrays::unique([$userA, $userA, $userB]));
     }
 
     /**
@@ -127,18 +154,29 @@ class ArraysTest extends AbstractTestCase
      */
     public function testDiff(): void
     {
-        $objA = new stdClass();
-        $objB = new stdClass();
+        $objA  = new stdClass();
+        $objB  = new stdClass();
+        $userA = (new User())->setId(5);
+        $userB = (new User())->setId(6);
+        $userC = (new User())->setId(7);
 
+        // scalars
         static::assertSame(['foo'], Arrays::diff(['foo'], ['bar']));
         static::assertSame(['foo'], Arrays::diff(['foo', 'bar'], ['bar']));
         static::assertSame([], Arrays::diff(['foo', 'bar'], ['foo', 'bar']));
         static::assertSame([], Arrays::diff(['foo', 'bar'], ['bar', 'foo']));
 
+        // objects
         static::assertSame([$objA], Arrays::diff([$objA], [$objB]));
         static::assertSame([], Arrays::diff([$objA], [$objA]));
         static::assertSame([1 => $objB], Arrays::diff([$objA, $objB], [$objA]));
         static::assertSame([], Arrays::diff([$objA, $objB], [$objA, $objB]));
         static::assertSame([], Arrays::diff([$objA, $objB], [$objB, $objA]));
+
+        // equatable interface
+        static::assertSame([], Arrays::diff([$userA, $userB], [$userA, $userB]));
+        static::assertSame([$userA], array_values(Arrays::diff([$userA, $userB], [$userB])));
+        static::assertSame([$userA], array_values(Arrays::diff([$userA, $userB], [$userB, $userC])));
+        static::assertSame([$userC], array_values(Arrays::diff([$userB, $userC], [$userA, $userB])));
     }
 }
