@@ -18,6 +18,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Utility\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,7 +37,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'user.email.already.exists')]
 #[ORM\UniqueConstraint('EMAIL', ['email'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -268,5 +269,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->replies = $replies;
 
         return $this;
+    }
+
+    public function equalsTo(mixed $other): bool
+    {
+        return $other instanceof self && $this->id === $other->id;
     }
 }

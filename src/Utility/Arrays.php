@@ -118,12 +118,30 @@ class Arrays
      */
     public static function remove(array $items, mixed $item): array
     {
-        $index = array_search($item, $items, true);
+        $index = self::search($items, $item);
         if ($index !== false) {
             unset($items[$index]);
         }
 
         return $items;
+    }
+
+    /**
+     * @template T of array-key
+     *
+     * @param array<T, mixed> $items
+     *
+     * @phpstan-return T|false
+     */
+    public static function search(array $items, mixed $needle): int|string|false
+    {
+        foreach ($items as $key => $value) {
+            if ($value === $needle || ($needle instanceof EquatableInterface && $needle->equalsTo($value))) {
+                return $key;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -137,7 +155,7 @@ class Arrays
     {
         $result = [];
         foreach ($items as $key => $item) {
-            if (in_array($item, $result, true) === false) {
+            if (self::search($result, $item) === false) {
                 $result[$key] = $item;
             }
         }
@@ -160,6 +178,10 @@ class Arrays
             $itemsA,
             $itemsB,
             static function ($itemA, $itemB) {
+                if ($itemA instanceof EquatableInterface) {
+                    return $itemA->equalsTo($itemB) ? 0 : 1;
+                }
+
                 $keyA = is_object($itemA) ? spl_object_hash($itemA) : (string)$itemA;
                 $keyB = is_object($itemB) ? spl_object_hash($itemB) : (string)$itemB;
 

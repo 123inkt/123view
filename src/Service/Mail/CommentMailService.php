@@ -42,9 +42,6 @@ class CommentMailService implements LoggerAwareInterface
             $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         }
         $recipients = Arrays::remove(Arrays::unique($recipients), Assert::notNull($comment->getUser()));
-        if (count($recipients) === 0) {
-            return;
-        }
 
         $subject = $this->translator->trans(
             'mail.new.comment.subject',
@@ -67,6 +64,11 @@ class CommentMailService implements LoggerAwareInterface
             $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for comment %d.', $recipient->getEmail(), $comment->getId()));
         }
+
+        if (count($email->getBcc()) === 0) {
+            return;
+        }
+
         $this->mailer->send($email);
     }
 
@@ -83,9 +85,6 @@ class CommentMailService implements LoggerAwareInterface
             $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment, $reply));
         }
         $recipients = Arrays::remove(Arrays::unique($recipients), Assert::notNull($reply->getUser()));
-        if (count($recipients) === 0) {
-            return;
-        }
 
         $subject = $this->translator->trans(
             'mail.updated.comment.subject',
@@ -108,6 +107,11 @@ class CommentMailService implements LoggerAwareInterface
             $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for comment %d.', $recipient->getEmail(), $reply->getId()));
         }
+
+        if (count($email->getBcc()) === 0) {
+            return;
+        }
+
         $this->mailer->send($email);
     }
 
@@ -120,9 +124,6 @@ class CommentMailService implements LoggerAwareInterface
         $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         $recipients = array_merge($recipients, $this->recipientService->getUsersForReply($comment));
         $recipients = Arrays::remove(Arrays::unique($recipients), $resolvedBy);
-        if (count($recipients) === 0) {
-            return;
-        }
 
         $subject = $this->translator->trans(
             'mail.comment.resolved.subject',
@@ -152,6 +153,11 @@ class CommentMailService implements LoggerAwareInterface
                 )
             );
         }
+
+        if (count($email->getBcc()) === 0) {
+            return;
+        }
+
         $this->mailer->send($email);
     }
 }
