@@ -70,12 +70,15 @@ class CommentMailServiceTest extends AbstractTestCase
     public function testSendNewCommentMailShouldSendMail(): void
     {
         $userA = new User();
+        $userA->setId(5);
         $userA->setEmail('sherlock@example.com');
         $userA->getSetting()->setMailCommentAdded(true);
         $userB = new User();
+        $userB->setId(6);
         $userB->setEmail('watson@example.com');
         $userB->getSetting()->setMailCommentAdded(true);
         $userC = new User();
+        $userC->setId(7);
         $userC->setEmail('enola@example.com');
         $userC->getSetting()->setMailCommentAdded(false);
         $comment = new Comment();
@@ -109,7 +112,8 @@ class CommentMailServiceTest extends AbstractTestCase
      */
     public function testSendNewCommentReplyMailNoMailForEmptyRecipients(): void
     {
-        $user    = new User();
+        $user = new User();
+        $user->setId(5);
         $comment = new Comment();
         $comment->setUser($user);
         $reply = new CommentReply();
@@ -132,12 +136,15 @@ class CommentMailServiceTest extends AbstractTestCase
     public function testSendNewCommentReplyMail(): void
     {
         $userA = new User();
+        $userA->setId(5);
         $userA->setEmail('sherlock@example.com');
         $userA->getSetting()->setMailCommentReplied(true);
         $userB = new User();
+        $userB->setId(6);
         $userB->setEmail('watson@example.com');
         $userB->getSetting()->setMailCommentReplied(true);
         $userC = new User();
+        $userC->setId(7);
         $userC->setEmail('enola@example.com');
         $userC->getSetting()->setMailCommentReplied(false);
         $comment = new Comment();
@@ -194,12 +201,15 @@ class CommentMailServiceTest extends AbstractTestCase
     public function testSendCommentResolvedMail(): void
     {
         $userA = new User();
+        $userA->setId(5);
         $userA->setEmail('sherlock@example.com');
         $userA->getSetting()->setMailCommentResolved(true);
         $userB = new User();
+        $userB->setId(6);
         $userB->setEmail('watson@example.com');
         $userB->getSetting()->setMailCommentResolved(true);
         $userC = new User();
+        $userC->setId(7);
         $userC->setEmail('enola@example.com');
         $userC->getSetting()->setMailCommentResolved(false);
         $comment = new Comment();
