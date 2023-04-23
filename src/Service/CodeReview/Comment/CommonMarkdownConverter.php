@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview\Comment;
 
+use FD\CommonMarkEmoji\EmojiExtension;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
@@ -46,6 +47,7 @@ class CommonMarkdownConverter extends MarkdownConverter
         );
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
+        $environment->addExtension(new EmojiExtension());
         $environment->addRenderer(FencedCode::class, new FencedCodeRenderer(self::LANGUAGES));
 
         parent::__construct($environment);

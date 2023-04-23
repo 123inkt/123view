@@ -42,6 +42,7 @@
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
+        "fdekker/commonmark-ext-emoji": "^1.0",
         "league/commonmark": "^2.3",
         "league/uri": "^6.8",
         "nesbot/carbon": "^2.64",
