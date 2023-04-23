@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c321b06d5800c82441f5b2f88efe1b7",
+    "content-hash": "b799c3e421e96bce29e4f4c06eb238b4",
     "packages": [
         {
             "name": "api-platform/core",
@@ -1996,6 +1996,52 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
+        },
+        {
+            "name": "fdekker/commonmark-ext-emoji",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/frankdekker/commonmark-ext-emoji.git",
+                "reference": "1e52ea61da430ecbb96f3105cb8e08ed89a143b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/frankdekker/commonmark-ext-emoji/zipball/1e52ea61da430ecbb96f3105cb8e08ed89a143b7",
+                "reference": "1e52ea61da430ecbb96f3105cb8e08ed89a143b7",
+                "shasum": ""
+            },
+            "require": {
+                "league/commonmark": "^2.4.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "digitalrevolution/phpunit-file-coverage-inspection": "^v2.0",
+                "phpmd/phpmd": "@stable",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpunit/phpunit": "10.1.*",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FD\\CommonMarkEmoji\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "An emoji extension for league/commonmark",
+            "support": {
+                "issues": "https://github.com/frankdekker/commonmark-ext-emoji/issues",
+                "source": "https://github.com/frankdekker/commonmark-ext-emoji/tree/v1.0.1"
+            },
+            "time": "2023-04-23T15:48:54+00:00"
         },
         {
             "name": "firebase/php-jwt",
