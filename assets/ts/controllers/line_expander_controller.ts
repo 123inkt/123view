@@ -32,9 +32,9 @@ export default class extends Controller<HTMLElement> {
 
         // todo this.expanded = true
         const lines       = this.getExpandableLines();
-        const expandCount = 2; // lines.length > 130 ? 100 : lines.length;
-        const expandStart = direction === 'up' ? lines.length - expandCount : 0;
-        const expandEnd   = direction === 'up' ? lines.length : expandCount;
+        const expandCount = lines.length > 130 ? 100 : lines.length;
+        const expandStart = direction === 'down' ? lines.length - expandCount : 0;
+        const expandEnd   = direction === 'down' ? lines.length : expandCount;
 
         console.log('direction', direction);
         console.log('lineCount', lines.length);
@@ -43,7 +43,7 @@ export default class extends Controller<HTMLElement> {
 
         // show hidden lines between start and end
         lines.forEach((line, index) => {
-            if (expandStart <= index && index <= expandEnd) {
+            if (expandStart <= index && index < expandEnd) {
                 line.classList.remove('diff-file__diff-line-hidden');
             }
         });
@@ -51,7 +51,7 @@ export default class extends Controller<HTMLElement> {
         if (expandCount === lines.length) {
             // and remove the expander if all lines are shown
             this.element.remove();
-        } else if (direction === 'up') {
+        } else if (direction === 'down') {
             // move expander to the first visible line
             Assert.notUndefined(lines[expandStart]).insertAdjacentElement('beforebegin', this.element);
         }
@@ -84,6 +84,6 @@ export default class extends Controller<HTMLElement> {
             elements.push(el as HTMLElement);
         }
 
-        return elements;
+        return elements.reverse();
     }
 }
