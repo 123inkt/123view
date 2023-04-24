@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import Assert from '../lib/Assert';
 
 export default class extends Controller<HTMLElement> {
     private expanded: boolean = false;
@@ -16,11 +17,61 @@ export default class extends Controller<HTMLElement> {
         return this.element.dataset.lineNumber;
     }
 
-    public expand(): void {
-        if (this.expanded) {
-            return;
+    public expandUp(): void {
+        this.expand('up');
+    }
+
+    public expandDown(): void {
+        this.expand('down');
+    }
+
+    private expand(direction: 'up' | 'down'): void {
+        // if (this.expanded) {
+        //     return;
+        // }
+
+        // todo this.expanded = true
+        const lines       = this.getExpandableLines();
+        const expandCount = 2; // lines.length > 130 ? 100 : lines.length;
+        const expandStart = direction === 'up' ? lines.length - expandCount : 0;
+        const expandEnd   = direction === 'up' ? lines.length : expandCount;
+
+        console.log('direction', direction);
+        console.log('lineCount', lines.length);
+        console.log('expandStart', expandStart);
+        console.log('expandEnd', expandEnd);
+
+        // show hidden lines between start and end
+        lines.forEach((line, index) => {
+            if (expandStart <= index && index <= expandEnd) {
+                line.classList.remove('diff-file__diff-line-hidden');
+            }
+        });
+
+        if (expandCount === lines.length) {
+            // and remove the expander if all lines are shown
+            this.element.remove();
+        } else if (direction === 'up') {
+            // move expander to the first visible line
+            Assert.notUndefined(lines[expandStart]).insertAdjacentElement('beforebegin', this.element);
         }
-        this.expanded = true;
+
+        // notify other line expanders on the page
+        // TODO document.dispatchEvent(new CustomEvent('line-expander', {detail: this.element.dataset.lineNumber}));
+    }
+
+    private expandOnEvent(event: Event): void {
+        if (this.element.dataset.lineNumber === (event as CustomEvent).detail) {
+            // TODO
+            this.expand('up');
+        }
+    }
+
+    /**
+     * Gather all invisible lines above this element
+     */
+    private getExpandableLines(): HTMLElement[] {
+        const elements: HTMLElement[] = [];
 
         // show all hidden lines above this collapsed block
         for (let el = this.element.previousElementSibling; el !== null; el = el.previousElementSibling) {
@@ -30,18 +81,9 @@ export default class extends Controller<HTMLElement> {
             if (el.classList.contains('diff-file__diff-line-hidden') === false) {
                 break;
             }
-            el.classList.remove('diff-file__diff-line-hidden');
+            elements.push(el as HTMLElement);
         }
-        // and remove the expander
-        this.element.remove();
 
-        // notify other line expanders on the page
-        document.dispatchEvent(new CustomEvent('line-expander', {detail: this.element.dataset.lineNumber}));
-    }
-
-    private expandOnEvent(event: Event): void {
-        if (this.element.dataset.lineNumber === (event as CustomEvent).detail) {
-            this.expand();
-        }
+        return elements;
     }
 }
