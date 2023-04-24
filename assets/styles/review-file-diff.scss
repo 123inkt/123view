@@ -62,11 +62,16 @@
 .diff-file__block-spacer-divider__top,
 .diff-file__block-spacer-divider__bottom {
     height: 12px;
+    left: 0;
     padding-left: 4px;
+    position: absolute;
+    right: 0;
+    z-index: 1;
 }
 
 .diff-file__block-spacer-divider__top {
     border-top: 1px solid transparent;
+    top: 0;
 
     &:hover {
         border-top: 1px solid var(--bs-primary);
@@ -76,6 +81,7 @@
 
 .diff-file__block-spacer-divider__bottom {
     border-bottom: 1px solid transparent;
+    bottom: 0;
 
     &:hover {
         border-bottom: 1px solid var(--bs-primary);
