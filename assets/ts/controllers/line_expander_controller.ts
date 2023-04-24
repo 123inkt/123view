@@ -48,6 +48,9 @@ export default class extends Controller<HTMLElement> {
             }
         });
 
+        // update line count counter
+        Assert.notNull(this.element.querySelector<HTMLElement>('[data-role=line-count]')).innerText = String(lines.length - expandCount);
+
         if (expandCount === lines.length) {
             // and remove the expander if all lines are shown
             this.element.remove();

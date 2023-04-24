@@ -60,7 +60,7 @@ return [
     'detach.revisions'                            => 'Detach selected',
     'diff.algorithm'                              => 'Diff algorithm',
     'diff.inline'                                 => 'Inline',
-    'diff.lines.hidden'                           => '{lines} lines hidden',
+    'diff.lines.hidden'                           => '<span data-role="line-count">{lines}</span> lines hidden',
     'diff.side-by-side'                           => 'Side-by-side',
     'diff.split'                                  => 'Split',
     'diff.unified'                                => 'Unified',
