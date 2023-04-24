@@ -22,7 +22,7 @@ class CommonMarkdownConverterTest extends AbstractTestCase
         $environment = $converter->getEnvironment();
 
         $extension = $environment->getExtensions();
-        static::assertCount(2, $extension);
+        static::assertCount(3, $extension);
 
         $renderers = [...$environment->getRenderersForClass(FencedCode::class)];
         static::assertCount(2, $renderers);

@@ -133,4 +133,41 @@ class UserTest extends AbstractTestCase
         $user->setReplies($collection);
         static::assertSame($collection, $user->getReplies());
     }
+
+    /**
+     * @covers ::equalsTo
+     */
+    public function testEqualsTo(): void
+    {
+        $userA = new User();
+        $userA->setId(123);
+        $userB = new User();
+        $userB->setId(456);
+        $userC = new User();
+        $userC->setId(123);
+
+        static::assertTrue($userA->equalsTo($userA));
+        static::assertFalse($userA->equalsTo($userB));
+        static::assertTrue($userA->equalsTo($userC));
+        static::assertFalse($userA->equalsTo("foobar"));
+    }
+
+    /**
+     * @covers ::compareTo
+     */
+    public function testCompareTo(): void
+    {
+        $userA = new User();
+        $userA->setId(123);
+        $userB = new User();
+        $userB->setId(456);
+        $userC = new User();
+        $userC->setId(123);
+
+        static::assertSame(0, $userA->compareTo($userA));
+        static::assertSame(-1, $userA->compareTo($userB));
+        static::assertSame(1, $userB->compareTo($userA));
+        static::assertSame(0, $userA->compareTo($userC));
+        static::assertSame(-1, $userA->compareTo("foobar"));
+    }
 }
