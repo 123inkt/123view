@@ -1999,16 +1999,16 @@
         },
         {
             "name": "fdekker/commonmark-ext-emoji",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/commonmark-ext-emoji.git",
-                "reference": "2407034d42628fbc74997a089ef55313cdb2da73"
+                "reference": "d09acf0b66fafd1ba63bb145c578fd46cf43d91f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/commonmark-ext-emoji/zipball/2407034d42628fbc74997a089ef55313cdb2da73",
-                "reference": "2407034d42628fbc74997a089ef55313cdb2da73",
+                "url": "https://api.github.com/repos/frankdekker/commonmark-ext-emoji/zipball/d09acf0b66fafd1ba63bb145c578fd46cf43d91f",
+                "reference": "d09acf0b66fafd1ba63bb145c578fd46cf43d91f",
                 "shasum": ""
             },
             "require": {
@@ -2039,9 +2039,9 @@
             "description": "An emoji extension for league/commonmark",
             "support": {
                 "issues": "https://github.com/frankdekker/commonmark-ext-emoji/issues",
-                "source": "https://github.com/frankdekker/commonmark-ext-emoji/tree/v1.1.1"
+                "source": "https://github.com/frankdekker/commonmark-ext-emoji/tree/v1.1.2"
             },
-            "time": "2023-04-26T16:00:47+00:00"
+            "time": "2023-04-26T17:48:25+00:00"
         },
         {
             "name": "firebase/php-jwt",
