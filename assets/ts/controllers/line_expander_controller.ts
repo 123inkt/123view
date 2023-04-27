@@ -1,8 +1,9 @@
 import {Controller} from '@hotwired/stimulus';
+import ExpandLineEvent from '../ExpandLineEvent';
+import Assert from '../lib/Assert';
+import Elements from '../lib/Elements';
 
 export default class extends Controller<HTMLElement> {
-    private expanded: boolean = false;
-
     public connect(): void {
         this.expandOnEvent = this.expandOnEvent.bind(this);
         document.addEventListener('line-expander', this.expandOnEvent);
@@ -16,11 +17,61 @@ export default class extends Controller<HTMLElement> {
         return this.element.dataset.lineNumber;
     }
 
-    public expand(): void {
-        if (this.expanded) {
-            return;
+    public expandUp(): void {
+        this.expand('up');
+    }
+
+    public expandDown(): void {
+        this.expand('down');
+    }
+
+    private expand(direction: 'up' | 'down'): void {
+        const lines       = this.getExpandableLines();
+        const expandCount = lines.length > 50 ? 30 : lines.length;
+        const expandStart = direction === 'down' ? lines.length - expandCount : 0;
+        const expandEnd   = direction === 'down' ? lines.length : expandCount;
+        const offsetTop   = this.element.offsetTop;
+
+        // show hidden lines between start and end
+        lines.forEach((line, index) => {
+            if (expandStart <= index && index < expandEnd) {
+                line.classList.remove('diff-file__diff-line-hidden');
+            }
+        });
+
+        // ensure this is still at the same position within the viewport
+        if (direction === 'up') {
+            const scrollTop = this.element.offsetTop - offsetTop - (expandCount === lines.length ? this.element.offsetHeight : 0);
+            Assert.notNull(Elements.getScrollParent(this.element)).scrollTop += scrollTop;
         }
-        this.expanded = true;
+
+        // update line count counter
+        Assert.notNull(this.element.querySelector<HTMLElement>('[data-role=line-count]')).innerText = String(lines.length - expandCount);
+
+        if (expandCount === lines.length) {
+            // and remove the expander if all lines are shown
+            this.element.remove();
+        } else if (direction === 'down') {
+            // move expander to the first visible line
+            Assert.notUndefined(lines[expandStart]).insertAdjacentElement('beforebegin', this.element);
+        }
+
+        // notify other line expanders on the page
+        document.dispatchEvent(new ExpandLineEvent(Assert.notUndefined(this.getLineNumber()), direction, this));
+    }
+
+    private expandOnEvent(event: Event): void {
+        const lineEvent = event as ExpandLineEvent;
+        if (this.getLineNumber() === lineEvent.lineNumber && lineEvent.source !== this) {
+            this.expand(lineEvent.direction);
+        }
+    }
+
+    /**
+     * Gather all invisible lines above this element
+     */
+    private getExpandableLines(): HTMLElement[] {
+        const elements: HTMLElement[] = [];
 
         // show all hidden lines above this collapsed block
         for (let el = this.element.previousElementSibling; el !== null; el = el.previousElementSibling) {
@@ -30,18 +81,9 @@ export default class extends Controller<HTMLElement> {
             if (el.classList.contains('diff-file__diff-line-hidden') === false) {
                 break;
             }
-            el.classList.remove('diff-file__diff-line-hidden');
+            elements.push(el as HTMLElement);
         }
-        // and remove the expander
-        this.element.remove();
 
-        // notify other line expanders on the page
-        document.dispatchEvent(new CustomEvent('line-expander', {detail: this.element.dataset.lineNumber}));
-    }
-
-    private expandOnEvent(event: Event): void {
-        if (this.element.dataset.lineNumber === (event as CustomEvent).detail) {
-            this.expand();
-        }
+        return elements.reverse();
     }
 }

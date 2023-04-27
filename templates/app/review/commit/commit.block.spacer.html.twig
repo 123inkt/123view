@@ -2,20 +2,32 @@
 {# line_number: int      int #}
 {# lineNrLengthBefore:   int #}
 {# lineNrLengthAfter:    int #}
-<div class="diff-file__block-spacer diff-file__block-spacer--clickable clearfix"
-     data-line-number="{{ line_number|default('0') }}"
+<div class="diff-file__block-spacer diff-file__block-spacer--clickable clearfix" data-line-number="{{ line_number|default('0') }}"
         {{ stimulus_controller('line-expander') }}
-        {{ stimulus_action('line-expander', 'expand', 'click') }}
+
 >
-    <div class="diff-file__block-spacer-line-nr float-start">
-        {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
+    <div class="diff-file__block-spacer-divider__top overflow-hidden"
+            {{ stimulus_action('line-expander', 'expandUp', 'click') }}
+            title="{{ 'expand.up'|trans }}"
+    >
+        <div class="diff-file__block-spacer-line-nr float-start">
+            {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
+        </div>
+
+        <i class="indicator indicator-up float-start">&#9650;</i>
+    </div>
+    <div class="diff-file__block-spacer-divider__bottom overflow-hidden"
+            {{ stimulus_action('line-expander', 'expandDown', 'click') }}
+            title="{{ 'expand.down'|trans }}"
+    >
+        <div class="diff-file__block-spacer-line-nr float-start">
+            {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
+        </div>
+
+        <i class="indicator indicator-down float-start">&#9660;</i>
     </div>
 
-    <div class="diff-file__line-expander float-start">
-        <i class="indicator indicator-up">&#9650;</i>
-        <i class="indicator indicator-down">&#9660;</i>
-    </div>
-    <div class="diff-file_line-expander-lines float-start">
-        {{- 'diff.lines.hidden'|trans({lines: invisible_lines}) -}}
+    <div class="diff-file_line-expander-lines">
+        {{- 'diff.lines.hidden'|trans({lines: invisible_lines})|raw -}}
     </div>
 </div>
