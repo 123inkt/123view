@@ -41,7 +41,8 @@ export default class extends Controller<HTMLElement> {
 
         // ensure this is still at the same position within the viewport
         if (direction === 'up') {
-            Assert.notNull(Elements.getScrollParent(this.element)).scrollTop += this.element.offsetTop - offsetTop;
+            const scrollTop = this.element.offsetTop - offsetTop - (expandCount === lines.length ? this.element.offsetHeight : 0);
+            Assert.notNull(Elements.getScrollParent(this.element)).scrollTop += scrollTop;
         }
 
         // update line count counter
@@ -56,12 +57,12 @@ export default class extends Controller<HTMLElement> {
         }
 
         // notify other line expanders on the page
-        document.dispatchEvent(new ExpandLineEvent(Assert.notUndefined(this.element.dataset.lineNumber), direction, this));
+        document.dispatchEvent(new ExpandLineEvent(Assert.notUndefined(this.getLineNumber()), direction, this));
     }
 
     private expandOnEvent(event: Event): void {
         const lineEvent = event as ExpandLineEvent;
-        if (this.element.dataset.lineNumber === lineEvent.lineNumber && lineEvent.source !== this) {
+        if (this.getLineNumber() === lineEvent.lineNumber && lineEvent.source !== this) {
             this.expand(lineEvent.direction);
         }
     }

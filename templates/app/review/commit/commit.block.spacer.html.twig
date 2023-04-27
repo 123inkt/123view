@@ -6,14 +6,20 @@
         {{ stimulus_controller('line-expander') }}
 
 >
-    <div class="diff-file__block-spacer-divider__top overflow-hidden" {{ stimulus_action('line-expander', 'expandUp', 'click') }}>
+    <div class="diff-file__block-spacer-divider__top overflow-hidden"
+            {{ stimulus_action('line-expander', 'expandUp', 'click') }}
+            title="{{ 'expand.up'|trans }}"
+    >
         <div class="diff-file__block-spacer-line-nr float-start">
             {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
         </div>
 
         <i class="indicator indicator-up float-start">&#9650;</i>
     </div>
-    <div class="diff-file__block-spacer-divider__bottom overflow-hidden" {{ stimulus_action('line-expander', 'expandDown', 'click') }}>
+    <div class="diff-file__block-spacer-divider__bottom overflow-hidden"
+            {{ stimulus_action('line-expander', 'expandDown', 'click') }}
+            title="{{ 'expand.down'|trans }}"
+    >
         <div class="diff-file__block-spacer-line-nr float-start">
             {%- for i in 0..(lineNrLengthBefore + lineNrLengthAfter) -%}&nbsp;{%- endfor -%}
         </div>
