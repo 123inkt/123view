@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Security\AzureAd;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -45,7 +46,38 @@ class AzureAdUserBadgeFactoryTest extends AbstractTestCase
     {
         $user = new User();
         $this->userRepository->expects(self::exactly(2))->method('findOneBy')->with(['email' => 'email'])->willReturn(null, $user);
-        $this->userRepository->expects(self::once())->method('save')->with(static::isInstanceOf(User::class), true);
+        $this->userRepository->expects(self::once())->method('getUserCount')->willReturn(1);
+        $this->userRepository->expects(self::once())->method('save')
+            ->with(
+                static::callback(static function (User $user): bool {
+                    static::assertSame([], $user->getRoles());
+
+                    return true;
+                }),
+                true
+            );
+
+        $badge = $this->factory->create('email', 'name');
+        static::assertSame($user, $badge->getUser());
+    }
+
+    /**
+     * @covers ::create
+     */
+    public function testCreateFirstNonExistingUser(): void
+    {
+        $user = new User();
+        $this->userRepository->expects(self::exactly(2))->method('findOneBy')->with(['email' => 'email'])->willReturn(null, $user);
+        $this->userRepository->expects(self::once())->method('getUserCount')->willReturn(0);
+        $this->userRepository->expects(self::once())->method('save')
+            ->with(
+                static::callback(static function (User $user): bool {
+                    static::assertSame([Roles::ROLE_USER, Roles::ROLE_ADMIN], $user->getRoles());
+
+                    return true;
+                }),
+                true
+            );
 
         $badge = $this->factory->create('email', 'name');
         static::assertSame($user, $badge->getUser());
