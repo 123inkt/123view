@@ -11,7 +11,7 @@ export default class extends Controller {
 
     public show(): void {
         window.setTimeout(() => {
-            this.dropdownTarget.style.display = 'block';
+            this.showAndPosition();
             document.addEventListener('click', this.hide);
         }, 1);
     }
@@ -22,5 +22,21 @@ export default class extends Controller {
         }
         this.dropdownTarget.style.display = '';
         document.removeEventListener('click', this.hide);
+    }
+
+    private showAndPosition(): void {
+        // set visible and reset position
+        this.dropdownTarget.style.left    = '0px';
+        this.dropdownTarget.style.display = 'block';
+
+        // gather widths of button and dropdown
+        const buttonWidth   = this.buttonTarget.offsetWidth;
+        const dropdownWidth = this.dropdownTarget.offsetWidth;
+        const dropdownLeft  = this.dropdownTarget.getBoundingClientRect().left;
+
+        // dropdown is outside the viewport, shift to the left
+        if (dropdownLeft + dropdownWidth > window.innerWidth) {
+            this.dropdownTarget.style.left = `-${dropdownWidth - buttonWidth}px`;
+        }
     }
 }
