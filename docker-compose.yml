@@ -53,7 +53,7 @@ services:
             timeout: 20s
             retries: 10
         volumes:
-            - ./docker/db/data:/var/lib/mysql
+            - ${MYSQL_DATA_DIR}:/var/lib/mysql
 
     rabbitmq:
         container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
