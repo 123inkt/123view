@@ -31,6 +31,17 @@ export default class Elements {
         throw new Error(`No sibling with role '${dataRole}'`);
     }
 
+    public static getScrollParent(element: HTMLElement): HTMLElement | null {
+        for (let el = element.parentElement; el !== null; el = el.parentElement) {
+            const styles = getComputedStyle(el);
+            if (styles.overflow === 'auto' || styles.overflow === 'scroll' || styles.overflowY === 'auto' || styles.overflowY === 'scroll') {
+                return el;
+            }
+        }
+
+        return null;
+    }
+
     public static create(html: string): HTMLElement {
         html = html.trim();
         if (html.charAt(0) !== '<') {

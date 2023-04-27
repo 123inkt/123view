@@ -1,9 +1,9 @@
 import {Controller} from '@hotwired/stimulus';
+import ExpandLineEvent from '../ExpandLineEvent';
 import Assert from '../lib/Assert';
+import Elements from '../lib/Elements';
 
 export default class extends Controller<HTMLElement> {
-    private expanded: boolean = false;
-
     public connect(): void {
         this.expandOnEvent = this.expandOnEvent.bind(this);
         document.addEventListener('line-expander', this.expandOnEvent);
@@ -26,20 +26,11 @@ export default class extends Controller<HTMLElement> {
     }
 
     private expand(direction: 'up' | 'down'): void {
-        // if (this.expanded) {
-        //     return;
-        // }
-
-        // todo this.expanded = true
         const lines       = this.getExpandableLines();
-        const expandCount = lines.length > 130 ? 100 : lines.length;
+        const expandCount = lines.length > 50 ? 30 : lines.length;
         const expandStart = direction === 'down' ? lines.length - expandCount : 0;
         const expandEnd   = direction === 'down' ? lines.length : expandCount;
-
-        console.log('direction', direction);
-        console.log('lineCount', lines.length);
-        console.log('expandStart', expandStart);
-        console.log('expandEnd', expandEnd);
+        const offsetTop   = this.element.offsetTop;
 
         // show hidden lines between start and end
         lines.forEach((line, index) => {
@@ -47,6 +38,11 @@ export default class extends Controller<HTMLElement> {
                 line.classList.remove('diff-file__diff-line-hidden');
             }
         });
+
+        // ensure this is still at the same position within the viewport
+        if (direction === 'up') {
+            Assert.notNull(Elements.getScrollParent(this.element)).scrollTop += this.element.offsetTop - offsetTop;
+        }
 
         // update line count counter
         Assert.notNull(this.element.querySelector<HTMLElement>('[data-role=line-count]')).innerText = String(lines.length - expandCount);
@@ -60,13 +56,13 @@ export default class extends Controller<HTMLElement> {
         }
 
         // notify other line expanders on the page
-        // TODO document.dispatchEvent(new CustomEvent('line-expander', {detail: this.element.dataset.lineNumber}));
+        document.dispatchEvent(new ExpandLineEvent(Assert.notUndefined(this.element.dataset.lineNumber), direction, this));
     }
 
     private expandOnEvent(event: Event): void {
-        if (this.element.dataset.lineNumber === (event as CustomEvent).detail) {
-            // TODO
-            this.expand('up');
+        const lineEvent = event as ExpandLineEvent;
+        if (this.element.dataset.lineNumber === lineEvent.lineNumber && lineEvent.source !== this) {
+            this.expand(lineEvent.direction);
         }
     }
 
