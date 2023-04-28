@@ -11,6 +11,7 @@ use DR\Review\Controller\App\User\UserAccessTokenController;
 use DR\Review\Utility\Assert;
 use Exception;
 use ReflectionClass;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OpenApiFactory implements OpenApiFactoryInterface
@@ -45,6 +46,11 @@ class OpenApiFactory implements OpenApiFactoryInterface
         // Unfortunately we have to resort to reflection to set our own description here.
         foreach (new OpenApiParameterIterator($openApi) as [$operation, $parameter]) {
             $this->setParameterDescription($parameter, $this->documentor->getDescription($operation, $parameter));
+        }
+
+        $finder = (new Finder())->files()->in(__DIR__ . '/../../../resources/openapi')->name('*.php');
+        foreach ($finder as $openApiFile) {
+            (require $openApiFile)($openApi);
         }
 
         return $openApi;
