@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use DR\Review\Doctrine\Type\BitSetType;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Doctrine\Type\ColorThemeType;
@@ -28,17 +29,18 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     'enum' => 'string'
                 ],
                 'types'          => [
-                    UriType::TYPE                       => UriType::class,
-                    FrequencyType::TYPE                 => FrequencyType::class,
-                    DiffAlgorithmType::TYPE             => DiffAlgorithmType::class,
-                    MailThemeType::TYPE                 => MailThemeType::class,
-                    FilterType::TYPE                    => FilterType::class,
+                    BitSetType::TYPE                    => BitSetType::class,
                     CodeReviewStateType::TYPE           => CodeReviewStateType::class,
                     CodeReviewerStateType::TYPE         => CodeReviewerStateType::class,
-                    CommentStateType::TYPE              => CommentStateType::class,
-                    NotificationStatusType::TYPE        => NotificationStatusType::class,
                     ColorThemeType::TYPE                => ColorThemeType::class,
-                    SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class
+                    CommentStateType::TYPE              => CommentStateType::class,
+                    DiffAlgorithmType::TYPE             => DiffAlgorithmType::class,
+                    FilterType::TYPE                    => FilterType::class,
+                    FrequencyType::TYPE                 => FrequencyType::class,
+                    MailThemeType::TYPE                 => MailThemeType::class,
+                    NotificationStatusType::TYPE        => NotificationStatusType::class,
+                    SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class,
+                    UriType::TYPE                       => UriType::class,
                 ]
             ]
         ]
