@@ -16,11 +16,11 @@ return static function (OpenApi $openApi) {
         description: "Upload test coverage report which will be made available in reviews matching the `match`",
         parameters : [
                          new Parameter(
-                                     'repositoryId',
+                                     'repository',
                                      'path',
-                                     'The id of the repository to which the coverage belongs to.',
+                                     'The name of the repository to which the coverage belongs to.',
                                      true,
-                             schema: ['type' => 'integer']
+                             schema: ['type' => 'string']
                          ),
                          new Parameter(
                                      'match',
@@ -48,5 +48,5 @@ return static function (OpenApi $openApi) {
                      ]
     );
 
-    $openApi->getPaths()->addPath('/api/test-coverage/{repositoryId}', new PathItem(post: $operation));
+    $openApi->getPaths()->addPath('/api/test-coverage/{repository}', new PathItem(post: $operation));
 };
