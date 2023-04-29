@@ -8,13 +8,15 @@ use DR\Review\Entity\Report\CodeInspectionIssue;
 class CodeInspectionViewModel
 {
     /** @var array<int, CodeInspectionIssue[]> */
-    public readonly array $issues;
+    private readonly array $issues;
 
     /**
      * @param CodeInspectionIssue[] $issues
      */
     public function __construct(array $issues)
     {
+        $this->issues = [];
+
         // create lookup table based on line number
         foreach ($issues as $issue) {
             $this->issues[(int)$issue->getLineNumber()][] = $issue;

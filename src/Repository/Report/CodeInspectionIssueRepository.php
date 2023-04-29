@@ -7,6 +7,7 @@ namespace DR\Review\Repository\Report;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Report\CodeInspectionIssue;
+use DR\Review\Entity\Report\CodeInspectionReport;
 
 /**
  * @extends ServiceEntityRepository<CodeInspectionIssue>
@@ -22,16 +23,25 @@ class CodeInspectionIssueRepository extends ServiceEntityRepository
         parent::__construct($registry, CodeInspectionIssue::class);
     }
 
-    public function findByFile(int $repositoryId, string $commitHash, string $filePath): array
+    /**
+     * @param CodeInspectionReport[] $reports
+     *
+     * @return CodeInspectionIssue[]
+     */
+    public function findByFile(array $reports, string $filePath): array
     {
-        //$this->createQueryBuilder('i')
-        //    ->select('i', 'r')
-        //    ->innerJoin('i.report', 'r')
-        //    ->where('r.repository = :repositoryId')
-        //    ->setParameter('repositoryId', $repositoryId)
-        //    ->andWhere('i.file = :filePath')
-        //    ->setParameter('filePath', $filePath)
-        //    ->andWhere('r.commitHash = :commitHash')
-        //    ->setParameter();
+        $reportIds = array_map(static fn(CodeInspectionReport $report) => (int)$report->getId(), $reports);
+
+        $query = $this->createQueryBuilder('i')
+            ->where('i.report IN (:reportIds)')
+            ->setParameter('reportIds', $reportIds)
+            ->andWhere('i.file = :filePath')
+            ->setParameter('filePath', $filePath)
+            ->getQuery();
+
+        /** @var CodeInspectionIssue[] $results */
+        $results = $query->getResult();
+
+        return $results;
     }
 }

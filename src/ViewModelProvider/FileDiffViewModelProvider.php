@@ -26,6 +26,7 @@ class FileDiffViewModelProvider
         private readonly UnifiedDiffBundler $bundler,
         private readonly UnifiedDiffEmphasizer $emphasizer,
         private readonly UnifiedDiffSplitter $splitter,
+        private readonly CodeInspectionViewModelProvider $inspectionModelProvider,
     ) {
     }
 
@@ -65,6 +66,9 @@ class FileDiffViewModelProvider
         if ($reviewAction instanceof AddCommentReplyAction) {
             $viewModel->setReplyCommentForm($this->commentModelProvider->getReplyCommentViewModel($reviewAction));
         }
+
+        // gather code inspection issues
+        $viewModel->setCodeInspectionViewModel($this->inspectionModelProvider->getCodeInspectionViewModel($review, $selectedFile->getPathname()));
 
         return $viewModel;
     }
