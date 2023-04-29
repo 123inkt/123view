@@ -33,6 +33,11 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         static::assertSame('gitlab', $this->validatedRequest->getFormat());
     }
 
+    public function testGetContent(): void
+    {
+        static::assertSame('content', $this->validatedRequest->getData());
+    }
+
     /**
      * @throws InvalidRuleException
      */
