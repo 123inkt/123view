@@ -26,8 +26,12 @@ class CodeInspectionViewModel
     /**
      * @return CodeInspectionIssue[]
      */
-    public function getIssues(int $lineNumber): array
+    public function getIssues(?int $lineNumber): array
     {
+        if ($lineNumber === null) {
+            return [];
+        }
+
         return $this->issues[$lineNumber] ?? [];
     }
 }
