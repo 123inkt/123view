@@ -26,7 +26,8 @@ return static function (OpenApi $openApi) {
         operationId: 'uploadCodeInspection',
         tags       : ['Report'],
         responses  : [
-                         204 => new Response('When the request has been successfully processed'),
+                         201 => new Response('When the report was successfully created'),
+                         204 => new Response('When the report has no issues'),
                          400 => new Response('On any invalid arguments'),
                          404 => new Response('When the repository with the given `name` cant be found'),
                      ],
@@ -45,20 +46,20 @@ return static function (OpenApi $openApi) {
                                      'path',
                                      'The hash of the commit this report belongs to.',
                                      true,
-                             schema: ['type' => 'string']
+                             schema: ['type' => 'string', 'pattern' => '^[a-zA-Z0-9]{6,255}$']
                          ),
                          new Parameter(
                                      'identifier',
                                      'query',
                                      'The identifier of the type of the report. Only one type per commit hash is possible. Ex: `phpstan`, `phpcs`, ..',
                                      true,
-                             schema: ['type' => 'string']
+                             schema: ['type' => 'string', 'minLength' => 1, 'maxLength' => 50]
                          ),
                          new Parameter(
                                      'basePath',
                                      'query',
                                      'The `basePath` to subtract from the filenames in the report.',
-                             schema: ['type' => 'string']
+                             schema: ['type' => 'string', 'maxLength' => 500]
                          ),
                          new Parameter(
                                      'format',
