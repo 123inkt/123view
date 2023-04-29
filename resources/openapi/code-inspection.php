@@ -42,8 +42,15 @@ return static function (OpenApi $openApi) {
                          ),
                          new Parameter(
                                      'commitHash',
-                                     'query',
+                                     'path',
                                      'The hash of the commit this report belongs to.',
+                                     true,
+                             schema: ['type' => 'string']
+                         ),
+                         new Parameter(
+                                     'identifier',
+                                     'query',
+                                     'The identifier of the type of the report. Only one type per commit hash is possible. Ex: `phpstan`, `phpcs`, ..',
                                      true,
                              schema: ['type' => 'string']
                          ),
@@ -71,5 +78,5 @@ return static function (OpenApi $openApi) {
                      )
     );
 
-    $openApi->getPaths()->addPath('/api/report/code-inspection/{repository}', new PathItem(post: $operation));
+    $openApi->getPaths()->addPath('/api/report/code-inspection/{repository}/{commitHash}', new PathItem(post: $operation));
 };
