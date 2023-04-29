@@ -21,4 +21,17 @@ class CodeInspectionIssueRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CodeInspectionIssue::class);
     }
+
+    public function findByFile(int $repositoryId, string $commitHash, string $filePath): array
+    {
+        //$this->createQueryBuilder('i')
+        //    ->select('i', 'r')
+        //    ->innerJoin('i.report', 'r')
+        //    ->where('r.repository = :repositoryId')
+        //    ->setParameter('repositoryId', $repositoryId)
+        //    ->andWhere('i.file = :filePath')
+        //    ->setParameter('filePath', $filePath)
+        //    ->andWhere('r.commitHash = :commitHash')
+        //    ->setParameter();
+    }
 }

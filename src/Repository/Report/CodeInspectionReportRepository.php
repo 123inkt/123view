@@ -6,6 +6,8 @@ namespace DR\Review\Repository\Report;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Report\CodeInspectionReport;
+use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 
 /**
  * @extends ServiceEntityRepository<CodeInspectionReport>
@@ -19,6 +21,33 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CodeInspectionReport::class);
+    }
+
+    /**
+     * @param Revision[] $revisions
+     *
+     * @return CodeInspectionReport[]
+     */
+    public function findByRevisions(Repository $repository, array $revisions): array
+    {
+        $hashes = array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions);
+
+        $query = $this->createQueryBuilder('r')
+            ->where('r.repository = :repositoryId')
+            ->setParameter('repositoryId', (int)$repository->getId())
+            ->andWhere('r.commitHash IN (:commitHash)')
+            ->setParameter('commitHash', $hashes)
+            ->orderBy('r.createTimestamp', 'desc')
+            ->getQuery();
+
+        $result = [];
+
+        /** @var CodeInspectionReport $report */
+        foreach ($query->getResult() as $report) {
+            $result[$report->getInspectionId()] = $report;
+        }
+
+        return array_values($result);
     }
 
     public function cleanUp(int $beforeTimestamp): int
