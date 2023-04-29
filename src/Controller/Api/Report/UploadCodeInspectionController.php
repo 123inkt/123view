@@ -12,8 +12,10 @@ class UploadCodeInspectionController
 {
     #[Route('/api/report/code-inspection/{repositoryName<[a-z0-9-]+>}/{commitHash<[a-zA-Z0-9]+>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_ADMIN)]
-    public function __invoke(string $repositoryName, string $commitHash): JsonResponse
-    {
+    public function __invoke(
+        string $repositoryName,
+        string $commitHash
+    ): JsonResponse {
         return new JsonResponse(
             [
                 'repositoryName' => $repositoryName,
