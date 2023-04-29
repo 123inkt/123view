@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Report;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
@@ -33,6 +34,11 @@ class CodeInspectionReport
     /** @phpstan-var Collection<int, CodeInspectionIssue> */
     #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeInspectionIssue::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $issues;
+
+    public function __construct()
+    {
+        $this->issues = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

@@ -43,7 +43,7 @@ class UploadCodeInspectionController
             return new Response('', Response::HTTP_NO_CONTENT);
         }
 
-        $this->reportRepository->save($report);
+        $this->reportRepository->save($report, true);
 
         return new Response('', Response::HTTP_CREATED);
     }

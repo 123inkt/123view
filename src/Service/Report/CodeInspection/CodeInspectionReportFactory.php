@@ -30,6 +30,7 @@ class CodeInspectionReportFactory
         $report->setInspectionId($inspectionId);
         $report->setCommitHash($commitHash);
         foreach ($issues as $issue) {
+            $issue->setReport($report);
             $report->getIssues()->add($issue);
         }
         $report->setCreateTimestamp(time());
