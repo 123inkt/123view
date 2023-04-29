@@ -40,8 +40,7 @@ class CodeInspectionReportFactoryTest extends AbstractTestCase
 
     public function testParse(): void
     {
-        $time = time();
-
+        $time       = time();
         $repository = new Repository();
         $issue      = new CodeInspectionIssue();
 
