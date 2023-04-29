@@ -1,17 +1,16 @@
 <?php
-
 declare(strict_types=1);
 
 namespace DR\Review\Entity\Report;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Repository\Report\CodeInspectionRepository;
+use DR\Review\Repository\Report\CodeInspectionReportRepository;
 
-#[ORM\Entity(repositoryClass: CodeInspectionRepository::class)]
-#[ORM\Index(['commit_hash', 'repository_id', 'file'], name: 'IDX_COMMIT_HASH_REPOSITORY_FILE')]
+#[ORM\Entity(repositoryClass: CodeInspectionReportRepository::class)]
 #[ORM\UniqueConstraint('IDX_COMMIT_HASH_REPOSITORY_ID', ['commit_hash', 'repository_id', 'inspection_id'])]
-class CodeInspection
+class CodeInspectionReport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,27 +23,16 @@ class CodeInspection
     #[ORM\Column(length: 50)]
     private ?string $inspectionId = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $severity = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $file = null;
-
-    #[ORM\Column]
-    private ?int $lineNumber = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $message = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $rule = null;
-
     #[ORM\ManyToOne(targetEntity: Repository::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
 
     #[ORM\Column]
     private ?int $createTimestamp = null;
+
+    /** @phpstan-var Collection<int, CodeInspectionIssue> */
+    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeInspectionIssue::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $issues;
 
     public function getId(): ?int
     {
@@ -82,66 +70,6 @@ class CodeInspection
         return $this;
     }
 
-    public function getSeverity(): ?string
-    {
-        return $this->severity;
-    }
-
-    public function setSeverity(?string $severity): self
-    {
-        $this->severity = $severity;
-
-        return $this;
-    }
-
-    public function getFile(): ?string
-    {
-        return $this->file;
-    }
-
-    public function setFile(?string $file): self
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    public function getLineNumber(): ?int
-    {
-        return $this->lineNumber;
-    }
-
-    public function setLineNumber(int $lineNumber): self
-    {
-        $this->lineNumber = $lineNumber;
-
-        return $this;
-    }
-
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-
-    public function setMessage(?string $message): self
-    {
-        $this->message = $message;
-
-        return $this;
-    }
-
-    public function getRule(): ?string
-    {
-        return $this->rule;
-    }
-
-    public function setRule(?string $rule): self
-    {
-        $this->rule = $rule;
-
-        return $this;
-    }
-
     public function getRepository(): ?Repository
     {
         return $this->repository;
@@ -162,6 +90,24 @@ class CodeInspection
     public function setCreateTimestamp(?int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CodeInspectionIssue>
+     */
+    public function getIssues(): Collection
+    {
+        return $this->issues;
+    }
+
+    /**
+     * @param Collection<int, CodeInspectionIssue> $issues
+     */
+    public function setIssues(Collection $issues): self
+    {
+        $this->issues = $issues;
 
         return $this;
     }
