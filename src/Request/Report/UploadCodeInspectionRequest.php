@@ -35,7 +35,7 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
                 'query' => [
                     'identifier' => 'required|string|min:1|max:50',
                     'basePath'   => 'string',
-                    'format'     => 'string|in:checkstyle,github,gitlab'
+                    'format'     => 'string|in:checkstyle,gitlab'
                 ]
             ]
         );
