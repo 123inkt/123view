@@ -18,6 +18,7 @@ class CodeInspectionViewModelTest extends AbstractTestCase
 
         $viewModel = new CodeInspectionViewModel([$issue]);
 
+        static::assertSame([], $viewModel->getIssues(null));
         static::assertSame([], $viewModel->getIssues(400));
         static::assertSame([$issue], $viewModel->getIssues(500));
     }
