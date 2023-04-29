@@ -30,8 +30,8 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
      */
     public function findByRevisions(Repository $repository, array $revisions): array
     {
-        $hashes  = array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions);
-        $reports = $this->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp', 'DESC']);
+        $hashes  = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
+        $reports = $this->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'DESC']);
 
         $result = [];
         foreach ($reports as $report) {

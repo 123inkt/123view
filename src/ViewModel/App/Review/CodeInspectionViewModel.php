@@ -8,7 +8,7 @@ use DR\Review\Entity\Report\CodeInspectionIssue;
 class CodeInspectionViewModel
 {
     /** @var array<int, CodeInspectionIssue[]> */
-    private readonly array $issues;
+    private array $issues;
 
     /**
      * @param CodeInspectionIssue[] $issues
