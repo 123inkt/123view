@@ -20,4 +20,20 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CodeInspectionReport::class);
     }
+
+    public function cleanUp(int $beforeTimestamp): int
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->where('c.createTimestamp < :timestamp');
+        $qb->setParameter('timestamp', $beforeTimestamp);
+        /** @var CodeInspectionReport[] $entities */
+        $entities = $qb->getQuery()->getResult();
+
+        foreach ($entities as $entity) {
+            $this->remove($entity);
+        }
+        $this->getEntityManager()->flush();
+
+        return count($entities);
+    }
 }
