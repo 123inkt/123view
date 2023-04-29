@@ -67,7 +67,7 @@ return static function (OpenApi $openApi) {
                                      'The format of the input. Defaults to `checkstyle`.',
                              schema: [
                                          'type' => 'string',
-                                         'enum' => ['checkstyle', 'github', 'gitlab']
+                                         'enum' => ['checkstyle', 'gitlab']
                                      ]
                          )
 
