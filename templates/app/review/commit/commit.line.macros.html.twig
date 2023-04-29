@@ -62,3 +62,9 @@
         {%- else %}{{ change.code }}{% endif -%}
     {%- endfor -%}
 {%- endmacro -%}
+
+{%- macro code_inspection_issues(issues) -%}
+    {%- for issue in issues -%}
+        {{- issue.report.inspectionId ~ ': ' ~ issue.message -}}&#13;
+    {%- endfor -%}
+{%- endmacro -%}

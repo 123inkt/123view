@@ -122,6 +122,12 @@
     display: none;
 }
 
+.diff-file__diff-line__code-inspection-issue {
+    text-decoration-color: red;
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+}
+
 .diff-file__line-gutter {
     border-right: 1px solid var(--review-diff-gutter-border-color);
     color: var(--review-diff-gutter-fg-color);
