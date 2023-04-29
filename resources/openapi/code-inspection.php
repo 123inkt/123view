@@ -31,7 +31,7 @@ return static function (OpenApi $openApi) {
                          404 => new Response('When the repository with the given `name` cant be found'),
                      ],
         summary    : "Upload code inspection report",
-        description: "Upload code inspection report in varies formats",
+        description: "Upload code inspection report in varies formats. **Requires ADMIN privileges.**",
         parameters : [
                          new Parameter(
                                      'repository',
