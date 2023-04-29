@@ -15,7 +15,9 @@ use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\Tests\AbstractTestCase;
+use DR\Review\ViewModel\App\Review\CodeInspectionViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
+use DR\Review\ViewModelProvider\CodeInspectionViewModelProvider;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
@@ -34,24 +36,27 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     private UnifiedDiffBundler&MockObject              $bundler;
     private UnifiedDiffEmphasizer&MockObject           $emphasizer;
     private UnifiedDiffSplitter&MockObject             $splitter;
+    private CodeInspectionViewModelProvider&MockObject $inspectionModelProvider;
     private FileDiffViewModelProvider                  $provider;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->commentModelProvider   = $this->createMock(CommentViewModelProvider::class);
-        $this->commentsModelProvider  = $this->createMock(CommentsViewModelProvider::class);
-        $this->highlightedFileService = $this->createMock(CacheableHighlightedFileService::class);
-        $this->bundler                = $this->createMock(UnifiedDiffBundler::class);
-        $this->emphasizer             = $this->createMock(UnifiedDiffEmphasizer::class);
-        $this->splitter               = $this->createMock(UnifiedDiffSplitter::class);
-        $this->provider               = new FileDiffViewModelProvider(
+        $this->commentModelProvider    = $this->createMock(CommentViewModelProvider::class);
+        $this->commentsModelProvider   = $this->createMock(CommentsViewModelProvider::class);
+        $this->highlightedFileService  = $this->createMock(CacheableHighlightedFileService::class);
+        $this->bundler                 = $this->createMock(UnifiedDiffBundler::class);
+        $this->emphasizer              = $this->createMock(UnifiedDiffEmphasizer::class);
+        $this->splitter                = $this->createMock(UnifiedDiffSplitter::class);
+        $this->inspectionModelProvider = $this->createMock(CodeInspectionViewModelProvider::class);
+        $this->provider                = new FileDiffViewModelProvider(
             $this->commentModelProvider,
             $this->commentsModelProvider,
             $this->highlightedFileService,
             $this->bundler,
             $this->emphasizer,
-            $this->splitter
+            $this->splitter,
+            $this->inspectionModelProvider
         );
     }
 
@@ -66,15 +71,18 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $repository          = new Repository();
         $review              = new CodeReview();
         $review->setRepository($repository);
-        $highlightedFile = new HighlightedFile('filepath', static fn() => []);
+        $highlightedFile     = new HighlightedFile('filepath', static fn() => []);
+        $inspectionViewModel = new CodeInspectionViewModel([]);
 
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, null, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
         $this->bundler->expects(self::once())->method('bundleFile')->with($file);
         $this->emphasizer->expects(self::never())->method('emphasizeFile');
+        $this->inspectionModelProvider->expects(self::once())->method('getCodeInspectionViewModel')->with($review)->willReturn($inspectionViewModel);
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
+        static::assertSame($inspectionViewModel, $viewModel->getCodeInspectionViewModel());
     }
 
     /**
