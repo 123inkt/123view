@@ -40,6 +40,9 @@ class CodeInspectionReportRepositoryTest extends AbstractRepositoryTestCase
         static::assertSame(1, $reportRepository->cleanUp(123456790));
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function getFixtures(): array
     {
         return [CodeInspectionReportFixtures::class];
