@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\Api;
+namespace DR\Review\Controller\Api\User;
 
 use DR\Review\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
