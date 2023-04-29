@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<checkstyle>
+    <file name="/build/5/src/file/path.php">
+        <error line="1" column="1" severity="error" message="message" source="source"/>
+    </file>
+</checkstyle>
