@@ -8,6 +8,7 @@ use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\Request\Report\UploadCodeInspectionRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionReportFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,6 +46,6 @@ class UploadCodeInspectionController
 
         $this->reportRepository->save($report, true);
 
-        return new Response('', Response::HTTP_CREATED);
+        return new JsonResponse(['created' => count($report->getIssues())], Response::HTTP_OK);
     }
 }
