@@ -5,7 +5,7 @@ namespace DR\Review\Service\Report\CodeInspection;
 
 use DR\Review\Entity\Report\CodeInspectionIssue;
 
-interface CodeInspectionParserInterface
+interface CodeInspectionIssueParserInterface
 {
     /**
      * @return CodeInspectionIssue[]
