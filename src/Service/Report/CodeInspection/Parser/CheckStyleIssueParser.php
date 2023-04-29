@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Report\CodeInspection;
+namespace DR\Review\Service\Report\CodeInspection\Parser;
 
 use DOMElement;
 use DOMXPath;
@@ -12,7 +12,7 @@ use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Utility\Assert;
 
-class CheckStyleIssueIssueParser implements CodeInspectionIssueParserInterface
+class CheckStyleIssueParser implements CodeInspectionIssueParserInterface
 {
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {

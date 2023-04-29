@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Report\CodeInspection;
+namespace DR\Review\Service\Report\CodeInspection\Parser;
 
 use DR\Review\Entity\Report\CodeInspectionIssue;
 
