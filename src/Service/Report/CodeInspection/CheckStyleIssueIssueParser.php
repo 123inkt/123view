@@ -8,12 +8,13 @@ use DOMXPath;
 use DR\Review\Entity\Report\CodeInspectionIssue;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\XMLException;
+use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Utility\Assert;
 
 class CheckStyleIssueIssueParser implements CodeInspectionIssueParserInterface
 {
-    public function __construct(private readonly DOMDocumentFactory $documentFactory)
+    public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
     }
 
@@ -21,7 +22,7 @@ class CheckStyleIssueIssueParser implements CodeInspectionIssueParserInterface
      * @inheritDoc
      * @throws XMLException|ParseException
      */
-    public function parse(string $data): array
+    public function parse(string $basePath, string $data): array
     {
         $issues = [];
 
@@ -31,10 +32,12 @@ class CheckStyleIssueIssueParser implements CodeInspectionIssueParserInterface
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
+            $filePath = $this->pathNormalizer->normalize($basePath, $fileElement->getAttribute('name'));
+
             /** @var DOMElement $errorElement */
             foreach ($fileElement->getElementsByTagName('error') as $errorElement) {
                 $issues[] = $issue = new CodeInspectionIssue();
-                $issue->setFile($fileElement->getAttribute('name'));
+                $issue->setFile($filePath);
                 $issue->setLineNumber((int)$errorElement->getAttribute('line'));
                 $issue->setMessage($errorElement->getAttribute('message'));
                 $issue->setSeverity($errorElement->getAttribute('severity'));
