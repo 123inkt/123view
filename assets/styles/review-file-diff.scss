@@ -123,9 +123,7 @@
 }
 
 .diff-file__diff-line__code-inspection-issue {
-    text-decoration-color: red;
-    text-decoration-line: underline;
-    text-decoration-style: wavy;
+    text-decoration: #ff0000 underline wavy;
 }
 
 .diff-file__line-gutter {

@@ -51,6 +51,7 @@ class CodeInspectionReportFactoryTest extends AbstractTestCase
 
         $report = $this->reportFactory->parse($repository, 'hash', 'inspectionId', 'format', 'basePath', 'content');
 
+        static::assertNotNull($report);
         static::assertSame($repository, $report->getRepository());
         static::assertSame('inspectionId', $report->getInspectionId());
         static::assertSame('hash', $report->getCommitHash());
