@@ -20,12 +20,12 @@ class CodeInspectionIssueParserProvider
         $this->parsers = iterator_to_array($parsers);
     }
 
-    public function getParser(string $inspectionName): CodeInspectionIssueParserInterface
+    public function getParser(string $format): CodeInspectionIssueParserInterface
     {
-        if (isset($this->parsers[$inspectionName]) === false) {
-            throw new InvalidArgumentException('Unknown inspection: ' . $inspectionName);
+        if (isset($this->parsers[$format]) === false) {
+            throw new InvalidArgumentException('Unknown inspection: ' . $format);
         }
 
-        return $this->parsers[$inspectionName];
+        return $this->parsers[$format];
     }
 }
