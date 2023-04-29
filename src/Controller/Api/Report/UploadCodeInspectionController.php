@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Api\Report;
 
+use DR\Review\Controller\AbstractController;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\Request\Report\UploadCodeInspectionRequest;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class UploadCodeInspectionController
+class UploadCodeInspectionController extends AbstractController
 {
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
