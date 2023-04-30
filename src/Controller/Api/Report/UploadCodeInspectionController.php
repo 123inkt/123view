@@ -9,14 +9,18 @@ use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\Request\Report\UploadCodeInspectionRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionReportFactory;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class UploadCodeInspectionController extends AbstractController
+class UploadCodeInspectionController extends AbstractController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
         private readonly CodeInspectionReportRepository $reportRepository,
@@ -33,6 +37,18 @@ class UploadCodeInspectionController extends AbstractController
             throw new NotFoundHttpException();
         }
 
+        $this->logger?->info(
+            'CodeInspectionReport: {name}, {basePath}, {hash}, {id}, {format}, body size: {size}',
+            [
+                'name' => $repositoryName,
+                'hash' => $commitHash,
+                'basePath' => $request->getBasePath(),
+                'id' => $request->getIdentifier(),
+                'format' => $request->getFormat(),
+                'size' => strlen($request->getData())
+            ]
+        );
+
         $report = $this->reportFactory->parse(
             $repository,
             $commitHash,
@@ -46,6 +62,11 @@ class UploadCodeInspectionController extends AbstractController
         $this->reportRepository->removeOneBy(
             ['repository' => $repository, 'inspectionId' => $request->getIdentifier(), 'commitHash' => $commitHash],
             flush: true
+        );
+
+        $this->logger?->info(
+            'CodeInspectionReport: {name}, creating report with {count} issues.',
+            ['name' => $repositoryName, 'count' => count($report->getIssues())]
         );
 
         // save new report
