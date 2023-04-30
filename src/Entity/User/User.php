@@ -85,7 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->replies   = new ArrayCollection();
     }
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 

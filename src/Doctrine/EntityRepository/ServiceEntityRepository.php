@@ -24,6 +24,20 @@ class ServiceEntityRepository extends DoctrineServiceEntityRepository
     }
 
     /**
+     * @param array<string, int|float|string|int[]|string[]|object> $criteria
+     * @param array<string, string>|null                            $orderBy
+     */
+    public function removeOneBy(array $criteria, ?array $orderBy = null, bool $flush = false): void
+    {
+        $entity = $this->findOneBy($criteria, $orderBy);
+        if ($entity === null) {
+            return;
+        }
+
+        $this->remove($entity, $flush);
+    }
+
+    /**
      * @param T $entity
      */
     public function remove(object $entity, bool $flush = false): void
