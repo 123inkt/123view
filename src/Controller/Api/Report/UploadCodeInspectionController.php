@@ -43,7 +43,10 @@ class UploadCodeInspectionController extends AbstractController
         );
 
         // remove existing report
-        $this->reportRepository->removeOneBy(['repository' => $repository, 'inspectionId' => $request->getIdentifier(), 'commitHash' => $commitHash]);
+        $this->reportRepository->removeOneBy(
+            ['repository' => $repository, 'inspectionId' => $request->getIdentifier(), 'commitHash' => $commitHash],
+            flush: true
+        );
 
         // save new report
         $this->reportRepository->save($report, true);
