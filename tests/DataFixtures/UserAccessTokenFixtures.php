@@ -12,6 +12,8 @@ use DR\Review\Utility\Assert;
 
 class UserAccessTokenFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const TOKEN_VALUE = 'token';
+
     public function load(ObjectManager $manager): void
     {
         $user = Assert::notNull($manager->getRepository(User::class)->findOneBy(['name' => 'Sherlock Holmes']));
@@ -19,7 +21,7 @@ class UserAccessTokenFixtures extends Fixture implements DependentFixtureInterfa
         $token = new UserAccessToken();
         $token->setUser($user);
         $token->setName('name');
-        $token->setToken('token');
+        $token->setToken(self::TOKEN_VALUE);
         $token->setUsages(5);
         $token->setCreateTimestamp(123456789);
         $token->setUseTimestamp(123456789);
