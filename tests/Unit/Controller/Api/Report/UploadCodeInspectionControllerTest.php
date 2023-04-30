@@ -80,6 +80,10 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
             ->method('parse')
             ->with($repository, 'hash', 'identifier', 'format', 'basePath', 'data')
             ->willReturn($report);
+        $this->reportRepository->expects(self::once())
+            ->method('removeOneBy')
+            ->with(['repository' => $repository, 'inspectionId' => 'identifier', 'commitHash' => 'hash']);
+        $this->reportRepository->expects(self::once())->method('save')->with($report, true);
 
         $response = ($this->controller)($request, 'repository', 'hash');
         static::assertEquals(new JsonResponse(['created' => 1], Response::HTTP_OK), $response);

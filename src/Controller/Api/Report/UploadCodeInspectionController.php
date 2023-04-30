@@ -41,10 +41,11 @@ class UploadCodeInspectionController extends AbstractController
             $request->getBasePath(),
             $request->getData()
         );
-        if ($report === null) {
-            return new Response('', Response::HTTP_NO_CONTENT);
-        }
 
+        // remove existing report
+        $this->reportRepository->removeOneBy(['repository' => $repository, 'inspectionId' => $request->getIdentifier(), 'commitHash' => $commitHash]);
+
+        // save new report
         $this->reportRepository->save($report, true);
 
         return new JsonResponse(['created' => count($report->getIssues())], Response::HTTP_OK);

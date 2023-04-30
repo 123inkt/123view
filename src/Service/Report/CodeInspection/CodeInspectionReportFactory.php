@@ -19,11 +19,8 @@ class CodeInspectionReportFactory
         string $format,
         string $basePath,
         string $data
-    ): ?CodeInspectionReport {
+    ): CodeInspectionReport {
         $issues = $this->parserProvider->getParser($format)->parse($basePath, $data);
-        if (count($issues) === 0) {
-            return null;
-        }
 
         $report = new CodeInspectionReport();
         $report->setRepository($repository);
