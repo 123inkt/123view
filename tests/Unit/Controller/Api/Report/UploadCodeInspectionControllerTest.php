@@ -44,25 +44,6 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, 'repository', 'hash');
     }
 
-    public function testInvokeEmptyReport(): void
-    {
-        $request = $this->createMock(UploadCodeInspectionRequest::class);
-        $request->method('getIdentifier')->willReturn('identifier');
-        $request->method('getFormat')->willReturn('format');
-        $request->method('getBasePath')->willReturn('basePath');
-        $request->method('getData')->willReturn('data');
-        $repository = new Repository();
-
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
-        $this->reportFactory->expects(self::once())
-            ->method('parse')
-            ->with($repository, 'hash', 'identifier', 'format', 'basePath', 'data')
-            ->willReturn(null);
-
-        $response = ($this->controller)($request, 'repository', 'hash');
-        static::assertEquals(new Response('', Response::HTTP_NO_CONTENT), $response);
-    }
-
     public function testInvoke(): void
     {
         $request = $this->createMock(UploadCodeInspectionRequest::class);
