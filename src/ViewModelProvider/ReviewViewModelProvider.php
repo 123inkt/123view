@@ -21,7 +21,7 @@ class ReviewViewModelProvider
         private readonly CodeReviewFileService $fileService,
         private readonly FileTreeViewModelProvider $fileTreeModelProvider,
         private readonly RevisionViewModelProvider $revisionModelProvider,
-        private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider,
+        private readonly ReviewSummaryViewModelProvider $summaryViewModelProvider,
         private readonly RevisionVisibilityService $visibilityService,
     ) {
     }
@@ -48,7 +48,7 @@ class ReviewViewModelProvider
 
         // get timeline or file-diff view model
         if ($selectedFile === null) {
-            $viewModel->setTimelineViewModel($this->timelineViewModelProvider->getTimelineViewModel($review));
+            $viewModel->setReviewSummaryViewModel($this->summaryViewModelProvider->getSummaryViewModel($review, $fileTree));
             $viewModel->setDescriptionVisible(true);
         } else {
             $viewModel->setFileDiffViewModel(

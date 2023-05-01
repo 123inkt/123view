@@ -69,12 +69,12 @@
             </div>
 
             <div class="mt-1">
-                {%- if reviewModel.timelineViewModel is not same as (null) -%}
-                    <h6 class="m-0 pt-1 pb-1 bg-primary bg-opacity-10">{{ 'timeline.review'|trans }}</h6>
+                {%- if reviewModel.reviewSummaryViewModel is not same as (null) -%}
+                    <h6 class="m-0 pt-1 pb-1 bg-primary bg-opacity-10">{{ 'review.summary'|trans }}</h6>
                 {% else %}
                     <a class="pt-1 pb-1 text-body d-block"
                        href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
-                        <h6 class="m-0">{{ 'timeline.review'|trans }}</h6>
+                        <h6 class="m-0">{{ 'review.summary'|trans }}</h6>
                     </a>
                 {% endif %}
             </div>

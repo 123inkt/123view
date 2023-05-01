@@ -143,7 +143,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
 
         $viewModel = $this->modelProvider->getViewModel($review, $request);
         static::assertTrue($viewModel->isDescriptionVisible());
-        static::assertNotNull($viewModel->getTimelineViewModel());
+        static::assertNotNull($viewModel->getReviewSummaryViewModel());
         static::assertNull($viewModel->getFileDiffViewModel());
         static::assertNotNull($viewModel->getRevisionViewModel());
     }

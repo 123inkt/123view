@@ -1,0 +1,8 @@
+{# reviewSummaryViewModel: ReviewSummaryViewModel #}
+
+<div class="review-summary__overview">
+    {%- include 'app/review/review.summary.timeline.html.twig' with {timelineViewModel: reviewSummaryViewModel.timelineViewModel} -%}
+    <div class="mt-4"></div>
+    {%- include 'app/review/review.summary.keybindings.html.twig' -%}
+    <br><br>
+</div>

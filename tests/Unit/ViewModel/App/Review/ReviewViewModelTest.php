@@ -31,8 +31,8 @@ class ReviewViewModelTest extends AbstractTestCase
      * @covers ::getFileTreeModel
      * @covers ::getFileDiffViewModel
      * @covers ::setFileDiffViewModel
-     * @covers ::getTimelineViewModel
-     * @covers ::setTimelineViewModel
+     * @covers ::getReviewSummaryViewModel
+     * @covers ::setReviewSummaryViewModel
      * @covers ::getVisibleRevisionCount
      * @covers ::setVisibleRevisionCount
      * @covers ::getOpenComments

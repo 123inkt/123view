@@ -65,7 +65,7 @@ class CodeInspectionViewModelProviderTest extends AbstractTestCase
         $issue  = new CodeInspectionIssue();
 
         $this->reportRepository->expects(self::once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
-        $this->issueRepository->expects(self::once())->method('findByFile')->with([$report], 'filepath')->willReturn([$issue]);
+        $this->issueRepository->expects(self::once())->method('findBy')->with(['report' => [$report], 'file' => 'filepath'])->willReturn([$issue]);
 
         $viewModel = $this->provider->getCodeInspectionViewModel($review, 'filepath');
         static::assertEquals(new CodeInspectionViewModel([$issue]), $viewModel);
