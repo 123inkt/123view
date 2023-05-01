@@ -20,7 +20,7 @@ use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
-use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
+use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,32 +34,32 @@ use Throwable;
  */
 class ReviewViewModelProviderTest extends AbstractTestCase
 {
-    private FileDiffViewModelProvider&MockObject       $fileDiffProvider;
-    private CodeReviewFileService&MockObject           $fileService;
-    private FormFactoryInterface&MockObject            $formFactory;
-    private FileTreeViewModelProvider&MockObject       $fileTreeModelProvider;
-    private RevisionViewModelProvider&MockObject       $revisionModelProvider;
-    private ReviewTimelineViewModelProvider&MockObject $timelineViewModelProvider;
-    private RevisionVisibilityService&MockObject       $visibilityService;
-    private ReviewViewModelProvider                    $modelProvider;
+    private FileDiffViewModelProvider&MockObject      $fileDiffProvider;
+    private CodeReviewFileService&MockObject          $fileService;
+    private FormFactoryInterface&MockObject           $formFactory;
+    private FileTreeViewModelProvider&MockObject      $fileTreeModelProvider;
+    private RevisionViewModelProvider&MockObject      $revisionModelProvider;
+    private ReviewSummaryViewModelProvider&MockObject $summaryViewModelProvider;
+    private RevisionVisibilityService&MockObject      $visibilityService;
+    private ReviewViewModelProvider                   $modelProvider;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->fileDiffProvider          = $this->createMock(FileDiffViewModelProvider::class);
-        $this->fileService               = $this->createMock(CodeReviewFileService::class);
-        $this->formFactory               = $this->createMock(FormFactoryInterface::class);
-        $this->fileTreeModelProvider     = $this->createMock(FileTreeViewModelProvider::class);
-        $this->revisionModelProvider     = $this->createMock(RevisionViewModelProvider::class);
-        $this->timelineViewModelProvider = $this->createMock(ReviewTimelineViewModelProvider::class);
-        $this->visibilityService         = $this->createMock(RevisionVisibilityService::class);
-        $this->modelProvider             = new ReviewViewModelProvider(
+        $this->fileDiffProvider         = $this->createMock(FileDiffViewModelProvider::class);
+        $this->fileService              = $this->createMock(CodeReviewFileService::class);
+        $this->formFactory              = $this->createMock(FormFactoryInterface::class);
+        $this->fileTreeModelProvider    = $this->createMock(FileTreeViewModelProvider::class);
+        $this->revisionModelProvider    = $this->createMock(RevisionViewModelProvider::class);
+        $this->summaryViewModelProvider = $this->createMock(ReviewSummaryViewModelProvider::class);
+        $this->visibilityService        = $this->createMock(RevisionVisibilityService::class);
+        $this->modelProvider            = new ReviewViewModelProvider(
             $this->fileDiffProvider,
             $this->formFactory,
             $this->fileService,
             $this->fileTreeModelProvider,
             $this->revisionModelProvider,
-            $this->timelineViewModelProvider,
+            $this->summaryViewModelProvider,
             $this->visibilityService
         );
     }
@@ -137,7 +137,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             ->with($review, [$revision], $filePath, DiffComparePolicy::IGNORE)
             ->willReturn([$tree, null]);
         $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $this->timelineViewModelProvider->expects(self::once())->method('getTimelineViewModel')->with($review);
+        $this->summaryViewModelProvider->expects(self::once())->method('getSummaryViewModel')->with($review, $tree);
         $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');
         $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
 
