@@ -1,6 +1,6 @@
 {# inspectionIssueViewModel: CodeInspectionReportViewModel #}
 
-{#{% if inspectionIssueViewModel.issues %}#}
+{% if inspectionIssueViewModel.issues %}
     <div class="mb-4">
         <h5>{{ 'code.issues'|trans }}</h5>
 
@@ -23,4 +23,4 @@
             </ul>
         {%- endfor -%}
     </div>
-{#{% endif %}#}
+{% endif %}
