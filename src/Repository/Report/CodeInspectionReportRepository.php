@@ -32,7 +32,7 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
     {
         // TODO optimize this to select with group by and then order by
         $hashes  = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
-        $reports = $this->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'DESC'], 20);
+        $reports = $this->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'DESC'], 50);
 
         $result = [];
         foreach ($reports as $report) {

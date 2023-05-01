@@ -7,7 +7,6 @@ use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
-use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use Symfony\Component\Form\FormView;
 
@@ -16,14 +15,14 @@ class ReviewViewModel
     public const SIDEBAR_TAB_OVERVIEW  = 'overview';
     public const SIDEBAR_TAB_REVISIONS = 'revisions';
 
-    private string                   $sidebarTabMode       = self::SIDEBAR_TAB_OVERVIEW;
-    private ?FileTreeViewModel       $fileTreeModel        = null;
-    private ?ReviewRevisionViewModel $revisionViewModel    = null;
-    private ?TimelineViewModel       $timelineViewModel    = null;
-    private ?FileDiffViewModel       $fileDiffViewModel    = null;
-    private ?FormView                $addReviewerForm      = null;
-    private bool                     $descriptionVisible   = true;
-    private int                      $visibleRevisionCount = 0;
+    private string                   $sidebarTabMode         = self::SIDEBAR_TAB_OVERVIEW;
+    private ?FileTreeViewModel       $fileTreeModel          = null;
+    private ?ReviewRevisionViewModel $revisionViewModel      = null;
+    private ?ReviewSummaryViewModel  $reviewSummaryViewModel = null;
+    private ?FileDiffViewModel       $fileDiffViewModel      = null;
+    private ?FormView                $addReviewerForm        = null;
+    private bool                     $descriptionVisible     = true;
+    private int                      $visibleRevisionCount   = 0;
 
     public function __construct(public readonly CodeReview $review)
     {
@@ -93,14 +92,14 @@ class ReviewViewModel
         return $this;
     }
 
-    public function getTimelineViewModel(): ?TimelineViewModel
+    public function getReviewSummaryViewModel(): ?ReviewSummaryViewModel
     {
-        return $this->timelineViewModel;
+        return $this->reviewSummaryViewModel;
     }
 
-    public function setTimelineViewModel(?TimelineViewModel $timelineViewModel): self
+    public function setReviewSummaryViewModel(?ReviewSummaryViewModel $reviewSummaryViewModel): self
     {
-        $this->timelineViewModel = $timelineViewModel;
+        $this->reviewSummaryViewModel = $reviewSummaryViewModel;
 
         return $this;
     }

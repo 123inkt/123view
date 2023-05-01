@@ -28,7 +28,7 @@ class CodeInspectionViewModelProvider
             return new CodeInspectionViewModel([]);
         }
 
-        $issues = $this->issueRepository->findByFile($reports, $filePath);
+        $issues = $this->issueRepository->findBy(['report' => $reports, 'file' => $filePath]);
 
         return new CodeInspectionViewModel($issues);
     }

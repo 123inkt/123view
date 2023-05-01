@@ -281,4 +281,7 @@ return [
     'visit.the.api.at'                            => 'Visit the API documentation at',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'review.summary'                              => 'Review summary',
+    'code.issues'                                 => 'Code inspection issues',
+    'line'                                        => 'Line',
 ];
