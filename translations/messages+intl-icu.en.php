@@ -282,4 +282,6 @@ return [
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
     'review.summary'                              => 'Review summary',
+    'code.issues'                                 => 'Code inspection issues',
+    'line'                                        => 'Line',
 ];

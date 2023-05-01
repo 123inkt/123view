@@ -8,11 +8,22 @@ use DR\Review\Entity\Report\CodeInspectionIssue;
 class CodeInspectionReportViewModel
 {
     /**
-     * @codeCoverageIgnore
-     *
      * @param CodeInspectionIssue[] $issues
      */
     public function __construct(public readonly array $issues)
     {
+    }
+
+    /**
+     * @return array<string, CodeInspectionIssue[]>
+     */
+    public function getGroupByFile(): array
+    {
+        $result = [];
+        foreach ($this->issues as $issue) {
+            $result[(string)$issue->getFile()][] = $issue;
+        }
+
+        return $result;
     }
 }
