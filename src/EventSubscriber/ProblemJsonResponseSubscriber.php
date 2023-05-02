@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace DR\Review\EventSubscriber;
 
 use DR\Review\Response\ProblemJsonResponseFactory;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class ProblemJsonResponseSubscriber implements EventSubscriberInterface
+class ProblemJsonResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(private ProblemJsonResponseFactory $responseFactory)
     {
     }
@@ -21,7 +25,11 @@ class ProblemJsonResponseSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->setResponse($this->responseFactory->createFromThrowable($event->getThrowable()));
+        $throwable = $event->getThrowable();
+
+        $this->logger?->info("ProblemJsonResponseSubscriber: " . $throwable->getMessage(), ['exception' => $throwable]);
+
+        $event->setResponse($this->responseFactory->createFromThrowable($throwable));
     }
 
     /**
