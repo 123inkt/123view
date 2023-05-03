@@ -15,4 +15,5 @@
             <error type="\RuntimeException">test error</error>
         </testcase>
     </testsuite>
+    <error type="invalid">invalid</error>
 </testsuites>

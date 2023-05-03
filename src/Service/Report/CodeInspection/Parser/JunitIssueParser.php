@@ -36,11 +36,9 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
         foreach ($issueElements as $issueElement) {
             // expecting parentElement to be testcase
             $testCaseElement = $issueElement->parentNode;
-            // @codeCoverageIgnoreStart
             if ($testCaseElement === null || $testCaseElement instanceof DOMElement === false || $testCaseElement->nodeName !== 'testcase') {
                 continue;
             }
-            // @codeCoverageIgnoreEnd
 
             $filePath = $this->pathNormalizer->normalize($basePath, $testCaseElement->getAttribute('file'));
 
