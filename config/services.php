@@ -43,6 +43,7 @@ use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
 use DR\Review\Service\Report\CodeInspection\Parser\CheckStyleIssueParser;
 use DR\Review\Service\Report\CodeInspection\Parser\GitlabIssueParser;
+use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
@@ -157,8 +158,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ReviewRouter::class)->decorate('router')->args([service('.inner')]);
 
     // Code inspection parsers
-    $services->set(CheckStyleIssueParser::class)->tag('code_inspection_issue_parser', ['key' => 'checkstyle']);
-    $services->set(GitlabIssueParser::class)->tag('code_inspection_issue_parser', ['key' => 'gitlab']);
+    $services->set(CheckStyleIssueParser::class)->tag('code_inspection_issue_parser', ['key' => CheckStyleIssueParser::FORMAT]);
+    $services->set(GitlabIssueParser::class)->tag('code_inspection_issue_parser', ['key' => GitlabIssueParser::FORMAT]);
+    $services->set(JunitIssueParser::class)->tag('code_inspection_issue_parser', ['key' => JunitIssueParser::FORMAT]);
     $services->set(CodeInspectionIssueParserProvider::class)->arg('$parsers', tagged_iterator('code_inspection_issue_parser', 'key'));
 
     // Mail Notification Message handlers

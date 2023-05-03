@@ -14,6 +14,8 @@ use DR\Review\Utility\Assert;
 
 class CheckStyleIssueParser implements CodeInspectionIssueParserInterface
 {
+    public const FORMAT = 'checkstyle';
+
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
     }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="SuiteName" file="/file/to/test-with-warning.php" tests="1" assertions="5" errors="0" warnings="1" failures="0" skipped="0" time="0.36">
+        <testcase name="testName" class="TestClass" classname="Test.Class" file="/file/to/test-with-warning.php" line="20" assertions="1" time="0.20">
+            <warning type="warning">test warning</warning>
+        </testcase>
+    </testsuite>
+    <testsuite name="SuiteName" file="/file/to/test-with-failure.php" tests="1" assertions="5" errors="0" warnings="0" failures="1" skipped="0" time="0.36">
+        <testcase name="testName" class="TestClass" classname="Test.Class" file="/file/to/test-with-failure.php" line="25" assertions="1" time="0.20">
+            <failure type="\LogicException">test failure</failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="SuiteName" file="/file/to/test-with-error.php" tests="1" assertions="5" errors="1" warnings="0" failures="0" skipped="0" time="0.36">
+        <testcase name="testName" class="TestClass" classname="Test.Class" file="/file/to/test-with-error.php" line="30" assertions="1" time="0.20">
+            <error type="\RuntimeException">test error</error>
+        </testcase>
+    </testsuite>
+</testsuites>
