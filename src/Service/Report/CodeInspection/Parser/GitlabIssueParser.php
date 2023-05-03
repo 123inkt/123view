@@ -11,6 +11,8 @@ use Nette\Utils\JsonException;
 
 class GitlabIssueParser implements CodeInspectionIssueParserInterface
 {
+    public const FORMAT = 'gitlab';
+
     public function __construct(private readonly FilePathNormalizer $pathNormalizer)
     {
     }
