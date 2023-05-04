@@ -90,6 +90,12 @@ class CodeInspectionIssue
 
     public function setMessage(?string $message): CodeInspectionIssue
     {
+        // @codeCoverageIgnoreStart
+        if ($message !== null && mb_strlen($message) > 255) {
+            $message = mb_substr($message, 0, 250) . '...';
+        }
+        // @codeCoverageIgnoreEnd
+
         $this->message = $message;
 
         return $this;
