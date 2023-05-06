@@ -5,22 +5,38 @@ set -e
 BINDIR=$(dirname $(realpath "$0"))
 SOURCEDIR=$(dirname ${BINDIR})
 REBUILD='no'
+MODE=''
+FOLLOW_LOG='1'
 
 # Map arguments
-while getopts b flag
+while [[ $# -gt 0 ]] && [[ "$1" == "--"* ]] ;
 do
-    case "${flag}" in
-        b) REBUILD='yes';;
-    esac
+    opt="$1";
+    shift;
+    case "$opt" in
+        "-b" )
+           REBUILD='yes';;
+        "--prod" )
+           MODE='prod';;
+        "--dev" )
+           MODE='dev';;
+        "--skip-log" )
+           FOLLOW_LOG='0';;
+        *) echo >&2 "Invalid option: $@"; exit 1;;
+   esac
 done
 
-echo -n "Deployment mode: [prod/dev] "
-read mode
+if [ "$MODE" == '' ]; then
+    echo -n "Deployment mode: [prod/dev] "
+    read MODE
 
-if [ "$mode" != 'prod' ] && [ "$mode" != 'dev' ]; then
-    echo "Invalid mode: ${mode}"
-    exit 1;
+    if [ "$MODE" != 'prod' ] && [ "$MODE" != 'dev' ]; then
+        echo "Invalid mode: ${MODE}"
+        exit 1;
+    fi
 fi
+
+echo "[MODE]: ${MODE}"
 
 if [ "$REBUILD" == 'yes' ]; then
     echo "[REBUILD]: yes"
@@ -47,7 +63,7 @@ rm -rf ${SOURCEDIR}/var/cache
 ##
 # Start new container
 #
-if [ "$mode" == 'prod' ]; then
+if [ "$MODE" == 'prod' ]; then
     set -o allexport
     source .env
     [[ -f ".env.prod" ]] && source .env.prod
@@ -62,11 +78,14 @@ if [ "$mode" == 'prod' ]; then
         DOCKER_BUILDKIT=1 docker compose -f docker-compose.yml -f docker-compose.production.yml build
     fi
     docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
-    docker compose logs --tail=5 --follow
+
+    if [ "$FOLLOW_LOG" == '1' ]; then
+        docker compose logs --tail=5 --follow
+    fi
 
     exit 0;
 
-elif [ "$mode" == 'dev' ]; then
+elif [ "$MODE" == 'dev' ]; then
     set -o allexport
     source .env
     [[ -f ".env.dev" ]] && source .env.dev
@@ -77,5 +96,8 @@ elif [ "$mode" == 'dev' ]; then
         DOCKER_BUILDKIT=1 docker compose build
     fi
     docker compose up -d --remove-orphans
-    docker compose logs --tail=5 --follow
+
+    if [ "$FOLLOW_LOG" == '1' ]; then
+        docker compose logs --tail=5 --follow
+    fi
 fi
