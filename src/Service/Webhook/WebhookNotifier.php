@@ -29,7 +29,7 @@ class WebhookNotifier implements LoggerAwareInterface
             return;
         }
 
-        $webhooks = $this->webhookRepository->findBy(['enabled' => 1, 'repository' => $repositoryId]);
+        $webhooks = $this->webhookRepository->findByRepositoryId($repositoryId, true);
         foreach ($webhooks as $webhook) {
             $this->logger?->info('Invoking webhook: {webhookId}', ['webhookId' => $webhook->getId()]);
             $this->executionService->execute($webhook, $event);
