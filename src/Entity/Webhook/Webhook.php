@@ -33,8 +33,9 @@ class Webhook
     #[ORM\Column(type: 'json', nullable: true)]
     private array $headers = [];
 
-    #[ORM\ManyToOne(targetEntity: Repository::class)]
-    private ?Repository $repository = null;
+    /** @phpstan-var Collection<int, Repository> */
+    #[ORM\ManyToMany(targetEntity: Repository::class)]
+    private Collection $repositories;
 
     /** @phpstan-var Collection<int, WebhookActivity> */
     #[ORM\OneToMany(mappedBy: 'webhook', targetEntity: WebhookActivity::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
@@ -42,7 +43,8 @@ class Webhook
 
     public function __construct()
     {
-        $this->activities = new ArrayCollection();
+        $this->repositories = new ArrayCollection();
+        $this->activities   = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -123,14 +125,26 @@ class Webhook
         return $this;
     }
 
-    public function getRepository(): ?Repository
+    /**
+     * @return Collection<int, Repository>
+     */
+    public function getRepositories(): Collection
     {
-        return $this->repository;
+        return $this->repositories;
     }
 
-    public function setRepository(?Repository $repository): self
+    public function addRepository(Repository $repository): self
     {
-        $this->repository = $repository;
+        if (!$this->repositories->contains($repository)) {
+            $this->repositories->add($repository);
+        }
+
+        return $this;
+    }
+
+    public function removeRepository(Repository $repository): self
+    {
+        $this->repositories->removeElement($repository);
 
         return $this;
     }
