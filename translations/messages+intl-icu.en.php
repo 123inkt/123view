@@ -284,4 +284,9 @@ return [
     'review.summary'                              => 'Review summary',
     'code.issues'                                 => 'Code inspection issues',
     'line'                                        => 'Line',
+    'webhooks'                                    => 'Webhooks',
+    'id'                                          => 'Id',
+    'enabled'                                     => 'Enabled',
+    'retries'                                     => 'Retries',
+    'verify.ssl'                                  => 'Verify SSL',
 ];

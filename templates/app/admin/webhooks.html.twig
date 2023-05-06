@@ -1,0 +1,42 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1 class="mb-4 mt-2">{{ 'webhooks'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'id'|trans }}</th>
+            <th scope="col">{{ 'enabled'|trans }}</th>
+            <th scope="col">{{ 'name'|trans }}</th>
+            <th scope="col">{{ 'retries'|trans }}</th>
+            <th scope="col">{{ 'verify.ssl'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%- for webhook in webhooksViewModel.webhooks -%}
+            <tr>
+                <td>{{ webhook.id }}</td>
+                <td>
+                    {% if webhook.enabled %}
+                        <i class="bi bi-check-circle-fill text-success" title="{{ 'active'|trans }}"></i>
+                    {% else %}
+                        <i class="bi bi-check-circle-fill text-secondary" title="{{ 'active'|trans }}"></i>
+                    {% endif %}
+                </td>
+                <td>{{ webhook.url }}</td>
+                <td>{{ webhook.retries }}</td>
+                <td>
+                    {% if webhook.verifySsl %}
+                        <i class="bi bi-check-circle-fill text-success" title="{{ 'active'|trans }}"></i>
+                    {% else %}
+                        <i class="bi bi-check-circle-fill text-secondary" title="{{ 'active'|trans }}"></i>
+                    {% endif %}
+                </td>
+            </tr>
+        {%- endfor -%}
+        <tbody>
+    </table>
+{% endblock %}
