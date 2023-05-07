@@ -16,7 +16,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 class DeleteWebhookControllerTest extends AbstractControllerTestCase
 {
     private WebhookRepository&MockObject $webhookRepository;
-    private DeleteWebhookController      $service;
 
     protected function setUp(): void
     {
