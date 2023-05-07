@@ -24,7 +24,7 @@ class WebhookRepositoryTest extends AbstractRepositoryTestCase
         $webhookRepository = self::getService(WebhookRepository::class);
 
         static::assertCount(0, $webhookRepository->findByRepositoryId(-1));
-        static::assertCount(1, $webhookRepository->findByRepositoryId($repository->getId()));
+        static::assertCount(1, $webhookRepository->findByRepositoryId((int)$repository->getId()));
     }
 
     /**
@@ -35,8 +35,8 @@ class WebhookRepositoryTest extends AbstractRepositoryTestCase
         $repository        = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
         $webhookRepository = self::getService(WebhookRepository::class);
 
-        static::assertCount(1, $webhookRepository->findByRepositoryId($repository->getId(), true));
-        static::assertCount(0, $webhookRepository->findByRepositoryId($repository->getId(), false));
+        static::assertCount(1, $webhookRepository->findByRepositoryId((int)$repository->getId(), true));
+        static::assertCount(0, $webhookRepository->findByRepositoryId((int)$repository->getId(), false));
     }
 
     /**
