@@ -19,6 +19,17 @@ class WebhookTest extends AbstractTestCase
         static::assertAccessorPairs(Webhook::class, $config);
     }
 
+    public function testSetHeader(): void
+    {
+        $webhook = new Webhook();
+        $webhook->setHeader('foo', '123');
+        $webhook->setHeader('bar', '456');
+        static::assertSame(['foo' => '123', 'bar' => '456'], $webhook->getHeaders());
+
+        $webhook->setHeader('bar', null);
+        static::assertSame(['foo' => '123'], $webhook->getHeaders());
+    }
+
     public function testActivities(): void
     {
         $collection = new ArrayCollection();
