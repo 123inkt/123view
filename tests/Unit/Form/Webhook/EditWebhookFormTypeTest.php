@@ -27,9 +27,6 @@ class EditWebhookFormTypeTest extends AbstractTestCase
         $this->type         = new EditWebhookFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url     = 'https://123view/add/webhook';
