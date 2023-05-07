@@ -10,7 +10,6 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Admin\EditWebhookViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -25,7 +24,7 @@ class DeleteWebhookController extends AbstractController
      */
     #[Route('/app/admin/webhook/{id<\d+>}', self::class, methods: ['DELETE'])]
     #[IsGranted(Roles::ROLE_ADMIN)]
-    public function __invoke(Request $request, #[MapEntity] Webhook $webhook): array|RedirectResponse
+    public function __invoke(#[MapEntity] Webhook $webhook): array|RedirectResponse
     {
         $this->webhookRepository->remove($webhook, true);
 
