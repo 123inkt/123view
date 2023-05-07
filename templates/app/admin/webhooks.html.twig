@@ -13,6 +13,7 @@
             <th scope="col">{{ 'name'|trans }}</th>
             <th scope="col">{{ 'retries'|trans }}</th>
             <th scope="col">{{ 'verify.ssl'|trans }}</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -35,8 +36,21 @@
                         <i class="bi bi-check-circle-fill text-secondary" title="{{ 'active'|trans }}"></i>
                     {% endif %}
                 </td>
+                <td>
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\WebhookController', {id: webhook.id}) }}"
+                       class="btn btn-success btn-sm">
+                        <i class="bi-pencil-square"></i>
+                    </a>
+                </td>
             </tr>
         {%- endfor -%}
         <tbody>
     </table>
+
+    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\WebhookController') }}" class="btn btn-outline-primary">
+        <i class="bi-plus"></i>
+        {{ 'webhook.new'|trans }}
+    </a>
+
+    <br><br>
 {% endblock %}

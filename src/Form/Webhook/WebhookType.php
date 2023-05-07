@@ -30,7 +30,7 @@ class WebhookType extends AbstractType
                 'label'    => 'authorization.header',
                 'required' => false,
                 'getter'   => static fn(Webhook $webhook): string => $webhook->getHeaders()['Authorization'] ?? '',
-                'setter'   => static function (Webhook $webhook, string $authorization): void {
+                'setter'   => static function (Webhook $webhook, ?string $authorization): void {
                     $webhook->setHeader('Authorization', $authorization);
                 }
             ]

@@ -293,4 +293,5 @@ return [
     'add.webhook'                                 => 'Add webhook',
     'edit.webhook'                                => 'Edit webhook',
     'authorization.header'                        => 'Authorization header',
+    'webhook.new'                                 => 'Add webhook',
 ];

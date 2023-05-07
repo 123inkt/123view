@@ -125,9 +125,13 @@ class Webhook
         return $this;
     }
 
-    public function setHeader(string $key, string $value): self
+    public function setHeader(string $key, ?string $value): self
     {
-        $this->headers[$key] = $value;
+        if ($value === null) {
+            unset($this->headers[$key]);
+        } else {
+            $this->headers[$key] = $value;
+        }
 
         return $this;
     }
