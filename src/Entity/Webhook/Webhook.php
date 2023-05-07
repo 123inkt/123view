@@ -125,6 +125,13 @@ class Webhook
         return $this;
     }
 
+    public function setHeader(string $key, string $value): self
+    {
+        $this->headers[$key] = $value;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Repository>
      */

@@ -289,4 +289,5 @@ return [
     'enabled'                                     => 'Enabled',
     'retries'                                     => 'Retries',
     'verify.ssl'                                  => 'Verify SSL',
+    'webhook.successful.saved'                    => 'Webhook successfully saved.',
 ];
