@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Repository\Webhook\WebhookActivityRepository;
 
 #[ORM\Entity(repositoryClass: WebhookActivityRepository::class)]
+#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp_idx')]
 class WebhookActivity
 {
     #[ORM\Id]
