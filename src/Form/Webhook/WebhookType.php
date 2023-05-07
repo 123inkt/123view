@@ -29,10 +29,8 @@ class WebhookType extends AbstractType
             [
                 'label'    => 'authorization.header',
                 'required' => false,
-                'getter'   => static fn(Webhook $webhook): string => $webhook->getHeaders()['Authorization'] ?? '',
-                'setter'   => static function (Webhook $webhook, ?string $authorization): void {
-                    $webhook->setHeader('Authorization', $authorization);
-                }
+                'getter'   => [$this, 'getAuthorization'],
+                'setter'   => [$this, 'setAuthorization'],
             ]
         );
         $builder->add(
@@ -55,5 +53,15 @@ class WebhookType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => Webhook::class,]);
+    }
+
+    public function getAuthorization(Webhook $webhook): string
+    {
+        return $webhook->getHeaders()['Authorization'] ?? '';
+    }
+
+    public function setAuthorization(Webhook $webhook, ?string $authorization): void
+    {
+        $webhook->setHeader('Authorization', $authorization);
     }
 }
