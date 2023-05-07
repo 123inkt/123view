@@ -1,0 +1,30 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set form = editWebhookModel.form %}
+
+    <h1 class="mb-4 mt-2">
+        {% if editWebhookModel.webhook.id is same as null %}
+            {{ 'add.webhook'|trans }}
+        {% else %}
+            {{ 'edit.webhook'|trans }} #{{ editWebhookModel.webhook.id }}
+        {% endif %}
+    </h1>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.webhook.url) }}
+    {{ form_row(form.webhook.authorization) }}
+    {{ form_row(form.webhook.retries) }}
+    {{ form_row(form.webhook.enabled) }}
+    {{ form_row(form.webhook.verifySsl) }}
+
+    {{ form_label(form.webhook.repositories) }}
+    <div class="repository-columns mb-3">
+        {{ form_widget(form.webhook.repositories) }}
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

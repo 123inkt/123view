@@ -290,4 +290,7 @@ return [
     'retries'                                     => 'Retries',
     'verify.ssl'                                  => 'Verify SSL',
     'webhook.successful.saved'                    => 'Webhook successfully saved.',
+    'add.webhook'                                 => 'Add webhook',
+    'edit.webhook'                                => 'Edit webhook',
+    'authorization.header'                        => 'Authorization header',
 ];

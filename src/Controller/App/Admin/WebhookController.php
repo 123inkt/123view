@@ -26,7 +26,7 @@ class WebhookController extends AbstractController
     /**
      * @return array<string, EditWebhookViewModel>|RedirectResponse
      */
-    #[Route('/app/admin/webhooks/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
+    #[Route('/app/admin/webhook/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/admin/edit_webhook.html.twig')]
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(Request $request, #[MapEntity] ?Webhook $webhook): array|RedirectResponse

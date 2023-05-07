@@ -5,6 +5,7 @@ namespace DR\Review\Form\Webhook;
 
 use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Form\Repository\RepositoryChoiceType;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -21,13 +22,12 @@ class WebhookType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('enabled', CheckboxType::class, ['label' => 'enabled', 'required' => false]);
         $builder->add('url', UrlType::class, ['label' => 'url', 'required' => true]);
         $builder->add(
             'authorization',
             TextType::class,
             [
-                'label'    => 'authorization',
+                'label'    => 'authorization.header',
                 'required' => false,
                 'getter'   => static fn(Webhook $webhook): string => $webhook->getHeaders()['Authorization'] ?? '',
                 'setter'   => static function (Webhook $webhook, string $authorization): void {
@@ -45,8 +45,11 @@ class WebhookType extends AbstractType
                 'constraints' => [new Assert\Range(['min' => 0, 'max' => 10])]
             ]
         );
+        $builder->add('enabled', CheckboxType::class, ['label' => 'enabled', 'required' => false]);
         $builder->add('verifySsl', CheckboxType::class, ['label' => 'verify.ssl', 'required' => false]);
         $builder->add('repositories', RepositoryChoiceType::class, ['label' => 'repositories']);
+
+        $builder->get('repositories')->addModelTransformer(new CollectionToArrayTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
