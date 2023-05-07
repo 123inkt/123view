@@ -294,4 +294,5 @@ return [
     'edit.webhook'                                => 'Edit webhook',
     'authorization.header'                        => 'Authorization header',
     'webhook.new'                                 => 'Add webhook',
+    'webhook.successful.removed'                  => 'Webhook successfully removed.',
 ];
