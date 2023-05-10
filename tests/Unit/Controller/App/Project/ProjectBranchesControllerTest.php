@@ -26,9 +26,6 @@ class ProjectBranchesControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $repository = new Repository();
