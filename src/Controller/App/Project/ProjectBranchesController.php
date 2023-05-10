@@ -7,8 +7,8 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
+use DR\Review\ViewModelProvider\ProjectBranchesViewModelProvider;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +17,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectBranchesController extends AbstractController
 {
-    public function __construct(private readonly TranslatorInterface $translator, private readonly GitBranchService $branchService)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly ProjectBranchesViewModelProvider $viewModelProvider
+    ) {
     }
 
     /**
@@ -30,13 +32,9 @@ class ProjectBranchesController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(#[MapEntity] Repository $repository): array
     {
-        $branches       = $this->branchService->getRemoteBranches($repository);
-        $mergedBranches = $this->branchService->getRemoteBranches($repository, true);
-        $model          = new ProjectBranchesViewModel($repository, $branches, $mergedBranches);
-
         return [
             'page_title'        => $this->translator->trans('branches'),
-            'branchesViewModel' => $model
+            'branchesViewModel' => $this->viewModelProvider->getProjectBranchesViewModel($repository)
         ];
     }
 }
