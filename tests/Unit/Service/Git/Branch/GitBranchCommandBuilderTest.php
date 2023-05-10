@@ -31,12 +31,14 @@ class GitBranchCommandBuilderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::remote
+     * @covers ::merged
      * @covers ::delete
      * @covers ::build
      */
     public function testBuildMethods(): void
     {
-        static::assertSame(['git', 'branch', '-D branchName'], $this->builder->delete('branchName')->build());
+        static::assertSame(['git', 'branch', '-D branchName', '--merged', '-r'], $this->builder->delete('branchName')->merged()->remote()->build());
     }
 
     /**

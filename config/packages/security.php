@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;

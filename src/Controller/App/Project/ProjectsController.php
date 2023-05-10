@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\App\Review;
+namespace DR\Review\Controller\App\Project;
 
 use Doctrine\DBAL\Exception;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
-use DR\Review\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;

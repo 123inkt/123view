@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\User;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\SecurityBundle\Security;

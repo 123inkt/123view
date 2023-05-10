@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Controller\Auth;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\Auth\RegistrationController;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\RegistrationFormType;

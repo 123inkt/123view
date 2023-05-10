@@ -8,6 +8,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\Service\Git\Branch\GitRemoteBranchParser;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
@@ -22,6 +23,7 @@ class GitBranchServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
     private GitCommandBuilderFactory&MockObject      $builderFactory;
+    private GitRemoteBranchParser&MockObject         $branchParser;
     private GitBranchService                         $service;
 
     public function setUp(): void
@@ -29,7 +31,52 @@ class GitBranchServiceTest extends AbstractTestCase
         parent::setUp();
         $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
         $this->builderFactory    = $this->createMock(GitCommandBuilderFactory::class);
-        $this->service           = new GitBranchService($this->repositoryService, $this->builderFactory);
+        $this->branchParser      = $this->createMock(GitRemoteBranchParser::class);
+        $this->service           = new GitBranchService($this->repositoryService, $this->builderFactory, $this->branchParser);
+    }
+
+    /**
+     * @covers ::getRemoteBranches
+     * @throws RepositoryException
+     */
+    public function testGetRemoteBranches(): void
+    {
+        $repository = new Repository();
+
+        $builder = $this->createMock(GitBranchCommandBuilder::class);
+        $builder->expects(self::once())->method('remote')->willReturnSelf();
+        $builder->expects(self::never())->method('merged');
+        $this->builderFactory->expects(self::once())->method('createBranch')->willReturn($builder);
+
+        $git = $this->createMock(GitRepository::class);
+        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+
+        $this->branchParser->expects(self::once())->method('parse')->with('output')->willReturn(['branch']);
+
+        static::assertSame(['branch'], $this->service->getRemoteBranches($repository));
+    }
+
+    /**
+     * @covers ::getRemoteBranches
+     * @throws RepositoryException
+     */
+    public function testGetRemoteBranchesMergedOnly(): void
+    {
+        $repository = new Repository();
+
+        $builder = $this->createMock(GitBranchCommandBuilder::class);
+        $builder->expects(self::once())->method('remote')->willReturnSelf();
+        $builder->expects(self::once())->method('merged')->willReturnSelf();
+        $this->builderFactory->expects(self::once())->method('createBranch')->willReturn($builder);
+
+        $git = $this->createMock(GitRepository::class);
+        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+
+        $this->branchParser->expects(self::once())->method('parse')->with('output')->willReturn(['branch']);
+
+        static::assertSame(['branch'], $this->service->getRemoteBranches($repository, true));
     }
 
     /**

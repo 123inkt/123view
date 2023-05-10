@@ -1,0 +1,49 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <div class="mt-2 pb-3 clearfix">
+        <h2 class="float-start pe-3">{{ branchesViewModel.repository.displayName }}</h2>
+
+        <ul class="nav nav-pills float-start">
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: branchesViewModel.repository.id}) }}">
+                    {{ 'reviews'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: branchesViewModel.repository.id}) }}">
+                    {{ 'revisions'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">{{ 'branches'|trans }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'branch'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for branch in branchesViewModel.branches %}
+            {% if not (branch ends with 'HEAD') %}
+                <tr>
+                    <td>
+                        {{ branch }}
+
+                        {% if branchesViewModel.isMerged(branch) and branch != 'origin/' ~ branchesViewModel.repository.mainBranchName %}
+                            <span class="badge rounded-pill text-bg-primary">{{ 'merged'|trans }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+        {%- endfor -%}
+        <tbody>
+    </table>
+{% endblock %}
