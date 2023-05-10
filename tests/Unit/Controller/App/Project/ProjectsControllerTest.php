@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Controller\App\Review;
+namespace DR\Review\Tests\Unit\Controller\App\Project;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Tests\AbstractControllerTestCase;
-use DR\Review\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @coversDefaultClass \DR\Review\Controller\App\Review\ProjectsController
+ * @coversDefaultClass \DR\Review\Controller\App\Project\ProjectsController
  * @covers ::__construct
  */
 class ProjectsControllerTest extends AbstractControllerTestCase

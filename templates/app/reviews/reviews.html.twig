@@ -20,6 +20,12 @@
                             {{ 'revisions'|trans }}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ path('DR\\Review\\Controller\\App\\Project\\ProjectBranchesController', {id: reviewsModel.repository.id}) }}">
+                            {{ 'branches'|trans }}
+                        </a>
+                    </li>
                 </ul>
             </div>
 

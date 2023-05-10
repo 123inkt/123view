@@ -18,7 +18,23 @@ class GitBranchService implements LoggerAwareInterface
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
+        private readonly GitRemoteBranchParser $branchParser
     ) {
+    }
+
+    /**
+     * @return non-empty-string[]
+     * @throws RepositoryException
+     */
+    public function getRemoteBranches(Repository $repository): array
+    {
+        $commandBuilder = $this->commandFactory->createBranch()->remote();
+
+        // list remote branches
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+        $this->logger?->info($output);
+
+        return $this->branchParser->parse($output);
     }
 
     public function tryDeleteBranch(Repository $repository, string $ref): bool

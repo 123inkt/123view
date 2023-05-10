@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Security\AzureAd;
 
-use DR\Review\Controller\App\Review\ProjectsController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Security\Role\Roles;
