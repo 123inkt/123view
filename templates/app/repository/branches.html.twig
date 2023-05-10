@@ -1,19 +1,19 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
-    <div class="mt-2 pb-3">
-        <h2 class="float-start pe-3">!DRCore</h2>
+    <div class="mt-2 pb-3 clearfix">
+        <h2 class="float-start pe-3">{{ branchesViewModel.repository.displayName }}</h2>
 
         <ul class="nav nav-pills float-start">
             <li class="nav-item">
                 <a class="nav-link"
-                   href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: revisionsModel.repository.id}) }}">
+                   href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: branchesViewModel.repository.id}) }}">
                     {{ 'reviews'|trans }}
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"
-                   href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: reviewsModel.repository.id}) }}">
+                   href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: branchesViewModel.repository.id}) }}">
                     {{ 'revisions'|trans }}
                 </a>
             </li>
@@ -23,14 +23,11 @@
         </ul>
     </div>
 
-    {%- include 'app/revision/revisions.searchbar.html.twig' with {searchQuery: revisionsModel.searchQuery} -%}
-    {%- include 'app/revision/revisions.entities.html.twig' with {revisions: revisionsModel.revisions} -%}
-    {%- include 'app/paginator/paginator.html.twig' with {paginatorModel: revisionsModel.paginator} -%}
-
+    <div>
+        <ul>
+            {% for branch in branchesViewModel.branches %}
+                <li>{{ branch }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
-
-<ul>
-{% for branch in branches %}
-    <li>{{ branch }}</li>
-{% endfor %}
-</ul>

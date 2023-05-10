@@ -7,6 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
 use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -29,10 +30,11 @@ class ProjectBranchesController extends AbstractController
     public function __invoke(#[MapEntity] Repository $repository): array
     {
         $branches = $this->branchService->getRemoteBranches($repository);
+        $model    = new ProjectBranchesViewModel($repository, $branches);
 
         return [
-            'page_title' => $this->translator->trans('branches'),
-            'branches'   => $branches
+            'page_title'        => $this->translator->trans('branches'),
+            'branchesViewModel' => $model
         ];
     }
 }
