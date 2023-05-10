@@ -6,7 +6,7 @@ namespace DR\Review\Service\Git\Branch;
 class GitRemoteBranchParser
 {
     /**
-     * @return non-empty-string[]
+     * @return string[]
      */
     public function parse(string $output): array
     {

@@ -23,7 +23,7 @@ class GitBranchService implements LoggerAwareInterface
     }
 
     /**
-     * @return non-empty-string[]
+     * @return string[]
      * @throws RepositoryException
      */
     public function getRemoteBranches(Repository $repository, bool $mergedOnly = false): array
