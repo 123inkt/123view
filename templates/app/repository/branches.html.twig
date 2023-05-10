@@ -23,11 +23,27 @@
         </ul>
     </div>
 
-    <div>
-        <ul>
-            {% for branch in branchesViewModel.branches %}
-                <li>{{ branch }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'branch'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for branch in branchesViewModel.branches %}
+            {% if not (branch ends with 'HEAD') %}
+                <tr>
+                    <td>
+                        {{ branch }}
+
+                        {% if branchesViewModel.isMerged(branch) %}
+                            <span class="badge rounded-pill text-bg-primary">{{ 'merged'|trans }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+        {%- endfor -%}
+        <tbody>
+    </table>
 {% endblock %}

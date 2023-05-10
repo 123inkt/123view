@@ -296,4 +296,6 @@ return [
     'webhook.new'                                 => 'Add webhook',
     'webhook.successful.removed'                  => 'Webhook successfully removed.',
     'branches'                                    => 'Branches',
+    'branch'                                      => 'Branch',
+    'merged'                                      => 'merged',
 ];

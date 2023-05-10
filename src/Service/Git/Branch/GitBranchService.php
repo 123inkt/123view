@@ -26,9 +26,12 @@ class GitBranchService implements LoggerAwareInterface
      * @return non-empty-string[]
      * @throws RepositoryException
      */
-    public function getRemoteBranches(Repository $repository): array
+    public function getRemoteBranches(Repository $repository, bool $mergedOnly = false): array
     {
         $commandBuilder = $this->commandFactory->createBranch()->remote();
+        if ($mergedOnly) {
+            $commandBuilder->merged();
+        }
 
         // list remote branches
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
