@@ -37,7 +37,7 @@
                     <td>
                         {{ branch }}
 
-                        {% if branchesViewModel.isMerged(branch) %}
+                        {% if branchesViewModel.isMerged(branch) and branch != 'origin/' ~ branchesViewModel.repository.mainBranchName %}
                             <span class="badge rounded-pill text-bg-primary">{{ 'merged'|trans }}</span>
                         {% endif %}
                     </td>
