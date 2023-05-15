@@ -29,7 +29,7 @@ class GitRevListService implements LoggerAwareInterface
     {
         // show all commits ahead of the master branch, excluding merge commits.
         $commandBuilder = $this->commandFactory->createRevList()
-            ->commitRange(sprintf('origin/%s...%s', $repository->getMainBranchName(), $branchName))
+            ->commitRange(sprintf('origin/%s', $repository->getMainBranchName()), $branchName)
             ->leftRight()
             ->noMerges()
             ->pretty('oneline')

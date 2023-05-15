@@ -35,7 +35,9 @@
             {% if not (branch ends with 'HEAD') %}
                 <tr>
                     <td>
-                        {{ branch }}
+                        <a href="{{ path('DR\\Review\\Controller\\App\\Project\\ProjectBranchController', {id: branchesViewModel.repository.id, branch: branch}) }}">
+                            {{- branch -}}
+                        </a>
 
                         {% if branchesViewModel.isMerged(branch) and branch != 'origin/' ~ branchesViewModel.repository.mainBranchName %}
                             <span class="badge rounded-pill text-bg-primary">{{ 'merged'|trans }}</span>

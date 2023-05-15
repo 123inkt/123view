@@ -16,7 +16,7 @@ class GitRevListCommandBuilder implements GitCommandBuilderInterface
         $this->arguments['command'] = 'rev-list';
     }
 
-    public function commitRange(string $start, string $end = null): self
+    public function commitRange(string $start, string $end): self
     {
         $this->arguments['commits'] = $start . '...' . $end;
 
@@ -46,7 +46,7 @@ class GitRevListCommandBuilder implements GitCommandBuilderInterface
 
     public function pretty(string $format): self
     {
-        $this->arguments['pretty'] = '-pretty=' . $format;
+        $this->arguments['pretty'] = '--pretty=' . $format;
 
         return $this;
     }
