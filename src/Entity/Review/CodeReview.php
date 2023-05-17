@@ -103,10 +103,6 @@ class CodeReview
     #[Groups(['code_review_write'])]
     private string $state = CodeReviewStateType::OPEN;
 
-    /** Required when $type is CodeReviewType::BRANCH */
-    #[ORM\Column(length: 500, nullable: true)]
-    private ?string $branchName = null;
-
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
     private array $actors = [];
@@ -221,18 +217,6 @@ class CodeReview
     public function setState(string $state): self
     {
         $this->state = $this->propertyChange(self::PROP_STATE, $this->state, $state);
-
-        return $this;
-    }
-
-    public function getBranchName(): ?string
-    {
-        return $this->branchName;
-    }
-
-    public function setBranchName(?string $branchName): CodeReview
-    {
-        $this->branchName = $branchName;
 
         return $this;
     }

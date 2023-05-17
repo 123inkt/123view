@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\CodeReview;
 
 use Doctrine\ORM\NonUniqueResultException;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -127,7 +128,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
         $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
         $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
-        $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890')->willReturn($review);
+        $this->reviewRepository->expects(self::once())
+            ->method('findOneByReferenceId')
+            ->with(5, 'T#890', CodeReviewType::COMMITS)
+            ->willReturn($review);
         $this->reviewCreationService->expects(self::never())->method('createFromRevision');
 
         static::assertSame($review, $this->matcher->match($revision));
@@ -147,7 +151,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
         $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
         $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
-        $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890')->willReturn(null);
+        $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890', CodeReviewType::COMMITS)->willReturn(null);
         $this->reviewCreationService->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
 
         static::assertSame($review, $this->matcher->match($revision));

@@ -21,13 +21,13 @@ final class Version20230517064259 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
-            'ALTER TABLE code_review ADD type ENUM(\'commits\', \'branch\') DEFAULT \'commits\' NOT NULL AFTER `description`, ADD branch_name VARCHAR(500) DEFAULT NULL AFTER project_id'
+            'ALTER TABLE code_review ADD type ENUM(\'commits\', \'branch\') DEFAULT \'commits\' NOT NULL AFTER `description`'
         );
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE code_review DROP type, DROP branch_name');
+        $this->addSql('ALTER TABLE code_review DROP type');
     }
 }
