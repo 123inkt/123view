@@ -117,7 +117,7 @@ class ReviewEventService
 
         // create events
         if ($reviewCreated) {
-            $events[] = new ReviewCreated((int)$review->getId(), (int)$revision->getId());
+            $events[] = new ReviewCreated((int)$review->getId(), (int)$revision->getId(), $userId);
         }
         if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
             $events[] = new ReviewOpened((int)$review->getId(), $userId);

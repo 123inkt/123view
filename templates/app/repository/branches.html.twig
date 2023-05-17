@@ -1,19 +1,19 @@
 {% extends 'app/app.base.html.twig' %}
 
 {% block page_content %}
+    {% set repository = branchesViewModel.repository %}
+
     <div class="mt-2 pb-3 clearfix">
-        <h2 class="float-start pe-3">{{ branchesViewModel.repository.displayName }}</h2>
+        <h2 class="float-start pe-3">{{ repository.displayName }}</h2>
 
         <ul class="nav nav-pills float-start">
             <li class="nav-item">
-                <a class="nav-link"
-                   href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: branchesViewModel.repository.id}) }}">
+                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: repository.id}) }}">
                     {{ 'reviews'|trans }}
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"
-                   href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: branchesViewModel.repository.id}) }}">
+                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Revision\\RevisionsController', {id: repository.id}) }}">
                     {{ 'revisions'|trans }}
                 </a>
             </li>
@@ -27,21 +27,30 @@
         <thead>
         <tr>
             <th scope="col">{{ 'branch'|trans }}</th>
+            <th scope="col"></th>
         </tr>
         </thead>
 
         <tbody>
+
         {% for branch in branchesViewModel.branches %}
             {% if not (branch ends with 'HEAD') %}
                 <tr>
                     <td>
-                        <a href="{{ path('DR\\Review\\Controller\\App\\Project\\ProjectBranchController', {id: branchesViewModel.repository.id, branch: branch}) }}">
-                            {{- branch -}}
-                        </a>
+                        {{- branch -}}
 
-                        {% if branchesViewModel.isMerged(branch) and branch != 'origin/' ~ branchesViewModel.repository.mainBranchName %}
+                        {% if branchesViewModel.isMerged(branch) and branch != 'origin/' ~ repository.mainBranchName %}
                             <span class="badge rounded-pill text-bg-primary">{{ 'merged'|trans }}</span>
                         {% endif %}
+                    </td>
+                    <td>
+                        <form method="post"
+                              action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
+                            <input type="hidden" name="branch" value="{{ branch }}">
+                            <button type="submit" class="btn btn-outline-success btn-sm" title="{{ 'create.branch.review'|trans }}">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
             {% endif %}
