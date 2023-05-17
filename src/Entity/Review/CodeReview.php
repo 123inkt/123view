@@ -18,6 +18,7 @@ use DR\Review\ApiPlatform\Provider\CodeReviewProvider;
 use DR\Review\ApiPlatform\StateProcessor\CodeReviewProcessor;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\PropertyChangeTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
@@ -95,9 +96,16 @@ class CodeReview
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+    #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
+    private string $type = CodeReviewType::COMMITS;
+
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     #[Groups(['code_review_write'])]
     private string $state = CodeReviewStateType::OPEN;
+
+    /** Required when $type is CodeReviewType::BRANCH */
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $branchName = null;
 
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
@@ -193,6 +201,18 @@ class CodeReview
         return $this;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
     public function getState(): ?string
     {
         return $this->state;
@@ -201,6 +221,18 @@ class CodeReview
     public function setState(string $state): self
     {
         $this->state = $this->propertyChange(self::PROP_STATE, $this->state, $state);
+
+        return $this;
+    }
+
+    public function getBranchName(): ?string
+    {
+        return $this->branchName;
+    }
+
+    public function setBranchName(?string $branchName): CodeReview
+    {
+        $this->branchName = $branchName;
 
         return $this;
     }
