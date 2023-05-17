@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -43,14 +44,18 @@ class RevisionViewModelProvider
     {
         $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->user);
 
-        return new ReviewRevisionViewModel(
-            $revisions,
-            $this->formFactory
+        if ($review->getType() === CodeReviewType::COMMITS) {
+            $detachRevisionForm     = $this->formFactory
                 ->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
-                ->createView(),
-            $this->formFactory
+                ->createView();
+            $revisionVisibilityForm = $this->formFactory
                 ->create(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()])
-                ->createView()
-        );
+                ->createView();
+        } else {
+            $detachRevisionForm     = null;
+            $revisionVisibilityForm = null;
+        }
+
+        return new ReviewRevisionViewModel($revisions, $detachRevisionForm, $revisionVisibilityForm);
     }
 }

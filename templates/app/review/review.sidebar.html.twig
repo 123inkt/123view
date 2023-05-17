@@ -14,11 +14,13 @@
                    href="{{ url_query_params({tab: 'revisions'}) }}">
                     {{ 'revisions'|trans }}
 
-                    {% if reviewModel.visibleRevisionCount == review.revisions|length -%}
+                    {% if review.type == 'branch' %}
+                        ({{ reviewModel.visibleRevisionCount }})
+                    {% elseif reviewModel.visibleRevisionCount == review.revisions|length %}
                         ({{ review.revisions|length }})
-                    {%- else -%}
+                    {% else %}
                         ({{ reviewModel.visibleRevisionCount ~ '/' ~ review.revisions|length }})
-                    {%- endif -%}
+                    {% endif %}
                 </a>
             </li>
         </ul>

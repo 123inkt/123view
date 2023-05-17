@@ -5,36 +5,40 @@
 {% set revisionVisibilityForm = revisionViewModel.revisionVisibilityForm %}
 <div class="review-revision mt-3" {{ stimulus_controller('component--checkbox-select-all') }}>
     <h6 class="border-bottom review-revision--header">
-        <input type="checkbox" class="form-check-input mb-1"
-                {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
-               data-role="detach">
+        {% if detachRevisionForm %}
+            <input type="checkbox" class="form-check-input mb-1"
+                    {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
+                   data-role="detach">
+        {% endif %}
         {{ 'revisions'|trans }}
 
-        <div class="float-end me-3">
-            {%- apply spaceless -%}
-            <a href="#" class="p-1 c-icon-checkbox"
-                    {{ stimulus_controller('component--icon-checkbox') }}
-                    {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
-                <input type="checkbox"
-                        {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
-                        {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
-                       data-role="visibility"
-                       class="d-none icon-checkbox"
-                       checked>
-                <label></label>
-                <i class="bi bi-eye-fill icon-checked"></i>
-                <i class="bi bi-eye-slash icon-unchecked"></i>
-            </a>
-            {%- endapply -%}
-        </div>
+        {% if revisionVisibilityForm %}
+            <div class="float-end me-3">
+                {%- apply spaceless -%}
+                    <a href="#" class="p-1 c-icon-checkbox"
+                            {{ stimulus_controller('component--icon-checkbox') }}
+                            {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
+                        <input type="checkbox"
+                                {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
+                                {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
+                               data-role="visibility" class="d-none icon-checkbox" checked>
+                        <label></label>
+                        <i class="bi bi-eye-fill icon-checked"></i>
+                        <i class="bi bi-eye-slash icon-unchecked"></i>
+                    </a>
+                {%- endapply -%}
+            </div>
+        {% endif %}
     </h6>
 
     {%- for revision in revisionViewModel.revisions -%}
 
         <div class="review-revision--grid">
-            <div class="review-revision--selection">
-                {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
-            </div>
+            {% if detachRevisionForm %}
+                <div class="review-revision--selection">
+                    {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
+                </div>
+            {% endif %}
             <div class="review-revision--title-author">
                 <div class="text-primary">{{ revision.title }}</div>
                 <div class="text-secondary review-revision--author-time" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
@@ -46,20 +50,22 @@
                 <small class="text-muted d-block review-revision--commit-hash" title="{{ revision.commitHash }}">
                     {{- revision.commitHash|slice(0, 7) }}
                 </small>
-                <div class="text-end me-3">
-                    {%- apply spaceless -%}
-                    <a href="#" class="p-1 c-icon-checkbox"
-                            {{ stimulus_controller('component--icon-checkbox') }}
-                            {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
-                        {{- form_widget(
-                            revisionVisibilityForm.visibilities[loop.index0].visible,
-                            {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
-                        )-}}
-                        <i class="bi bi-eye-fill icon-checked"></i>
-                        <i class="bi bi-eye-slash icon-unchecked"></i>
-                    </a>
-                    {%- endapply -%}
-                </div>
+                {% if revisionVisibilityForm %}
+                    <div class="text-end me-3">
+                        {%- apply spaceless -%}
+                            <a href="#" class="p-1 c-icon-checkbox"
+                                    {{ stimulus_controller('component--icon-checkbox') }}
+                                    {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
+                                {{- form_widget(
+                                    revisionVisibilityForm.visibilities[loop.index0].visible,
+                                    {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
+                                ) -}}
+                                <i class="bi bi-eye-fill icon-checked"></i>
+                                <i class="bi bi-eye-slash icon-unchecked"></i>
+                            </a>
+                        {%- endapply -%}
+                    </div>
+                {% endif %}
             </div>
         </div>
     {% else %}
@@ -68,24 +74,30 @@
     {%- endfor -%}
 
     <div class="pt-1 pb-2 clearfix sticky-bottom bg-body">
-        <div class="float-start">
-            <a href="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionSelectionController', {id: review.id}) }}"
-               class="btn btn-outline-success" {{ stimulus_controller('button') }}>{{ 'add.revisions'|trans }}</a>
-        </div>
+        {% if review.type == 'commits' %}
+            <div class="float-start">
+                <a href="{{ path('DR\\Review\\Controller\\App\\Revision\\AttachRevisionSelectionController', {id: review.id}) }}"
+                   class="btn btn-outline-success" {{ stimulus_controller('button') }}>{{ 'add.revisions'|trans }}</a>
+            </div>
+        {% endif %}
 
-        <div class="float-start ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
-            {{ form_start(detachRevisionForm) }}
-            {{ form_widget(detachRevisionForm.detach, {attr: {class: 'btn-outline-danger btn', 'data-controller': 'button'}}) }}
-            {{ form_end(detachRevisionForm) }}
-        </div>
+        {% if detachRevisionForm %}
+            <div class="float-start ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
+                {{ form_start(detachRevisionForm) }}
+                {{ form_widget(detachRevisionForm.detach, {attr: {class: 'btn-outline-danger btn', 'data-controller': 'button'}}) }}
+                {{ form_end(detachRevisionForm) }}
+            </div>
+        {% endif %}
 
-        <div class="float-end ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
-            {{ form_start(revisionVisibilityForm) }}
-            <button class="btn btn-outline-primary" {{ stimulus_controller('button') }}>
-                <i class="bi bi-eye-fill"></i>
-                <i class="bi bi-eye-slash"></i>
-            </button>
-            {{ form_end(revisionVisibilityForm) }}
-        </div>
+        {% if revisionVisibilityForm %}
+            <div class="float-end ms-2 {% if revisionViewModel.revisions|length == 0 %}d-none{% endif %}">
+                {{ form_start(revisionVisibilityForm) }}
+                <button class="btn btn-outline-primary" {{ stimulus_controller('button') }}>
+                    <i class="bi bi-eye-fill"></i>
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+                {{ form_end(revisionVisibilityForm) }}
+            </div>
+        {% endif %}
     </div>
 </div>

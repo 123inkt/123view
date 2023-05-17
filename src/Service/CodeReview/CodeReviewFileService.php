@@ -42,11 +42,7 @@ class CodeReviewFileService
         /** @var DirectoryTreeNode<DiffFile> $fileTree */
         $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $cacheKey, $diffOptions): DirectoryTreeNode {
             // generate diff files
-            $files = $this->diffService->getDiffFiles(
-                Assert::notNull($review->getRepository()),
-                $revisions,
-                $diffOptions
-            );
+            $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, $diffOptions);
 
             // prune large diff files
             $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);
