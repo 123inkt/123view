@@ -299,4 +299,5 @@ return [
     'branch'                                      => 'Branch',
     'merged'                                      => 'merged',
     'create.branch.review'                        => 'Create branch review',
+    'branch.review'                               => 'Branch review',
 ];
