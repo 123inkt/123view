@@ -21,7 +21,7 @@ final class Version20230517064259 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
-            'ALTER TABLE code_review ADD type ENUM(\'commits\', \'branch\') DEFAULT \'commits\' NOT NULL, ADD branch_name VARCHAR(500) DEFAULT NULL'
+            'ALTER TABLE code_review ADD type ENUM(\'commits\', \'branch\') DEFAULT \'commits\' NOT NULL AFTER `description`, ADD branch_name VARCHAR(500) DEFAULT NULL AFTER project_id'
         );
     }
 
