@@ -9,6 +9,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\RevList\GitRevListService;
+use DR\Review\Utility\Arrays;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -49,6 +50,9 @@ class CodeReviewRevisionService implements LoggerAwareInterface
         }
 
         $revisions = $this->revisionRepository->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'ASC']);
+
+        // reindex array by revision id
+        $revisions = Arrays::reindex($revisions, static fn(Revision $revision) => (int)$revision->getId());
 
         return $this->revisions[$reviewId] = $revisions;
     }

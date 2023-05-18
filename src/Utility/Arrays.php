@@ -110,6 +110,25 @@ class Arrays
 
     /**
      * @template T
+     * @template K of int|string
+     *
+     * @param T[]              $items
+     * @param (callable(T): K) $callback
+     *
+     * @return array<K, T>
+     */
+    public static function reindex(array $items, callable $callback): array
+    {
+        $result = [];
+        foreach ($items as $item) {
+            $result[$callback($item)] = $item;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @template T
      *
      * @param T[] $items
      * @param T   $item
