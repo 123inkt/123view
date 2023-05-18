@@ -9,33 +9,32 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Mail\MailRecipientService;
 use DR\Review\Service\User\UserService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Mail\MailRecipientService
- * @covers ::__construct
- */
+#[CoversClass(MailRecipientService::class)]
 class MailRecipientServiceTest extends AbstractTestCase
 {
-    private UserService&MockObject           $userService;
-    private CommentMentionService&MockObject $mentionService;
-    private MailRecipientService             $service;
+    private UserService&MockObject               $userService;
+    private CommentMentionService&MockObject     $mentionService;
+    private CodeReviewRevisionService&MockObject $revisionService;
+    private MailRecipientService                 $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->userService    = $this->createMock(UserService::class);
-        $this->mentionService = $this->createMock(CommentMentionService::class);
-        $this->service        = new MailRecipientService($this->userService, $this->mentionService);
+        $this->userService     = $this->createMock(UserService::class);
+        $this->mentionService  = $this->createMock(CommentMentionService::class);
+        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->service         = new MailRecipientService($this->userService, $this->mentionService, $this->revisionService);
     }
 
-    /**
-     * @covers ::getUsersForReply
-     */
     public function testGetUsersForReply(): void
     {
         $userA = new User();
@@ -61,9 +60,6 @@ class MailRecipientServiceTest extends AbstractTestCase
         static::assertSame([$userA, $userB, $userA], $users);
     }
 
-    /**
-     * @covers ::getUserForComment
-     */
     public function testGetUserForComment(): void
     {
         $userA = new User();
@@ -80,7 +76,7 @@ class MailRecipientServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getUsersForReview
+     * @throws RepositoryException
      */
     public function testGetUsersForReview(): void
     {
@@ -102,8 +98,8 @@ class MailRecipientServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getReviewers()->add($reviewerA);
         $review->getReviewers()->add($reviewerB);
-        $review->getRevisions()->add($revision);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->userService->expects(self::once())->method('getUsersForRevisions')->with([$revision])->willReturn([$userC]);
 
         $users = $this->service->getUsersForReview($review);
