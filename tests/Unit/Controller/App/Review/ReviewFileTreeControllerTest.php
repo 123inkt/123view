@@ -11,6 +11,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
@@ -27,12 +28,14 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
     private FileTreeViewModelProvider&MockObject $viewModelProvider;
     private CodeReviewFileService&MockObject     $fileService;
     private ReviewSessionService&MockObject      $sessionService;
+    private CodeReviewRevisionService&MockObject $revisionService;
 
     protected function setUp(): void
     {
         $this->viewModelProvider = $this->createMock(FileTreeViewModelProvider::class);
         $this->fileService       = $this->createMock(CodeReviewFileService::class);
         $this->sessionService    = $this->createMock(ReviewSessionService::class);
+        $this->revisionService   = $this->createMock(CodeReviewRevisionService::class);
         parent::setUp();
     }
 
@@ -44,13 +47,13 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
         $request  = new Request(['filePath' => 'filePath']);
         $revision = new Revision();
         $review   = new CodeReview();
-        $review->getRevisions()->add($revision);
 
         /** @var DirectoryTreeNode<DiffFile> $treeNode */
         $treeNode     = new DirectoryTreeNode('node');
         $selectedFile = new DiffFile();
         $viewModel    = $this->createMock(FileTreeViewModel::class);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->fileService->expects(self::once())
             ->method('getFiles')
             ->with($review, [$revision], 'filePath', DiffComparePolicy::ALL)
@@ -67,6 +70,6 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new ReviewFileTreeController($this->viewModelProvider, $this->fileService, $this->sessionService);
+        return new ReviewFileTreeController($this->viewModelProvider, $this->fileService, $this->sessionService, $this->revisionService);
     }
 }
