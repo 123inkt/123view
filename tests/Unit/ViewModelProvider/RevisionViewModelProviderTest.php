@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ViewModelProvider;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -89,6 +90,27 @@ class RevisionViewModelProviderTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->createMock(FormInterface::class));
+
+        $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
+        static::assertSame([$revision], $viewModel->revisions);
+    }
+
+    /**
+     * @covers ::getRevisionViewModel
+     */
+    public function testGetRevisionViewModelBranchReview(): void
+    {
+        $revision   = new Revision();
+        $visibility = new RevisionVisibility();
+        $review     = new CodeReview();
+        $review->setId(123);
+        $review->setType(CodeReviewType::BRANCH);
+
+        $this->visibilityService->expects(self::once())
+            ->method('getRevisionVisibilities')
+            ->with($review, [$revision], $this->user)
+            ->willReturn([$visibility]);
+        $this->formFactory->expects(self::never())->method('create');
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);
