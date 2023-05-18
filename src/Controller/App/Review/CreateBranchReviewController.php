@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -40,6 +41,11 @@ class CreateBranchReviewController extends AbstractController
         $branchName = $request->request->get('branch', '');
         if (trim($branchName) === '') {
             throw new BadRequestHttpException('Branch request property is mandatory');
+        }
+
+        $review = $this->reviewRepository->findOneBy(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => $branchName]);
+        if ($review !== null) {
+            throw new BadRequestHttpException('A branch review already exists');
         }
 
         $review   = $this->reviewCreationService->createFromBranch($repository, $branchName);
