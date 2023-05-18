@@ -5,6 +5,9 @@ namespace DR\Review\Utility;
 
 use RuntimeException;
 
+/**
+ * @suppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class Arrays
 {
     /**
