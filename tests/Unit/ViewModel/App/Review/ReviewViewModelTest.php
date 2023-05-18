@@ -11,42 +11,16 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewViewModel
- * @covers ::__construct
- */
+#[CoversClass(ReviewViewModel::class)]
 class ReviewViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::isDescriptionVisible
-     * @covers ::setDescriptionVisible
-     * @covers ::setSidebarTabMode
-     * @covers ::getSidebarTabMode
-     * @covers ::setAddReviewerForm
-     * @covers ::getAddReviewerForm
-     * @covers ::getRevisionViewModel
-     * @covers ::setRevisionViewModel
-     * @covers ::setFileTreeModel
-     * @covers ::getFileTreeModel
-     * @covers ::getFileDiffViewModel
-     * @covers ::setFileDiffViewModel
-     * @covers ::getReviewSummaryViewModel
-     * @covers ::setReviewSummaryViewModel
-     * @covers ::getVisibleRevisionCount
-     * @covers ::setVisibleRevisionCount
-     * @covers ::getOpenComments
-     * @covers ::getAuthors
-     * @covers ::getReviewer
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(ReviewViewModel::class);
     }
 
-    /**
-     * @covers ::getOpenComments
-     */
     public function testGetOpenComments(): void
     {
         $commentA = new Comment();
@@ -60,13 +34,10 @@ class ReviewViewModelTest extends AbstractTestCase
         $review->getComments()->add($commentB);
         $review->getComments()->add($commentC);
 
-        $model = new ReviewViewModel($review);
+        $model = new ReviewViewModel($review, []);
         static::assertSame(2, $model->getOpenComments());
     }
 
-    /**
-     * @covers ::getAuthors
-     */
     public function testGetAuthors(): void
     {
         $revision = new Revision();
@@ -74,16 +45,12 @@ class ReviewViewModelTest extends AbstractTestCase
         $revision->setAuthorName('Sherlock Holmes');
 
         $review = new CodeReview();
-        $review->getRevisions()->add($revision);
 
-        $model = new ReviewViewModel($review);
+        $model = new ReviewViewModel($review, [$revision]);
 
         static::assertSame(['holmes@example.com' => 'Sherlock Holmes'], $model->getAuthors());
     }
 
-    /**
-     * @covers ::getReviewer
-     */
     public function testIsReviewer(): void
     {
         $userA = (new User())->setId(5);
@@ -95,7 +62,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getReviewers()->add($reviewer);
 
-        $model = new ReviewViewModel($review);
+        $model = new ReviewViewModel($review, []);
 
         static::assertNotNull($model->getReviewer($userA));
         static::assertNull($model->getReviewer($userB));
