@@ -47,9 +47,8 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setRepository($repository);
         $options = new FileDiffOptions(10, DiffComparePolicy::ALL);
-        $files   = [new DiffFile()];
 
-        /** @var DirectoryTreeNode<DiffFile> $treeNode */
+        /** @var DirectoryTreeNode<DiffFile>&MockObject $treeNode */
         $treeNode = $this->createMock(DirectoryTreeNode::class);
 
         $this->diffService->expects(self::never())->method('getDiffForRevisions');
@@ -76,7 +75,7 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
         $revisions = [new Revision()];
         $files     = [new DiffFile()];
 
-        /** @var DirectoryTreeNode<DiffFile> $treeNode */
+        /** @var DirectoryTreeNode<DiffFile>&MockObject $treeNode */
         $treeNode = $this->createMock(DirectoryTreeNode::class);
 
         $this->diffService->expects(self::once())->method('getDiffForBranch')->with($repository, $revisions, 'branch', $options)->willReturn($files);
@@ -101,7 +100,7 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
         $revisions = [new Revision()];
         $files     = [new DiffFile()];
 
-        /** @var DirectoryTreeNode<DiffFile> $treeNode */
+        /** @var DirectoryTreeNode<DiffFile>&MockObject $treeNode */
         $treeNode = $this->createMock(DirectoryTreeNode::class);
 
         $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, $revisions, $options)->willReturn($files);
