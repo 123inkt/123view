@@ -68,7 +68,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->will(static::onConsecutiveCalls([$activityA, $this->user], [$activityA, $this->user]))
             ->willReturn('message', null);
 
-        $viewModel = $this->provider->getTimelineViewModel($review);
+        $viewModel = $this->provider->getTimelineViewModel($review, []);
         static::assertCount(1, $viewModel->entries);
 
         $timeline = $viewModel->entries[0];
@@ -129,7 +129,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->with($activity, $this->user)
             ->willReturn('message');
 
-        $viewModel = $this->provider->getTimelineViewModel($review);
+        $viewModel = $this->provider->getTimelineViewModel($review, []);
         static::assertCount(1, $viewModel->entries);
 
         $timeline = $viewModel->entries[0];
