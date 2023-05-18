@@ -12,6 +12,7 @@ use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
@@ -27,17 +28,19 @@ use Throwable;
 class MailCommentViewModelProviderTest extends AbstractTestCase
 {
     private ReviewDiffServiceInterface&MockObject $diffService;
+    private CodeReviewRevisionService&MockObject  $revisionService;
     private DiffFinder&MockObject                 $diffFinder;
     private MailCommentViewModelProvider          $provider;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->diffService = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->diffFinder  = $this->createMock(DiffFinder::class);
-        $translator        = $this->createMock(TranslatorInterface::class);
+        $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->diffFinder      = $this->createMock(DiffFinder::class);
+        $translator            = $this->createMock(TranslatorInterface::class);
         $translator->method('trans')->willReturnArgument(0);
-        $this->provider = new MailCommentViewModelProvider($this->diffService, $this->diffFinder, $translator);
+        $this->provider = new MailCommentViewModelProvider($this->diffService, $this->revisionService, $this->diffFinder, $translator);
     }
 
     /**
@@ -55,11 +58,11 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
         $review->getComments()->add($comment);
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
         $this->diffFinder->expects(self::once())
@@ -95,11 +98,11 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
         $review->getComments()->add($comment);
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
         $this->diffFinder->expects(self::once())
@@ -135,12 +138,12 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
         $review->getComments()->add($comment);
         $user = new User();
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
         $this->diffFinder->expects(self::once())
