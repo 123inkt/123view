@@ -38,7 +38,7 @@ class CreateBranchReviewController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity(expr: 'repository.find(repositoryId)')] Repository $repository): Response
     {
-        $branchName = $request->request->get('branch', '');
+        $branchName = (string)$request->request->get('branch', '');
         if (trim($branchName) === '') {
             throw new BadRequestHttpException('Branch request property is mandatory');
         }
