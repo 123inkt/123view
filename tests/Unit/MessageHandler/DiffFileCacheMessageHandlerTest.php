@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\MessageHandler;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -54,6 +55,21 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     public function testHandleEventNoRevisions(): void
     {
         $review = new CodeReview();
+
+        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects(self::never())->method('getDiffForRevisions');
+
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
+    }
+
+    /**
+     * @covers ::handleEvent
+     * @throws Throwable
+     */
+    public function testHandleEventBranchReview(): void
+    {
+        $review = new CodeReview();
+        $review->setType(CodeReviewType::BRANCH);
 
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
         $this->diffService->expects(self::never())->method('getDiffForRevisions');
