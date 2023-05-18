@@ -83,7 +83,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
                 new ReturnCallback(static fn($repository, $callback) => $diffFileA)
             );
         $this->diffFileUpdater->expects(self::once())->method('update')->with([$diffFileA])->willReturn([$diffFileA]);
-        $this->diffService->expects(self::once())->method('getDiffFiles')
+        $this->diffService->expects(self::once())->method('getDiffForRevisions')
             ->with($repository, [$revision], new FileDiffOptions(9999999, DiffComparePolicy::IGNORE))
             ->willReturn([$diffFileA]);
 

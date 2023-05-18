@@ -36,7 +36,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesEmptyRevisions(): void
@@ -45,11 +45,11 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $repository->setId(123);
 
         $this->diffService->expects(self::never())->method('getDiffFromRevision');
-        static::assertSame([], $this->service->getDiffFiles($repository, []));
+        static::assertSame([], $this->service->getDiffForRevisions($repository, []));
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesSingleRevision(): void
@@ -61,11 +61,11 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $diffFile = new DiffFile();
 
         $this->diffService->expects(self::once())->method('getDiffFromRevision')->with($revision)->willReturn([$diffFile]);
-        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revision]));
+        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision]));
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesMultipleRevisionsFirstStrategy(): void
@@ -79,11 +79,11 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $this->diffService->expects(self::never())->method('getDiffFromRevision');
         $this->strategyA->expects(self::once())->method('getDiffFiles')->with($repository, [$revisionA, $revisionB])->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revisionA, $revisionB]));
+        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revisionA, $revisionB]));
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesMultipleRevisionsSecondStrategy(): void
@@ -98,11 +98,11 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $this->strategyA->expects(self::once())->method('getDiffFiles')->willThrowException(new RuntimeException());
         $this->strategyB->expects(self::once())->method('getDiffFiles')->with($repository, [$revisionA, $revisionB])->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revisionA, $revisionB]));
+        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revisionA, $revisionB]));
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesMultipleRevisionsNoStrategy(): void
@@ -117,6 +117,6 @@ class ReviewDiffServiceTest extends AbstractTestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to fetch diff for revisions. All strategies exhausted');
-        $this->service->getDiffFiles($repository, [$revisionA, $revisionB]);
+        $this->service->getDiffForRevisions($repository, [$revisionA, $revisionB]);
     }
 }

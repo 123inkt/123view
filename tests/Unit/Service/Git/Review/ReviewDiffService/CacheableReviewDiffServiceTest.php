@@ -34,18 +34,18 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesWithoutRevisions(): void
     {
         $this->cache->expects(self::never())->method('get');
 
-        static::assertSame([], $this->service->getDiffFiles(new Repository(), []));
+        static::assertSame([], $this->service->getDiffForRevisions(new Repository(), []));
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFilesWithRevisions(): void
@@ -61,8 +61,8 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
             ->method('get')
             ->with('diff-files-123-hash-fdo-20-trim')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFile]);
+        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revision], $options));
+        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision], $options));
     }
 }

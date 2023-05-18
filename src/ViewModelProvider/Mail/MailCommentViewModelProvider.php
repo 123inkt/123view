@@ -35,7 +35,7 @@ class MailCommentViewModelProvider
     ): CommentViewModel {
         /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
-        $files         = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
+        $files         = $this->diffService->getDiffForRevisions(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
 
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
@@ -42,7 +43,12 @@ class CodeReviewFileService
         /** @var DirectoryTreeNode<DiffFile> $fileTree */
         $fileTree = $this->revisionCache->get($cacheKey, function () use ($review, $revisions, $cacheKey, $diffOptions): DirectoryTreeNode {
             // generate diff files
-            $files = $this->diffService->getDiffFiles(Assert::notNull($review->getRepository()), $revisions, $diffOptions);
+            if ($review->getType() === CodeReviewType::BRANCH) {
+                $branchName = (string)$review->getReferenceId();
+                $files      = $this->diffService->getDiffForBranch(Assert::notNull($review->getRepository()), $branchName, $diffOptions);
+            } else {
+                $files = $this->diffService->getDiffForRevisions(Assert::notNull($review->getRepository()), $revisions, $diffOptions);
+            }
 
             // prune large diff files
             $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);

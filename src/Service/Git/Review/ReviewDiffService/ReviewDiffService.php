@@ -29,7 +29,7 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
     /**
      * @inheritDoc
      */
-    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
+    public function getDiffForRevisions(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
     {
         if (count($revisions) === 0) {
             return $revisions;
@@ -58,5 +58,13 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
             0,
             $finalException
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDiffForBranch(Repository $repository, string $branchName, ?FileDiffOptions $options = null): array
+    {
+        return [];
     }
 }

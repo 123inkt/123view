@@ -55,7 +55,7 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
         }
 
         // fetch diff files for current review and trigger cache refresh
-        $this->diffService->getDiffFiles(
+        $this->diffService->getDiffForRevisions(
             Assert::notNull($review->getRepository()),
             $revisions->toArray(),
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL)

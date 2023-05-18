@@ -32,7 +32,7 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
+     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
     public function testGetDiffFiles(): void
@@ -47,8 +47,8 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->diffService->expects(self::once())->method('getDiffFiles')->with($repository, [$revision])->willReturn([$diffFile]);
+        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffFiles($repository, [$revision]));
+        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision]));
     }
 }

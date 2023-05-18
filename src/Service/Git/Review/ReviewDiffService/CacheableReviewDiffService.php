@@ -17,7 +17,7 @@ class CacheableReviewDiffService implements ReviewDiffServiceInterface
     /**
      * @inheritDoc
      */
-    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
+    public function getDiffForRevisions(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array
     {
         if (count($revisions) === 0) {
             return [];
@@ -26,8 +26,18 @@ class CacheableReviewDiffService implements ReviewDiffServiceInterface
         // gather hashes
         $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
 
-        $key = sprintf('diff-files-%s-%s-%s', $repository->getId(), implode('-', $hashes), $options);
+        $key = sprintf('diff-files-revision-%s-%s-%s', $repository->getId(), implode('-', $hashes), $options);
 
-        return $this->revisionCache->get($key, fn() => $this->diffService->getDiffFiles($repository, $revisions, $options));
+        return $this->revisionCache->get($key, fn() => $this->diffService->getDiffForRevisions($repository, $revisions, $options));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDiffForBranch(Repository $repository, string $branchName, ?FileDiffOptions $options = null): array
+    {
+        $key = sprintf('diff-files-branch %s-%s-%s', $repository->getId(), $branchName, $options);
+
+        return $this->revisionCache->get($key, fn() => $this->diffService->getDiffForBranch($repository, $branchName, $options));
     }
 }

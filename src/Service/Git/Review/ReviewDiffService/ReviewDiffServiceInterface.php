@@ -17,5 +17,11 @@ interface ReviewDiffServiceInterface
      * @return DiffFile[]
      * @throws Throwable
      */
-    public function getDiffFiles(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array;
+    public function getDiffForRevisions(Repository $repository, array $revisions, ?FileDiffOptions $options = null): array;
+
+    /**
+     * @return DiffFile[]
+     * @throws Throwable
+     */
+    public function getDiffForBranch(Repository $repository, string $branchName, ?FileDiffOptions $options = null): array;
 }
