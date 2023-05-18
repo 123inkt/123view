@@ -12,6 +12,7 @@ use DR\Review\Service\Git\RevList\GitRevListService;
 use DR\Review\Utility\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class CodeReviewRevisionService implements LoggerAwareInterface
 {
@@ -41,7 +42,7 @@ class CodeReviewRevisionService implements LoggerAwareInterface
         $repository = Assert::notNull($review->getRepository());
         try {
             $hashes = $this->revListService->getCommitsAheadOfMaster($repository, Assert::notNull($review->getReferenceId()));
-        } catch (RepositoryException $e) {
+        } catch (RepositoryException|ProcessFailedException $e) {
             $this->logger?->info('Unable to get revisions for branch review: ' . $review->getId(), ['exception' => $e]);
 
             return [];
