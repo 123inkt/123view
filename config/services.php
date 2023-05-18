@@ -27,6 +27,7 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
+use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
@@ -53,6 +54,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
+use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -156,6 +158,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
     $services->set(ReviewRouter::class)->decorate('router')->args([service('.inner')]);
+    $services->set(CodeReviewFileService::class)->arg('$revisionCache', service(CacheInterface::class . ' $revisionCache'));
 
     // Code inspection parsers
     $services->set(CheckStyleIssueParser::class)->tag('code_inspection_issue_parser', ['key' => CheckStyleIssueParser::FORMAT]);
