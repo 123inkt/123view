@@ -5,6 +5,7 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
@@ -27,7 +28,10 @@ class ReviewTimelineViewModelProvider
     ) {
     }
 
-    public function getTimelineViewModel(CodeReview $review): TimelineViewModel
+    /**
+     * @param Revision[] $revisions
+     */
+    public function getTimelineViewModel(CodeReview $review, array $revisions): TimelineViewModel
     {
         $activities      = $this->activityRepository->findBy(['review' => $review->getId()], ['createTimestamp' => 'ASC']);
         $timelineEntries = [];
@@ -43,7 +47,7 @@ class ReviewTimelineViewModelProvider
             if ($activity->getEventName() === CommentAdded::NAME) {
                 $entry->setComment($review->getComments()->get((int)$activity->getDataValue('commentId')));
             } elseif ($activity->getEventName() === ReviewRevisionAdded::NAME) {
-                $entry->setRevision($review->getRevisions()->get((int)$activity->getDataValue('revisionId')));
+                $entry->setRevision($revisions[(int)$activity->getDataValue('revisionId')] ?? null);
             }
         }
 

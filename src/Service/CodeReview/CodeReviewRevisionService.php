@@ -10,16 +10,22 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\RevList\GitRevListService;
 use DR\Review\Utility\Assert;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class CodeReviewRevisionService
+class CodeReviewRevisionService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /** @var array<int, Revision[]> */
+    private array $revisions = [];
+
     public function __construct(private readonly GitRevListService $revListService, private readonly RevisionRepository $revisionRepository)
     {
     }
 
     /**
      * @return Revision[]
-     * @throws RepositoryException
      */
     public function getRevisions(CodeReview $review): array
     {
@@ -27,9 +33,22 @@ class CodeReviewRevisionService
             return $review->getRevisions()->toArray();
         }
 
-        $repository = Assert::notNull($review->getRepository());
-        $hashes     = $this->revListService->getCommitsAheadOfMaster($repository, Assert::notNull($review->getReferenceId()));
+        $reviewId = (int)$review->getId();
+        if (isset($this->revisions[$reviewId])) {
+            return $this->revisions[$reviewId];
+        }
 
-        return $this->revisionRepository->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'ASC']);
+        $repository = Assert::notNull($review->getRepository());
+        try {
+            $hashes = $this->revListService->getCommitsAheadOfMaster($repository, Assert::notNull($review->getReferenceId()));
+        } catch (RepositoryException $e) {
+            $this->logger?->info('Unable to get revisions for branch review: ' . $review->getId(), ['exception' => $e]);
+
+            return [];
+        }
+
+        $revisions = $this->revisionRepository->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'ASC']);
+
+        return $this->revisions[$reviewId] = $revisions;
     }
 }

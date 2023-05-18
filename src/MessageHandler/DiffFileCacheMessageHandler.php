@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
@@ -34,6 +35,10 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
         if ($review === null) {
             $this->logger?->info('DiffFileCacheMessageHandler: no review available for id: {review}', ['review' => $event->getReviewId()]);
 
+            return;
+        }
+
+        if ($review->getType() === CodeReviewType::BRANCH) {
             return;
         }
 

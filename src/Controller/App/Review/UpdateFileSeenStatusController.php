@@ -7,6 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
@@ -23,7 +24,8 @@ class UpdateFileSeenStatusController extends AbstractController
     public function __construct(
         private readonly FileSeenStatusService $fileSeenStatusService,
         private readonly ReviewDiffServiceInterface $diffService,
-        private readonly ReviewSessionService $sessionService
+        private readonly ReviewSessionService $sessionService,
+        private readonly CodeReviewRevisionService $revisionService,
     ) {
     }
 
@@ -38,7 +40,7 @@ class UpdateFileSeenStatusController extends AbstractController
         $seenStatus = $request->getSeenStatus();
         $files      = $this->diffService->getDiffForRevisions(
             Assert::notNull($review->getRepository()),
-            $review->getRevisions()->toArray(),
+            $this->revisionService->getRevisions($review),
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $this->sessionService->getDiffComparePolicyForUser())
         );
 

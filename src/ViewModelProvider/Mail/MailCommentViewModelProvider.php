@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Utility\Assert;
@@ -19,6 +20,7 @@ class MailCommentViewModelProvider
 {
     public function __construct(
         private readonly ReviewDiffServiceInterface $diffService,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly DiffFinder $diffFinder,
         private readonly TranslatorInterface $translator
     ) {
@@ -35,7 +37,8 @@ class MailCommentViewModelProvider
     ): CommentViewModel {
         /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
-        $files         = $this->diffService->getDiffForRevisions(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
+        $revisions     = $this->revisionService->getRevisions($review);
+        $files         = $this->diffService->getDiffForRevisions(Assert::notNull($review->getRepository()), $revisions);
 
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);

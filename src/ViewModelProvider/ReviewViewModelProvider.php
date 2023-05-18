@@ -50,7 +50,7 @@ class ReviewViewModelProvider
 
         // get timeline or file-diff view model
         if ($selectedFile === null) {
-            $viewModel->setReviewSummaryViewModel($this->summaryViewModelProvider->getSummaryViewModel($review, $fileTree));
+            $viewModel->setReviewSummaryViewModel($this->summaryViewModelProvider->getSummaryViewModel($review, $revisions, $fileTree));
             $viewModel->setDescriptionVisible(true);
         } else {
             $viewModel->setFileDiffViewModel(

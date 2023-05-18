@@ -24,8 +24,8 @@ class LockableReviewDiffService implements ReviewDiffServiceInterface
     /**
      * @inheritDoc
      */
-    public function getDiffForBranch(Repository $repository, string $branchName, ?FileDiffOptions $options = null): array
+    public function getDiffForBranch(Repository $repository, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
     {
-        return $this->lockManager->start($repository, fn() => $this->diffService->getDiffForBranch($repository, $branchName, $options));
+        return $this->lockManager->start($repository, fn() => $this->diffService->getDiffForBranch($repository, $revisions, $branchName, $options));
     }
 }

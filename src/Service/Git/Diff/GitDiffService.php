@@ -106,4 +106,34 @@ class GitDiffService implements LoggerAwareInterface
         // parse files
         return $this->parser->parse($output);
     }
+
+    /**
+     * @return DiffFile[]
+     * @throws RepositoryException|ParseException
+     */
+    public function getBundledDiffFromBranch(
+        Repository $repository,
+        string $sourceBranch,
+        string $targetBranch,
+        ?FileDiffOptions $options = null
+    ): array {
+        // create git diff HEAD command
+        $commandBuilder = $this->builderFactory->createDiff()
+            ->hash($targetBranch . '...' . $sourceBranch)
+            ->diffAlgorithm(DiffAlgorithmType::MYERS)
+            ->unified($options?->unifiedDiffLines ?? 10)
+            ->ignoreCrAtEol()
+            ->ignoreSpaceAtEol();
+
+        if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
+            $commandBuilder->ignoreSpaceChange();
+        } elseif ($options?->comparePolicy === DiffComparePolicy::IGNORE) {
+            $commandBuilder->ignoreAllSpace();
+        }
+
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+        // parse files
+        return $this->parser->parse($output);
+    }
 }

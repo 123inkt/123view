@@ -63,8 +63,8 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
     /**
      * @inheritDoc
      */
-    public function getDiffForBranch(Repository $repository, string $branchName, ?FileDiffOptions $options = null): array
+    public function getDiffForBranch(Repository $repository, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
     {
-        return [];
+        return $this->diffService->getBundledDiffFromBranch($repository, $branchName, 'origin/' . $repository->getMainBranchName(), $options);
     }
 }

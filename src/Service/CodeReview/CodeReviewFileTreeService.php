@@ -36,7 +36,7 @@ class CodeReviewFileTreeService
 
         // generate diff files
         if ($review->getType() === CodeReviewType::BRANCH) {
-            $files = $this->diffService->getDiffForBranch($repository, (string)$review->getReferenceId(), $diffOptions);
+            $files = $this->diffService->getDiffForBranch($repository, $revisions, (string)$review->getReferenceId(), $diffOptions);
         } else {
             $files = $this->diffService->getDiffForRevisions($repository, $revisions, $diffOptions);
         }
