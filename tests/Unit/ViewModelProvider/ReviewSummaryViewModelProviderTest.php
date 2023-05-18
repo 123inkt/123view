@@ -45,7 +45,6 @@ class ReviewSummaryViewModelProviderTest extends AbstractTestCase
         $revision   = new Revision();
         $review     = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
 
         $file                 = new DiffFile();
         $file->filePathBefore = 'file/path/before';
@@ -62,6 +61,6 @@ class ReviewSummaryViewModelProviderTest extends AbstractTestCase
             ->willReturn([$issue]);
         $this->timelineModelProvider->expects(self::once())->method('getTimelineViewModel')->with($review);
 
-        $this->provider->getSummaryViewModel($review, $tree);
+        $this->provider->getSummaryViewModel($review, [$revision], $tree);
     }
 }
