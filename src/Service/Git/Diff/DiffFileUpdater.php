@@ -12,7 +12,7 @@ class DiffFileUpdater
     /**
      * @param DiffFile[] $files
      *
-     * @return  DiffFile[]
+     * @return DiffFile[]
      */
     public function update(array $files, int $visibleDiffLines, int $maxInvisibleLines): array
     {

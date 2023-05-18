@@ -41,8 +41,7 @@ class CodeReviewFileService
             $files    = $fileTree->getFilesRecursive();
         } else {
             // generate diff files tree
-            $fileTree = $this->fileTreeService->getFileTree($review, $revisions, $diffOptions);
-            $files    = $fileTree->getFilesRecursive();
+            [$fileTree, $files] = $this->fileTreeService->getFileTree($review, $revisions, $diffOptions);
 
             // add tree to cache
             $this->revisionCache->get($cacheKey, static fn() => $fileTree);

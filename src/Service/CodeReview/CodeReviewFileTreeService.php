@@ -27,10 +27,10 @@ class CodeReviewFileTreeService
     /**
      * @param Revision[] $revisions
      *
-     * @return DirectoryTreeNode<DiffFile>
+     * @return array{0: DirectoryTreeNode<DiffFile>, 1: DiffFile[]}
      * @throws Throwable
      */
-    public function getFileTree(CodeReview $review, array $revisions, ?FileDiffOptions $diffOptions = null): DirectoryTreeNode
+    public function getFileTree(CodeReview $review, array $revisions, ?FileDiffOptions $diffOptions = null): array
     {
         $repository = Assert::notNull($review->getRepository());
 
@@ -45,8 +45,10 @@ class CodeReviewFileTreeService
         $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);
 
         // generate file tree
-        return $this->treeGenerator->generate($files)
+        $fileTree = $this->treeGenerator->generate($files)
             ->flatten()
             ->sort(static fn(DiffFile $left, DiffFile $right) => strcmp($left->getFilename(), $right->getFilename()));
+
+        return [$fileTree, $files];
     }
 }
