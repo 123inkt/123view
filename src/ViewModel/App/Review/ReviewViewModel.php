@@ -6,6 +6,7 @@ namespace DR\Review\ViewModel\App\Review;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use Symfony\Component\Form\FormView;
@@ -24,7 +25,10 @@ class ReviewViewModel
     private bool                     $descriptionVisible     = true;
     private int                      $visibleRevisionCount   = 0;
 
-    public function __construct(public readonly CodeReview $review)
+    /**
+     * @param Revision[] $revisions
+     */
+    public function __construct(public readonly CodeReview $review, public readonly array $revisions)
     {
     }
 
@@ -134,7 +138,7 @@ class ReviewViewModel
     public function getAuthors(): array
     {
         $authors = [];
-        foreach ($this->review->getRevisions() as $revision) {
+        foreach ($this->revisions as $revision) {
             $authors[(string)$revision->getAuthorEmail()] = (string)$revision->getAuthorName();
         }
 

@@ -33,8 +33,8 @@ class ReviewViewModelProvider
      */
     public function getViewModel(CodeReview $review, ReviewRequest $request): ReviewViewModel
     {
-        $viewModel = new ReviewViewModel($review);
         $revisions = $this->revisionService->getRevisions($review);
+        $viewModel = new ReviewViewModel($review, $revisions);
 
         // visible revisions
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
