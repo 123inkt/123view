@@ -24,7 +24,7 @@ class CacheableGitRevListService
      */
     public function getCommitsAheadOfMaster(Repository $repository, string $branchName): array
     {
-        $cacheKey = hash('sha256', sprintf('%s-%s', $repository->getId(), $branchName));
+        $cacheKey = 'git-rev-list-' . hash('sha256', sprintf('%s-%s', $repository->getId(), $branchName));
 
         /** @var string[] $result */
         $result = $this->cache->get(
