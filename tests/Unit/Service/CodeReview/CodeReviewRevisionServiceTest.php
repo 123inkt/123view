@@ -10,7 +10,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\Git\RevList\GitRevListService;
+use DR\Review\Service\Git\RevList\CacheableGitRevListService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,14 +18,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(CodeReviewRevisionService::class)]
 class CodeReviewRevisionServiceTest extends AbstractTestCase
 {
-    private GitRevListService&MockObject  $revListService;
-    private RevisionRepository&MockObject $revisionRepository;
-    private CodeReviewRevisionService     $service;
+    private CacheableGitRevListService&MockObject $revListService;
+    private RevisionRepository&MockObject         $revisionRepository;
+    private CodeReviewRevisionService             $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->revListService     = $this->createMock(GitRevListService::class);
+        $this->revListService     = $this->createMock(CacheableGitRevListService::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
         $this->service            = new CodeReviewRevisionService($this->revListService, $this->revisionRepository);
     }
