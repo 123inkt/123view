@@ -11,6 +11,9 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheableGitRevListService
 {
+    private const MIN_CACHE_TIME = 60;
+    private const MAX_CACHE_TIME = 180;
+
     public function __construct(private readonly CacheInterface $cache, private readonly LockableGitRevListService $revListService)
     {
     }
@@ -32,7 +35,7 @@ class CacheableGitRevListService
                 $duration  = (int)(microtime(true) - $startTime);
 
                 // set the cache duration 5 times the duration of git command with minimum of 60 seconds and maximum of 3 minutes
-                $item->expiresAfter(min(180, max(60, $duration * 4)));
+                $item->expiresAfter(min(self::MAX_CACHE_TIME, max(self::MIN_CACHE_TIME, $duration * 5)));
 
                 return $branches;
             }
