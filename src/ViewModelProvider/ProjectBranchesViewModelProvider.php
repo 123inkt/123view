@@ -13,10 +13,8 @@ use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
 
 class ProjectBranchesViewModelProvider
 {
-    public function __construct(
-        private readonly GitBranchService $branchService,
-        private readonly CodeReviewRepository $reviewRepository,
-    ) {
+    public function __construct(private readonly GitBranchService $branchService, private readonly CodeReviewRepository $reviewRepository)
+    {
     }
 
     /**
