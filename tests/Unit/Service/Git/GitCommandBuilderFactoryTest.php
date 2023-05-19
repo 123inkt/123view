@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git;
 
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\GitCommandBuilderFactory
- * @covers ::__construct
- */
+#[CoversClass(GitCommandBuilderFactory::class)]
 class GitCommandBuilderFactoryTest extends AbstractTestCase
 {
     private GitCommandBuilderFactory $factory;
@@ -20,19 +18,6 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory = new GitCommandBuilderFactory('git');
     }
 
-    /**
-     * @covers ::createCheryPick
-     * @covers ::createCheckout
-     * @covers ::createLog
-     * @covers ::createFetch
-     * @covers ::createAdd
-     * @covers ::createBranch
-     * @covers ::createShow
-     * @covers ::createDiff
-     * @covers ::createDiffTree
-     * @covers ::createReset
-     * @covers ::createClean
-     */
     public function testCreate(): void
     {
         $this->factory->createCheryPick();
@@ -45,6 +30,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createBranch();
         $this->factory->createShow();
         $this->factory->createReset();
+        $this->factory->createRevList();
         $this->factory->createClean();
         $this->addToAssertionCount(1);
     }
