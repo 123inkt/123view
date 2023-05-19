@@ -35,6 +35,7 @@
 
         {% for branch in branchesViewModel.branches %}
             {% if not (branch ends with 'HEAD') %}
+                {% set review = branchesViewModel.review(branch) %}
                 <tr>
                     <td>
                         {{- branch -}}
@@ -45,13 +46,19 @@
                     </td>
                     <td class="col-create-branch text-center">
                         {% if branch != 'origin/' ~ repository.mainBranchName %}
-                            <form method="post"
-                                  action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
-                                <input type="hidden" name="branch" value="{{ branch }}">
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    {{ 'create.branch.review'|trans }}
-                                </button>
-                            </form>
+                            {% if review %}
+                                <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                                    CR-{{ review.projectId }}
+                                </a>
+                            {% else %}
+                                <form method="post"
+                                      action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
+                                    <input type="hidden" name="branch" value="{{ branch }}">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        {{ 'create.branch.review'|trans }}
+                                    </button>
+                                </form>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
