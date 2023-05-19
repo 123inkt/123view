@@ -3,7 +3,7 @@
 <div class="review-grid-header">
     <h3 class="m-0 overflow-hidden review-heading">
         {% if review.type == 'branch' %}
-            <button class="btn btn-primary btn-sm">{{ 'branch.review'|trans }}</button>
+            <button class="btn btn-primary btn-sm" title="{{ review.referenceId }}">{{ 'branch.review'|trans }}</button>
         {% endif %}
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
 
