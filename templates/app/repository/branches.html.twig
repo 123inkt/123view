@@ -23,7 +23,7 @@
         </ul>
     </div>
 
-    <table class="table table-bordered table-hover table-sm">
+    <table class="table table-bordered table-hover table-sm repository-branch-list">
         <thead>
         <tr>
             <th scope="col">{{ 'branch'|trans }}</th>
@@ -43,14 +43,16 @@
                             <span class="badge rounded-pill text-bg-primary">{{ 'merged'|trans }}</span>
                         {% endif %}
                     </td>
-                    <td>
-                        <form method="post"
-                              action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
-                            <input type="hidden" name="branch" value="{{ branch }}">
-                            <button type="submit" class="btn btn-outline-success btn-sm" title="{{ 'create.branch.review'|trans }}">
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </form>
+                    <td class="col-create-branch text-center">
+                        {% if branch != 'origin/' ~ repository.mainBranchName %}
+                            <form method="post"
+                                  action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
+                                <input type="hidden" name="branch" value="{{ branch }}">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    {{ 'create.branch.review'|trans }}
+                                </button>
+                            </form>
+                        {% endif %}
                     </td>
                 </tr>
             {% endif %}
