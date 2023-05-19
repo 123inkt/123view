@@ -11,35 +11,11 @@ use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\CodeReview
- * @covers ::__construct
- */
+#[CoversClass(CodeReview::class)]
 class CodeReviewTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::getProjectId
-     * @covers ::setProjectId
-     * @covers ::getReferenceId
-     * @covers ::setReferenceId
-     * @covers ::getTitle
-     * @covers ::setTitle
-     * @covers ::getDescription
-     * @covers ::setDescription
-     * @covers ::getState
-     * @covers ::setState
-     * @covers ::getCreateTimestamp
-     * @covers ::setCreateTimestamp
-     * @covers ::getUpdateTimestamp
-     * @covers ::setUpdateTimestamp
-     * @covers ::getRepository
-     * @covers ::setRepository
-     * @covers ::getActors
-     * @covers ::setActors
-     */
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
@@ -47,11 +23,6 @@ class CodeReviewTest extends AbstractTestCase
         static::assertAccessorPairs(CodeReview::class, $config);
     }
 
-    /**
-     * @covers ::getRevisions
-     * @covers ::setRevisions
-     * @covers ::addRevision
-     */
     public function testRevisions(): void
     {
         /** @var ArrayCollection<int, Revision> $collection */
@@ -69,10 +40,6 @@ class CodeReviewTest extends AbstractTestCase
         static::assertSame($revision, $collection->first());
     }
 
-    /**
-     * @covers ::isAccepted
-     * @covers ::getReviewersState
-     */
     public function testIsAccepted(): void
     {
         $review = new CodeReview();
@@ -86,10 +53,6 @@ class CodeReviewTest extends AbstractTestCase
         static::assertTrue($review->isAccepted());
     }
 
-    /**
-     * @covers ::isRejected
-     * @covers ::getReviewersState
-     */
     public function testIsRejected(): void
     {
         $review = new CodeReview();
@@ -104,9 +67,6 @@ class CodeReviewTest extends AbstractTestCase
         static::assertSame(CodeReviewerStateType::REJECTED, $review->getReviewersState());
     }
 
-    /**
-     * @covers ::getReviewer
-     */
     public function testGetReviewer(): void
     {
         $userA = new User();
@@ -123,10 +83,6 @@ class CodeReviewTest extends AbstractTestCase
         static::assertNull($review->getReviewer($userB));
     }
 
-    /**
-     * @covers ::getReviewers
-     * @covers ::setReviewers
-     */
     public function testReviewers(): void
     {
         $collection = new ArrayCollection();
@@ -138,10 +94,6 @@ class CodeReviewTest extends AbstractTestCase
         static::assertSame($collection, $review->getReviewers());
     }
 
-    /**
-     * @covers ::getComments
-     * @covers ::setComments
-     */
     public function testComments(): void
     {
         $collection = new ArrayCollection();

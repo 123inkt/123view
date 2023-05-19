@@ -14,6 +14,7 @@ use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -40,6 +41,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
     private FileTreeViewModelProvider&MockObject      $fileTreeModelProvider;
     private RevisionViewModelProvider&MockObject      $revisionModelProvider;
     private ReviewSummaryViewModelProvider&MockObject $summaryViewModelProvider;
+    private CodeReviewRevisionService&MockObject      $revisionService;
     private RevisionVisibilityService&MockObject      $visibilityService;
     private ReviewViewModelProvider                   $modelProvider;
 
@@ -52,6 +54,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->fileTreeModelProvider    = $this->createMock(FileTreeViewModelProvider::class);
         $this->revisionModelProvider    = $this->createMock(RevisionViewModelProvider::class);
         $this->summaryViewModelProvider = $this->createMock(ReviewSummaryViewModelProvider::class);
+        $this->revisionService          = $this->createMock(CodeReviewRevisionService::class);
         $this->visibilityService        = $this->createMock(RevisionVisibilityService::class);
         $this->modelProvider            = new ReviewViewModelProvider(
             $this->fileDiffProvider,
@@ -60,6 +63,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             $this->fileTreeModelProvider,
             $this->revisionModelProvider,
             $this->summaryViewModelProvider,
+            $this->revisionService,
             $this->visibilityService
         );
     }
@@ -76,7 +80,6 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
         $file                 = new DiffFile();
         $file->filePathBefore = 'before';
         $file->filePathAfter  = 'after';
@@ -84,6 +87,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
         $request = $this->createMock(ReviewRequest::class);
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->visibilityService->expects(self::once())
             ->method('getVisibleRevisions')
             ->with($review, [$revision])
@@ -119,7 +123,6 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
         $file = new DiffFile();
         $tree = new DirectoryTreeNode('foobar');
         $tree->addNode(['path', 'to', 'file.txt'], $file);
@@ -128,6 +131,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
         $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->visibilityService->expects(self::once())
             ->method('getVisibleRevisions')
             ->with($review, [$revision])
@@ -137,7 +141,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             ->with($review, [$revision], $filePath, DiffComparePolicy::IGNORE)
             ->willReturn([$tree, null]);
         $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $this->summaryViewModelProvider->expects(self::once())->method('getSummaryViewModel')->with($review, $tree);
+        $this->summaryViewModelProvider->expects(self::once())->method('getSummaryViewModel')->with($review, [$revision], $tree);
         $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');
         $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
 

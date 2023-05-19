@@ -3,10 +3,12 @@ const url  = require('url');
 // load common languages
 const hljs = require('highlight.js/lib/common');
 // supplement with custom languages
-hljs.registerLanguage('ini', require('highlight.js/lib/languages/ini'));
 hljs.registerLanguage('apache', require('highlight.js/lib/languages/apache'));
+hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
+hljs.registerLanguage('ini', require('highlight.js/lib/languages/ini'));
 hljs.registerLanguage('twig', require('highlight.js/lib/languages/twig'));
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
+
 
 const hostname = process.env.NODEJS_HOST;
 const port     = process.env.NODEJS_PORT;

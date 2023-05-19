@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
@@ -37,6 +38,10 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
             return;
         }
 
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            return;
+        }
+
         // @codeCoverageIgnoreStart
         $systemLoad = function_exists('sys_getloadavg') ? (sys_getloadavg()[1] ?? 0) : 0; // system load in the last 5 minutes
         if ($systemLoad >= 1.1) {
@@ -55,7 +60,7 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
         }
 
         // fetch diff files for current review and trigger cache refresh
-        $this->diffService->getDiffFiles(
+        $this->diffService->getDiffForRevisions(
             Assert::notNull($review->getRepository()),
             $revisions->toArray(),
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL)

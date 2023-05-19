@@ -14,6 +14,7 @@ import './styles/review-file-diff-side-by-side.scss';
 import './styles/review-timeline.scss';
 import './styles/review.revisions.scss';
 import './styles/review.notifications.scss';
+import './styles/repository.branch-list.scss';
 import './styles/markdown.scss';
 import './styles/comment.scss';
 import './styles/user-settings.scss';

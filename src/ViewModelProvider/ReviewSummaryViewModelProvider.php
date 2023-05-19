@@ -5,6 +5,7 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Repository\Report\CodeInspectionIssueRepository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
@@ -22,11 +23,12 @@ class ReviewSummaryViewModelProvider
     }
 
     /**
+     * @param Revision[]                  $revisions
      * @param DirectoryTreeNode<DiffFile> $fileTree
      */
-    public function getSummaryViewModel(CodeReview $review, DirectoryTreeNode $fileTree): ReviewSummaryViewModel
+    public function getSummaryViewModel(CodeReview $review, array $revisions, DirectoryTreeNode $fileTree): ReviewSummaryViewModel
     {
-        $reports = $this->reportRepository->findByRevisions(Assert::notNull($review->getRepository()), $review->getRevisions()->toArray());
+        $reports = $this->reportRepository->findByRevisions(Assert::notNull($review->getRepository()), $revisions);
         $issues  = [];
         if (count($reports) > 0) {
             $filePaths = array_map(static fn(DiffFile $file) => $file->getPathname(), $fileTree->getFilesRecursive());
@@ -34,7 +36,7 @@ class ReviewSummaryViewModelProvider
         }
 
         return new ReviewSummaryViewModel(
-            $this->timelineViewModelProvider->getTimelineViewModel($review),
+            $this->timelineViewModelProvider->getTimelineViewModel($review, $revisions),
             new CodeInspectionReportViewModel($issues)
         );
     }

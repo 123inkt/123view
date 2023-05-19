@@ -14,6 +14,7 @@ use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -68,6 +69,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $file->addBlock($block);
 
         $response = $this->createMock(ResponseInterface::class);
+        $response->expects(self::once())->method('getStatusCode')->willReturn(Response::HTTP_OK);
         $response->expects(self::once())->method('getContent')->willReturn('highlighted-data');
 
         $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
@@ -96,6 +98,27 @@ class HighlightedFileServiceTest extends AbstractTestCase
 
         $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
         $this->httpClient->expects(self::once())->method('request')->willThrowException(new RuntimeException('error'));
+
+        static::assertNull($this->service->fromDiffFile($file));
+    }
+
+    /**
+     * @covers ::fromDiffFile
+     * @throws Exception
+     */
+    public function testGetHighlightedFileBadResponse(): void
+    {
+        $block               = new DiffBlock();
+        $block->lines        = [new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'file-data')])];
+        $file                = new DiffFile();
+        $file->filePathAfter = '/path/to/file.xml';
+        $file->addBlock($block);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->expects(self::once())->method('getStatusCode')->willReturn(Response::HTTP_BAD_REQUEST);
+
+        $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
+        $this->httpClient->expects(self::once())->method('request')->willReturn($response);
 
         static::assertNull($this->service->fromDiffFile($file));
     }

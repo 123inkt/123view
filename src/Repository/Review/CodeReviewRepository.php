@@ -85,15 +85,17 @@ class CodeReviewRepository extends ServiceEntityRepository
     /**
      * @throws NonUniqueResultException
      */
-    public function findOneByReferenceId(int $repositoryId, string $referenceId): ?CodeReview
+    public function findOneByReferenceId(int $repositoryId, string $referenceId, string $reviewType): ?CodeReview
     {
         /** @var CodeReview|null $review */
         $review = $this->createQueryBuilder('c')
             ->where('c.referenceId = :referenceId')
             ->andWhere('c.repository = :repositoryId')
+            ->andWhere('c.type = :type')
             ->orderBy('c.id', 'DESC')
             ->setParameter('referenceId', $referenceId)
             ->setParameter('repositoryId', $repositoryId)
+            ->setParameter('type', $reviewType)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);

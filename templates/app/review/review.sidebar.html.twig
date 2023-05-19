@@ -14,11 +14,11 @@
                    href="{{ url_query_params({tab: 'revisions'}) }}">
                     {{ 'revisions'|trans }}
 
-                    {% if reviewModel.visibleRevisionCount == review.revisions|length -%}
-                        ({{ review.revisions|length }})
-                    {%- else -%}
-                        ({{ reviewModel.visibleRevisionCount ~ '/' ~ review.revisions|length }})
-                    {%- endif -%}
+                    {% if reviewModel.visibleRevisionCount == reviewModel.revisions|length %}
+                        ({{ reviewModel.revisions|length }})
+                    {% else %}
+                        ({{ reviewModel.visibleRevisionCount ~ '/' ~ reviewModel.revisions|length }})
+                    {% endif %}
                 </a>
             </li>
         </ul>
@@ -26,7 +26,11 @@
 
     <div class="review-grid-sidebar--grid-bottom">
         {% if reviewModel.sidebarTabMode == 'revisions' %}
-            {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+            {% if review.type == 'branch' %}
+                {% include 'app/review/review.revisions.branch.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+            {% else %}
+                {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+            {% endif %}
         {% endif %}
 
         {% if reviewModel.sidebarTabMode == 'overview' %}

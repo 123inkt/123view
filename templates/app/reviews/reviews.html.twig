@@ -60,6 +60,10 @@
 
                             <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
 
+                            {% if review.type == 'branch' %}
+                                <span class="badge rounded-pill text-bg-primary">{{ 'branch.review'|trans }}</span>
+                            {% endif %}
+
                             <div>
                                 {# authors #}
                                 {% set authors = reviewsModel.authors(review.revisions) %}

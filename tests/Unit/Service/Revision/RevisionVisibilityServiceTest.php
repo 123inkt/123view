@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Revision;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
@@ -10,12 +11,10 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Revision\RevisionVisibilityService
- * @covers ::__construct
- */
+#[CoversClass(RevisionVisibilityService::class)]
 class RevisionVisibilityServiceTest extends AbstractTestCase
 {
     private RevisionVisibilityRepository&MockObject $visibilityRepository;
@@ -31,9 +30,17 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $this->service              = new RevisionVisibilityService($this->user, $this->visibilityRepository);
     }
 
-    /**
-     * @covers ::getVisibleRevisions
-     */
+    public function testGetVisibleRevisionsShouldIgnoreBranchReview(): void
+    {
+        $revision = new Revision();
+        $review   = new CodeReview();
+        $review->setType(CodeReviewType::BRANCH);
+
+        $this->visibilityRepository->expects(self::never())->method('findBy');
+
+        static::assertSame([$revision], $this->service->getVisibleRevisions($review, [$revision]));
+    }
+
     public function testGetVisibleRevisions(): void
     {
         $revisionA = new Revision();
@@ -61,9 +68,6 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         static::assertSame([$revisionA, $revisionC], $result);
     }
 
-    /**
-     * @covers ::getRevisionVisibilities
-     */
     public function testGetRevisionVisibilities(): void
     {
         $revisionA = new Revision();
@@ -88,9 +92,6 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         static::assertTrue($result[1]->isVisible());
     }
 
-    /**
-     * @covers ::setRevisionVisibility
-     */
     public function testSetRevisionVisibility(): void
     {
         $revision = new Revision();
@@ -109,9 +110,6 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $this->service->setRevisionVisibility($review, [$revision], $this->user, false);
     }
 
-    /**
-     * @covers ::setRevisionVisibility
-     */
     public function testSetRevisionVisibilityShouldSkipEmptyRevisions(): void
     {
         $review = new CodeReview();

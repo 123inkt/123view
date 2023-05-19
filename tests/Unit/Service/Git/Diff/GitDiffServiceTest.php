@@ -200,4 +200,56 @@ class GitDiffServiceTest extends AbstractTestCase
 
         $this->diffService->getBundledDiffFromRevisions($repository, new FileDiffOptions(15, DiffComparePolicy::IGNORE));
     }
+
+    /**
+     * @covers ::getBundledDiffFromBranch
+     * @throws Exception
+     */
+    public function testGetBundledDiffFromBranch(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+
+        $builder = $this->createMock(GitDiffCommandBuilder::class);
+        $builder->expects(self::once())->method('hash')->with('target...source')->willReturnSelf();
+        $builder->expects(self::once())->method('unified')->with(15)->willReturnSelf();
+        $builder->expects(self::once())->method('diffAlgorithm')->with(DiffAlgorithmType::MYERS)->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreCrAtEol')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreSpaceChange')->willReturnSelf();
+        $this->commandBuilderFactory->expects(self::once())->method('createDiff')->willReturn($builder);
+
+        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('foobar');
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $this->parser->expects(self::once())->method('parse')->with('foobar');
+
+        $this->diffService->getBundledDiffFromBranch($repository, 'source', 'target', new FileDiffOptions(15, DiffComparePolicy::TRIM));
+    }
+
+    /**
+     * @covers ::getBundledDiffFromBranch
+     * @throws Exception
+     */
+    public function testGetBundledDiffFromBranchIgnoreAllSpaceChange(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+
+        $builder = $this->createMock(GitDiffCommandBuilder::class);
+        $builder->expects(self::once())->method('hash')->with('target...source')->willReturnSelf();
+        $builder->expects(self::once())->method('unified')->with(15)->willReturnSelf();
+        $builder->expects(self::once())->method('diffAlgorithm')->with(DiffAlgorithmType::MYERS)->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreCrAtEol')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $builder->expects(self::once())->method('ignoreAllSpace')->willReturnSelf();
+        $this->commandBuilderFactory->expects(self::once())->method('createDiff')->willReturn($builder);
+
+        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('foobar');
+        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $this->parser->expects(self::once())->method('parse')->with('foobar');
+
+        $this->diffService->getBundledDiffFromBranch($repository, 'source', 'target', new FileDiffOptions(15, DiffComparePolicy::IGNORE));
+    }
 }

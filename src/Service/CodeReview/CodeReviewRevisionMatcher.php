@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview;
 
 use Doctrine\ORM\NonUniqueResultException;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -73,7 +74,11 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
         }
 
         /** @var CodeReview|null $review */
-        $review = $this->reviewRepository->findOneByReferenceId((int)Assert::notNull($revision->getRepository())->getId(), $referenceId);
+        $review = $this->reviewRepository->findOneByReferenceId(
+            (int)Assert::notNull($revision->getRepository())->getId(),
+            $referenceId,
+            CodeReviewType::COMMITS
+        );
 
         // create new review, and generate project id
         return $review ?? $this->reviewCreationService->createFromRevision($revision, $referenceId);

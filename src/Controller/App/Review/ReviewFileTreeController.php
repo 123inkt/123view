@@ -7,6 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
@@ -22,7 +23,8 @@ class ReviewFileTreeController extends AbstractController
     public function __construct(
         private readonly FileTreeViewModelProvider $viewModelProvider,
         private readonly CodeReviewFileService $fileService,
-        private readonly ReviewSessionService $sessionService
+        private readonly ReviewSessionService $sessionService,
+        private readonly CodeReviewRevisionService $revisionService,
     ) {
     }
 
@@ -38,7 +40,7 @@ class ReviewFileTreeController extends AbstractController
         // get diff files for review
         [$fileTree, $selectedFile] = $this->fileService->getFiles(
             $review,
-            $review->getRevisions()->toArray(),
+            $this->revisionService->getRevisions($review),
             $request->query->get('filePath'),
             $this->sessionService->getDiffComparePolicyForUser()
         );
