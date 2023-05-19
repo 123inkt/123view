@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService
- * @covers ::__construct
- */
+#[CoversClass(LockableReviewDiffService::class)]
 class LockableReviewDiffServiceTest extends AbstractTestCase
 {
     private GitRepositoryLockManager&MockObject   $lockManager;
@@ -32,23 +32,47 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffForRevisions
      * @throws Throwable
      */
-    public function testGetDiffFiles(): void
+    public function testGetDiffForRevisions(): void
     {
         $repository = new Repository();
         $repository->setId(123);
         $revision = new Revision();
         $revision->setCommitHash('hash');
+        $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
         $diffFile = new DiffFile();
 
         $this->lockManager->expects(self::once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
+        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision]));
+        static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision], $options));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testGetDiffForBranch(): void
+    {
+        $repository = new Repository();
+        $repository->setId(123);
+        $revision = new Revision();
+        $revision->setCommitHash('hash');
+        $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
+        $diffFile = new DiffFile();
+
+        $this->lockManager->expects(self::once())
+            ->method('start')
+            ->with($repository)
+            ->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->diffService->expects(self::once())
+            ->method('getDiffForBranch')
+            ->with($repository, [$revision], 'branch', $options)
+            ->willReturn([$diffFile]);
+
+        static::assertSame([$diffFile], $this->service->getDiffForBranch($repository, [$revision], 'branch', $options));
     }
 }
