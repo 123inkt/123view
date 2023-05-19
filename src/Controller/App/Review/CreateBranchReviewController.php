@@ -45,7 +45,7 @@ class CreateBranchReviewController extends AbstractController
 
         $review = $this->reviewRepository->findOneBy(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => $branchName]);
         if ($review !== null) {
-            throw new BadRequestHttpException('A branch review already exists');
+            return $this->redirectToRoute(ReviewController::class, ['review' => $review]);
         }
 
         $review   = $this->reviewCreationService->createFromBranch($repository, $branchName);

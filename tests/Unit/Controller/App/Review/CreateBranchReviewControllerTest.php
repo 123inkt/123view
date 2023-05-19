@@ -53,7 +53,7 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $repository);
     }
 
-    public function testInvokeReviewShouldNotExist(): void
+    public function testInvokeExistingReviewShouldRedirect(): void
     {
         $repository = new Repository();
         $request    = new Request(request: ['branch' => 'branch']);
@@ -64,8 +64,7 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
             ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => 'branch'])
             ->willReturn($review);
 
-        $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('A branch review already exists');
+        $this->expectRedirectToRoute(ReviewController::class, ['review' => $review])->willReturn('url');
         ($this->controller)($request, $repository);
     }
 
