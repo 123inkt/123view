@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Report\Coverage;
+namespace DR\Review\Service\Report\Coverage\Parser;
 
 use DOMElement;
 use DOMException;

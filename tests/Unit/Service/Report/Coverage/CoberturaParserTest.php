@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Report\Coverage;
 
 use DR\Review\Service\IO\FilePathNormalizer;
-use DR\Review\Service\Report\Coverage\CoberturaParser;
+use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

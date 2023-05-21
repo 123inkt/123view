@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Repository\Report\Coverage\FileCoverageRepository;
+use DR\Review\Repository\Report\CodeCoverageReportRepository;
 
-#[ORM\Entity(repositoryClass: FileCoverageRepository::class)]
+#[ORM\Entity(repositoryClass: CodeCoverageReportRepository::class)]
 #[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp')]
 #[ORM\Index(columns: ['repository_id', 'create_timestamp'], name: 'repository_create_timestamp')]
 #[ORM\Index(columns: ['repository_id', 'commit_hash'], name: 'repository_commit_hash')]

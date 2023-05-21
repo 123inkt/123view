@@ -7,9 +7,9 @@ namespace DR\Review\Entity\Report;
 use Doctrine\ORM\Mapping as ORM;
 use DR\JBDiff\Util\BitSet;
 use DR\Review\Doctrine\Type\BitSetType;
-use DR\Review\Repository\Report\Coverage\FileCoverageRepository;
+use DR\Review\Repository\Report\CodeCoverageFileRepository;
 
-#[ORM\Entity(repositoryClass: FileCoverageRepository::class)]
+#[ORM\Entity(repositoryClass: CodeCoverageFileRepository::class)]
 #[ORM\Index(columns: ['report_id', 'file'], name: 'report_filepath')]
 class CodeCoverageFile
 {
