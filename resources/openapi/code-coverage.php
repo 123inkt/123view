@@ -9,6 +9,7 @@ use ApiPlatform\OpenApi\Model\PathItem;
 use ApiPlatform\OpenApi\Model\RequestBody;
 use ApiPlatform\OpenApi\Model\Response;
 use ApiPlatform\OpenApi\OpenApi;
+use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 
 // phpcs:ignorefile
 return static function (OpenApi $openApi) {
@@ -57,10 +58,10 @@ return static function (OpenApi $openApi) {
             new Parameter(
                 'format',
                 'query',
-                'The format of the input. Defaults to `cobertura`.',
+                'The format of the input. Defaults to `' . CoberturaParser::FORMAT . '`.',
                 schema: [
                     'type' => 'string',
-                    'enum' => ['cobertura', 'clover']
+                    'enum' => [CoberturaParser::FORMAT, 'clover']
                 ]
             )
         ],

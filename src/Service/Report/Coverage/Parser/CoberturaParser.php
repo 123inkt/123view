@@ -14,7 +14,7 @@ use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Utility\Assert;
 
-class CoberturaParser
+class CoberturaParser implements CodeCoverageParserInterface
 {
     public const FORMAT = 'cobertura';
 
