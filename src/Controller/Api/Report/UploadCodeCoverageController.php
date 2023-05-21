@@ -28,7 +28,7 @@ class UploadCodeCoverageController extends AbstractController implements LoggerA
     ) {
     }
 
-    #[Route('/api/report/code-coverage/{repositoryName<[a-z0-9-]+>}/{commitHash<[a-zA-Z0-9]{6,255}>}', name: self::class, methods: ['GET', 'POST'])]
+    #[Route('/api/report/code-coverage/{repositoryName<[a-z0-9-]+>}/{commitHash<[a-zA-Z0-9]{6,255}>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(UploadCodeCoverageRequest $request, string $repositoryName, string $commitHash): Response
     {
