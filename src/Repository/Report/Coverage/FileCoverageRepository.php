@@ -2,26 +2,25 @@
 
 namespace DR\Review\Repository\Report\Coverage;
 
-use DR\Review\Entity\Report\Coverage\FileCoverage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DR\Review\Entity\Report\CodeCoverageFile;
 
 /**
- * @extends ServiceEntityRepository<FileCoverage>
- *
- * @method FileCoverage|null find($id, $lockMode = null, $lockVersion = null)
- * @method FileCoverage|null findOneBy(array $criteria, array $orderBy = null)
- * @method FileCoverage[]    findAll()
- * @method FileCoverage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<CodeCoverageFile>
+ * @method CodeCoverageFile|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CodeCoverageFile|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CodeCoverageFile[]    findAll()
+ * @method CodeCoverageFile[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FileCoverageRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FileCoverage::class);
+        parent::__construct($registry, CodeCoverageFile::class);
     }
 
-    public function save(FileCoverage $entity, bool $flush = false): void
+    public function save(CodeCoverageFile $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +29,7 @@ class FileCoverageRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(FileCoverage $entity, bool $flush = false): void
+    public function remove(CodeCoverageFile $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +39,7 @@ class FileCoverageRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return FileCoverage[] Returns an array of FileCoverage objects
+//     * @return CodeCoverageFile[] Returns an array of CodeCoverageFile objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +53,7 @@ class FileCoverageRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?FileCoverage
+//    public function findOneBySomeField($value): ?CodeCoverageFile
 //    {
 //        return $this->createQueryBuilder('f')
 //            ->andWhere('f.exampleField = :val')

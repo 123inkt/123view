@@ -7,7 +7,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use DR\JBDiff\Util\BitSet;
-use DR\Review\Utility\Assert;
 
 class BitSetType extends Type
 {
@@ -18,7 +17,7 @@ class BitSetType extends Type
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getStringTypeDeclarationSQL($column);
+        return $platform->getBinaryTypeDeclarationSQL($column);
     }
 
     /**
@@ -34,7 +33,7 @@ class BitSetType extends Type
             throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'BitSet']);
         }
 
-        return serialize($value);
+        return $value->toBinaryString();
     }
 
     /**
@@ -50,8 +49,7 @@ class BitSetType extends Type
             throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string']);
         }
 
-        // test
-        return Assert::instanceOf(BitSet::class, unserialize($value, ['allowed_classes' => [BitSet::class]]));
+        return BitSet::fromBinaryString($value);
     }
 
     public function getName(): string

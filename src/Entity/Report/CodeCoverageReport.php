@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DR\Review\Entity\Report;
@@ -7,13 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Repository\Report\CodeInspectionReportRepository;
+use DR\Review\Repository\Report\Coverage\FileCoverageRepository;
 
-#[ORM\Entity(repositoryClass: CodeInspectionReportRepository::class)]
+#[ORM\Entity(repositoryClass: FileCoverageRepository::class)]
 #[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp')]
 #[ORM\Index(columns: ['repository_id', 'create_timestamp'], name: 'repository_create_timestamp')]
-#[ORM\UniqueConstraint('IDX_COMMIT_HASH_REPOSITORY_ID', ['repository_id', 'inspection_id', 'commit_hash'])]
-class CodeInspectionReport
+#[ORM\Index(columns: ['repository_id', 'commit_hash'], name: 'repository_commit_hash')]
+class CodeCoverageReport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,23 +24,20 @@ class CodeInspectionReport
     #[ORM\Column(length: 255)]
     private ?string $commitHash = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $inspectionId = null;
+    #[ORM\Column]
+    private ?int $createTimestamp = null;
 
     #[ORM\ManyToOne(targetEntity: Repository::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
 
-    #[ORM\Column]
-    private ?int $createTimestamp = null;
-
-    /** @phpstan-var Collection<int, CodeInspectionIssue> */
-    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeInspectionIssue::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $issues;
+    /** @phpstan-var Collection<int, CodeCoverageFile> */
+    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeCoverageFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $files;
 
     public function __construct()
     {
-        $this->issues = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,14 +64,14 @@ class CodeInspectionReport
         return $this;
     }
 
-    public function getInspectionId(): ?string
+    public function getCreateTimestamp(): ?int
     {
-        return $this->inspectionId;
+        return $this->createTimestamp;
     }
 
-    public function setInspectionId(?string $inspectionId): self
+    public function setCreateTimestamp(?int $createTimestamp): self
     {
-        $this->inspectionId = $inspectionId;
+        $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
@@ -90,32 +88,20 @@ class CodeInspectionReport
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    /**
+     * @return Collection<int, CodeCoverageFile>
+     */
+    public function getFiles(): Collection
     {
-        return $this->createTimestamp;
-    }
-
-    public function setCreateTimestamp(?int $createTimestamp): self
-    {
-        $this->createTimestamp = $createTimestamp;
-
-        return $this;
+        return $this->files;
     }
 
     /**
-     * @return Collection<int, CodeInspectionIssue>
+     * @param Collection<int, CodeCoverageFile> $files
      */
-    public function getIssues(): Collection
+    public function setFiles(Collection $files): self
     {
-        return $this->issues;
-    }
-
-    /**
-     * @param Collection<int, CodeInspectionIssue> $issues
-     */
-    public function setIssues(Collection $issues): self
-    {
-        $this->issues = $issues;
+        $this->files = $files;
 
         return $this;
     }

@@ -2,41 +2,49 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\Entity\Report\Coverage;
+namespace DR\Review\Entity\Report;
 
 use Doctrine\ORM\Mapping as ORM;
 use DR\JBDiff\Util\BitSet;
 use DR\Review\Doctrine\Type\BitSetType;
-use DR\Review\Entity\Repository\Repository;
 use DR\Review\Repository\Report\Coverage\FileCoverageRepository;
 
 #[ORM\Entity(repositoryClass: FileCoverageRepository::class)]
-class FileCoverage
+#[ORM\Index(columns: ['report_id', 'file'], name: 'report_filepath')]
+class CodeCoverageFile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 500)]
-    private ?string $filePath = null;
+    #[ORM\Column(length: 255)]
+    private ?string $file = null;
 
     /**
-     * A bitset of all line numbers that are covered
+     * BitSet size calculation:
+     * => a file of max 64000 lines.
+     * => store each line number inside the BitSet
+     * => requires 64000 / 64 = 10000 words inside the BitSet
+     * => one 64-bit word can be stored into 4 bytes: 10000 * 4 = 40000.
      */
-    #[ORM\Column(type: BitSetType::TYPE, length: 500000)]
+    #[ORM\Column(type: BitSetType::TYPE, length: 40000)]
     private ?BitSet $coverage = null;
 
-    #[ORM\Column]
-    private ?int $createTimestamp = null;
-
-    #[ORM\ManyToOne(targetEntity: Repository::class)]
+    #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Repository $repository = null;
+    private ?CodeCoverageReport $report = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getFilePath(): ?string
@@ -75,14 +83,14 @@ class FileCoverage
         return $this;
     }
 
-    public function getRepository(): ?Repository
+    public function getReport(): ?CodeCoverageReport
     {
-        return $this->repository;
+        return $this->report;
     }
 
-    public function setRepository(?Repository $repository): FileCoverage
+    public function setReport(?CodeCoverageReport $report): self
     {
-        $this->repository = $repository;
+        $this->report = $report;
 
         return $this;
     }

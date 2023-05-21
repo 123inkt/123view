@@ -7,7 +7,7 @@ use DOMDocument;
 use DOMElement;
 use DOMException;
 use DOMXPath;
-use DR\Review\Entity\Report\Coverage\FileCoverage;
+use DR\Review\Entity\Report\CodeCoverageFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Utility\Assert;
 use LibXMLError;
@@ -15,7 +15,7 @@ use LibXMLError;
 class CoberturaParser
 {
     /**
-     * @return FileCoverage[]
+     * @return CodeCoverageFile[]
      * @throws DOMException
      */
     public function parse(Repository $repository, string $test): array
@@ -33,7 +33,7 @@ class CoberturaParser
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
-            $result[] = $fileCoverage = new FileCoverage();
+            $result[] = $fileCoverage = new CodeCoverageFile();
             $fileCoverage->setFilePath($fileElement->getAttribute('name'));
             $fileCoverage->setRepository($repository);
             $fileCoverage->setCreateTimestamp(time());
