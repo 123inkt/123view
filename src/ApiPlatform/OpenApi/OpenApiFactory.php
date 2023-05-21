@@ -48,6 +48,7 @@ class OpenApiFactory implements OpenApiFactoryInterface
             $this->setParameterDescription($parameter, $this->documentor->getDescription($operation, $parameter));
         }
 
+        // add custom OpenApi documentation
         $finder = (new Finder())->files()->in(__DIR__ . '/../../../resources/openapi')->name('*.php');
         foreach ($finder as $openApiFile) {
             (require $openApiFile)($openApi);

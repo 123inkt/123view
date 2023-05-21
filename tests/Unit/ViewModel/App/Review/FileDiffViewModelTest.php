@@ -8,32 +8,18 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Review\FileDiffViewModel
- * @covers ::__construct
- */
+#[CoversClass(FileDiffViewModel::class)]
 class FileDiffViewModelTest extends AbstractTestCase
 {
     use AccessorPairAsserter;
 
-    /**
-     * @covers ::getDiffModes
-     * @covers ::getCommentsViewModel
-     * @covers ::setCommentsViewModel
-     * @covers ::getReplyCommentForm
-     * @covers ::setReplyCommentForm
-     * @covers ::getHighlightedFile
-     * @covers ::setHighlightedFile
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(FileDiffViewModel::class);
     }
 
-    /**
-     * @covers ::getDiffModes
-     */
     public function testGetDiffModes(): void
     {
         $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE);

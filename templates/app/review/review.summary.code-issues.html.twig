@@ -1,0 +1,26 @@
+{# inspectionIssueViewModel: CodeInspectionReportViewModel #}
+
+{% if inspectionIssueViewModel.issues %}
+    <div class="mb-4">
+        <h5>{{ 'code.issues'|trans }}</h5>
+
+        {%- for file,issues in inspectionIssueViewModel.getGroupByFile() -%}
+            <ul>
+                <li>
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review, filePath: file}) }}"
+                       class="d-block">{{ file }}</a>
+
+                    <ul>
+                    {% for issue in issues %}
+                        <li>
+                            <span class="fw-bold">{{ issue.report.inspectionId }}</span>
+                            <code>{{ 'line'|trans|lower }}:{{ issue.lineNumber }}</code>
+                            <span>{{ issue.message }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        {%- endfor -%}
+    </div>
+{% endif %}

@@ -8,18 +8,21 @@
      data-role="diff-line"
      data-line="{{ line_number }}"
      data-line-offset="{{ line_offset }}"
-     data-line-after="{{ line.lineNumberAfter|default('0') }}"
->
+     data-line-after="{{ line.lineNumberAfter|default('0') }}">
     {#- gutter -#}
     {{ macro.gutter_double(line, lineNrLengthBefore, lineNrLengthAfter) }}
 
     {#- line state -#}
     <span class="diff-file__diff-change-state">{{ macro.line_modifier(line) }}</span>
 
+    {%- set issues = fileDiffViewModel.codeInspectionViewModel.getIssues(line.lineNumberAfter) -%}
+
     {#- code changes -#}
-    {%- if fileDiffViewModel.highlightedFile != null and line.changes|length == 1 and line.state != 2 -%}
-        {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
-    {%- else -%}
-        {{ macro.changes(line) }}
-    {%- endif -%}
+    <span {% if issues %}class="diff-file__diff-line__code-inspection-issue" title="{{ macro.code_inspection_issues(issues) }}"{% endif %}>
+        {%- if fileDiffViewModel.highlightedFile != null and line.changes|length == 1 and line.state != 2 -%}
+            {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
+        {%- else -%}
+            {{ macro.changes(line) }}
+        {%- endif -%}
+    </span>
 </div>

@@ -8,7 +8,6 @@ use DR\Review\Entity\Notification\Filter;
 use DR\Review\Validator\Filter\IsValidPattern;
 use DR\Review\Validator\Filter\IsValidPatternValidator;
 use RuntimeException;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
@@ -17,14 +16,6 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function setUp(): void
-    {
-        if (Kernel::VERSION_ID < 60300) {
-            self::markTestSkipped('Symfony 6.2 and lower is not compatible with PHPUnit 10.');
-        }
-        parent::setUp();
-    }
-
     /**
      * @covers ::validate
      */

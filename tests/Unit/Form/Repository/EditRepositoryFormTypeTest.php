@@ -34,8 +34,8 @@ class EditRepositoryFormTypeTest extends AbstractTestCase
      */
     public function testBuildForm(): void
     {
-        $url  = 'https://123view/add/repository';
-        $rule = (new Repository())->setId(123);
+        $url        = 'https://123view/add/repository';
+        $repository = (new Repository())->setId(123);
 
         $this->urlGenerator->expects(self::once())
             ->method('generate')
@@ -56,6 +56,6 @@ class EditRepositoryFormTypeTest extends AbstractTestCase
                 )
             )->willReturnSelf();
 
-        $this->type->buildForm($builder, ['data' => ['repository' => $rule]]);
+        $this->type->buildForm($builder, ['data' => ['repository' => $repository]]);
     }
 }

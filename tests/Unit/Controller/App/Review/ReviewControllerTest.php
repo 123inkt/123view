@@ -58,7 +58,7 @@ class ReviewControllerTest extends AbstractControllerTestCase
         $review->setProjectId(123);
 
         $diffFile  = new DiffFile();
-        $viewModel = new ReviewViewModel($review);
+        $viewModel = new ReviewViewModel($review, []);
         $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile, ReviewDiffModeEnum::INLINE));
 
         $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);

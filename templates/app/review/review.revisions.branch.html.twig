@@ -1,0 +1,28 @@
+{# review:            CodeReview #}
+{# revisionViewModel: ReviewRevisionViewModel #}
+
+<div class="review-revision mt-3" {{ stimulus_controller('component--checkbox-select-all') }}>
+    <h6 class="border-bottom review-revision--header">
+        {{ 'revisions'|trans }}
+    </h6>
+
+    {%- for revision in revisionViewModel.revisions -%}
+        <div class="review-revision-branch--grid">
+            <div class="review-revision--title-author">
+                <div class="text-primary">{{ revision.title }}</div>
+                <div class="text-secondary review-revision--author-time" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
+                    {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
+                </div>
+            </div>
+
+            <div>
+                <small class="text-muted d-block review-revision--commit-hash" title="{{ revision.commitHash }}">
+                    {{- revision.commitHash|slice(0, 7) }}
+                </small>
+            </div>
+        </div>
+    {% else %}
+        <em>{{ 'review.no.revisions'|trans }}</em>
+
+    {%- endfor -%}
+</div>

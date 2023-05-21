@@ -80,6 +80,17 @@ class ArraysTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::reindex
+     */
+    public function testReindex(): void
+    {
+        $callback = static fn($value) => strlen($value);
+
+        static::assertSame([], Arrays::reindex([], $callback));
+        static::assertSame([3 => 'foo', 6 => 'foobar'], Arrays::reindex(['foo', 'foobar'], $callback));
+    }
+
+    /**
      * @covers ::tryFind
      */
     public function testTryFind(): void

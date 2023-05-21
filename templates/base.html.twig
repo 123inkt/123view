@@ -41,7 +41,7 @@
                                 <a class="nav-link"
                                    aria-label="{{ 'projects'|trans }}"
                                    title="{{ 'projects'|trans }}"
-                                   href="{{ path('DR\\Review\\Controller\\App\\Review\\ProjectsController') }}">
+                                   href="{{ path('DR\\Review\\Controller\\App\\Project\\ProjectsController') }}">
                                     {{- 'projects'|trans -}}
                                 </a>
                             </li>
@@ -93,6 +93,11 @@
                                             <li>
                                                 <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}">
                                                     {{- 'repositories'|trans -}}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\WebhooksController') }}">
+                                                    {{- 'webhooks'|trans -}}
                                                 </a>
                                             </li>
                                         </ul>

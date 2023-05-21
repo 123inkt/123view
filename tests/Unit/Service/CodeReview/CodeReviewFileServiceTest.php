@@ -5,66 +5,51 @@ namespace DR\Review\Tests\Unit\Service\CodeReview;
 
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
-use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\CodeReview\CodeReviewFileTreeService;
 use DR\Review\Service\CodeReview\DiffFinder;
-use DR\Review\Service\CodeReview\FileTreeGenerator;
-use DR\Review\Service\Git\Diff\DiffFileUpdater;
-use DR\Review\Service\Git\Review\FileDiffOptions;
-use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Tests\CacheTestTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub\ReturnCallback;
+use Symfony\Component\Cache\Adapter\AbstractAdapter as AbstractCacheAdapter;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewFileService
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewFileService::class)]
 class CodeReviewFileServiceTest extends AbstractTestCase
 {
-    private CacheInterface&MockObject             $cache;
-    private ReviewDiffServiceInterface&MockObject $diffService;
-    private FileTreeGenerator&MockObject          $treeGenerator;
-    private DiffFileUpdater&MockObject            $diffFileUpdater;
-    private DiffFinder&MockObject                 $diffFinder;
-    private CodeReviewFileService                 $service;
+    use CacheTestTrait;
+
+    private CacheInterface&AdapterInterface&MockObject $revisionCache;
+    private DiffFinder&MockObject                      $diffFinder;
+    private CodeReviewFileTreeService&MockObject       $fileTreeService;
+    private CodeReviewFileService                      $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->cache = $this->createMock(CacheInterface::class);
-
-        $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->treeGenerator   = $this->createMock(FileTreeGenerator::class);
-        $this->diffFileUpdater = $this->createMock(DiffFileUpdater::class);
+        $this->revisionCache   = $this->createMock(AbstractCacheAdapter::class);
         $this->diffFinder      = $this->createMock(DiffFinder::class);
+        $this->fileTreeService = $this->createMock(CodeReviewFileTreeService::class);
         $this->service         = new CodeReviewFileService(
-            $this->cache,
-            $this->diffService,
-            $this->treeGenerator,
-            $this->diffFileUpdater,
-            $this->diffFinder
+            $this->revisionCache,
+            $this->diffFinder,
+            $this->fileTreeService
         );
     }
 
     /**
-     * @covers ::getFiles
-     * @covers ::getReviewCacheKey
-     * @covers ::getDiffFileCacheKey
      * @throws Throwable
      */
-    public function testGetFiles(): void
+    public function testGetFilesWithCache(): void
     {
-        $repository = new Repository();
-        $repository->setId(789);
         $review = new CodeReview();
         $review->setId(123);
-        $review->setRepository($repository);
         $revision = new Revision();
         $revision->setId(456);
         $revision->setCommitHash('hash');
@@ -75,19 +60,38 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $tree = new DirectoryTreeNode('node');
         $tree->addNode(['file'], $diffFileA);
 
-        $this->cache->expects(self::exactly(3))
-            ->method('get')
-            ->willReturnOnConsecutiveCalls(
-                new ReturnCallback(static fn($repository, $callback) => $callback()),
-                new ReturnCallback(static fn($repository, $callback) => $callback()),
-                new ReturnCallback(static fn($repository, $callback) => $diffFileA)
-            );
-        $this->diffFileUpdater->expects(self::once())->method('update')->with([$diffFileA])->willReturn([$diffFileA]);
-        $this->diffService->expects(self::once())->method('getDiffFiles')
-            ->with($repository, [$revision], new FileDiffOptions(9999999, DiffComparePolicy::IGNORE))
-            ->willReturn([$diffFileA]);
+        $cacheItem = self::createCacheItem('key', $tree, true);
 
-        $this->treeGenerator->expects(self::once())->method('generate')->with([$diffFileA])->willReturn($tree);
+        $this->revisionCache->expects(self::once())->method('getItem')->willReturn($cacheItem);
+        $this->revisionCache->expects(self::once())->method('get')->willReturn($diffFileA);
+        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+
+        $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);
+        static::assertSame([$tree, $diffFileA], $result);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testGetFilesWithoutCache(): void
+    {
+        $review = new CodeReview();
+        $review->setId(123);
+        $revision = new Revision();
+        $revision->setId(456);
+        $revision->setCommitHash('hash');
+
+        $diffFileA = new DiffFile();
+        $diffFileB = new DiffFile();
+        /** @var DirectoryTreeNode<DiffFile> $tree */
+        $tree = new DirectoryTreeNode('node');
+        $tree->addNode(['file'], $diffFileA);
+
+        $cacheItem = self::createCacheItem('key', null, false);
+
+        $this->revisionCache->expects(self::once())->method('getItem')->willReturn($cacheItem);
+        $this->fileTreeService->expects(self::once())->method('getFileTree')->with($review, [$revision])->willReturn([$tree, [$diffFileA]]);
+        $this->revisionCache->expects(self::exactly(3))->method('get')->willReturn(null, null, $diffFileA);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
         $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);

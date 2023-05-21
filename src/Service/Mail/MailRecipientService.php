@@ -7,6 +7,8 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
+use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\User\UserService;
 use DR\Review\Utility\Arrays;
@@ -14,16 +16,21 @@ use DR\Review\Utility\Assert;
 
 class MailRecipientService
 {
-    public function __construct(private readonly UserService $userService, private readonly CommentMentionService $mentionService)
-    {
+    public function __construct(
+        private readonly UserService $userService,
+        private readonly CommentMentionService $mentionService,
+        private readonly CodeReviewRevisionService $revisionService,
+    ) {
     }
 
     /**
      * @return User[]
+     * @throws RepositoryException
      */
     public function getUsersForReview(CodeReview $review): array
     {
-        $users = $this->userService->getUsersForRevisions($review->getRevisions()->toArray());
+        $revisions = $this->revisionService->getRevisions($review);
+        $users     = $this->userService->getUsersForRevisions($revisions);
         foreach ($review->getReviewers() as $reviewer) {
             $users[] = Assert::notNull($reviewer->getUser());
         }

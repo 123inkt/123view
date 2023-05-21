@@ -8,6 +8,8 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -26,7 +28,7 @@ class HighlightedFileService implements LoggerAwareInterface
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|TransportExceptionInterface
      */
     public function fromDiffFile(DiffFile $diffFile): ?HighlightedFile
     {
@@ -41,6 +43,12 @@ class HighlightedFileService implements LoggerAwareInterface
             $response = $this->highlightjsClient->request('POST', '', ['query' => ['language' => $languageName], 'body' => implode("\n", $lines)]);
         } catch (Throwable $exception) {
             $this->logger?->info('Failed to get code highlighting: ' . $exception->getMessage());
+
+            return null;
+        }
+
+        if ($response->getStatusCode() !== Response::HTTP_OK) {
+            $this->logger?->info('Failed to get code highlighting: ' . $response->getContent(false));
 
             return null;
         }

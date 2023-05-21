@@ -8,3 +8,5 @@ HOME=/app
 0 0 * * 1       www-data     php bin/console mail --frequency=once-per-week             2>&1
 */5 * * * *     www-data     php bin/console revisions:fetch                            2>&1
 */5 * * * *     www-data     php -dmax_execution_time=0 bin/console revisions:validate  2>&1
+15 4 * * *      www-data     php bin/console code-inspection:cleanup                    2>&1
+30 5 * * *      www-data     php bin/console webhook:cleanup                            2>&1

@@ -28,7 +28,7 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->request = new Request();
+        $this->request = new Request(content: 'content');
         $stack         = new RequestStack();
         $stack->push($this->request);
         $this->validator         = $this->createMock(ValidatorInterface::class);

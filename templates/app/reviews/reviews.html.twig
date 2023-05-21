@@ -20,6 +20,12 @@
                             {{ 'revisions'|trans }}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ path('DR\\Review\\Controller\\App\\Project\\ProjectBranchesController', {id: reviewsModel.repository.id}) }}">
+                            {{ 'branches'|trans }}
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -53,6 +59,10 @@
                             {% endif %}
 
                             <b>CR-{{- review.projectId -}}</b>{{- ' ' ~ review.title -}}
+
+                            {% if review.type == 'branch' %}
+                                <span class="badge rounded-pill text-bg-primary">{{ 'branch.review'|trans }}</span>
+                            {% endif %}
 
                             <div>
                                 {# authors #}

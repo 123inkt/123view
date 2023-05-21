@@ -30,7 +30,7 @@ class CreateReviewFromRevisionController extends AbstractController
     /**
      * @throws Throwable
      */
-    #[Route('app/review/createFrom/{id<\d+>}', name: self::class, methods: 'POST')]
+    #[Route('app/review/create-from/{id<\d+>}', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(#[MapEntity] Revision $revision): Response
     {

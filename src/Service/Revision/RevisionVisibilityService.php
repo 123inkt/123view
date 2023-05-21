@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Revision;
 
 use Doctrine\Common\Collections\Collection;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
@@ -21,8 +22,12 @@ class RevisionVisibilityService
      *
      * @return Revision[]
      */
-    public function getVisibleRevisions(CodeReview $review, iterable $revisions): array
+    public function getVisibleRevisions(CodeReview $review, array $revisions): array
     {
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            return $revisions;
+        }
+
         $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->user?->getId()]);
 
         $result = [];

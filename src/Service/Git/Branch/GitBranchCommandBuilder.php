@@ -23,6 +23,20 @@ class GitBranchCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function remote(): self
+    {
+        $this->arguments['remote'] = '-r';
+
+        return $this;
+    }
+
+    public function merged(): self
+    {
+        $this->arguments['merged'] = '--merged';
+
+        return $this;
+    }
+
     public function command(): string
     {
         return 'branch';

@@ -1,0 +1,19 @@
+[
+    {
+        "description": "message",
+        "severity": "error",
+        "check_name": "source",
+        "location": {
+            "path": "/build/5/src/file/path.php",
+            "lines": {
+                "begin": 1,
+                "end": 2
+            }
+        }
+    },
+    {
+        "description": "ignore error",
+        "severity": "error",
+        "check_name": "source"
+    }
+]

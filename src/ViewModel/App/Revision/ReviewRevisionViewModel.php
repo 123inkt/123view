@@ -13,8 +13,8 @@ class ReviewRevisionViewModel
      */
     public function __construct(
         public readonly array $revisions,
-        public readonly FormView $detachRevisionForm,
-        public readonly FormView $revisionVisibilityForm
+        public readonly ?FormView $detachRevisionForm,
+        public readonly ?FormView $revisionVisibilityForm
     ) {
     }
 

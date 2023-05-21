@@ -5,6 +5,7 @@ declare(strict_types=1);
 use DR\Review\Doctrine\Type\BitSetType;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Doctrine\Type\ColorThemeType;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
@@ -31,6 +32,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                 'types'          => [
                     BitSetType::TYPE                    => BitSetType::class,
                     CodeReviewStateType::TYPE           => CodeReviewStateType::class,
+                    CodeReviewType::TYPE                => CodeReviewType::class,
                     CodeReviewerStateType::TYPE         => CodeReviewerStateType::class,
                     ColorThemeType::TYPE                => ColorThemeType::class,
                     CommentStateType::TYPE              => CommentStateType::class,

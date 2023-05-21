@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\ViewModel\App\Review;
+namespace DR\Review\Tests\Unit\ViewModel\App\Project;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Tests\AbstractTestCase;
-use DR\Review\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
 /**
- * @coversDefaultClass \DR\Review\ViewModel\App\Review\ProjectsViewModel
+ * @coversDefaultClass \DR\Review\ViewModel\App\Project\ProjectsViewModel
  * @covers ::__construct
  */
 class ProjectsViewModelTest extends AbstractTestCase

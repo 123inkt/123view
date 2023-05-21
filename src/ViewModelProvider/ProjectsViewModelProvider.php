@@ -12,7 +12,7 @@ use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
-use DR\Review\ViewModel\App\Review\ProjectsViewModel;
+use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 
 class ProjectsViewModelProvider
 {

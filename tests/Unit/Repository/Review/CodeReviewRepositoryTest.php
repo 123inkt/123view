@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Repository\Review;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
@@ -68,7 +69,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     {
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
 
-        static::assertNotNull($this->repository->findOneByReferenceId((int)$repository->getId(), 'reference'));
+        static::assertNotNull($this->repository->findOneByReferenceId((int)$repository->getId(), 'reference', CodeReviewType::COMMITS));
     }
 
     /**

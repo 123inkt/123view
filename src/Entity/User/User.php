@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Output\UserOutput;
-use DR\Review\Controller\Api\CurrentUserController;
+use DR\Review\Controller\Api\User\CurrentUserController;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Review\CodeReviewer;
@@ -85,7 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->replies   = new ArrayCollection();
     }
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 

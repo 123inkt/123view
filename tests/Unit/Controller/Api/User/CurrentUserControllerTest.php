@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Controller\Api;
+namespace DR\Review\Tests\Unit\Controller\Api\User;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\Api\CurrentUserController;
+use DR\Review\Controller\Api\User\CurrentUserController;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractControllerTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @coversDefaultClass \DR\Review\Controller\Api\CurrentUserController
+ * @coversDefaultClass \DR\Review\Controller\Api\User\CurrentUserController
  */
 class CurrentUserControllerTest extends AbstractControllerTestCase
 {

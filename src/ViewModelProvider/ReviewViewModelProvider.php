@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
@@ -21,7 +22,8 @@ class ReviewViewModelProvider
         private readonly CodeReviewFileService $fileService,
         private readonly FileTreeViewModelProvider $fileTreeModelProvider,
         private readonly RevisionViewModelProvider $revisionModelProvider,
-        private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider,
+        private readonly ReviewSummaryViewModelProvider $summaryViewModelProvider,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly RevisionVisibilityService $visibilityService,
     ) {
     }
@@ -31,8 +33,8 @@ class ReviewViewModelProvider
      */
     public function getViewModel(CodeReview $review, ReviewRequest $request): ReviewViewModel
     {
-        $viewModel = new ReviewViewModel($review);
-        $revisions = $review->getRevisions()->toArray();
+        $revisions = $this->revisionService->getRevisions($review);
+        $viewModel = new ReviewViewModel($review, $revisions);
 
         // visible revisions
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
@@ -48,7 +50,7 @@ class ReviewViewModelProvider
 
         // get timeline or file-diff view model
         if ($selectedFile === null) {
-            $viewModel->setTimelineViewModel($this->timelineViewModelProvider->getTimelineViewModel($review));
+            $viewModel->setReviewSummaryViewModel($this->summaryViewModelProvider->getSummaryViewModel($review, $revisions, $fileTree));
             $viewModel->setDescriptionVisible(true);
         } else {
             $viewModel->setFileDiffViewModel(

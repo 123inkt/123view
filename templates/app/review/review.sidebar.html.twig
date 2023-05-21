@@ -14,11 +14,11 @@
                    href="{{ url_query_params({tab: 'revisions'}) }}">
                     {{ 'revisions'|trans }}
 
-                    {% if reviewModel.visibleRevisionCount == review.revisions|length -%}
-                        ({{ review.revisions|length }})
-                    {%- else -%}
-                        ({{ reviewModel.visibleRevisionCount ~ '/' ~ review.revisions|length }})
-                    {%- endif -%}
+                    {% if reviewModel.visibleRevisionCount == reviewModel.revisions|length %}
+                        ({{ reviewModel.revisions|length }})
+                    {% else %}
+                        ({{ reviewModel.visibleRevisionCount ~ '/' ~ reviewModel.revisions|length }})
+                    {% endif %}
                 </a>
             </li>
         </ul>
@@ -26,7 +26,11 @@
 
     <div class="review-grid-sidebar--grid-bottom">
         {% if reviewModel.sidebarTabMode == 'revisions' %}
-            {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+            {% if review.type == 'branch' %}
+                {% include 'app/review/review.revisions.branch.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+            {% else %}
+                {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
+            {% endif %}
         {% endif %}
 
         {% if reviewModel.sidebarTabMode == 'overview' %}
@@ -69,12 +73,12 @@
             </div>
 
             <div class="mt-1">
-                {%- if reviewModel.timelineViewModel is not same as (null) -%}
-                    <h6 class="m-0 pt-1 pb-1 bg-primary bg-opacity-10">{{ 'timeline.review'|trans }}</h6>
+                {%- if reviewModel.reviewSummaryViewModel is not same as (null) -%}
+                    <h6 class="m-0 pt-1 pb-1 bg-primary bg-opacity-10">{{ 'review.summary'|trans }}</h6>
                 {% else %}
                     <a class="pt-1 pb-1 text-body d-block"
                        href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
-                        <h6 class="m-0">{{ 'timeline.review'|trans }}</h6>
+                        <h6 class="m-0">{{ 'review.summary'|trans }}</h6>
                     </a>
                 {% endif %}
             </div>

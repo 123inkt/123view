@@ -5,6 +5,9 @@ namespace DR\Review\Utility;
 
 use RuntimeException;
 
+/**
+ * @suppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class Arrays
 {
     /**
@@ -103,6 +106,25 @@ class Arrays
         foreach ($items as $item) {
             $keyValuePair             = $callback($item);
             $result[$keyValuePair[0]] = $keyValuePair[1];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @template T
+     * @template K of int|string
+     *
+     * @param T[]              $items
+     * @param (callable(T): K) $callback
+     *
+     * @return array<K, T>
+     */
+    public static function reindex(array $items, callable $callback): array
+    {
+        $result = [];
+        foreach ($items as $item) {
+            $result[$callback($item)] = $item;
         }
 
         return $result;

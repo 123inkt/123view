@@ -49,4 +49,21 @@ class CodeReviewCreationServiceTest extends AbstractTestCase
         static::assertSame($review, $actualReview);
         static::assertSame(789, $actualReview->getProjectId());
     }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function testCreateFromBranch(): void
+    {
+        $repository = new Repository();
+        $repository->setId(123);
+        $review = new CodeReview();
+
+        $this->reviewFactory->expects(self::once())->method('createFromBranch')->with($repository, 'branch')->willReturn($review);
+        $this->reviewRepository->expects(self::once())->method('getCreateProjectId')->with(123)->willReturn(789);
+
+        $actualReview = $this->service->createFromBranch($repository, 'branch');
+        static::assertSame($review, $actualReview);
+        static::assertSame(789, $actualReview->getProjectId());
+    }
 }
