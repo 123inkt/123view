@@ -368,8 +368,8 @@
       <line num="23" type="stmt" count="1"/>
       <metrics loc="26" ncloc="26" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="9" coveredelements="9"/>
     </file>
-    <file name="C:\Projects\123view\src\Controller\Api\UploadTestCoverage.php">
-      <class name="DR\Review\Controller\Api\UploadTestCoverage" namespace="global">
+    <file name="C:\Projects\123view\src\Controller\Api\UploadCodeCoverageController.php">
+      <class name="DR\Review\Controller\Api\UploadCodeCoverageController" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
       </class>
       <line num="11" type="method" name="__invoke" visibility="public" complexity="1" crap="2" count="0"/>
