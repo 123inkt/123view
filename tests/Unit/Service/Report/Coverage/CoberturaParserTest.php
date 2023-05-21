@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Report\Coverage;
 
-use DR\Review\Entity\Repository\Repository;
+use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Report\Coverage\CoberturaParser;
+use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -15,7 +16,7 @@ class CoberturaParserTest extends AbstractTestCase
     {
         $data = file_get_contents(__DIR__ . '/../../../../../coverage-coburtara.xml');
 
-        $coberturaParser = new CoberturaParser();
-        $coverage        = $coberturaParser->parse(new Repository(), $data);
+        $coberturaParser = new CoberturaParser(new DOMDocumentFactory(), new FilePathNormalizer());
+        $coverage        = $coberturaParser->parse('C:\\Projects\\123view\\', $data);
     }
 }

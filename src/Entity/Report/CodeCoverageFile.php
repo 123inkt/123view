@@ -26,7 +26,8 @@ class CodeCoverageFile
      * => a file of max 64000 lines.
      * => store each line number inside the BitSet
      * => requires 64000 / 64 = 10000 words inside the BitSet
-     * => one 64-bit word can be stored into 4 bytes: 10000 * 4 = 40000.
+     * => one 64-bit word can be stored into 4 bytes.
+     * => storage: 10000 * 4 = 40000 bytes.
      */
     #[ORM\Column(type: BitSetType::TYPE, length: 40000)]
     private ?BitSet $coverage = null;
@@ -47,38 +48,26 @@ class CodeCoverageFile
         return $this;
     }
 
-    public function getFilePath(): ?string
+    public function getFile(): ?string
     {
-        return $this->filePath;
+        return $this->file;
     }
 
-    public function setFilePath(?string $filePath): self
+    public function setFile(?string $file): self
     {
-        $this->filePath = $filePath;
+        $this->file = $file;
 
         return $this;
     }
 
-    public function getCoverage(): BitSet
+    public function getCoverage(): ?BitSet
     {
-        return $this->coverage ??= new BitSet();
+        return $this->coverage;
     }
 
     public function setCoverage(?BitSet $coverage): self
     {
         $this->coverage = $coverage;
-
-        return $this;
-    }
-
-    public function getCreateTimestamp(): ?int
-    {
-        return $this->createTimestamp;
-    }
-
-    public function setCreateTimestamp(?int $createTimestamp): self
-    {
-        $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
