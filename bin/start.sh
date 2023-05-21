@@ -9,7 +9,7 @@ MODE=''
 FOLLOW_LOG='1'
 
 # Map arguments
-while [[ $# -gt 0 ]] && [[ "$1" == "--"* ]] ;
+while [[ $# -gt 0 ]] && [[ "$1" == "-"* ]] ;
 do
     opt="$1";
     shift;

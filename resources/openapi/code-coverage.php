@@ -15,15 +15,12 @@ use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 return static function (OpenApi $openApi) {
     $content = new ArrayObject();
     $content->offsetSet(
-        "multipart/form-data",
-        new MediaType(
-            new ArrayObject(
-                [
-                    'type'       => 'object',
-                    'properties' => new ArrayObject(['fileName' => new ArrayObject(['type' => 'string', 'format' => 'binary'])])
-                ]
-            )
-        )
+        "application/json",
+        new MediaType(new ArrayObject(['type' => 'string']), "{}")
+    );
+    $content->offsetSet(
+        "application/xml",
+        new MediaType(new ArrayObject(['type' => 'string']), "<?xml version='1.0' encoding='UTF-8'?>\n><coverage></coverage>")
     );
 
     $operation = new Operation(
