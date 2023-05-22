@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Entity\Report;
 
 use Doctrine\ORM\Mapping as ORM;
-use DR\JBDiff\Util\BitSet;
-use DR\Review\Doctrine\Type\BitSetType;
+use DR\Review\Doctrine\Type\LineCoverageType;
 use DR\Review\Repository\Report\CodeCoverageFileRepository;
 
 #[ORM\Entity(repositoryClass: CodeCoverageFileRepository::class)]
@@ -29,8 +28,8 @@ class CodeCoverageFile
      * => one 64-bit word can be stored into 4 bytes.
      * => storage: 10000 * 4 = 40000 bytes.
      */
-    #[ORM\Column(type: BitSetType::TYPE, length: 40000)]
-    private ?BitSet $coverage = null;
+    #[ORM\Column(type: LineCoverageType::TYPE, length: 40000)]
+    private ?LineCoverage $coverage = null;
 
     #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -60,12 +59,12 @@ class CodeCoverageFile
         return $this;
     }
 
-    public function getCoverage(): ?BitSet
+    public function getCoverage(): ?LineCoverage
     {
         return $this->coverage;
     }
 
-    public function setCoverage(?BitSet $coverage): self
+    public function setCoverage(?LineCoverage $coverage): self
     {
         $this->coverage = $coverage;
 

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use DR\Review\Doctrine\Type\BitSetType;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Doctrine\Type\CodeReviewType;
@@ -11,6 +10,7 @@ use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Doctrine\Type\FilterType;
 use DR\Review\Doctrine\Type\FrequencyType;
+use DR\Review\Doctrine\Type\LineCoverageType;
 use DR\Review\Doctrine\Type\MailThemeType;
 use DR\Review\Doctrine\Type\NotificationStatusType;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     'enum' => 'string'
                 ],
                 'types'          => [
-                    BitSetType::TYPE                    => BitSetType::class,
+                    LineCoverageType::TYPE              => LineCoverageType::class,
                     CodeReviewStateType::TYPE           => CodeReviewStateType::class,
                     CodeReviewType::TYPE                => CodeReviewType::class,
                     CodeReviewerStateType::TYPE         => CodeReviewerStateType::class,

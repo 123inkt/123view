@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace DR\Review\Service\Report\Coverage\Parser;
 
 use DOMElement;
-use DOMException;
 use DOMXPath;
-use DR\JBDiff\Util\BitSet;
 use DR\Review\Entity\Report\CodeCoverageFile;
+use DR\Review\Entity\Report\LineCoverage;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\XMLException;
 use DR\Review\Service\IO\FilePathNormalizer;
@@ -24,7 +23,7 @@ class CoberturaParser implements CodeCoverageParserInterface
 
     /**
      * @return CodeCoverageFile[]
-     * @throws XMLException|ParseException|DOMException
+     * @throws XMLException|ParseException
      */
     public function parse(string $basePath, string $data): array
     {
@@ -37,13 +36,13 @@ class CoberturaParser implements CodeCoverageParserInterface
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
             $filePath = $this->pathNormalizer->normalize($basePath, $fileElement->getAttribute('name'));
-            $coverage = new BitSet();
+            $coverage = new LineCoverage();
 
             /** @var DOMElement $node */
             foreach ($fileElement->getElementsByTagName('line') as $node) {
-                if ($node->getAttribute('type') === 'stmt' && $node->getAttribute('count') === '1') {
-                    $coverage->set((int)$node->getAttribute('num'));
-                }
+                $lineNumber  = (int)$node->getAttribute('num');
+                $coversCount = (int)$node->getAttribute('count');
+                $coverage->setCoverage($lineNumber, $coversCount);
             }
 
             $result[] = (new CodeCoverageFile())
