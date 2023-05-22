@@ -14,7 +14,7 @@ use DR\Review\Event\CommitEvent;
 use DR\Review\Service\Filter\CommitFilter;
 use DR\Review\Service\Git\Commit\CommitBundler;
 use DR\Review\Service\Git\Diff\GitDiffService;
-use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Log\GitLogService;
 use DR\Review\Service\RuleProcessor;
 use DR\Review\Tests\AbstractTestCase;
@@ -29,7 +29,7 @@ use Throwable;
 class RuleProcessorTest extends AbstractTestCase
 {
     private GitLogService&MockObject            $gitLogService;
-    private UnifiedDiffBundler&MockObject       $diffBundler;
+    private UnifiedDiffEmphasizer&MockObject    $diffEmphasizer;
     private GitDiffService&MockObject           $diffService;
     private CommitFilter&MockObject             $commitFilter;
     private CommitBundler&MockObject            $commitBundler;
@@ -39,17 +39,17 @@ class RuleProcessorTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->gitLogService = $this->createMock(GitLogService::class);
-        $this->diffBundler   = $this->createMock(UnifiedDiffBundler::class);
-        $this->diffService   = $this->createMock(GitDiffService::class);
-        $this->commitFilter  = $this->createMock(CommitFilter::class);
-        $this->commitBundler = $this->createMock(CommitBundler::class);
-        $this->dispatcher    = $this->createMock(EventDispatcherInterface::class);
+        $this->gitLogService  = $this->createMock(GitLogService::class);
+        $this->diffEmphasizer = $this->createMock(UnifiedDiffEmphasizer::class);
+        $this->diffService    = $this->createMock(GitDiffService::class);
+        $this->commitFilter   = $this->createMock(CommitFilter::class);
+        $this->commitBundler  = $this->createMock(CommitBundler::class);
+        $this->dispatcher     = $this->createMock(EventDispatcherInterface::class);
 
         $this->ruleProcessor = new RuleProcessor(
             $this->log,
             $this->gitLogService,
-            $this->diffBundler,
+            $this->diffEmphasizer,
             $this->diffService,
             $this->commitFilter,
             $this->commitBundler,
@@ -70,7 +70,7 @@ class RuleProcessorTest extends AbstractTestCase
         $commits = [$commit];
 
         $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn($commits);
-        $this->diffBundler->expects(static::once())->method('bundleFile');
+        $this->diffEmphasizer->expects(static::once())->method('emphasizeFile');
         $this->commitBundler->expects(static::once())->method('bundle')->with($commits)->willReturn($commits);
         $this->diffService->expects(static::once())->method('getBundledDiff')->with($rule, $commit);
         $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
