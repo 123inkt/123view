@@ -12,7 +12,7 @@ use DR\Review\Event\CommitEvent;
 use DR\Review\Service\Filter\CommitFilter;
 use DR\Review\Service\Git\Commit\CommitBundler;
 use DR\Review\Service\Git\Diff\GitDiffService;
-use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Log\GitLogService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -23,7 +23,7 @@ class RuleProcessor
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly GitLogService $gitLogService,
-        private readonly UnifiedDiffBundler $diffBundler,
+        private readonly UnifiedDiffEmphasizer $diffEmphasizer,
         private readonly GitDiffService $diffService,
         private readonly CommitFilter $filter,
         private readonly CommitBundler $bundler,
@@ -41,19 +41,19 @@ class RuleProcessor
 
         $commits = $this->gitLogService->getCommits($ruleConfig);
 
-        // bundle similar diff lines
-        foreach ($commits as $commit) {
-            foreach ($commit->files as $file) {
-                $this->diffBundler->bundleFile($file, DiffComparePolicy::ALL);
-            }
-        }
-
         // bundle similar commits
         $commits = $this->bundler->bundle($commits);
 
         // Fetch the single diff for commits with multiple commit hashes
         foreach ($commits as $commit) {
             $this->diffService->getBundledDiff($ruleConfig->rule, $commit);
+        }
+
+        // bundle similar diff lines
+        foreach ($commits as $commit) {
+            foreach ($commit->files as $file) {
+                $this->diffEmphasizer->emphasizeFile($file, DiffComparePolicy::IGNORE);
+            }
         }
 
         // include or exclude certain commits
