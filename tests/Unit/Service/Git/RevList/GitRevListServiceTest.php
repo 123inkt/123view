@@ -45,7 +45,6 @@ class GitRevListServiceTest extends AbstractTestCase
 
         $builder->expects(self::once())->method('commitRange')->with('origin/master', 'branch_name')->willReturnSelf();
         $builder->expects(self::once())->method('leftRight')->willReturnSelf();
-        $builder->expects(self::once())->method('noMerges')->willReturnSelf();
         $builder->expects(self::once())->method('pretty')->with('oneline')->willReturnSelf();
         $builder->expects(self::once())->method('rightOnly')->willReturnSelf();
         $this->commandFactory->expects(self::once())->method('createRevList')->willReturn($builder);

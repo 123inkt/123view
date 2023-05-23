@@ -31,7 +31,6 @@ class GitRevListService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createRevList()
             ->commitRange(sprintf('origin/%s', $repository->getMainBranchName()), $branchName)
             ->leftRight()
-            ->noMerges()
             ->pretty('oneline')
             ->rightOnly();
 
