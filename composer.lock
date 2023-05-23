@@ -448,16 +448,16 @@
         },
         {
             "name": "digitalrevolution/symfony-request-validation",
-            "version": "v2.1.0",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/symfony-request-validation.git",
-                "reference": "1e9ca54facd1803f9fae27af17393a8bd85d2825"
+                "reference": "d5147521f8e86685836ff6cd3112e8844e2a59a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/symfony-request-validation/zipball/1e9ca54facd1803f9fae27af17393a8bd85d2825",
-                "reference": "1e9ca54facd1803f9fae27af17393a8bd85d2825",
+                "url": "https://api.github.com/repos/123inkt/symfony-request-validation/zipball/d5147521f8e86685836ff6cd3112e8844e2a59a3",
+                "reference": "d5147521f8e86685836ff6cd3112e8844e2a59a3",
                 "shasum": ""
             },
             "require": {
@@ -494,22 +494,22 @@
             "description": "Automatic request validation for symfony",
             "support": {
                 "issues": "https://github.com/123inkt/symfony-request-validation/issues",
-                "source": "https://github.com/123inkt/symfony-request-validation/tree/v2.1.0"
+                "source": "https://github.com/123inkt/symfony-request-validation/tree/v2.3.1"
             },
-            "time": "2023-01-03T09:58:02+00:00"
+            "time": "2023-05-23T13:56:47+00:00"
         },
         {
             "name": "digitalrevolution/symfony-validation-shorthand",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/symfony-validation-shorthand.git",
-                "reference": "f95d2dd5269892eed591b59a362ea43884760325"
+                "reference": "c3db9ef370c7e21a24fc2c61b192a663d49159be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/symfony-validation-shorthand/zipball/f95d2dd5269892eed591b59a362ea43884760325",
-                "reference": "f95d2dd5269892eed591b59a362ea43884760325",
+                "url": "https://api.github.com/repos/123inkt/symfony-validation-shorthand/zipball/c3db9ef370c7e21a24fc2c61b192a663d49159be",
+                "reference": "c3db9ef370c7e21a24fc2c61b192a663d49159be",
                 "shasum": ""
             },
             "require": {
@@ -541,9 +541,9 @@
             "description": "Validation shorthand for symfony",
             "support": {
                 "issues": "https://github.com/123inkt/symfony-validation-shorthand/issues",
-                "source": "https://github.com/123inkt/symfony-validation-shorthand/tree/v1.1.0"
+                "source": "https://github.com/123inkt/symfony-validation-shorthand/tree/v1.1.1"
             },
-            "time": "2023-03-09T17:04:45+00:00"
+            "time": "2023-05-17T08:49:03+00:00"
         },
         {
             "name": "doctrine/annotations",
