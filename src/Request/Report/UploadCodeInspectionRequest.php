@@ -5,6 +5,9 @@ namespace DR\Review\Request\Report;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
+use DR\Review\Service\Report\CodeInspection\Parser\CheckStyleIssueParser;
+use DR\Review\Service\Report\CodeInspection\Parser\GitlabIssueParser;
+use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 
 class UploadCodeInspectionRequest extends AbstractValidatedRequest
 {
@@ -20,7 +23,7 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
 
     public function getFormat(): string
     {
-        return $this->request->query->get('format', 'checkstyle');
+        return $this->request->query->get('format', CheckStyleIssueParser::FORMAT);
     }
 
     public function getData(): string
@@ -35,7 +38,7 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
                 'query' => [
                     'identifier' => 'required|string|min:1|max:50',
                     'basePath'   => 'string',
-                    'format'     => 'string|in:checkstyle,gitlab'
+                    'format'     => 'string|in:' . CheckStyleIssueParser::FORMAT . ',' . GitlabIssueParser::FORMAT . ',' . JunitIssueParser::FORMAT
                 ]
             ]
         );
