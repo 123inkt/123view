@@ -44,6 +44,9 @@ class CodeCoverageFileRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery();
 
-        return $query->getSingleResult();
+        /** @var CodeCoverageFile|null $result */
+        $result = $query->getResult()[0] ?? null;
+
+        return $result;
     }
 }
