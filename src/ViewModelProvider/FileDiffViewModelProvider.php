@@ -26,7 +26,7 @@ class FileDiffViewModelProvider
         private readonly UnifiedDiffBundler $bundler,
         private readonly UnifiedDiffEmphasizer $emphasizer,
         private readonly UnifiedDiffSplitter $splitter,
-        private readonly CodeInspectionViewModelProvider $inspectionModelProvider,
+        private readonly CodeQualityViewModelProvider $inspectionModelProvider,
     ) {
     }
 
@@ -68,7 +68,7 @@ class FileDiffViewModelProvider
         }
 
         // gather code inspection issues
-        $viewModel->setCodeInspectionViewModel($this->inspectionModelProvider->getCodeInspectionViewModel($review, $selectedFile->getPathname()));
+        $viewModel->setCodeInspectionViewModel($this->inspectionModelProvider->getCodeQualityViewModel($review, $selectedFile->getPathname()));
 
         return $viewModel;
     }
