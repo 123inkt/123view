@@ -11,6 +11,8 @@
      data-line-offset="{{ line_offset }}"
      data-line-after="{{ line.lineNumberAfter|default('0') }}"
 >
+    {%- set codeQualityViewModel = fileDiffViewModel.codeQualityViewModel -%}
+
     {#- gutter -#}
     {%- if isLineBefore -%}
         {{- macro.gutter_single(line.lineNumberBefore, lineNrLengthBefore) -}}
@@ -18,13 +20,33 @@
         {{- macro.gutter_single(line.lineNumberAfter, lineNrLengthAfter) -}}
     {%- endif -%}
 
+    {#- coverage  #}
+    {%- if not isLineBefore -%}
+        {%- set coverage = codeQualityViewModel.getCoverage(line.lineNumberAfter) -%}
+        {%- if coverage > 0 -%}
+            <span class="diff-file__diff-line-coverage covered" title="{{ 'line.has.test.coverage'|trans }}"></span>
+        {%- elseif coverage is same as (0) -%}
+            <span class="diff-file__diff-line-coverage uncovered" title="{{ 'line.is.missing.test.coverage'|trans }}"></span>
+        {%- elseif coverage < 0 -%}
+            <span class="diff-file__diff-line-coverage no-coverage"></span>
+        {%- endif -%}
+    {%- endif -%}
+
     {#- line state -#}
     <span class="diff-file__diff-change-state">{{ macro.line_modifier(line) }}</span>
 
-    {#- code changes -#}
-    {%- if fileDiffViewModel.highlightedFile != null and line.changes|length == 1 and line.state != 2 -%}
-        {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
+    {%- if not isLineBefore -%}
+        {%- set issues = codeQualityViewModel.getIssues(line.lineNumberAfter) -%}
     {%- else -%}
-        {{ macro.changes(line) }}
+        {%- set issues = [] -%}
     {%- endif -%}
+
+    {#- code changes -#}
+    <span {% if issues %}class="diff-file__diff-line__code-inspection-issue" title="{{ macro.code_inspection_issues(issues) }}"{% endif %}>
+        {%- if fileDiffViewModel.highlightedFile != null and line.changes|length == 1 and line.state != 2 -%}
+            {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
+        {%- else -%}
+            {{ macro.changes(line) }}
+        {%- endif -%}
+    </span>
 </div>

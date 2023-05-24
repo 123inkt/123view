@@ -34,8 +34,12 @@ class CodeQualityViewModel
 
     public function getCoverage(?int $lineNumber): ?int
     {
-        if ($lineNumber === null || $this->coverage === null) {
+        if ($this->coverage === null) {
             return null;
+        }
+
+        if ($lineNumber === null) {
+            return -1;
         }
 
         return $this->coverage->getCoverage($lineNumber) ?? -1;
