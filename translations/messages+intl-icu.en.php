@@ -300,4 +300,6 @@ return [
     'merged'                                      => 'merged',
     'create.branch.review'                        => 'Create branch review',
     'branch.review'                               => 'Branch review',
+    'line.has.test.coverage'                      => 'Line has test coverage',
+    'line.is.missing.test.coverage'               => 'Line is missing test coverage',
 ];

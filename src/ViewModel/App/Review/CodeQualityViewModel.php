@@ -14,7 +14,7 @@ class CodeQualityViewModel
     /**
      * @param CodeInspectionIssue[] $issues
      */
-    public function __construct(array $issues, public readonly ?LineCoverage $coverage)
+    public function __construct(array $issues, private readonly ?LineCoverage $coverage)
     {
         $this->issues = [];
 
@@ -34,6 +34,10 @@ class CodeQualityViewModel
 
     public function getCoverage(?int $lineNumber): ?int
     {
-        return $lineNumber === null ? null : $this->coverage?->getCoverage($lineNumber);
+        if ($lineNumber === null || $this->coverage === null) {
+            return null;
+        }
+
+        return $this->coverage->getCoverage($lineNumber) ?? -1;
     }
 }

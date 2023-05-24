@@ -11,11 +11,11 @@ use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 class FileDiffViewModel
 {
     /** @var DiffFile|null in side-by-side mode the file on the left side */
-    public ?DiffFile               $leftSideFile            = null;
-    private ?CommentsViewModel     $commentsViewModel       = null;
-    private ?ReplyCommentViewModel $replyCommentForm        = null;
-    private ?HighlightedFile       $highlightedFile         = null;
-    private ?CodeQualityViewModel  $codeInspectionViewModel = null;
+    public ?DiffFile               $leftSideFile         = null;
+    private ?CommentsViewModel     $commentsViewModel    = null;
+    private ?ReplyCommentViewModel $replyCommentForm     = null;
+    private ?HighlightedFile       $highlightedFile      = null;
+    private ?CodeQualityViewModel  $codeQualityViewModel = null;
 
     public function __construct(public readonly DiffFile $selectedFile, public readonly ReviewDiffModeEnum $diffMode)
     {
@@ -59,13 +59,13 @@ class FileDiffViewModel
         $this->highlightedFile = $highlightedFile;
     }
 
-    public function getCodeInspectionViewModel(): ?CodeQualityViewModel
+    public function getCodeQualityViewModel(): ?CodeQualityViewModel
     {
-        return $this->codeInspectionViewModel;
+        return $this->codeQualityViewModel;
     }
 
-    public function setCodeInspectionViewModel(?CodeQualityViewModel $codeInspectionViewModel): void
+    public function setCodeQualityViewModel(?CodeQualityViewModel $codeQualityViewModel): void
     {
-        $this->codeInspectionViewModel = $codeInspectionViewModel;
+        $this->codeQualityViewModel = $codeQualityViewModel;
     }
 }

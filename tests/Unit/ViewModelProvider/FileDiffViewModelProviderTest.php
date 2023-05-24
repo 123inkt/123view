@@ -82,7 +82,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
         static::assertSame($highlightedFile, $viewModel->getHighlightedFile());
-        static::assertSame($inspectionViewModel, $viewModel->getCodeInspectionViewModel());
+        static::assertSame($inspectionViewModel, $viewModel->getCodeQualityViewModel());
     }
 
     /**
