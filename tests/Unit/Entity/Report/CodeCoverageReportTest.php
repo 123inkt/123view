@@ -12,9 +12,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(CodeCoverageReport::class)]
 class CodeCoverageReportTest extends AbstractTestCase
 {
-    /**
-     * @covers ::<public>
-     */
     public function testAccessorPairs(): void
     {
         $config = (new ConstraintConfig())->setExcludedMethods(['getFiles']);
