@@ -9,6 +9,7 @@ use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
+use DR\Review\Utility\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(CoberturaParser::class)]
@@ -19,7 +20,7 @@ class CoberturaParserTest extends AbstractTestCase
      */
     public function testParse(): void
     {
-        $data = file_get_contents(__DIR__ . '/coverage-cobertura.xml');
+        $data = Assert::notFalse(file_get_contents(__DIR__ . '/coverage-cobertura.xml'));
 
         $coberturaParser = new CoberturaParser(new DOMDocumentFactory(), new FilePathNormalizer());
         $results         = $coberturaParser->parse('\\mnt\\123view\\', $data);
