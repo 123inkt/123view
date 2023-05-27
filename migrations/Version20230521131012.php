@@ -21,7 +21,7 @@ final class Version20230521131012 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
-            'CREATE TABLE code_coverage_file (id INT AUTO_INCREMENT NOT NULL, report_id INT NOT NULL, file VARCHAR(255) NOT NULL, coverage VARBINARY(100000) NOT NULL, INDEX IDX_3965FF284BD2A4C0 (report_id), INDEX report_filepath (report_id, file), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'
+            'CREATE TABLE code_coverage_file (id INT AUTO_INCREMENT NOT NULL, report_id INT NOT NULL, file VARCHAR(255) NOT NULL, coverage VARBINARY(60000) NOT NULL, INDEX IDX_3965FF284BD2A4C0 (report_id), INDEX report_filepath (report_id, file), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'
         );
         $this->addSql(
             'CREATE TABLE code_coverage_report (id INT AUTO_INCREMENT NOT NULL, repository_id INT NOT NULL, commit_hash VARCHAR(255) NOT NULL, create_timestamp INT NOT NULL, INDEX IDX_3108049150C9D4F7 (repository_id), INDEX create_timestamp (create_timestamp), INDEX repository_create_timestamp (repository_id, create_timestamp), INDEX repository_commit_hash (repository_id, commit_hash), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'

@@ -20,7 +20,10 @@ class CodeCoverageFile
     #[ORM\Column(length: 255)]
     private ?string $file = null;
 
-    #[ORM\Column(type: LineCoverageType::TYPE, length: 100000)]
+    /**
+     * Binary data: will be stored as json encoded + gzcompress
+     */
+    #[ORM\Column(type: LineCoverageType::TYPE, length: 60000)]
     private ?LineCoverage $coverage = null;
 
     #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
