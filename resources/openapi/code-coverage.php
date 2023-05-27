@@ -15,10 +15,6 @@ use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 return static function (OpenApi $openApi) {
     $content = new ArrayObject();
     $content->offsetSet(
-        "application/json",
-        new MediaType(new ArrayObject(['type' => 'string']), "{}")
-    );
-    $content->offsetSet(
         "application/xml",
         new MediaType(new ArrayObject(['type' => 'string']), "<?xml version='1.0' encoding='UTF-8'?>\n><coverage></coverage>")
     );
