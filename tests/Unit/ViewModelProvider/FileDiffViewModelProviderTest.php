@@ -72,7 +72,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $review              = new CodeReview();
         $review->setRepository($repository);
         $highlightedFile     = new HighlightedFile('filepath', static fn() => []);
-        $inspectionViewModel = new CodeQualityViewModel([]);
+        $inspectionViewModel = new CodeQualityViewModel([], null);
 
         $this->commentsModelProvider->expects(self::once())->method('getCommentsViewModel')->with($review, null, $file);
         $this->highlightedFileService->expects(self::once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);

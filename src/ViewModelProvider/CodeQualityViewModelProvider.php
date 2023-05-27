@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\ViewModelProvider;
 
 use Doctrine\ORM\UnexpectedResultException;
-use DR\Review\Entity\Report\LineCoverage;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Report\CodeCoverageFileRepository;
 use DR\Review\Repository\Report\CodeInspectionIssueRepository;
@@ -44,10 +43,6 @@ class CodeQualityViewModelProvider
 
         // find code coverage
         $lineCoverage = $this->coverageFileRepository->findOneByRevisions($repository, $revisions, $filePath)?->getCoverage();
-
-        $lineCoverage = new LineCoverage();
-        $lineCoverage->setCoverage(19, 1);
-        $lineCoverage->setCoverage(21, 0);
 
         return new CodeQualityViewModel($issues, $lineCoverage);
     }
