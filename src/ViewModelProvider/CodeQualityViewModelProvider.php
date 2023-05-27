@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
-use Doctrine\ORM\UnexpectedResultException;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Report\CodeCoverageFileRepository;
 use DR\Review\Repository\Report\CodeInspectionIssueRepository;
@@ -22,9 +21,6 @@ class CodeQualityViewModelProvider
     ) {
     }
 
-    /**
-     * @throws UnexpectedResultException
-     */
     public function getCodeQualityViewModel(CodeReview $review, string $filePath): CodeQualityViewModel
     {
         if ($filePath === '') {

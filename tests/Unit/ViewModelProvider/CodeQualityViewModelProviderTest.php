@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider;
 
-use Doctrine\ORM\UnexpectedResultException;
 use DR\Review\Entity\Report\CodeCoverageFile;
 use DR\Review\Entity\Report\CodeInspectionIssue;
 use DR\Review\Entity\Report\CodeInspectionReport;
@@ -45,9 +44,6 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @throws UnexpectedResultException
-     */
     public function testGetCodeQualityViewModelEmptyFilePath(): void
     {
         $review = new CodeReview();
@@ -56,9 +52,6 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         static::assertEquals(new CodeQualityViewModel([], null), $viewModel);
     }
 
-    /**
-     * @throws UnexpectedResultException
-     */
     public function testGetCodeQualityViewModelNoReports(): void
     {
         $repository = new Repository();
@@ -73,9 +66,6 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         static::assertEquals(new CodeQualityViewModel([], null), $viewModel);
     }
 
-    /**
-     * @throws UnexpectedResultException
-     */
     public function testGetCodeQualityViewModel(): void
     {
         $repository = new Repository();

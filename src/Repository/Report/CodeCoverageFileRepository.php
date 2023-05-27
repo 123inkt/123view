@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Repository\Report;
 
-use Doctrine\ORM\UnexpectedResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Report\CodeCoverageFile;
@@ -26,8 +25,6 @@ class CodeCoverageFileRepository extends ServiceEntityRepository
 
     /**
      * @param Revision[] $revisions
-     *
-     * @throws UnexpectedResultException
      */
     public function findOneByRevisions(Repository $repository, array $revisions, string $filePath): ?CodeCoverageFile
     {
