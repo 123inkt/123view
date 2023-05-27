@@ -61,7 +61,7 @@ return static function (OpenApi $openApi) {
                 'The format of the input. Defaults to `' . CoberturaParser::FORMAT . '`.',
                 schema: [
                     'type' => 'string',
-                    'enum' => [CoberturaParser::FORMAT, 'clover']
+                    'enum' => [CoberturaParser::FORMAT]
                 ]
             )
         ],
