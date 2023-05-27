@@ -20,15 +20,7 @@ class CodeCoverageFile
     #[ORM\Column(length: 255)]
     private ?string $file = null;
 
-    /**
-     * BitSet size calculation:
-     * => a file of max 64000 lines.
-     * => store each line number inside the BitSet
-     * => requires 64000 / 64 = 10000 words inside the BitSet
-     * => one 64-bit word can be stored into 4 bytes.
-     * => storage: 10000 * 4 = 40000 bytes.
-     */
-    #[ORM\Column(type: LineCoverageType::TYPE, length: 40000)]
+    #[ORM\Column(type: LineCoverageType::TYPE, length: 100000)]
     private ?LineCoverage $coverage = null;
 
     #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
