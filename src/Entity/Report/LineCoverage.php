@@ -38,9 +38,11 @@ class LineCoverage
         return Assert::notFalse(gzcompress(Json::encode($this->lines), 3));
     }
 
-    public function setCoverage(int $lineNumber, int $count): void
+    public function setCoverage(int $lineNumber, int $count): self
     {
         $this->lines[$lineNumber] = $count;
+
+        return $this;
     }
 
     public function getCoverage(int $lineNumber): ?int
