@@ -141,14 +141,6 @@
     line-height: 20px;
     height: 20px;
     width: 8px;
-
-    &.covered {
-        background-color: #00dd00;
-    }
-
-    &.uncovered {
-        background-color: #dd0000;
-    }
 }
 
 .diff-file__add-comment {

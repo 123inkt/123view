@@ -17,9 +17,9 @@
     {#- coverage  #}
     {%- set coverage = codeQualityViewModel.getCoverage(line.lineNumberAfter) -%}
     {%- if coverage > 0 -%}
-        <span class="diff-file__diff-line-coverage covered" title="{{ 'line.has.test.coverage'|trans }}"></span>
+        <span class="diff-file__diff-line-coverage bg-success" title="{{ 'line.has.test.coverage'|trans }}"></span>
     {%- elseif coverage is same as (0) -%}
-        <span class="diff-file__diff-line-coverage uncovered"  title="{{ 'line.is.missing.test.coverage'|trans }}"></span>
+        <span class="diff-file__diff-line-coverage bg-danger"  title="{{ 'line.is.missing.test.coverage'|trans }}"></span>
     {%- elseif coverage < 0 -%}
         <span class="diff-file__diff-line-coverage no-coverage"></span>
     {%- endif -%}
