@@ -10,7 +10,7 @@ use DR\Review\ViewModel\App\Review\CodeQualityViewModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(CodeQualityViewModel::class)]
-class CodeInspectionViewModelTest extends AbstractTestCase
+class CodeQualityViewModelTest extends AbstractTestCase
 {
     public function testGetIssues(): void
     {
@@ -41,6 +41,6 @@ class CodeInspectionViewModelTest extends AbstractTestCase
     {
         $viewModel = new CodeQualityViewModel([], null);
 
-        static::assertSame(null, $viewModel->getCoverage(5));
+        static::assertNull($viewModel->getCoverage(5));
     }
 }
