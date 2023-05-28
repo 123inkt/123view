@@ -49,7 +49,6 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c');
         $qb->where('c.createTimestamp < :timestamp');
         $qb->setParameter('timestamp', $beforeTimestamp);
-        /** @var CodeInspectionReport[] $entities */
         $entities = $qb->getQuery()->getResult();
 
         foreach ($entities as $entity) {
