@@ -30,7 +30,6 @@ final class Version20230521131012 extends AbstractMigration
             'ALTER TABLE code_coverage_file ADD CONSTRAINT FK_3965FF284BD2A4C0 FOREIGN KEY (report_id) REFERENCES code_coverage_report (id)'
         );
         $this->addSql('ALTER TABLE code_coverage_report ADD CONSTRAINT FK_3108049150C9D4F7 FOREIGN KEY (repository_id) REFERENCES repository (id)');
-        $this->addSql('ALTER TABLE file_coverage DROP FOREIGN KEY FK_E4067CF650C9D4F7');
         $this->addSql('DROP INDEX file_report_idx ON code_inspection_issue');
         $this->addSql('CREATE INDEX file_report_idx ON code_inspection_issue (report_id, file)');
         $this->addSql('DROP INDEX IDX_COMMIT_HASH_REPOSITORY_ID ON code_inspection_report');
