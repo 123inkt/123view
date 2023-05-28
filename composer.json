@@ -147,8 +147,8 @@
         "test:integration": "phpunit --testsuite integration",
         "test:unit": "phpunit --testsuite unit",
         "test:coverage": [
-            "phpunit --coverage-clover coverage.xml",
-            "phpfci inspect coverage.xml php://stdout --exit-code-on-failure"
+            "phpunit --testsuite unit --coverage-clover coverage.xml",
+            "phpfci inspect coverage.xml --reportText --exit-code-on-failure"
         ],
         "cache:destroy": [
             "@php bin/console cache:clear --env=prod --no-debug",
