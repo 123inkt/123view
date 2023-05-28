@@ -150,9 +150,6 @@
             "phpunit --coverage-clover coverage.xml",
             "phpfci inspect coverage.xml php://stdout --exit-code-on-failure"
         ],
-        "test:coverage:coburtura": [
-            "phpunit --coverage-clover coverage-coburtara.xml"
-        ],
         "cache:destroy": [
             "@php bin/console cache:clear --env=prod --no-debug",
             "@php bin/console cache:clear --env=dev  --no-debug",
