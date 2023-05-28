@@ -7,6 +7,9 @@
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    {#- application stylesheets -#}
+    {{- encore_entry_link_tags('app') -}}
+
     {#- light/dark mode stylesheets -#}
     {%- if app.user and app.user.setting.colorTheme == 'dark' -%}
         {%- include 'base.head.dark.html.twig' -%}
@@ -21,8 +24,6 @@
         {%- include 'base.head.light.html.twig' with {media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)'} -%}
     {%- endif -%}
 
-    {#- application stylesheets -#}
-    {{- encore_entry_link_tags('app') -}}
     {%- for js in encore_entry_js_files('app') -%}
         <script src="{{ js }}" defer></script>
     {%- endfor -%}

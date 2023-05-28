@@ -16,11 +16,15 @@
     --review-diff-line-fg-color: #0c0c0d;
     --review-diff-gutter-border-color: #cccccc;
     --review-diff-gutter-fg-color: rgba(0, 0, 0, 0.3);
+    --review-diff-gutter-emphasize-fg-color: rgba(0, 0, 0, 0.3);
     --review-diff-add-comment-bg-color: #fffee0;
     --review-diff-add-comment-fg-color: #ff008c;
     --review-diff-line-added-bg-color: #eaffea;
     --review-diff-line-removed-bg-color: #ffecec;
     --review-diff-line-changed-bg-color: #eaf0fe;
+    --review-diff-line-gutter-added-bg-color: #eaffea;
+    --review-diff-line-gutter-removed-bg-color: #ffecec;
+    --review-diff-line-gutter-changed-bg-color: #eaf0fe;
     --review-diff-line-empty-bg-color: #f8f8f8;
     --review-diff-line-hover-bg-color: #fffee0;
     --review-diff-change-added-bg-color: #a6f3a6;

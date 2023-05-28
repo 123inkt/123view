@@ -165,14 +165,29 @@
 
 .diff-file__line-change-added {
     background: var(--review-diff-line-added-bg-color);
+
+    > .diff-file__line-gutter {
+        color: var(--review-diff-gutter-emphasize-fg-color);
+        background: var(--review-diff-line-gutter-added-bg-color);
+    }
 }
 
 .diff-file__line-change-removed {
     background: var(--review-diff-line-removed-bg-color);
+
+    > .diff-file__line-gutter {
+        color: var(--review-diff-gutter-emphasize-fg-color);
+        background: var(--review-diff-line-gutter-removed-bg-color);
+    }
 }
 
 .diff-file__line-change-changed {
     background: var(--review-diff-line-changed-bg-color);
+
+    > .diff-file__line-gutter {
+        color: var(--review-diff-gutter-emphasize-fg-color);
+        background: var(--review-diff-line-gutter-changed-bg-color);
+    }
 }
 
 .diff-file__line-change-empty {
