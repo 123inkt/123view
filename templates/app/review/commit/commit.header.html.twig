@@ -1,3 +1,4 @@
+{#- fileDiffViewModel: FileDiffViewModel -#}
 <div class="diff-file__file-revision-info clearfix pb-2">
     <div class="float-start">
         <div>
@@ -22,6 +23,26 @@
             <div class="diff-file__file-mode-change">{{ 'file.mode.changed'|trans }} {{ file.fileModeBefore }} &gt; {{ file.fileModeAfter }}</div>
         {%- endif -%}
     </div>
+
+    {# file code coverage #}
+    {% if fileDiffViewModel.codeQualityViewModel %}
+        {%- set coveragePercentage = fileDiffViewModel.codeQualityViewModel.coveragePercentage -%}
+        {%- if coveragePercentage is not same as (null) -%}
+            <div class="float-start ps-2">
+                {% if coveragePercentage < 60 %}
+                    {% set coverageColor = 'danger' %}
+                {% elseif coveragePercentage < 80 %}
+                    {% set coverageColor = 'warning' %}
+                {% else %}
+                    {% set coverageColor = 'success' %}
+                {% endif %}
+
+                <span class="d-inline-flex px-1 text-{{ coverageColor }} bg-d bg-opacity-10 border border-{{ coverageColor }} border-opacity-100 rounded-2 float-end">
+                    Coverage: {{ coveragePercentage|format_number({fraction_digit: 2}) }}%
+                </span>
+            </div>
+        {%- endif -%}
+    {%- endif -%}
 
     <div class="float-end pe-2">
         {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}

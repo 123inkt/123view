@@ -38,6 +38,26 @@ class LineCoverage
         return Assert::notFalse(gzcompress(Json::encode($this->lines), 3));
     }
 
+    public function getPercentage(): ?float
+    {
+        $covered   = 0;
+        $uncovered = 0;
+
+        foreach ($this->lines as $coverage) {
+            if ($coverage === 0) {
+                ++$uncovered;
+            } else {
+                ++$covered;
+            }
+        }
+
+        if ($uncovered === 0) {
+            return 100.0;
+        }
+
+        return $covered / ($covered + $uncovered) * 100;
+    }
+
     public function setCoverage(int $lineNumber, int $count): self
     {
         $this->lines[$lineNumber] = $count;

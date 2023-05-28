@@ -24,6 +24,17 @@ class CodeQualityViewModelTest extends AbstractTestCase
         static::assertSame([$issue], $viewModel->getIssues(500));
     }
 
+    public function testGetCoveragePercentage(): void
+    {
+        $viewModel = new CodeQualityViewModel([], null);
+        static::assertNull($viewModel->getCoveragePercentage());
+
+        $coverage = $this->createMock(LineCoverage::class);
+        $coverage->method('getPercentage')->willReturn(123.45);
+        $viewModel = new CodeQualityViewModel([], $coverage);
+        static::assertSame(123.45, $viewModel->getCoveragePercentage());
+    }
+
     public function testGetCoverage(): void
     {
         $lineCoverage = new LineCoverage();

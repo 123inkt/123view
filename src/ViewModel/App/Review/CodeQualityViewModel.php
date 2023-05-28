@@ -32,6 +32,11 @@ class CodeQualityViewModel
         return $lineNumber === null ? [] : ($this->issues[$lineNumber] ?? []);
     }
 
+    public function getCoveragePercentage(): ?float
+    {
+        return $this->coverage?->getPercentage();
+    }
+
     public function getCoverage(?int $lineNumber): ?int
     {
         if ($this->coverage === null) {
