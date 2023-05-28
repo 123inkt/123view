@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+// phpcs:ignoreFile
+
 use DR\Review\Kernel;
 use Symfony\Component\Dotenv\Dotenv;
 
