@@ -31,7 +31,6 @@ final class Version20230521131012 extends AbstractMigration
         );
         $this->addSql('ALTER TABLE code_coverage_report ADD CONSTRAINT FK_3108049150C9D4F7 FOREIGN KEY (repository_id) REFERENCES repository (id)');
         $this->addSql('ALTER TABLE file_coverage DROP FOREIGN KEY FK_E4067CF650C9D4F7');
-        $this->addSql('DROP TABLE file_coverage');
         $this->addSql('DROP INDEX file_report_idx ON code_inspection_issue');
         $this->addSql('CREATE INDEX file_report_idx ON code_inspection_issue (report_id, file)');
         $this->addSql('DROP INDEX IDX_COMMIT_HASH_REPOSITORY_ID ON code_inspection_report');
@@ -43,12 +42,6 @@ final class Version20230521131012 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql(
-            'CREATE TABLE file_coverage (id INT AUTO_INCREMENT NOT NULL, repository_id INT NOT NULL, file_path VARCHAR(500) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, coverage MEDIUMTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, create_timestamp INT NOT NULL, INDEX IDX_E4067CF650C9D4F7 (repository_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' '
-        );
-        $this->addSql(
-            'ALTER TABLE file_coverage ADD CONSTRAINT FK_E4067CF650C9D4F7 FOREIGN KEY (repository_id) REFERENCES repository (id) ON UPDATE NO ACTION ON DELETE NO ACTION'
-        );
         $this->addSql('ALTER TABLE code_coverage_file DROP FOREIGN KEY FK_3965FF284BD2A4C0');
         $this->addSql('ALTER TABLE code_coverage_report DROP FOREIGN KEY FK_3108049150C9D4F7');
         $this->addSql('DROP TABLE code_coverage_file');
