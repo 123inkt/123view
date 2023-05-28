@@ -61,31 +61,6 @@ parameters:
 			path: src/Entity/Notification/RuleOptions.php
 
 		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageFile\\:\\:\\$file type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
-			count: 1
-			path: src/Entity/Report/CodeCoverageFile.php
-
-		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageFile\\:\\:\\$report type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageReport\\|null but database expects DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageReport\\.$#"
-			count: 1
-			path: src/Entity/Report/CodeCoverageFile.php
-
-		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageReport\\:\\:\\$commitHash type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
-			count: 1
-			path: src/Entity/Report/CodeCoverageReport.php
-
-		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageReport\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
-			count: 1
-			path: src/Entity/Report/CodeCoverageReport.php
-
-		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageReport\\:\\:\\$repository type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\|null but database expects DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\.$#"
-			count: 1
-			path: src/Entity/Report/CodeCoverageReport.php
-
-		-
 			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$file type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
 			count: 1
 			path: src/Entity/Report/CodeInspectionIssue.php

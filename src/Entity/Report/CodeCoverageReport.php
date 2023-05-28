@@ -22,14 +22,14 @@ class CodeCoverageReport
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $commitHash = null;
+    private string $commitHash;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: Repository::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Repository $repository = null;
+    private Repository $repository;
 
     /** @phpstan-var Collection<int, CodeCoverageFile> */
     #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeCoverageFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -52,36 +52,36 @@ class CodeCoverageReport
         return $this;
     }
 
-    public function getCommitHash(): ?string
+    public function getCommitHash(): string
     {
         return $this->commitHash;
     }
 
-    public function setCommitHash(?string $commitHash): self
+    public function setCommitHash(string $commitHash): self
     {
         $this->commitHash = $commitHash;
 
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): self
+    public function setCreateTimestamp(int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
 
-    public function getRepository(): ?Repository
+    public function getRepository(): Repository
     {
         return $this->repository;
     }
 
-    public function setRepository(?Repository $repository): self
+    public function setRepository(Repository $repository): self
     {
         $this->repository = $repository;
 

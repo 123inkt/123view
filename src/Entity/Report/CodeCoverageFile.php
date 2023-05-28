@@ -18,17 +18,17 @@ class CodeCoverageFile
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $file = null;
+    private string $file;
 
     /**
      * Binary data: will be stored as json encoded + gzcompress
      */
     #[ORM\Column(type: LineCoverageType::TYPE, length: 60000)]
-    private ?LineCoverage $coverage = null;
+    private LineCoverage $coverage;
 
     #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CodeCoverageReport $report = null;
+    private CodeCoverageReport $report;
 
     public function getId(): ?int
     {
@@ -42,36 +42,36 @@ class CodeCoverageFile
         return $this;
     }
 
-    public function getFile(): ?string
+    public function getFile(): string
     {
         return $this->file;
     }
 
-    public function setFile(?string $file): self
+    public function setFile(string $file): self
     {
         $this->file = $file;
 
         return $this;
     }
 
-    public function getCoverage(): ?LineCoverage
+    public function getCoverage(): LineCoverage
     {
         return $this->coverage;
     }
 
-    public function setCoverage(?LineCoverage $coverage): self
+    public function setCoverage(LineCoverage $coverage): self
     {
         $this->coverage = $coverage;
 
         return $this;
     }
 
-    public function getReport(): ?CodeCoverageReport
+    public function getReport(): CodeCoverageReport
     {
         return $this->report;
     }
 
-    public function setReport(?CodeCoverageReport $report): self
+    public function setReport(CodeCoverageReport $report): self
     {
         $this->report = $report;
 
