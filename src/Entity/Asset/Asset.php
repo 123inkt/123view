@@ -24,14 +24,14 @@ class Asset
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $mimeType = null;
+    private string $mimeType;
 
     /** @var resource|null */
     #[ORM\Column(type: 'binary', length: 16777215)]
     private $data = null;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     private ?User $user = null;
@@ -48,12 +48,12 @@ class Asset
         return $this->id;
     }
 
-    public function getMimeType(): ?string
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
 
-    public function setMimeType(?string $mimeType): Asset
+    public function setMimeType(string $mimeType): Asset
     {
         $this->mimeType = $mimeType;
 
@@ -78,12 +78,12 @@ class Asset
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): Asset
+    public function setCreateTimestamp(int $createTimestamp): Asset
     {
         $this->createTimestamp = $createTimestamp;
 

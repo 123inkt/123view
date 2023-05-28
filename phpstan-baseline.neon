@@ -26,16 +26,6 @@ parameters:
 			path: src/ApiPlatform/Provider/CodeReviewProvider.php
 
 		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Asset\\\\Asset\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
-			count: 1
-			path: src/Entity/Asset/Asset.php
-
-		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Asset\\\\Asset\\:\\:\\$mimeType type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
-			count: 1
-			path: src/Entity/Asset/Asset.php
-
-		-
 			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Filter\\:\\:\\$pattern type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
 			count: 1
 			path: src/Entity/Notification/Filter.php
