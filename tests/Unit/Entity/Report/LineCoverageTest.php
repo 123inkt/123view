@@ -37,4 +37,18 @@ class LineCoverageTest extends AbstractTestCase
 
         static::assertEquals($lineCoverage, $newLineCoverage);
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFromBinaryStringEmptyValue(): void
+    {
+        $lineCoverage = new LineCoverage();
+
+        $data = $lineCoverage->toBinaryString();
+        static::assertSame('', $data);
+        $newLineCoverage = LineCoverage::fromBinaryString($data);
+
+        static::assertEquals($lineCoverage, $newLineCoverage);
+    }
 }

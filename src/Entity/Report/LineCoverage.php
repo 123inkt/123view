@@ -17,8 +17,10 @@ class LineCoverage
      */
     public static function fromBinaryString(string $data): self
     {
-        $lineCoverage        = new LineCoverage();
-        $lineCoverage->lines = Assert::isArray(Json::decode(Assert::notFalse(gzuncompress($data)), true));
+        $lineCoverage = new LineCoverage();
+        if ($data !== '') {
+            $lineCoverage->lines = Assert::isArray(Json::decode(Assert::notFalse(gzuncompress($data)), true));
+        }
 
         return $lineCoverage;
     }
@@ -28,6 +30,10 @@ class LineCoverage
      */
     public function toBinaryString(): string
     {
+        if (count($this->lines) === 0) {
+            return '';
+        }
+
         // level 3 compression for best compression/performance ratio
         return Assert::notFalse(gzcompress(Json::encode($this->lines), 3));
     }
