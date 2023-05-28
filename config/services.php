@@ -45,6 +45,8 @@ use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
 use DR\Review\Service\Report\CodeInspection\Parser\CheckStyleIssueParser;
 use DR\Review\Service\Report\CodeInspection\Parser\GitlabIssueParser;
 use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
+use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
+use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
@@ -165,6 +167,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(GitlabIssueParser::class)->tag('code_inspection_issue_parser', ['key' => GitlabIssueParser::FORMAT]);
     $services->set(JunitIssueParser::class)->tag('code_inspection_issue_parser', ['key' => JunitIssueParser::FORMAT]);
     $services->set(CodeInspectionIssueParserProvider::class)->arg('$parsers', tagged_iterator('code_inspection_issue_parser', 'key'));
+
+    // Code coverage parsers
+    $services->set(CoberturaParser::class)->tag('code_coverage_parser', ['key' => CoberturaParser::FORMAT]);
+    $services->set(CodeCoverageParserProvider::class)->arg('$parsers', tagged_iterator('code_coverage_parser', 'key'));
 
     // Mail Notification Message handlers
     $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler');

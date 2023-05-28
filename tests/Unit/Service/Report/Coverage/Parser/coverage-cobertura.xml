@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1682706881">
+  <project timestamp="1682706881">
+    <file name="\mnt\123view\src\ApiPlatform\Factory\CodeReviewActivityOutputFactory.php">
+      <class name="DR\Review\ApiPlatform\Factory\CodeReviewActivityOutputFactory" namespace="global">
+        <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="13" coveredelements="13"/>
+      </class>
+      <line num="12" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="14" type="stmt" count="0"/>
+      <line num="16" type="method" name="create" visibility="public" complexity="2" crap="2" count="1"/>
+      <line num="18" type="stmt" count="1"/>
+    </file>
+    <file name="\mnt\123view\src\ApiPlatform\Factory\CodeReviewOutputFactory.php">
+      <class name="DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory" namespace="global">
+        <metrics complexity="4" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="21" elements="23" coveredelements="23"/>
+      </class>
+      <line num="17" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="19" type="stmt" count="1"/>
+      <line num="25" type="method" name="create" visibility="public" complexity="3" crap="3" count="1"/>
+    </file>
+  </project>
+</coverage>

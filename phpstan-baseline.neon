@@ -26,6 +26,376 @@ parameters:
 			path: src/ApiPlatform/Provider/CodeReviewProvider.php
 
 		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Filter\\:\\:\\$pattern type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Notification/Filter.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Filter\\:\\:\\$rule type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\|null but database expects DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\.$#"
+			count: 1
+			path: src/Entity/Notification/Filter.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Recipient\\:\\:\\$email type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Notification/Recipient.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Recipient\\:\\:\\$rule type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\|null but database expects DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\.$#"
+			count: 1
+			path: src/Entity/Notification/Recipient.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\:\\:\\$name type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Notification/Rule.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\:\\:\\$user type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\User\\\\User\\|null but database expects DR\\\\Review\\\\Entity\\\\User\\\\User\\.$#"
+			count: 1
+			path: src/Entity/Notification/Rule.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Notification\\\\RuleOptions\\:\\:\\$rule type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\|null but database expects DR\\\\Review\\\\Entity\\\\Notification\\\\Rule\\.$#"
+			count: 1
+			path: src/Entity/Notification/RuleOptions.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$file type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionIssue.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$lineNumber type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionIssue.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$message type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionIssue.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$report type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionReport\\|null but database expects DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionReport\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionIssue.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$severity type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionIssue.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionReport\\:\\:\\$commitHash type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionReport.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionReport\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionReport.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionReport\\:\\:\\$inspectionId type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionReport.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionReport\\:\\:\\$repository type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\|null but database expects DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeInspectionReport.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\:\\:\\$displayName type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Repository/Repository.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\:\\:\\$name type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Repository/Repository.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Repository\\\\RepositoryProperty\\:\\:\\$name type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Repository/RepositoryProperty.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Repository\\\\RepositoryProperty\\:\\:\\$repository type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\|null but database expects DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\.$#"
+			count: 1
+			path: src/Entity/Repository/RepositoryProperty.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Repository\\\\RepositoryProperty\\:\\:\\$value type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Repository/RepositoryProperty.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReview.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\:\\:\\$description type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReview.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\:\\:\\$projectId type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReview.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\:\\:\\$repository type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\|null but database expects DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReview.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\:\\:\\$title type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReview.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\:\\:\\$updateTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReview.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReviewActivity\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReviewActivity.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReviewActivity\\:\\:\\$eventName type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReviewActivity.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReviewActivity\\:\\:\\$review type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\|null but database expects DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReviewActivity.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReviewer\\:\\:\\$review type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\|null but database expects DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReviewer.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReviewer\\:\\:\\$stateTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReviewer.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CodeReviewer\\:\\:\\$user type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\User\\\\User\\|null but database expects DR\\\\Review\\\\Entity\\\\User\\\\User\\.$#"
+			count: 1
+			path: src/Entity/Review/CodeReviewer.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$filePath type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$lineReference type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$message type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$review type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\|null but database expects DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$state type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$updateTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\:\\:\\$user type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\User\\\\User\\|null but database expects DR\\\\Review\\\\Entity\\\\User\\\\User\\.$#"
+			count: 1
+			path: src/Entity/Review/Comment.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CommentReply\\:\\:\\$comment type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\|null but database expects DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\.$#"
+			count: 1
+			path: src/Entity/Review/CommentReply.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CommentReply\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CommentReply.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CommentReply\\:\\:\\$message type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/CommentReply.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CommentReply\\:\\:\\$updateTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/CommentReply.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\CommentReply\\:\\:\\$user type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\User\\\\User\\|null but database expects DR\\\\Review\\\\Entity\\\\User\\\\User\\.$#"
+			count: 1
+			path: src/Entity/Review/CommentReply.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\FileSeenStatus\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/FileSeenStatus.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\FileSeenStatus\\:\\:\\$filePath type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Review/FileSeenStatus.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\UserMention\\:\\:\\$comment type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\|null but database expects DR\\\\Review\\\\Entity\\\\Review\\\\Comment\\.$#"
+			count: 1
+			path: src/Entity/Review/UserMention.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Review\\\\UserMention\\:\\:\\$userId type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Review/UserMention.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$authorEmail type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$authorName type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$commitHash type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$description type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$repository type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\|null but database expects DR\\\\Review\\\\Entity\\\\Repository\\\\Repository\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\:\\:\\$title type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Revision/Revision.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\RevisionVisibility\\:\\:\\$review type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\|null but database expects DR\\\\Review\\\\Entity\\\\Review\\\\CodeReview\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionVisibility.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\RevisionVisibility\\:\\:\\$revision type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\|null but database expects DR\\\\Review\\\\Entity\\\\Revision\\\\Revision\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionVisibility.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Revision\\\\RevisionVisibility\\:\\:\\$user type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\User\\\\User\\|null but database expects DR\\\\Review\\\\Entity\\\\User\\\\User\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionVisibility.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\User\\\\User\\:\\:\\$email type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/User/User.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\User\\\\User\\:\\:\\$name type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/User/User.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\User\\\\UserAccessToken\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/User/UserAccessToken.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\User\\\\UserAccessToken\\:\\:\\$name type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/User/UserAccessToken.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\User\\\\UserAccessToken\\:\\:\\$token type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/User/UserAccessToken.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\User\\\\UserAccessToken\\:\\:\\$user type mapping mismatch\\: property can contain DR\\\\Review\\\\Entity\\\\User\\\\User\\|null but database expects DR\\\\Review\\\\Entity\\\\User\\\\User\\.$#"
+			count: 1
+			path: src/Entity/User/UserAccessToken.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\Webhook\\:\\:\\$enabled type mapping mismatch\\: property can contain bool\\|null but database expects bool\\.$#"
+			count: 1
+			path: src/Entity/Webhook/Webhook.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\Webhook\\:\\:\\$retries type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Webhook/Webhook.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\Webhook\\:\\:\\$url type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Webhook/Webhook.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\Webhook\\:\\:\\$verifySsl type mapping mismatch\\: property can contain bool\\|null but database expects bool\\.$#"
+			count: 1
+			path: src/Entity/Webhook/Webhook.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\WebhookActivity\\:\\:\\$createTimestamp type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Webhook/WebhookActivity.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\WebhookActivity\\:\\:\\$request type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Webhook/WebhookActivity.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\WebhookActivity\\:\\:\\$response type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Webhook/WebhookActivity.php
+
+		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Webhook\\\\WebhookActivity\\:\\:\\$statusCode type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Webhook/WebhookActivity.php
+
+		-
 			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php

@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace DR\Review\ViewModel\App\Review;
 
 use DR\Review\Entity\Report\CodeInspectionIssue;
+use DR\Review\Entity\Report\LineCoverage;
 
-class CodeInspectionViewModel
+class CodeQualityViewModel
 {
     /** @var array<int, CodeInspectionIssue[]> */
     private array $issues;
@@ -13,7 +14,7 @@ class CodeInspectionViewModel
     /**
      * @param CodeInspectionIssue[] $issues
      */
-    public function __construct(array $issues)
+    public function __construct(array $issues, private readonly ?LineCoverage $coverage)
     {
         $this->issues = [];
 
@@ -28,10 +29,19 @@ class CodeInspectionViewModel
      */
     public function getIssues(?int $lineNumber): array
     {
-        if ($lineNumber === null) {
-            return [];
+        return $lineNumber === null ? [] : ($this->issues[$lineNumber] ?? []);
+    }
+
+    public function getCoverage(?int $lineNumber): ?int
+    {
+        if ($this->coverage === null) {
+            return null;
         }
 
-        return $this->issues[$lineNumber] ?? [];
+        if ($lineNumber === null) {
+            return -1;
+        }
+
+        return $this->coverage->getCoverage($lineNumber) ?? -1;
     }
 }

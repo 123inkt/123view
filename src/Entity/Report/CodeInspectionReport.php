@@ -10,8 +10,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 
 #[ORM\Entity(repositoryClass: CodeInspectionReportRepository::class)]
-#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp_idx')]
-#[ORM\UniqueConstraint('IDX_COMMIT_HASH_REPOSITORY_ID', ['commit_hash', 'repository_id', 'inspection_id'])]
+#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp')]
+#[ORM\Index(columns: ['repository_id', 'create_timestamp'], name: 'repository_create_timestamp')]
+#[ORM\UniqueConstraint('IDX_COMMIT_HASH_REPOSITORY_ID', ['repository_id', 'inspection_id', 'commit_hash'])]
 class CodeInspectionReport
 {
     #[ORM\Id]

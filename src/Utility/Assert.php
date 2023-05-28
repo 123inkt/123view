@@ -29,7 +29,7 @@ class Assert
      * @template       T
      * @phpstan-assert array $value
      *
-     * @param T $value
+     * @param T              $value
      *
      * @return T&array
      */
@@ -47,7 +47,7 @@ class Assert
      * @template       T
      * @phpstan-assert callable $value
      *
-     * @param T $value
+     * @param T                 $value
      *
      * @return T&callable
      */
@@ -65,7 +65,7 @@ class Assert
      * @template       T
      * @phpstan-assert int $value
      *
-     * @param T $value
+     * @param T            $value
      *
      * @return T&int
      */
@@ -83,7 +83,7 @@ class Assert
      * @template       T
      * @phpstan-assert string $value
      *
-     * @param T $value
+     * @param T               $value
      *
      * @return T&string
      */
@@ -116,12 +116,12 @@ class Assert
     /**
      * Assert value is object and of type class-string
      * @template T of object
-     * @template V of object
+     * @template V of mixed
      * @phpstan-param class-string<T> $classString
      * @phpstan-param V|null          $value
      * @phpstan-return T&V
      */
-    public static function instanceOf(string $classString, ?object $value): object
+    public static function instanceOf(string $classString, mixed $value): object
     {
         if ($value === null || $value instanceof $classString === false) {
             throw new RuntimeException('Expecting value to be instance of ' . $classString);

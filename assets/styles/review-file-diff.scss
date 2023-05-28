@@ -130,8 +130,25 @@
     border-right: 1px solid var(--review-diff-gutter-border-color);
     color: var(--review-diff-gutter-fg-color);
     display: inline-block;
+    float: left;
     position: relative;
     user-select: none;
+}
+
+.diff-file__diff-line-coverage {
+    display: inline-block;
+    float: left;
+    line-height: 20px;
+    height: 20px;
+    width: 8px;
+
+    &.covered {
+        background-color: #00dd00;
+    }
+
+    &.uncovered {
+        background-color: #dd0000;
+    }
 }
 
 .diff-file__add-comment {
