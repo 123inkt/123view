@@ -24,6 +24,9 @@ class CodeCoverageReport
     #[ORM\Column(length: 255)]
     private string $commitHash;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $branchId = null;
+
     #[ORM\Column]
     private int $createTimestamp;
 
@@ -60,6 +63,18 @@ class CodeCoverageReport
     public function setCommitHash(string $commitHash): self
     {
         $this->commitHash = $commitHash;
+
+        return $this;
+    }
+
+    public function getBranchId(): ?string
+    {
+        return $this->branchId;
+    }
+
+    public function setBranchId(?string $branchId): self
+    {
+        $this->branchId = $branchId;
 
         return $this;
     }

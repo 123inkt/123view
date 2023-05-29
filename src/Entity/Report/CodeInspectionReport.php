@@ -26,6 +26,9 @@ class CodeInspectionReport
     #[ORM\Column(length: 50)]
     private ?string $inspectionId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $branchId = null;
+
     #[ORM\ManyToOne(targetEntity: Repository::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Repository $repository = null;
@@ -74,6 +77,18 @@ class CodeInspectionReport
     public function setInspectionId(?string $inspectionId): self
     {
         $this->inspectionId = $inspectionId;
+
+        return $this;
+    }
+
+    public function getBranchId(): ?string
+    {
+        return $this->branchId;
+    }
+
+    public function setBranchId(?string $branchId): self
+    {
+        $this->branchId = $branchId;
 
         return $this;
     }
