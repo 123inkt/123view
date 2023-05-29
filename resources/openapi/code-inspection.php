@@ -59,6 +59,14 @@ return static function (OpenApi $openApi) {
                 schema: ['type' => 'string', 'minLength' => 1, 'maxLength' => 50]
             ),
             new Parameter(
+                'branchId',
+                'query',
+                'The identifier of the branch the report is for. Can either be branch name, MR/PR id, or something else unique to the branch. This ' .
+                'will be used to find the latest `identifier` within the branch group for a set of commit hashes.',
+                true,
+                schema: ['type' => 'string', 'minLength' => 1, 'maxLength' => 255]
+            ),
+            new Parameter(
                 'basePath',
                 'query',
                 'The `basePath` to subtract from the filenames in the report.',

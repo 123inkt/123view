@@ -49,6 +49,7 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(UploadCodeCoverageRequest::class);
         $request->method('getFormat')->willReturn('format');
         $request->method('getBasePath')->willReturn('basePath');
+        $request->method('getBranchId')->willReturn('branchId');
         $request->method('getData')->willReturn('data');
         $repository = new Repository();
 
@@ -58,7 +59,7 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
         $this->reportFactory->expects(self::once())
             ->method('parse')
-            ->with($repository, 'hash', 'format', 'basePath', 'data')
+            ->with($repository, 'hash', 'branchId', 'format', 'basePath', 'data')
             ->willReturn($report);
         $this->reportRepository->expects(self::once())->method('save')->with($report, true);
 

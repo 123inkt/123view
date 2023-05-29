@@ -28,8 +28,10 @@ class ReviewSummaryViewModelProvider
      */
     public function getSummaryViewModel(CodeReview $review, array $revisions, DirectoryTreeNode $fileTree): ReviewSummaryViewModel
     {
-        $reports = $this->reportRepository->findByRevisions(Assert::notNull($review->getRepository()), $revisions);
-        $issues  = [];
+        $repository = Assert::notNull($review->getRepository());
+        $branchIds  = $this->reportRepository->findBranchIds($repository, $revisions);
+        $reports    = $this->reportRepository->findByRevisions($repository, $revisions, $branchIds);
+        $issues     = [];
         if (count($reports) > 0) {
             $filePaths = array_map(static fn(DiffFile $file) => $file->getPathname(), $fileTree->getFilesRecursive());
             $issues    = $this->issueRepository->findBy(['report' => $reports, 'file' => $filePaths], ['file' => 'ASC']);

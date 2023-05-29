@@ -19,6 +19,7 @@ class CodeInspectionReportFixtures extends Fixture implements DependentFixtureIn
         $report = new CodeInspectionReport();
         $report->setRepository($repository);
         $report->setInspectionId('inspectionId');
+        $report->setBranchId('branchId');
         $report->setCommitHash('commit-hash');
         $report->setCreateTimestamp(123456789);
 

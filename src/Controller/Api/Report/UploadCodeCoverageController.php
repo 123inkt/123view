@@ -37,16 +37,24 @@ class UploadCodeCoverageController extends AbstractController implements LoggerA
             throw new NotFoundHttpException();
         }
 
-        $format = $request->getFormat();
+        $format   = $request->getFormat();
         $basePath = $request->getBasePath();
-        $data = $request->getData();
+        $branchId = $request->getBranchId();
+        $data     = $request->getData();
 
         $this->logger?->info(
-            'CodeCoverageReport: {name}, {basePath}, {hash}, {id}, {format}, body size: {size}',
-            ['name' => $repositoryName, 'hash' => $commitHash, 'basePath' => $basePath, 'format' => $format, 'size' => strlen($data)]
+            'CodeCoverageReport: {name}, {basePath}, {hash}, {branchId}, {format}, body size: {size}',
+            [
+                'name'     => $repositoryName,
+                'hash'     => $commitHash,
+                'branchId' => $branchId,
+                'basePath' => $basePath,
+                'format'   => $format,
+                'size'     => strlen($data)
+            ]
         );
 
-        $report = $this->reportFactory->parse($repository, $commitHash, $format, $basePath, $data);
+        $report = $this->reportFactory->parse($repository, $commitHash, $branchId, $format, $basePath, $data);
 
         $this->logger?->info(
             'CodeCoverageReport: {name}, creating report with {count} files.',

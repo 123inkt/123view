@@ -12,13 +12,20 @@ class CodeCoverageReportFactory
     {
     }
 
-    public function parse(Repository $repository, string $commitHash, string $format, string $basePath, string $data): CodeCoverageReport
-    {
+    public function parse(
+        Repository $repository,
+        string $commitHash,
+        ?string $branchId,
+        string $format,
+        string $basePath,
+        string $data
+    ): CodeCoverageReport {
         $files = $this->parserProvider->getParser($format)->parse($basePath, $data);
 
         $report = new CodeCoverageReport();
         $report->setRepository($repository);
         $report->setCommitHash($commitHash);
+        $report->setBranchId($branchId);
         foreach ($files as $file) {
             $file->setReport($report);
             $report->getFiles()->add($file);

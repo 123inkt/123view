@@ -16,6 +16,11 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
         return $this->request->query->get('identifier', '');
     }
 
+    public function getBranchId(): ?string
+    {
+        return $this->request->query->get('branchId');
+    }
+
     public function getBasePath(): string
     {
         return $this->request->query->get('basePath', '');
@@ -37,6 +42,7 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
             [
                 'query' => [
                     'identifier' => 'required|string|min:1|max:50',
+                    'branchId'   => 'string|min:1|max:255',
                     'basePath'   => 'string',
                     'format'     => 'string|in:' . CheckStyleIssueParser::FORMAT . ',' . GitlabIssueParser::FORMAT . ',' . JunitIssueParser::FORMAT
                 ]

@@ -31,7 +31,8 @@ class CodeQualityViewModelProvider
         $revisions  = $this->revisionService->getRevisions($review);
 
         // find code inspections
-        $inspectionReports = $this->reportRepository->findByRevisions($repository, $revisions);
+        $branchIds         = $this->reportRepository->findBranchIds($repository, $revisions);
+        $inspectionReports = $this->reportRepository->findByRevisions($repository, $revisions, $branchIds);
         $issues            = [];
         if (count($inspectionReports) > 0) {
             $issues = $this->issueRepository->findBy(['report' => $inspectionReports, 'file' => $filePath]);

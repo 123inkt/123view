@@ -21,6 +21,12 @@ class UploadCodeCoverageRequestTest extends AbstractRequestTestCase
         static::assertSame('basePath', $this->validatedRequest->getBasePath());
     }
 
+    public function testGetBranchId(): void
+    {
+        $this->request->query->set('branchId', 'branchId');
+        static::assertSame('branchId', $this->validatedRequest->getBranchId());
+    }
+
     public function testGetFormat(): void
     {
         $this->request->query->set('format', 'gitlab');
@@ -41,6 +47,7 @@ class UploadCodeCoverageRequestTest extends AbstractRequestTestCase
             [
                 'query' => [
                     'basePath' => 'string',
+                    'branchId' => 'string|min:1|max:255',
                     'format'   => 'string|in:cobertura'
                 ]
             ]

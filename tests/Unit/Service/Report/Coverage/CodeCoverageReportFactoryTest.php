@@ -34,9 +34,10 @@ class CodeCoverageReportFactoryTest extends AbstractTestCase
         $this->parserProvider->expects(self::once())->method('getParser')->with('format')->willReturn($parser);
         $parser->expects(self::once())->method('parse')->with('basePath', 'data')->willReturn([$file]);
 
-        $report = $this->factory->parse($repository, 'commitHash', 'format', 'basePath', 'data');
+        $report = $this->factory->parse($repository, 'commitHash', 'branchId', 'format', 'basePath', 'data');
         static::assertSame($repository, $report->getRepository());
         static::assertSame('commitHash', $report->getCommitHash());
+        static::assertSame('branchId', $report->getBranchId());
         static::assertEqualsWithDelta(time(), $report->getCreateTimestamp(), 10);
         static::assertSame([$file], $report->getFiles()->toArray());
     }
