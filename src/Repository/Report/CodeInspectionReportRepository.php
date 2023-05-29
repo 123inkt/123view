@@ -9,7 +9,6 @@ use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Report\CodeInspectionReport;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Utility\Assert;
 
 /**
  * @extends ServiceEntityRepository<CodeInspectionReport>
@@ -30,41 +29,40 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
      *
      * @param Revision[] $revisions
      *
-     * @return array{0: string, 1: string}
+     * @return array<array{0: string, 1: string}>
      */
     public function findBranchIds(Repository $repository, array $revisions): array
     {
         $hashes = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
-        $rows   = Assert::isArray(
-            $this->getEntityManager()
-                ->createQueryBuilder()
-                ->select(['r.inspectionId', 'r.branchId'])
-                ->from($this->getEntityName(), 'r')
-                ->where('r.commitHash IN (:hashes)')
-                ->andWhere('r.repository = :repositoryId')
-                ->andWhere('r.branchId IS NOT NULL')
-                ->setParameter('hashes', $hashes)
-                ->setParameter('repositoryId', $repository->getId())
-                ->groupBy('r.inspectionId')
-                ->getQuery()
-                ->getArrayResult()
-        );
+        /** @var array<array{inspectionId: string, branchId: string}> $rows */
+        $rows = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select(['r.inspectionId', 'r.branchId'])
+            ->from($this->getEntityName(), 'r')
+            ->where('r.commitHash IN (:hashes)')
+            ->andWhere('r.repository = :repositoryId')
+            ->andWhere('r.branchId IS NOT NULL')
+            ->setParameter('hashes', $hashes)
+            ->setParameter('repositoryId', $repository->getId())
+            ->groupBy('r.inspectionId')
+            ->getQuery()
+            ->getArrayResult();
 
         $result = [];
         foreach ($rows as $row) {
-            $result[] = [(string)$row['inspectionId'], (string)$row['branchId']];
+            $result[] = [$row['inspectionId'], $row['branchId']];
         }
 
         return $result;
     }
 
     /**
-     * @param Revision[]                  $revisions
-     * @param array{0: string, 1: string} $branchIds
+     * @param Revision[]                         $revisions
+     * @param array<array{0: string, 1: string}> $branchIds
      *
      * @return CodeInspectionReport[]
      */
-    public function findByRevisions(Repository $repository, array $revisions, array $branchIds = []): array
+    public function findByRevisions(Repository $repository, array $revisions, array $branchIds): array
     {
         $conn   = $this->getEntityManager()->getConnection();
         $qb     = $conn->createQueryBuilder();

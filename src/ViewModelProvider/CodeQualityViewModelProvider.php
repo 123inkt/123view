@@ -30,9 +30,8 @@ class CodeQualityViewModelProvider
         $repository = Assert::notNull($review->getRepository());
         $revisions  = $this->revisionService->getRevisions($review);
 
-        $branchIds = $this->reportRepository->findBranchIds($repository, $revisions);
-
         // find code inspections
+        $branchIds         = $this->reportRepository->findBranchIds($repository, $revisions);
         $inspectionReports = $this->reportRepository->findByRevisions($repository, $revisions, $branchIds);
         $issues            = [];
         if (count($inspectionReports) > 0) {
