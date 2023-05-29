@@ -36,10 +36,11 @@ class CodeInspectionReportFactoryTest extends AbstractTestCase
 
         $this->parserProvider->expects(self::once())->method('getParser')->with('format')->willReturn($parser);
 
-        $report = $this->reportFactory->parse($repository, 'hash', 'inspectionId', 'format', 'basePath', 'content');
+        $report = $this->reportFactory->parse($repository, 'hash', 'inspectionId', 'branchId', 'format', 'basePath', 'content');
 
         static::assertSame($repository, $report->getRepository());
         static::assertSame('inspectionId', $report->getInspectionId());
+        static::assertSame('branchId', $report->getBranchId());
         static::assertSame('hash', $report->getCommitHash());
         static::assertGreaterThanOrEqual($time, $report->getCreateTimestamp());
         static::assertGreaterThanOrEqual([$issue], $report->getIssues()->toArray());

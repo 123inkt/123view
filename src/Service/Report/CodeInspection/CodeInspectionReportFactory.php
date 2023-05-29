@@ -26,6 +26,7 @@ class CodeInspectionReportFactory
         $report = new CodeInspectionReport();
         $report->setRepository($repository);
         $report->setInspectionId($inspectionId);
+        $report->setBranchId($branchId);
         $report->setCommitHash($commitHash);
         foreach ($issues as $issue) {
             $issue->setReport($report);

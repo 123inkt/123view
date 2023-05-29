@@ -25,7 +25,7 @@ class CodeInspectionReportRepositoryTest extends AbstractRepositoryTestCase
         $revision = new Revision();
         $revision->setCommitHash('commit-hash');
 
-        $reports = self::getService(CodeInspectionReportRepository::class)->findByRevisions($repository, [$revision]);
+        $reports = self::getService(CodeInspectionReportRepository::class)->findByRevisions($repository, [$revision], []);
         static::assertCount(1, $reports);
     }
 
