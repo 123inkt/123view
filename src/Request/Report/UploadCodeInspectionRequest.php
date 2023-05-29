@@ -16,9 +16,9 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
         return $this->request->query->get('identifier', '');
     }
 
-    public function getBranchId(): string
+    public function getBranchId(): ?string
     {
-        return $this->request->query->get('branchId', '');
+        return $this->request->query->get('branchId');
     }
 
     public function getBasePath(): string

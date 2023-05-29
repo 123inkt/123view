@@ -16,6 +16,7 @@ class CodeInspectionReportFactory
         Repository $repository,
         string $commitHash,
         string $inspectionId,
+        ?string $branchId,
         string $format,
         string $basePath,
         string $data
