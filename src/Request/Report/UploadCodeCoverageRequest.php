@@ -9,6 +9,11 @@ use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
 
 class UploadCodeCoverageRequest extends AbstractValidatedRequest
 {
+    public function getBranchId(): string
+    {
+        return $this->request->query->get('branchId', '');
+    }
+
     public function getBasePath(): string
     {
         return $this->request->query->get('basePath', '');
@@ -30,6 +35,7 @@ class UploadCodeCoverageRequest extends AbstractValidatedRequest
             [
                 'query' => [
                     'basePath' => 'string',
+                    'branchId' => 'string|min:1|max:255',
                     'format'   => 'string|in:' . CoberturaParser::FORMAT
                 ]
             ]

@@ -21,6 +21,12 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         static::assertSame('identifier', $this->validatedRequest->getIdentifier());
     }
 
+    public function testGetBranchId(): void
+    {
+        $this->request->query->set('branchId', 'branchId');
+        static::assertSame('branchId', $this->validatedRequest->getBranchId());
+    }
+
     public function testGetBasePath(): void
     {
         $this->request->query->set('basePath', 'basePath');
@@ -47,6 +53,7 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
             [
                 'query' => [
                     'identifier' => 'required|string|min:1|max:50',
+                    'branchId'   => 'string|min:1|max:255',
                     'basePath'   => 'string',
                     'format'     => 'string|in:checkstyle,gitlab,junit'
                 ]
