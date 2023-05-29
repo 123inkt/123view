@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Repository\Report;
 
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Report\CodeInspectionReport;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Utility\Assert;
 
 /**
  * @extends ServiceEntityRepository<CodeInspectionReport>
@@ -24,24 +26,83 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
     }
 
     /**
+     * For the given set of revisions find all inspection reports and the branchId if available
+     *
      * @param Revision[] $revisions
+     *
+     * @return array<string, string>
+     */
+    public function findBranchIds(Repository $repository, array $revisions): array
+    {
+        $hashes = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
+        $rows   = Assert::isArray(
+            $this->getEntityManager()
+                ->createQueryBuilder()
+                ->select(['r.inspectionId', 'r.branchId'])
+                ->from($this->getEntityName(), 'r')
+                ->where('r.commitHash IN (:hashes)')
+                ->andWhere('r.repository = :repositoryId')
+                ->andWhere('r.branchId IS NOT NULL')
+                ->setParameter('hashes', $hashes)
+                ->setParameter('repositoryId', $repository->getId())
+                ->groupBy('r.inspectionId')
+                ->getQuery()
+                ->getArrayResult()
+        );
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[(string)$row['inspectionId']] = (string)$row['branchId'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Revision[]            $revisions
+     * @param array<string, string> $branchIds
      *
      * @return CodeInspectionReport[]
      */
-    public function findByRevisions(Repository $repository, array $revisions): array
+    public function findByRevisions(Repository $repository, array $revisions, array $branchIds = []): array
     {
-        // TODO optimize this to select with group by and then order by
-        $hashes  = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
-        $reports = $this->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'DESC'], 50);
+        $params = [
+            'hashes'       => array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions)),
+            'repositoryId' => $repository->getId()
+        ];
 
-        $result = [];
-        foreach ($reports as $report) {
-            if (isset($result[$report->getInspectionId()]) === false) {
-                $result[$report->getInspectionId()] = $report;
-            }
+        $branchSql = [];
+        $index     = 1;
+        foreach ($branchIds as $inspectionId => $branchId) {
+            $branchSql[]                     = sprintf('OR (inspection_id = :inspectionId%d AND branch_id = :branchId%d)', $index, $index);
+            $params['inspectionId' . $index] = $inspectionId;
+            $params['branchId' . $index]     = $branchId;
+            ++$index;
         }
 
-        return array_values($result);
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(CodeInspectionReport::class, 'report');
+
+        /** @var CodeInspectionReport[] $result */
+        $result = $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT report.*
+                 FROM   code_inspection_report report
+                 INNER JOIN (
+                    SELECT   inspection_id, MAX(create_timestamp) AS create_timestamp
+                    FROM     code_inspection_report
+                    WHERE    (commit_hash IN (:hashes) ' . implode(' ', $branchSql) . ')
+                    AND      repository_id = :repositoryId
+                    GROUP BY inspection_id
+                 ) AS `filter`
+                 ON  report.inspection_id = filter.inspection_id
+                 AND report.create_timestamp = filter.create_timestamp',
+                $rsm
+            )
+            ->setParameters($params)
+            ->getResult();
+
+        return $result;
     }
 
     public function cleanUp(int $beforeTimestamp): int
