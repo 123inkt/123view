@@ -66,6 +66,7 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
      */
     public function findByRevisions(Repository $repository, array $revisions, array $branchIds = []): array
     {
+        $conn   = $this->getEntityManager()->getConnection();
         $params = [
             'hashes'       => array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions)),
             'repositoryId' => $repository->getId()
@@ -80,27 +81,32 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
             ++$index;
         }
 
+        // find most recent report for each inspectionId given commit hashes and branchIds
+        $subQuery = $conn->createQueryBuilder()
+            ->select('inspection_id', 'MAX(create_timestamp) AS create_timestamp')
+            ->from('code_inspection_report')
+            ->where('commit_hash IN (:hashes)')
+            ->andWhere('repository_id = :repositoryId')
+            ->groupBy('inspection_id');
+
+        // inner join to get full entity data
+        $query = $conn->createQueryBuilder()
+            ->select('report.*')
+            ->from('code_inspection_report', 'report')
+            ->innerJoin(
+                'report',
+                sprintf('(%s)', $subQuery->getSQL()),
+                'filter',
+
+                'report.inspection_id = filter.inspection_id AND report.create_timestamp = filter.create_timestamp'
+            );
+
+        // create ResultSetMapping to transform to Entity
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(CodeInspectionReport::class, 'report');
 
         /** @var CodeInspectionReport[] $result */
-        $result = $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT report.*
-                 FROM   code_inspection_report report
-                 INNER JOIN (
-                    SELECT   inspection_id, MAX(create_timestamp) AS create_timestamp
-                    FROM     code_inspection_report
-                    WHERE    (commit_hash IN (:hashes) ' . implode(' ', $branchSql) . ')
-                    AND      repository_id = :repositoryId
-                    GROUP BY inspection_id
-                 ) AS `filter`
-                 ON  report.inspection_id = filter.inspection_id
-                 AND report.create_timestamp = filter.create_timestamp',
-                $rsm
-            )
-            ->setParameters($params)
-            ->getResult();
+        $result = $this->getEntityManager()->createNativeQuery($query->getSQL(), $rsm)->setParameters($params)->getResult();
 
         return $result;
     }
