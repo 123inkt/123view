@@ -18,6 +18,20 @@ class CodeInspectionReportRepositoryTest extends AbstractRepositoryTestCase
     /**
      * @throws Exception
      */
+    public function testFindBranchIds(): void
+    {
+        $repository = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+
+        $revision = new Revision();
+        $revision->setCommitHash('commit-hash');
+
+        $branchIds = self::getService(CodeInspectionReportRepository::class)->findBranchIds($repository, [$revision]);
+        static::assertSame([['inspectionId', 'branchId']], $branchIds);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testFindByRevisions(): void
     {
         $repository = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
@@ -25,7 +39,7 @@ class CodeInspectionReportRepositoryTest extends AbstractRepositoryTestCase
         $revision = new Revision();
         $revision->setCommitHash('commit-hash');
 
-        $reports = self::getService(CodeInspectionReportRepository::class)->findByRevisions($repository, [$revision], []);
+        $reports = self::getService(CodeInspectionReportRepository::class)->findByRevisions($repository, [$revision], [['inspectionId', 'branchId']]);
         static::assertCount(1, $reports);
     }
 
