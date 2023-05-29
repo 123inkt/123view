@@ -43,8 +43,15 @@ class UploadCodeCoverageController extends AbstractController implements LoggerA
         $data     = $request->getData();
 
         $this->logger?->info(
-            'CodeCoverageReport: {name}, {basePath}, {hash}, {id}, {format}, body size: {size}',
-            ['name' => $repositoryName, 'hash' => $commitHash, 'basePath' => $basePath, 'format' => $format, 'size' => strlen($data)]
+            'CodeCoverageReport: {name}, {basePath}, {hash}, {branchId}, {format}, body size: {size}',
+            [
+                'name'     => $repositoryName,
+                'hash'     => $commitHash,
+                'branchId' => $branchId,
+                'basePath' => $basePath,
+                'format'   => $format,
+                'size'     => strlen($data)
+            ]
         );
 
         $report = $this->reportFactory->parse($repository, $commitHash, $branchId, $format, $basePath, $data);
