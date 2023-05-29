@@ -48,6 +48,7 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
     {
         $request = $this->createMock(UploadCodeInspectionRequest::class);
         $request->method('getIdentifier')->willReturn('identifier');
+        $request->method('getBranchId')->willReturn('branchId');
         $request->method('getFormat')->willReturn('format');
         $request->method('getBasePath')->willReturn('basePath');
         $request->method('getData')->willReturn('data');
@@ -59,7 +60,7 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
         $this->reportFactory->expects(self::once())
             ->method('parse')
-            ->with($repository, 'hash', 'identifier', 'format', 'basePath', 'data')
+            ->with($repository, 'hash', 'identifier', 'branchId', 'format', 'basePath', 'data')
             ->willReturn($report);
         $this->reportRepository->expects(self::once())
             ->method('removeOneBy')
