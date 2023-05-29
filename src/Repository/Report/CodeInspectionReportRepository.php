@@ -30,7 +30,7 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
      *
      * @param Revision[] $revisions
      *
-     * @return array<string, string>
+     * @return array{0: string, 1: string}
      */
     public function findBranchIds(Repository $repository, array $revisions): array
     {
@@ -52,40 +52,42 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
 
         $result = [];
         foreach ($rows as $row) {
-            $result[(string)$row['inspectionId']] = (string)$row['branchId'];
+            $result[] = [(string)$row['inspectionId'], (string)$row['branchId']];
         }
 
         return $result;
     }
 
     /**
-     * @param Revision[]            $revisions
-     * @param array<string, string> $branchIds
+     * @param Revision[]                  $revisions
+     * @param array{0: string, 1: string} $branchIds
      *
      * @return CodeInspectionReport[]
      */
     public function findByRevisions(Repository $repository, array $revisions, array $branchIds = []): array
     {
         $conn   = $this->getEntityManager()->getConnection();
+        $qb     = $conn->createQueryBuilder();
         $params = [
             'hashes'       => array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions)),
             'repositoryId' => $repository->getId()
         ];
 
-        $branchSql = [];
-        $index     = 1;
-        foreach ($branchIds as $inspectionId => $branchId) {
-            $branchSql[]                     = sprintf('OR (inspection_id = :inspectionId%d AND branch_id = :branchId%d)', $index, $index);
+        $filterExpr = [$qb->expr()->in('commit_hash', ':hashes')];
+        foreach ($branchIds as $index => [$inspectionId, $branchId]) {
+            $filterExpr[]                    = (string)$qb->expr()->and(
+                $qb->expr()->eq('inspection_id', ':inspectionId' . $index),
+                $qb->expr()->eq('branch_id', ':branchId' . $index),
+            );
             $params['inspectionId' . $index] = $inspectionId;
             $params['branchId' . $index]     = $branchId;
-            ++$index;
         }
 
         // find most recent report for each inspectionId given commit hashes and branchIds
         $subQuery = $conn->createQueryBuilder()
             ->select('inspection_id', 'MAX(create_timestamp) AS create_timestamp')
             ->from('code_inspection_report')
-            ->where('commit_hash IN (:hashes)')
+            ->where($qb->expr()->or(...$filterExpr))
             ->andWhere('repository_id = :repositoryId')
             ->groupBy('inspection_id');
 
@@ -97,8 +99,10 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
                 'report',
                 sprintf('(%s)', $subQuery->getSQL()),
                 'filter',
-
-                'report.inspection_id = filter.inspection_id AND report.create_timestamp = filter.create_timestamp'
+                (string)$qb->expr()->and(
+                    $qb->expr()->eq('report.inspection_id', 'filter.inspection_id'),
+                    $qb->expr()->eq('report.create_timestamp', 'filter.create_timestamp')
+                )
             );
 
         // create ResultSetMapping to transform to Entity
