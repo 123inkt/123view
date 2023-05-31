@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Review;
 
+use DR\Review\Entity\Report\CodeCoverageFile;
 use DR\Review\Entity\Report\CodeInspectionIssue;
 use DR\Review\Entity\Report\LineCoverage;
 
@@ -11,12 +12,15 @@ class CodeQualityViewModel
     /** @var array<int, CodeInspectionIssue[]> */
     private array $issues;
 
+    private readonly ?LineCoverage $lineCoverage;
+
     /**
      * @param CodeInspectionIssue[] $issues
      */
-    public function __construct(array $issues, private readonly ?LineCoverage $coverage)
+    public function __construct(array $issues, private readonly ?CodeCoverageFile $fileCoverage)
     {
-        $this->issues = [];
+        $this->lineCoverage = $this->fileCoverage?->getCoverage();
+        $this->issues       = [];
 
         // create lookup table based on line number
         foreach ($issues as $issue) {
@@ -34,12 +38,12 @@ class CodeQualityViewModel
 
     public function getCoveragePercentage(): ?float
     {
-        return $this->coverage?->getPercentage();
+        return $this->fileCoverage?->getPercentage() ?? $this->lineCoverage?->getPercentage();
     }
 
     public function getCoverage(?int $lineNumber): ?int
     {
-        if ($this->coverage === null) {
+        if ($this->lineCoverage === null) {
             return null;
         }
 
@@ -47,6 +51,6 @@ class CodeQualityViewModel
             return -1;
         }
 
-        return $this->coverage->getCoverage($lineNumber) ?? -1;
+        return $this->lineCoverage->getCoverage($lineNumber) ?? -1;
     }
 }

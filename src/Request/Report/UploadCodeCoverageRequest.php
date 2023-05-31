@@ -5,7 +5,7 @@ namespace DR\Review\Request\Report;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
+use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 
 class UploadCodeCoverageRequest extends AbstractValidatedRequest
 {
@@ -21,7 +21,7 @@ class UploadCodeCoverageRequest extends AbstractValidatedRequest
 
     public function getFormat(): string
     {
-        return $this->request->query->get('format', CoberturaParser::FORMAT);
+        return $this->request->query->get('format', CloverParser::FORMAT);
     }
 
     public function getData(): string
@@ -36,7 +36,7 @@ class UploadCodeCoverageRequest extends AbstractValidatedRequest
                 'query' => [
                     'basePath' => 'string',
                     'branchId' => 'string|min:1|max:255',
-                    'format'   => 'string|in:' . CoberturaParser::FORMAT
+                    'format'   => 'string|in:' . CloverParser::FORMAT
                 ]
             ]
         );

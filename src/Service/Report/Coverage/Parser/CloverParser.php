@@ -13,9 +13,9 @@ use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Utility\Assert;
 
-class CoberturaParser implements CodeCoverageParserInterface
+class CloverParser implements CodeCoverageParserInterface
 {
-    public const FORMAT = 'cobertura';
+    public const FORMAT = 'clover';
 
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
@@ -35,18 +35,27 @@ class CoberturaParser implements CodeCoverageParserInterface
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
-            $filePath = $this->pathNormalizer->normalize($basePath, $fileElement->getAttribute('name'));
-            $coverage = new LineCoverage();
+            $filePath   = $this->pathNormalizer->normalize($basePath, $fileElement->getAttribute('name'));
+            $coverage   = new LineCoverage();
+            $percentage = null;
 
-            /** @var DOMElement $node */
-            foreach ($fileElement->getElementsByTagName('line') as $node) {
-                $lineNumber  = (int)$node->getAttribute('num');
-                $coversCount = (int)$node->getAttribute('count');
-                $coverage->setCoverage($lineNumber, $coversCount);
+            for ($node = $fileElement->firstElementChild; $node !== null; $node = $node->nextElementSibling) {
+                if (strtolower($node->tagName) === 'line') {
+                    // line node
+                    $lineNumber  = (int)$node->getAttribute('num');
+                    $coversCount = (int)$node->getAttribute('count');
+                    $coverage->setCoverage($lineNumber, $coversCount);
+                } elseif (strtolower($node->tagName) === 'metrics') {
+                    // metrics node - calculate coverage percentage
+                    $statements        = (int)$node->getAttribute('statements');
+                    $coveredStatements = (int)$node->getAttribute('coveredstatements');
+                    $percentage        = $statements === 0 ? 100 : round($coveredStatements / $statements * 100, 2);
+                }
             }
 
             $result[] = (new CodeCoverageFile())
                 ->setCoverage($coverage)
+                ->setPercentage($percentage)
                 ->setFile($filePath);
         }
 

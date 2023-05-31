@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
+use DR\Review\Entity\Report\CodeCoverageFile;
 use DR\Review\Entity\Report\CodeInspectionIssue;
 use DR\Review\Entity\Report\LineCoverage;
 use DR\Review\Tests\AbstractTestCase;
@@ -29,9 +30,11 @@ class CodeQualityViewModelTest extends AbstractTestCase
         $viewModel = new CodeQualityViewModel([], null);
         static::assertNull($viewModel->getCoveragePercentage());
 
-        $coverage = $this->createMock(LineCoverage::class);
-        $coverage->method('getPercentage')->willReturn(123.45);
-        $viewModel = new CodeQualityViewModel([], $coverage);
+        $fileCoverage = new CodeCoverageFile();
+        $fileCoverage->setPercentage(123.45);
+        $fileCoverage->setCoverage($this->createMock(LineCoverage::class));
+
+        $viewModel = new CodeQualityViewModel([], $fileCoverage);
         static::assertSame(123.45, $viewModel->getCoveragePercentage());
     }
 
@@ -41,7 +44,10 @@ class CodeQualityViewModelTest extends AbstractTestCase
         $lineCoverage->setCoverage(5, 1);
         $lineCoverage->setCoverage(10, 0);
 
-        $viewModel = new CodeQualityViewModel([], $lineCoverage);
+        $fileCoverage = new CodeCoverageFile();
+        $fileCoverage->setCoverage($lineCoverage);
+
+        $viewModel = new CodeQualityViewModel([], $fileCoverage);
 
         static::assertSame(-1, $viewModel->getCoverage(null));
         static::assertSame(1, $viewModel->getCoverage(5));
