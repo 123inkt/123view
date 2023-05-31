@@ -61,6 +61,11 @@ parameters:
 			path: src/Entity/Notification/RuleOptions.php
 
 		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageFile\\:\\:\\$percentage type mapping mismatch\\: database can contain string\\|null but property expects float\\|null\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeCoverageFile.php
+
+		-
 			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeInspectionIssue\\:\\:\\$file type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
 			count: 1
 			path: src/Entity/Report/CodeInspectionIssue.php

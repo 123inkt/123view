@@ -6,27 +6,28 @@ namespace DR\Review\Tests\Unit\Service\Report\Coverage\Parser;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\XMLException;
 use DR\Review\Service\IO\FilePathNormalizer;
-use DR\Review\Service\Report\Coverage\Parser\CoberturaParser;
+use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(CoberturaParser::class)]
-class CoberturaParserTest extends AbstractTestCase
+#[CoversClass(CloverParser::class)]
+class CloverParserTest extends AbstractTestCase
 {
     /**
      * @throws XMLException|ParseException
      */
     public function testParse(): void
     {
-        $data = Assert::notFalse(file_get_contents(__DIR__ . '/coverage-cobertura.xml'));
+        $data = Assert::notFalse(file_get_contents(__DIR__ . '/coverage-clover.xml'));
 
-        $coberturaParser = new CoberturaParser(new DOMDocumentFactory(), new FilePathNormalizer());
-        $results         = $coberturaParser->parse('\\mnt\\123view\\', $data);
+        $parser  = new CloverParser(new DOMDocumentFactory(), new FilePathNormalizer());
+        $results = $parser->parse('\\mnt\\123view\\', $data);
         static::assertCount(2, $results);
 
         $fileCoverage = $results[0];
+        static::assertEqualsWithDelta(73.33, $fileCoverage->getPercentage(), .01);
         static::assertSame('src/ApiPlatform/Factory/CodeReviewActivityOutputFactory.php', $fileCoverage->getFile());
 
         $coverage = $fileCoverage->getCoverage();

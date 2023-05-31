@@ -20,6 +20,9 @@ class CodeCoverageFile
     #[ORM\Column(length: 255)]
     private string $file;
 
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, nullable: true)]
+    private ?float $percentage = null;
+
     /**
      * Binary data: will be stored as json encoded + gzcompress
      */
@@ -50,6 +53,18 @@ class CodeCoverageFile
     public function setFile(string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getPercentage(): ?float
+    {
+        return $this->percentage;
+    }
+
+    public function setPercentage(?float $percentage): self
+    {
+        $this->percentage = $percentage;
 
         return $this;
     }
