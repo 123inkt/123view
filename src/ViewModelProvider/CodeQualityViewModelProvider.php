@@ -39,8 +39,8 @@ class CodeQualityViewModelProvider
         }
 
         // find code coverage
-        $lineCoverage = $this->coverageFileRepository->findOneByRevisions($repository, $revisions, $filePath)?->getCoverage();
+        $fileCoverage = $this->coverageFileRepository->findOneByRevisions($repository, $revisions, $filePath);
 
-        return new CodeQualityViewModel($issues, $lineCoverage);
+        return new CodeQualityViewModel($issues, $fileCoverage);
     }
 }

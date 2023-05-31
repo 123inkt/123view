@@ -48,7 +48,7 @@ class UploadCodeCoverageRequestTest extends AbstractRequestTestCase
                 'query' => [
                     'basePath' => 'string',
                     'branchId' => 'string|min:1|max:255',
-                    'format'   => 'string|in:cobertura'
+                    'format'   => 'string|in:clover'
                 ]
             ]
         );

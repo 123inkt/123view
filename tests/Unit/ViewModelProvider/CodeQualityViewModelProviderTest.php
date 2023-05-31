@@ -86,6 +86,6 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $this->issueRepository->expects(self::once())->method('findBy')->with(['report' => [$report], 'file' => 'filepath'])->willReturn([$issue]);
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');
-        static::assertEquals(new CodeQualityViewModel([$issue], $lineCoverage), $viewModel);
+        static::assertEquals(new CodeQualityViewModel([$issue], $coverage), $viewModel);
     }
 }
