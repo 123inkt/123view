@@ -43,6 +43,17 @@ export default class extends Controller<HTMLElement> {
         this.updateCommentThread('add-reply:' + String(this.idValue));
     }
 
+    public reactToComment(event: Event): void {
+        Events.stop(event);
+        const target = event.currentTarget as HTMLElement;
+        if (target.hasAttribute('disabled')) {
+            return;
+        }
+        const text = target.dataset.text;
+        target.setAttribute('disabled', '');
+        console.log(text, this.idValue);
+    }
+
     public editReplyComment(event: Event): void {
         Events.stop(event);
         this.updateCommentThread('edit-reply:' + String((event.currentTarget as HTMLElement).dataset.replyId));

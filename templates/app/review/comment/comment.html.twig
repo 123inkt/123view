@@ -95,6 +95,13 @@
                title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
+
+            <a href="#" class="comment__action-button comment__reaction-button ms-3"
+                    {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
+               data-text="(y)">👍</a>
+            <a href="#" class="comment__action-button comment__reaction-button"
+                    {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
+               data-text="(n)">👎</a>
         {% endif %}
     </div>
 
