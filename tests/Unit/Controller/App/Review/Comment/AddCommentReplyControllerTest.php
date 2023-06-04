@@ -33,7 +33,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     private MessageBusInterface&MockObject    $bus;
     private Envelope                          $envelope;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentReplyRepository::class);

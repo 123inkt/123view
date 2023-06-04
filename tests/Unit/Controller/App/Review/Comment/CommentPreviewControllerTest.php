@@ -24,7 +24,7 @@ class CommentPreviewControllerTest extends AbstractControllerTestCase
     private MarkdownConverter&MockObject     $markdownService;
     private CommentMentionService&MockObject $mentionService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->markdownService = $this->createMock(MarkdownConverter::class);
         $this->mentionService  = $this->createMock(CommentMentionService::class);

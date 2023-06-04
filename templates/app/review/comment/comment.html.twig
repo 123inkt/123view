@@ -95,6 +95,25 @@
                title="{{ 'reply'|trans }}">
                 <i class="bi bi-reply-fill"></i>
             </a>
+
+            {% set emoijs = {
+                "(y)": "👍",
+                "(n)": "👎",
+                "(partying_face)": "🥳",
+                ":p": "😛",
+                ":o": "😮",
+                "(astonished)": "😲"
+            } %}
+
+            <div class="float-end me-3">
+                {% for text, emoji in emoijs %}
+                    <a href="#"
+                       class="comment__action-button comment__reaction-button"
+                            {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
+                       data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\AddCommentReactionController', {id: comment.id}) }}"
+                       data-text="{{ text }}">{{ emoji }}</a>
+                {% endfor %}
+            </div>
         {% endif %}
     </div>
 

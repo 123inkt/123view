@@ -87,3 +87,12 @@
     text-align: center;
     width: 20px;
 }
+
+.comment__reaction-button {
+    text-decoration: none;
+
+    &[disabled] {
+        opacity: 0.25;
+        cursor: default;
+    }
+}
