@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import Assert from '../lib/Assert';
 import DataSet from '../lib/DataSet';
 import Errors from '../lib/Errors';
 import Events from '../lib/Events';
@@ -49,9 +50,11 @@ export default class extends Controller<HTMLElement> {
         if (target.hasAttribute('disabled')) {
             return;
         }
-        const text = target.dataset.text;
         target.setAttribute('disabled', '');
-        console.log(text, this.idValue);
+        this.commentService.addCommentReaction(Assert.notUndefined(target.dataset.url), Assert.notUndefined(target.dataset.text))
+            .then(() => this.updateCommentThread())
+            .catch(Errors.catch)
+            .finally(() => target.removeAttribute('disabled'));
     }
 
     public editReplyComment(event: Event): void {

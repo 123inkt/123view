@@ -98,9 +98,11 @@
 
             <a href="#" class="comment__action-button comment__reaction-button ms-3"
                     {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
+               data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\AddCommentReactionController', {id: comment.id}) }}"
                data-text="(y)">👍</a>
             <a href="#" class="comment__action-button comment__reaction-button"
                     {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
+               data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\AddCommentReactionController', {id: comment.id}) }}"
                data-text="(n)">👎</a>
         {% endif %}
     </div>
