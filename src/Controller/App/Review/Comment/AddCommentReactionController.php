@@ -42,6 +42,6 @@ class AddCommentReactionController extends AbstractController
             new CommentReplyAdded((int)$comment->getReview()?->getId(), (int)$reply->getId(), (int)$user->getId(), $message)
         );
 
-        return $this->json(['success' => true, 'commentId' => $comment->getId()]);
+        return $this->json(['success' => true]);
     }
 }
