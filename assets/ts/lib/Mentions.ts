@@ -24,7 +24,7 @@ export default class Mentions {
         // hide dropdown
         if (this.dropdown.isVisible() && event.key === 'Escape') {
             event.preventDefault();
-            event.stopPropagation();
+            event.stopImmediatePropagation();
             this.dropdown.hide();
         }
 
