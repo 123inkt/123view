@@ -55,17 +55,21 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @return User[]
      */
-    public function findBySearchQuery(string $searchQuery, int $limit): array
+    public function findBySearchQuery(string $searchQuery, ?string $role = null, ?int $limit = null): array
     {
         $query = $this->createQueryBuilder('u')
             ->where('u.name LIKE :search or u.email LIKE :search')
             ->setParameter('search', addcslashes($searchQuery, '%_') . '%')
-            ->orderBy('u.name', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery();
+            ->orderBy('u.name', 'ASC');
+        if ($role !== null) {
+            $query->andWhere('u.roles LIKE :role')->setParameter('role', addcslashes($role, '%_') . '%');
+        }
+        if ($limit !== null) {
+            $query->setMaxResults($limit);
+        }
 
         /** @var User[] $result */
-        $result = $query->getResult();
+        $result = $query->getQuery()->getResult();
 
         return $result;
     }
