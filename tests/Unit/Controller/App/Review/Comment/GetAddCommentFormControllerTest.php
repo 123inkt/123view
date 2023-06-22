@@ -26,6 +26,7 @@ class GetAddCommentFormControllerTest extends AbstractControllerTestCase
         $request       = $this->createMock(AddCommentRequest::class);
         $request->method('getLineReference')->willReturn($lineReference);
         $review = new CodeReview();
+        $review->setActors([1, 2, 3]);
         $review->setId(123);
 
         $view = $this->createMock(FormView::class);
@@ -33,7 +34,7 @@ class GetAddCommentFormControllerTest extends AbstractControllerTestCase
         $this->expectCreateForm(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])
             ->createViewWillReturn($view);
 
-        static::assertSame(['form' => $view], ($this->controller)($request, $review));
+        static::assertSame(['form' => $view, 'actors' => [1, 2, 3]], ($this->controller)($request, $review));
     }
 
     public function getController(): AbstractController
