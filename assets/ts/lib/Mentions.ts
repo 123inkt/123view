@@ -6,7 +6,10 @@ import type User from './User';
 export default class Mentions {
     public visible: boolean = false;
 
-    constructor(private readonly textarea: HTMLTextAreaElement, private readonly dropdown: MentionsDropdown) {
+    constructor(
+        private readonly textarea: HTMLTextAreaElement,
+        private readonly preferredUserIds: string[],
+        private readonly dropdown: MentionsDropdown) {
     }
 
     public bind(): void {
@@ -69,8 +72,9 @@ export default class Mentions {
     }
 
     private getSuggestions(searchQuery: string | null, callback: (data: User[]) => void): void {
+        const params = new URLSearchParams({search: searchQuery ?? '', preferredUserIds: this.preferredUserIds.join(',')});
         axios
-            .get('/app/user/mentions?search=' + encodeURI(searchQuery ?? ''))
+            .get('/app/user/mentions?' + params.toString())
             .then(response => callback(response.data))
             .catch(Function.empty);
     }

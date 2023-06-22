@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class GetAddCommentFormController extends AbstractController
 {
     /**
-     * @return array<string, FormView>
+     * @return array<string, FormView|int[]>
      */
     #[Route('app/reviews/{id<\d+>}/comment', name: self::class, methods: 'GET')]
     #[IsGranted(Roles::ROLE_USER)]
@@ -26,6 +26,6 @@ class GetAddCommentFormController extends AbstractController
     {
         $form = $this->createForm(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $request->getLineReference()]);
 
-        return ['form' => $form->createView()];
+        return ['form' => $form->createView(), 'actors' => $review->getActors()];
     }
 }

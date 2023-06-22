@@ -9,18 +9,21 @@ import CommentService from '../service/CommentService';
 export default class extends Controller<HTMLElement> {
     public static debounces = ['commentPreviewListener'];
     public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form'];
+    public static values    = {actors: String};
 
     private readonly commentService = new CommentService();
     private readonly declare formTarget: HTMLFormElement;
     private readonly declare textareaTarget: HTMLTextAreaElement;
     private readonly declare mentionSuggestionsTarget: HTMLElement;
     private readonly declare markdownPreviewTarget: HTMLElement;
+    private readonly declare actorsValue: string;
     private submitting: boolean     = false;
 
     public connect(): void {
         useDebounce(this, {wait: 150});
         this.textareaTarget.focus();
-        new Mentions(this.textareaTarget, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
+        const actors = this.actorsValue === '' ? [] : this.actorsValue.split(',');
+        new Mentions(this.textareaTarget, actors, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
         this.textareaTarget.addEventListener('keydown', this.commentCancelListener.bind(this));
         this.textareaTarget.addEventListener('input', this.commentPreviewListener.bind(this));
         this.formTarget.addEventListener('submit', this.submitComment.bind(this));
