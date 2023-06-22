@@ -26,6 +26,11 @@ class DiffLine
         $this->changes = new DiffChangeCollection($changes);
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->state === self::STATE_EMPTY;
+    }
+
     /**
      * @param int[] $exclude
      */
