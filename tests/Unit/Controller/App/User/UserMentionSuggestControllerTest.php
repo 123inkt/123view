@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Controller\App\User;
 use DR\Review\Controller\App\User\UserMentionSuggestController;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,7 @@ class UserMentionSuggestControllerTest extends AbstractTestCase
         $user->setId(123);
         $user->setName('Sherlock');
 
-        $this->userRepository->expects(self::once())->method('findBySearchQuery')->with('search', 15)->willReturn([$user]);
+        $this->userRepository->expects(self::once())->method('findBySearchQuery')->with('search', Roles::ROLE_USER, 15)->willReturn([$user]);
 
         $response = ($this->controller)($request);
         static::assertSame('[{"id":123,"name":"Sherlock"}]', $response->getContent());

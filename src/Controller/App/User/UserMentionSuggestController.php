@@ -22,7 +22,7 @@ class UserMentionSuggestController
     public function __invoke(Request $request): JsonResponse
     {
         // search users
-        $users = $this->userRepository->findBySearchQuery($request->query->get('search', ''), 15);
+        $users = $this->userRepository->findBySearchQuery($request->query->get('search', ''), Roles::ROLE_USER, 15);
 
         // create json array form user objects
         $json = array_map(static fn(User $user) => ['id' => $user->getId(), 'name' => $user->getName()], $users);
