@@ -6,6 +6,7 @@ namespace DR\Review\Repository\User;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\User\User;
@@ -53,23 +54,36 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int[] $preferredUserIds
+     *
      * @return User[]
      */
-    public function findBySearchQuery(string $searchQuery, ?string $role = null, ?int $limit = null): array
+    public function findBySearchQuery(string $searchQuery, array $preferredUserIds, ?string $role = null, ?int $limit = null): array
     {
-        $query = $this->createQueryBuilder('u')
-            ->where('u.name LIKE :search or u.email LIKE :search')
-            ->setParameter('search', addcslashes($searchQuery, '%_') . '%')
-            ->orderBy('u.name', 'ASC');
+        $conn   = $this->getEntityManager()->getConnection();
+        $params = ['search' => addcslashes($searchQuery, '%_') . '%'];
+
+        $query = $conn->createQueryBuilder()
+            ->select('*', 'IF(`id` IN (' . implode(',', $preferredUserIds) . '), 1, 0) AS priority')
+            ->from('user', 'user')
+            ->where('name LIKE :search OR email LIKE :search')
+            ->orderBy('priority', 'DESC')
+            ->addOrderBy('name', 'ASC');
+
         if ($role !== null) {
-            $query->andWhere('u.roles LIKE :role')->setParameter('role', addcslashes($role, '%_') . '%');
+            $query->andWhere('roles LIKE :role');
+            $params['role'] = '%' . addcslashes($role, '%_') . '%';
         }
         if ($limit !== null) {
             $query->setMaxResults($limit);
         }
 
+        // create ResultSetMapping to transform to Entity
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(User::class, 'user');
+
         /** @var User[] $result */
-        $result = $query->getQuery()->getResult();
+        $result = $this->getEntityManager()->createNativeQuery($query->getSQL(), $rsm)->setParameters($params)->getResult();
 
         return $result;
     }

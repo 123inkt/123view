@@ -26,7 +26,9 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     public function testFindBySearchQuery(): void
     {
         $repository = self::getService(UserRepository::class);
-        $users      = $repository->findBySearchQuery('Sherlock', Roles::ROLE_USER, 10);
+        $user       = Assert::notNull($repository->findOneBy(['email' => 'sherlock@example.com']));
+
+        $users = $repository->findBySearchQuery('Sherlock', [(int)$user->getId()], Roles::ROLE_USER, 10);
         static::assertCount(1, $users);
     }
 
@@ -37,7 +39,9 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     public function testFindBySearchQueryShouldExcludeBanned(): void
     {
         $repository = self::getService(UserRepository::class);
-        $users      = $repository->findBySearchQuery('Sherlock', Roles::ROLE_ADMIN, 10);
+        $user       = Assert::notNull($repository->findOneBy(['email' => 'sherlock@example.com']));
+
+        $users = $repository->findBySearchQuery('Sherlock', [(int)$user->getId()], Roles::ROLE_ADMIN, 10);
         static::assertCount(0, $users);
     }
 

@@ -5,9 +5,9 @@ namespace DR\Review\Controller\App\User;
 
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Request\User\UserMentionSuggestRequest;
 use DR\Review\Security\Role\Roles;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -19,12 +19,14 @@ class UserMentionSuggestController
 
     #[Route('/app/user/mentions', self::class, methods: ['GET'])]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(UserMentionSuggestRequest $request): JsonResponse
     {
-        // search users
-        $users = $this->userRepository->findBySearchQuery($request->query->get('search', ''), Roles::ROLE_USER, 15);
+        $preferredUserIds = $request->getPreferredUserIds();
 
-        // create json array form user objects
+        // search users
+        $users = $this->userRepository->findBySearchQuery($request->getSearch(), $preferredUserIds, Roles::ROLE_USER, 15);
+
+        // create json array from user objects
         $json = array_map(static fn(User $user) => ['id' => $user->getId(), 'name' => $user->getName()], $users);
 
         $response = new JsonResponse($json);
