@@ -31,7 +31,6 @@ class UserMentionSuggestRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void
