@@ -25,6 +25,15 @@ class DiffLineTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::isEmpty
+     */
+    public function testIsEmpty(): void
+    {
+        static::assertTrue((new DiffLine(DiffLine::STATE_EMPTY, []))->isEmpty());
+        static::assertFalse((new DiffLine(DiffLine::STATE_CHANGED, []))->isEmpty());
+    }
+
+    /**
      * @covers ::getLine
      */
     public function testGetLine(): void

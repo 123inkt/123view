@@ -15,9 +15,9 @@
 
     {#- gutter -#}
     {%- if isLineBefore -%}
-        {{- macro.gutter_single(line.lineNumberBefore, lineNrLengthBefore) -}}
+        {{- macro.gutter_single(line.lineNumberBefore, lineNrLengthBefore, line.isEmpty() == false) -}}
     {%- else -%}
-        {{- macro.gutter_single(line.lineNumberAfter, lineNrLengthAfter) -}}
+        {{- macro.gutter_single(line.lineNumberAfter, lineNrLengthAfter, line.isEmpty() == false) -}}
     {%- endif -%}
 
     {#- coverage  #}
