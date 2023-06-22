@@ -21,6 +21,7 @@ export default class extends Controller<HTMLElement> {
         useDebounce(this, {wait: 150});
         this.textareaTarget.focus();
         new Mentions(this.textareaTarget, new MentionsDropdown(this.mentionSuggestionsTarget)).bind();
+        this.textareaTarget.addEventListener('keydown', this.commentCancelListener.bind(this));
         this.textareaTarget.addEventListener('input', this.commentPreviewListener.bind(this));
         this.formTarget.addEventListener('submit', this.submitComment.bind(this));
         this.commentPreviewListener(this.textareaTarget);
@@ -60,6 +61,14 @@ export default class extends Controller<HTMLElement> {
                     this.submitting = false;
                     Errors.catch(err);
                 });
+        }
+    }
+
+    private commentCancelListener(event: KeyboardEvent): void {
+        if (event.key === 'Escape') {
+            event.stopPropagation();
+            event.preventDefault();
+            this.cancelComment();
         }
     }
 
