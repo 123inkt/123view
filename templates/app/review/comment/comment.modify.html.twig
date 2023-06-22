@@ -1,7 +1,8 @@
 {# commentId: number #}
 {# form: FormView #}
+{# actors: int[] #}
 <div class="diff-file__comment_form"
-        {{ stimulus_controller('comment-form') }}
+        {{ stimulus_controller('comment-form', {actors: (actors ?? [])|join(',') }) }}
         {{ stimulus_target('review', 'commentForm') }}
         {% if commentId is defined %}data-comment-id="{{ commentId }}"{% endif %}
 >

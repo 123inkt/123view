@@ -26,6 +26,6 @@ class GetAddCommentFormController extends AbstractController
     {
         $form = $this->createForm(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $request->getLineReference()]);
 
-        return ['form' => $form->createView()];
+        return ['form' => $form->createView(), 'actors' => $review->getActors()];
     }
 }
