@@ -64,12 +64,16 @@ class UserRepository extends ServiceEntityRepository
         $params = ['search' => addcslashes($searchQuery, '%_') . '%'];
 
         $query = $conn->createQueryBuilder()
-            ->select('*', 'IF(`id` IN (' . implode(',', $preferredUserIds) . '), 1, 0) AS priority')
             ->from('user', 'user')
             ->where('name LIKE :search OR email LIKE :search')
             ->orderBy('priority', 'DESC')
             ->addOrderBy('name', 'ASC');
 
+        if (count($preferredUserIds) === 0) {
+            $query->select('*', '0 AS priority');
+        } else {
+            $query->select('*', 'IF(`id` IN (' . implode(',', $preferredUserIds) . '), 1, 0) AS priority');
+        }
         if ($role !== null) {
             $query->andWhere('roles LIKE :role');
             $params['role'] = '%' . addcslashes($role, '%_') . '%';
