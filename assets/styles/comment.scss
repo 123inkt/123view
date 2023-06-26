@@ -2,6 +2,16 @@
     background: var(--comment-background-color);
     border-bottom: 1px solid var(--comment-border-color);
     font-size: 0.9rem;
+
+    .comment__quick-reactions {
+        opacity: 0;
+        transition: opacity 0.2s 3s;
+    }
+
+    &:hover .comment__quick-reactions {
+        opacity: 1;
+        transition: opacity 0.2s;
+    }
 }
 
 .comment__detached-comment {
@@ -94,17 +104,5 @@
     &[disabled] {
         cursor: default;
         opacity: 0.25;
-    }
-}
-
-.comment__comment-thread {
-    .comment__quick-reactions {
-        opacity: 0;
-        transition: opacity 0.2s 3s;
-    }
-
-    &:hover .comment__quick-reactions {
-        opacity: 1;
-        transition: opacity 0.2s;
     }
 }
