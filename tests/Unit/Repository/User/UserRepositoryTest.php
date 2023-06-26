@@ -36,6 +36,18 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
      * @covers ::findBySearchQuery
      * @throws Exception
      */
+    public function testFindBySearchQueryWithoutPreferredUsers(): void
+    {
+        $repository = self::getService(UserRepository::class);
+
+        $users = $repository->findBySearchQuery('Sherlock', [], Roles::ROLE_USER, 10);
+        static::assertCount(1, $users);
+    }
+
+    /**
+     * @covers ::findBySearchQuery
+     * @throws Exception
+     */
     public function testFindBySearchQueryShouldExcludeBanned(): void
     {
         $repository = self::getService(UserRepository::class);
