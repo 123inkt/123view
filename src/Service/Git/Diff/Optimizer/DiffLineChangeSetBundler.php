@@ -93,9 +93,13 @@ class DiffLineChangeSetBundler
             $lineState = $this->stateDeterminator->determineState($changes);
         }
 
-        $line                   = new DiffLine($lineState, $changes);
-        $line->lineNumberBefore = $lineNumbers->getLineNumberBefore();
-        $line->lineNumberAfter  = $lineNumbers->getLineNumberAfter();
+        $line = new DiffLine($lineState, $changes);
+        if ($lineState !== DiffLine::STATE_ADDED) {
+            $line->lineNumberBefore = $lineNumbers->getLineNumberBefore();
+        }
+        if ($lineState !== DiffLine::STATE_REMOVED) {
+            $line->lineNumberAfter = $lineNumbers->getLineNumberAfter();
+        }
 
         return $line;
     }
