@@ -69,10 +69,10 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
 
         static::assertCount(0, $lines[1]->changes);
         static::assertSame(11, $lines[1]->lineNumberBefore);
-        static::assertSame(21, $lines[1]->lineNumberAfter);
+        static::assertNull($lines[1]->lineNumberAfter);
 
         static::assertCount(1, $lines[2]->changes);
-        static::assertSame(12, $lines[2]->lineNumberBefore);
+        static::assertNull($lines[2]->lineNumberBefore);
         static::assertSame(21, $lines[2]->lineNumberAfter);
     }
 }
