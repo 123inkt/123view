@@ -11,6 +11,10 @@ use DR\Review\Utility\Assert;
 
 class DiffFinder
 {
+    public function __construct(private readonly LineReferenceMatcher $referenceMatcher)
+    {
+    }
+
     /**
      * @param DiffFile[] $files
      */
@@ -93,31 +97,8 @@ class DiffFinder
      */
     public function findLineInLines(array $lines, LineReference $lineReference): ?DiffLine
     {
-        $potentialMatch = null;
-
-        foreach ($lines as $index => $line) {
-            if ($line->state === DiffLine::STATE_ADDED && $line->lineNumberAfter === $lineReference->lineAfter) {
-                $potentialMatch = $line;
-            }
-
-            if ($line->lineNumberBefore !== $lineReference->line) {
-                continue;
-            }
-
-            // find the next line with the correct offset. Must have empty lineNumberBefore
-            $lineMatch = $lines[$index + $lineReference->offset] ?? null;
-            if ($lineMatch === null) {
-                return $line;
-            }
-
-            if ($lineMatch->lineNumberAfter === null || $lineMatch->lineNumberAfter === $lineReference->lineAfter) {
-                return $lineMatch;
-            }
-
-            return $line;
-        }
-
-        return $potentialMatch;
+        return $this->referenceMatcher->exactMatch($lines, $lineReference)
+            ?? $this->referenceMatcher->bestEffortMatch($lines, $lineReference);
     }
 
     /**
