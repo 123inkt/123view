@@ -8,19 +8,23 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\CodeReview\LineReferenceMatcher;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \DR\Review\Service\CodeReview\DiffFinder
  */
 class DiffFinderTest extends AbstractTestCase
 {
-    private DiffFinder $finder;
+    private DiffFinder                      $finder;
+    private LineReferenceMatcher&MockObject $referenceMatcher;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->finder = new DiffFinder();
+        $this->referenceMatcher = $this->createMock(LineReferenceMatcher::class);
+        $this->finder           = new DiffFinder($this->referenceMatcher);
     }
 
     /**
@@ -81,6 +85,8 @@ class DiffFinderTest extends AbstractTestCase
         $file->filePathAfter  = '/path/to/file/foobar.txt';
         $file->addBlock($block);
 
+        $this->referenceMatcher->method('exactMatch')->willReturn($lineA, $lineB, $lineB);
+
         // match line 100 => expect before: 100, after: 101
         static::assertSame(
             ['before' => [$lineA], 'after' => [$lineB]],
@@ -107,29 +113,14 @@ class DiffFinderTest extends AbstractTestCase
      */
     public function testFindLineInLines(): void
     {
-        $lineA                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
-        $lineA->lineNumberBefore = 100;
-        $lineA->lineNumberAfter  = 100;
+        $line = new DiffLine(DiffLine::STATE_UNCHANGED, []);
 
-        $lineB                  = new DiffLine(DiffLine::STATE_ADDED, []);
-        $lineB->lineNumberAfter = 101;
+        $this->referenceMatcher->expects(self::exactly(3))->method('exactMatch')->willReturn($line, null, null);
+        $this->referenceMatcher->expects(self::exactly(2))->method('bestEffortMatch')->willReturn($line, null);
 
-        $lineC                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
-        $lineC->lineNumberBefore = 101;
-        $lineC->lineNumberAfter  = 102;
-
-        $lineD                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
-        $lineD->lineNumberBefore = 102;
-        $lineD->lineNumberAfter  = 103;
-
-        $lines = [$lineA, $lineB, $lineC, $lineD];
-
-        static::assertSame($lineA, $this->finder->findLineInLines($lines, new LineReference('', 100, 0, 100)));
-        static::assertSame($lineB, $this->finder->findLineInLines($lines, new LineReference('', 100, 1, 101)));
-        static::assertSame($lineA, $this->finder->findLineInLines($lines, new LineReference('', 100, 4, 100)));
-        static::assertSame($lineC, $this->finder->findLineInLines($lines, new LineReference('', 101, 1, 102)));
-        static::assertSame($lineB, $this->finder->findLineInLines($lines, new LineReference('', 0, 0, 101)));
-        static::assertNull($this->finder->findLineInLines($lines, new LineReference('', 103, 0, 103)));
+        static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', 100, 0, 100)));
+        static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', 100, 1, 100)));
+        static::assertNull($this->finder->findLineInLines([$line], new LineReference('', 100, 1, 100)));
     }
 
     /**
@@ -185,7 +176,8 @@ class DiffFinderTest extends AbstractTestCase
         $file->filePathBefore = '/path/to/file/foobar.txt';
         $file->filePathAfter  = '/path/to/file/foobar.txt';
 
-        static::assertNull($this->finder->findLineInBlock($file, $block, new LineReference('', 99, 0, 99)));
+        $this->referenceMatcher->expects(self::once())->method('exactMatch')->willReturn($line);
+
         static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
     }
 
