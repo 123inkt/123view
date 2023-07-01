@@ -5,6 +5,6 @@ namespace DR\Review\Entity\Git\Diff;
 
 class DiffBlock
 {
-    /** @var DiffLine[] */
+    /** @var array<int, DiffLine> */
     public array $lines = [];
 }
