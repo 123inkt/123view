@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\GetCommentThreadController;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
@@ -13,12 +14,10 @@ use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Request\Comment\GetCommentThreadRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\GetCommentThreadController
- * @covers ::__construct
- */
+#[CoversClass(GetCommentThreadController::class)]
 class GetCommentThreadControllerTest extends AbstractControllerTestCase
 {
     private CommentViewModelProvider&MockObject $modelProvider;
@@ -29,24 +28,21 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request = $this->createMock(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn(null);
 
+        $review = new CodeReview();
+
         $comment = new Comment();
         $comment->setId(123);
+        $comment->setReview($review);
 
         $result = ($this->controller)($request, $comment);
-        static::assertSame(['comment' => $comment, 'visible' => true], $result);
+        static::assertSame(['comment' => $comment, 'visible' => true, 'review' => $review], $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeEditComment(): void
     {
         $comment = new Comment();
@@ -63,9 +59,6 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         static::assertSame($comment, $result['comment']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeAddCommentReply(): void
     {
         $comment = new Comment();
@@ -82,9 +75,6 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         static::assertSame($comment, $result['comment']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeEditCommentReply(): void
     {
         $comment = new Comment();
