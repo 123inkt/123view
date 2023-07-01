@@ -10,11 +10,10 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\CodeReview\LineReferenceMatcher;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\DiffFinder
- */
+#[CoversClass(DiffFinder::class)]
 class DiffFinderTest extends AbstractTestCase
 {
     private DiffFinder                      $finder;
@@ -27,9 +26,6 @@ class DiffFinderTest extends AbstractTestCase
         $this->finder           = new DiffFinder($this->referenceMatcher);
     }
 
-    /**
-     * @covers ::findFileByPath
-     */
     public function testFindFileByPath(): void
     {
         $fileA                 = new DiffFile();
@@ -56,9 +52,6 @@ class DiffFinderTest extends AbstractTestCase
         static::assertSame($fileC, $this->finder->findFileByPath($files, '/path/to/file/created.txt:foobar'));
     }
 
-    /**
-     * @covers ::findLinesAround
-     */
     public function testFindLinesAround(): void
     {
         $lineA                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
@@ -108,9 +101,6 @@ class DiffFinderTest extends AbstractTestCase
         static::assertNull($this->finder->findLinesAround($file, new LineReference('', 105, 0, 105), 1));
     }
 
-    /**
-     * @covers ::findLineInLines
-     */
     public function testFindLineInLines(): void
     {
         $line = new DiffLine(DiffLine::STATE_UNCHANGED, []);
@@ -123,9 +113,6 @@ class DiffFinderTest extends AbstractTestCase
         static::assertNull($this->finder->findLineInLines([$line], new LineReference('', 100, 1, 100)));
     }
 
-    /**
-     * @covers ::findLineInFile
-     */
     public function testFindLineInFile(): void
     {
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
@@ -142,9 +129,6 @@ class DiffFinderTest extends AbstractTestCase
         static::assertSame($line, $this->finder->findLineInFile($file, new LineReference('', 100, 0, 100)));
     }
 
-    /**
-     * @covers ::findLineInBlock
-     */
     public function testFineLineInBlockForNewFile(): void
     {
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
@@ -160,9 +144,6 @@ class DiffFinderTest extends AbstractTestCase
         static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
     }
 
-    /**
-     * @covers ::findLineInBlock
-     */
     public function testFineLineInBlockForLines(): void
     {
         $line                   = new DiffLine(DiffLine::STATE_ADDED, []);
@@ -181,9 +162,6 @@ class DiffFinderTest extends AbstractTestCase
         static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
     }
 
-    /**
-     * @covers ::findLineInNewFile
-     */
     public function testFindLineInNewFile(): void
     {
         $lineA                  = new DiffLine(DiffLine::STATE_UNCHANGED, []);
