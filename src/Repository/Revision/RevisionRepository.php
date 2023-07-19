@@ -94,7 +94,9 @@ class RevisionRepository extends ServiceEntityRepository
             ->setMaxResults(50);
 
         if ($searchQuery !== '') {
-            $query->andWhere('r.title LIKE :searchQuery OR r.authorEmail LIKE :searchQuery OR r.authorName LIKE :searchQuery');
+            $query->andWhere(
+                'r.title LIKE :searchQuery OR r.authorEmail LIKE :searchQuery OR r.authorName LIKE :searchQuery OR r.commitHash LIKE :searchQuery'
+            );
             $query->setParameter('searchQuery', '%' . addcslashes($searchQuery, '%_') . '%');
         }
 
