@@ -89,7 +89,7 @@ class GitLogService implements LoggerAwareInterface
     {
         $command = $this->commandBuilderFactory->createLog();
         $command->noMerges()
-            ->hashRange($fromReference, $toReference)
+            ->hashRange($fromReference . '~1', $toReference)
             ->format($this->formatPatternFactory->createPattern());
 
         // fetch revisions for range

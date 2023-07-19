@@ -123,7 +123,7 @@ class GitLogServiceTest extends AbstractTestCase
         $this->commandBuilderFactory->expects(self::once())->method('createLog')->willReturn($logBuilder);
         $this->patternFactory->expects(self::once())->method('createPattern')->willReturn('pattern');
         $logBuilder->expects(self::once())->method('noMerges')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('hashRange')->with('foo', 'bar')->willReturnSelf();
+        $logBuilder->expects(self::once())->method('hashRange')->with('foo~1', 'bar')->willReturnSelf();
         $logBuilder->expects(self::once())->method('format')->with('pattern')->willReturnSelf();
 
         $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn('output');
