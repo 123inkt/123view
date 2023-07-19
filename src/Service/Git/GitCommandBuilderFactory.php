@@ -11,6 +11,7 @@ use DR\Review\Service\Git\Clean\GitCleanCommandBuilder;
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
+use DR\Review\Service\Git\GarbageCollect\GitGarbageCollectCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\RevList\GitRevListCommandBuilder;
@@ -83,5 +84,10 @@ class GitCommandBuilderFactory
     public function createClean(): GitCleanCommandBuilder
     {
         return new GitCleanCommandBuilder($this->git);
+    }
+
+    public function createGarbageCollect(): GitGarbageCollectCommandBuilder
+    {
+        return new GitGarbageCollectCommandBuilder($this->git);
     }
 }

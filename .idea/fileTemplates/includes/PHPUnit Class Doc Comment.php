@@ -1,1 +1,0 @@
-#[CoversClass(${TESTED_NAME}::class)]
