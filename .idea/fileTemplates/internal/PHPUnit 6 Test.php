@@ -10,6 +10,7 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #parse("PHPUnit Class Doc Comment.php")
+#[CoversClass(GarbageCollectGitCommand::class)]
 class ${NAME} extends AbstractTestCase
 {
 }
