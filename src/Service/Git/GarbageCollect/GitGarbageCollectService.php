@@ -27,7 +27,7 @@ class GitGarbageCollectService implements LoggerAwareInterface
     {
         $commandBuilder = $this->commandFactory
             ->createGarbageCollect()
-            ->prune('now')
+            ->prune($date)
             ->quiet();
 
         // execute command
