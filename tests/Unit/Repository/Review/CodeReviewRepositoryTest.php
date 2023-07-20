@@ -20,8 +20,8 @@ use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Tests\DataFixtures\RevisionFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
-use DR\Review\Utility\Arrays;
-use DR\Review\Utility\Assert;
+use DR\Utils\Arrays;
+use DR\Utils\Assert;
 use Exception;
 use Parsica\Parsica\Parser;
 

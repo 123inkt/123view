@@ -10,7 +10,7 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

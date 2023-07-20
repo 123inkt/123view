@@ -9,7 +9,7 @@ use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Log\FormatPatternFactory;
 use DR\Review\Service\Parser\GitLogParser;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

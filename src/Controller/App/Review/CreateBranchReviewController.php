@@ -11,7 +11,7 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewCreationService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

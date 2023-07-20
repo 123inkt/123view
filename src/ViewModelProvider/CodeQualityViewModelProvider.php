@@ -8,8 +8,8 @@ use DR\Review\Repository\Report\CodeCoverageFileRepository;
 use DR\Review\Repository\Report\CodeInspectionIssueRepository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Review\CodeQualityViewModel;
+use DR\Utils\Assert;
 
 class CodeQualityViewModelProvider
 {

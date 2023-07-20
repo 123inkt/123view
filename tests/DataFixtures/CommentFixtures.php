@@ -10,7 +10,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {

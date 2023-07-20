@@ -7,7 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;

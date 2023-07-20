@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Functional\Controller\Api;
 
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 

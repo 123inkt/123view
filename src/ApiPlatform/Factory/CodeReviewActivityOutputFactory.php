@@ -5,7 +5,7 @@ namespace DR\Review\ApiPlatform\Factory;
 
 use DR\Review\ApiPlatform\Output\CodeReviewActivityOutput;
 use DR\Review\Entity\Review\CodeReviewActivity;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeReviewActivityOutputFactory
 {

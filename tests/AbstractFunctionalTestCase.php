@@ -7,7 +7,7 @@ namespace DR\Review\Tests;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;

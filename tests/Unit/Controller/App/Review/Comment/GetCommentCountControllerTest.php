@@ -9,7 +9,7 @@ use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Tests\AbstractControllerTestCase;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;

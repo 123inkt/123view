@@ -7,7 +7,7 @@ use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;
 use Symfony\Component\HttpFoundation\Response;

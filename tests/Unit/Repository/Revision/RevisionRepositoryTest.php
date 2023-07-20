@@ -9,7 +9,7 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\RevisionFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Throwable;
 

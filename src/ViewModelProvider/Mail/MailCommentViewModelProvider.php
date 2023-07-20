@@ -11,8 +11,8 @@ use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\Mail\CommentViewModel;
+use DR\Utils\Assert;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 

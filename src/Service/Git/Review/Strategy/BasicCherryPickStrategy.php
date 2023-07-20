@@ -10,7 +10,7 @@ use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Review\FileDiffOptions;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**

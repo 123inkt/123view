@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\User\User;
 use DR\Review\Entity\User\UserAccessToken;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class UserAccessTokenFixtures extends Fixture implements DependentFixtureInterface
 {

@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Asset;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\Asset\AssetFactory;
 use DR\Review\Tests\AbstractTestCase;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Asset\AssetFactory

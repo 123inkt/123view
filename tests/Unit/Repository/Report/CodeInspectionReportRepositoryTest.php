@@ -8,7 +8,7 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeInspectionReportFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 

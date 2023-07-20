@@ -10,7 +10,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Revision\RevisionTitleNormalizer;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

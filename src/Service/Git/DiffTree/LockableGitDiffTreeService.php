@@ -5,7 +5,7 @@ namespace DR\Review\Service\Git\DiffTree;
 
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 
 class LockableGitDiffTreeService

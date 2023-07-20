@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class RevisionFixtures extends Fixture implements DependentFixtureInterface
 {

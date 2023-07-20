@@ -12,9 +12,9 @@ use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
-use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
+use DR\Utils\Assert;
 use Throwable;
 
 class FileDiffViewModelProvider

@@ -7,7 +7,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareTrait;
 
 class GitDiffTreeService

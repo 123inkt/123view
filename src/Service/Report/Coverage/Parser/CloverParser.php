@@ -11,7 +11,7 @@ use DR\Review\Exception\ParseException;
 use DR\Review\Exception\XMLException;
 use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Xml\DOMDocumentFactory;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CloverParser implements CodeCoverageParserInterface
 {

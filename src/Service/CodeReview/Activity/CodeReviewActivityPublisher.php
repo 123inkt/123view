@@ -5,7 +5,7 @@ namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Repository\User\UserRepository;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Nette\Utils\Json;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

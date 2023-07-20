@@ -8,7 +8,7 @@ use DR\Review\Repository\Webhook\WebhookRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\WebhookFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 

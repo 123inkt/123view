@@ -10,7 +10,7 @@ use DR\Review\Message\MailNotificationInterface;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\Mail\CommentMailService;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Throwable;

@@ -9,7 +9,7 @@ use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Service\Mail\CommitMailService;
 use DR\Review\Service\RuleProcessor;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -45,7 +45,7 @@ class MailCommand extends Command implements LoggerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @phpstan-var Frequency::* $frequency */
-        $frequency = Assert::isString($input->getOption('frequency'));
+        $frequency = Assert::string($input->getOption('frequency'));
         if (Frequency::isValid($frequency) === false) {
             throw new InvalidArgumentException('Invalid or missing `frequency` argument: ' . $frequency);
         }

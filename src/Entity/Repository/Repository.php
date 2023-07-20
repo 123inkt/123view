@@ -16,7 +16,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use League\Uri\Contracts\UriInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
@@ -262,12 +262,12 @@ class Repository
 
     public function setRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $currentProperty = $this->repositoryProperties->get(Assert::isString($repositoryProperty->getName()));
+        $currentProperty = $this->repositoryProperties->get(Assert::string($repositoryProperty->getName()));
         if ($currentProperty !== null) {
-            $currentProperty->setValue(Assert::isString($repositoryProperty->getValue()));
+            $currentProperty->setValue(Assert::string($repositoryProperty->getValue()));
         } else {
             $repositoryProperty->setRepository($this);
-            $this->repositoryProperties->set(Assert::isString($repositoryProperty->getName()), $repositoryProperty);
+            $this->repositoryProperties->set(Assert::string($repositoryProperty->getName()), $repositoryProperty);
         }
 
         return $this;
@@ -275,7 +275,7 @@ class Repository
 
     public function removeRepositoryProperty(RepositoryProperty $repositoryProperty): self
     {
-        $this->repositoryProperties->remove(Assert::isString($repositoryProperty->getName()));
+        $this->repositoryProperties->remove(Assert::string($repositoryProperty->getName()));
 
         return $this;
     }

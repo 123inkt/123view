@@ -5,7 +5,7 @@ namespace DR\Review\Service\Report\CodeInspection\Parser;
 
 use DR\Review\Entity\Report\CodeInspectionIssue;
 use DR\Review\Service\IO\FilePathNormalizer;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 

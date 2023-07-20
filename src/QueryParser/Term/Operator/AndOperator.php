@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\QueryParser\Term\Operator;
 
 use DR\Review\QueryParser\Term\TermInterface;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use InvalidArgumentException;
 
 class AndOperator implements TermInterface

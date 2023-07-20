@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CommentEventSubscriber implements EventSubscriberInterface
 {

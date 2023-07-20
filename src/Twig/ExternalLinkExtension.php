@@ -5,7 +5,7 @@ namespace DR\Review\Twig;
 
 use DR\Review\Entity\Config\ExternalLink;
 use DR\Review\Repository\Config\ExternalLinkRepository;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

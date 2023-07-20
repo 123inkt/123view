@@ -9,7 +9,7 @@ use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineNumberPair;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareTrait;
 
 class DiffLineChangeSetBundler

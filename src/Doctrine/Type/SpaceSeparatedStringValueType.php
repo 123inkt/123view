@@ -5,7 +5,7 @@ namespace DR\Review\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class SpaceSeparatedStringValueType extends Type
 {
@@ -33,7 +33,7 @@ class SpaceSeparatedStringValueType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform): ?array
     {
-        return $value === null ? null : array_filter(explode(" ", Assert::isString($value)), static fn($val) => $val !== '');
+        return $value === null ? null : array_filter(explode(" ", Assert::string($value)), static fn($val) => $val !== '');
     }
 
     public function getName(): string

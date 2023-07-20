@@ -10,7 +10,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\User\User;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -31,7 +31,7 @@ class UserRepository extends ServiceEntityRepository
      */
     public function getNewUserCount(): int
     {
-        return Assert::isInt(
+        return Assert::integer(
             $this->createQueryBuilder('u')
                 ->select('count(u.id)')
                 ->where('u.roles=\'\'')
@@ -45,7 +45,7 @@ class UserRepository extends ServiceEntityRepository
      */
     public function getUserCount(): int
     {
-        return Assert::isInt(
+        return Assert::integer(
             $this->createQueryBuilder('u')
                 ->select('count(u.id)')
                 ->getQuery()

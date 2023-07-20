@@ -7,7 +7,7 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;
 

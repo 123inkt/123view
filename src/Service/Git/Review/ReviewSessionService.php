@@ -5,7 +5,7 @@ namespace DR\Review\Service\Git\Review;
 
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Security\SessionKeys;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ReviewSessionService
@@ -29,6 +29,6 @@ class ReviewSessionService
             return DiffComparePolicy::ALL;
         }
 
-        return DiffComparePolicy::from(Assert::isString($policy));
+        return DiffComparePolicy::from(Assert::string($policy));
     }
 }
