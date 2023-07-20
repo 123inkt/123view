@@ -7,7 +7,7 @@ use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitCommandBuilderInterface;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class GitLogCommandFactory
 {

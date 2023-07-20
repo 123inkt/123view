@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Report\CodeCoverageReport;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeCoverageReportFixtures extends Fixture implements DependentFixtureInterface
 {

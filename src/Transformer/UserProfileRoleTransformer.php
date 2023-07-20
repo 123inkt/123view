@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Transformer;
 
 use DR\Review\Security\Role\Roles;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -22,6 +22,6 @@ class UserProfileRoleTransformer implements DataTransformerInterface
      */
     public function reverseTransform(mixed $value): ?array
     {
-        return $value === null ? null : Roles::profileToRoles(Assert::isString($value));
+        return $value === null ? null : Roles::profileToRoles(Assert::string($value));
     }
 }

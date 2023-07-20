@@ -7,7 +7,7 @@ use DR\Review\Exception\ParseException;
 use DR\Review\Exception\XMLException;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(DOMDocumentFactory::class)]
@@ -35,7 +35,7 @@ class DOMDocumentFactoryTest extends AbstractTestCase
      */
     public function testCreateFromStringValid(): void
     {
-        $xml      = Assert::isString(file_get_contents(__DIR__ . '/../../../../phpunit.xml.dist'));
+        $xml      = Assert::string(file_get_contents(__DIR__ . '/../../../../phpunit.xml.dist'));
         $document = $this->documentFactory->createFromString($xml);
 
         static::assertSame(1, $document->childNodes->length);

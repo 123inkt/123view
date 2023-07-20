@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepositoryLockManager

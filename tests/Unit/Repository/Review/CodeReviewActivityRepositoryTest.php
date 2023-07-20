@@ -9,7 +9,7 @@ use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 /**
  * @coversDefaultClass \DR\Review\Repository\Review\CodeReviewActivityRepository

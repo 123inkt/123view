@@ -6,7 +6,7 @@ namespace DR\Review\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CacheableGitRepositoryService extends GitRepositoryService
 {

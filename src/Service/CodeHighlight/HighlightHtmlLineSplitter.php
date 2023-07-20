@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeHighlight;
 
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class HighlightHtmlLineSplitter
 {

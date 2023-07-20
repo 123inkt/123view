@@ -9,7 +9,7 @@ use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;

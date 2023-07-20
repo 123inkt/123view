@@ -9,7 +9,7 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Service\Revision\RevisionFactory;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

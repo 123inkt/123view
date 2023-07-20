@@ -7,7 +7,7 @@ use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\Parameter;
 use ApiPlatform\OpenApi\Model\PathItem;
 use ApiPlatform\OpenApi\OpenApi;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Generator;
 use IteratorAggregate;
 

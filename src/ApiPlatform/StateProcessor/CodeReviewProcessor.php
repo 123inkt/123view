@@ -9,7 +9,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeReviewProcessor implements ProcessorInterface
 {
@@ -37,7 +37,7 @@ class CodeReviewProcessor implements ProcessorInterface
 
         // dispatch events if state was changed
         if ($data->isPropertyChanged(CodeReview::PROP_STATE)) {
-            $originalState = Assert::isString($data->getOriginalValue(CodeReview::PROP_STATE));
+            $originalState = Assert::string($data->getOriginalValue(CodeReview::PROP_STATE));
             $this->eventService->reviewStateChanged($data, $originalState, (int)$this->user->getId());
         }
 

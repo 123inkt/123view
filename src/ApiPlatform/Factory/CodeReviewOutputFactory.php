@@ -9,7 +9,7 @@ use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class CodeReviewOutputFactory

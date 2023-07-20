@@ -6,7 +6,7 @@ namespace DR\Review\Service\CodeHighlight;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;

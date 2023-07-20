@@ -8,7 +8,7 @@ use DR\Review\QueryParser\Term\Match\MatchFilter;
 use DR\Review\QueryParser\Term\Match\MatchWord;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
 use DR\Review\QueryParser\Term\TermInterface;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use Parsica\Parsica\Parser;
 use function Parsica\Parsica\atLeastOne;
@@ -54,7 +54,7 @@ class ReviewSearchQueryParserFactory
             string('id:')
                 ->followedBy(atLeastOne(digitChar()))->map(static fn(string $val) => new MatchFilter('id', $val)),
             string('state:')
-                ->followedBy(choice(stringI('open'), stringI('closed')))->map(static fn($val) => new MatchFilter('state', Assert::isString($val))),
+                ->followedBy(choice(stringI('open'), stringI('closed')))->map(static fn($val) => new MatchFilter('state', Assert::string($val))),
             string('author:')
                 ->followedBy(ParserFactory::stringLiteral())->map(static fn($val) => new MatchFilter('author', $val)),
             string('reviewer:')

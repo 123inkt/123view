@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Report\CodeInspectionIssue;
 use DR\Review\Entity\Report\CodeInspectionReport;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeInspectionIssueFixtures extends Fixture implements DependentFixtureInterface
 {

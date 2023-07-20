@@ -9,7 +9,7 @@ use DR\Review\Service\IO\FilePathNormalizer;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(CloverParser::class)]

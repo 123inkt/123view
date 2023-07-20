@@ -8,7 +8,7 @@ use ApiPlatform\OpenApi\Model\Parameter;
 use ApiPlatform\OpenApi\Model\SecurityScheme;
 use ApiPlatform\OpenApi\OpenApi;
 use DR\Review\Controller\App\User\UserAccessTokenController;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;

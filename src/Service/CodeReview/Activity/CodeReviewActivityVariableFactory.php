@@ -6,7 +6,7 @@ namespace DR\Review\Service\CodeReview\Activity;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Model\Review\ActivityVariable;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CodeReviewActivityVariableFactory

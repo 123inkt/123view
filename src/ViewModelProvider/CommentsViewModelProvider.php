@@ -9,8 +9,8 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
 use DR\Review\Service\CodeReview\DiffComparePolicyProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
-use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
+use DR\Utils\Assert;
 
 class CommentsViewModelProvider
 {

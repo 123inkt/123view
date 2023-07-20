@@ -7,7 +7,7 @@ use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Nette\Utils\Json;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

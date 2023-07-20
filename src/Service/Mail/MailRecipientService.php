@@ -12,7 +12,7 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\User\UserService;
 use DR\Review\Utility\Arrays;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class MailRecipientService
 {

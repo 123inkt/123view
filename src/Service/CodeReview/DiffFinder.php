@@ -7,7 +7,7 @@ use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\LineReference;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class DiffFinder
 {
@@ -57,7 +57,7 @@ class DiffFinder
                 continue;
             }
 
-            $index = Assert::isInt(array_search($line, $block->lines, true));
+            $index = Assert::integer(array_search($line, $block->lines, true));
 
             $start = max(0, $index - $margin + 1);
             $lines = array_slice($block->lines, $start, $margin * 2);

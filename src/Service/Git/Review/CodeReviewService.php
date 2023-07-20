@@ -11,7 +11,7 @@ use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeReviewService
 {

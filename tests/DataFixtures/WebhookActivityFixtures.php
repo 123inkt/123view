@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Entity\Webhook\WebhookActivity;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class WebhookActivityFixtures extends Fixture implements DependentFixtureInterface
 {

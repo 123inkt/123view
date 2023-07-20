@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Command;
 
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,7 +36,7 @@ class TestMailCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $address = Assert::isString($input->getArgument('address'));
+        $address = Assert::string($input->getArgument('address'));
 
         $email = (new Email())
             ->addTo(new Address($address))

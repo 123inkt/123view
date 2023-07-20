@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Report\CodeCoverageFile;
 use DR\Review\Entity\Report\CodeCoverageReport;
 use DR\Review\Entity\Report\LineCoverage;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeCoverageFileFixtures extends Fixture implements DependentFixtureInterface
 {

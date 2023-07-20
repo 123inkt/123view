@@ -9,7 +9,7 @@ use DR\Review\Repository\Report\CodeCoverageFileRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeCoverageFileFixtures;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 

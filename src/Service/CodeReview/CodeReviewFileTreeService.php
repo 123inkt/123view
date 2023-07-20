@@ -12,7 +12,7 @@ use DR\Review\Service\CodeHighlight\HighlightedFileService;
 use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Throwable;
 
 class CodeReviewFileTreeService

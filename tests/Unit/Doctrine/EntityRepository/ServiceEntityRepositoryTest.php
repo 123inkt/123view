@@ -7,7 +7,7 @@ use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\UserFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ServiceEntityRepository::class)]

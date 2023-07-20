@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 
 class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
 {

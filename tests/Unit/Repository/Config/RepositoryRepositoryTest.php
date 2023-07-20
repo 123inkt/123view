@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Repository\Config;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
-use DR\Review\Utility\Assert;
+use DR\Utils\Assert;
 use Exception;
 
 /**

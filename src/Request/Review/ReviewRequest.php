@@ -10,9 +10,9 @@ use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Security\SessionKeys;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
-use DR\Review\Utility\Assert;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
+use DR\Utils\Assert;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -49,7 +49,7 @@ class ReviewRequest extends AbstractValidatedRequest
 
         $this->request->getSession()->set(SessionKeys::DIFF_COMPARISON_POLICY->value, $policy);
 
-        return DiffComparePolicy::from(Assert::isString($policy));
+        return DiffComparePolicy::from(Assert::string($policy));
     }
 
     public function getDiffMode(): ReviewDiffModeEnum
@@ -64,7 +64,7 @@ class ReviewRequest extends AbstractValidatedRequest
 
         $this->request->getSession()->set(SessionKeys::REVIEW_DIFF_MODE->value, $mode);
 
-        return ReviewDiffModeEnum::from(Assert::isString($mode));
+        return ReviewDiffModeEnum::from(Assert::string($mode));
     }
 
     public function getAction(): ?AbstractReviewAction
