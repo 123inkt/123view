@@ -8,7 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Branch\GitBranchService;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
 
 class ProjectBranchesViewModelProvider

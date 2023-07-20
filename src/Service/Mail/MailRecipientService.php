@@ -11,7 +11,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\User\UserService;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 
 class MailRecipientService

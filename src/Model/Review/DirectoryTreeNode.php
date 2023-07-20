@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Model\Review;
 
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use Iterator;
 use LogicException;
 

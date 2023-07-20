@@ -9,7 +9,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\RevList\CacheableGitRevListService;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;

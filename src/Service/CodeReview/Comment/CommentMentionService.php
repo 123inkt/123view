@@ -8,7 +8,7 @@ use DR\Review\Entity\Review\UserMention;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\UserMentionRepository;
 use DR\Review\Repository\User\UserRepository;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 
 class CommentMentionService
 {

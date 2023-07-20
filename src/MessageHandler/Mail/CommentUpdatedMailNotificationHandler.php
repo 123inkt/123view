@@ -8,7 +8,7 @@ use DR\Review\Message\MailNotificationInterface;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Mail\CommentMailService;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

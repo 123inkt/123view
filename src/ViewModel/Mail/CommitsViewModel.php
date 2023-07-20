@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\ViewModel\Mail;
 
 use DR\Review\Entity\Git\Commit;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 
 class CommitsViewModel
 {

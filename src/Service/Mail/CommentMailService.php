@@ -7,7 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
-use DR\Review\Utility\Arrays;
+use DR\Utils\Arrays;
 use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
