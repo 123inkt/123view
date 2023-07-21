@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Project;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
+use DR\Review\Request\Project\ProjectBranchRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
 use DR\Review\ViewModelProvider\ProjectBranchesViewModelProvider;
@@ -30,11 +31,11 @@ class ProjectBranchesController extends AbstractController
     #[Route('app/projects/{id<\d+>}/branches', name: self::class, methods: 'GET')]
     #[Template('app/repository/branches.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(#[MapEntity] Repository $repository): array
+    public function __invoke(ProjectBranchRequest $request, #[MapEntity] Repository $repository): array
     {
         return [
             'page_title'        => $this->translator->trans('branches'),
-            'branchesViewModel' => $this->viewModelProvider->getProjectBranchesViewModel($repository)
+            'branchesViewModel' => $this->viewModelProvider->getProjectBranchesViewModel($repository, $request->getSearchQuery())
         ];
     }
 }

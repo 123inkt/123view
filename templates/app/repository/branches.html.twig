@@ -23,7 +23,19 @@
         </ul>
     </div>
 
-    <table class="table table-bordered table-hover table-sm repository-branch-list">
+    <form method="get">
+        <div class="input-group">
+            <input type="search" name="search" value="{{ branchesViewModel.searchQuery }}" class="form-control"
+                    {{ stimulus_controller('search-field') }}
+                   placeholder="{{ 'search'|trans }}"/>
+
+            {% if branchesViewModel.searchQuery != '' %}
+                <a href="?search=" class="btn btn-secondary">&times;</a>
+            {% endif %}
+        </div>
+    </form>
+
+    <table class="table table-bordered table-hover table-sm repository-branch-list mt-3">
         <thead>
         <tr>
             <th scope="col">{{ 'branch'|trans }}</th>

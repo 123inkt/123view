@@ -15,6 +15,7 @@ class ProjectBranchesViewModel
      */
     public function __construct(
         public readonly Repository $repository,
+        public readonly ?string $searchQuery,
         public readonly array $branches,
         public readonly array $mergedBranches,
         private readonly array $reviews

@@ -16,7 +16,7 @@ class ProjectBranchesViewModelTest extends AbstractTestCase
     {
         $review     = new CodeReview();
         $repository = new Repository();
-        $model      = new ProjectBranchesViewModel($repository, [], [], ['branch' => $review]);
+        $model      = new ProjectBranchesViewModel($repository, null, [], [], ['branch' => $review]);
 
         static::assertNull($model->getReview('foobar'));
         static::assertSame($review, $model->getReview('branch'));
@@ -25,7 +25,7 @@ class ProjectBranchesViewModelTest extends AbstractTestCase
     public function testIsMerged(): void
     {
         $repository = new Repository();
-        $model      = new ProjectBranchesViewModel($repository, ['branch A', 'branch B'], ['branch B'], []);
+        $model      = new ProjectBranchesViewModel($repository, null, ['branch A', 'branch B'], ['branch B'], []);
 
         static::assertFalse($model->isMerged('branch A'));
         static::assertTrue($model->isMerged('branch B'));
