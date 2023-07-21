@@ -41,16 +41,16 @@ class ProjectBranchesViewModelProviderTest extends AbstractTestCase
         $this->branchService->expects(self::exactly(2))
             ->method('getRemoteBranches')
             ->with($repository)
-            ->willReturn(['branchA', 'mergedB'], ['mergedB']);
+            ->willReturn(['branchA', 'mergedBranchB', 'foobar'], ['mergedBranchB']);
         $this->reviewRepository->expects(self::once())
             ->method('findBy')
-            ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => ['branchA', 'mergedB']])
+            ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => ['branchA', 'mergedBranchB']])
             ->willReturn([$review]);
 
-        $model = $this->provider->getProjectBranchesViewModel($repository);
+        $model = $this->provider->getProjectBranchesViewModel($repository, 'branch');
         static::assertSame($repository, $model->repository);
-        static::assertSame(['branchA', 'mergedB'], $model->branches);
-        static::assertSame(['mergedB'], $model->mergedBranches);
+        static::assertSame(['branchA', 'mergedBranchB'], $model->branches);
+        static::assertSame(['mergedBranchB'], $model->mergedBranches);
         static::assertSame($review, $model->getReview('branch'));
     }
 }

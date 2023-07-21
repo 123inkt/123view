@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-npm install
+npm install --no-save
 
 if [ "${APP_ENV}" == "dev" ]; then
     npm run watch &

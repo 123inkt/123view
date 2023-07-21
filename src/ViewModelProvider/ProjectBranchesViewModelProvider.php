@@ -20,14 +20,19 @@ class ProjectBranchesViewModelProvider
     /**
      * @throws RepositoryException
      */
-    public function getProjectBranchesViewModel(Repository $repository): ProjectBranchesViewModel
+    public function getProjectBranchesViewModel(Repository $repository, ?string $searchQuery): ProjectBranchesViewModel
     {
         $branches       = $this->branchService->getRemoteBranches($repository);
         $mergedBranches = $this->branchService->getRemoteBranches($repository, true);
 
+        // filter branches based on searchQuery
+        if ($searchQuery !== null) {
+            $branches = array_filter($branches, static fn(string $branch): bool => stripos($branch, $searchQuery) !== false);
+        }
+
         $branchReviews = $this->reviewRepository->findBy(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => $branches]);
         $branchReviews = Arrays::reindex($branchReviews, static fn($review) => (string)$review->getReferenceId());
 
-        return new ProjectBranchesViewModel($repository, $branches, $mergedBranches, $branchReviews);
+        return new ProjectBranchesViewModel($repository, $searchQuery, $branches, $mergedBranches, $branchReviews);
     }
 }
