@@ -1,4 +1,10 @@
-type Subscriptions = Record<string, Array<{reviewId: number; userId?: number; callback: (event: Event) => void}>>;
+interface Subscription {
+    reviewId: number;
+    userId?: number;
+    callback: (event: Event) => void;
+}
+
+type Subscriptions = Record<string, Subscription[]>;
 
 export default class ReviewNotificationService {
     private subscriptions: Subscriptions = {};
