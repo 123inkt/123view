@@ -13364,16 +13364,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.13.2",
+            "version": "8.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "83fb531a75950b6c6c7c37d7813836c3df8fc8d1"
+                "reference": "daa7ae48cca0e19e320b02c3f3f1176538b6a5c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/83fb531a75950b6c6c7c37d7813836c3df8fc8d1",
-                "reference": "83fb531a75950b6c6c7c37d7813836c3df8fc8d1",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/daa7ae48cca0e19e320b02c3f3f1176538b6a5c4",
+                "reference": "daa7ae48cca0e19e320b02c3f3f1176538b6a5c4",
                 "shasum": ""
             },
             "require": {
@@ -13413,7 +13413,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.13.2"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.13.3"
             },
             "funding": [
                 {
@@ -13425,7 +13425,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-24T10:09:44+00:00"
+            "time": "2023-07-24T15:24:58+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
