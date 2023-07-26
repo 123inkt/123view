@@ -28,11 +28,11 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
     {
         parent::setUp();
         $this->client        = static::createClient(['environment' => 'test', 'debug' => 'false']);
-        $this->databaseTool  = Assert::instanceOf(DatabaseToolCollection::class, static::getContainer()->get(DatabaseToolCollection::class))->get();
-        $doctrine            = Assert::instanceOf(ManagerRegistry::class, static::getContainer()->get('doctrine'));
-        $this->entityManager = Assert::instanceOf(EntityManagerInterface::class, $doctrine->getManager());
+        $this->databaseTool  = Assert::isInstanceOf(static::getContainer()->get(DatabaseToolCollection::class), DatabaseToolCollection::class)->get();
+        $doctrine            = Assert::isInstanceOf(static::getContainer()->get('doctrine'), ManagerRegistry::class);
+        $this->entityManager = Assert::isInstanceOf($doctrine->getManager(), EntityManagerInterface::class);
 
-        Assert::instanceOf(Connection::class, $doctrine->getConnection())->beginTransaction();
+        Assert::isInstanceOf($doctrine->getConnection(), Connection::class)->beginTransaction();
 
         $fixtures = $this->getFixtures();
         if (count($fixtures) > 0) {
