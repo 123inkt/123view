@@ -40,7 +40,7 @@ class GitCherryPickService implements LoggerAwareInterface
     /**
      * @param Revision[] $revisions
      *
-     * @throws RepositoryException
+     * @throws RepositoryException|ProcessFailedException
      */
     public function cherryPickRevisions(array $revisions): void
     {
@@ -54,6 +54,21 @@ class GitCherryPickService implements LoggerAwareInterface
             ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
 
         // merge given hashes
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+        $this->logger?->info($output);
+    }
+
+    /**
+     * @throws RepositoryException|ProcessFailedException
+     */
+    public function cherryPickContinue(Repository $repository): void
+    {
+        $commandBuilder = $this->commandFactory
+            ->createCheryPick()
+            ->continue();
+
+        // continue cherry-pick
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         $this->logger?->info($output);

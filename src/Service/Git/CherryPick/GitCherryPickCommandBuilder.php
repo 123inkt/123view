@@ -50,6 +50,13 @@ class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function continue(): self
+    {
+        $this->arguments['abort'] = '--continue';
+
+        return $this;
+    }
+
     public function abort(): self
     {
         $this->arguments['abort'] = '--abort';
