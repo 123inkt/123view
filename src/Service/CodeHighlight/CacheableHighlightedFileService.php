@@ -13,6 +13,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CacheableHighlightedFileService implements LoggerAwareInterface
 {
@@ -22,11 +23,11 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
 
     public function __construct(CacheInterface $revisionCache, private readonly HighlightedFileService $fileService)
     {
-        $this->revisionCache = Assert::instanceOf(AdapterInterface::class, $revisionCache);
+        $this->revisionCache = Assert::isInstanceOf($revisionCache, AdapterInterface::class);
     }
 
     /**
-     * @throws Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException|TransportExceptionInterface
      */
     public function fromDiffFile(Repository $repository, DiffFile $diffFile): ?HighlightedFile
     {
