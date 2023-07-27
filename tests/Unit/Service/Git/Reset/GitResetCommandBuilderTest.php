@@ -20,6 +20,6 @@ class GitResetCommandBuilderTest extends AbstractTestCase
 
     public function testBuild(): void
     {
-        static::assertSame(['git', 'reset', '--hard', '--soft'], $this->builder->hard()->soft()->build());
+        static::assertSame(['git', 'reset', '--hard', '--soft', 'hash'], $this->builder->hard()->soft()->commitHash('hash')->build());
     }
 }
