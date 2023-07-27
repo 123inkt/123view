@@ -34,7 +34,7 @@ class GitRepositoryService implements LoggerAwareInterface
         string $cacheDirectory
     ) {
         $this->circuitBreaker = new CircuitBreaker(5, 5000);
-        $this->cacheDirectory = $cacheDirectory . '/git/';
+        $this->cacheDirectory = $cacheDirectory;
     }
 
     /**

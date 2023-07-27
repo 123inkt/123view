@@ -139,9 +139,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ParserHasFailedFormatter::class);
 
     // custom register cache dir
-    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
-    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
-    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
+    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)
