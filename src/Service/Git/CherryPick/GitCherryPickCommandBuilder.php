@@ -3,17 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\CherryPick;
 
-use DR\Review\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\AbstractGitCommandBuilder;
 
-class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
+class GitCherryPickCommandBuilder extends AbstractGitCommandBuilder
 {
-    /** @var array<string, string> */
-    private array $arguments = [];
-
-    public function __construct(private readonly string $git)
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'cherry-pick';
+        parent::__construct($git, 'cherry-pick');
     }
 
     public function strategy(string $strategy): self
@@ -52,7 +48,7 @@ class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
 
     public function continue(): self
     {
-        $this->arguments['abort'] = '--continue';
+        $this->arguments['continue'] = '--continue';
 
         return $this;
     }
@@ -62,23 +58,5 @@ class GitCherryPickCommandBuilder implements GitCommandBuilderInterface
         $this->arguments['abort'] = '--abort';
 
         return $this;
-    }
-
-    public function command(): string
-    {
-        return 'cherry-pick';
-    }
-
-    /**
-     * @return string[]
-     */
-    public function build(): array
-    {
-        return array_values($this->arguments);
-    }
-
-    public function __toString(): string
-    {
-        return implode(" ", $this->arguments);
     }
 }
