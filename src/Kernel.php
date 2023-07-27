@@ -26,7 +26,7 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerConfigurator $container): void
     {
-        $container->parameters()->set('container.dumper.inline_factories', true);
+        $container->parameters()->set('.container.dumper.inline_factories', true);
 
         $container->import('../config/{packages}/*.php');
         $container->import('../config/{packages}/*.yaml');

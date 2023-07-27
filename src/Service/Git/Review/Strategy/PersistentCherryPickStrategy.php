@@ -43,17 +43,17 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
         return $this->resetManager->start($repository, $branchName, function () use ($repository, $revisions, $options) {
             try {
                 $failure = false;
-                for ($i = 0; $i < 10; $i++) {
+                for ($i = 0; $i < 20; $i++) {
                     try {
                         if ($i === 0) {
-                            $this->cherryPickService->cherryPickRevisions($revisions);
+                            $this->cherryPickService->cherryPickRevisions($revisions, true);
                         } else {
                             $this->cherryPickService->cherryPickContinue($repository);
                         }
-                        if ($failure) {
-                            $this->resetService->resetSoft($repository, Arrays::first($revisions)->getCommitHash() . '~');
-                            $failure = false;
-                        }
+                        // finally successful, get all the changes from
+                        $this->resetService->resetSoft($repository, Arrays::first($revisions)->getCommitHash() . '~');
+                        $failure = false;
+                        break;
                     } catch (ProcessFailedException) {
                         // cherry pick conflict
                         // add conflicts to the repository
@@ -63,6 +63,10 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
                         $failure = true;
                         continue;
                     }
+                }
+
+                if ($failure) {
+                    throw new RepositoryException('Unable to cherry pick revisions');
                 }
 
                 // get the diff
