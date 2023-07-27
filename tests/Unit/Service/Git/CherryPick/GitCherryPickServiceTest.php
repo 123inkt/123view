@@ -13,12 +13,10 @@ use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\CherryPick\GitCherryPickService
- * @covers ::__construct
- */
+#[CoversClass(GitCherryPickService::class)]
 class GitCherryPickServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -33,10 +31,6 @@ class GitCherryPickServiceTest extends AbstractTestCase
         $this->service           = new GitCherryPickService($this->repositoryService, $this->builderFactory);
     }
 
-    /**
-     * @covers ::tryCherryPickRevisions
-     * @covers ::cherryPickRevisions
-     */
     public function testCherryPickRevisions(): void
     {
         $hash       = '123acbedf';
@@ -60,10 +54,6 @@ class GitCherryPickServiceTest extends AbstractTestCase
         static::assertTrue($this->service->tryCherryPickRevisions([$revision]));
     }
 
-    /**
-     * @covers ::tryCherryPickRevisions
-     * @covers ::cherryPickRevisions
-     */
     public function testCherryPickRevisionsShouldCaptureFailure(): void
     {
         $hash       = '123acbedf';
@@ -79,7 +69,6 @@ class GitCherryPickServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::cherryPickAbort
      * @throws RepositoryException
      */
     public function testCherryAbort(): void
@@ -96,5 +85,24 @@ class GitCherryPickServiceTest extends AbstractTestCase
         $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
 
         $this->service->cherryPickAbort($repository);
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function testCherryContinue(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl(Uri::createFromString('https://url/'));
+
+        $builder = $this->createMock(GitCherryPickCommandBuilder::class);
+        $builder->expects(self::once())->method('continue')->willReturnSelf();
+        $this->builderFactory->expects(self::once())->method('createCheryPick')->willReturn($builder);
+
+        $git = $this->createMock(GitRepository::class);
+        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+
+        $this->service->cherryPickContinue($repository);
     }
 }
