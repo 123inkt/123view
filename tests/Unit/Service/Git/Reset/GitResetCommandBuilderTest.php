@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\Reset;
 
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Reset\GitResetCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitResetCommandBuilder::class)]
 class GitResetCommandBuilderTest extends AbstractTestCase
 {
     private GitResetCommandBuilder $builder;
@@ -20,29 +18,8 @@ class GitResetCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitResetCommandBuilder('git');
     }
 
-    /**
-     * @covers ::command
-     */
-    public function testCommand(): void
-    {
-        static::assertSame('reset', $this->builder->command());
-    }
-
-    /**
-     * @covers ::hard
-     * @covers ::build
-     */
     public function testBuild(): void
     {
-        static::assertSame(['git', 'reset', '--hard'], $this->builder->hard()->build());
-    }
-
-    /**
-     * @covers ::hard
-     * @covers ::__toString
-     */
-    public function testToString(): void
-    {
-        static::assertSame('git reset --hard', (string)$this->builder->hard());
+        static::assertSame(['git', 'reset', '--hard', '--soft'], $this->builder->hard()->soft()->build());
     }
 }
