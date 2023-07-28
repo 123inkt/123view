@@ -31,7 +31,7 @@ return static function (MonologConfig $monolog) {
             ->type('symfony_mailer')
             ->fromEmail('%env(MAILER_SENDER)%')
             ->toEmail(['%env(ERROR_MAIL)%'])
-            ->subject('[Git commit notification] %%message%%')
+            ->subject('[123view] %%message%%')
             ->level('error')
             ->formatter('monolog.formatter.html')
             ->contentType('text/html');

@@ -18,13 +18,14 @@ use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Utils\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Throwable;
 
 /**
  * Strategy tries to cherry-pick all revision hashes in a single pick, and keeps continuing on conflicts.
  */
 class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
 {
-    private const MAX_DURATION_IN_SECONDS = 10;
+    private const MAX_DURATION_IN_SECONDS = 150;
 
     public function __construct(
         private readonly GitAddService $addService,
@@ -69,25 +70,31 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
     private function getDiff(Repository $repository, array $revisions, ?FileDiffOptions $options): array
     {
         $timeStart = microtime(true);
-        for ($attempt = 0; microtime(true) - $timeStart < self::MAX_DURATION_IN_SECONDS; $attempt++) {
-            try {
-                if ($attempt === 0) {
-                    $this->cherryPickService->cherryPickRevisions($revisions, true);
-                } else {
-                    $this->cherryPickService->cherryPickContinue($repository);
-                }
-                // successful, uncommit all changes
-                $this->resetService->resetSoft($repository, Arrays::first($revisions)->getCommitHash() . '~');
+        try {
+            for ($i = 0; $i < 50; $i++) {
+                try {
+                    if ($i === 0) {
+                        $this->cherryPickService->cherryPickRevisions($revisions, true);
+                    } else {
+                        $this->cherryPickService->cherryPickContinue($repository);
+                    }
+                    // successful, uncommit all changes
+                    $this->resetService->resetSoft($repository, Arrays::first($revisions)->getCommitHash() . '~');
 
-                // get all diff files
-                return $this->diffService->getBundledDiffFromRevisions($repository, $options);
-            } catch (ProcessFailedException) {
-                // add conflicts to the repository
-                $this->addService->add($repository, '.');
-                // commit changes
-                $this->commitService->commit($repository);
-                continue;
+                    // get all diff files
+                    return $this->diffService->getBundledDiffFromRevisions($repository, $options);
+                } catch (ProcessFailedException $e) {
+                    $error = $e->getProcess()->getErrorOutput();
+
+                    // add conflicts to the repository
+                    $this->addService->add($repository, '.');
+                    // commit changes
+                    $this->commitService->commit($repository);
+                    continue;
+                }
             }
+        } catch (Throwable $e) {
+            $test = true;
         }
 
         throw new RepositoryException('Unable to cherry pick revisions');

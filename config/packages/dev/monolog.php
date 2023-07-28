@@ -18,15 +18,24 @@ return static function (MonologConfig $monolog) {
         ->channels()->elements(["!event"]);
 
     $monolog->handler('doctrine')
-        ->type('stream')
+        ->type('rotating_file')
         ->path('%kernel.logs_dir%/doctrine.%kernel.environment%.log')
         ->level('debug')
+        ->maxFiles(1)
         ->channels()->elements(["doctrine"]);
 
+    $monolog->handler('git')
+        ->type('rotating_file')
+        ->path('%kernel.logs_dir%/git.%kernel.environment%.log')
+        ->level('debug')
+        ->maxFiles(1)
+        ->channels()->elements(["git"]);
+
     $monolog->handler('app')
-        ->type('stream')
+        ->type('rotating_file')
         ->path('%kernel.logs_dir%/app.%kernel.environment%.log')
         ->level('debug')
+        ->maxFiles(1)
         ->channels()->elements(["app"]);
 
     $monolog->handler('console')
