@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Filter\FilterType
@@ -26,12 +27,8 @@ class FilterTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
-                    ['type', ChoiceType::class],
-                    ['pattern', TextType::class],
-                )
-            )->willReturnSelf();
+            ->with(...consecutive(['type', ChoiceType::class], ['pattern', TextType::class]))
+            ->willReturnSelf();
 
         $type = new FilterType();
         $type->buildForm($builder, []);

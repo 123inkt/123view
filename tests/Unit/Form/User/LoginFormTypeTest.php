@@ -44,7 +44,7 @@ class LoginFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(4))
             ->method('add')
-            ->will(
+            ->with(
                 static::onConsecutiveCalls(
                     ['_username', EmailType::class],
                     ['_password', PasswordType::class],

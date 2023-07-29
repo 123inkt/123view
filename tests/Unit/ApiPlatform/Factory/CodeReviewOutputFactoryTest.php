@@ -15,6 +15,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory
@@ -58,7 +59,7 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
 
         $this->userOutputFactory->expects(self::exactly(2))
             ->method('create')
-            ->will(static::onConsecutiveCalls([$userA, $userB]))
+            ->with(...consecutive([$userA], [$userB]))
             ->willReturn($this->createMock(UserOutput::class));
         $this->urlGenerator->expects(self::once())
             ->method('generate')

@@ -8,6 +8,7 @@ use DR\Review\Form\Filter\InExclusionFilterType;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Transformer\FilterCollectionTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Filter\InExclusionFilterType
@@ -23,8 +24,8 @@ class InExclusionFilterTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['inclusions', FilterCollectionType::class],
                     ['exclusions', FilterCollectionType::class],
                 )

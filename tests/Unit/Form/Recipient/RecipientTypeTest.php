@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Recipient\RecipientType
@@ -26,8 +27,8 @@ class RecipientTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['email', EmailType::class],
                     ['name', TextType::class],
                 )
