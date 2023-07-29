@@ -8,6 +8,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -44,11 +45,10 @@ class GitCherryPickService implements LoggerAwareInterface
      */
     public function cherryPickRevisions(array $revisions, bool $commit = false): void
     {
-        /** @var Repository $repository */
-        $repository     = Assert::notFalse(reset($revisions))->getRepository();
+        $repository     = Assert::notNull(Arrays::first($revisions)->getRepository());
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
-            ->strategy('recursive')
+            ->strategy('ort')
             ->conflictResolution('theirs')
             ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
 
