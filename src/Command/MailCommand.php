@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use DR\Review\Entity\Notification\Frequency;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Mail\CommitMailService;
 use DR\Review\Service\RuleProcessor;
 use DR\Utils\Assert;
@@ -58,6 +59,10 @@ class MailCommand extends Command implements LoggerAwareInterface
 
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
+            if (Assert::notNull($rule->getUser())->hasRole(Roles::ROLE_USER) === false) {
+                continue;
+            }
+
             try {
                 $ruleConfig = new RuleConfiguration($period, $rule);
                 $commits    = $this->ruleProcessor->processRule($ruleConfig);
