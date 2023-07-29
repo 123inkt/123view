@@ -7,12 +7,14 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Clean\GitCleanService;
 use DR\Review\Service\Git\Reset\GitResetService;
 
 class GitRepositoryResetManager
 {
     public function __construct(
+        private readonly GitCherryPickService $cherryPickService,
         private readonly GitCheckoutService $checkoutService,
         private readonly GitResetService $resetService,
         private readonly GitBranchService $branchService,
@@ -33,6 +35,8 @@ class GitRepositoryResetManager
         try {
             return $callback();
         } finally {
+            $this->cherryPickService->tryCherryPickAbort($repository);
+
             // reset the repository again
             $this->resetService->resetHard($repository);
 

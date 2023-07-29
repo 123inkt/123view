@@ -47,7 +47,7 @@ class GitCherryPickService implements LoggerAwareInterface
     {
         $repository     = Assert::notNull(Arrays::first($revisions)->getRepository());
         $commandBuilder = $this->commandFactory
-            ->createCheryPick()
+            ->createCherryPick()
             ->strategy('ort')
             ->conflictResolution('theirs')
             ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
@@ -74,7 +74,7 @@ class GitCherryPickService implements LoggerAwareInterface
     public function cherryPickContinue(Repository $repository): CherryPickResult
     {
         $commandBuilder = $this->commandFactory
-            ->createCheryPick()
+            ->createCherryPick()
             ->continue();
 
         // continue cherry-pick
@@ -92,10 +92,29 @@ class GitCherryPickService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
+    public function tryCherryPickAbort(Repository $repository): bool
+    {
+        $commandBuilder = $this->commandFactory
+            ->createCherryPick()
+            ->abort();
+
+        // abort cherry-pick
+        try {
+            $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+            return true;
+        } catch (ProcessFailedException) {
+            return false;
+        }
+    }
+
+    /**
+     * @throws RepositoryException
+     */
     public function cherryPickAbort(Repository $repository): void
     {
         $commandBuilder = $this->commandFactory
-            ->createCheryPick()
+            ->createCherryPick()
             ->abort();
 
         // abort cherry-pick

@@ -57,7 +57,7 @@ class GitCommandBuilderFactory
         return new GitFetchCommandBuilder($this->git);
     }
 
-    public function createCheryPick(): GitCherryPickCommandBuilder
+    public function createCherryPick(): GitCherryPickCommandBuilder
     {
         return new GitCherryPickCommandBuilder($this->git);
     }

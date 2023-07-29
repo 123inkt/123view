@@ -20,7 +20,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
 
     public function testCreate(): void
     {
-        $this->factory->createCheryPick();
+        $this->factory->createCherryPick();
         $this->factory->createCheckout();
         $this->factory->createLog();
         $this->factory->createFetch();
