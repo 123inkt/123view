@@ -158,7 +158,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->willReturn([$activityA, $activityB, $activityC]);
         $this->activityFormatter->expects(self::exactly(3))
             ->method('format')
-            ->with(...consecutive([$activityA, $user], [$activityB, $user]))
+            ->with(...consecutive([$activityA, $user], [$activityB, $user], [$activityC, $user]))
             ->willReturn('activityA', null, 'activityC');
         $this->commentRepository->expects(self::once())->method('find')->with(456)->willReturn(null);
         $this->urlGenerator->expects(self::once())->method('generate')->with($activityC)->willReturn('url');
