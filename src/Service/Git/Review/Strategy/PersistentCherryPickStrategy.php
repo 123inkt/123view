@@ -96,7 +96,9 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
             $this->commitService->commit($repository);
         }
 
+        // @codeCoverageIgnoreStart
         throw new RepositoryException('Unable to cherry pick revisions');
+        // @codeCoverageIgnoreEnd
     }
 
     /**
