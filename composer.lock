@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "073f13c7757393c985aefe388abe0e3d",
+    "content-hash": "a65a6ffe455179f67b9e3757c7d1d23e",
     "packages": [
         {
             "name": "api-platform/core",
@@ -10238,6 +10238,72 @@
                 "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.14"
             },
             "time": "2023-03-21T15:06:00+00:00"
+        },
+        {
+            "name": "digitalrevolution/phpunit-extensions",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/123inkt/phpunit-extensions.git",
+                "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
+                "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "phpunit/phpunit": "^9.5.24 || ^10.0"
+            },
+            "conflict": {
+                "symfony/form": "<6.0",
+                "symfony/framework-bundle": "<6.0",
+                "symfony/security-core": "<6.0",
+                "symfony/twig-bundle": "<6.0"
+            },
+            "require-dev": {
+                "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
+                "phpmd/phpmd": "^2.12",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.9.1",
+                "phpstan/phpstan-phpunit": "^1.2.2",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpstan/phpstan-symfony": "^1.2.16",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.7",
+                "symfony/form": "^6.0",
+                "symfony/framework-bundle": "^6.0",
+                "symfony/security-core": "^6.0",
+                "symfony/twig-bundle": "^6.0",
+                "symfony/validator": "^6.0"
+            },
+            "suggest": {
+                "symfony/form": "Symfony form component is required for testing the controller createForm methods",
+                "symfony/framework-bundle": "Symfony framework bundle is required for the AbstractControllerTestCase",
+                "symfony/security-core": "Symfony security component is required for testing authentication/authorization related methods",
+                "symfony/twig-bundle": "Symfony twig bundle is required to test rendering templates/forms"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Mock/consecutive.php"
+                ],
+                "psr-4": {
+                    "DR\\PHPUnitExtensions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library for phpunit utility and support classes",
+            "support": {
+                "issues": "https://github.com/123inkt/phpunit-extensions/issues",
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.0.1"
+            },
+            "time": "2023-07-11T10:33:26+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
