@@ -6,39 +6,40 @@ namespace DR\Review\Tests\Unit\Command;
 use DR\Review\Command\MailCommand;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Mail\CommitMailService;
 use DR\Review\Service\RuleProcessor;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @coversDefaultClass \DR\Review\Command\MailCommand
- * @covers ::__construct
- */
+#[CoversClass(MailCommand::class)]
 class MailCommandTest extends AbstractTestCase
 {
     private RuleProcessor&MockObject     $ruleProcessor;
     private RuleRepository&MockObject    $ruleRepository;
     private CommitMailService&MockObject $mailService;
     private MailCommand                  $command;
+    private User                         $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->user = new User();
+        $this->user->setRoles([Roles::ROLE_USER]);
+
         $this->ruleProcessor  = $this->createMock(RuleProcessor::class);
         $this->ruleRepository = $this->createMock(RuleRepository::class);
         $this->mailService    = $this->createMock(CommitMailService::class);
         $this->command        = new MailCommand($this->ruleRepository, $this->ruleProcessor, $this->mailService);
     }
 
-    /**
-     * @covers ::configure
-     */
     public function testConfigure(): void
     {
         static::assertSame('mail', $this->command->getName());
@@ -50,9 +51,6 @@ class MailCommandTest extends AbstractTestCase
         static::assertSame('frequency', $options['frequency']->getName());
     }
 
-    /**
-     * @covers ::execute
-     */
     public function testCommandInvalidFrequency(): void
     {
         $commandTester = new CommandTester($this->command);
@@ -62,13 +60,11 @@ class MailCommandTest extends AbstractTestCase
         $commandTester->execute(['--frequency' => 'foobar']);
     }
 
-    /**
-     * @covers ::execute
-     */
     public function testCommandSuccessfulWithoutCommitsShouldNotMail(): void
     {
         $rule = new Rule();
         $rule->setName('foobar');
+        $rule->setUser($this->user);
 
         // setup mocks
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
@@ -86,13 +82,11 @@ class MailCommandTest extends AbstractTestCase
         static::assertSame(Command::SUCCESS, $exitCode);
     }
 
-    /**
-     * @covers ::execute
-     */
     public function testCommandSuccessfulWithCommits(): void
     {
         $rule = new Rule();
         $rule->setName('foobar');
+        $rule->setUser($this->user);
         $commits = [$this->createCommit()];
 
         // setup mocks
@@ -114,13 +108,28 @@ class MailCommandTest extends AbstractTestCase
         static::assertSame(Command::SUCCESS, $exitCode);
     }
 
-    /**
-     * @covers ::execute
-     */
+    public function testCommandShouldSkipUserWithoutUserRole(): void
+    {
+        $this->user->setRoles([]);
+        $rule = new Rule();
+        $rule->setName('foobar');
+        $rule->setUser($this->user);
+
+        // setup mocks
+        $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
+        $this->ruleProcessor->expects(static::never())->method('processRule');
+        $this->mailService->expects(self::never())->method('sendCommitsMail');
+
+        $commandTester = new CommandTester($this->command);
+        $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);
+        static::assertSame(Command::SUCCESS, $exitCode);
+    }
+
     public function testCommandShouldExitWithFailureOnException(): void
     {
         $rule = new Rule();
         $rule->setName('foobar');
+        $rule->setUser($this->user);
 
         // setup mocks
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
