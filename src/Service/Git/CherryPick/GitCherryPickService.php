@@ -48,7 +48,7 @@ class GitCherryPickService implements LoggerAwareInterface
         $repository     = Assert::notNull(Arrays::first($revisions)->getRepository());
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
-            ->strategy('ort')
+            ->strategy('recursive')
             ->conflictResolution('theirs')
             ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
 
