@@ -5,15 +5,18 @@ use Symfony\Config\MonologConfig;
 
 return static function (MonologConfig $monolog) {
     $monolog->handler('main')
-        ->type('stream')
+        ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
         ->level('info')
+        ->maxFiles(1)
+        ->formatter('monolog.formatter.line')
         ->channels()->elements(["!event"]);
 
     $monolog->handler('error')
         ->type('stream')
         ->path('%kernel.logs_dir%/error.%kernel.environment%.log')
         ->level('error')
+        ->formatter('monolog.formatter.line')
         ->includeStacktraces(true)
         ->channels()->elements(["!event"]);
 
@@ -21,6 +24,7 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/doctrine.%kernel.environment%.log')
         ->level('debug')
+        ->formatter('monolog.formatter.line')
         ->maxFiles(1)
         ->channels()->elements(["doctrine"]);
 
@@ -28,6 +32,7 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/git.%kernel.environment%.log')
         ->level('debug')
+        ->formatter('monolog.formatter.line')
         ->maxFiles(1)
         ->channels()->elements(["git"]);
 
@@ -35,10 +40,12 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/app.%kernel.environment%.log')
         ->level('debug')
+        ->formatter('monolog.formatter.line')
         ->maxFiles(1)
         ->channels()->elements(["app"]);
 
     $monolog->handler('console')
         ->type('console')
-        ->level('debug');
+        ->level('debug')
+        ->formatter('monolog.formatter.line');
 };

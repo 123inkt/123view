@@ -37,7 +37,6 @@ use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
@@ -52,6 +51,7 @@ use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
+use Monolog\Formatter\LineFormatter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
@@ -104,6 +104,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
+    $services->set('monolog.formatter.line', LineFormatter::class)
+        ->arg('$format', "[%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%extra%%\n")
+        ->arg('$dateFormat', "Y-m-d\TH:i:s");
 
     // Configure Api
     $services->set(OperationParameterDocumentor::class);
