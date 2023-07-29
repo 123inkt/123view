@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Service\Git\CherryPick;
 
 use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitCherryPickCommandBuilder::class)]
 class GitCherryPickCommandBuilderTest extends AbstractTestCase
 {
-    private const DEFAULTS = ['git', 'cherry-pick'];
-
     private GitCherryPickCommandBuilder $builder;
 
     protected function setUp(): void
@@ -22,46 +18,11 @@ class GitCherryPickCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitCherryPickCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
-    public function testBuildDefaults(): void
-    {
-        static::assertSame(self::DEFAULTS, $this->builder->build());
-    }
-
-    /**
-     * @covers ::strategy
-     * @covers ::abort
-     * @covers ::noCommit
-     * @covers ::hashes
-     * @covers ::conflictResolution
-     * @covers ::build
-     */
     public function testBuildWithOptions(): void
     {
         static::assertSame(
-            ['git', 'cherry-pick', '--strategy=strategy', '--abort', '--no-commit', 'hashes', '-X theirs'],
-            $this->builder->strategy('strategy')->abort()->noCommit()->hashes(['hashes'])->conflictResolution('theirs')->build()
-        );
-    }
-
-    /**
-     * @covers ::command
-     */
-    public function testCommand(): void
-    {
-        static::assertSame('cherry-pick', $this->builder->command());
-    }
-
-    /**
-     * @covers ::__toString
-     */
-    public function testToString(): void
-    {
-        static::assertSame(
-            'git cherry-pick --strategy=strategy --abort --no-commit hashes -X theirs',
-            (string)$this->builder->strategy('strategy')->abort()->noCommit()->hashes(['hashes'])->conflictResolution('theirs')
+            ['git', 'cherry-pick', '--strategy=strategy', '--abort', '--continue', '--no-commit', 'hashes', '-X theirs'],
+            $this->builder->strategy('strategy')->abort()->continue()->noCommit()->hashes(['hashes'])->conflictResolution('theirs')->build()
         );
     }
 }

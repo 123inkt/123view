@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Rule\RuleOptionsType
@@ -27,8 +28,8 @@ class RuleOptionsTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(9))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['frequency', ChoiceType::class,],
                     ['theme', ChoiceType::class],
                     ['subject', TextType::class],

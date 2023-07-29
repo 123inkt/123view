@@ -11,6 +11,7 @@ use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Page\BreadcrumbFactory
@@ -44,8 +45,8 @@ class BreadcrumbFactoryTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $this->urlGenerator->expects(self::exactly(2))->method('generate')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [ReviewsController::class, ['id' => 123]],
                     [ReviewController::class, ['review' => $review]]
                 )

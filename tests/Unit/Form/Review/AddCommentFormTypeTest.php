@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Review\AddCommentFormType
@@ -69,10 +70,10 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(3))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
-                    ['lineReference', HiddenType::class],
-                    ['message', CommentType::class],
+            ->with(
+                ...consecutive(
+                    ['lineReference', HiddenType::class, static::isType('array')],
+                    ['message', CommentType::class, static::isType('array')],
                     ['save', SubmitType::class, ['label' => 'add.comment']],
                 )
             )->willReturnSelf();

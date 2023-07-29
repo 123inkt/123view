@@ -1,158 +1,172 @@
 {#- fileDiffViewModel: FileDiffViewModel -#}
-<div class="diff-file__file-revision-info clearfix pb-2">
-    <div class="float-start">
-        <div>
+<div class="diff-file__file-revision-info pb-2">
+    <div class="clearfix">
+        <div class="float-start">
+            <div>
+                {%- if file.rename -%}
+                    <span class="diff-file__file-change-state text-primary">↗</span>
+                {%- elseif file.added -%}
+                    <span class="diff-file__file-change-state text-success">+</span>
+                {%- elseif file.deleted -%}
+                    <span class="diff-file__file-change-state text-danger">-</span>
+                {%- elseif file.modified -%}
+                    <span class="diff-file__file-change-state text-primary">*</span>
+                {%- endif -%}
+                <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
+                <span class="diff-file__directory-name">{{ file.dirname }}</span>
+            </div>
+
             {%- if file.rename -%}
-                <span class="diff-file__file-change-state text-primary">↗</span>
-            {%- elseif file.added -%}
-                <span class="diff-file__file-change-state text-success">+</span>
-            {%- elseif file.deleted -%}
-                <span class="diff-file__file-change-state text-danger">-</span>
-            {%- elseif file.modified -%}
-                <span class="diff-file__file-change-state text-primary">*</span>
+                <div class="diff-file__file-mode-change">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
             {%- endif -%}
-            <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
-            <span class="diff-file__directory-name">{{ file.dirname }}</span>
+
+            {%- if file.fileModeBefore is not same as (null) and file.fileModeBefore != file.fileModeAfter -%}
+                <div class="diff-file__file-mode-change">{{ 'file.mode.changed'|trans }} {{ file.fileModeBefore }} &gt; {{ file.fileModeAfter }}</div>
+            {%- endif -%}
         </div>
 
-        {%- if file.rename -%}
-            <div class="diff-file__file-mode-change">{{ 'renamed.from'|trans }} {{ file.filePathBefore }}</div>
+        {# file code coverage #}
+        {% if fileDiffViewModel.codeQualityViewModel %}
+            {%- set coveragePercentage = fileDiffViewModel.codeQualityViewModel.coveragePercentage -%}
+            {%- if coveragePercentage is not same as (null) -%}
+                <div class="float-start ps-2">
+                    {% if coveragePercentage < 60 %}
+                        {% set coverageColor = 'danger' %}
+                    {% elseif coveragePercentage < 80 %}
+                        {% set coverageColor = 'warning' %}
+                    {% else %}
+                        {% set coverageColor = 'success' %}
+                    {% endif %}
+
+                    <span class="d-inline-flex px-1 text-{{ coverageColor }} bg-d bg-opacity-10 border border-{{ coverageColor }} border-opacity-100 rounded-2 float-end">
+                        Coverage: {{ coveragePercentage|format_number({fraction_digit: 2}) }}%
+                    </span>
+                </div>
+            {%- endif -%}
         {%- endif -%}
 
-        {%- if file.fileModeBefore is not same as (null) and file.fileModeBefore != file.fileModeAfter -%}
-            <div class="diff-file__file-mode-change">{{ 'file.mode.changed'|trans }} {{ file.fileModeBefore }} &gt; {{ file.fileModeAfter }}</div>
-        {%- endif -%}
-    </div>
+        <div class="float-end pe-2">
+            {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+            {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
+            {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
 
-    {# file code coverage #}
-    {% if fileDiffViewModel.codeQualityViewModel %}
-        {%- set coveragePercentage = fileDiffViewModel.codeQualityViewModel.coveragePercentage -%}
-        {%- if coveragePercentage is not same as (null) -%}
-            <div class="float-start ps-2">
-                {% if coveragePercentage < 60 %}
-                    {% set coverageColor = 'danger' %}
-                {% elseif coveragePercentage < 80 %}
-                    {% set coverageColor = 'warning' %}
-                {% else %}
-                    {% set coverageColor = 'success' %}
-                {% endif %}
+            {# whitespace management #}
+            {% if file.modified %}
+                <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
+                    <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
+                            {{ stimulus_target('component--dropdown-menu', 'button') }}
+                            {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
+                        {% if comparisonPolicy == 'ignore' %}
+                            {{ 'ignore.whitespaces'|trans }}
+                        {% elseif comparisonPolicy == 'trim' %}
+                            {{ 'trim.whitespaces'|trans }}
+                        {% else %}
+                            {{ 'do.not.ignore.whitespaces'|trans }}
+                        {% endif %}
+                    </a>
 
-                <span class="d-inline-flex px-1 text-{{ coverageColor }} bg-d bg-opacity-10 border border-{{ coverageColor }} border-opacity-100 rounded-2 float-end">
-                    Coverage: {{ coveragePercentage|format_number({fraction_digit: 2}) }}%
-                </span>
-            </div>
-        {%- endif -%}
-    {%- endif -%}
+                    <ul class="dropdown-menu"
+                            {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
+                            {{ stimulus_controller('review-comparison-policy') }}
+                    >
+                        <li>
+                            <label class="dropdown-item">
+                                <input type="radio"
+                                       name="whitespace"
+                                       data-url="{{ url_query_params({comparisonPolicy: 'all'}) }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
+                                {{ 'do.not.ignore.whitespaces'|trans }}
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item">
+                                <input type="radio"
+                                       name="whitespace"
+                                       data-url="{{ url_query_params({comparisonPolicy: 'trim'}) }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
+                                {{ 'trim.whitespaces'|trans }}
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item">
+                                <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
+                                        {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
+                                {{ 'ignore.whitespaces'|trans }}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
 
-    <div class="float-end pe-2">
-        {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
-        {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
-        {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
-
-        {# whitespace management #}
-        {% if file.modified %}
+            {# comment visibility #}
             <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
                 <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                         {{ stimulus_target('component--dropdown-menu', 'button') }}
                         {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
-                    {% if comparisonPolicy == 'ignore' %}
-                        {{ 'ignore.whitespaces'|trans }}
-                    {% elseif comparisonPolicy == 'trim' %}
-                        {{ 'trim.whitespaces'|trans }}
-                    {% else %}
-                        {{ 'do.not.ignore.whitespaces'|trans }}
+
+                    {% set iconClassName = 'bi bi-chat-fill' %}
+                    {% if commentVisibility == 'none' %}
+                        {% set iconClassName = 'bi bi-chat' %}
+                    {% elseif commentVisibility == 'unresolved' %}
+                        {% set iconClassName = 'bi bi-chat-dots' %}
                     {% endif %}
+
+                    <i class="{{ iconClassName }}"
+                       data-icon-class-all="bi bi-chat-fill"
+                       data-icon-class-unresolved="bi bi-chat-dots"
+                       data-icon-class-none="bi bi-chat"
+                            {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
                 </a>
 
                 <ul class="dropdown-menu"
                         {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
-                        {{ stimulus_controller('review-comparison-policy') }}
-                >
+                        {{ stimulus_target('review-comment-visibility', 'dropdown') }}>
                     <li>
                         <label class="dropdown-item">
                             <input type="radio"
-                                   name="whitespace"
-                                   data-url="{{ url_query_params({comparisonPolicy: 'all'}) }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
-                            {{ 'do.not.ignore.whitespaces'|trans }}
+                                   value="all"
+                                   name="visibility"
+                                   data-role="visibility" {{ commentVisibility == 'all' ? 'checked' : '' }}>
+                            {{ 'all.discussions'|trans }}
                         </label>
                     </li>
                     <li>
                         <label class="dropdown-item">
                             <input type="radio"
-                                   name="whitespace"
-                                   data-url="{{ url_query_params({comparisonPolicy: 'trim'}) }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
-                            {{ 'trim.whitespaces'|trans }}
+                                   value="unresolved"
+                                   name="visibility"
+                                   data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
+                            {{ 'only.unresolved'|trans }}
                         </label>
                     </li>
                     <li>
                         <label class="dropdown-item">
-                            <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
-                                    {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
-                            {{ 'ignore.whitespaces'|trans }}
+                            <input type="radio"
+                                   value="none"
+                                   name="visibility"
+                                   data-role="visibility" {{ commentVisibility == 'none' ? 'checked' : '' }}>
+                            {{ 'none'|trans }}
                         </label>
                     </li>
                 </ul>
             </div>
-        {% endif %}
 
-        {# comment visibility #}
-        <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
-            <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
-                    {{ stimulus_target('component--dropdown-menu', 'button') }}
-                    {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
-
-                {% set iconClassName = 'bi bi-chat-fill' %}
-                {% if commentVisibility == 'none' %}
-                    {% set iconClassName = 'bi bi-chat' %}
-                {% elseif commentVisibility == 'unresolved' %}
-                    {% set iconClassName = 'bi bi-chat-dots' %}
-                {% endif %}
-
-                <i class="{{ iconClassName }}"
-                   data-icon-class-all="bi bi-chat-fill"
-                   data-icon-class-unresolved="bi bi-chat-dots"
-                   data-icon-class-none="bi bi-chat"
-                        {{ stimulus_target('review-comment-visibility', 'icon') }}></i>
-            </a>
-
-            <ul class="dropdown-menu"
-                    {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
-                    {{ stimulus_target('review-comment-visibility', 'dropdown') }}>
-                <li>
-                    <label class="dropdown-item">
-                        <input type="radio" value="all" name="visibility" data-role="visibility" {{ commentVisibility == 'all' ? 'checked' : '' }}>
-                        {{ 'all.discussions'|trans }}
-                    </label>
-                </li>
-                <li>
-                    <label class="dropdown-item">
-                        <input type="radio"
-                               value="unresolved"
-                               name="visibility"
-                               data-role="visibility" {{ commentVisibility == 'unresolved' ? 'checked' : '' }}>
-                        {{ 'only.unresolved'|trans }}
-                    </label>
-                </li>
-                <li>
-                    <label class="dropdown-item">
-                        <input type="radio" value="none" name="visibility" data-role="visibility" {{ commentVisibility == 'none' ? 'checked' : '' }}>
-                        {{ 'none'|trans }}
-                    </label>
-                </li>
-            </ul>
+            {% if file.modified %}
+                <div class="btn-group btn-group-sm">
+                    {% for diffMode in fileDiffViewModel.diffModes %}
+                        <a href="{{ url_query_params({diff: diffMode}) }}"
+                           class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
+                                {{ stimulus_controller('button') }}
+                        >
+                            {{ ('diff.' ~ diffMode)|trans }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-
-        {% if file.modified %}
-            <div class="btn-group btn-group-sm">
-                {% for diffMode in fileDiffViewModel.diffModes %}
-                    <a href="{{ url_query_params({diff: diffMode}) }}"
-                       class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
-                            {{ stimulus_controller('button') }}
-                    >
-                        {{ ('diff.' ~ diffMode)|trans }}
-                    </a>
-                {% endfor %}
-            </div>
-        {% endif %}
     </div>
+
+    {% if file.hasMergeConflict and file.modified %}
+        <div class="clearfix alert alert-warning mb-0">
+            There were <b>conflicting</b> changes in this review and another. This file <em>may</em> contain changes that are not part of this review.
+        </div>
+    {% endif %}
 </div>

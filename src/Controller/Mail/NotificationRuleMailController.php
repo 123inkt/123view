@@ -35,11 +35,12 @@ class NotificationRuleMailController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] Rule $rule): Response
     {
-        $frequency = Assert::notNull($rule->getRuleOptions()?->getFrequency());
+        $options   = Assert::notNull($rule->getRuleOptions());
+        $frequency = Assert::notNull($options->getFrequency());
         $startDate = new DateTimeImmutable(date('Y-m-d H:i:00', $request->query->getInt('timestamp', time())));
 
         $commits   = $this->ruleProcessor->processRule(new RuleConfiguration(Frequency::getPeriod($startDate, $frequency), $rule));
-        $viewModel = new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource');
+        $viewModel = new CommitsViewModel($commits, $options->getTheme() ?? 'upsource');
 
         $response = $this->render('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
         $response->headers->set('Content-Security-Policy', "");

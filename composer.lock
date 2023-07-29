@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "073f13c7757393c985aefe388abe0e3d",
+    "content-hash": "a65a6ffe455179f67b9e3757c7d1d23e",
     "packages": [
         {
             "name": "api-platform/core",
@@ -547,16 +547,16 @@
         },
         {
             "name": "digitalrevolution/utils",
-            "version": "v1.0.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/utils.git",
-                "reference": "028a24c5819b0e6a53d1dfa4b8598d2e092b9a97"
+                "reference": "79fb0cdf91b9bff56801fa4614aee6f69deb5157"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/utils/zipball/028a24c5819b0e6a53d1dfa4b8598d2e092b9a97",
-                "reference": "028a24c5819b0e6a53d1dfa4b8598d2e092b9a97",
+                "url": "https://api.github.com/repos/123inkt/utils/zipball/79fb0cdf91b9bff56801fa4614aee6f69deb5157",
+                "reference": "79fb0cdf91b9bff56801fa4614aee6f69deb5157",
                 "shasum": ""
             },
             "require": {
@@ -586,9 +586,9 @@
             "description": "A library for everyday use utility classes",
             "support": {
                 "issues": "https://github.com/123inkt/utils/issues",
-                "source": "https://github.com/123inkt/utils/tree/v1.0.0"
+                "source": "https://github.com/123inkt/utils/tree/v1.4.0"
             },
-            "time": "2023-07-20T19:42:53+00:00"
+            "time": "2023-07-26T19:08:07+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -10240,6 +10240,72 @@
             "time": "2023-03-21T15:06:00+00:00"
         },
         {
+            "name": "digitalrevolution/phpunit-extensions",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/123inkt/phpunit-extensions.git",
+                "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
+                "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "phpunit/phpunit": "^9.5.24 || ^10.0"
+            },
+            "conflict": {
+                "symfony/form": "<6.0",
+                "symfony/framework-bundle": "<6.0",
+                "symfony/security-core": "<6.0",
+                "symfony/twig-bundle": "<6.0"
+            },
+            "require-dev": {
+                "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
+                "phpmd/phpmd": "^2.12",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.9.1",
+                "phpstan/phpstan-phpunit": "^1.2.2",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpstan/phpstan-symfony": "^1.2.16",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.7",
+                "symfony/form": "^6.0",
+                "symfony/framework-bundle": "^6.0",
+                "symfony/security-core": "^6.0",
+                "symfony/twig-bundle": "^6.0",
+                "symfony/validator": "^6.0"
+            },
+            "suggest": {
+                "symfony/form": "Symfony form component is required for testing the controller createForm methods",
+                "symfony/framework-bundle": "Symfony framework bundle is required for the AbstractControllerTestCase",
+                "symfony/security-core": "Symfony security component is required for testing authentication/authorization related methods",
+                "symfony/twig-bundle": "Symfony twig bundle is required to test rendering templates/forms"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Mock/consecutive.php"
+                ],
+                "psr-4": {
+                    "DR\\PHPUnitExtensions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library for phpunit utility and support classes",
+            "support": {
+                "issues": "https://github.com/123inkt/phpunit-extensions/issues",
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.0.1"
+            },
+            "time": "2023-07-11T10:33:26+00:00"
+        },
+        {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
             "version": "v2.0.0",
             "source": {
@@ -11825,7 +11891,7 @@
                 "3f/pygmentize": "<1.2",
                 "admidio/admidio": "<4.2.10",
                 "adodb/adodb-php": "<=5.20.20|>=5.21,<=5.21.3",
-                "aheinze/cockpit": "<=2.2.1",
+                "aheinze/cockpit": "<2.2",
                 "aimeos/aimeos-typo3": "<19.10.12|>=20,<20.10.5",
                 "akaunting/akaunting": "<2.1.13",
                 "akeneo/pim-community-dev": "<5.0.119|>=6,<6.0.53",
@@ -11885,7 +11951,7 @@
                 "catfan/medoo": "<1.7.5",
                 "centreon/centreon": "<22.10-beta.1",
                 "cesnet/simplesamlphp-module-proxystatistics": "<3.1",
-                "cockpit-hq/cockpit": "<2.4.1",
+                "cockpit-hq/cockpit": "<2.6",
                 "codeception/codeception": "<3.1.3|>=4,<4.1.22",
                 "codeigniter/framework": "<=3.0.6",
                 "codeigniter4/framework": "<4.3.5",
@@ -11897,7 +11963,7 @@
                 "contao-components/mediaelement": ">=2.14.2,<2.21.1",
                 "contao/contao": ">=4,<4.4.56|>=4.5,<4.9.40|>=4.10,<4.11.7|>=4.13,<4.13.21|>=5.1,<5.1.4",
                 "contao/core": ">=2,<3.5.39",
-                "contao/core-bundle": "<4.9.40|>=4.10,<4.11.7|>=4.13,<4.13.21|>=5.1,<5.1.4|= 4.10.0",
+                "contao/core-bundle": "<4.9.42|>=4.10,<4.13.28|>=5,<5.1.10|= 4.10.0",
                 "contao/listing-bundle": ">=4,<4.4.8",
                 "contao/managed-edition": "<=1.5",
                 "cosenary/instagram": "<=2.3",
@@ -11966,6 +12032,7 @@
                 "fixpunkt/fp-masterquiz": "<2.2.1|>=3,<3.5.2",
                 "fixpunkt/fp-newsletter": "<1.1.1|>=2,<2.1.2|>=2.2,<3.2.6",
                 "flarum/core": "<1.7",
+                "flarum/framework": "<=0.1-beta.7.1",
                 "flarum/mentions": "<1.6.3",
                 "flarum/sticky": ">=0.1-beta.14,<=0.1-beta.15",
                 "flarum/tags": "<=0.1-beta.13",
@@ -11989,6 +12056,7 @@
                 "genix/cms": "<=1.1.11",
                 "getgrav/grav": "<=1.7.42.1",
                 "getkirby/cms": "= 3.8.0|<3.5.8.2|>=3.6,<3.6.6.2|>=3.7,<3.7.5.1",
+                "getkirby/kirby": "<=2.5.12",
                 "getkirby/panel": "<2.5.14",
                 "getkirby/starterkit": "<=3.7.0.2",
                 "gilacms/gila": "<=1.11.4",
@@ -12037,6 +12105,7 @@
                 "joomla/archive": "<1.1.12|>=2,<2.0.1",
                 "joomla/filesystem": "<1.6.2|>=2,<2.0.1",
                 "joomla/filter": "<1.4.4|>=2,<2.0.1",
+                "joomla/framework": ">=2.5.4,<=3.8.12",
                 "joomla/input": ">=2,<2.0.2",
                 "joomla/joomla-cms": ">=3,<3.9.12",
                 "joomla/session": "<1.3.1",
@@ -12091,14 +12160,14 @@
                 "melisplatform/melis-front": "<5.0.1",
                 "mezzio/mezzio-swoole": "<3.7|>=4,<4.3",
                 "mgallegos/laravel-jqgrid": "<=1.3",
-                "microweber/microweber": "= 1.1.18|<=1.3.4",
+                "microweber/microweber": "<=1.3.4|= 1.1.18",
                 "miniorange/miniorange-saml": "<1.4.3",
                 "mittwald/typo3_forum": "<1.2.1",
                 "mobiledetect/mobiledetectlib": "<2.8.32",
-                "modx/revolution": "<= 2.8.3-pl|<2.8",
+                "modx/revolution": "<2.8|<= 2.8.3-pl",
                 "mojo42/jirafeau": "<4.4",
                 "monolog/monolog": ">=1.8,<1.12",
-                "moodle/moodle": "<4.2-rc.2|= 3.5|= 3.7|= 3.9|= 3.8|= 4.2.0|= 3.11",
+                "moodle/moodle": "<4.2-rc.2|= 3.4.3|= 3.5|= 3.7|= 3.9|= 3.8|= 4.2.0|= 3.11",
                 "movim/moxl": ">=0.8,<=0.10",
                 "mpdf/mpdf": "<=7.1.7",
                 "mustache/mustache": ">=2,<2.14.1",
@@ -12121,7 +12190,7 @@
                 "nzo/url-encryptor-bundle": ">=4,<4.3.2|>=5,<5.0.1",
                 "october/backend": "<1.1.2",
                 "october/cms": "= 1.1.1|= 1.0.471|= 1.0.469|>=1.0.319,<1.0.469",
-                "october/october": ">=1.0.319,<1.0.466|>=2.1,<2.1.12",
+                "october/october": "<1.0.466|>=2.1,<2.1.12",
                 "october/rain": "<1.0.472|>=1.1,<1.1.2",
                 "october/system": "<1.0.476|>=1.1,<1.1.12|>=2,<2.2.34|>=3,<3.0.66",
                 "onelogin/php-saml": "<2.10.4",
@@ -12169,7 +12238,7 @@
                 "pimcore/customer-management-framework-bundle": "<3.4.1",
                 "pimcore/data-hub": "<1.2.4",
                 "pimcore/perspective-editor": "<1.5.1",
-                "pimcore/pimcore": "<10.5.24",
+                "pimcore/pimcore": "<10.6.4",
                 "pixelfed/pixelfed": "<=0.11.4",
                 "pocketmine/bedrock-protocol": "<8.0.2",
                 "pocketmine/pocketmine-mp": "<4.22.3|>=5,<5.2.1|< 4.18.0-ALPHA2|>= 4.0.0-BETA5, < 4.4.2",
@@ -12330,10 +12399,10 @@
                 "twig/twig": "<1.44.7|>=2,<2.15.3|>=3,<3.4.3",
                 "typo3/cms": "<2.0.5|>=3,<3.0.3|>=6.2,<=6.2.38|>=7,<7.6.32|>=8,<8.7.38|>=9,<9.5.29|>=10,<10.4.35|>=11,<11.5.23|>=12,<12.2",
                 "typo3/cms-backend": ">=7,<=7.6.50|>=8,<=8.7.39|>=9,<=9.5.24|>=10,<=10.4.13|>=11,<=11.1",
-                "typo3/cms-core": "<8.7.51|>=9,<9.5.40|>=10,<10.4.36|>=11,<11.5.23|>=12,<12.2",
+                "typo3/cms-core": "<8.7.51|>=9,<9.5.42|>=10,<10.4.39|>=11,<11.5.30|>=12,<12.4.4",
                 "typo3/cms-form": ">=8,<=8.7.39|>=9,<=9.5.24|>=10,<=10.4.13|>=11,<=11.1",
                 "typo3/flow": ">=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.12|>=3.1,<3.1.10|>=3.2,<3.2.13|>=3.3,<3.3.13|>=4,<4.0.6",
-                "typo3/html-sanitizer": ">=1,<1.5|>=2,<2.1.1",
+                "typo3/html-sanitizer": ">=1,<1.5.1|>=2,<2.1.2",
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4|>=2.3,<2.3.99|>=3,<3.0.20|>=3.1,<3.1.18|>=3.2,<3.2.14|>=3.3,<3.3.23|>=4,<4.0.17|>=4.1,<4.1.16|>=4.2,<4.2.12|>=4.3,<4.3.3",
                 "typo3/phar-stream-wrapper": ">=1,<2.1.1|>=3,<3.1.1",
                 "typo3/swiftmailer": ">=4.1,<4.1.99|>=5.4,<5.4.5",

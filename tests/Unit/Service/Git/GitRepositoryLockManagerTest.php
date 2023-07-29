@@ -24,8 +24,8 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->cacheDirectory = vfsStream::setup('cache')->url();
-        $this->filesystem     = $this->getMockBuilder(Filesystem::class)->enableProxyingToOriginalMethods()->getMock();
+        $this->cacheDirectory = vfsStream::setup('cache')->url() . '/git/';
+        $this->filesystem     = $this->createMock(Filesystem::class);
         $this->lockManager    = new GitRepositoryLockManager($this->cacheDirectory, $this->filesystem);
     }
 
@@ -38,7 +38,9 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         $repository->setId(123);
         $repository->setName('foobar');
 
-        $this->filesystem->expects(self::once())->method('mkdir');
+        $this->filesystem->expects(self::once())
+            ->method('mkdir')
+            ->willReturnCallback(static fn($dir) => mkdir($dir, 0777, true));
 
         static::assertSame('result', $this->lockManager->start($repository, static fn() => 'result'));
     }
@@ -67,6 +69,8 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setName('foobar');
+
+        mkdir($this->cacheDirectory . '/git/', 0777, true);
 
         $this->expectException(RuntimeException::class);
         $this->lockManager->start($repository, static fn() => throw new RuntimeException());

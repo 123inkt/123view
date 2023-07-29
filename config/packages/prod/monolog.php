@@ -9,12 +9,14 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
         ->level('info')
+        ->formatter('monolog.formatter.line')
         ->maxFiles(10);
 
     $monolog->handler('error')
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
         ->level('error')
+        ->formatter('monolog.formatter.line')
         ->includeStacktraces(true)
         ->maxFiles(10);
 
@@ -31,7 +33,7 @@ return static function (MonologConfig $monolog) {
             ->type('symfony_mailer')
             ->fromEmail('%env(MAILER_SENDER)%')
             ->toEmail(['%env(ERROR_MAIL)%'])
-            ->subject('[Git commit notification] %%message%%')
+            ->subject('[123view] %%message%%')
             ->level('error')
             ->formatter('monolog.formatter.html')
             ->contentType('text/html');
@@ -41,5 +43,6 @@ return static function (MonologConfig $monolog) {
 
     $monolog->handler('console')
         ->type('console')
-        ->level('info');
+        ->level('info')
+        ->formatter('monolog.formatter.line');
 };

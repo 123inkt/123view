@@ -13,7 +13,7 @@ class GitRepositoryLockManager
 
     public function __construct(string $cacheDirectory, private readonly Filesystem $filesystem)
     {
-        $this->cacheDirectory = $cacheDirectory . '/git/';
+        $this->cacheDirectory = $cacheDirectory;
     }
 
     /**

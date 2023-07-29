@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\CherryPick;
 
+use DR\Review\Entity\Git\CherryPick\CherryPickResult;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -19,7 +21,8 @@ class GitCherryPickService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitCommandBuilderFactory $commandFactory
+        private readonly GitCommandBuilderFactory $commandFactory,
+        private readonly GitCherryPickParser $cherryPickParser,
     ) {
     }
 
@@ -29,10 +32,8 @@ class GitCherryPickService implements LoggerAwareInterface
     public function tryCherryPickRevisions(array $revisions): bool
     {
         try {
-            $this->cherryPickRevisions($revisions);
-
-            return true;
-        } catch (RepositoryException|ProcessFailedException) {
+            return $this->cherryPickRevisions($revisions)->completed;
+        } catch (RepositoryException) {
             return false;
         }
     }
@@ -42,21 +43,50 @@ class GitCherryPickService implements LoggerAwareInterface
      *
      * @throws RepositoryException
      */
-    public function cherryPickRevisions(array $revisions): void
+    public function cherryPickRevisions(array $revisions, bool $commit = false): CherryPickResult
     {
-        /** @var Repository $repository */
-        $repository     = Assert::notFalse(reset($revisions))->getRepository();
+        $repository     = Assert::notNull(Arrays::first($revisions)->getRepository());
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
-            ->strategy('recursive')
+            ->strategy('ort')
             ->conflictResolution('theirs')
-            ->noCommit()
             ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
 
-        // merge given hashes
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+        if ($commit === false) {
+            $commandBuilder->noCommit();
+        }
 
-        $this->logger?->info($output);
+        // merge given hashes
+        try {
+            $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+            return new CherryPickResult(true);
+        } catch (ProcessFailedException $exception) {
+            $process = $exception->getProcess();
+
+            return $this->cherryPickParser->parse($process->getOutput() . "\n" . $process->getErrorOutput());
+        }
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function cherryPickContinue(Repository $repository): CherryPickResult
+    {
+        $commandBuilder = $this->commandFactory
+            ->createCheryPick()
+            ->continue();
+
+        // continue cherry-pick
+        try {
+            $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+            return new CherryPickResult(true);
+        } catch (ProcessFailedException $exception) {
+            $process = $exception->getProcess();
+
+            return $this->cherryPickParser->parse($process->getOutput() . "\n" . $process->getErrorOutput());
+        }
     }
 
     /**
