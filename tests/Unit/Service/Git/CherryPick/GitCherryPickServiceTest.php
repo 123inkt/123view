@@ -47,7 +47,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
         $revision->setCommitHash($hash);
 
         $builder = $this->createMock(GitCherryPickCommandBuilder::class);
-        $builder->expects(self::once())->method('strategy')->with('recursive')->willReturnSelf();
+        $builder->expects(self::once())->method('strategy')->with('ort')->willReturnSelf();
         $builder->expects(self::once())->method('conflictResolution')->with('theirs')->willReturnSelf();
         $builder->expects(self::once())->method('noCommit')->willReturnSelf();
         $builder->expects(self::once())->method('hashes')->with([$hash])->willReturnSelf();
