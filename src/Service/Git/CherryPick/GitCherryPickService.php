@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\CherryPick;
 
+use DR\Review\Entity\Git\CherryPick\CherryPickResult;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
@@ -20,7 +21,8 @@ class GitCherryPickService implements LoggerAwareInterface
 
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitCommandBuilderFactory $commandFactory
+        private readonly GitCommandBuilderFactory $commandFactory,
+        private readonly GitCherryPickParser $cherryPickParser,
     ) {
     }
 
@@ -30,10 +32,8 @@ class GitCherryPickService implements LoggerAwareInterface
     public function tryCherryPickRevisions(array $revisions): bool
     {
         try {
-            $this->cherryPickRevisions($revisions);
-
-            return true;
-        } catch (RepositoryException|ProcessFailedException) {
+            return $this->cherryPickRevisions($revisions)->completed;
+        } catch (RepositoryException) {
             return false;
         }
     }
@@ -41,9 +41,9 @@ class GitCherryPickService implements LoggerAwareInterface
     /**
      * @param Revision[] $revisions
      *
-     * @throws RepositoryException|ProcessFailedException
+     * @throws RepositoryException
      */
-    public function cherryPickRevisions(array $revisions, bool $commit = false): void
+    public function cherryPickRevisions(array $revisions, bool $commit = false): CherryPickResult
     {
         $repository     = Assert::notNull(Arrays::first($revisions)->getRepository());
         $commandBuilder = $this->commandFactory
@@ -57,24 +57,36 @@ class GitCherryPickService implements LoggerAwareInterface
         }
 
         // merge given hashes
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+        try {
+            $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
-        $this->logger?->info($output);
+            return new CherryPickResult(true);
+        } catch (ProcessFailedException $exception) {
+            $process = $exception->getProcess();
+
+            return $this->cherryPickParser->parse($process->getOutput() . "\n" . $process->getErrorOutput());
+        }
     }
 
     /**
-     * @throws RepositoryException|ProcessFailedException
+     * @throws RepositoryException
      */
-    public function cherryPickContinue(Repository $repository): void
+    public function cherryPickContinue(Repository $repository): CherryPickResult
     {
         $commandBuilder = $this->commandFactory
             ->createCheryPick()
             ->continue();
 
         // continue cherry-pick
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+        try {
+            $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
-        $this->logger?->info($output);
+            return new CherryPickResult(true);
+        } catch (ProcessFailedException $exception) {
+            $process = $exception->getProcess();
+
+            return $this->cherryPickParser->parse($process->getOutput() . "\n" . $process->getErrorOutput());
+        }
     }
 
     /**

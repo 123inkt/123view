@@ -18,14 +18,13 @@ use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Utils\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Throwable;
 
 /**
  * Strategy tries to cherry-pick all revision hashes in a single pick, and keeps continuing on conflicts.
  */
 class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
 {
-    private const MAX_DURATION_IN_SECONDS = 150;
+    private const MAX_ATTEMPTS = 30;
 
     public function __construct(
         private readonly GitAddService $addService,
@@ -69,34 +68,56 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
      */
     private function getDiff(Repository $repository, array $revisions, ?FileDiffOptions $options): array
     {
-        $timeStart = microtime(true);
-        try {
-            for ($i = 0; $i < 50; $i++) {
-                try {
-                    if ($i === 0) {
-                        $this->cherryPickService->cherryPickRevisions($revisions, true);
-                    } else {
-                        $this->cherryPickService->cherryPickContinue($repository);
-                    }
-                    // successful, uncommit all changes
-                    $this->resetService->resetSoft($repository, Arrays::first($revisions)->getCommitHash() . '~');
+        $conflicts = [];
 
-                    // get all diff files
-                    return $this->diffService->getBundledDiffFromRevisions($repository, $options);
-                } catch (ProcessFailedException $e) {
-                    $error = $e->getProcess()->getErrorOutput();
-
-                    // add conflicts to the repository
-                    $this->addService->add($repository, '.');
-                    // commit changes
-                    $this->commitService->commit($repository);
-                    continue;
-                }
+        for ($i = 0; $i < self::MAX_ATTEMPTS; $i++) {
+            if ($i === 0) {
+                $result = $this->cherryPickService->cherryPickRevisions($revisions, true);
+            } else {
+                $result = $this->cherryPickService->cherryPickContinue($repository);
             }
-        } catch (Throwable $e) {
-            $test = true;
+
+            if ($result->completed) {
+                // successful, unstash all changes
+                $this->resetService->resetSoft($repository, Arrays::first($revisions)->getCommitHash() . '~');
+
+                // get all diff files
+                $files = $this->diffService->getBundledDiffFromRevisions($repository, $options);
+
+                // mark which files have merge conflicts
+                return $this->markMergeConflicts($files, array_merge(...$conflicts));
+            }
+
+            // keep track of conflict files
+            $conflicts[] = $result->conflicts;
+            // add conflicts to the repository
+            $this->addService->add($repository, implode(' ', $result->conflicts));
+            // commit changes
+            $this->commitService->commit($repository);
         }
 
         throw new RepositoryException('Unable to cherry pick revisions');
+    }
+
+    /**
+     * @param DiffFile[] $files
+     * @param string[]   $conflicts
+     *
+     * @return DiffFile[]
+     */
+    private function markMergeConflicts(array $files, array $conflicts): array
+    {
+        // create lookup table for files in conflict
+        $conflictLookup = array_flip($conflicts);
+
+        // mark files in conflict as conflicted
+        foreach ($files as $file) {
+            $filePath = $file->filePathAfter ?? $file->filePathBefore;
+            if ($filePath !== null) {
+                $file->hasMergeConflict = isset($conflictLookup[$filePath]);
+            }
+        }
+
+        return $files;
     }
 }
