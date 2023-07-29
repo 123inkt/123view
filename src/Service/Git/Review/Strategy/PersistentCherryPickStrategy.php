@@ -51,8 +51,8 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
             function () use ($repository, $revisions, $options): array {
                 try {
                     return $this->getDiff($repository, $revisions, $options);
-                } catch (RepositoryException|ProcessFailedException $exception) {
                     // @codeCoverageIgnoreStart
+                } catch (RepositoryException|ProcessFailedException $exception) {
                     $this->cherryPickService->cherryPickAbort($repository);
 
                     throw $exception;
