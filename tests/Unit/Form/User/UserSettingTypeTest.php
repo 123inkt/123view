@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\User\UserSettingType
@@ -26,8 +27,8 @@ class UserSettingTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(5))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['colorTheme', ChoiceType::class],
                     ['mailCommentAdded', CheckboxType::class],
                     ['mailCommentReplied', CheckboxType::class],

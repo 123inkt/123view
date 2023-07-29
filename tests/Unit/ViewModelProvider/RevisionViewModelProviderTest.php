@@ -19,6 +19,7 @@ use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModelProvider\RevisionViewModelProvider
@@ -83,8 +84,8 @@ class RevisionViewModelProviderTest extends AbstractTestCase
             ->willReturn([$visibility]);
         $this->formFactory->expects(self::exactly(2))
             ->method('create')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [DetachRevisionsFormType::class, null, ['reviewId' => 123, 'revisions' => [$revision]]],
                     [RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123]],
                 )

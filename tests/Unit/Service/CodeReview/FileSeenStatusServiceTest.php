@@ -12,6 +12,7 @@ use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\CodeReview\FileSeenStatusService
@@ -136,7 +137,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->method('findBy')
             ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
             ->willReturn([$statusA, $statusB]);
-        $this->statusRepository->expects(self::exactly(2))->method('remove')->will(static::onConsecutiveCalls([$statusA, false], [$statusB, true]));
+        $this->statusRepository->expects(self::exactly(2))->method('remove')->with(...consecutive([$statusA, false], [$statusB, true]));
 
         $this->service->markAllAsUnseen($review, $revision);
     }

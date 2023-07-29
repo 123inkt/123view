@@ -22,6 +22,7 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter
@@ -66,7 +67,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
 
         $this->translator->expects(self::exactly(2))
             ->method('trans')
-            ->will(static::onConsecutiveCalls(['you'], ['timeline.review.accepted']))
+            ->with(...consecutive(['you'], ['timeline.review.accepted']))
             ->willReturnArgument(0);
         $this->userRepository->expects(self::never())->method('find');
         $this->revisionRepository->expects(self::never())->method('find');

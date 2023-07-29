@@ -13,6 +13,7 @@ use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueError;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Parser\GitLogParser
@@ -105,7 +106,7 @@ class GitLogParserTest extends AbstractTestCase
 
         // prepare mocks
         $this->diffParser->expects(static::exactly(2))->method('parse')
-            ->will(static::onConsecutiveCalls(['commitA-part10'], ['commitB-part10']))
+            ->with(...consecutive(['commitA-part10'], ['commitB-part10']))
             ->willReturn([]);
         $this->hydrator->expects(static::exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
 

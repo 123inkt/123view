@@ -26,6 +26,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Webhook\ReviewEventService
@@ -103,8 +104,8 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(3))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [new ReviewRejected(123, 5)],
                     [new ReviewAccepted(123, 5)],
                     [new ReviewResumed(123, 5)],
@@ -161,8 +162,8 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [new ReviewOpened(123, 5)],
                     [new ReviewClosed(123, 5)],
                 )
@@ -196,8 +197,8 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [new ReviewRevisionAdded(123, 456, 5, 'title')],
                     [new ReviewRevisionAdded(123, 789, 5, 'title')],
                 )
@@ -224,8 +225,8 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [new ReviewRevisionRemoved(123, 456, 5, 'title')],
                     [new ReviewRevisionRemoved(123, 789, 5, 'title')],
                 )
@@ -249,8 +250,8 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(4))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [new Envelope(new ReviewCreated(123, 456))],
                     [new Envelope(new ReviewOpened(123, null))],
                     [new Envelope(new ReviewResumed(123, null))],
@@ -296,8 +297,8 @@ class ReviewEventServiceTest extends AbstractTestCase
 
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     [new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title'))],
                     [new Envelope(new ReviewClosed(123, null))]
                 )

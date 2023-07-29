@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\User\LoginFormType
@@ -45,7 +46,7 @@ class LoginFormTypeTest extends AbstractTestCase
         $builder->expects(self::exactly(4))
             ->method('add')
             ->with(
-                static::onConsecutiveCalls(
+                ...consecutive(
                     ['_username', EmailType::class],
                     ['_password', PasswordType::class],
                     ['_target_path', HiddenType::class],
@@ -67,8 +68,8 @@ class LoginFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(3))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['_username', EmailType::class],
                     ['_password', PasswordType::class],
                     ['loginBtn', SubmitType::class],
