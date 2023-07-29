@@ -10,16 +10,23 @@ FROM php:${VERSION}-fpm-bullseye as base
 # Install packages and remove libldap due to a known vulnerability and upgrade openssl
 RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     && apt-get install -y \
-    supervisor \
-    netcat \
-    zip \
-    libpng-dev \
     cron \
-    libcurl4 \
     curl \
+    gettext \
+    libcurl4 \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    libghc-zlib-dev \
     libicu-dev \
+    libpng-dev \
     librabbitmq-dev \
+    libssl-dev \
+    make \
+    netcat \
     openssl \
+    supervisor \
+    wget \
+    zip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pecl channel-update pecl.php.net && \
@@ -34,13 +41,20 @@ RUN docker-php-ext-install \
     pdo_mysql \
     intl
 
+## install git 2.41.0
+RUN curl -sLO https://github.com/git/git/archive/refs/tags/v2.41.0.tar.gz && \
+    tar -xzf v2.41.0.tar.gz && \
+    cd git-2.41.0 && \
+    make prefix=/usr/local all && \
+    make prefix=/usr/local install && \
+    cd .. && \
+    rm -rf git-2.41.0 && \
+    rm v2.41.0.tar.gz
+
 ## Copy php default configuration
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
 COPY ./docker/php-fpm/conf/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
 COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-## Copy git
-COPY --from=bitnami/git:2-debian-11 /opt/bitnami/git/bin/git /usr/bin/git
 
 ## Copy composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
