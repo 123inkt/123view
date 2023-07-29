@@ -39,7 +39,6 @@ class GitCommitServiceTest extends AbstractTestCase
 
         $repository = new Repository();
         $repository->setUrl(Uri::createFromString('https://url/'));
-        $path = '/foo/bar/';
 
         $builder = $this->createMock(GitCommitCommandBuilder::class);
         $builder->expects(self::once())->method('message')->with($message)->willReturnSelf();
