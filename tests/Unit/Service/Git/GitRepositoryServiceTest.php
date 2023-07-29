@@ -14,6 +14,7 @@ use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -33,7 +34,13 @@ class GitRepositoryServiceTest extends AbstractTestCase
         parent::setUp();
         $this->git        = $this->createMock(Git::class);
         $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new GitRepositoryService($this->git, $this->filesystem, null, self::CACHE_DIRECTORY);
+        $this->service    = new GitRepositoryService(
+            $this->createMock(LoggerInterface::class),
+            $this->git,
+            $this->filesystem,
+            null,
+            self::CACHE_DIRECTORY
+        );
     }
 
     /**

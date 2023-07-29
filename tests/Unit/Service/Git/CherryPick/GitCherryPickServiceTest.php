@@ -9,6 +9,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
+use DR\Review\Service\Git\CherryPick\GitCherryPickParser;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
@@ -21,6 +22,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
     private GitCommandBuilderFactory&MockObject      $builderFactory;
+    private GitCherryPickParser&MockObject           $cherryPickParser;
     private GitCherryPickService                     $service;
 
     public function setUp(): void
@@ -28,7 +30,8 @@ class GitCherryPickServiceTest extends AbstractTestCase
         parent::setUp();
         $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
         $this->builderFactory    = $this->createMock(GitCommandBuilderFactory::class);
-        $this->service           = new GitCherryPickService($this->repositoryService, $this->builderFactory);
+        $this->cherryPickParser  = $this->createMock(GitCherryPickParser::class);
+        $this->service           = new GitCherryPickService($this->repositoryService, $this->builderFactory, $this->cherryPickParser);
     }
 
     public function testCherryPickRevisions(): void
@@ -41,7 +44,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
         $revision->setCommitHash($hash);
 
         $builder = $this->createMock(GitCherryPickCommandBuilder::class);
-        $builder->expects(self::once())->method('strategy')->with('recursive')->willReturnSelf();
+        $builder->expects(self::once())->method('strategy')->with('ort')->willReturnSelf();
         $builder->expects(self::once())->method('conflictResolution')->with('theirs')->willReturnSelf();
         $builder->expects(self::once())->method('noCommit')->willReturnSelf();
         $builder->expects(self::once())->method('hashes')->with([$hash])->willReturnSelf();
