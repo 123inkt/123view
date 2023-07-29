@@ -7,6 +7,7 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
+use DR\Review\Security\Role\Roles;
 use League\Uri\Uri;
 
 $name  = 'Sherlock Holmes';
@@ -18,6 +19,7 @@ return [
             (new User())
                 ->setName($name)
                 ->setEmail($email)
+                ->setRoles([Roles::ROLE_USER])
         )
         ->setName('Detectives')
         ->setActive(true)

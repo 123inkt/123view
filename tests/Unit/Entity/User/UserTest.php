@@ -9,39 +9,11 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\User\User;
 use DR\Review\Entity\User\UserSetting;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\User\User
- * @covers ::__construct
- */
+#[CoversClass(User::class)]
 class UserTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::getName
-     * @covers ::setName
-     * @covers ::getEmail
-     * @covers ::setEmail
-     * @covers ::getPassword
-     * @covers ::setPassword
-     * @covers ::getSetting
-     * @covers ::setSetting
-     * @covers ::getRules
-     * @covers ::addRule
-     * @covers ::removeRule
-     * @covers ::getUserIdentifier
-     * @covers ::setRoles
-     * @covers ::addRole
-     * @covers ::getRoles
-     * @covers ::eraseCredentials
-     * @covers ::getReviewers
-     * @covers ::setReviewers
-     * @covers ::getComments
-     * @covers ::setComments
-     * @covers ::getReplies
-     * @covers ::setReplies
-     */
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
@@ -50,11 +22,14 @@ class UserTest extends AbstractTestCase
         static::assertAccessorPairs(User::class, $config);
     }
 
-    /**
-     * @covers ::addRule
-     * @covers ::getRules
-     * @covers ::removeRule
-     */
+    public function testHasRole(): void
+    {
+        $user = new User();
+        $user->setRoles(['foo']);
+        static::assertTrue($user->hasRole('foo'));
+        static::assertFalse($user->hasRole('bar'));
+    }
+
     public function testRuleAccessors(): void
     {
         $rule = new Rule();
@@ -67,9 +42,6 @@ class UserTest extends AbstractTestCase
         static::assertCount(0, $repository->getRules());
     }
 
-    /**
-     * @covers ::getUserIdentifier
-     */
     public function testGetUserIdentifier(): void
     {
         $user = new User();
@@ -77,10 +49,6 @@ class UserTest extends AbstractTestCase
         static::assertSame('email', $user->getUserIdentifier());
     }
 
-    /**
-     * @covers ::setSetting
-     * @covers ::getSetting
-     */
     public function testGetSetting(): void
     {
         $setting = new UserSetting();
@@ -89,10 +57,6 @@ class UserTest extends AbstractTestCase
         static::assertSame($setting, $user->getSetting());
     }
 
-    /**
-     * @covers ::getReviewers
-     * @covers ::setReviewers
-     */
     public function testReviewers(): void
     {
         $collection = new ArrayCollection();
@@ -104,10 +68,6 @@ class UserTest extends AbstractTestCase
         static::assertSame($collection, $user->getReviewers());
     }
 
-    /**
-     * @covers ::getComments
-     * @covers ::setComments
-     */
     public function testComments(): void
     {
         $collection = new ArrayCollection();
@@ -119,10 +79,6 @@ class UserTest extends AbstractTestCase
         static::assertSame($collection, $user->getComments());
     }
 
-    /**
-     * @covers ::getReplies
-     * @covers ::setReplies
-     */
     public function testReplies(): void
     {
         $collection = new ArrayCollection();
@@ -134,9 +90,6 @@ class UserTest extends AbstractTestCase
         static::assertSame($collection, $user->getReplies());
     }
 
-    /**
-     * @covers ::equalsTo
-     */
     public function testEqualsTo(): void
     {
         $userA = new User();
@@ -152,9 +105,6 @@ class UserTest extends AbstractTestCase
         static::assertFalse($userA->equalsTo("foobar"));
     }
 
-    /**
-     * @covers ::compareTo
-     */
     public function testCompareTo(): void
     {
         $userA = new User();
