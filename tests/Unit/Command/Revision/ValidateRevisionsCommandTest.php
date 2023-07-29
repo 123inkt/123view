@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Command\Revision\ValidateRevisionsCommand
@@ -66,12 +67,7 @@ class ValidateRevisionsCommandTest extends AbstractTestCase
         $this->logService->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn($remoteHashes);
         $this->bus->expects(self::exactly(2))
             ->method('dispatch')
-            ->will(
-                static::onConsecutiveCalls(
-                    [new CommitAddedMessage(123, 'new-hash')],
-                    [new CommitRemovedMessage(123, 'old-hash')],
-                )
-            )
+            ->with(...consecutive([new CommitAddedMessage(123, 'new-hash')], [new CommitRemovedMessage(123, 'old-hash')]))
             ->willReturn($this->envelope);
 
         static::assertSame(Command::SUCCESS, $this->command->run(new ArrayInput([]), new NullOutput()));

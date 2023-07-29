@@ -12,6 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Rule\EditRuleFormType
@@ -47,8 +48,8 @@ class EditRuleFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['rule', RuleType::class],
                     ['save', SubmitType::class, ['label' => 'save']],
                 )

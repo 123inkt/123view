@@ -39,6 +39,7 @@ use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
+use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
@@ -52,6 +53,7 @@ use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
+use Monolog\Formatter\LineFormatter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
@@ -104,6 +106,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
+    $services->set('monolog.formatter.line', LineFormatter::class)
+        ->arg('$format', "[%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%extra%%\n")
+        ->arg('$dateFormat', "Y-m-d\TH:i:s");
 
     // Configure Api
     $services->set(OperationParameterDocumentor::class);
@@ -139,9 +144,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ParserHasFailedFormatter::class);
 
     // custom register cache dir
-    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
-    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
-    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git");
+    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)
@@ -154,6 +159,7 @@ return static function (ContainerConfigurator $container): void {
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
+    $services->set(PersistentCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 20]);
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
 

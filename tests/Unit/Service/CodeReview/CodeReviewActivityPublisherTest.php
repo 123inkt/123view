@@ -17,6 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher
@@ -110,7 +111,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         $this->urlGenerator->expects(self::once())->method('generate')->with($activity)->willReturn('url');
         $this->mercureHub->expects(self::exactly(2))
             ->method('publish')
-            ->will(static::onConsecutiveCalls([$reviewUpdate], [$userUpdate]))
+            ->with(...consecutive([$reviewUpdate], [$userUpdate]))
             ->willReturn('success');
 
         $this->service->publish($activity);

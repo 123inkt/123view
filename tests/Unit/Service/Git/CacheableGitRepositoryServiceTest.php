@@ -11,6 +11,7 @@ use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -29,7 +30,13 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
         parent::setUp();
         $this->git        = $this->createMock(Git::class);
         $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new CacheableGitRepositoryService($this->git, $this->filesystem, null, self::CACHE_DIRECTORY);
+        $this->service    = new CacheableGitRepositoryService(
+            $this->createMock(LoggerInterface::class),
+            $this->git,
+            $this->filesystem,
+            null,
+            self::CACHE_DIRECTORY
+        );
     }
 
     /**

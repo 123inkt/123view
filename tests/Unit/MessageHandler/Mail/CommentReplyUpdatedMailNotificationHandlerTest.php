@@ -15,6 +15,7 @@ use DR\Review\Service\Mail\CommentMailService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
@@ -85,7 +86,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($reply);
         $this->mentionService->expects(self::exactly(2))
             ->method('getMentionedUsers')
-            ->will(static::onConsecutiveCalls(['comment2'], ['comment1']))
+            ->with(...consecutive(['comment2'], ['comment1']))
             ->willReturn([$user], [$user]);
         $this->mailService->expects(self::never())->method('sendNewCommentReplyMail');
 
@@ -109,7 +110,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($reply);
         $this->mentionService->expects(self::exactly(2))
             ->method('getMentionedUsers')
-            ->will(static::onConsecutiveCalls(['comment2'], ['comment1']))
+            ->with(...consecutive(['comment2'], ['comment1']))
             ->willReturn([$user], []);
         $this->mailService->expects(self::once())->method('sendNewCommentReplyMail')->with($review, $comment, $reply);
 

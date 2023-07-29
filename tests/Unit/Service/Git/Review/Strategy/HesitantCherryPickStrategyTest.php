@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Review\Strategy;
 
+use DR\Review\Entity\Git\CherryPick\CherryPickResult;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
@@ -16,6 +17,7 @@ use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy
@@ -78,7 +80,7 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revisionA)->willReturn('branchName');
         $this->cherryPickService->expects(self::exactly(2))
             ->method('cherryPickRevisions')
-            ->will(static::onConsecutiveCalls([[$revisionA]], [[$revisionB]]));
+            ->with(...consecutive([[$revisionA]], [[$revisionB]]));
         $this->resetManager->expects(self::once())
             ->method('start')
             ->with($repository, 'branchName')
@@ -109,7 +111,8 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         // trigger exception on the second cherry-pick
         $this->cherryPickService->expects(self::exactly(2))
             ->method('cherryPickRevisions')
-            ->will(static::onConsecutiveCalls([$revisionA], static::throwException(new RepositoryException())));
+            ->with(...consecutive([[$revisionA]], [[$revisionB]]))
+            ->will(static::onConsecutiveCalls(new CherryPickResult(true), static::throwException(new RepositoryException())));
         $this->resetManager->expects(self::once())
             ->method('start')
             ->with($repository, 'branchName')

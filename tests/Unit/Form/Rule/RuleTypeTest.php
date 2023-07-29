@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Rule\RuleType
@@ -32,8 +33,8 @@ class RuleTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(6))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['name', TextType::class],
                     ['active', CheckboxType::class],
                     ['ruleOptions', RuleOptionsType::class],
@@ -56,8 +57,8 @@ class RuleTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(5))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['name', TextType::class],
                     ['active', CheckboxType::class],
                     ['ruleOptions', RuleOptionsType::class],

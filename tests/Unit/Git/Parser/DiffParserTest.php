@@ -9,6 +9,7 @@ use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Parser\DiffParser
@@ -92,7 +93,7 @@ class DiffParserTest extends AbstractTestCase
 
         // setup mocks
         $this->fileParser->expects(static::exactly(2))->method('parse')
-            ->will(static::onConsecutiveCalls(["foobar A"], ["foobar B\n"]))
+            ->with(...consecutive(["foobar A"], ["foobar B\n"]))
             ->willReturn($fileA, $fileB);
 
         $diffs = $this->parser->parse($input);

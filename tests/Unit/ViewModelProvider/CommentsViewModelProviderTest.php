@@ -17,6 +17,7 @@ use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModelProvider\CommentsViewModelProvider
@@ -70,7 +71,7 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->willReturn($comments);
         $this->diffFinder->expects(self::exactly(2))
             ->method('findLineInFile')
-            ->will(static::onConsecutiveCalls([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))
+            ->with(...consecutive([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))
             ->willReturn($line, null);
         $this->comparePolicyProvider->expects(self::once())->method('getComparePolicy')->willReturn(DiffComparePolicy::IGNORE);
         $this->visibilityProvider->expects(self::once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);

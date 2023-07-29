@@ -11,8 +11,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Utility\CircuitBreaker;
 use DR\Utils\Assert;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Throwable;
@@ -20,21 +19,20 @@ use Throwable;
 /**
  * Service to clone or pull the repository from the given url.
  */
-class GitRepositoryService implements LoggerAwareInterface
+class GitRepositoryService
 {
-    use LoggerAwareTrait;
-
-    private string         $cacheDirectory;
-    private CircuitBreaker $circuitBreaker;
+    private readonly string         $cacheDirectory;
+    private readonly CircuitBreaker $circuitBreaker;
 
     public function __construct(
+        private readonly LoggerInterface $gitLogger,
         private readonly Git $git,
         private readonly Filesystem $filesystem,
         private readonly ?Stopwatch $stopwatch,
         string $cacheDirectory
     ) {
         $this->circuitBreaker = new CircuitBreaker(5, 5000);
-        $this->cacheDirectory = $cacheDirectory . '/git/';
+        $this->cacheDirectory = $cacheDirectory;
     }
 
     /**
@@ -71,11 +69,11 @@ class GitRepositoryService implements LoggerAwareInterface
         if ($this->filesystem->exists($repositoryDir . '.git') === false) {
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
-            $this->logger?->info(sprintf('git: clone repository `%s`.', $repositoryUrl->withUserInfo(null)));
+            $this->gitLogger->info(sprintf('git: clone repository `%s`.', $repositoryUrl->withUserInfo(null)));
             $this->git->cloneRepository((string)$repositoryUrl, $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
         }
 
-        return new GitRepository($this->logger, $repository, $this->stopwatch, $repositoryDir);
+        return new GitRepository($this->gitLogger, $repository, $this->stopwatch, $repositoryDir);
     }
 }

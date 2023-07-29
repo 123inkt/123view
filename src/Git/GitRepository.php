@@ -16,7 +16,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class GitRepository
 {
     public function __construct(
-        private readonly ?LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
         private readonly Repository $repository,
         private readonly ?StopWatch $stopWatch,
         private readonly string $repositoryPath
@@ -29,7 +29,7 @@ class GitRepository
      */
     public function execute(string|GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
     {
-        $this->logger?->info(sprintf('Executing `%s` for `%s`', $commandBuilder, $this->repository->getName()));
+        $this->logger->info('Executing `{command}` for `{name}`', ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]);
 
         $command = is_string($commandBuilder) ? $commandBuilder : implode(' ', $commandBuilder->build());
         $action  = is_string($commandBuilder) ? 'manual' : $commandBuilder->command();
@@ -46,8 +46,11 @@ class GitRepository
 
         // executes after the command finishes
         if ($process->isSuccessful() === false) {
+            $this->logProcessOutput($process, false);
             throw new ProcessFailedException($process);
         }
+
+        $this->logProcessOutput($process, true);
 
         $output = $process->getOutput();
         if ($errorOutputAsOutput === true) {
@@ -56,5 +59,19 @@ class GitRepository
 
         // remove any \r in the output
         return str_replace("\r", "", $output);
+    }
+
+    private function logProcessOutput(Process $process, bool $success): void
+    {
+        $status = $success ? 'succeeded' : 'failed';
+        $output = trim(str_replace("\r", "", $process->getOutput()));
+        $error  = trim(str_replace("\r", "", $process->getErrorOutput()));
+
+        if ($error !== '') {
+            $this->logger->debug('Process {status}: error: {error}', ['status' => $status, 'error' => $error]);
+        }
+        if ($output !== '') {
+            $this->logger->debug('Process {status}: output: {output}', ['status' => $status, 'output' => $output]);
+        }
     }
 }

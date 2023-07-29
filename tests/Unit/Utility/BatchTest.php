@@ -7,6 +7,7 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\Helper\MockCallableClass;
 use DR\Review\Utility\Batch;
 use stdClass;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Utility\Batch
@@ -28,7 +29,7 @@ class BatchTest extends AbstractTestCase
         $shouldBeCalled = $this->createMock(MockCallableClass::class);
         $shouldBeCalled->expects(static::exactly(2))
             ->method('__invoke')
-            ->will(static::onConsecutiveCalls([[$classA, $classB]], [[$classC]]));
+            ->with(...consecutive([[$classA, $classB]], [[$classC]]));
 
         $batch = new Batch(2, $shouldBeCalled);
 

@@ -20,6 +20,8 @@ class DiffFile
     public ?string $hashStart = null;
     public ?string $hashEnd   = null;
 
+    public bool $hasMergeConflict = false;
+
     /** @var DiffBlock[] */
     private array $blocks = [];
 

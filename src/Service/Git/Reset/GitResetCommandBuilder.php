@@ -3,17 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Reset;
 
-use DR\Review\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\AbstractGitCommandBuilder;
 
-class GitResetCommandBuilder implements GitCommandBuilderInterface
+class GitResetCommandBuilder extends AbstractGitCommandBuilder
 {
-    /** @var array<string, string> */
-    private array $arguments = [];
-
-    public function __construct(private readonly string $git)
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'reset';
+        parent::__construct($git, 'reset');
     }
 
     public function hard(): self
@@ -23,21 +19,17 @@ class GitResetCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
-    public function command(): string
+    public function soft(): self
     {
-        return 'reset';
+        $this->arguments['soft'] = '--soft';
+
+        return $this;
     }
 
-    /**
-     * @return string[]
-     */
-    public function build(): array
+    public function commitHash(string $commitHash): self
     {
-        return array_values($this->arguments);
-    }
+        $this->arguments['hash'] = $commitHash;
 
-    public function __toString(): string
-    {
-        return implode(" ", $this->arguments);
+        return $this;
     }
 }

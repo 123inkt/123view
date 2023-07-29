@@ -15,7 +15,6 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
     zip \
     libpng-dev \
     cron \
-    git \
     libcurl4 \
     curl \
     libicu-dev \
@@ -39,6 +38,9 @@ RUN docker-php-ext-install \
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
 COPY ./docker/php-fpm/conf/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
 COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+## Copy git
+COPY --from=bitnami/git:2-debian-11 /opt/bitnami/git/bin/git /usr/bin/git
 
 ## Copy composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

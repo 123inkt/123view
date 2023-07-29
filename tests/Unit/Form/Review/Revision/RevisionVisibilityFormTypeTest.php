@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Review\Revision\RevisionVisibilityFormType
@@ -65,8 +66,8 @@ class RevisionVisibilityFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['hidden', HiddenType::class],
                     ['visibilities', CollectionType::class],
                 )

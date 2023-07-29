@@ -11,6 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\User\UserSettingFormType
@@ -45,8 +46,8 @@ class UserSettingFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['setting', UserSettingType::class],
                     ['save', SubmitType::class, ['label' => 'save']],
                 )

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\User\RegistrationFormType
@@ -42,8 +43,8 @@ class RegistrationFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(4))
             ->method('add')
-            ->will(
-                static::onConsecutiveCalls(
+            ->with(
+                ...consecutive(
                     ['name', TextType::class],
                     ['email', EmailType::class],
                     ['plainPassword', PasswordType::class],

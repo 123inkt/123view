@@ -18,6 +18,7 @@ use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider
@@ -65,7 +66,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->willReturn([$activityA, $activityB]);
         $this->activityFormatter->expects(self::exactly(2))
             ->method('format')
-            ->will(static::onConsecutiveCalls([$activityA, $this->user], [$activityA, $this->user]))
+            ->with(...consecutive([$activityA, $this->user], [$activityA, $this->user]))
             ->willReturn('message', null);
 
         $viewModel = $this->provider->getTimelineViewModel($review, []);
@@ -157,10 +158,10 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->willReturn([$activityA, $activityB, $activityC]);
         $this->activityFormatter->expects(self::exactly(3))
             ->method('format')
-            ->will(static::onConsecutiveCalls([$activityA, $user], [$activityB, $user]))
+            ->with(...consecutive([$activityA, $user], [$activityB, $user], [$activityC, $user]))
             ->willReturn('activityA', null, 'activityC');
         $this->commentRepository->expects(self::once())->method('find')->with(456)->willReturn(null);
-        $this->urlGenerator->expects(self::once())->method('generate')->will(static::onConsecutiveCalls([$activityC]))->willReturn('url');
+        $this->urlGenerator->expects(self::once())->method('generate')->with($activityC)->willReturn('url');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(1, $viewModel->entries);

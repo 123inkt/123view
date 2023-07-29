@@ -11,6 +11,7 @@ use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Service\Parser\DiffFileParser
@@ -228,7 +229,7 @@ class DiffFileParserTest extends AbstractTestCase
 
         // prepare mocks
         $this->blockParser->expects(static::exactly(2))->method('parse')
-            ->will(static::onConsecutiveCalls([29, 30], [60, 71]))
+            ->with(...consecutive([29, 30], [60, 71]))
             ->willReturn($blockA, $blockB);
 
         $result = $this->parser->parse($contents, $file);

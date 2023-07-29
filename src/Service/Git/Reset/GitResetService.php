@@ -27,7 +27,23 @@ class GitResetService implements LoggerAwareInterface
     {
         $commandBuilder = $this->commandFactory->createReset()->hard();
 
-        // merge given hashes
+        // hard reset repository
+        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+        $this->logger?->info($output);
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function resetSoft(Repository $repository, ?string $commitHash = null): void
+    {
+        $commandBuilder = $this->commandFactory->createReset()->soft();
+        if ($commitHash !== null) {
+            $commandBuilder->commitHash($commitHash);
+        }
+
+        // soft reset repository
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         $this->logger?->info($output);
