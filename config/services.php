@@ -37,6 +37,7 @@ use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
 use DR\Review\Service\Parser\DiffFileParser;
@@ -157,7 +158,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(Git::class)->arg('$runner', service(CliRunner::class));
 
     // Review diff strategies
-    //$services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
+    $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
     $services->set(PersistentCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 20]);
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
