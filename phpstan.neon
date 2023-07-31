@@ -10,7 +10,7 @@ parameters:
   symfony:
     containerXmlPath: var/build/dev/DR_Review_KernelDevDebugContainer.xml
   scanDirectories:
-    - var/cache/dev/Symfony/Config
+    - var/build/dev/Symfony/Config
   paths:
     - src
     - tests
