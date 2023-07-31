@@ -8,7 +8,7 @@ parameters:
     ormRepositoryClass: DR\Review\Doctrine\EntityRepository\ServiceEntityRepository
     objectManagerLoader: tests/object-manager.php
   symfony:
-    containerXmlPath: var/cache/dev/DR_Review_KernelDevDebugContainer.xml
+    containerXmlPath: var/build/dev/DR_Review_KernelDevDebugContainer.xml
   scanDirectories:
     - var/cache/dev/Symfony/Config
   paths:
