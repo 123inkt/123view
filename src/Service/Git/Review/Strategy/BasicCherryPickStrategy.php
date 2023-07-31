@@ -37,7 +37,9 @@ class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
         return $this->resetManager->start($repository, $branchName, function () use ($repository, $revisions, $options) {
             try {
                 // cherry-pick revisions
-                $this->cherryPickService->cherryPickRevisions($revisions);
+                if ($this->cherryPickService->cherryPickRevisions($revisions)->completed === false) {
+                    throw new RepositoryException('Cherry-pick failed');
+                }
 
                 // get the diff
                 return $this->diffService->getBundledDiffFromRevisions($repository, $options);
