@@ -42,6 +42,7 @@ class GitCommitServiceTest extends AbstractTestCase
 
         $builder = $this->createMock(GitCommitCommandBuilder::class);
         $builder->expects(self::once())->method('message')->with($message)->willReturnSelf();
+        $builder->expects(self::once())->method('allowEmpty')->willReturnSelf();
         $this->builderFactory->expects(self::once())->method('createCommit')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);

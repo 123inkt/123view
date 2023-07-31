@@ -25,7 +25,7 @@ class GitCommitService implements LoggerAwareInterface
      */
     public function commit(Repository $repository, string $message = "."): void
     {
-        $commandBuilder = $this->commandFactory->createCommit()->message($message);
+        $commandBuilder = $this->commandFactory->createCommit()->allowEmpty()->message($message);
 
         // commit
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);

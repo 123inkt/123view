@@ -29,7 +29,10 @@ class GitCommitCommandBuilderTest extends AbstractTestCase
 
     public function testBuild(): void
     {
-        static::assertSame(['git', 'commit', '-m ' . escapeshellarg('message')], $this->builder->message('message')->build());
+        static::assertSame(
+            ['git', 'commit', '--allow-empty', '-m ' . escapeshellarg('message')],
+            $this->builder->allowEmpty()->message('message')->build()
+        );
     }
 
     public function testCommand(): void
