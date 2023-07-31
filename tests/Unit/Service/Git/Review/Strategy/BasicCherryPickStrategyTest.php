@@ -62,7 +62,7 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
             ->method('start')
             ->with($repository, $branchName)
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
-        $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision]);
+        $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision])->willReturn(new CherryPickResult(true));
         $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository)->willReturn([$diffFile]);
 
         $this->strategy->getDiffFiles($repository, [$revision], new FileDiffOptions(20, DiffComparePolicy::IGNORE));
