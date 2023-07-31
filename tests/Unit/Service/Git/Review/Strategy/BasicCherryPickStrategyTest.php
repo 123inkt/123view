@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Review\Strategy;
 
+use DR\Review\Entity\Git\CherryPick\CherryPickResult;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
@@ -65,6 +66,31 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
         $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository)->willReturn([$diffFile]);
 
         $this->strategy->getDiffFiles($repository, [$revision], new FileDiffOptions(20, DiffComparePolicy::IGNORE));
+    }
+
+    /**
+     * @covers ::getDiffFiles
+     * @throws RepositoryException|ParseException
+     */
+    public function testGetDiffFilesCherryPickFailure(): void
+    {
+        $repository = new Repository();
+        $revision   = new Revision();
+        $branchName = 'branchName';
+
+        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
+        $this->resetManager->expects(self::once())
+            ->method('start')
+            ->with($repository, $branchName)
+            ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
+        $this->cherryPickService->expects(self::once())
+            ->method('cherryPickRevisions')
+            ->with([$revision])
+            ->willReturn(new CherryPickResult(false));
+        $this->cherryPickService->expects(self::once())->method('cherryPickAbort')->with($repository);
+
+        $this->expectException(RepositoryException::class);
+        $this->strategy->getDiffFiles($repository, [$revision]);
     }
 
     /**
