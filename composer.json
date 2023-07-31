@@ -34,6 +34,7 @@
         "ext-dom": "*",
         "ext-iconv": "*",
         "api-platform/core": "^3.1",
+        "chrisguitarguy/request-id-bundle": "^5.1",
         "czproject/git-php": "^4.0",
         "digitalrevolution/jbdiff": "^1.0",
         "digitalrevolution/symfony-console-validation": "^1.0",
