@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Commit;
 
 use DR\Review\Service\Git\AbstractGitCommandBuilder;
-use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 class GitCommitCommandBuilder extends AbstractGitCommandBuilder
 {
@@ -13,7 +12,14 @@ class GitCommitCommandBuilder extends AbstractGitCommandBuilder
         parent::__construct($git, 'commit');
     }
 
-    public function message(string $message): GitCommandBuilderInterface
+    public function allowEmpty(): self
+    {
+        $this->arguments['allow-empty'] = '--allow-empty';
+
+        return $this;
+    }
+
+    public function message(string $message): self
     {
         $this->arguments['message'] = '-m ' . escapeshellarg($message);
 
