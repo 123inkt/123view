@@ -12,6 +12,9 @@
             "./src/ApiResource/.gitignore"
         ]
     },
+    "chrisguitarguy/request-id-bundle": {
+        "version": "v5.1.0"
+    },
     "composer/pcre": {
         "version": "1.0.0"
     },

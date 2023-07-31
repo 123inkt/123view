@@ -24,6 +24,11 @@ class Kernel extends BaseKernel
         Locale::setDefault(Assert::string($this->getContainer()->getParameter('locale')));
     }
 
+    public function getBuildDir(): string
+    {
+        return $this->getProjectDir() . '/var/build/' . $this->environment;
+    }
+
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->parameters()->set('.container.dumper.inline_factories', true);
