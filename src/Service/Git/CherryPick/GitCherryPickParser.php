@@ -13,12 +13,14 @@ class GitCherryPickParser
             return new CherryPickResult(true);
         }
 
-        $result = preg_match_all('/CONFLICT\s+\(\S+\):\s+(\S+)/', $output, $matches);
-        if ($result === false || $result === 0) {
-            // no conflicts found
-            return new CherryPickResult(false);
+        if (preg_match_all('/CONFLICT\s+\(\S+\):\s+\S+\s+renamed to\s+(\S+)/', $output, $matches) > 0) {
+            return new CherryPickResult(false, $matches[1]);
         }
 
-        return new CherryPickResult(false, $matches[1]);
+        if (preg_match_all('/CONFLICT\s+\(\S+\):\s+(\S+)/', $output, $matches) > 0) {
+            return new CherryPickResult(false, $matches[1]);
+        }
+
+        return new CherryPickResult(false);
     }
 }
