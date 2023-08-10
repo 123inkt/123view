@@ -35,8 +35,10 @@ class ExternalLinkExtension extends AbstractExtension
         ];
     }
 
-    public function injectExternalLinks(string $html): string
+    public function injectExternalLinks(string $content): string
     {
+        $html = htmlspecialchars($content);
+
         foreach ($this->getLinks() as $link) {
             $key = (string)$link->getPattern();
             $url = (string)$link->getUrl();
