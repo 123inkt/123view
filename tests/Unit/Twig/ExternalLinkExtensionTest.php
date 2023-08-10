@@ -7,12 +7,10 @@ use DR\Review\Entity\Config\ExternalLink;
 use DR\Review\Repository\Config\ExternalLinkRepository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\ExternalLinkExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\ExternalLinkExtension
- * @covers ::__construct
- */
+#[CoversClass(ExternalLinkExtension::class)]
 class ExternalLinkExtensionTest extends AbstractTestCase
 {
     private ExternalLinkRepository&MockObject $linkRepository;
@@ -23,9 +21,6 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $this->linkRepository = $this->createMock(ExternalLinkRepository::class);
     }
 
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         $extension = new ExternalLinkExtension($this->linkRepository);
@@ -37,29 +32,21 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         static::assertSame('external_links', $filter->getName());
     }
 
-    /**
-     * @covers ::getLinks
-     * @covers ::injectExternalLinks
-     */
     public function testInjectExternalLinks(): void
     {
-        $html = 'A commit message for JB1234 ticket.';
-        $link = new ExternalLink();
+        $content = 'A commit <message> for JB1234 ticket.';
+        $link    = new ExternalLink();
         $link->setPattern('JB{}');
         $link->setUrl('https://mycompany.com/jira/{}');
-        $expect = 'A commit message for <a href="https://mycompany.com/jira/1234" class="external-link" target="_blank">JB1234</a> ticket.';
+        $expect = 'A commit &lt;message&gt; for <a href="https://mycompany.com/jira/1234" class="external-link" target="_blank">JB1234</a> ticket.';
 
         $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$link]);
 
         $extension = new ExternalLinkExtension($this->linkRepository);
-        $actual    = $extension->injectExternalLinks($html);
+        $actual    = $extension->injectExternalLinks($content);
         static::assertSame($expect, $actual);
     }
 
-    /**
-     * @covers ::getLinks
-     * @covers ::injectExternalLinks
-     */
     public function testInjectExternalLinksMultipleUrls(): void
     {
         $html  = 'F#123 US#456 T#789 A random task';
@@ -79,10 +66,6 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         static::assertSame($expect, $actual);
     }
 
-    /**
-     * @covers ::getLinks
-     * @covers ::injectExternalLinks
-     */
     public function testInjectExternalLinksMultipleOccurrences(): void
     {
         $html = 'A commit message for JB1234 and JB4567 ticket.';
