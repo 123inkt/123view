@@ -45,7 +45,6 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "fdekker/commonmark-ext-emoji": "^1.0",
-        "firebase/php-jwt": "<6.6 || 6.8.1",
         "league/commonmark": "^2.3",
         "league/uri": "^6.8",
         "nesbot/carbon": "^2.64",
