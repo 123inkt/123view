@@ -59,10 +59,10 @@ services:
         container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
         image: bitnami/rabbitmq:latest
         healthcheck:
-            test: rabbitmq-diagnostics -q ping
-            interval: 30s
-            timeout: 30s
-            retries: 10
+            test: rabbitmq-diagnostics check_port_connectivity
+            interval: 1s
+            timeout: 5s
+            retries: 30
 
     mail:
         container_name: ${MAIL_CONTAINER:-mail}
