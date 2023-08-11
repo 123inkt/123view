@@ -10536,15 +10536,15 @@
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
-            "version": "1.0.1",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.123dev.nl/123/dev-tools/phpunit-extensions.git",
+                "url": "https://github.com/123inkt/phpunit-extensions.git",
                 "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.123dev.nl/api/v4/projects/224/packages/composer/archives/digitalrevolution/phpunit-extensions.zip?sha=cd1704783ddf4315cb087b9a0677b3297bde7288",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
                 "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
                 "shasum": ""
             },
@@ -10559,23 +10559,20 @@
                 "symfony/twig-bundle": "<6.0"
             },
             "require-dev": {
-                "digitalrevolution/codequality": "^5.24",
-                "digitalrevolution/php-codesniffer-baseline": "^1.1.2",
                 "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
-                "digitalrevolution/pmd-gitlab-renderer": "^0.3.3",
-                "micheh/phpcs-gitlab": "^1.1",
-                "php-parallel-lint/php-parallel-lint": "^1.3",
                 "phpmd/phpmd": "^2.12",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan": "^1.9.1",
                 "phpstan/phpstan-phpunit": "^1.2.2",
+                "phpstan/phpstan-strict-rules": "^1.5",
                 "phpstan/phpstan-symfony": "^1.2.16",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.7",
                 "symfony/form": "^6.0",
                 "symfony/framework-bundle": "^6.0",
                 "symfony/security-core": "^6.0",
-                "symfony/twig-bundle": "^6.0"
+                "symfony/twig-bundle": "^6.0",
+                "symfony/validator": "^6.0"
             },
             "suggest": {
                 "symfony/form": "Symfony form component is required for testing the controller createForm methods",
@@ -10583,46 +10580,24 @@
                 "symfony/security-core": "Symfony security component is required for testing authentication/authorization related methods",
                 "symfony/twig-bundle": "Symfony twig bundle is required to test rendering templates/forms"
             },
-            "type": "project",
+            "type": "library",
             "autoload": {
+                "files": [
+                    "src/Mock/consecutive.php"
+                ],
                 "psr-4": {
                     "DR\\PHPUnitExtensions\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "DR\\PHPUnitExtensions\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "fix": [
-                    "@fix:phpcbf"
-                ],
-                "test": [
-                    "phpunit"
-                ],
-                "check": [
-                    "@check:phpstan",
-                    "@check:phpmd",
-                    "@check:phpcs"
-                ],
-                "fix:phpcbf": [
-                    "phpcbf src tests"
-                ],
-                "check:phpcs": [
-                    "phpcs src tests"
-                ],
-                "check:phpmd": [
-                    "phpmd src,tests text phpmd.xml --suffixes=php"
-                ],
-                "check:phpstan": [
-                    "phpstan analyse"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "proprietary"
+                "MIT"
             ],
-            "description": "Digital Revolution skeleton package",
+            "description": "A library for phpunit utility and support classes",
+            "support": {
+                "issues": "https://github.com/123inkt/phpunit-extensions/issues",
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.0.1"
+            },
             "time": "2023-07-11T10:33:26+00:00"
         },
         {
