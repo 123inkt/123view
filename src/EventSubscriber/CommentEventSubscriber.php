@@ -3,58 +3,33 @@ declare(strict_types=1);
 
 namespace DR\Review\EventSubscriber;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Utils\Assert;
 
-class CommentEventSubscriber implements EventSubscriberInterface
+/**
+ * When comment or reply is created or updated, update user mentions
+ */
+#[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
+#[AsEntityListener(event: Events::postPersist, method: 'commentUpdated', entity: Comment::class)]
+#[AsEntityListener(event: Events::postUpdate, method: 'commentReplyUpdated', entity: CommentReply::class)]
+#[AsEntityListener(event: Events::postPersist, method: 'commentReplyUpdated', entity: CommentReply::class)]
+class CommentEventSubscriber
 {
     public function __construct(private readonly CommentMentionService $mentionService)
     {
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getSubscribedEvents(): array
+    public function commentUpdated(Comment $comment): void
     {
-        return [
-            Events::postPersist,
-            Events::postUpdate,
-        ];
+        $this->mentionService->updateMentions($comment);
     }
 
-    /**
-     * @param LifecycleEventArgs<ObjectManager> $args
-     */
-    public function postPersist(LifecycleEventArgs $args): void
+    public function commentReplyUpdated(CommentReply $reply): void
     {
-        $this->update($args);
-    }
-
-    /**
-     * @param LifecycleEventArgs<ObjectManager> $args
-     */
-    public function postUpdate(LifecycleEventArgs $args): void
-    {
-        $this->update($args);
-    }
-
-    /**
-     * @param LifecycleEventArgs<ObjectManager> $args
-     */
-    private function update(LifecycleEventArgs $args): void
-    {
-        $object = $args->getObject();
-        if ($object instanceof Comment) {
-            $this->mentionService->updateMentions($object);
-        } elseif ($object instanceof CommentReply) {
-            $this->mentionService->updateMentions(Assert::notNull($object->getComment()));
-        }
+        $this->mentionService->updateMentions(Assert::notNull($reply->getComment()));
     }
 }
