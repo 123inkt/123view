@@ -53,7 +53,7 @@ docker compose down
 # setup network
 #
 docker network rm 123view-network || true
-docker network create --driver bridge 123view-network || true
+#docker network create --driver bridge 123view-network || true
 
 ##
 # remove cache directory

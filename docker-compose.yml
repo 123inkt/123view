@@ -102,3 +102,8 @@ services:
 networks:
     default:
         name: 123view-network
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: ${DOCKER_SUBNET}
