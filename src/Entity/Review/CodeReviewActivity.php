@@ -64,17 +64,17 @@ class CodeReviewActivity
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CodeReview $review = null;
+    private CodeReview $review;
 
     #[ORM\Column]
-    private ?string $eventName = null;
+    private string $eventName;
 
     /** @var array<string, int|float|bool|string|null> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $data = [];
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     public function getId(): ?int
     {
@@ -100,7 +100,7 @@ class CodeReviewActivity
         return $this;
     }
 
-    public function getReview(): ?CodeReview
+    public function getReview(): CodeReview
     {
         return $this->review;
     }
@@ -112,7 +112,7 @@ class CodeReviewActivity
         return $this;
     }
 
-    public function getEventName(): ?string
+    public function getEventName(): string
     {
         return $this->eventName;
     }
@@ -147,7 +147,7 @@ class CodeReviewActivity
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
