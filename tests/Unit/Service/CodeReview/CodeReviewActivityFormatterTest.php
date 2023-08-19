@@ -221,6 +221,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity = new CodeReviewActivity();
         $activity->setEventName(CommentAdded::NAME);
         $activity->setData(['commentId' => 789, 'file' => 'filepath']);
+        $activity->setReview(new CodeReview());
 
         $this->translator->expects(self::once())
             ->method('trans')

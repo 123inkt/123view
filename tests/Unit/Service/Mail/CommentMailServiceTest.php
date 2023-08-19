@@ -54,6 +54,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setUser($user);
         $review = new CodeReview();
+        $review->setProjectId(123);
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
@@ -84,6 +85,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setUser($userA);
         $review = new CodeReview();
+        $review->setProjectId(123);
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
