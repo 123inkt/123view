@@ -47,19 +47,19 @@ class Repository
     #[Constraint\Regex('/^[a-z][a-z0-9-]*[a-z0-9]$/')]
     #[Constraint\Length(min: 2, max: 255)]
     #[Groups(['repository:read'])]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Constraint\Length(max: 255)]
     #[Groups(['repository:read'])]
-    private ?string $displayName = null;
+    private string $displayName;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
     #[Constraint\Length(max: 255)]
     private string $mainBranchName = 'master';
 
     #[ORM\Column(type: UriType::TYPE, length: 255)]
-    private ?UriInterface $url = null;
+    private UriInterface $url;
 
     #[ORM\Column]
     private bool $favorite = false;
@@ -131,7 +131,7 @@ class Repository
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -143,12 +143,12 @@ class Repository
         return $this;
     }
 
-    public function getDisplayName(): ?string
+    public function getDisplayName(): string
     {
         return $this->displayName;
     }
 
-    public function setDisplayName(?string $displayName): self
+    public function setDisplayName(string $displayName): self
     {
         $this->displayName = $displayName;
 
@@ -167,7 +167,7 @@ class Repository
         return $this;
     }
 
-    public function getUrl(): ?UriInterface
+    public function getUrl(): UriInterface
     {
         return $this->url;
     }

@@ -17,23 +17,23 @@ class CodeInspectionIssue
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $severity = null;
+    private string $severity;
 
     #[ORM\Column(length: 255)]
-    private ?string $file = null;
+    private string $file;
 
     #[ORM\Column]
-    private ?int $lineNumber = null;
+    private int $lineNumber;
 
     #[ORM\Column(length: 255)]
-    private ?string $message = null;
+    private string $message;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $rule = null;
 
     #[ORM\ManyToOne(targetEntity: CodeInspectionReport::class, inversedBy: "issues")]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CodeInspectionReport $report = null;
+    private CodeInspectionReport $report;
 
     public function getId(): ?int
     {
@@ -47,51 +47,51 @@ class CodeInspectionIssue
         return $this;
     }
 
-    public function getSeverity(): ?string
+    public function getSeverity(): string
     {
         return $this->severity;
     }
 
-    public function setSeverity(?string $severity): CodeInspectionIssue
+    public function setSeverity(string $severity): CodeInspectionIssue
     {
         $this->severity = $severity;
 
         return $this;
     }
 
-    public function getFile(): ?string
+    public function getFile(): string
     {
         return $this->file;
     }
 
-    public function setFile(?string $file): CodeInspectionIssue
+    public function setFile(string $file): CodeInspectionIssue
     {
         $this->file = $file;
 
         return $this;
     }
 
-    public function getLineNumber(): ?int
+    public function getLineNumber(): int
     {
         return $this->lineNumber;
     }
 
-    public function setLineNumber(?int $lineNumber): CodeInspectionIssue
+    public function setLineNumber(int $lineNumber): CodeInspectionIssue
     {
         $this->lineNumber = $lineNumber;
 
         return $this;
     }
 
-    public function getMessage(): ?string
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    public function setMessage(?string $message): CodeInspectionIssue
+    public function setMessage(string $message): CodeInspectionIssue
     {
         // @codeCoverageIgnoreStart
-        if ($message !== null && mb_strlen($message) > 255) {
+        if (mb_strlen($message) > 255) {
             $message = mb_substr($message, 0, 250) . '...';
         }
         // @codeCoverageIgnoreEnd
@@ -113,12 +113,12 @@ class CodeInspectionIssue
         return $this;
     }
 
-    public function getReport(): ?CodeInspectionReport
+    public function getReport(): CodeInspectionReport
     {
         return $this->report;
     }
 
-    public function setReport(?CodeInspectionReport $report): CodeInspectionIssue
+    public function setReport(CodeInspectionReport $report): CodeInspectionIssue
     {
         $this->report = $report;
 
