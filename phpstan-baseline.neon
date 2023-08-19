@@ -26,6 +26,11 @@ parameters:
 			path: src/ApiPlatform/Provider/CodeReviewProvider.php
 
 		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Report\\\\CodeCoverageFile\\:\\:\\$percentage type mapping mismatch\\: database can contain string\\|null but property expects float\\|null\\.$#"
+			count: 1
+			path: src/Entity/Report/CodeCoverageFile.php
+
+		-
 			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
