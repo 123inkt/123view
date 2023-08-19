@@ -18,16 +18,16 @@ class Webhook
     private ?int $id = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private ?bool $enabled = null;
+    private bool $enabled = true;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $url = null;
+    private string $url;
 
     #[ORM\Column(type: 'integer', options: ['default' => 3])]
-    private ?int $retries = 3;
+    private int $retries = 3;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    private ?bool $verifySsl = null;
+    private bool $verifySsl = true;
 
     /** @var array<string, string> */
     #[ORM\Column(type: 'json', nullable: true)]
@@ -59,7 +59,7 @@ class Webhook
         return $this->id;
     }
 
-    public function isEnabled(): ?bool
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -71,7 +71,7 @@ class Webhook
         return $this;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -83,19 +83,19 @@ class Webhook
         return $this;
     }
 
-    public function getRetries(): ?int
+    public function getRetries(): int
     {
         return $this->retries;
     }
 
-    public function setRetries(?int $retries): Webhook
+    public function setRetries(int $retries): Webhook
     {
         $this->retries = $retries;
 
         return $this;
     }
 
-    public function isVerifySsl(): ?bool
+    public function isVerifySsl(): bool
     {
         return $this->verifySsl;
     }

@@ -16,24 +16,24 @@ class WebhookActivity
     private ?int $id = null;
 
     #[ORM\Column(type: 'text', length: 65535)]
-    private ?string $request = null;
+    private string $request;
 
     /** @var array<string, string> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $requestHeaders = [];
 
     #[ORM\Column(type: 'integer')]
-    private ?int $statusCode = null;
+    private int $statusCode;
 
     #[ORM\Column(type: 'text', length: 65535)]
-    private ?string $response = null;
+    private string $response;
 
     /** @var array<string, string|string[]> */
     #[ORM\Column(type: 'json', nullable: true)]
     private array $responseHeaders = [];
 
     #[ORM\Column(type: 'integer')]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: Webhook::class, cascade: ['persist'], inversedBy: 'activities')]
     private ?Webhook $webhook = null;
@@ -50,7 +50,7 @@ class WebhookActivity
         return $this->id;
     }
 
-    public function getRequest(): ?string
+    public function getRequest(): string
     {
         return $this->request;
     }
@@ -80,7 +80,7 @@ class WebhookActivity
         return $this;
     }
 
-    public function getStatusCode(): ?int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -92,7 +92,7 @@ class WebhookActivity
         return $this;
     }
 
-    public function getResponse(): ?string
+    public function getResponse(): string
     {
         return $this->response;
     }
@@ -122,7 +122,7 @@ class WebhookActivity
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }

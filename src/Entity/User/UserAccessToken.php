@@ -17,20 +17,20 @@ class UserAccessToken
     private ?int $id = null;
 
     #[ORM\Column(length: 80, options: ['fixed' => true])]
-    private ?string $token = null;
+    private string $token;
 
     #[ORM\Column(length: 100)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(options: ['default' => 0])]
     private int $usages = 0;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\Column(nullable: true)]
     private ?int $useTimestamp = null;
@@ -47,7 +47,7 @@ class UserAccessToken
         return $this;
     }
 
-    public function getToken(): ?string
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -59,24 +59,24 @@ class UserAccessToken
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): UserAccessToken
+    public function setName(string $name): UserAccessToken
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): UserAccessToken
+    public function setUser(User $user): UserAccessToken
     {
         $this->user = $user;
 
@@ -95,12 +95,12 @@ class UserAccessToken
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): UserAccessToken
+    public function setCreateTimestamp(int $createTimestamp): UserAccessToken
     {
         $this->createTimestamp = $createTimestamp;
 
