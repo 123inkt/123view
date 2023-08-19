@@ -48,7 +48,7 @@ class UserAccessTokenIssuerTest extends AbstractTestCase
                         static::assertSame('token', $token->getToken());
                         static::assertSame('name', $token->getName());
                         static::assertSame($user, $token->getUser());
-                        static::assertNotNull($token->getCreateTimestamp());
+                        static::assertGreaterThan(0, $token->getCreateTimestamp());
                         static::assertNull($token->getUseTimestamp());
 
                         return true;

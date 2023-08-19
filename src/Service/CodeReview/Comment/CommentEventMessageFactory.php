@@ -16,22 +16,22 @@ class CommentEventMessageFactory
     public function createAdded(Comment $comment, User $user): CommentAdded
     {
         return new CommentAdded(
-            (int)$comment->getReview()?->getId(),
+            (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             (int)$user->getId(),
-            (string)$comment->getLineReference()?->filePath,
-            (string)$comment->getMessage()
+            $comment->getLineReference()->filePath,
+            $comment->getMessage()
         );
     }
 
     public function createUpdated(Comment $comment, User $user, string $originalComment): CommentUpdated
     {
         return new CommentUpdated(
-            (int)$comment->getReview()?->getId(),
+            (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             (int)$user->getId(),
-            (string)$comment->getLineReference()?->filePath,
-            (string)$comment->getMessage(),
+            $comment->getLineReference()->filePath,
+            $comment->getMessage(),
             $originalComment
         );
     }
@@ -39,31 +39,31 @@ class CommentEventMessageFactory
     public function createResolved(Comment $comment, User $user): CommentResolved
     {
         return new CommentResolved(
-            (int)$comment->getReview()?->getId(),
+            (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             (int)$user->getId(),
-            (string)$comment->getLineReference()?->filePath,
+            $comment->getLineReference()->filePath,
         );
     }
 
     public function createUnresolved(Comment $comment, User $user): CommentUnresolved
     {
         return new CommentUnresolved(
-            (int)$comment->getReview()?->getId(),
+            (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             (int)$user->getId(),
-            (string)$comment->getLineReference()?->filePath,
+            $comment->getLineReference()->filePath,
         );
     }
 
     public function createRemoved(Comment $comment, User $user): CommentRemoved
     {
         return new CommentRemoved(
-            (int)$comment->getReview()?->getId(),
+            (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             (int)$user->getId(),
-            (string)$comment->getLineReference()?->filePath,
-            (string)$comment->getMessage(),
+            $comment->getLineReference()->filePath,
+            $comment->getMessage(),
         );
     }
 }

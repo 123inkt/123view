@@ -38,6 +38,6 @@ class CommentReplyVoter extends Voter
         $reply = $subject;
 
         // user must own the comment
-        return $reply->getUser()?->getId() === $user->getId();
+        return $reply->getUser()->getId() === $user->getId();
     }
 }

@@ -45,7 +45,7 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
             $issues[] = $issue = new CodeInspectionIssue();
             $issue->setFile($filePath);
             $issue->setLineNumber((int)$testCaseElement->getAttribute('line'));
-            $issue->setMessage(preg_replace('/[ ]+/', ' ', str_replace($basePath, '', trim($issueElement->textContent))));
+            $issue->setMessage(Assert::string(preg_replace('/[ ]+/', ' ', str_replace($basePath, '', trim($issueElement->textContent)))));
             $issue->setSeverity(strtolower((string)$issueElement->nodeName));
             $issue->setRule((string)$issueElement->getAttribute('type'));
         }

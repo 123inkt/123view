@@ -64,6 +64,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $review  = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
+        $comment->setMessage('message');
         $comment->setReview($review);
 
         $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);

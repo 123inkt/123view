@@ -19,26 +19,26 @@ class Revision
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $commitHash = null;
+    private string $commitHash;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column(length: 255)]
-    private ?string $authorEmail = null;
+    private string $authorEmail;
 
     #[ORM\Column(length: 255)]
-    private ?string $authorName = null;
+    private string $authorName;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'revisions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Repository $repository = null;
+    private Repository $repository;
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'revisions')]
     private ?CodeReview $review = null;
@@ -55,7 +55,7 @@ class Revision
         return $this->id;
     }
 
-    public function getCommitHash(): ?string
+    public function getCommitHash(): string
     {
         return $this->commitHash;
     }
@@ -67,7 +67,7 @@ class Revision
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -79,19 +79,19 @@ class Revision
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getAuthorEmail(): ?string
+    public function getAuthorEmail(): string
     {
         return $this->authorEmail;
     }
@@ -103,7 +103,7 @@ class Revision
         return $this;
     }
 
-    public function getAuthorName(): ?string
+    public function getAuthorName(): string
     {
         return $this->authorName;
     }
@@ -115,7 +115,7 @@ class Revision
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
@@ -127,12 +127,12 @@ class Revision
         return $this;
     }
 
-    public function getRepository(): ?Repository
+    public function getRepository(): Repository
     {
         return $this->repository;
     }
 
-    public function setRepository(?Repository $repository): self
+    public function setRepository(Repository $repository): self
     {
         $this->repository = $repository;
 

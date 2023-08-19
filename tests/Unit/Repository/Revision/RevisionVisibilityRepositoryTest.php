@@ -12,6 +12,7 @@ use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Tests\DataFixtures\RevisionFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
+use DR\Utils\Assert;
 use Exception;
 
 /**
@@ -27,9 +28,9 @@ class RevisionVisibilityRepositoryTest extends AbstractRepositoryTestCase
      */
     public function testSaveAll(): void
     {
-        $review   = self::getService(CodeReviewRepository::class)->findOneBy(['title' => 'title']);
-        $revision = self::getService(RevisionRepository::class)->findOneBy(['title' => 'title']);
-        $user     = self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']);
+        $review   = Assert::notNull(self::getService(CodeReviewRepository::class)->findOneBy(['title' => 'title']));
+        $revision = Assert::notNull(self::getService(RevisionRepository::class)->findOneBy(['title' => 'title']));
+        $user     = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
 
         $visibility = new RevisionVisibility();
         $visibility->setRevision($revision);

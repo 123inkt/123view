@@ -23,7 +23,7 @@ class IsValidPatternValidator extends ConstraintValidator
         switch ($value->getType()) {
             // pattern should be valid e-mail
             case FilterType::AUTHOR:
-                if (preg_match('/^.+@\S+\.\S+$/', (string)$value->getPattern()) === 1) {
+                if (preg_match('/^.+@\S+\.\S+$/', $value->getPattern()) === 1) {
                     return true;
                 }
 
@@ -37,7 +37,7 @@ class IsValidPatternValidator extends ConstraintValidator
             case FilterType::SUBJECT:
             case FilterType::FILE:
                 // validating regex, suppress any warnings preg_match gives.
-                if (@preg_match((string)$value->getPattern(), '') !== false) {
+                if (@preg_match($value->getPattern(), '') !== false) {
                     return true;
                 }
 

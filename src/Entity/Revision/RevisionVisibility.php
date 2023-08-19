@@ -15,51 +15,51 @@ class RevisionVisibility
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Revision::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Revision $revision = null;
+    private Revision $revision;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CodeReview $review = null;
+    private CodeReview $review;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(nullable: false)]
     private bool $visible = true;
 
-    public function getRevision(): ?Revision
+    public function getRevision(): Revision
     {
         return $this->revision;
     }
 
-    public function setRevision(?Revision $revision): self
+    public function setRevision(Revision $revision): self
     {
         $this->revision = $revision;
 
         return $this;
     }
 
-    public function getReview(): ?CodeReview
+    public function getReview(): CodeReview
     {
         return $this->review;
     }
 
-    public function setReview(?CodeReview $review): self
+    public function setReview(CodeReview $review): self
     {
         $this->review = $review;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

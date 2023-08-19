@@ -35,7 +35,7 @@ class RecipientCollectionTypeTest extends AbstractTestCase
 
         $deleteEmpty = $introspector->getDefault('delete_empty');
         static::assertIsCallable($deleteEmpty);
-        static::assertTrue($deleteEmpty((new Recipient())));
+        static::assertTrue($deleteEmpty(null));
         static::assertFalse($deleteEmpty((new Recipient())->setEmail('email')));
 
         $constraints = $introspector->getDefault('constraints');

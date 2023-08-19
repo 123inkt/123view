@@ -46,10 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $password = null;
@@ -97,7 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -109,7 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -165,12 +165,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function removeRule(Rule $rule): self
     {
-        if ($this->rules->removeElement($rule)) {
-            // set the owning side to null (unless already changed)
-            if ($rule->getUser() === $this) {
-                $rule->setUser(null);
-            }
-        }
+        $this->rules->removeElement($rule);
 
         return $this;
     }
@@ -180,7 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return $this->email;
     }
 
     /**

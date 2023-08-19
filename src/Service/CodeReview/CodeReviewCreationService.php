@@ -25,7 +25,7 @@ class CodeReviewCreationService implements LoggerAwareInterface
     public function createFromRevision(Revision $revision, ?string $referenceId = null): CodeReview
     {
         $review = $this->reviewFactory->createFromRevision($revision, $referenceId);
-        $review->setProjectId($this->reviewRepository->getCreateProjectId((int)$revision->getRepository()?->getId()));
+        $review->setProjectId($this->reviewRepository->getCreateProjectId((int)$revision->getRepository()->getId()));
         $this->logger?->info('Created new review CR-' . $review->getProjectId());
 
         return $review;

@@ -46,7 +46,7 @@ class ReviewsController extends AbstractController
         }
 
         return [
-            'page_title'   => ucfirst((string)$repository->getDisplayName()),
+            'page_title'   => ucfirst($repository->getDisplayName()),
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
             'reviewsModel' => $this->viewModelProvider->getReviewsViewModel($request, $terms, $repository)
         ];

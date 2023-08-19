@@ -54,6 +54,8 @@ class CommentMailServiceTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setUser($user);
         $review = new CodeReview();
+        $review->setProjectId(123);
+        $review->setTitle('title');
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
@@ -72,18 +74,23 @@ class CommentMailServiceTest extends AbstractTestCase
         $userA = new User();
         $userA->setId(5);
         $userA->setEmail('sherlock@example.com');
+        $userA->setName('Holmes');
         $userA->getSetting()->setMailCommentAdded(true);
         $userB = new User();
         $userB->setId(6);
         $userB->setEmail('watson@example.com');
+        $userB->setName('Watson');
         $userB->getSetting()->setMailCommentAdded(true);
         $userC = new User();
         $userC->setId(7);
         $userC->setEmail('enola@example.com');
+        $userC->setName('Holmes');
         $userC->getSetting()->setMailCommentAdded(false);
         $comment = new Comment();
         $comment->setUser($userA);
         $review = new CodeReview();
+        $review->setProjectId(123);
+        $review->setTitle('title');
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
@@ -119,6 +126,8 @@ class CommentMailServiceTest extends AbstractTestCase
         $reply = new CommentReply();
         $reply->setUser($user);
         $review = new CodeReview();
+        $review->setProjectId(123);
+        $review->setTitle('title');
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
@@ -135,23 +144,17 @@ class CommentMailServiceTest extends AbstractTestCase
      */
     public function testSendNewCommentReplyMail(): void
     {
-        $userA = new User();
-        $userA->setId(5);
-        $userA->setEmail('sherlock@example.com');
+        $userA = (new User())->setId(5)->setEmail('sherlock@example.com')->setName('name');
         $userA->getSetting()->setMailCommentReplied(true);
-        $userB = new User();
-        $userB->setId(6);
-        $userB->setEmail('watson@example.com');
+        $userB = (new User())->setId(6)->setEmail('watson@example.com')->setName('name');
         $userB->getSetting()->setMailCommentReplied(true);
-        $userC = new User();
-        $userC->setId(7);
-        $userC->setEmail('enola@example.com');
+        $userC = (new User())->setId(7)->setEmail('enola@example.com')->setName('name');
         $userC->getSetting()->setMailCommentReplied(false);
         $comment = new Comment();
         $comment->setUser($userA);
         $reply = new CommentReply();
         $reply->setUser($userA);
-        $review = new CodeReview();
+        $review = (new CodeReview())->setProjectId(123)->setTitle('title');
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
@@ -184,6 +187,8 @@ class CommentMailServiceTest extends AbstractTestCase
         $user    = (new User())->setId(5);
         $comment = new Comment();
         $review  = new CodeReview();
+        $review->setProjectId(123);
+        $review->setTitle('title');
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
@@ -200,21 +205,15 @@ class CommentMailServiceTest extends AbstractTestCase
      */
     public function testSendCommentResolvedMail(): void
     {
-        $userA = new User();
-        $userA->setId(5);
-        $userA->setEmail('sherlock@example.com');
+        $userA = (new User())->setId(5)->setEmail('sherlock@example.com')->setName('name');
         $userA->getSetting()->setMailCommentResolved(true);
-        $userB = new User();
-        $userB->setId(6);
-        $userB->setEmail('watson@example.com');
+        $userB = (new User())->setId(6)->setEmail('watson@example.com')->setName('name');
         $userB->getSetting()->setMailCommentResolved(true);
-        $userC = new User();
-        $userC->setId(7);
-        $userC->setEmail('enola@example.com');
+        $userC = (new User())->setId(7)->setEmail('enola@example.com')->setName('name');
         $userC->getSetting()->setMailCommentResolved(false);
         $comment = new Comment();
         $comment->setUser($userA);
-        $review = new CodeReview();
+        $review = (new CodeReview())->setProjectId(123)->setTitle('title');
 
         $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
         $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);

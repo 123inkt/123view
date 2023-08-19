@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\AddCommentReactionController;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
@@ -40,6 +41,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
 
         $user    = new User();
         $comment = new Comment();
+        $comment->setReview(new CodeReview());
 
         $this->expectGetUser($user);
         $this->commentRepository

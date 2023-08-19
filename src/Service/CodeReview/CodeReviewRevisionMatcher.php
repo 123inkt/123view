@@ -42,7 +42,7 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
             return false;
         }
 
-        if ($revision->getCreateTimestamp() < $revision->getRepository()?->getCreateTimestamp()) {
+        if ($revision->getCreateTimestamp() < $revision->getRepository()->getCreateTimestamp()) {
             $this->logger?->info('Matcher: revision was created before the repository was added to the project: ' . $revision->getId());
 
             return false;
@@ -63,7 +63,7 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
     public function match(Revision $revision): ?CodeReview
     {
         // normalize message
-        $revisionTitle = $this->titleNormalizer->normalize((string)$revision->getTitle());
+        $revisionTitle = $this->titleNormalizer->normalize($revision->getTitle());
 
         // get review id matcher
         $referenceId = $this->patternMatcher->match($revisionTitle);

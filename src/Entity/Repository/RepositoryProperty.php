@@ -12,34 +12,34 @@ class RepositoryProperty
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'repositoryProperties')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Repository $repository;
+    private Repository $repository;
 
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $value;
+    private string $value;
 
-    public function __construct(?string $name = null, ?string $value = null)
+    public function __construct(string $name, string $value)
     {
         $this->name  = $name;
         $this->value = $value;
     }
 
-    public function getRepository(): ?Repository
+    public function getRepository(): Repository
     {
         return $this->repository;
     }
 
-    public function setRepository(?Repository $repository): self
+    public function setRepository(Repository $repository): self
     {
         $this->repository = $repository;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -51,7 +51,7 @@ class RepositoryProperty
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue(): string
     {
         return $this->value;
     }

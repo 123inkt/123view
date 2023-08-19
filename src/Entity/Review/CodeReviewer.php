@@ -17,18 +17,18 @@ class CodeReviewer
     private ?int $id = null;
 
     #[ORM\Column(type: CodeReviewerStateType::TYPE, options: ['default' => CodeReviewerStateType::OPEN])]
-    private ?string $state = CodeReviewerStateType::OPEN;
+    private string $state = CodeReviewerStateType::OPEN;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $stateTimestamp = null;
+    private int $stateTimestamp;
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'reviewers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CodeReview $review = null;
+    private CodeReview $review;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'reviewers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     public function setId(int $id): self
     {
@@ -42,7 +42,7 @@ class CodeReviewer
         return $this->id;
     }
 
-    public function getState(): ?string
+    public function getState(): string
     {
         return $this->state;
     }
@@ -57,32 +57,32 @@ class CodeReviewer
         return $this;
     }
 
-    public function getStateTimestamp(): ?int
+    public function getStateTimestamp(): int
     {
         return $this->stateTimestamp;
     }
 
-    public function setStateTimestamp(?int $stateTimestamp): void
+    public function setStateTimestamp(int $stateTimestamp): void
     {
         $this->stateTimestamp = $stateTimestamp;
     }
 
-    public function getReview(): ?CodeReview
+    public function getReview(): CodeReview
     {
         return $this->review;
     }
 
-    public function setReview(?CodeReview $review): void
+    public function setReview(CodeReview $review): void
     {
         $this->review = $review;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

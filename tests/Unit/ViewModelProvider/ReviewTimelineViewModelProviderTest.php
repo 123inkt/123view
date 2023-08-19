@@ -56,8 +56,10 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     public function testGetTimelineViewModel(): void
     {
         $activityA = new CodeReviewActivity();
+        $activityA->setEventName('event');
         $activityB = new CodeReviewActivity();
-        $review    = new CodeReview();
+        $activityB->setEventName('event');
+        $review = new CodeReview();
         $review->setId(123);
 
         $this->activityRepository->expects(self::once())

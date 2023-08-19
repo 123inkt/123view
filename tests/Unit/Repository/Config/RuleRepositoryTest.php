@@ -30,6 +30,7 @@ class RuleRepositoryTest extends AbstractRepositoryTestCase
 
         $rule = new Rule();
         $rule->setUser($user);
+        $rule->setRuleOptions(new RuleOptions());
         $rule->setName('rule');
         $rule->setActive(true);
         $rule->setRuleOptions((new RuleOptions())->setFrequency(Frequency::ONCE_PER_DAY));

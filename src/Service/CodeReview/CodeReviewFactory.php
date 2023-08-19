@@ -22,7 +22,7 @@ class CodeReviewFactory
         $review->setUpdateTimestamp(time());
         $review->setType(CodeReviewType::COMMITS);
         $review->setReferenceId($referenceId);
-        $review->setTitle($this->titleNormalizer->normalize((string)$revision->getTitle()));
+        $review->setTitle($this->titleNormalizer->normalize($revision->getTitle()));
         $review->setDescription($revision->getDescription());
         $review->setRepository($revision->getRepository());
 

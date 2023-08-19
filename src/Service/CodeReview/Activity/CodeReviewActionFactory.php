@@ -29,8 +29,8 @@ class CodeReviewActionFactory
         if (preg_match('/^([a-z-]+):(.*)$/', (string)$request->query->get('action'), $matches) !== 1) {
             return null;
         }
-        $action = (string)$matches[1];
-        $value  = (string)$matches[2];
+        $action = $matches[1];
+        $value  = $matches[2];
 
         return match ($action) {
             self::ACTION_ADD_COMMENT  => new AddCommentAction(LineReference::fromString($request->query->get('filePath') . ':' . $value)),

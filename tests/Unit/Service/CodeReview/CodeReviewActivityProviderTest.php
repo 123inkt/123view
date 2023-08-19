@@ -51,7 +51,7 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         static::assertSame($user, $activity->getUser());
         static::assertSame(ReviewOpened::NAME, $activity->getEventName());
         static::assertSame(['reviewId' => 123, 'userId' => 789], $activity->getData());
-        static::assertNotNull($activity->getCreateTimestamp());
+        static::assertGreaterThan(0, $activity->getCreateTimestamp());
     }
 
     /**

@@ -21,20 +21,20 @@ class CodeInspectionReport
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $commitHash = null;
+    private string $commitHash;
 
     #[ORM\Column(length: 50)]
-    private ?string $inspectionId = null;
+    private string $inspectionId;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $branchId = null;
 
     #[ORM\ManyToOne(targetEntity: Repository::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Repository $repository = null;
+    private Repository $repository;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     /** @phpstan-var Collection<int, CodeInspectionIssue> */
     #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeInspectionIssue::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -57,24 +57,24 @@ class CodeInspectionReport
         return $this;
     }
 
-    public function getCommitHash(): ?string
+    public function getCommitHash(): string
     {
         return $this->commitHash;
     }
 
-    public function setCommitHash(?string $commitHash): self
+    public function setCommitHash(string $commitHash): self
     {
         $this->commitHash = $commitHash;
 
         return $this;
     }
 
-    public function getInspectionId(): ?string
+    public function getInspectionId(): string
     {
         return $this->inspectionId;
     }
 
-    public function setInspectionId(?string $inspectionId): self
+    public function setInspectionId(string $inspectionId): self
     {
         $this->inspectionId = $inspectionId;
 
@@ -93,24 +93,24 @@ class CodeInspectionReport
         return $this;
     }
 
-    public function getRepository(): ?Repository
+    public function getRepository(): Repository
     {
         return $this->repository;
     }
 
-    public function setRepository(?Repository $repository): self
+    public function setRepository(Repository $repository): self
     {
         $this->repository = $repository;
 
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): self
+    public function setCreateTimestamp(int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
 

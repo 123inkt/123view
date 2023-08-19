@@ -21,7 +21,7 @@ class Rule
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'rules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(type: 'boolean')]
     private bool $active = false;
@@ -29,7 +29,7 @@ class Rule
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 255)]
-    private ?string $name = null;
+    private string $name;
 
     /** @phpstan-var Collection<int, Repository> */
     #[ORM\ManyToMany(targetEntity: Repository::class)]
@@ -65,12 +65,12 @@ class Rule
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
@@ -145,12 +145,7 @@ class Rule
 
     public function removeRecipient(Recipient $recipient): self
     {
-        if ($this->recipients->removeElement($recipient)) {
-            // set the owning side to null (unless already changed)
-            if ($recipient->getRule() === $this) {
-                $recipient->setRule(null);
-            }
-        }
+        $this->recipients->removeElement($recipient);
 
         return $this;
     }
@@ -175,12 +170,7 @@ class Rule
 
     public function removeFilter(Filter $filter): self
     {
-        if ($this->filters->removeElement($filter)) {
-            // set the owning side to null (unless already changed)
-            if ($filter->getRule() === $this) {
-                $filter->setRule(null);
-            }
-        }
+        $this->filters->removeElement($filter);
 
         return $this;
     }
@@ -192,11 +182,8 @@ class Rule
 
     public function setRuleOptions(RuleOptions $ruleOptions): self
     {
-        // set the owning side of the relation if necessary
-        if ($ruleOptions->getRule() !== $this) {
-            $ruleOptions->setRule($this);
-        }
-
+        // set the owning side of the relation
+        $ruleOptions->setRule($this);
         $this->ruleOptions = $ruleOptions;
 
         return $this;

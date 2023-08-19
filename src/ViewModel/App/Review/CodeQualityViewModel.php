@@ -24,7 +24,7 @@ class CodeQualityViewModel
 
         // create lookup table based on line number
         foreach ($issues as $issue) {
-            $this->issues[(int)$issue->getLineNumber()][] = $issue;
+            $this->issues[$issue->getLineNumber()][] = $issue;
         }
     }
 

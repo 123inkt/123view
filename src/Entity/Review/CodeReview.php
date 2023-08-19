@@ -85,16 +85,16 @@ class CodeReview
 
     /** Unique key per project to have a incremental sequence per repository instead of a global sequence */
     #[ORM\Column]
-    private ?int $projectId = null;
+    private int $projectId;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $referenceId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
     private string $type = CodeReviewType::COMMITS;
@@ -108,14 +108,14 @@ class CodeReview
     private array $actors = [];
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\Column]
-    private ?int $updateTimestamp = null;
+    private int $updateTimestamp;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Repository $repository = null;
+    private Repository $repository;
 
     /** @phpstan-var Collection<int, Revision> */
     #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false, indexBy: 'id')]
@@ -149,12 +149,12 @@ class CodeReview
         return $this->id;
     }
 
-    public function getProjectId(): ?int
+    public function getProjectId(): int
     {
         return $this->projectId;
     }
 
-    public function setProjectId(?int $projectId): self
+    public function setProjectId(int $projectId): self
     {
         $this->projectId = $projectId;
 
@@ -173,7 +173,7 @@ class CodeReview
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -185,12 +185,12 @@ class CodeReview
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -221,36 +221,36 @@ class CodeReview
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): self
+    public function setCreateTimestamp(int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
 
-    public function getUpdateTimestamp(): ?int
+    public function getUpdateTimestamp(): int
     {
         return $this->updateTimestamp;
     }
 
-    public function setUpdateTimestamp(?int $updateTimestamp): self
+    public function setUpdateTimestamp(int $updateTimestamp): self
     {
         $this->updateTimestamp = $updateTimestamp;
 
         return $this;
     }
 
-    public function getRepository(): ?Repository
+    public function getRepository(): Repository
     {
         return $this->repository;
     }
 
-    public function setRepository(?Repository $repository): self
+    public function setRepository(Repository $repository): self
     {
         $this->repository = $repository;
 
@@ -323,7 +323,7 @@ class CodeReview
     public function getReviewer(User $user): ?CodeReviewer
     {
         foreach ($this->reviewers as $reviewer) {
-            if ($reviewer->getUser()?->getId() === $user->getId()) {
+            if ($reviewer->getUser()->getId() === $user->getId()) {
                 return $reviewer;
             }
         }

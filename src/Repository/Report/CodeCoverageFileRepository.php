@@ -29,7 +29,7 @@ class CodeCoverageFileRepository extends ServiceEntityRepository
      */
     public function findOneByRevisions(Repository $repository, array $revisions, string $filePath): ?CodeCoverageFile
     {
-        $hashes = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
+        $hashes = array_values(array_map(static fn(Revision $rev): string => $rev->getCommitHash(), $revisions));
         $query  = $this->createQueryBuilder('f')
             ->leftJoin('f.report', 'r')
             ->where('r.repository = :repositoryId')

@@ -14,7 +14,7 @@ class RuleFactory
             ->setUser($user)
             ->setActive(true)
             ->setRuleOptions(new RuleOptions())
-            ->addRecipient((new Recipient())->setEmail($user->getEmail() ?? '')->setName($user->getName() ?? ''))
-            ->addFilter((new Filter())->setInclusion(false)->setType(FilterType::AUTHOR)->setPattern($user->getEmail() ?? ''));
+            ->addRecipient((new Recipient())->setEmail($user->getEmail())->setName($user->getName()))
+            ->addFilter((new Filter())->setInclusion(false)->setType(FilterType::AUTHOR)->setPattern($user->getEmail()));
     }
 }

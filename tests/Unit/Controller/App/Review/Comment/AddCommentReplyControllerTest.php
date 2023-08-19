@@ -101,8 +101,8 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
                     static::assertSame($user, $reply->getUser());
                     static::assertSame($comment, $reply->getComment());
                     static::assertSame('my-comment', $reply->getMessage());
-                    static::assertNotNull($reply->getCreateTimestamp());
-                    static::assertNotNull($reply->getUpdateTimestamp());
+                    static::assertGreaterThan(0, $reply->getCreateTimestamp());
+                    static::assertGreaterThan(0, $reply->getUpdateTimestamp());
 
                     return true;
                 }),

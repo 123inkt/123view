@@ -42,6 +42,7 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
+        $repository->setName('name');
         $change   = new BranchUpdate('from', 'to', 'oldBranch', 'newBranch');
         $commit   = $this->createCommit();
         $revision = new Revision();
@@ -63,6 +64,7 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
+        $repository->setName('name');
         $repository->setMainBranchName('main');
         $change   = new BranchCreation('local/newBranch', 'origin/newBranch');
         $commit   = $this->createCommit();

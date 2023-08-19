@@ -139,7 +139,7 @@ class ReviewViewModel
     {
         $authors = [];
         foreach ($this->revisions as $revision) {
-            $authors[(string)$revision->getAuthorEmail()] = (string)$revision->getAuthorName();
+            $authors[$revision->getAuthorEmail()] = $revision->getAuthorName();
         }
 
         return $authors;
@@ -148,7 +148,7 @@ class ReviewViewModel
     public function getReviewer(User $user): ?CodeReviewer
     {
         foreach ($this->review->getReviewers() as $reviewer) {
-            if ($reviewer->getUser()?->getId() === $user->getId()) {
+            if ($reviewer->getUser()->getId() === $user->getId()) {
                 return $reviewer;
             }
         }

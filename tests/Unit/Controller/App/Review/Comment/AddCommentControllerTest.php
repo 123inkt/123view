@@ -92,8 +92,8 @@ class AddCommentControllerTest extends AbstractControllerTestCase
                     static::assertSame('filepath', $comment->getFilePath());
                     static::assertSame('my-comment', $comment->getMessage());
                     static::assertEquals(LineReference::fromString('filepath:1:2:3'), $comment->getLineReference());
-                    static::assertNotNull($comment->getCreateTimestamp());
-                    static::assertNotNull($comment->getUpdateTimestamp());
+                    static::assertGreaterThan(0, $comment->getCreateTimestamp());
+                    static::assertGreaterThan(0, $comment->getUpdateTimestamp());
 
                     return true;
                 }),

@@ -22,9 +22,9 @@ class CodeReviewActivityOutputFactory
             (int)$activity->getId(),
             $user,
             $review,
-            (string)$activity->getEventName(),
+            $activity->getEventName(),
             array_filter($activity->getData(), static fn($val) => $val !== null),
-            (int)$activity->getCreateTimestamp()
+            $activity->getCreateTimestamp()
         );
     }
 }

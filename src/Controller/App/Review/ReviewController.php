@@ -49,7 +49,7 @@ class ReviewController extends AbstractController
         $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->getFileDiffViewModel()?->selectedFile);
 
         return [
-            'page_title'  => 'CR-' . $review->getProjectId() . ' - ' . ucfirst((string)$review->getRepository()?->getDisplayName()),
+            'page_title'  => 'CR-' . $review->getProjectId() . ' - ' . ucfirst($review->getRepository()->getDisplayName()),
             'breadcrumbs' => $this->breadcrumbFactory->createForReview($review),
             'reviewModel' => $viewModel
         ];

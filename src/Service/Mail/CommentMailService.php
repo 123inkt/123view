@@ -61,7 +61,7 @@ class CommentMailService implements LoggerAwareInterface
                 continue;
             }
 
-            $email->addBcc(new Address((string)$recipient->getEmail(), (string)$recipient->getName()));
+            $email->addBcc(new Address($recipient->getEmail(), $recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for comment %d.', $recipient->getEmail(), $comment->getId()));
         }
 

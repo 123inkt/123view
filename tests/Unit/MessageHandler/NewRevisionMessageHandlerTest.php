@@ -81,6 +81,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     {
         $message  = new NewRevisionMessage(123);
         $revision = new Revision();
+        $revision->setTitle('title');
 
         $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
@@ -97,7 +98,9 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     {
         $message  = new NewRevisionMessage(123);
         $revision = new Revision();
-        $review   = new CodeReview();
+        $revision->setTitle('title');
+        $revision->setCommitHash('hash');
+        $review = new CodeReview();
 
         $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
@@ -118,6 +121,8 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     {
         $message  = new NewRevisionMessage(123);
         $revision = new Revision();
+        $revision->setTitle('title');
+        $revision->setCommitHash('hash');
         $reviewer = new CodeReviewer();
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $review = new CodeReview();

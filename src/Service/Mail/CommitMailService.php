@@ -39,7 +39,7 @@ class CommitMailService implements LoggerAwareInterface
             ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource')]);
 
         foreach ($rule->getRecipients() as $recipient) {
-            $email->addTo(new Address((string)$recipient->getEmail(), $recipient->getName() ?? ''));
+            $email->addTo(new Address($recipient->getEmail(), $recipient->getName() ?? ''));
             $this->logger?->info(sprintf('Sending %s commit mail to %s.', $rule->getName(), $recipient->getEmail()));
         }
         $this->mailer->send($email);

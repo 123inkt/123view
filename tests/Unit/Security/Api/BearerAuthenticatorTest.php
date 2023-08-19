@@ -116,6 +116,7 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer 123view']);
 
         $user = new User();
+        $user->setEmail('email');
         $user->setRoles([Roles::ROLE_USER]);
         $token = new UserAccessToken();
         $token->setUsages(5);

@@ -91,7 +91,7 @@ class CodeReviewActivityFormatter
         if (in_array($activity->getEventName(), [ReviewRevisionAdded::NAME, ReviewRevisionRemoved::NAME], true)) {
             $revision = $this->revisionRepository->find((int)$activity->getDataValue('revisionId'));
             if ($revision instanceof Revision) {
-                $params[] = new Variable('revision', sprintf('%s - %s', substr((string)$revision->getCommitHash(), 0, 8), $revision->getTitle()));
+                $params[] = new Variable('revision', sprintf('%s - %s', substr($revision->getCommitHash(), 0, 8), $revision->getTitle()));
             } else {
                 $params[] = new Variable('revision', (string)$activity->getDataValue('title'));
             }
@@ -99,7 +99,7 @@ class CodeReviewActivityFormatter
 
         // add filepath the comment was added to
         if (in_array($activity->getEventName(), [CommentAdded::NAME, CommentResolved::NAME, CommentRemoved::NAME, CommentUnresolved::NAME], true)) {
-            $comment = $activity->getReview()?->getComments()?->get((int)$activity->getDataValue('commentId'));
+            $comment = $activity->getReview()->getComments()->get((int)$activity->getDataValue('commentId'));
             if ($comment === null) {
                 $params[] = new Variable('file', basename((string)$activity->getDataValue('file')));
             } else {

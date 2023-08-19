@@ -43,13 +43,11 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
         $this->logger?->info('ReviewActivityHandler: registered activity for review event: ' . $evt->getName());
         $this->activityRepository->save($activity, true);
 
-        $review = $activity->getReview();
-        if ($review !== null) {
-            $actorUserIds = array_map(static fn($user) => (int)$user->getId(), $this->userRepository->getActors((int)$review->getId()));
-            $review->setActors($actorUserIds);
-            $review->setUpdateTimestamp(time());
-            $this->reviewRepository->save($review, true);
-        }
+        $review       = $activity->getReview();
+        $actorUserIds = array_map(static fn($user) => (int)$user->getId(), $this->userRepository->getActors((int)$review->getId()));
+        $review->setActors($actorUserIds);
+        $review->setUpdateTimestamp(time());
+        $this->reviewRepository->save($review, true);
 
         $this->logger?->info('ReviewActivityHandler: publish to mercure: ' . $evt->getName());
         $this->activityPublisher->publish($activity);

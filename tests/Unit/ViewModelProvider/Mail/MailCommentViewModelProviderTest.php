@@ -52,7 +52,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     public function testCreateCommentViewModelCommentCreated(): void
     {
         $reference = new LineReference('reference', 1, 2, 3);
-        $comment   = new Comment();
+        $comment   = (new Comment())->setUser((new User())->setName('name'));
         $comment->setLineReference($reference);
         $revision   = new Revision();
         $repository = new Repository();
@@ -89,7 +89,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
      */
     public function testCreateCommentViewModelCommentReplied(): void
     {
-        $reply     = new CommentReply();
+        $reply     = (new CommentReply())->setUser((new User())->setName('name'));
         $reference = new LineReference('reference', 1, 2, 3);
         $comment   = new Comment();
         $comment->setLineReference($reference);
@@ -139,7 +139,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setRepository($repository);
         $review->getComments()->add($comment);
-        $user = new User();
+        $user = (new User())->setName('name');
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 

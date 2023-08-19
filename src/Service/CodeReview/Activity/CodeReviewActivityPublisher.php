@@ -59,7 +59,7 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
         $topics = [sprintf('/review/%d', $review->getId())];
         if (count($review->getActors()) > 0) {
             foreach ($this->userRepository->findBy(['id' => $review->getActors()]) as $actor) {
-                if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent((string)$activity->getEventName())) {
+                if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent($activity->getEventName())) {
                     $topics[] = sprintf('/user/%d', (int)$actor->getId());
                 }
             }

@@ -75,7 +75,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
         $key = 'authorEmail' . $this->getNextUniqId();
 
         if (strcasecmp($term->value, 'me') === 0 && $this->user !== null) {
-            $parameters->set($key, (string)$this->user->getEmail());
+            $parameters->set($key, $this->user->getEmail());
 
             return new Expr\Comparison('rv.authorEmail', '=', ':' . $key);
         }
@@ -102,7 +102,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
         $key = 'reviewerEmail' . $this->getNextUniqId();
 
         if (strcasecmp($term->value, 'me') === 0 && $this->user !== null) {
-            $parameters->set($key, (string)$this->user->getEmail());
+            $parameters->set($key, $this->user->getEmail());
 
             return new Expr\Comparison('u.email', '=', ':' . $key);
         }
