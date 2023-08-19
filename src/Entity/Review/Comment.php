@@ -21,34 +21,34 @@ class Comment
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 500)]
-    private ?string $filePath = null;
+    private string $filePath;
 
     #[ORM\Column(type: 'string', length: 500)]
-    private ?string $lineReference = null;
+    private string $lineReference;
 
     // todo change to CommentStateType.
     #[ORM\Column(type: 'string', length: 20, options: ['default' => CommentStateType::OPEN])]
-    private ?string $state = CommentStateType::OPEN;
+    private string $state = CommentStateType::OPEN;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $message = null;
+    private string $message;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\Column]
-    private ?int $updateTimestamp = null;
+    private int $updateTimestamp;
 
     #[ORM\Column(type: 'type_notification_status', nullable: true)]
     private ?NotificationStatus $notificationStatus = null;
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CodeReview $review = null;
+    private CodeReview $review;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     /** @phpstan-var Collection<int, CommentReply> */
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: false)]
@@ -76,19 +76,19 @@ class Comment
         return $this->id;
     }
 
-    public function getFilePath(): ?string
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
 
-    public function setFilePath(?string $filePath): void
+    public function setFilePath(string $filePath): void
     {
         $this->filePath = $filePath;
     }
 
-    public function getLineReference(): ?LineReference
+    public function getLineReference(): LineReference
     {
-        return $this->lineReference === null ? null : LineReference::fromString($this->lineReference);
+        return LineReference::fromString($this->lineReference);
     }
 
     public function setLineReference(LineReference $lineReference): self
@@ -98,19 +98,19 @@ class Comment
         return $this;
     }
 
-    public function getState(): ?string
+    public function getState(): string
     {
         return $this->state;
     }
 
-    public function setState(?string $state): self
+    public function setState(string $state): self
     {
         $this->state = $state;
 
         return $this;
     }
 
-    public function getMessage(): ?string
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -122,7 +122,7 @@ class Comment
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
@@ -134,12 +134,12 @@ class Comment
         return $this;
     }
 
-    public function getUpdateTimestamp(): ?int
+    public function getUpdateTimestamp(): int
     {
         return $this->updateTimestamp;
     }
 
-    public function setUpdateTimestamp(?int $updateTimestamp): self
+    public function setUpdateTimestamp(int $updateTimestamp): self
     {
         $this->updateTimestamp = $updateTimestamp;
 
@@ -158,22 +158,22 @@ class Comment
         return $this;
     }
 
-    public function getReview(): ?CodeReview
+    public function getReview(): CodeReview
     {
         return $this->review;
     }
 
-    public function setReview(?CodeReview $review): void
+    public function setReview(CodeReview $review): void
     {
         $this->review = $review;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }

@@ -17,16 +17,18 @@ class FileSeenStatus
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 500)]
-    private ?string $filePath = null;
+    private string $filePath;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    private ?User $user = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private User $user;
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class)]
-    private ?CodeReview $review = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private CodeReview $review;
 
     public function setId(int $id): self
     {
@@ -40,48 +42,48 @@ class FileSeenStatus
         return $this->id;
     }
 
-    public function getFilePath(): ?string
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
 
-    public function setFilePath(?string $filePath): self
+    public function setFilePath(string $filePath): self
     {
         $this->filePath = $filePath;
 
         return $this;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): self
+    public function setCreateTimestamp(int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getReview(): ?CodeReview
+    public function getReview(): CodeReview
     {
         return $this->review;
     }
 
-    public function setReview(?CodeReview $review): self
+    public function setReview(CodeReview $review): self
     {
         $this->review = $review;
 

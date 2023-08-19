@@ -17,24 +17,24 @@ class CommentReply
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $message = null;
+    private string $message;
 
     #[ORM\Column]
-    private ?int $createTimestamp = null;
+    private int $createTimestamp;
 
     #[ORM\Column]
-    private ?int $updateTimestamp = null;
+    private int $updateTimestamp;
 
     #[ORM\Column(type: 'type_notification_status', nullable: true)]
     private ?NotificationStatus $notificationStatus = null;
 
     #[ORM\ManyToOne(targetEntity: Comment::class, cascade: ['persist'], inversedBy: 'replies')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Comment $comment = null;
+    private Comment $comment;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'replies')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     public function setId(int $id): self
     {
@@ -48,32 +48,32 @@ class CommentReply
         return $this->id;
     }
 
-    public function getMessage(): ?string
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    public function setMessage(?string $message): void
+    public function setMessage(string $message): void
     {
         $this->message = $message;
     }
 
-    public function getCreateTimestamp(): ?int
+    public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;
     }
 
-    public function setCreateTimestamp(?int $createTimestamp): void
+    public function setCreateTimestamp(int $createTimestamp): void
     {
         $this->createTimestamp = $createTimestamp;
     }
 
-    public function getUpdateTimestamp(): ?int
+    public function getUpdateTimestamp(): int
     {
         return $this->updateTimestamp;
     }
 
-    public function setUpdateTimestamp(?int $updateTimestamp): void
+    public function setUpdateTimestamp(int $updateTimestamp): void
     {
         $this->updateTimestamp = $updateTimestamp;
     }
@@ -90,22 +90,22 @@ class CommentReply
         return $this;
     }
 
-    public function getComment(): ?Comment
+    public function getComment(): Comment
     {
         return $this->comment;
     }
 
-    public function setComment(?Comment $comment): void
+    public function setComment(Comment $comment): void
     {
         $this->comment = $comment;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
