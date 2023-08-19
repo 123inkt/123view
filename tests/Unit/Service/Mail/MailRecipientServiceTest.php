@@ -43,10 +43,13 @@ class MailRecipientServiceTest extends AbstractTestCase
 
         $replyA = new CommentReply();
         $replyA->setUser($userA);
+        $replyA->setMessage('message');
         $replyB = new CommentReply();
         $replyB->setUser($userB);
+        $replyB->setMessage('message');
         $replyC = new CommentReply();
         $replyC->setUser($userC);
+        $replyC->setMessage('message');
 
         $comment = new Comment();
         $comment->getReplies()->add($replyA);
@@ -68,6 +71,7 @@ class MailRecipientServiceTest extends AbstractTestCase
 
         $comment = new Comment();
         $comment->setUser($userA);
+        $comment->setMessage('message');
 
         $this->mentionService->expects(self::once())->method('getMentionedUsers')->willReturn([$userB, $userC]);
 

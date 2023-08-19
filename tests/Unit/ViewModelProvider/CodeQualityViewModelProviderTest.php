@@ -74,7 +74,7 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $report       = new CodeInspectionReport();
-        $issue        = new CodeInspectionIssue();
+        $issue        = (new CodeInspectionIssue())->setLineNumber(123);
         $lineCoverage = new LineCoverage();
         $coverage     = (new CodeCoverageFile())->setCoverage($lineCoverage);
 

@@ -98,6 +98,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     {
         $message  = new NewRevisionMessage(123);
         $revision = new Revision();
+        $revision->setTitle('title');
         $revision->setCommitHash('hash');
         $review = new CodeReview();
 

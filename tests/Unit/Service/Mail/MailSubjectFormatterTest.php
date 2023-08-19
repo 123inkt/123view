@@ -37,7 +37,7 @@ class MailSubjectFormatterTest extends AbstractTestCase
      */
     public function testFormatEmptyVariables(): void
     {
-        $rule    = new Rule();
+        $rule    = (new Rule())->setName('');
         $subject = '#{name}#{authors}#{repositories}#';
 
         $result = (new MailSubjectFormatter())->format($subject, $rule, []);
