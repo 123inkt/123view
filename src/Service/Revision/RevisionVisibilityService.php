@@ -33,7 +33,7 @@ class RevisionVisibilityService
         $result = [];
         foreach ($revisions as $revision) {
             foreach ($visibilities as $visibility) {
-                if ($revision->getId() !== $visibility->getRevision()?->getId()) {
+                if ($revision->getId() !== $visibility->getRevision()->getId()) {
                     continue;
                 }
                 if ($visibility->isVisible()) {
@@ -60,7 +60,7 @@ class RevisionVisibilityService
         $result = [];
         foreach ($revisions as $revision) {
             foreach ($visibilities as $visibility) {
-                if ($revision->getId() === $visibility->getRevision()?->getId()) {
+                if ($revision->getId() === $visibility->getRevision()->getId()) {
                     $result[] = $visibility;
                     continue 2;
                 }

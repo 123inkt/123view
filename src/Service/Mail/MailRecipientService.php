@@ -12,7 +12,6 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\User\UserService;
 use DR\Utils\Arrays;
-use DR\Utils\Assert;
 
 class MailRecipientService
 {
@@ -32,7 +31,7 @@ class MailRecipientService
         $revisions = $this->revisionService->getRevisions($review);
         $users     = $this->userService->getUsersForRevisions($revisions);
         foreach ($review->getReviewers() as $reviewer) {
-            $users[] = Assert::notNull($reviewer->getUser());
+            $users[] = $reviewer->getUser();
         }
 
         return Arrays::unique($users);
@@ -44,8 +43,8 @@ class MailRecipientService
     public function getUserForComment(Comment $comment): array
     {
         return array_merge(
-            [Assert::notNull($comment->getUser())],
-            array_values($this->mentionService->getMentionedUsers((string)$comment->getMessage()))
+            [$comment->getUser()],
+            array_values($this->mentionService->getMentionedUsers($comment->getMessage()))
         );
     }
 
@@ -56,9 +55,9 @@ class MailRecipientService
     {
         $subscribers = [];
         foreach ($comment->getReplies() as $reply) {
-            $subscribers[] = Assert::notNull($reply->getUser());
+            $subscribers[] = $reply->getUser();
 
-            foreach ($this->mentionService->getMentionedUsers((string)$reply->getMessage()) as $user) {
+            foreach ($this->mentionService->getMentionedUsers($reply->getMessage()) as $user) {
                 $subscribers[] = $user;
             }
 

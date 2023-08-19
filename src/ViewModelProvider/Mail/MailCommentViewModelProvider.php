@@ -71,10 +71,10 @@ class MailCommentViewModelProvider
         }
 
         if ($reply !== null) {
-            return $this->translator->trans('mail.new.reply.by.user.on', ['userName' => $reply->getUser()?->getName()]);
+            return $this->translator->trans('mail.new.reply.by.user.on', ['userName' => $reply->getUser()->getName()]);
         }
 
-        return $this->translator->trans('mail.new.comment.by.user.on', ['userName' => $comment->getUser()?->getName()]);
+        return $this->translator->trans('mail.new.comment.by.user.on', ['userName' => $comment->getUser()->getName()]);
     }
 
     /**

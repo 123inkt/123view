@@ -23,7 +23,7 @@ class BreadcrumbFactory
     {
         return [
             new Breadcrumb(
-                ucfirst((string)$repository->getDisplayName()),
+                ucfirst($repository->getDisplayName()),
                 $this->urlGenerator->generate(ReviewsController::class, ['id' => $repository->getId()])
             )
         ];
@@ -36,8 +36,8 @@ class BreadcrumbFactory
     {
         return [
             new Breadcrumb(
-                ucfirst((string)$review->getRepository()?->getDisplayName()),
-                $this->urlGenerator->generate(ReviewsController::class, ['id' => $review->getRepository()?->getId()])
+                ucfirst($review->getRepository()->getDisplayName()),
+                $this->urlGenerator->generate(ReviewsController::class, ['id' => $review->getRepository()->getId()])
             ),
             new Breadcrumb(
                 'CR-' . $review->getProjectId(),

@@ -60,14 +60,13 @@ class GitDiffService implements LoggerAwareInterface
      */
     public function getDiffFromRevision(Revision $revision, ?FileDiffOptions $options = null): array
     {
-        /** @var Repository $repository */
         $repository     = $revision->getRepository();
         $commandBuilder = $this->builderFactory
             ->createShow()
             ->ignoreCrAtEol()
             ->ignoreSpaceAtEol()
             ->unified($options?->unifiedDiffLines ?? 10)
-            ->startPoint((string)$revision->getCommitHash());
+            ->startPoint($revision->getCommitHash());
 
         if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
             $commandBuilder->ignoreSpaceChange();
