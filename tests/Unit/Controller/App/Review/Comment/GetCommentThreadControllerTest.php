@@ -47,6 +47,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
     {
         $comment = new Comment();
         $comment->setId(123);
+        $comment->setReview(new CodeReview());
 
         $action = new EditCommentAction($comment);
 
@@ -63,6 +64,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
     {
         $comment = new Comment();
         $comment->setId(123);
+        $comment->setReview(new CodeReview());
 
         $action = new AddCommentReplyAction($comment);
 
@@ -79,6 +81,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
     {
         $comment = new Comment();
         $comment->setId(123);
+        $comment->setReview(new CodeReview());
 
         $action = new EditCommentReplyAction(new CommentReply());
 

@@ -53,7 +53,7 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeWithUser(): void
     {
-        $rule = (new Rule())->setUser($this->user);
+        $rule = (new Rule())->setUser($this->user)->setName('name');
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::DELETE, $rule);
         $this->ruleRepository->expects(self::once())->method('remove')->with($rule, true);

@@ -145,12 +145,7 @@ class Rule
 
     public function removeRecipient(Recipient $recipient): self
     {
-        if ($this->recipients->removeElement($recipient)) {
-            // set the owning side to null (unless already changed)
-            if ($recipient->getRule() === $this) {
-                $recipient->setRule(null);
-            }
-        }
+        $this->recipients->removeElement($recipient);
 
         return $this;
     }
@@ -175,12 +170,7 @@ class Rule
 
     public function removeFilter(Filter $filter): self
     {
-        if ($this->filters->removeElement($filter)) {
-            // set the owning side to null (unless already changed)
-            if ($filter->getRule() === $this) {
-                $filter->setRule(null);
-            }
-        }
+        $this->filters->removeElement($filter);
 
         return $this;
     }
@@ -192,11 +182,8 @@ class Rule
 
     public function setRuleOptions(RuleOptions $ruleOptions): self
     {
-        // set the owning side of the relation if necessary
-        if ($ruleOptions->getRule() !== $this) {
-            $ruleOptions->setRule($this);
-        }
-
+        // set the owning side of the relation
+        $ruleOptions->setRule($this);
         $this->ruleOptions = $ruleOptions;
 
         return $this;

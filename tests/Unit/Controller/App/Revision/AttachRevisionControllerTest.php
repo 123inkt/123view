@@ -47,6 +47,7 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setId(456);
+        $review->setProjectId(321);
         $review->setRepository($repository);
         $revision = new Revision();
         $revision->setRepository($repository);
@@ -81,6 +82,7 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $request = new Request(request: ['revision' => [123 => 1]]);
         $review  = new CodeReview();
         $review->setId(456);
+        $review->setProjectId(321);
         $review->setRepository(new Repository());
         $revision = new Revision();
         $revision->setRepository(new Repository());
