@@ -42,7 +42,7 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
             return false;
         }
 
-        if ($revision->getCreateTimestamp() < $revision->getRepository()?->getCreateTimestamp()) {
+        if ($revision->getCreateTimestamp() < $revision->getRepository()->getCreateTimestamp()) {
             $this->logger?->info('Matcher: revision was created before the repository was added to the project: ' . $revision->getId());
 
             return false;

@@ -30,8 +30,8 @@ class FileSeenStatusRepository extends ServiceEntityRepository
         $em->wrapInTransaction(function () use ($entity, $flush): void {
             $entityExists = $this->findOneBy(
                 [
-                    'review'   => (int)$entity->getReview()?->getId(),
-                    'user'     => (int)$entity->getUser()?->getId(),
+                    'review'   => (int)$entity->getReview()->getId(),
+                    'user'     => (int)$entity->getUser()->getId(),
                     'filePath' => $entity->getFilePath()
                 ]
             );

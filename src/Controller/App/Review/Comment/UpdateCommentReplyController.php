@@ -51,7 +51,7 @@ class UpdateCommentReplyController extends AbstractController
         if ($reply->getMessage() !== $originalComment) {
             $this->bus->dispatch(
                 new CommentReplyUpdated(
-                    (int)$reply->getComment()?->getReview()?->getId(),
+                    (int)$reply->getComment()->getReview()->getId(),
                     (int)$reply->getId(),
                     (int)$this->getUser()->getId(),
                     $originalComment

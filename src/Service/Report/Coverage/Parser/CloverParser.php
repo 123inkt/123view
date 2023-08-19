@@ -55,7 +55,7 @@ class CloverParser implements CodeCoverageParserInterface
 
             $result[] = (new CodeCoverageFile())
                 ->setCoverage($coverage)
-                ->setPercentage((float)$percentage)
+                ->setPercentage($percentage)
                 ->setFile($filePath);
         }
 

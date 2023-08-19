@@ -17,7 +17,7 @@ class CodeReviewer
     private ?int $id = null;
 
     #[ORM\Column(type: CodeReviewerStateType::TYPE, options: ['default' => CodeReviewerStateType::OPEN])]
-    private ?string $state = CodeReviewerStateType::OPEN;
+    private string $state = CodeReviewerStateType::OPEN;
 
     #[ORM\Column(type: 'integer')]
     private int $stateTimestamp;

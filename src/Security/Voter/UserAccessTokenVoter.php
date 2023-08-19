@@ -37,6 +37,6 @@ class UserAccessTokenVoter extends Voter
         $token = $subject;
 
         // user must own the token
-        return $token->getUser()?->getId() === $user->getId();
+        return $token->getUser()->getId() === $user->getId();
     }
 }

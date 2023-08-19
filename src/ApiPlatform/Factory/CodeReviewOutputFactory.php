@@ -36,7 +36,7 @@ class CodeReviewOutputFactory
 
         return new CodeReviewOutput(
             (int)$review->getId(),
-            (int)$review->getRepository()?->getId(),
+            (int)$review->getRepository()->getId(),
             'cr-' . $review->getProjectId(),
             $review->getTitle(),
             $review->getDescription(),

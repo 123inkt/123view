@@ -45,7 +45,7 @@ class ReviewRouter implements RouterInterface, WarmableInterface, RequestMatcher
             }
 
             $review                       = $parameters['review'];
-            $parameters['repositoryName'] = strtolower((string)$review->getRepository()?->getName());
+            $parameters['repositoryName'] = strtolower($review->getRepository()->getName());
             $parameters['reviewId']       = $review->getProjectId();
             unset($parameters['review']);
         }
