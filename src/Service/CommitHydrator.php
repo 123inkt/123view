@@ -21,21 +21,21 @@ class CommitHydrator
      */
     public function hydrate(Repository $repository, array $data, array $files): Commit
     {
-        $author     = new Author((string)$data[FormatPattern::AUTHOR_NAME], (string)$data[FormatPattern::AUTHOR_EMAIL]);
-        $authorDate = Carbon::parse((string)$data[FormatPattern::AUTHOR_DATE_ISO8601]);
-        $refs       = trim((string)$data[FormatPattern::REF_NAMES]);
+        $author     = new Author($data[FormatPattern::AUTHOR_NAME], $data[FormatPattern::AUTHOR_EMAIL]);
+        $authorDate = Carbon::parse($data[FormatPattern::AUTHOR_DATE_ISO8601]);
+        $refs       = trim($data[FormatPattern::REF_NAMES]);
         if ($refs === '') {
-            $refs = trim((string)$data[FormatPattern::REF_NAME_SOURCE]);
+            $refs = trim($data[FormatPattern::REF_NAME_SOURCE]);
         }
 
         return new Commit(
             $repository,
-            (string)$data[FormatPattern::PARENT_HASH],
-            (string)$data[FormatPattern::COMMIT_HASH],
+            $data[FormatPattern::PARENT_HASH],
+            $data[FormatPattern::COMMIT_HASH],
             $author,
             $authorDate,
-            (string)$data[FormatPattern::SUBJECT],
-            trim((string)$data[FormatPattern::BODY]),
+            $data[FormatPattern::SUBJECT],
+            trim($data[FormatPattern::BODY]),
             $refs === '' ? null : $refs,
             $files,
         );

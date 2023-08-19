@@ -18,7 +18,7 @@ class CodeReviewActivityVariableFactory
     public function createFromComment(Comment $comment): ActivityVariable
     {
         $review   = Assert::notNull($comment->getReview());
-        $filePath = (string)$comment->getFilePath();
+        $filePath = $comment->getFilePath();
         $url      = $this->urlGenerator->generate(ReviewController::class, ['review' => $review, 'filePath' => $filePath]);
         $link     = sprintf(
             '<a href="%s#focus:comment:%d">%s</a>',

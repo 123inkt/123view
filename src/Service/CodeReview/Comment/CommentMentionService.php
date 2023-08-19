@@ -22,9 +22,9 @@ class CommentMentionService
     public function updateMentions(Comment $comment): void
     {
         // fetch all user mentions from message
-        $mentions = [$this->getMentionedUsers((string)$comment->getMessage())];
+        $mentions = [$this->getMentionedUsers($comment->getMessage())];
         foreach ($comment->getReplies() as $reply) {
-            $mentions[] = $this->getMentionedUsers((string)$reply->getMessage());
+            $mentions[] = $this->getMentionedUsers($reply->getMessage());
         }
         $mentions = array_merge(...$mentions);
 
@@ -59,7 +59,7 @@ class CommentMentionService
                 continue;
             }
 
-            $mentions[(string)$matches[0][$i]] = $user;
+            $mentions[$matches[0][$i]] = $user;
         }
 
         return $mentions;

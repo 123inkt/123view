@@ -21,7 +21,7 @@ class CodeInspectionReportViewModel
     {
         $result = [];
         foreach ($this->issues as $issue) {
-            $result[(string)$issue->getFile()][] = $issue;
+            $result[$issue->getFile()][] = $issue;
         }
 
         return $result;

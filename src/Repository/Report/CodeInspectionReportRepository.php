@@ -33,7 +33,7 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
      */
     public function findBranchIds(Repository $repository, array $revisions): array
     {
-        $hashes = array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions));
+        $hashes = array_values(array_map(static fn(Revision $rev): string => $rev->getCommitHash(), $revisions));
         /** @var array<array{inspectionId: string, branchId: string}> $rows */
         $rows = $this->getEntityManager()
             ->createQueryBuilder()
@@ -67,7 +67,7 @@ class CodeInspectionReportRepository extends ServiceEntityRepository
         $conn   = $this->getEntityManager()->getConnection();
         $qb     = $conn->createQueryBuilder();
         $params = [
-            'hashes'       => array_values(array_map(static fn(Revision $rev): string => (string)$rev->getCommitHash(), $revisions)),
+            'hashes'       => array_values(array_map(static fn(Revision $rev): string => $rev->getCommitHash(), $revisions)),
             'repositoryId' => $repository->getId()
         ];
 

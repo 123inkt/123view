@@ -38,15 +38,15 @@ class CodeReviewOutputFactory
             (int)$review->getId(),
             (int)$review->getRepository()?->getId(),
             'cr-' . $review->getProjectId(),
-            (string)$review->getTitle(),
-            (string)$review->getDescription(),
+            $review->getTitle(),
+            $review->getDescription(),
             $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL),
             (string)$review->getState(),
             $review->getReviewersState(),
             $reviewersOutput,
             $authorOutput,
-            (int)$review->getCreateTimestamp(),
-            (int)$review->getUpdateTimestamp(),
+            $review->getCreateTimestamp(),
+            $review->getUpdateTimestamp(),
         );
     }
 }

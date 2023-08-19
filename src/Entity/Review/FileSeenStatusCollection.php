@@ -14,7 +14,7 @@ class FileSeenStatusCollection extends ArrayCollection
     {
         /** @var FileSeenStatus $status */
         foreach ($this as $status) {
-            if (strcasecmp((string)$status->getFilePath(), $filePath) === 0) {
+            if (strcasecmp($status->getFilePath(), $filePath) === 0) {
                 return true;
             }
         }

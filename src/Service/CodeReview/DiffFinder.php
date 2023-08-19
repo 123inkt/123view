@@ -26,8 +26,8 @@ class DiffFinder
 
         $hashEnd = null;
         if (preg_match('/^(.*):(\w+)$/', $filePath, $matches) === 1) {
-            $filePath = (string)$matches[1];
-            $hashEnd  = (string)$matches[2];
+            $filePath = $matches[1];
+            $hashEnd  = $matches[2];
         }
 
         // filepath matched, but not the hash

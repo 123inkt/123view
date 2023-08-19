@@ -10,7 +10,6 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Utils\Arrays;
-use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -45,12 +44,12 @@ class GitCherryPickService implements LoggerAwareInterface
      */
     public function cherryPickRevisions(array $revisions, bool $commit = false): CherryPickResult
     {
-        $repository     = Assert::notNull(Arrays::first($revisions)->getRepository());
+        $repository     = Arrays::first($revisions)->getRepository();
         $commandBuilder = $this->commandFactory
             ->createCherryPick()
             ->strategy('ort')
             ->conflictResolution('theirs')
-            ->hashes(array_map(static fn($revision) => (string)$revision->getCommitHash(), $revisions));
+            ->hashes(array_map(static fn($revision) => $revision->getCommitHash(), $revisions));
 
         if ($commit === false) {
             $commandBuilder->noCommit();

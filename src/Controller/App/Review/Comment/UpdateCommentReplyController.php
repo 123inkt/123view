@@ -36,7 +36,7 @@ class UpdateCommentReplyController extends AbstractController
             return $this->json(['success' => false, 'error' => $this->translator->trans('comment.was.deleted.meanwhile')], Response::HTTP_NOT_FOUND);
         }
 
-        $originalComment = (string)$reply->getMessage();
+        $originalComment = $reply->getMessage();
         $this->denyAccessUnlessGranted(CommentReplyVoter::EDIT, $reply);
 
         $form = $this->createForm(EditCommentReplyFormType::class, $reply, ['reply' => $reply]);
