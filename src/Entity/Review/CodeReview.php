@@ -323,7 +323,7 @@ class CodeReview
     public function getReviewer(User $user): ?CodeReviewer
     {
         foreach ($this->reviewers as $reviewer) {
-            if ($reviewer->getUser()?->getId() === $user->getId()) {
+            if ($reviewer->getUser()->getId() === $user->getId()) {
                 return $reviewer;
             }
         }

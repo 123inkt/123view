@@ -59,6 +59,6 @@ class UpdateCommentReplyController extends AbstractController
             );
         }
 
-        return $this->json(['success' => true, 'commentId' => $reply->getComment()?->getId()]);
+        return $this->json(['success' => true, 'commentId' => $reply->getComment()->getId()]);
     }
 }

@@ -165,12 +165,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function removeRule(Rule $rule): self
     {
-        if ($this->rules->removeElement($rule)) {
-            // set the owning side to null (unless already changed)
-            if ($rule->getUser() === $this) {
-                $rule->setUser(null);
-            }
-        }
+        $this->rules->removeElement($rule);
 
         return $this;
     }

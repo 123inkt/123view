@@ -56,7 +56,7 @@ class RepositoryTest extends AbstractTestCase
     public function testGetRepositoryProperty(): void
     {
         $repository = new Repository();
-        $repository->setRepositoryProperty((new RepositoryProperty())->setName('property')->setValue('value'));
+        $repository->setRepositoryProperty((new RepositoryProperty('foo', 'bar'))->setName('property')->setValue('value'));
 
         static::assertNull($repository->getRepositoryProperty('foobar'));
         static::assertSame('value', $repository->getRepositoryProperty('property'));

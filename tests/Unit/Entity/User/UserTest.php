@@ -34,12 +34,12 @@ class UserTest extends AbstractTestCase
     {
         $rule = new Rule();
 
-        $repository = new User();
-        $repository->addRule($rule);
-        static::assertSame([$rule], $repository->getRules()->getValues());
+        $user = new User();
+        $user->addRule($rule);
+        static::assertSame([$rule], $user->getRules()->getValues());
 
-        $repository->removeRule($rule);
-        static::assertCount(0, $repository->getRules());
+        $user->removeRule($rule);
+        static::assertCount(0, $user->getRules());
     }
 
     public function testGetUserIdentifier(): void

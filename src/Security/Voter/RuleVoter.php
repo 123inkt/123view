@@ -38,6 +38,6 @@ class RuleVoter extends Voter
         $rule = $subject;
 
         // user must own the rule
-        return $rule->getUser()?->getId() === $user->getId();
+        return $rule->getUser()->getId() === $user->getId();
     }
 }

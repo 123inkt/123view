@@ -21,7 +21,7 @@ class RepositoryProperty
     #[ORM\Column(type: 'string', length: 255)]
     private string $value;
 
-    public function __constuct(string $name, string $value)
+    public function __construct(string $name, string $value)
     {
         $this->name  = $name;
         $this->value = $value;
