@@ -20,7 +20,7 @@ class RuleOptions
 
     #[ORM\OneToOne(inversedBy: 'ruleOptions', targetEntity: Rule::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rule $rule = null;
+    private Rule $rule;
 
     #[ORM\Column(type: FrequencyType::TYPE)]
     private string $frequency = FrequencyType::ONCE_PER_HOUR;
@@ -55,7 +55,7 @@ class RuleOptions
         return $this->id;
     }
 
-    public function getRule(): ?Rule
+    public function getRule(): Rule
     {
         return $this->rule;
     }

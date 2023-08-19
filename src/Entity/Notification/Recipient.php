@@ -22,11 +22,11 @@ class Recipient
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Email]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'recipients')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rule $rule = null;
+    private Rule $rule;
 
     public function getId(): ?int
     {
@@ -45,7 +45,7 @@ class Recipient
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -57,12 +57,12 @@ class Recipient
         return $this;
     }
 
-    public function getRule(): ?Rule
+    public function getRule(): Rule
     {
         return $this->rule;
     }
 
-    public function setRule(?Rule $rule): self
+    public function setRule(Rule $rule): self
     {
         $this->rule = $rule;
 

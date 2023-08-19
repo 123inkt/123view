@@ -18,7 +18,7 @@ class Filter
 
     #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'filters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rule $rule = null;
+    private Rule $rule;
 
     #[ORM\Column(type: FilterType::TYPE)]
     private string $type = FilterType::FILE;
@@ -28,19 +28,19 @@ class Filter
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(min: 1, max: 255)]
-    private ?string $pattern = null;
+    private string $pattern;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getRule(): ?Rule
+    public function getRule(): Rule
     {
         return $this->rule;
     }
 
-    public function setRule(?Rule $rule): self
+    public function setRule(Rule $rule): self
     {
         $this->rule = $rule;
 
@@ -71,7 +71,7 @@ class Filter
         return $this;
     }
 
-    public function getPattern(): ?string
+    public function getPattern(): string
     {
         return $this->pattern;
     }

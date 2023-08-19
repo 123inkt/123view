@@ -21,7 +21,7 @@ class Rule
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'rules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(type: 'boolean')]
     private bool $active = false;
@@ -29,7 +29,7 @@ class Rule
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 255)]
-    private ?string $name = null;
+    private string $name;
 
     /** @phpstan-var Collection<int, Repository> */
     #[ORM\ManyToMany(targetEntity: Repository::class)]
