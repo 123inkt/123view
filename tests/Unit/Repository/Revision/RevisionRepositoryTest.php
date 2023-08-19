@@ -63,7 +63,7 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     {
         $revisionRepository = self::getService(RevisionRepository::class);
         $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
-        $repositoryId       = (int)$revision->getRepository()?->getId();
+        $repositoryId       = (int)$revision->getRepository()->getId();
 
         static::assertCount(2, $revisionRepository->getPaginatorForSearchQuery($repositoryId, 1, '', null));
     }
@@ -76,7 +76,7 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     {
         $revisionRepository = self::getService(RevisionRepository::class);
         $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
-        $repositoryId       = (int)$revision->getRepository()?->getId();
+        $repositoryId       = (int)$revision->getRepository()->getId();
 
         static::assertCount(1, $revisionRepository->getPaginatorForSearchQuery($repositoryId, 1, 'sherlock@example.com', null));
         static::assertCount(0, $revisionRepository->getPaginatorForSearchQuery($repositoryId, 1, 'foobar', null));
@@ -90,7 +90,7 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     {
         $revisionRepository = self::getService(RevisionRepository::class);
         $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
-        $repositoryId       = (int)$revision->getRepository()?->getId();
+        $repositoryId       = (int)$revision->getRepository()->getId();
 
         static::assertCount(0, $revisionRepository->getPaginatorForSearchQuery($repositoryId, 1, '', true));
         static::assertCount(2, $revisionRepository->getPaginatorForSearchQuery($repositoryId, 1, '', false));

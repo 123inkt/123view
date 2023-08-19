@@ -148,7 +148,7 @@ class ReviewViewModel
     public function getReviewer(User $user): ?CodeReviewer
     {
         foreach ($this->review->getReviewers() as $reviewer) {
-            if ($reviewer->getUser()?->getId() === $user->getId()) {
+            if ($reviewer->getUser()->getId() === $user->getId()) {
                 return $reviewer;
             }
         }
