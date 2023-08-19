@@ -12,25 +12,25 @@ class UserMention
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Comment::class, cascade: ['persist'], inversedBy: 'mentions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Comment $comment = null;
+    private Comment $comment;
 
     #[ORM\Id]
     #[ORM\Column(nullable: false)]
-    private ?int $userId = null;
+    private int $userId;
 
-    public function getComment(): ?Comment
+    public function getComment(): Comment
     {
         return $this->comment;
     }
 
-    public function setComment(?Comment $comment): self
+    public function setComment(Comment $comment): self
     {
         $this->comment = $comment;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): int
     {
         return $this->userId;
     }
