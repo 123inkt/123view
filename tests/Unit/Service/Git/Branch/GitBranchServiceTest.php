@@ -86,7 +86,7 @@ class GitBranchServiceTest extends AbstractTestCase
     public function testDeleteBranch(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
@@ -106,7 +106,7 @@ class GitBranchServiceTest extends AbstractTestCase
     public function testTryDeleteBranch(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
@@ -126,7 +126,7 @@ class GitBranchServiceTest extends AbstractTestCase
     public function testTryDeleteBranchCaptureException(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $path = '/foo/bar/';
 
         $this->builderFactory->expects(self::once())->method('createBranch')->willThrowException(new RepositoryException());

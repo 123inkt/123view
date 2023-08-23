@@ -52,7 +52,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
+        $repository->setUrl(Uri::new('http://my.repository.com'));
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
@@ -72,7 +72,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
+        $repository->setUrl(Uri::new('http://my.repository.com'));
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
@@ -91,7 +91,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
+        $repository->setUrl(Uri::new('http://my.repository.com'));
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
@@ -113,7 +113,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
+        $repository->setUrl(Uri::new('http://my.repository.com'));
 
         // setup mocks
         $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY);

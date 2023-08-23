@@ -8,39 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Tests\AbstractTestCase;
+use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Repository\Repository
- * @covers ::__construct
- */
+#[CoversClass(Repository::class)]
 class RepositoryTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::isActive
-     * @covers ::setActive
-     * @covers ::getName
-     * @covers ::setName
-     * @covers ::getDisplayName
-     * @covers ::setDisplayName
-     * @covers ::getMainBranchName
-     * @covers ::setMainBranchName
-     * @covers ::getUrl
-     * @covers ::setUrl
-     * @covers ::isFavorite
-     * @covers ::setFavorite
-     * @covers ::getUpdateRevisionsInterval
-     * @covers ::setUpdateRevisionsInterval
-     * @covers ::getUpdateRevisionsTimestamp
-     * @covers ::setUpdateRevisionsTimestamp
-     * @covers ::getValidateRevisionsInterval
-     * @covers ::setValidateRevisionsInterval
-     * @covers ::getValidateRevisionsTimestamp
-     * @covers ::setValidateRevisionsTimestamp
-     * @covers ::getCreateTimestamp
-     * @covers ::setCreateTimestamp
-     */
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
@@ -50,9 +23,15 @@ class RepositoryTest extends AbstractTestCase
         static::assertAccessorPairs(Repository::class, $config);
     }
 
-    /**
-     * @covers ::getRepositoryProperty
-     */
+    public function testUrlAccessor(): void
+    {
+        $repository = new Repository();
+        static::assertFalse($repository->hasUrl());
+
+        $repository->setUrl(Uri::new('https://example.com'));
+        static::assertSame('https://example.com', (string)$repository->getUrl());
+    }
+
     public function testGetRepositoryProperty(): void
     {
         $repository = new Repository();
@@ -62,11 +41,6 @@ class RepositoryTest extends AbstractTestCase
         static::assertSame('value', $repository->getRepositoryProperty('property'));
     }
 
-    /**
-     * @covers ::setRepositoryProperty
-     * @covers ::getRepositoryProperties
-     * @covers ::removeRepositoryProperty
-     */
     public function testRepositoryPropertyAccessors(): void
     {
         $propertyA = new RepositoryProperty('property', '5');
@@ -84,10 +58,6 @@ class RepositoryTest extends AbstractTestCase
         static::assertCount(0, $repository->getRepositoryProperties());
     }
 
-    /**
-     * @covers ::getRevisions
-     * @covers ::setRevisions
-     */
     public function testRevisions(): void
     {
         $collection = new ArrayCollection();
@@ -99,10 +69,6 @@ class RepositoryTest extends AbstractTestCase
         static::assertSame($collection, $repository->getRevisions());
     }
 
-    /**
-     * @covers ::getReviews
-     * @covers ::setReviews
-     */
     public function testReviews(): void
     {
         $collection = new ArrayCollection();

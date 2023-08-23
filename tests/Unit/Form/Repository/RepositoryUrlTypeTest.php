@@ -58,8 +58,8 @@ class RepositoryUrlTypeTest extends AbstractTestCase
 
         // test callback
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://sherlock:holmes@example.com'));
-        $uri = Uri::createFromString('https://watson@example.com');
+        $repository->setUrl(Uri::new('https://sherlock:holmes@example.com'));
+        $uri = Uri::new('https://watson@example.com');
         $callback($repository, $uri);
 
         static::assertSame('https://watson:holmes@example.com', (string)$repository->getUrl());

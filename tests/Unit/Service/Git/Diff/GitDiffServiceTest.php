@@ -100,7 +100,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetDiffFromRevision(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('commit-hash');
@@ -128,7 +128,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetDiffFromRevisionWithIgnoreSpace(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('commit-hash');
@@ -156,7 +156,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetBundledDiffFromRevisions(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);
         $builder->expects(self::once())->method('hash')->with('HEAD')->willReturnSelf();
@@ -182,7 +182,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetBundledDiffFromRevisionsIgnoreAllSpaceChange(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);
         $builder->expects(self::once())->method('hash')->with('HEAD')->willReturnSelf();
@@ -208,7 +208,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetBundledDiffFromBranch(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);
         $builder->expects(self::once())->method('hash')->with('target...source')->willReturnSelf();
@@ -234,7 +234,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetBundledDiffFromBranchIgnoreAllSpaceChange(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);
         $builder->expects(self::once())->method('hash')->with('target...source')->willReturnSelf();

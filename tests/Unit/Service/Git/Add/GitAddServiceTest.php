@@ -21,8 +21,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 class GitAddServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
-    private GitCommandBuilderFactory&MockObject      $builderFactory;
-    private GitAddService                            $service;
+    private GitCommandBuilderFactory&MockObject $builderFactory;
+    private GitAddService $service;
 
     public function setUp(): void
     {
@@ -39,7 +39,7 @@ class GitAddServiceTest extends AbstractTestCase
     public function testAdd(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitAddCommandBuilder::class);

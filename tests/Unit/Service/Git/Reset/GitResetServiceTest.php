@@ -36,7 +36,7 @@ class GitResetServiceTest extends AbstractTestCase
     public function testResetHard(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://example.com'));
+        $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
         $builder->expects(self::once())->method('hard')->willReturnSelf();
@@ -57,7 +57,7 @@ class GitResetServiceTest extends AbstractTestCase
         $commitHash = '123abc';
 
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://example.com'));
+        $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
         $builder->expects(self::once())->method('soft')->willReturnSelf();

@@ -167,6 +167,11 @@ class Repository
         return $this;
     }
 
+    public function hasUrl(): bool
+    {
+        return isset($this->url);
+    }
+
     public function getUrl(): UriInterface
     {
         return $this->url;

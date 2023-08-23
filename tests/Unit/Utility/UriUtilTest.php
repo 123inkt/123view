@@ -25,7 +25,7 @@ class UriUtilTest extends AbstractTestCase
      */
     public function testCredentialsUriWithoutCredentials(): void
     {
-        static::assertSame([null, null], UriUtil::credentials(Uri::createFromString('https://example.com')));
+        static::assertSame([null, null], UriUtil::credentials(Uri::new('https://example.com')));
     }
 
     /**
@@ -33,7 +33,7 @@ class UriUtilTest extends AbstractTestCase
      */
     public function testCredentialsUriWithUsername(): void
     {
-        static::assertSame(['shërlock', null], UriUtil::credentials(Uri::createFromString('https://sh%C3%ABrlock@example.com')));
+        static::assertSame(['shërlock', null], UriUtil::credentials(Uri::new('https://sh%C3%ABrlock@example.com')));
     }
 
     /**
@@ -41,9 +41,9 @@ class UriUtilTest extends AbstractTestCase
      */
     public function testCredentialsUriWithCredentials(): void
     {
-        static::assertSame(['sherlock', 'passw*rd'], UriUtil::credentials(Uri::createFromString('https://sherlock:passw%2Ard@example.com')));
+        static::assertSame(['sherlock', 'passw*rd'], UriUtil::credentials(Uri::new('https://sherlock:passw%2Ard@example.com')));
 
         // with special character
-        static::assertSame(['sher:lock', 'passw*rd'], UriUtil::credentials(Uri::createFromString('https://sher%3Alock:passw%2Ard@example.com')));
+        static::assertSame(['sher:lock', 'passw*rd'], UriUtil::credentials(Uri::new('https://sher%3Alock:passw%2Ard@example.com')));
     }
 }
