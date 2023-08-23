@@ -23,7 +23,7 @@ class RepositoryUrlType extends AbstractType
             [
                 'setter' => static function (Repository $repository, Uri $uri): void {
                     // if no new password, transfer existing password to the new uri
-                    [, $password] = UriUtil::credentials($repository->getUrl());
+                    [, $password] = UriUtil::credentials($repository->hasUrl() ? $repository->getUrl() : null);
                     [$username, $newPassword] = UriUtil::credentials($uri);
                     $repository->setUrl($uri->withUserInfo($username, $newPassword ?? $password));
                 }
