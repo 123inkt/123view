@@ -9,6 +9,16 @@ class BasicAuthCredential implements CredentialInterface
     {
     }
 
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
     public function __toString(): string
     {
         return base64_encode($this->username . ':' . $this->password);
