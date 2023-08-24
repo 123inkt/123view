@@ -7,7 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Admin\Webhook\WebhookController;
 use DR\Review\Controller\App\Admin\Webhook\WebhooksController;
 use DR\Review\Entity\Webhook\Webhook;
-use DR\Review\Form\Webhook\EditWebhookFormType;
+use DR\Review\Form\Webhook\EditCredentialFormType;
 use DR\Review\Repository\Webhook\WebhookRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\EditWebhookViewModel;
@@ -44,7 +44,7 @@ class WebhookControllerTest extends AbstractControllerTestCase
 
         $form = $this->createMock(FormView::class);
 
-        $this->expectCreateForm(EditWebhookFormType::class, ['webhook' => $webhook])
+        $this->expectCreateForm(EditCredentialFormType::class, ['webhook' => $webhook])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false)
             ->createViewWillReturn($form);
@@ -58,7 +58,7 @@ class WebhookControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $webhook = new Webhook();
 
-        $this->expectCreateForm(EditWebhookFormType::class, ['webhook' => $webhook])
+        $this->expectCreateForm(EditCredentialFormType::class, ['webhook' => $webhook])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);

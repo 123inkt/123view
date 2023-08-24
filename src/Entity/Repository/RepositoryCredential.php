@@ -9,6 +9,7 @@ use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
 use DR\Review\Entity\Repository\Credential\CredentialInterface;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use InvalidArgumentException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RepositoryCredentialRepository::class)]
 class RepositoryCredential
@@ -19,12 +20,14 @@ class RepositoryCredential
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 3, max: 255)]
     private string $name;
 
     #[ORM\Column(type: AuthenticationType::TYPE, options: ["default" => AuthenticationType::BASIC_AUTH])]
     private string $authType = AuthenticationType::BASIC_AUTH;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 0, max: 255)]
     private string $value;
 
     public function setId(int $id): self

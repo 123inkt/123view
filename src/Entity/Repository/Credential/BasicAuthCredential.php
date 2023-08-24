@@ -5,18 +5,32 @@ namespace DR\Review\Entity\Repository\Credential;
 
 class BasicAuthCredential implements CredentialInterface
 {
-    public function __construct(private readonly string $username, private readonly string $password)
+    public function __construct(private ?string $username = null, private ?string $password = null)
     {
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function getPassword(): string
+    public function setUsername(?string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
     {
         return $this->password;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     public function __toString(): string
@@ -31,6 +45,10 @@ class BasicAuthCredential implements CredentialInterface
 
     public static function fromString(string $string): self
     {
+        if ($string === '') {
+            return new self();
+        }
+
         [$username, $password] = explode(':', base64_decode($string));
 
         return new self($username, $password);

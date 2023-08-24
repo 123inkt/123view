@@ -5,8 +5,8 @@ namespace DR\Review\Tests\Unit\Form\Webhook;
 
 use DR\Review\Controller\App\Admin\Webhook\WebhookController;
 use DR\Review\Entity\Webhook\Webhook;
-use DR\Review\Form\Webhook\EditWebhookFormType;
-use DR\Review\Form\Webhook\WebhookType;
+use DR\Review\Form\Webhook\EditCredentialFormType;
+use DR\Review\Form\Webhook\RepositoryCredentialType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -14,17 +14,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[CoversClass(EditWebhookFormType::class)]
+#[CoversClass(EditCredentialFormType::class)]
 class EditWebhookFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
-    private EditWebhookFormType              $type;
+    private EditCredentialFormType           $type;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->type         = new EditWebhookFormType($this->urlGenerator);
+        $this->type         = new EditCredentialFormType($this->urlGenerator);
     }
 
     public function testBuildForm(): void
@@ -45,7 +45,7 @@ class EditWebhookFormTypeTest extends AbstractTestCase
             ->will(
                 self::onConsecutiveCalls(
                     [
-                        ['repository', WebhookType::class, ['label' => false]],
+                        ['repository', RepositoryCredentialType::class, ['label' => false]],
                         ['save', SubmitType::class, ['label' => 'save']],
                     ]
                 )

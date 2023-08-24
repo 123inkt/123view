@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Form\Webhook;
 
 use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Form\Repository\RepositoryChoiceType;
-use DR\Review\Form\Webhook\WebhookType;
+use DR\Review\Form\Webhook\RepositoryCredentialType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-#[CoversClass(WebhookType::class)]
+#[CoversClass(RepositoryCredentialType::class)]
 class WebhookTypeTest extends AbstractTestCase
 {
     public function testBuildForm(): void
@@ -35,7 +35,7 @@ class WebhookTypeTest extends AbstractTestCase
                 )
             )->willReturnSelf();
 
-        $type = new WebhookType();
+        $type = new RepositoryCredentialType();
         $type->buildForm($builder, []);
     }
 
@@ -44,7 +44,7 @@ class WebhookTypeTest extends AbstractTestCase
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
-        $type = new WebhookType();
+        $type = new RepositoryCredentialType();
         $type->configureOptions($resolver);
 
         static::assertSame(Webhook::class, $introspector->getDefault('data_class'));
@@ -55,7 +55,7 @@ class WebhookTypeTest extends AbstractTestCase
         $webhookA = new Webhook();
         $webhookB = (new Webhook())->setHeader('Authorization', 'Bearer 123view');
 
-        $type = new WebhookType();
+        $type = new RepositoryCredentialType();
         static::assertSame('', $type->getAuthorization($webhookA));
         static::assertSame('Bearer 123view', $type->getAuthorization($webhookB));
     }
@@ -65,7 +65,7 @@ class WebhookTypeTest extends AbstractTestCase
         $webhookA = new Webhook();
         $webhookB = (new Webhook())->setHeader('Authorization', 'Bearer 123view');
 
-        $type = new WebhookType();
+        $type = new RepositoryCredentialType();
         $type->setAuthorization($webhookA, 'bearer');
         $type->setAuthorization($webhookB, null);
 

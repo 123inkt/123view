@@ -300,6 +300,7 @@ return [
     'webhook.successful.removed'                  => 'Webhook successfully removed.',
     'credential.successful.removed'               => 'Credential successfully removed.',
     'webhook.successful.saved'                    => 'Webhook successfully saved.',
+    'credential.successful.saved'                 => 'Credential successfully saved.',
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',

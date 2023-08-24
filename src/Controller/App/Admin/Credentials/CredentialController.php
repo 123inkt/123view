@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Admin\Credentials;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Entity\Webhook\Webhook;
-use DR\Review\Form\Webhook\EditWebhookFormType;
-use DR\Review\Repository\Webhook\WebhookRepository;
+use DR\Review\Doctrine\Type\AuthenticationType;
+use DR\Review\Entity\Repository\RepositoryCredential;
+use DR\Review\Form\Repository\Credential\EditCredentialFormType;
+use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Admin\EditWebhookViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -19,34 +20,34 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CredentialController extends AbstractController
 {
-    public function __construct(private WebhookRepository $webhookRepository)
+    public function __construct(private RepositoryCredentialRepository $webhookRepository)
     {
     }
 
     /**
      * @return array<string, EditWebhookViewModel>|RedirectResponse
      */
-    #[Route('/app/admin/webhook/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
+    #[Route('/app/admin/credential/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/admin/edit_webhook.html.twig')]
     #[IsGranted(Roles::ROLE_ADMIN)]
-    public function __invoke(Request $request, #[MapEntity] ?Webhook $webhook): array|RedirectResponse
+    public function __invoke(Request $request, #[MapEntity] ?RepositoryCredential $credential): array|RedirectResponse
     {
-        if ($webhook === null && $request->attributes->get('id') !== null) {
-            throw new NotFoundHttpException('Webhook not found');
+        if ($credential === null && $request->attributes->get('id') !== null) {
+            throw new NotFoundHttpException('Credential not found');
         }
 
-        $webhook ??= (new Webhook())->setEnabled(true)->setRetries(3)->setVerifySsl(true);
+        $credential ??= (new RepositoryCredential())->setAuthType(AuthenticationType::BASIC_AUTH);
 
-        $form = $this->createForm(EditWebhookFormType::class, ['webhook' => $webhook]);
+        $form = $this->createForm(EditCredentialFormType::class, ['credential' => $credential]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['editWebhookModel' => new EditWebhookViewModel($webhook, $form->createView())];
+            return ['editWebhookModel' => new EditWebhookViewModel($credential, $form->createView())];
         }
 
-        $this->webhookRepository->save($webhook, true);
+        $this->webhookRepository->save($credential, true);
 
-        $this->addFlash('success', 'webhook.successful.saved');
+        $this->addFlash('success', 'credential.successful.saved');
 
-        return $this->redirectToRoute(WebhooksController::class);
+        return $this->redirectToRoute(CredentialsController::class);
     }
 }
