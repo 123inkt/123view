@@ -298,6 +298,7 @@ return [
     'visit.the.api.at'                            => 'Visit the API documentation at',
     'webhook.new'                                 => 'Add webhook',
     'webhook.successful.removed'                  => 'Webhook successfully removed.',
+    'credential.successful.removed'               => 'Credential successfully removed.',
     'webhook.successful.saved'                    => 'Webhook successfully saved.',
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
