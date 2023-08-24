@@ -18,7 +18,7 @@ class BasicAuthCredentialType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('username', TextType::class, ['label' => 'username']);
-        $builder->add('password', PasswordType::class, ['label' => 'username']);
+        $builder->add('password', PasswordType::class, ['label' => 'password']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
