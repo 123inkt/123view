@@ -9,6 +9,22 @@ class BasicAuthCredential implements CredentialInterface
     {
     }
 
+    public static function fromString(string $string): self
+    {
+        if ($string === '') {
+            return new self();
+        }
+
+        $decoded = base64_decode($string, true);
+        if ($decoded === false) {
+            return new self();
+        }
+
+        [$username, $password] = explode(':', $decoded, 2);
+
+        return new self($username, $password);
+    }
+
     public function getUsername(): ?string
     {
         return $this->username;
@@ -33,29 +49,13 @@ class BasicAuthCredential implements CredentialInterface
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return base64_encode($this->username . ':' . $this->password);
-    }
-
     public function getAuthorizationHeader(): string
     {
         return 'Basic ' . $this;
     }
 
-    public static function fromString(string $string): self
+    public function __toString(): string
     {
-        if ($string === '') {
-            return new self();
-        }
-
-        $decoded = base64_decode($string, true);
-        if ($decoded === false) {
-            return new self();
-        }
-
-        [$username, $password] = explode(':', $decoded, 2);
-
-        return new self($username, $password);
+        return base64_encode($this->username . ':' . $this->password);
     }
 }
