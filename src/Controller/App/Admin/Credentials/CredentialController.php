@@ -9,6 +9,7 @@ use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Credential\EditCredentialFormType;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\ViewModel\App\Admin\EditCredentialViewModel;
 use DR\Review\ViewModel\App\Admin\EditWebhookViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -41,7 +42,7 @@ class CredentialController extends AbstractController
         $form = $this->createForm(EditCredentialFormType::class, ['credential' => $credential]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['editWebhookModel' => new EditWebhookViewModel($credential, $form->createView())];
+            return ['editCredentialModel' => new EditCredentialViewModel($credential, $form->createView())];
         }
 
         $this->webhookRepository->save($credential, true);
