@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\Webhook;
 
-use DR\Review\Controller\App\Admin\WebhookController;
+use DR\Review\Controller\App\Admin\Webhook\WebhookController;
 use DR\Review\Entity\Webhook\Webhook;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

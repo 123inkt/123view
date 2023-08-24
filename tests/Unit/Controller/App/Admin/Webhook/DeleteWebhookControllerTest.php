@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Controller\App\Admin;
+namespace DR\Review\Tests\Unit\Controller\App\Admin\Webhook;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Admin\DeleteWebhookController;
-use DR\Review\Controller\App\Admin\WebhooksController;
+use DR\Review\Controller\App\Admin\Webhook\DeleteWebhookController;
+use DR\Review\Controller\App\Admin\Webhook\WebhooksController;
 use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Repository\Webhook\WebhookRepository;
 use DR\Review\Tests\AbstractControllerTestCase;

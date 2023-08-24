@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Form\Webhook;
 
-use DR\Review\Controller\App\Admin\WebhookController;
+use DR\Review\Controller\App\Admin\Webhook\WebhookController;
 use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Form\Webhook\EditWebhookFormType;
 use DR\Review\Form\Webhook\WebhookType;

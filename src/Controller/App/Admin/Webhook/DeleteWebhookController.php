@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Controller\App\Admin;
+namespace DR\Review\Controller\App\Admin\Webhook;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Webhook\Webhook;
