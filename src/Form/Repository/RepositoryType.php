@@ -4,17 +4,23 @@ declare(strict_types=1);
 namespace DR\Review\Form\Repository;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
+use DR\Review\Repository\Config\RepositoryCredentialRepository;
+use DR\Review\Transformer\RepositoryUrlTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RepositoryType extends AbstractType
 {
-    public function __construct(private string $gitlabApiUrl)
+    public function __construct(private readonly RepositoryCredentialRepository $credentialRepository, private readonly string $gitlabApiUrl)
     {
     }
 
@@ -32,7 +38,23 @@ class RepositoryType extends AbstractType
         );
         $builder->add('displayName', TextType::class, ['label' => 'display.name', 'required' => true, 'attr' => ['maxlength' => 255]]);
         $builder->add('mainBranchName', TextType::class, ['label' => 'main.branch', 'required' => true, 'attr' => ['maxlength' => 255]]);
-        $builder->add('url', RepositoryUrlType::class, ['label' => false, 'required' => true]);
+        $builder->add(
+            'url',
+            UrlType::class,
+            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new Assert\Url()]
+        );
+        $builder->add(
+            'credential',
+            ChoiceType::class,
+            [
+                'label'                     => 'credentials',
+                'required'                  => false,
+                'choice_translation_domain' => false,
+                'choices'                   => $this->credentialRepository->findBy([], ['name' => 'ASC']),
+                'choice_value'              => static fn(?RepositoryCredential $credential) => $credential?->getId(),
+                'choice_label'              => static fn(?RepositoryCredential $credential) => $credential?->getName(),
+            ]
+        );
         $builder->add(
             'updateRevisionsInterval',
             IntegerType::class,
@@ -47,10 +69,12 @@ class RepositoryType extends AbstractType
         if ($this->gitlabApiUrl !== '') {
             $builder->add('gitlabProjectId', GitlabProjectIdType::class);
         }
+
+        $builder->get('url')->addModelTransformer(new RepositoryUrlTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Repository::class,]);
+        $resolver->setDefaults(['data_class' => Repository::class]);
     }
 }

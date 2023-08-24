@@ -65,6 +65,7 @@ return [
     'created.at'                                  => 'Created at',
     'creation.date'                               => 'Creation date',
     'credential.new'                              => 'Add credential',
+    'credentials'                                 => 'Credentials',
     'credential.successful.removed'               => 'Credential successfully removed.',
     'credential.successful.saved'                 => 'Credential successfully saved.',
     'darcula'                                     => 'Darcula',
