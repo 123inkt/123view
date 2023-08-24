@@ -304,4 +304,6 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'repository.credentials'                      => 'Git credential store',
+    'credential.new'                              => 'Add credential',
 ];

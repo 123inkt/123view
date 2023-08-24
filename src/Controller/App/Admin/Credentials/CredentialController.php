@@ -10,7 +10,6 @@ use DR\Review\Form\Repository\Credential\EditCredentialFormType;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Admin\EditCredentialViewModel;
-use DR\Review\ViewModel\App\Admin\EditWebhookViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,10 +25,10 @@ class CredentialController extends AbstractController
     }
 
     /**
-     * @return array<string, EditWebhookViewModel>|RedirectResponse
+     * @return array<string, EditCredentialViewModel>|RedirectResponse
      */
     #[Route('/app/admin/credential/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
-    #[Template('app/admin/edit_webhook.html.twig')]
+    #[Template('app/admin/edit_credential.html.twig')]
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(Request $request, #[MapEntity] ?RepositoryCredential $credential): array|RedirectResponse
     {

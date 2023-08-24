@@ -21,7 +21,7 @@ class CredentialsController extends AbstractController
      * @return array<string, WebhooksViewModel>
      */
     #[Route('/app/admin/credentials', self::class, methods: 'GET')]
-    #[Template('app/admin/webhooks.html.twig')]
+    #[Template('app/admin/credentials.html.twig')]
     #[IsGranted(Roles::ROLE_ADMIN)]
     public function __invoke(): array
     {

@@ -37,13 +37,13 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\WebhookController', {id: webhook.id}) }}"
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Webhook\\WebhookController', {id: webhook.id}) }}"
                        class="btn btn-success btn-sm">
                         <i class="bi-pencil-square"></i>
                     </a>
 
                     <form method="POST" class="d-inline-block"
-                          action="{{ path('DR\\Review\\Controller\\App\\Admin\\DeleteWebhookController', {id: webhook.id}) }}"
+                          action="{{ path('DR\\Review\\Controller\\App\\Admin\\Webhook\\DeleteWebhookController', {id: webhook.id}) }}"
                             {{ stimulus_controller('component--confirm-submit') }}
                           data-confirm-message="{{ 'are.you.sure.you.want.to.delete.this'|trans }}">
                         <input type="hidden" name="_method" value="DELETE" />
@@ -57,7 +57,7 @@
         <tbody>
     </table>
 
-    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\WebhookController') }}" class="btn btn-outline-primary">
+    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Webhook\\WebhookController') }}" class="btn btn-outline-primary">
         <i class="bi-plus"></i>
         {{ 'webhook.new'|trans }}
     </a>
