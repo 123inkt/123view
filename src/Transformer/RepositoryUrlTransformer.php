@@ -9,7 +9,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
- * @implements DataTransformerInterface<UriInterface|null, string[]|null>
+ * @implements DataTransformerInterface<UriInterface|null, string|null>
  */
 class RepositoryUrlTransformer implements DataTransformerInterface
 {

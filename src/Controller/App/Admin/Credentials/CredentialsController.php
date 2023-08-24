@@ -5,7 +5,7 @@ namespace DR\Review\Controller\App\Admin\Credentials;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
-use DR\Review\ViewModel\App\Admin\WebhooksViewModel;
+use DR\Review\ViewModel\App\Admin\CredentialsViewModel;
 use DR\Review\ViewModelProvider\CredentialsViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +18,7 @@ class CredentialsController extends AbstractController
     }
 
     /**
-     * @return array<string, WebhooksViewModel>
+     * @return array<string, CredentialsViewModel>
      */
     #[Route('/app/admin/credentials', self::class, methods: 'GET')]
     #[Template('app/admin/credentials.html.twig')]

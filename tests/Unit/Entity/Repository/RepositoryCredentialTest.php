@@ -31,6 +31,7 @@ class RepositoryCredentialTest extends AbstractTestCase
         static::assertSame((string)$credentials, $repositoryCredential->getValue());
 
         $newCredentials = $repositoryCredential->getCredentials();
+        static::assertInstanceOf(BasicAuthCredential::class, $newCredentials);
         static::assertSame('sherlock', $newCredentials->getUsername());
         static::assertSame('holmes', $newCredentials->getPassword());
     }
