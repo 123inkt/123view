@@ -42,6 +42,6 @@ class RepositoryUrlTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Unable to transform value');
         }
 
-        return Uri::new($value);
+        return Uri::new($value)->withUserInfo(null);
     }
 }
