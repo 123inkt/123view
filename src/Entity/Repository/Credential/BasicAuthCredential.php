@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Repository\Credential;
 
+use SensitiveData;
+
 class BasicAuthCredential implements CredentialInterface
 {
-    public function __construct(private ?string $username = null, private ?string $password = null)
-    {
+    public function __construct(
+        private ?string $username = null,
+        #[SensitiveData] private ?string $password = null
+    ) {
     }
 
     public function getUsername(): ?string
