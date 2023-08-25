@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Admin;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Form\Repository\EditRepositoryFormType;
+use DR\Review\Message\Repository\RepositoryUpdated;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Admin\EditRepositoryViewModel;
@@ -14,12 +15,13 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RepositoryController extends AbstractController
 {
-    public function __construct(private RepositoryRepository $repositoryRepository)
+    public function __construct(private readonly RepositoryRepository $repositoryRepository, private readonly MessageBusInterface $messageBus)
     {
     }
 
@@ -44,6 +46,7 @@ class RepositoryController extends AbstractController
         }
 
         $this->repositoryRepository->save($repository, true);
+        $this->messageBus->dispatch(new RepositoryUpdated((int)$repository->getId()));
 
         $this->addFlash('success', 'repository.successful.saved');
 
