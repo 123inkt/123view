@@ -23,11 +23,14 @@ class GitRemoteCommandBuilderTest extends AbstractTestCase
         $urlWithCredentials = 'https://user:pass@example.com/test';
 
         $command = (string)$this->builder->setUrl('name', 'url')->setUrl('name', $urlWithCredentials);
-        static::assertSame('git remote set-url name https://example.com/test', $command);
+        static::assertSame('git remote set-url *************', $command);
     }
 
     public function testBuild(): void
     {
-        static::assertSame(['git', 'remote', 'set-url', 'name', 'url'], $this->builder->setUrl('name', 'url')->build());
+        static::assertSame(
+            ['git', 'remote', 'set-url ' . escapeshellarg('name') . ' ' . escapeshellarg('url')],
+            $this->builder->setUrl('name', 'url')->build()
+        );
     }
 }
