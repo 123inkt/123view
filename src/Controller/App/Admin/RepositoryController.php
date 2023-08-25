@@ -5,28 +5,31 @@ namespace DR\Review\Controller\App\Admin;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Exception\RepositoryException;
 use DR\Review\Form\Repository\EditRepositoryFormType;
-use DR\Review\Message\Repository\RepositoryUpdated;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Git\Remote\GitRemoteService;
 use DR\Review\ViewModel\App\Admin\EditRepositoryViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RepositoryController extends AbstractController
 {
-    public function __construct(private readonly RepositoryRepository $repositoryRepository, private readonly MessageBusInterface $messageBus)
-    {
+    public function __construct(
+        private readonly RepositoryRepository $repositoryRepository,
+        private readonly GitRemoteService $gitRemoteService
+    ) {
     }
 
     /**
      * @return array<string, EditRepositoryViewModel>|RedirectResponse
+     * @throws RepositoryException
      */
     #[Route('/app/admin/repository/{id<\d+>?}', self::class, methods: ['GET', 'POST'])]
     #[Template('app/admin/edit_repository.html.twig')]
@@ -46,7 +49,7 @@ class RepositoryController extends AbstractController
         }
 
         $this->repositoryRepository->save($repository, true);
-        $this->messageBus->dispatch(new RepositoryUpdated((int)$repository->getId()));
+        $this->gitRemoteService->updateRemoteUrl($repository);
 
         $this->addFlash('success', 'repository.successful.saved');
 

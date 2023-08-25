@@ -6,8 +6,8 @@ namespace DR\Review\Service\Git;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\Helpers;
-use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Utility\CircuitBreaker;
@@ -67,17 +67,11 @@ class GitRepositoryService
         $repositoryName = Helpers::extractRepositoryNameFromUrl((string)$repositoryUrl);
         $repositoryDir  = $this->cacheDirectory . $repositoryName . '-' . hash('sha1', (string)$repositoryUrl) . '/';
 
-        // add credentials
-        $credentials = $repository->getCredential()?->getCredentials();
-        if ($credentials instanceof BasicAuthCredential) {
-            $repositoryUrl = $repositoryUrl->withUserInfo($credentials->getUsername(), $credentials->getPassword());
-        }
-
         if ($this->filesystem->exists($repositoryDir . '.git') === false) {
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
             $this->gitLogger->info(sprintf('git: clone repository `%s`.', $repositoryUrl->withUserInfo(null)));
-            $this->git->cloneRepository((string)$repositoryUrl, $repositoryDir);
+            $this->git->cloneRepository((string)RepositoryUtil::getUriWithCredentials($repository), $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
         }
 

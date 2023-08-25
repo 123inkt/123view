@@ -63,7 +63,7 @@ class Repository
     #[ORM\Column(type: UriType::TYPE, length: 255)]
     private UriInterface $url;
 
-    #[OneToOne(targetEntity: RepositoryCredential::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[OneToOne(targetEntity: RepositoryCredential::class)]
     #[JoinColumn(name: 'credential_id', referencedColumnName: 'id')]
     private ?RepositoryCredential $credential = null;
 
