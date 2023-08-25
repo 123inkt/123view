@@ -310,4 +310,5 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'empty.password.will.be.kept'                 => 'Leave the password field empty to keep the current password.'
 ];
