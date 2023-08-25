@@ -11,9 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(WebhookType::class)]
 class WebhookTypeTest extends AbstractTestCase
@@ -24,9 +26,9 @@ class WebhookTypeTest extends AbstractTestCase
 
         $builder->expects(self::exactly(6))
             ->method('add')
-            ->will(
-                self::onConsecutiveCalls(
-                    ['url', CheckboxType::class],
+            ->with(
+                ...consecutive(
+                    ['url', UrlType::class],
                     ['authorization', TextType::class],
                     ['retries', NumberType::class],
                     ['enabled', CheckboxType::class],

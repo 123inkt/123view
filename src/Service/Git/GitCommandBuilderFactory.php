@@ -14,6 +14,7 @@ use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\GarbageCollect\GitGarbageCollectCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
+use DR\Review\Service\Git\Remote\GitRemoteCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\RevList\GitRevListCommandBuilder;
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
@@ -80,6 +81,11 @@ class GitCommandBuilderFactory
     public function createReset(): GitResetCommandBuilder
     {
         return new GitResetCommandBuilder($this->git);
+    }
+
+    public function createRemote(): GitRemoteCommandBuilder
+    {
+        return new GitRemoteCommandBuilder($this->git);
     }
 
     public function createRevList(): GitRevListCommandBuilder

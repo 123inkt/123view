@@ -29,6 +29,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createDiffTree();
         $this->factory->createBranch();
         $this->factory->createShow();
+        $this->factory->createRemote();
         $this->factory->createReset();
         $this->factory->createRevList();
         $this->factory->createCommit();

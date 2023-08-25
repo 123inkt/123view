@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Form\Webhook;
 
-use DR\Review\Controller\App\Admin\WebhookController;
+use DR\Review\Controller\App\Admin\Webhook\WebhookController;
 use DR\Review\Entity\Webhook\Webhook;
 use DR\Review\Form\Webhook\EditWebhookFormType;
 use DR\Review\Form\Webhook\WebhookType;
@@ -13,6 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(EditWebhookFormType::class)]
 class EditWebhookFormTypeTest extends AbstractTestCase
@@ -42,12 +43,10 @@ class EditWebhookFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                self::onConsecutiveCalls(
-                    [
-                        ['repository', WebhookType::class, ['label' => false]],
-                        ['save', SubmitType::class, ['label' => 'save']],
-                    ]
+            ->with(
+                ...consecutive(
+                    ['webhook', WebhookType::class, ['label' => false]],
+                    ['save', SubmitType::class, ['label' => 'save']],
                 )
             )->willReturnSelf();
 

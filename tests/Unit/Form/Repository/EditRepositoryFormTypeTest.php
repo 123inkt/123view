@@ -12,6 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @coversDefaultClass \DR\Review\Form\Repository\EditRepositoryFormType
@@ -47,12 +48,10 @@ class EditRepositoryFormTypeTest extends AbstractTestCase
         $builder->expects(self::once())->method('setMethod')->with('POST');
         $builder->expects(self::exactly(2))
             ->method('add')
-            ->will(
-                self::onConsecutiveCalls(
-                    [
-                        ['repository', RepositoryType::class],
-                        ['save', SubmitType::class, ['label' => 'save']],
-                    ]
+            ->with(
+                ...consecutive(
+                    ['repository', RepositoryType::class],
+                    ['save', SubmitType::class, ['label' => 'save']],
                 )
             )->willReturnSelf();
 

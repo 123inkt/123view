@@ -27,16 +27,15 @@ class GitRepository
      * Execute git command via cli
      * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
      */
-    public function execute(string|GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
+    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
     {
         $this->logger->info('Executing `{command}` for `{name}`', ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]);
 
-        $command = is_string($commandBuilder) ? $commandBuilder : implode(' ', $commandBuilder->build());
-        $action  = is_string($commandBuilder) ? 'manual' : $commandBuilder->command();
+        $action = $commandBuilder->command();
 
         $this->stopWatch?->start('git.' . $action, 'git');
         try {
-            $process = Process::fromShellCommandline($command);
+            $process = new Process($commandBuilder->build());
             $process->setTimeout(300);
             $process->setWorkingDirectory($this->repositoryPath);
             $process->run();

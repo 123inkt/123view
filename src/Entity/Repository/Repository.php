@@ -11,6 +11,8 @@ use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToOne;
 use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -60,6 +62,10 @@ class Repository
 
     #[ORM\Column(type: UriType::TYPE, length: 255)]
     private UriInterface $url;
+
+    #[OneToOne(targetEntity: RepositoryCredential::class)]
+    #[JoinColumn(name: 'credential_id', referencedColumnName: 'id')]
+    private ?RepositoryCredential $credential = null;
 
     #[ORM\Column]
     private bool $favorite = false;
@@ -180,6 +186,18 @@ class Repository
     public function setUrl(UriInterface $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getCredential(): ?RepositoryCredential
+    {
+        return $this->credential;
+    }
+
+    public function setCredential(?RepositoryCredential $credential): self
+    {
+        $this->credential = $credential;
 
         return $this;
     }

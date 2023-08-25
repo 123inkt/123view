@@ -93,11 +93,16 @@
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}">
-                                                    {{- 'repositories'|trans -}}
+                                                    {{- 'git.repositories'|trans -}}
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\WebhooksController') }}">
+                                                <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\Credentials\\CredentialsController') }}">
+                                                    {{- 'repository.credentials'|trans -}}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\Webhook\\WebhooksController') }}">
                                                     {{- 'webhooks'|trans -}}
                                                 </a>
                                             </li>

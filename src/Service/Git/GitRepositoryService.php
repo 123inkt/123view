@@ -7,6 +7,7 @@ use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\Helpers;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Utility\CircuitBreaker;
@@ -70,7 +71,7 @@ class GitRepositoryService
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
             $this->gitLogger->info(sprintf('git: clone repository `%s`.', $repositoryUrl->withUserInfo(null)));
-            $this->git->cloneRepository((string)$repositoryUrl, $repositoryDir);
+            $this->git->cloneRepository((string)RepositoryUtil::getUriWithCredentials($repository), $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
         }
 

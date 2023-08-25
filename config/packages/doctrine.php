@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Doctrine\Type\CodeReviewType;
@@ -30,7 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     'enum' => 'string'
                 ],
                 'types'          => [
-                    LineCoverageType::TYPE              => LineCoverageType::class,
+                    AuthenticationType::TYPE            => AuthenticationType::class,
                     CodeReviewStateType::TYPE           => CodeReviewStateType::class,
                     CodeReviewType::TYPE                => CodeReviewType::class,
                     CodeReviewerStateType::TYPE         => CodeReviewerStateType::class,
@@ -39,6 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     DiffAlgorithmType::TYPE             => DiffAlgorithmType::class,
                     FilterType::TYPE                    => FilterType::class,
                     FrequencyType::TYPE                 => FrequencyType::class,
+                    LineCoverageType::TYPE              => LineCoverageType::class,
                     MailThemeType::TYPE                 => MailThemeType::class,
                     NotificationStatusType::TYPE        => NotificationStatusType::class,
                     SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class,

@@ -3,21 +3,20 @@ declare(strict_types=1);
 
 namespace DR\Review\Transformer;
 
-use DR\Review\Utility\UriUtil;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
- * @implements DataTransformerInterface<UriInterface|null, string[]|null>
+ * @implements DataTransformerInterface<UriInterface|null, string|null>
  */
 class RepositoryUrlTransformer implements DataTransformerInterface
 {
     /**
      * @inheritDoc
      */
-    public function transform(mixed $value): ?array
+    public function transform(mixed $value): ?string
     {
         if ($value === null) {
             return null;
@@ -27,13 +26,7 @@ class RepositoryUrlTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Unable to transform value');
         }
 
-        [$username,] = UriUtil::credentials($value);
-
-        return [
-            'url'      => (string)$value->withUserInfo(null),
-            'username' => (string)$username,
-            'password' => ''
-        ];
+        return (string)$value->withUserInfo(null);
     }
 
     /**
@@ -45,10 +38,10 @@ class RepositoryUrlTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (is_array($value) === false) {
+        if (is_string($value) === false) {
             throw new TransformationFailedException('Unable to transform value');
         }
 
-        return Uri::createFromString($value['url'])->withUserInfo($value['username'], $value['password']);
+        return Uri::new($value)->withUserInfo(null);
     }
 }

@@ -112,7 +112,7 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $this->cherryPickService->expects(self::exactly(2))
             ->method('cherryPickRevisions')
             ->with(...consecutive([[$revisionA]], [[$revisionB]]))
-            ->will(static::onConsecutiveCalls(new CherryPickResult(true), static::throwException(new RepositoryException())));
+            ->willReturnOnConsecutiveCalls(new CherryPickResult(true), static::throwException(new RepositoryException()));
         $this->resetManager->expects(self::once())
             ->method('start')
             ->with($repository, 'branchName')
