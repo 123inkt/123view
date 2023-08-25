@@ -7,7 +7,9 @@ use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
 use CzProject\GitPhp\RunnerResult;
+use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
@@ -58,7 +60,31 @@ class GitRepositoryServiceTest extends AbstractTestCase
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->willReturn($gitRepository);
+        $this->git->expects(static::once())->method('cloneRepository')->with('http://my.repository.com')->willReturn($gitRepository);
+
+        $this->service->getRepository($repository);
+    }
+
+    /**
+     * @covers ::getRepository
+     * @covers ::tryGetRepository
+     * @throws RepositoryException
+     */
+    public function testGetRepositoryWithCredentials(): void
+    {
+        $credential = new RepositoryCredential();
+        $credential->setCredentials(new BasicAuthCredential('user', 'pass'));
+
+        $repository = new Repository();
+        $repository->setCredential($credential);
+        $repository->setId(123);
+        $repository->setUrl(Uri::new('http://my.repository.com'));
+        $gitRepository = $this->createMock(GitRepository::class);
+
+        // setup mocks
+        $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
+        $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
+        $this->git->expects(static::once())->method('cloneRepository')->with('http://user:pass@my.repository.com')->willReturn($gitRepository);
 
         $this->service->getRepository($repository);
     }
