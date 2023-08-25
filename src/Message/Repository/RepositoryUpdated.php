@@ -7,6 +7,9 @@ use DR\Review\Message\AsyncMessageInterface;
 
 class RepositoryUpdated implements AsyncMessageInterface
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(public readonly int $repositoryId)
     {
     }
