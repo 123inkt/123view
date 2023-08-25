@@ -16,7 +16,7 @@ class BasicAuthCredential implements CredentialInterface
         }
 
         $decoded = base64_decode($string, true);
-        if ($decoded === false) {
+        if ($decoded === false || str_contains($decoded, ':') === false) {
             return new self();
         }
 
