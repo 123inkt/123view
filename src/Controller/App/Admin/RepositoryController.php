@@ -21,10 +21,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RepositoryController extends AbstractController
 {
-    public function __construct(
-        private readonly RepositoryRepository $repositoryRepository,
-        private readonly GitRemoteService $gitRemoteService
-    ) {
+    public function __construct(private readonly RepositoryRepository $repositoryRepository, private readonly GitRemoteService $gitRemoteService)
+    {
     }
 
     /**
