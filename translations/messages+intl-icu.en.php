@@ -313,4 +313,5 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'authentication.type'                         => 'Authentication type',
 ];
