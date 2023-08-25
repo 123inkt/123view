@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Form\Repository;
 
+use ApiPlatform\Api\UrlGeneratorInterface;
+use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
 use DR\Review\Form\Repository\RepositoryType;
@@ -23,16 +25,21 @@ use function DR\PHPUnitExtensions\Mock\consecutive;
 #[CoversClass(RepositoryType::class)]
 class RepositoryTypeTest extends AbstractTestCase
 {
+    private UrlGeneratorInterface&MockObject          $urlGenerator;
     private RepositoryCredentialRepository&MockObject $credentialRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->urlGenerator         = $this->createMock(UrlGeneratorInterface::class);
         $this->credentialRepository = $this->createMock(RepositoryCredentialRepository::class);
     }
 
     public function testBuildForm(): void
     {
+        $this->urlGenerator->expects(self::once())->method('generate')->with(CredentialsController::class)->willReturn('url');
+        $this->credentialRepository->expects(self::once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([]);
+
         $builder = $this->createMock(FormBuilderInterface::class);
 
         $builder->expects(self::exactly(10))
@@ -52,7 +59,7 @@ class RepositoryTypeTest extends AbstractTestCase
                 )
             )->willReturnSelf();
 
-        $type = new RepositoryType($this->credentialRepository, 'gitlab');
+        $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
         $type->buildForm($builder, []);
     }
 
@@ -61,7 +68,7 @@ class RepositoryTypeTest extends AbstractTestCase
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
-        $type = new RepositoryType($this->credentialRepository, 'gitlab');
+        $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
         $type->configureOptions($resolver);
 
         static::assertSame(Repository::class, $introspector->getDefault('data_class'));

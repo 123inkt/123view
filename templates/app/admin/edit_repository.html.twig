@@ -16,7 +16,7 @@
             {{ form_widget(formField) }}
             {{ form_errors(formField) }}
             {% if formField.vars.help %}
-                <small class="text-secondary">{{ formField.vars.help|trans|raw }}</small>
+                <small class="text-secondary">{{ formField.vars.help|trans(formField.vars.help_translation_parameters)|raw }}</small>
             {% endif %}
         </div>
     </div>

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\Repository;
 
+use ApiPlatform\Api\UrlGeneratorInterface;
+use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
@@ -20,8 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RepositoryType extends AbstractType
 {
-    public function __construct(private readonly RepositoryCredentialRepository $credentialRepository, private readonly string $gitlabApiUrl)
-    {
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly RepositoryCredentialRepository $credentialRepository,
+        private readonly string $gitlabApiUrl
+    ) {
     }
 
     /**
@@ -47,12 +52,14 @@ class RepositoryType extends AbstractType
             'credential',
             ChoiceType::class,
             [
-                'label'                     => 'credentials',
-                'required'                  => false,
-                'choice_translation_domain' => false,
-                'choices'                   => $this->credentialRepository->findBy([], ['name' => 'ASC']),
-                'choice_value'              => static fn(?RepositoryCredential $credential) => $credential?->getId(),
-                'choice_label'              => static fn(?RepositoryCredential $credential) => $credential?->getName(),
+                'label'                       => 'credentials',
+                'required'                    => false,
+                'choice_translation_domain'   => false,
+                'help'                        => 'repository.credentials.help',
+                'help_translation_parameters' => ['url' => $this->urlGenerator->generate(CredentialsController::class)],
+                'choices'                     => $this->credentialRepository->findBy([], ['name' => 'ASC']),
+                'choice_value'                => static fn(?RepositoryCredential $credential) => $credential?->getId(),
+                'choice_label'                => static fn(?RepositoryCredential $credential) => $credential?->getName(),
             ]
         );
         $builder->add(
