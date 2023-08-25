@@ -7,16 +7,15 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Credential\EditCredentialFormType;
-use DR\Review\Message\Repository\RepositoryCredentialUpdated;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Git\Remote\GitRemoteService;
 use DR\Review\ViewModel\App\Admin\EditCredentialViewModel;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -24,7 +23,7 @@ class CredentialController extends AbstractController
 {
     public function __construct(
         private readonly RepositoryCredentialRepository $credentialRepository,
-        private readonly MessageBusInterface $messageBus
+        private readonly GitRemoteService $gitRemoteService
     ) {
     }
 
@@ -49,7 +48,7 @@ class CredentialController extends AbstractController
         }
 
         $this->credentialRepository->save($credential, true);
-        $this->messageBus->dispatch(new RepositoryCredentialUpdated((int)$credential->getId()));
+        $this->gitRemoteService->updateRemoteUrls($credential);
 
         $this->addFlash('success', 'credential.successful.saved');
 
