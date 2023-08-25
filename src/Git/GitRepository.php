@@ -35,7 +35,7 @@ class GitRepository
 
         $this->stopWatch?->start('git.' . $action, 'git');
         try {
-            $process = new Process($commandBuilder->build());
+            $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
             $process->setTimeout(300);
             $process->setWorkingDirectory($this->repositoryPath);
             $process->run();

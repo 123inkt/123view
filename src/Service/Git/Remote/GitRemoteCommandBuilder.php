@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Remote;
 
 use DR\Review\Service\Git\AbstractGitCommandBuilder;
-use League\Uri\Uri;
 
 class GitRemoteCommandBuilder extends AbstractGitCommandBuilder
 {
@@ -15,9 +14,7 @@ class GitRemoteCommandBuilder extends AbstractGitCommandBuilder
 
     public function setUrl(string $name, string $remoteUrl): self
     {
-        $this->arguments['set-url']            = 'set-url';
-        $this->arguments['set-url-name']       = $name;
-        $this->arguments['set-url-remote-url'] = $remoteUrl;
+        $this->arguments['set-url'] = sprintf('set-url %s %s', escapeshellarg($name), escapeshellarg($remoteUrl));
 
         return $this;
     }
@@ -26,8 +23,8 @@ class GitRemoteCommandBuilder extends AbstractGitCommandBuilder
     {
         // strip sensitive data
         $arguments = $this->arguments;
-        if (isset($arguments['set-url-remote-url'])) {
-            $arguments['set-url-remote-url'] = (string)Uri::new($arguments['set-url-remote-url'])->withUserInfo(null);
+        if (isset($arguments['set-url'])) {
+            $arguments['set-url'] = 'set-url *************';
         }
 
         return implode(" ", $arguments);

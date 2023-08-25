@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\OneToOne;
 use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -63,7 +62,7 @@ class Repository
     #[ORM\Column(type: UriType::TYPE, length: 255)]
     private UriInterface $url;
 
-    #[OneToOne(targetEntity: RepositoryCredential::class)]
+    #[ORM\ManyToOne(targetEntity: RepositoryCredential::class)]
     #[JoinColumn(name: 'credential_id', referencedColumnName: 'id')]
     private ?RepositoryCredential $credential = null;
 

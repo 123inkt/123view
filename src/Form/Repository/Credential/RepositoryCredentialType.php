@@ -19,7 +19,11 @@ class RepositoryCredentialType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', TextType::class, ['label' => 'name']);
-        $builder->add('authType', ChoiceType::class, ['choices' => ['BasicAuth' => AuthenticationType::BASIC_AUTH]]);
+        $builder->add(
+            'authType',
+            ChoiceType::class,
+            ['label' => 'authentication.type', 'choices' => ['BasicAuth' => AuthenticationType::BASIC_AUTH]]
+        );
         $builder->add('credentials', BasicAuthCredentialType::class, ['label' => false]);
     }
 
