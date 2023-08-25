@@ -8,22 +8,30 @@ use DR\Review\Controller\App\Admin\Credentials\CredentialController;
 use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
 use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Credential\EditCredentialFormType;
+use DR\Review\Message\Repository\RepositoryCredentialUpdated;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\EditCredentialViewModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use stdClass;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(CredentialController::class)]
 class CredentialControllerTest extends AbstractControllerTestCase
 {
     private RepositoryCredentialRepository&MockObject $repository;
+    private MessageBusInterface&MockObject            $bus;
+    private Envelope                                  $envelope;
 
     protected function setUp(): void
     {
+        $this->envelope   = new Envelope(new stdClass(), []);
+        $this->bus        = $this->createMock(MessageBusInterface::class);
         $this->repository = $this->createMock(RepositoryCredentialRepository::class);
         parent::setUp();
     }
@@ -57,6 +65,7 @@ class CredentialControllerTest extends AbstractControllerTestCase
     {
         $request    = new Request();
         $credential = new RepositoryCredential();
+        $credential->setId(123);
 
         $this->expectCreateForm(EditCredentialFormType::class, ['credential' => $credential])
             ->handleRequest($request)
@@ -64,6 +73,7 @@ class CredentialControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true);
 
         $this->repository->expects(static::once())->method('save')->with($credential, true);
+        $this->bus->expects(static::once())->method('dispatch')->with(new RepositoryCredentialUpdated(123))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'credential.successful.saved');
         $this->expectRedirectToRoute(CredentialsController::class)->willReturn('url');
 
@@ -72,6 +82,6 @@ class CredentialControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new CredentialController($this->repository);
+        return new CredentialController($this->repository, $this->bus);
     }
 }
