@@ -12,12 +12,16 @@ return static function (MonologConfig $monolog) {
         ->formatter('monolog.formatter.line')
         ->maxFiles(10);
 
+    $monolog->handler('error_fingers_crossed')
+        ->type('fingers_crossed')
+        ->actionLevel('error')
+        ->handler('error')
+        ->channels()->elements(["!event"]);
     $monolog->handler('error')
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
-        ->level('error')
+        ->level('debug')
         ->formatter('monolog.formatter.line')
-        ->includeStacktraces(true)
         ->maxFiles(10);
 
     if ((string)env('ERROR_MAIL') !== '') {
