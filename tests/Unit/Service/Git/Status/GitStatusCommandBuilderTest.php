@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Status;
 
-use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\Status\GitStatusCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(GitResetCommandBuilder::class)]
+#[CoversClass(GitStatusCommandBuilder::class)]
 class GitStatusCommandBuilderTest extends AbstractTestCase
 {
     private GitStatusCommandBuilder $builder;
