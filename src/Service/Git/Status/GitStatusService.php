@@ -31,10 +31,8 @@ class GitStatusService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
         $this->logger?->info($output);
 
-        if (preg_match_all('/^\w{2}\s+(.*?)\s*$/m', $output, $matches) === 0) {
-            return [];
-        }
+        $results = preg_match_all('/^\w{2}\s+(.*?)\s*$/m', $output, $matches);
 
-        return $matches[1];
+        return $results === 0 ? [] : $matches[1];
     }
 }
