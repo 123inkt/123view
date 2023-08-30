@@ -13,11 +13,11 @@ class GitCherryPickParser
             return new CherryPickResult(true);
         }
 
-        if (preg_match_all('/CONFLICT\s+\(\S+\):\s+\S+\s+renamed to\s+(\S+)/', $output, $matches) > 0) {
+        if (preg_match_all('/CONFLICT\s+\([^)]+\):\s+\S+?\s+renamed to\s+(\S+)/', $output, $matches) > 0) {
             return new CherryPickResult(false, $matches[1]);
         }
 
-        if (preg_match_all('/CONFLICT\s+\(\S+\):\s+(\S+)/', $output, $matches) > 0) {
+        if (preg_match_all('/CONFLICT\s+\([^)]+\):\s+(\S+)/', $output, $matches) > 0) {
             return new CherryPickResult(false, $matches[1]);
         }
 

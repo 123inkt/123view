@@ -16,6 +16,7 @@ use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Git\Status\GitStatusService;
 use DR\Utils\Arrays;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -28,6 +29,7 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
 
     public function __construct(
         private readonly GitAddService $addService,
+        private readonly GitStatusService $statusService,
         private readonly GitCommitService $commitService,
         private readonly GitCheckoutService $checkoutService,
         private readonly GitCherryPickService $cherryPickService,
@@ -92,8 +94,11 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
 
             // keep track of conflict files
             $conflicts[] = $result->conflicts;
+
             // add conflicts to the repository
-            $this->addService->add($repository, implode(' ', $result->conflicts));
+            $modifiedFiles = $this->statusService->getModifiedFiles($repository);
+            $this->addService->add($repository, implode(' ', $modifiedFiles));
+
             // commit changes
             $this->commitService->commit($repository);
         }

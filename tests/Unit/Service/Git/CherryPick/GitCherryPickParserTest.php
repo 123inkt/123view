@@ -38,6 +38,17 @@ class GitCherryPickParserTest extends AbstractTestCase
         static::assertSame(['src/Tests/Unit/AbstractTestCase.php'], $result->conflicts);
     }
 
+    public function testParseWithFileLocationRename(): void
+    {
+        $data = "some random text\n";
+        $data .= "  CONFLICT (file location): src/Tests/Unit/AbstractTest.php renamed to src/Tests/Unit/AbstractTestCase.php in c61a64dc1de.";
+        $data .= "some random text\n";
+
+        $result = $this->parser->parse($data);
+        static::assertFalse($result->completed);
+        static::assertSame(['src/Tests/Unit/AbstractTestCase.php'], $result->conflicts);
+    }
+
     public function testParseWithConflicts(): void
     {
         $data = "some random text\n";
