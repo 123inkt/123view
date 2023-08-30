@@ -19,6 +19,7 @@ use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
+use DR\Review\Service\Git\Status\GitStatusService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,6 +28,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class PersistentCherryPickStrategyTest extends AbstractTestCase
 {
     private GitAddService&MockObject             $addService;
+    private GitStatusService&MockObject          $statusService;
     private GitCommitService&MockObject          $commitService;
     private GitCheckoutService&MockObject        $checkoutService;
     private GitCherryPickService&MockObject      $cherryPickService;
@@ -39,6 +41,7 @@ class PersistentCherryPickStrategyTest extends AbstractTestCase
     {
         parent::setUp();
         $this->addService        = $this->createMock(GitAddService::class);
+        $this->statusService     = $this->createMock(GitStatusService::class);
         $this->commitService     = $this->createMock(GitCommitService::class);
         $this->checkoutService   = $this->createMock(GitCheckoutService::class);
         $this->cherryPickService = $this->createMock(GitCherryPickService::class);
@@ -47,6 +50,7 @@ class PersistentCherryPickStrategyTest extends AbstractTestCase
         $this->resetManager      = $this->createMock(GitRepositoryResetManager::class);
         $this->strategy          = new PersistentCherryPickStrategy(
             $this->addService,
+            $this->statusService,
             $this->commitService,
             $this->checkoutService,
             $this->cherryPickService,
@@ -78,7 +82,8 @@ class PersistentCherryPickStrategyTest extends AbstractTestCase
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
         $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision])->willReturn($cherryPickResultA);
         $this->cherryPickService->expects(self::once())->method('cherryPickContinue')->with($repository)->willReturn($cherryPickResultB);
-        $this->addService->expects(self::once())->method('add')->with($repository, 'conflict-file');
+        $this->statusService->expects(self::once())->method('getModifiedFiles')->with()->willReturn(['modified-file']);
+        $this->addService->expects(self::once())->method('add')->with($repository, 'modified-file');
         $this->commitService->expects(self::once())->method('commit')->with($repository);
         $this->resetService->expects(self::once())->method('resetSoft')->with($repository, 'hash~');
         $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository, $options)->willReturn([$file]);

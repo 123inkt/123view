@@ -18,6 +18,7 @@ use DR\Review\Service\Git\Remote\GitRemoteCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\RevList\GitRevListCommandBuilder;
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
+use DR\Review\Service\Git\Status\GitStatusCommandBuilder;
 
 /**
  * @suppressWarnings(PHPMD.TooManyPublicMethods)
@@ -86,6 +87,11 @@ class GitCommandBuilderFactory
     public function createRemote(): GitRemoteCommandBuilder
     {
         return new GitRemoteCommandBuilder($this->git);
+    }
+
+    public function createStatus(): GitStatusCommandBuilder
+    {
+        return new GitStatusCommandBuilder($this->git);
     }
 
     public function createRevList(): GitRevListCommandBuilder
