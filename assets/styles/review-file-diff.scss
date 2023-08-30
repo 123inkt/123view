@@ -9,6 +9,7 @@
 
 .diff-file__file-change-state {
     display: inline-block;
+    font-family: 'Segoe UI Symbol', Arial, sans-serif;
     font-size: 16px;
     font-weight: bold;
     line-height: 5px;
@@ -138,8 +139,8 @@
 .diff-file__diff-line-coverage {
     display: inline-block;
     float: left;
-    line-height: 20px;
     height: 20px;
+    line-height: 20px;
     width: 8px;
 }
 
@@ -167,8 +168,8 @@
     background: var(--review-diff-line-added-bg-color);
 
     > .diff-file__line-gutter {
-        color: var(--review-diff-gutter-emphasize-fg-color);
         background: var(--review-diff-line-gutter-added-bg-color);
+        color: var(--review-diff-gutter-emphasize-fg-color);
     }
 }
 
@@ -176,8 +177,8 @@
     background: var(--review-diff-line-removed-bg-color);
 
     > .diff-file__line-gutter {
-        color: var(--review-diff-gutter-emphasize-fg-color);
         background: var(--review-diff-line-gutter-removed-bg-color);
+        color: var(--review-diff-gutter-emphasize-fg-color);
     }
 }
 
@@ -185,8 +186,8 @@
     background: var(--review-diff-line-changed-bg-color);
 
     > .diff-file__line-gutter {
-        color: var(--review-diff-gutter-emphasize-fg-color);
         background: var(--review-diff-line-gutter-changed-bg-color);
+        color: var(--review-diff-gutter-emphasize-fg-color);
     }
 }
 
