@@ -3838,16 +3838,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.7.2",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "b2fe4d22a5426f38e014855322200b97b5362c0d"
+                "reference": "3219c6ee25c9ea71e3d9bbaf39c67c9ebd499419"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/b2fe4d22a5426f38e014855322200b97b5362c0d",
-                "reference": "b2fe4d22a5426f38e014855322200b97b5362c0d",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/3219c6ee25c9ea71e3d9bbaf39c67c9ebd499419",
+                "reference": "3219c6ee25c9ea71e3d9bbaf39c67c9ebd499419",
                 "shasum": ""
             },
             "require": {
@@ -3890,9 +3890,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.7.2"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.7.3"
             },
-            "time": "2023-05-30T18:13:47+00:00"
+            "time": "2023-08-12T11:01:26+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -10493,22 +10493,22 @@
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
-            "version": "v2.1.15",
+            "version": "v2.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/accessorpair-constraint.git",
-                "reference": "acd2350ea44a7df8324ff8aaa24d4ef440e25894"
+                "reference": "64cc945f683513342d4e62348e7a8dacd0d68d24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/acd2350ea44a7df8324ff8aaa24d4ef440e25894",
-                "reference": "acd2350ea44a7df8324ff8aaa24d4ef440e25894",
+                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/64cc945f683513342d4e62348e7a8dacd0d68d24",
+                "reference": "64cc945f683513342d4e62348e7a8dacd0d68d24",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^2.0",
                 "php": ">=7.4",
-                "phpdocumentor/type-resolver": "^1.6",
+                "phpdocumentor/type-resolver": "^1.7",
                 "phpunit/phpunit": "^9.0 || ^10.0"
             },
             "require-dev": {
@@ -10533,9 +10533,9 @@
             "description": "Digital Revolution PHPUnit Constraint for accessorpairs",
             "support": {
                 "issues": "https://github.com/123inkt/accessorpair-constraint/issues",
-                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.15"
+                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.17"
             },
-            "time": "2023-08-07T16:40:28+00:00"
+            "time": "2023-08-29T14:31:32+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
