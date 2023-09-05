@@ -10539,16 +10539,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-extensions.git",
-                "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3"
+                "reference": "8b9e1433684559687275f83d6e90b468f15cce4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
-                "reference": "63a2fd3312cdafd96f6ed47a54e2bb397d10e9d3",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/8b9e1433684559687275f83d6e90b468f15cce4c",
+                "reference": "8b9e1433684559687275f83d6e90b468f15cce4c",
                 "shasum": ""
             },
             "require": {
@@ -10599,9 +10599,9 @@
             "description": "A library for phpunit utility and support classes",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-extensions/issues",
-                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.0.1"
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.1.0"
             },
-            "time": "2023-07-11T10:33:26+00:00"
+            "time": "2023-08-31T09:24:56+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
