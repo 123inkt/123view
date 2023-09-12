@@ -5,13 +5,13 @@ namespace DR\Review\MessageHandler;
 
 use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Service\Git\Remote\GitRemoteService;
+use DR\Review\Service\Git\Remote\LockableGitRemoteService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
 
 class UpdateRepositoryRemoteMessageHandler
 {
-    public function __construct(private readonly RepositoryRepository $repositoryRepository, readonly GitRemoteService $remoteService)
+    public function __construct(private readonly RepositoryRepository $repositoryRepository, readonly LockableGitRemoteService $remoteService)
     {
     }
 
