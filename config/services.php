@@ -58,8 +58,10 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
+use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -98,6 +100,9 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\Request\\', __DIR__ . '/../src/Request');
     $services->load('DR\Review\Security\Voter\\', __DIR__ . '/../src/Security/Voter');
     $services->load('DR\Review\ViewModelProvider\\', __DIR__ . '/../src/ViewModelProvider');
+
+    // create empty cache clearer
+    $services->set('cache.default_clearer', Psr6CacheClearer::class)->args([[]]);
 
     $services->set(Filesystem::class);
     $services->set(InputValidator::class);

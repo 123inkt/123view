@@ -7,7 +7,7 @@ use Symfony\Config\FrameworkConfig;
 return static function (FrameworkConfig $framework): void {
     $cache = $framework->cache();
     $cache->app('cache.adapter.filesystem');
-    $cache->directory('%kernel.cache_dir%/pools');
+    $cache->directory('%kernel.project_dir%/var/cache/pools');
 
     // application caches
     $cache->pool('gitlab.cache')->defaultLifetime(3600);

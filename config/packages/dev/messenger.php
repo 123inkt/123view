@@ -6,6 +6,7 @@ use DR\Review\Message\Delay\DelayableMessage;
 use DR\Review\Message\Revision\CommitAddedMessage;
 use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
+use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {
@@ -23,6 +24,7 @@ return static function (FrameworkConfig $framework): void {
     $messenger->routing(FetchRepositoryRevisionsMessage::class)->senders(['async_revisions']);
     $messenger->routing(CommitAddedMessage::class)->senders(['async_revisions']);
     $messenger->routing(CommitRemovedMessage::class)->senders(['async_revisions']);
+    $messenger->routing(RepositoryUpdatedMessage::class)->senders(['async_revisions']);
     $messenger->routing(DelayableMessage::class)->senders(['async_delay_mail']);
     $messenger->routing(AsyncMessageInterface::class)->senders(['async_messages']);
 };
