@@ -15,7 +15,7 @@ fi
 ##
 # clear caches
 #
-php bin/console cache:pool:clear cache.system_clearer
+php bin/console cache:clear
 
 ##
 # install assets
