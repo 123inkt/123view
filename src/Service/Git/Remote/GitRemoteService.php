@@ -6,7 +6,6 @@ namespace DR\Review\Service\Git\Remote;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
@@ -17,9 +16,8 @@ class GitRemoteService implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly RepositoryRepository $repositoryRepository,
         private readonly CacheableGitRepositoryService $repositoryService,
-        private readonly GitCommandBuilderFactory $commandFactory,
+        private readonly GitCommandBuilderFactory $commandFactory
     ) {
     }
 

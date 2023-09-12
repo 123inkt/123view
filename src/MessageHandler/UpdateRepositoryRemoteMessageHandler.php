@@ -11,7 +11,7 @@ use Throwable;
 
 class UpdateRepositoryRemoteMessageHandler
 {
-    public function __construct(private readonly RepositoryRepository $repositoryRepository, readonly LockableGitRemoteService $remoteService)
+    public function __construct(private readonly RepositoryRepository $repositoryRepository, private readonly LockableGitRemoteService $remoteService)
     {
     }
 

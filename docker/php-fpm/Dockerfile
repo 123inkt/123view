@@ -31,7 +31,7 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
 
 RUN pecl channel-update pecl.php.net && \
     pecl install apcu && \
-    pecl install amqp && \
+    pecl install amqp-1.11.0 && \
     docker-php-ext-enable apcu && \
     docker-php-ext-enable amqp && \
     docker-php-source delete

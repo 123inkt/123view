@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\Git\Remote;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Remote\GitRemoteCommandBuilder;
@@ -19,18 +18,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(GitRemoteService::class)]
 class GitRemoteServiceTest extends AbstractTestCase
 {
-    private RepositoryRepository&MockObject          $repositoryRepository;
     private CacheableGitRepositoryService&MockObject $repositoryService;
-    private GitCommandBuilderFactory&MockObject      $builderFactory;
-    private GitRemoteService                         $service;
+    private GitCommandBuilderFactory&MockObject $builderFactory;
+    private GitRemoteService $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
-        $this->repositoryService    = $this->createMock(CacheableGitRepositoryService::class);
-        $this->builderFactory       = $this->createMock(GitCommandBuilderFactory::class);
-        $this->service              = new GitRemoteService($this->repositoryRepository, $this->repositoryService, $this->builderFactory);
+        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
+        $this->builderFactory    = $this->createMock(GitCommandBuilderFactory::class);
+        $this->service           = new GitRemoteService($this->repositoryService, $this->builderFactory);
     }
 
     /**
