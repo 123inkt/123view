@@ -8,14 +8,17 @@ use DR\Review\Controller\App\Admin\RepositoriesController;
 use DR\Review\Controller\App\Admin\RepositoryController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Form\Repository\EditRepositoryFormType;
+use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Service\Git\Remote\GitRemoteService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\EditRepositoryViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
+use stdClass;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Admin\RepositoryController
@@ -24,11 +27,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class RepositoryControllerTest extends AbstractControllerTestCase
 {
     private RepositoryRepository&MockObject $repositoryRepository;
-    private GitRemoteService&MockObject     $gitRemoteService;
+    private MessageBusInterface&MockObject $messageBus;
+    private Envelope $envelope;
 
     protected function setUp(): void
     {
-        $this->gitRemoteService     = $this->createMock(GitRemoteService::class);
+        $this->envelope             = new Envelope(new stdClass(), []);
+        $this->messageBus           = $this->createMock(MessageBusInterface::class);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         parent::setUp();
     }
@@ -80,7 +85,7 @@ class RepositoryControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
         $this->repositoryRepository->expects(self::once())->method('save')->with($repository, true);
-        $this->gitRemoteService->expects(self::once())->method('updateRemoteUrl')->with($repository);
+        $this->messageBus->expects(self::once())->method('dispatch')->with(new RepositoryUpdatedMessage(123))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'repository.successful.saved');
         $this->expectRedirectToRoute(RepositoriesController::class)->willReturn('url');
 
@@ -89,6 +94,6 @@ class RepositoryControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new RepositoryController($this->repositoryRepository, $this->gitRemoteService);
+        return new RepositoryController($this->repositoryRepository, $this->messageBus);
     }
 }
