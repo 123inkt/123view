@@ -140,7 +140,7 @@
         "post-update-cmd": ["@auto-scripts"],
         "check": ["@check:phpstan", "@check:phpmd", "@check:phpcs"],
         "check:phpstan": "@php -dxdebug.mode=off vendor/bin/phpstan analyse",
-        "check:phpmd": "@php -derror_reporting=24575 vendor/bin/phpmd src,tests text phpmd.xml --suffixes=php",
+        "check:phpmd": "@php vendor/bin/phpmd src,tests text phpmd.xml",
         "check:phpcs": "@php vendor/bin/phpcs src tests",
         "fix": "@fix:phpcbf",
         "fix:phpcbf": "phpcbf src tests",
