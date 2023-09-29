@@ -27,6 +27,9 @@ class Revision
     #[ORM\Column(length: 255)]
     private string $description;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $firstBranch;
+
     #[ORM\Column(length: 255)]
     private string $authorEmail;
 
@@ -87,6 +90,18 @@ class Revision
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getFirstBranch(): ?string
+    {
+        return $this->firstBranch;
+    }
+
+    public function setFirstBranch(?string $firstBranch): self
+    {
+        $this->firstBranch = $firstBranch;
 
         return $this;
     }
