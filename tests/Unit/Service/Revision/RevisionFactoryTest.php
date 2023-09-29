@@ -24,7 +24,7 @@ class RevisionFactoryTest extends AbstractTestCase
         $date       = new DateTime();
         $repository = new Repository();
         $author     = new Author('Sherlock', 'holmes@example.com');
-        $commit     = new Commit($repository, 'parent', 'commit', $author, Carbon::now(), "subject", "message", null, []);
+        $commit     = new Commit($repository, 'parent', 'commit', $author, Carbon::now(), "subject", "message", 'first-branch', []);
 
         $factory   = new RevisionFactory();
         $revisions = $factory->createFromCommit($commit);
@@ -38,6 +38,22 @@ class RevisionFactoryTest extends AbstractTestCase
         static::assertSame('holmes@example.com', $revision->getAuthorEmail());
         static::assertSame('subject', $revision->getTitle());
         static::assertSame('message', $revision->getDescription());
+        static::assertSame('first-branch', $revision->getFirstBranch());
         static::assertSame($date->getTimestamp(), $revision->getCreateTimestamp());
+    }
+
+    /**
+     * @covers ::createFromCommit
+     */
+    public function testCreateFromCommitShouldIgnoreRefIsHash(): void
+    {
+        $author = new Author('Sherlock', 'holmes@example.com');
+        $commit = new Commit(new Repository(), 'parent', 'commit', $author, Carbon::now(), "subject", "message", 'commit', []);
+
+        $factory   = new RevisionFactory();
+        $revisions = $factory->createFromCommit($commit);
+
+        static::assertCount(1, $revisions);
+        static::assertNull($revisions[0]->getFirstBranch());
     }
 }
