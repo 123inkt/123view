@@ -12,6 +12,10 @@ else
     composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative --no-scripts
 fi
 
+mkdir -p /app/var/cache/prod
+chmod -R a+rw /app/var/cache
+chown www-data:www-data -R /app/var/cache
+
 ##
 # clear caches
 #
