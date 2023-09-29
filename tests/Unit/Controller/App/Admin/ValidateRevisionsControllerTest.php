@@ -8,7 +8,6 @@ use DR\Review\Controller\App\Admin\RepositoriesController;
 use DR\Review\Controller\App\Admin\ValidateRevisionsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Message\Revision\ValidateRevisionsMessage;
-use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,9 +23,8 @@ class ValidateRevisionsControllerTest extends AbstractControllerTestCase
 
     protected function setUp(): void
     {
-        $this->envelope             = new Envelope(new stdClass(), []);
-        $this->messageBus           = $this->createMock(MessageBusInterface::class);
-        $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
+        $this->envelope   = new Envelope(new stdClass(), []);
+        $this->messageBus = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
 
