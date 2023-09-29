@@ -314,4 +314,6 @@ return [
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
     'authentication.type'                         => 'Authentication type',
+    'revalidate.revisions'                        => 'Validate revisions',
+    'repository.schedule.validate_revisions'      => 'Revision validation successfully scheduled'
 ];

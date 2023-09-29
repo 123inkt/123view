@@ -43,6 +43,10 @@
                        class="btn btn-success btn-sm">
                         <i class="bi-pencil-square"></i>
                     </a>
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\ValidateRevisionsController', {id: repository.id}) }}"
+                       class="btn btn-primary btn-sm" title="{{ 'revalidate.revisions'|trans }}">
+                        <i class="bi-arrow-clockwise"></i>
+                    </a>
                 </td>
             </tr>
         {%- endfor -%}
