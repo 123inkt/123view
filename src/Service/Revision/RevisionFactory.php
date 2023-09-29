@@ -24,6 +24,13 @@ class RevisionFactory
             $revision->setCommitHash($hash);
             $revision->setTitle(mb_substr(trim($commit->subject), 0, 255));
             $revision->setDescription(mb_substr($commit->body, 0, 255));
+
+            $remoteRef = $commit->getRemoteRef();
+            if ($remoteRef !== null && $remoteRef !== $hash) {
+                $revision->setFirstBranch(mb_substr($remoteRef, 0, 255));
+            } else {
+                $revision->setFirstBranch(null);
+            }
         }
 
         return $revisions;
