@@ -40,13 +40,14 @@ class UploadCodeInspectionController extends AbstractController implements Logge
         $this->logger?->info(
             'CodeInspectionReport: {name}, {basePath}, {hash}, {id}, {branchId}, {format}, body size: {size}',
             [
-                'name'     => $repositoryName,
-                'hash'     => $commitHash,
-                'basePath' => $request->getBasePath(),
-                'id'       => $request->getIdentifier(),
-                'branchId' => $request->getBranchId(),
-                'format'   => $request->getFormat(),
-                'size'     => strlen($request->getData())
+                'name'         => $repositoryName,
+                'hash'         => $commitHash,
+                'basePath'     => $request->getBasePath(),
+                'subDirectory' => $request->getSubDirectory(),
+                'id'           => $request->getIdentifier(),
+                'branchId'     => $request->getBranchId(),
+                'format'       => $request->getFormat(),
+                'size'         => strlen($request->getData())
             ]
         );
 
@@ -57,6 +58,7 @@ class UploadCodeInspectionController extends AbstractController implements Logge
             $request->getBranchId(),
             $request->getFormat(),
             $request->getBasePath(),
+            $request->getSubDirectory(),
             $request->getData()
         );
 

@@ -10,5 +10,5 @@ interface CodeInspectionIssueParserInterface
     /**
      * @return CodeInspectionIssue[]
      */
-    public function parse(string $basePath, string $data): array;
+    public function parse(string $basePath, string $subDirectory, string $data): array;
 }

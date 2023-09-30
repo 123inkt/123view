@@ -20,10 +20,12 @@ class FilePathNormalizerTest extends AbstractTestCase
 
     public function testNormalize(): void
     {
-        static::assertSame('test.txt', $this->normalizer->normalize('/foo/bar/', '/foo/bar/test.txt'));
-        static::assertSame('test.txt', $this->normalizer->normalize('/foo/bar', '/foo/bar/test.txt'));
-        static::assertSame('foo/bar/test.txt', $this->normalizer->normalize('/invalid/', '/foo/bar/test.txt'));
-        static::assertSame('test.txt', $this->normalizer->normalize('\\foo\\bar', '/foo/bar/test.txt'));
-        static::assertSame('bar/test.txt', $this->normalizer->normalize('/foo', '\\foo\\bar\\test.txt'));
+        static::assertSame('test.txt', $this->normalizer->normalize('/foo/bar/', '', '/foo/bar/test.txt'));
+        static::assertSame('subdir/test.txt', $this->normalizer->normalize('/foo/bar/', 'subdir', '/foo/bar/test.txt'));
+        static::assertSame('subdir/test.txt', $this->normalizer->normalize('/foo/bar/', '\\subdir/', '/foo/bar/test.txt'));
+        static::assertSame('test.txt', $this->normalizer->normalize('/foo/bar', '', '/foo/bar/test.txt'));
+        static::assertSame('foo/bar/test.txt', $this->normalizer->normalize('/invalid/', '', '/foo/bar/test.txt'));
+        static::assertSame('test.txt', $this->normalizer->normalize('\\foo\\bar', '', '/foo/bar/test.txt'));
+        static::assertSame('bar/test.txt', $this->normalizer->normalize('/foo', '', '\\foo\\bar\\test.txt'));
     }
 }

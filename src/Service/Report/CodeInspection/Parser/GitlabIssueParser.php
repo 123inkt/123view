@@ -21,7 +21,7 @@ class GitlabIssueParser implements CodeInspectionIssueParserInterface
      * @inheritDoc
      * @throws JsonException
      */
-    public function parse(string $basePath, string $data): array
+    public function parse(string $basePath, string $subDirectory, string $data): array
     {
         $json = Assert::isArray(Json::decode($data, true));
 
@@ -29,7 +29,7 @@ class GitlabIssueParser implements CodeInspectionIssueParserInterface
         foreach ($json as $error) {
             $description = trim($error['description'] ?? '');
             $severity    = $error['severity'] ?? 'major';
-            $filePath    = $this->pathNormalizer->normalize($basePath, $error['location']['path'] ?? '');
+            $filePath    = $this->pathNormalizer->normalize($basePath, $subDirectory, $error['location']['path'] ?? '');
             $lineNumber  = (int)($error['location']['lines']['begin'] ?? 0);
             $rule        = $error['check_name'] ?? null;
 

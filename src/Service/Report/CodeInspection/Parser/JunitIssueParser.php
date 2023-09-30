@@ -24,7 +24,7 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
      * @inheritDoc
      * @throws XMLException|ParseException
      */
-    public function parse(string $basePath, string $data): array
+    public function parse(string $basePath, string $subDirectory, string $data): array
     {
         $issues = [];
 
@@ -40,7 +40,7 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
                 continue;
             }
 
-            $filePath = $this->pathNormalizer->normalize($basePath, $testCaseElement->getAttribute('file'));
+            $filePath = $subDirectory . $this->pathNormalizer->normalize($basePath, $subDirectory, $testCaseElement->getAttribute('file'));
 
             $issues[] = $issue = new CodeInspectionIssue();
             $issue->setFile($filePath);
