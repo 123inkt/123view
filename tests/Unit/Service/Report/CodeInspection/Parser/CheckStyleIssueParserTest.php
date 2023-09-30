@@ -29,10 +29,10 @@ class CheckStyleIssueParserTest extends AbstractTestCase
     {
         $data = (string)file_get_contents(__DIR__ . '/CheckStyleIssueParserTest.xml');
 
-        $issues = $this->parser->parse('/build/5', $data);
+        $issues = $this->parser->parse('/build/5', 'subDir', $data);
 
         static::assertCount(1, $issues);
-        static::assertSame('src/file/path.php', $issues[0]->getFile());
+        static::assertSame('subDir/src/file/path.php', $issues[0]->getFile());
         static::assertSame(1, $issues[0]->getLineNumber());
         static::assertSame('message', $issues[0]->getMessage());
         static::assertSame('error', $issues[0]->getSeverity());

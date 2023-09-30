@@ -26,6 +26,11 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
         return $this->request->query->get('basePath', '');
     }
 
+    public function getSubDirectory(): string
+    {
+        return $this->request->query->get('subDirectory', '');
+    }
+
     public function getFormat(): string
     {
         return $this->request->query->get('format', CheckStyleIssueParser::FORMAT);
@@ -41,10 +46,11 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
         return new ValidationRules(
             [
                 'query' => [
-                    'identifier' => 'required|string|min:1|max:50',
-                    'branchId'   => 'string|min:1|max:255',
-                    'basePath'   => 'string',
-                    'format'     => 'string|in:' . CheckStyleIssueParser::FORMAT . ',' . GitlabIssueParser::FORMAT . ',' . JunitIssueParser::FORMAT
+                    'identifier'   => 'required|string|min:1|max:50',
+                    'branchId'     => 'string|min:1|max:255',
+                    'basePath'     => 'string',
+                    'subDirectory' => 'string',
+                    'format'       => 'string|in:' . CheckStyleIssueParser::FORMAT . ',' . GitlabIssueParser::FORMAT . ',' . JunitIssueParser::FORMAT
                 ]
             ]
         );

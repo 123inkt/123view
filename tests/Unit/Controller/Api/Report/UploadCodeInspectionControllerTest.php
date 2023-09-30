@@ -51,6 +51,7 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         $request->method('getBranchId')->willReturn('branchId');
         $request->method('getFormat')->willReturn('format');
         $request->method('getBasePath')->willReturn('basePath');
+        $request->method('getSubDirectory')->willReturn('subDirectory');
         $request->method('getData')->willReturn('data');
         $repository = new Repository();
 
@@ -60,7 +61,7 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
         $this->reportFactory->expects(self::once())
             ->method('parse')
-            ->with($repository, 'hash', 'identifier', 'branchId', 'format', 'basePath', 'data')
+            ->with($repository, 'hash', 'identifier', 'branchId', 'format', 'basePath', 'subDirectory', 'data')
             ->willReturn($report);
         $this->reportRepository->expects(self::once())
             ->method('removeOneBy')

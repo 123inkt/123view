@@ -19,9 +19,10 @@ class CodeInspectionReportFactory
         ?string $branchId,
         string $format,
         string $basePath,
+        string $subDirectory,
         string $data
     ): CodeInspectionReport {
-        $issues = $this->parserProvider->getParser($format)->parse($basePath, $data);
+        $issues = $this->parserProvider->getParser($format)->parse($basePath, $subDirectory, $data);
 
         $report = new CodeInspectionReport();
         $report->setRepository($repository);

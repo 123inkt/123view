@@ -35,7 +35,7 @@ class CloverParser implements CodeCoverageParserInterface
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
-            $filePath   = $this->pathNormalizer->normalize($basePath, $fileElement->getAttribute('name'));
+            $filePath   = $this->pathNormalizer->normalize($basePath, '', $fileElement->getAttribute('name'));
             $coverage   = new LineCoverage();
             $percentage = null;
 

@@ -73,6 +73,13 @@ return static function (OpenApi $openApi) {
                 schema: ['type' => 'string', 'maxLength' => 500]
             ),
             new Parameter(
+                'subDirectory',
+                'query',
+                'The `subDirectory` to prepend to the filepath (after removing the `basePath`). ' .
+                'For tools that use relative working directory file paths.',
+                schema: ['type' => 'string']
+            ),
+            new Parameter(
                 'format',
                 'query',
                 sprintf('The format of the input. Defaults to `%s`.', CheckStyleIssueParser::FORMAT),

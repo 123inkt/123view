@@ -24,7 +24,7 @@ class CheckStyleIssueParser implements CodeInspectionIssueParserInterface
      * @inheritDoc
      * @throws XMLException|ParseException
      */
-    public function parse(string $basePath, string $data): array
+    public function parse(string $basePath, string $subDirectory, string $data): array
     {
         $issues = [];
 
@@ -34,7 +34,7 @@ class CheckStyleIssueParser implements CodeInspectionIssueParserInterface
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
-            $filePath = $this->pathNormalizer->normalize($basePath, $fileElement->getAttribute('name'));
+            $filePath = $this->pathNormalizer->normalize($basePath, $subDirectory, $fileElement->getAttribute('name'));
 
             /** @var DOMElement $errorElement */
             foreach ($fileElement->getElementsByTagName('error') as $errorElement) {
