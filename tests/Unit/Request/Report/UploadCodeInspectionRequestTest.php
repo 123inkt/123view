@@ -33,6 +33,12 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         static::assertSame('basePath', $this->validatedRequest->getBasePath());
     }
 
+    public function testGetSubDirectory(): void
+    {
+        $this->request->query->set('subDirectory', 'subDirectory');
+        static::assertSame('subDirectory', $this->validatedRequest->getSubDirectory());
+    }
+
     public function testGetFormat(): void
     {
         $this->request->query->set('format', 'gitlab');
@@ -52,10 +58,11 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         $expected = new ValidationRules(
             [
                 'query' => [
-                    'identifier' => 'required|string|min:1|max:50',
-                    'branchId'   => 'string|min:1|max:255',
-                    'basePath'   => 'string',
-                    'format'     => 'string|in:checkstyle,gitlab,junit'
+                    'identifier'   => 'required|string|min:1|max:50',
+                    'branchId'     => 'string|min:1|max:255',
+                    'basePath'     => 'string',
+                    'subDirectory' => 'string',
+                    'format'       => 'string|in:checkstyle,gitlab,junit'
                 ]
             ]
         );
