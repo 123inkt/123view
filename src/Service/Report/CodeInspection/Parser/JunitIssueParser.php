@@ -40,7 +40,7 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
                 continue;
             }
 
-            $filePath = $subDirectory . $this->pathNormalizer->normalize($basePath, $subDirectory, $testCaseElement->getAttribute('file'));
+            $filePath = $this->pathNormalizer->normalize($basePath, $subDirectory, $testCaseElement->getAttribute('file'));
 
             $issues[] = $issue = new CodeInspectionIssue();
             $issue->setFile($filePath);

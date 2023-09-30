@@ -19,7 +19,7 @@ class FilePathNormalizer
         $filePath = ltrim($filePath, '/');
 
         // append sub directory to file path
-        if ($subDirectory !== '') {
+        if ($subDirectory !== '' && $filePath !== '') {
             $filePath = $subDirectory . '/' . $filePath;
         }
 

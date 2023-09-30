@@ -29,13 +29,13 @@ class JunitIssueParserTest extends AbstractTestCase
     {
         $data = (string)file_get_contents(__DIR__ . '/JunitIssueParserTest.xml');
 
-        $issues = $this->parser->parse('/builds/123/production/drs/drs/', $data);
+        $issues = $this->parser->parse('/builds/123/production/drs/drs/', 'subDir', $data);
 
         static::assertCount(3, $issues);
 
-        static::assertSame('file/to/test-with-warning.php', $issues[0]->getFile());
-        static::assertSame('file/to/test-with-failure.php', $issues[1]->getFile());
-        static::assertSame('file/to/test-with-error.php', $issues[2]->getFile());
+        static::assertSame('subDir/file/to/test-with-warning.php', $issues[0]->getFile());
+        static::assertSame('subDir/file/to/test-with-failure.php', $issues[1]->getFile());
+        static::assertSame('subDir/file/to/test-with-error.php', $issues[2]->getFile());
 
         static::assertSame(20, $issues[0]->getLineNumber());
         static::assertSame('warning', $issues[0]->getSeverity());
