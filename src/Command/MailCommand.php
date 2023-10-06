@@ -9,6 +9,7 @@ use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Mail\CommitMailService;
+use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Service\RuleProcessor;
 use DR\Utils\Assert;
 use InvalidArgumentException;
@@ -29,6 +30,7 @@ class MailCommand extends Command implements LoggerAwareInterface
     public function __construct(
         private readonly RuleRepository $ruleRepository,
         private readonly RuleProcessor $ruleProcessor,
+        private readonly RevisionFetchService $revisionFetchService,
         private readonly CommitMailService $mailService
     ) {
         parent::__construct();
@@ -56,6 +58,9 @@ class MailCommand extends Command implements LoggerAwareInterface
 
         // gather active rules
         $rules = $this->ruleRepository->getActiveRulesForFrequency(true, $frequency);
+
+        // ensure all repositories are up-to-date
+        $this->revisionFetchService->fetchRevisionsForRules($rules);
 
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
