@@ -30,6 +30,13 @@ class GitFetchCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function noTags(): self
+    {
+        $this->arguments['no-tags'] = '--no-tags';
+
+        return $this;
+    }
+
     public function prune(): self
     {
         $this->arguments['prune'] = '--prune';
