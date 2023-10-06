@@ -8,9 +8,11 @@ use DR\Review\Repository\Config\ExternalLinkRepository;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Tests\AbstractKernelTestCase;
 use DR\Review\Tests\Helper\MessageEventCollector;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -19,18 +21,13 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MailCommandTest extends AbstractKernelTestCase
 {
-    /** @var GitRepositoryService&MockObject */
-    private GitRepositoryService $repositoryService;
-    /** @var MockObject&RuleRepository */
-    private RuleRepository $ruleRepository;
-    /** @var ExternalLinkRepository&MockObject */
-    private ExternalLinkRepository $linkRepository;
-    private MessageEventCollector  $messageCollector;
+    private GitRepositoryService&MockObject   $repositoryService;
+    private RuleRepository&MockObject         $ruleRepository;
+    private ExternalLinkRepository&MockObject $linkRepository;
+    private MessageEventCollector             $messageCollector;
 
     /**
      * @throws Exception
@@ -48,6 +45,7 @@ class MailCommandTest extends AbstractKernelTestCase
         self::getContainer()->set(RuleRepository::class, $this->ruleRepository);
         self::getContainer()->set(ExternalLinkRepository::class, $this->linkRepository);
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
+        self::getContainer()->set(RevisionFetchService::class, $this->createMock(RevisionFetchService::class));
 
         // register MessageEventCollector to subscribe to send e-mails
         /** @var EventDispatcherInterface|null $dispatcher */
