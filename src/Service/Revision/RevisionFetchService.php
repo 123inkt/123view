@@ -56,9 +56,16 @@ class RevisionFetchService
             }
         );
 
-        $commits = $this->remoteRevisionService->fetchRevisionFromRemote($repository);
-        foreach ($commits as $commit) {
-            $batch->addAll($this->revisionFactory->createFromCommit($commit));
+        $revisions = [];
+        foreach ($this->remoteRevisionService->fetchRevisionFromRemote($repository) as $commit) {
+            foreach ($this->revisionFactory->createFromCommit($commit) as $revision) {
+                // ensure no duplicate revisions are added
+                if (isset($revisions[$revision->getCommitHash()])) {
+                    continue;
+                }
+                $batch->add($revision);
+                $revisions[$revision->getCommitHash()] = true;
+            }
         }
         $batch->flush();
     }

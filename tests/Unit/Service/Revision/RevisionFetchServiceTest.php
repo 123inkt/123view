@@ -92,18 +92,17 @@ class RevisionFetchServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(456);
-        $latestRevision = new Revision();
-        $latestRevision->setCreateTimestamp(14400);
-        $newRevision = new Revision();
-        $commit      = $this->createCommit();
+        $revisionA = (new Revision())->setCommitHash('commit1');
+        $revisionB = (new Revision())->setCommitHash('commit1');
+        $commit    = $this->createCommit();
 
         $this->remoteRevisionService->expects(self::once())
             ->method('fetchRevisionFromRemote')
             ->with($repository)
             ->willReturn([$commit]);
 
-        $this->revisionFactory->expects(self::once())->method('createFromCommit')->with($commit)->willReturn([$newRevision]);
-        $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$newRevision])->willReturn([$newRevision]);
+        $this->revisionFactory->expects(self::once())->method('createFromCommit')->with($commit)->willReturn([$revisionA, $revisionB]);
+        $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$revisionA])->willReturn([$revisionA]);
         $this->bus->expects(self::once())
             ->method('dispatch')
             ->with(self::isInstanceOf(NewRevisionMessage::class))
