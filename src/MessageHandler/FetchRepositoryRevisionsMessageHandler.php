@@ -16,8 +16,10 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private RepositoryRepository $repositoryRepository, private RevisionFetchService $revisionFetchService)
-    {
+    public function __construct(
+        private readonly RepositoryRepository $repositoryRepository,
+        private readonly RevisionFetchService $revisionFetchService
+    ) {
     }
 
     /**
