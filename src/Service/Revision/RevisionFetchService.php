@@ -34,8 +34,8 @@ class RevisionFetchService
      */
     public function fetchRevisionsForRules(array $rules): void
     {
-        $repositories   = array_map(static fn(Rule $rule) => $rule->getRepositories(), $rules);
-        $repositories[] = count($repositories) > 0 ? Arrays::unique(array_merge(...$repositories)) : [];
+        $repositories = array_map(static fn(Rule $rule) => $rule->getRepositories()->toArray(), $rules);
+        $repositories = count($repositories) > 0 ? Arrays::unique(array_merge(...$repositories)) : [];
         foreach ($repositories as $repository) {
             $this->fetchRevisions($repository);
         }
