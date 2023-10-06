@@ -33,7 +33,7 @@ class GitFetchService implements LoggerAwareInterface
         $gitRepository = $this->gitRepositoryService->getRepository($repository);
 
         // fetch new revisions from remote
-        $fetchCommand = $this->commandFactory->createFetch()->prune()->verbose()->all();
+        $fetchCommand = $this->commandFactory->createFetch()->prune()->verbose()->noTags()->all();
 
         $output = $gitRepository->execute($fetchCommand, true);
         $this->logger?->info('GitFetchService: git fetch command output `{output}`', ['output' => $output]);
