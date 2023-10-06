@@ -18,6 +18,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Utils\Assert;
+use DR\Utils\EquatableInterface;
 use League\Uri\Contracts\UriInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
@@ -32,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Constraint;
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'createTimestamp'], arguments: ['orderParameterName' => 'order'])]
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
 #[ORM\Index(columns: ['active'], name: 'active_idx')]
-class Repository
+class Repository implements EquatableInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -336,5 +337,10 @@ class Repository
         $this->reviews = $reviews;
 
         return $this;
+    }
+
+    public function equalsTo(mixed $other): bool
+    {
+        return $other instanceof self && $this->id === $other->id;
     }
 }

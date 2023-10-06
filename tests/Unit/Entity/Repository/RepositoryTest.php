@@ -10,6 +10,7 @@ use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
+use stdClass;
 
 #[CoversClass(Repository::class)]
 class RepositoryTest extends AbstractTestCase
@@ -78,5 +79,15 @@ class RepositoryTest extends AbstractTestCase
 
         $repository->setReviews($collection);
         static::assertSame($collection, $repository->getReviews());
+    }
+
+    public function testEqualsTo(): void
+    {
+        $repositoryA = (new Repository())->setId(123);
+        $repositoryB = (new Repository())->setId(456);
+
+        static::assertTrue($repositoryA->equalsTo($repositoryA));
+        static::assertFalse($repositoryA->equalsTo($repositoryB));
+        static::assertFalse($repositoryA->equalsTo(new stdClass()));
     }
 }
