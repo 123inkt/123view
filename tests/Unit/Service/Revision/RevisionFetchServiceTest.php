@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Revision;
 
+use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService;
@@ -15,11 +15,11 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(RevisionFetchService::class)]
 class RevisionFetchServiceTest extends AbstractTestCase
@@ -51,23 +51,45 @@ class RevisionFetchServiceTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testInvokeShouldStopIfRepositoryIsUnknown(): void
+    public function testFetchRevisionsForRules(): void
     {
-        $message = new FetchRepositoryRevisionsMessage(123);
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $ruleA = new Rule();
+        $ruleA->getRepositories()->add((new Repository())->setId(123));
+        $ruleA->getRepositories()->add((new Repository())->setId(456));
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Expecting value to be not null');
+        $ruleB = new Rule();
+        $ruleB->getRepositories()->add((new Repository())->setId(123));
+        $ruleB->getRepositories()->add((new Repository())->setId(456));
 
-        ($this->fetchService)($message);
+        $this->remoteRevisionService->expects(self::exactly(2))
+            ->method('fetchRevisionFromRemote')
+            ->with(...consecutive([(new Repository())->setId(123)], [(new Repository())->setId(456)]))
+            ->willReturn([]);
+
+        $this->fetchService->fetchRevisionsForRules([$ruleA, $ruleB]);
     }
 
     /**
      * @throws Throwable
      */
-    public function testInvokeShouldProcessCommits(): void
+    public function testFetchRevisionsForRulesWithSingleRepositoryAndRule(): void
     {
-        $message    = new FetchRepositoryRevisionsMessage(123);
+        $rule = new Rule();
+        $rule->getRepositories()->add((new Repository())->setId(123));
+
+        $this->remoteRevisionService->expects(self::once())
+            ->method('fetchRevisionFromRemote')
+            ->with((new Repository())->setId(123))
+            ->willReturn([]);
+
+        $this->fetchService->fetchRevisionsForRules([$rule]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testFetchRevisions(): void
+    {
         $repository = new Repository();
         $repository->setId(456);
         $latestRevision = new Revision();
@@ -75,7 +97,6 @@ class RevisionFetchServiceTest extends AbstractTestCase
         $newRevision = new Revision();
         $commit      = $this->createCommit();
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
         $this->remoteRevisionService->expects(self::once())
             ->method('fetchRevisionFromRemote')
             ->with($repository)
@@ -88,6 +109,6 @@ class RevisionFetchServiceTest extends AbstractTestCase
             ->with(self::isInstanceOf(NewRevisionMessage::class))
             ->willReturn($this->envelope);
 
-        ($this->fetchService)($message);
+        $this->fetchService->fetchRevisions($repository);
     }
 }
