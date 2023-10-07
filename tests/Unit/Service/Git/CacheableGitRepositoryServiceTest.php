@@ -47,7 +47,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::createFromString('http://my.repository.com'));
+        $repository->setUrl(Uri::new('http://my.repository.com'));
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks

@@ -40,7 +40,7 @@ class GitCheckoutServiceTest extends AbstractTestCase
     public function testCheckout(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $hash = '123abcdef';
 
         $builder = $this->createMock(GitCheckoutCommandBuilder::class);
@@ -63,7 +63,7 @@ class GitCheckoutServiceTest extends AbstractTestCase
         $hash       = '123abcdef';
         $repository = new Repository();
         $repository->setId(5);
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $revision = new Revision();
         $revision->setId(6);
         $revision->setRepository($repository);

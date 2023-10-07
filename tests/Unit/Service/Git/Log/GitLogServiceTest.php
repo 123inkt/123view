@@ -91,7 +91,7 @@ class GitLogServiceTest extends AbstractTestCase
     public function testGetCommitHashes(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://example.com'));
+        $repository->setUrl(Uri::new('https://example.com'));
 
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);
@@ -115,7 +115,7 @@ class GitLogServiceTest extends AbstractTestCase
     {
         $commits    = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://example.com'));
+        $repository->setUrl(Uri::new('https://example.com'));
 
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);

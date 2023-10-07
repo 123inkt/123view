@@ -49,7 +49,7 @@ class GitShowServiceTest extends AbstractTestCase
 
         $repository = new Repository();
         $repository->setName('name');
-        $repository->setUrl(Uri::createFromString('url'));
+        $repository->setUrl(Uri::new('url'));
         $commit = $this->createCommit();
 
         $commandBuilder->expects(self::once())->method('startPoint')->with('hash')->willReturnSelf();

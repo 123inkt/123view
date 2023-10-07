@@ -36,6 +36,6 @@ return [
         ->addRepository(
             (new Repository())
                 ->setName('sherlock')
-                ->setUrl(Uri::createFromString('https://example.com/detectives/sherlock.git'))
+                ->setUrl(Uri::new('https://example.com/detectives/sherlock.git'))
         )
 ];

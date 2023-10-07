@@ -36,7 +36,7 @@ class GitGarbageCollectServiceTest extends AbstractTestCase
     public function testGarbageCollect(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://example.com'));
+        $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitGarbageCollectCommandBuilder::class);
         $builder->expects(self::once())->method('prune')->with('date')->willReturnSelf();
