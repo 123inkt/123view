@@ -50,7 +50,7 @@ class UriType extends Type
             throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string']);
         }
 
-        return Uri::createFromString($value);
+        return Uri::new($value);
     }
 
     public function getName(): string
