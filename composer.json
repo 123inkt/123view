@@ -89,7 +89,7 @@
         "twig/twig": "^3.0"
     },
     "require-dev": {
-        "digitalrevolution/accessorpair-constraint": "^2.1",
+        "digitalrevolution/accessorpair-constraint": "^2.1.18",
         "digitalrevolution/phpunit-extensions": "^1.0",
         "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
         "doctrine/doctrine-fixtures-bundle": "^3.4",

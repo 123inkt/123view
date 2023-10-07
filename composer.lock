@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "338f91d5a4d8e00a3156806054031136",
+    "content-hash": "b77b0fe933bc10d97c24aeca72365c9c",
     "packages": [
         {
             "name": "api-platform/core",
@@ -10496,16 +10496,16 @@
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
-            "version": "v2.1.17",
+            "version": "v2.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/accessorpair-constraint.git",
-                "reference": "64cc945f683513342d4e62348e7a8dacd0d68d24"
+                "reference": "7e8858774dbebfc338f0b7144e7c13136a47ac7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/64cc945f683513342d4e62348e7a8dacd0d68d24",
-                "reference": "64cc945f683513342d4e62348e7a8dacd0d68d24",
+                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/7e8858774dbebfc338f0b7144e7c13136a47ac7f",
+                "reference": "7e8858774dbebfc338f0b7144e7c13136a47ac7f",
                 "shasum": ""
             },
             "require": {
@@ -10536,9 +10536,9 @@
             "description": "Digital Revolution PHPUnit Constraint for accessorpairs",
             "support": {
                 "issues": "https://github.com/123inkt/accessorpair-constraint/issues",
-                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.17"
+                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.1.18"
             },
-            "time": "2023-08-29T14:31:32+00:00"
+            "time": "2023-10-06T22:29:50+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
@@ -14449,5 +14449,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
