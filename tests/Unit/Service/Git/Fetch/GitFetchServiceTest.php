@@ -48,7 +48,7 @@ class GitFetchServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::createFromString('https://www.example.com'));
+        $repository->setUrl(Uri::new('https://www.example.com'));
         $change = new BranchUpdate('from', 'to', 'oldBranch', 'newBranch');
 
         $gitRepository = $this->createMock(GitRepository::class);

@@ -41,7 +41,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     {
         $hash       = '123acbedf';
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash($hash);
@@ -67,7 +67,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     {
         $hash       = '123acbedf';
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash($hash);
@@ -94,7 +94,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     {
         $hash       = '123acbedf';
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash($hash);
@@ -163,7 +163,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     public function testCherryContinue(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
 
         $builder = $this->createMock(GitCherryPickCommandBuilder::class);
         $builder->expects(self::once())->method('continue')->willReturnSelf();
@@ -182,7 +182,7 @@ class GitCherryPickServiceTest extends AbstractTestCase
     public function testCherryContinueFailure(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://url/'));
+        $repository->setUrl(Uri::new('https://url/'));
 
         $exception = new ProcessFailedException($this->createMock(Process::class));
         $result    = new CherryPickResult(false);

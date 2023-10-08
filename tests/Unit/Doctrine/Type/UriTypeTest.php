@@ -67,7 +67,7 @@ class UriTypeTest extends AbstractTestCase
         static::assertNull($this->type->convertToDatabaseValue(null, $this->platform));
         static::assertSame(
             'https://example.com/',
-            $this->type->convertToDatabaseValue(Uri::createFromString('https://example.com/'), $this->platform)
+            $this->type->convertToDatabaseValue(Uri::new('https://example.com/'), $this->platform)
         );
     }
 
@@ -89,6 +89,6 @@ class UriTypeTest extends AbstractTestCase
     public function testConvertToPHPValue(): void
     {
         static::assertNull($this->type->convertToPHPValue(null, $this->platform));
-        static::assertEquals(Uri::createFromString('https://example.com/'), $this->type->convertToPHPValue('https://example.com/', $this->platform));
+        static::assertEquals(Uri::new('https://example.com/'), $this->type->convertToPHPValue('https://example.com/', $this->platform));
     }
 }

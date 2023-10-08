@@ -40,7 +40,7 @@ class GitDiffTreeServiceTest extends AbstractTestCase
     public function testGetFilesInRevision(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('http://foobar.com'));
+        $repository->setUrl(Uri::new('http://foobar.com'));
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $revision->setRepository($repository);

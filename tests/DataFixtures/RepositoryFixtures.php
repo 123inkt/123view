@@ -17,7 +17,7 @@ class RepositoryFixtures extends Fixture
         $repository->setFavorite(true);
         $repository->setName('repository');
         $repository->setDisplayName('displayName');
-        $repository->setUrl(Uri::createFromString('url'));
+        $repository->setUrl(Uri::new('url'));
         $repository->setCreateTimestamp(12345678);
         $repository->setUpdateRevisionsInterval(500);
         $repository->setUpdateRevisionsTimestamp(23456789);

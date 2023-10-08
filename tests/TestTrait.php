@@ -40,7 +40,7 @@ trait TestTrait
     {
         $repository = new Repository();
         $repository->setName($name);
-        $repository->setUrl(Uri::createFromString($url));
+        $repository->setUrl(Uri::new($url));
 
         return $repository;
     }

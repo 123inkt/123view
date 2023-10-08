@@ -39,7 +39,7 @@ class GitCleanServiceTest extends AbstractTestCase
     public function testForceClean(): void
     {
         $repository = new Repository();
-        $repository->setUrl(Uri::createFromString('https://example.com'));
+        $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitCleanCommandBuilder::class);
         $builder->expects(self::once())->method('force')->willReturnSelf();
