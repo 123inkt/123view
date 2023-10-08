@@ -43,6 +43,7 @@ class RuleTypeTest extends AbstractTestCase
                     ['filters', InExclusionFilterType::class],
                 )
             )->willReturnSelf();
+        $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();
 
         $type = new RuleType(true);
         $type->buildForm($builder, []);

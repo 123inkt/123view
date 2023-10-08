@@ -58,6 +58,7 @@ class RepositoryTypeTest extends AbstractTestCase
                     ['gitlabProjectId', GitlabProjectIdType::class],
                 )
             )->willReturnSelf();
+        $builder->expects(self::once())->method('get')->with('url')->willReturnSelf();
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
         $type->buildForm($builder, []);

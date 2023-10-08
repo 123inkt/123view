@@ -36,6 +36,7 @@ class WebhookTypeTest extends AbstractTestCase
                     ['repositories', RepositoryChoiceType::class],
                 )
             )->willReturnSelf();
+        $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();
 
         $type = new WebhookType();
         $type->buildForm($builder, []);

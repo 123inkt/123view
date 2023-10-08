@@ -51,6 +51,7 @@ class UserProfileFormTypeTest extends AbstractTestCase
             ->method('add')
             ->with('roles', ChoiceType::class)
             ->willReturnSelf();
+        $builder->expects(self::once())->method('get')->with('roles')->willReturnSelf();
 
         $this->type->buildForm($builder, ['user' => $user]);
     }
