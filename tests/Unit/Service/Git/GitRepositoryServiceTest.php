@@ -54,13 +54,13 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::new('http://my.repository.com'));
+        $repository->setUrl(Uri::new('https://my.repository.com'));
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->with('http://my.repository.com')->willReturn($gitRepository);
+        $this->git->expects(static::once())->method('cloneRepository')->with('https://my.repository.com')->willReturn($gitRepository);
 
         $this->service->getRepository($repository);
     }
@@ -78,13 +78,13 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setCredential($credential);
         $repository->setId(123);
-        $repository->setUrl(Uri::new('http://my.repository.com'));
+        $repository->setUrl(Uri::new('https://my.repository.com'));
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
         $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->with('http://user:pass@my.repository.com')->willReturn($gitRepository);
+        $this->git->expects(static::once())->method('cloneRepository')->with('https://user:pass@my.repository.com')->willReturn($gitRepository);
 
         $this->service->getRepository($repository);
     }
@@ -98,7 +98,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::new('http://my.repository.com'));
+        $repository->setUrl(Uri::new('https://my.repository.com'));
 
         // setup mocks
         $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
@@ -117,7 +117,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::new('http://my.repository.com'));
+        $repository->setUrl(Uri::new('https://my.repository.com'));
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
@@ -139,7 +139,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $repository->setUrl(Uri::new('http://my.repository.com'));
+        $repository->setUrl(Uri::new('https://my.repository.com'));
 
         // setup mocks
         $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY);

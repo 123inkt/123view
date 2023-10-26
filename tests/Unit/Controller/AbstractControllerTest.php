@@ -74,13 +74,13 @@ class AbstractControllerTest extends AbstractControllerTestCase
      */
     public function testRefererRedirectShouldFilterQueryParam(): void
     {
-        $request      = new Request(server: ['HTTP_REFERER' => 'http://referer?foo=bar&action=great']);
+        $request      = new Request(server: ['HTTP_REFERER' => 'https://referer?foo=bar&action=great']);
         $requestStack = new RequestStack();
         $requestStack->push($request);
         $this->container->set('request_stack', $requestStack);
 
         $response = $this->controller->refererRedirect('route', [], ['action']);
-        static::assertEquals(new RedirectResponse('http://referer?foo=bar'), $response);
+        static::assertEquals(new RedirectResponse('https://referer?foo=bar'), $response);
     }
 
     public function getController(): AbstractController

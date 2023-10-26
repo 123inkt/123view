@@ -33,7 +33,7 @@ class AzureAdAuthControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $request                    = new Request(['foo' => 'bar']);
-        $url                        = 'http://callback-url';
+        $url                        = 'https://callback-url';
         $this->azureProvider->scope = ['userid'];
 
         $this->expectGenerateUrl(AzureAdCallbackController::class, [], UrlGeneratorInterface::ABSOLUTE_URL)->willReturn($url);
