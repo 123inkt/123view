@@ -5,7 +5,7 @@ ARG VERSION=8.1
 ###################################################################################
 
 # Base image
-FROM php:${VERSION}-fpm-bullseye as base
+FROM php:${VERSION}-fpm-bullseye AS base
 
 # Install packages and remove libldap due to a known vulnerability and upgrade openssl
 RUN apt-get update && apt-get purge -y libldap-2.4-2 \
@@ -67,7 +67,7 @@ RUN mkdir -p /home/123view && chmod a+rwx /home/123view
 ###################################################################################
 
 # syntax=docker/dockerfile:experimental
-FROM base as prod
+FROM base AS prod
 ENV APP_ENV=prod
 WORKDIR /app
 
@@ -85,7 +85,7 @@ ENTRYPOINT ["/run/entrypoint.sh"]
 
 
 # syntax=docker/dockerfile:experimental
-FROM base as test
+FROM base AS test
 ENV APP_ENV=test
 WORKDIR /app
 
@@ -100,7 +100,7 @@ COPY ./docker/php-fpm/conf/development.ini /usr/local/etc/php/conf.d/development
 
 
 # syntax=docker/dockerfile:experimental
-FROM test as dev
+FROM test AS dev
 ENV APP_ENV=dev
 WORKDIR /app
 

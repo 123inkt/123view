@@ -1,7 +1,7 @@
 ARG VERSION
 ARG APPLICATION_IMAGE
 
-FROM nginx:${VERSION}-alpine as base
+FROM nginx:${VERSION}-alpine AS base
 
 RUN apk del freetype nginx-module-image-filter
 RUN apk update && apk upgrade && apk add bash
@@ -23,7 +23,7 @@ COPY ./docker/nginx/snippets/ssl-params.conf  /etc/nginx/snippets/ssl-params.con
 ##
 # production
 #
-FROM base as prod
+FROM base AS prod
 
 # setup https with production certificates
 COPY ./docker/ssl/production/dhparam.pem    /etc/ssl/certs/dhparam.pem
@@ -35,7 +35,7 @@ ENTRYPOINT ["/run/entrypoint.sh"]
 ##
 # development
 #
-FROM base as dev
+FROM base AS dev
 
 # setup https with self-signed cert
 COPY ./docker/ssl/dhparam.pem /etc/ssl/certs/dhparam.pem

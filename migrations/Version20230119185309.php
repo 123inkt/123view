@@ -24,8 +24,7 @@ final class Version20230119185309 extends AbstractMigration
     {
         $query = "UPDATE code_review cr
             LEFT JOIN
-	        (SELECT review_id, MAX(create_timestamp) AS update_timestamp FROM code_review_activity GROUP BY review_id) AS cra
-            ON   cra.review_id=cr.id
+            (SELECT review_id, MAX(create_timestamp) AS update_timestamp FROM code_review_activity GROUP BY review_id) AS cra ON cra.review_id=cr.id
             SET cr.update_timestamp=IF(ISNULL(cra.update_timestamp), cr.create_timestamp, cra.update_timestamp)";
         $this->connection->executeQuery($query);
     }

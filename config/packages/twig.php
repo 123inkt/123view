@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\TwigConfig;
 
-return static function (TwigConfig $twig, ContainerConfigurator $configurator): void {
+return static function (TwigConfig $twig): void {
     $twig
         ->defaultPath('%kernel.project_dir%/templates')
         ->path('%kernel.project_dir%/assets/styles', 'styles')
