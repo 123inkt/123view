@@ -59,7 +59,7 @@ export default class extends Controller<HTMLElement> {
             this.commentService
                 .submitAddCommentForm(this.formTarget)
                 .then(commentUrl => this.commentService.getCommentThread(commentUrl))
-                .then(commentThread => this.element.replaceWith(commentThread))
+                .then(thread => this.element.replaceWith(thread))
                 .catch(err => {
                     this.submitting = false;
                     Errors.catch(err);

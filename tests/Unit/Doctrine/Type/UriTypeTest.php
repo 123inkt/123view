@@ -55,7 +55,7 @@ class UriTypeTest extends AbstractTestCase
     {
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert PHP value');
-        static::assertNull($this->type->convertToDatabaseValue('foobar', $this->platform));
+        $this->type->convertToDatabaseValue('foobar', $this->platform);
     }
 
     /**
@@ -79,7 +79,7 @@ class UriTypeTest extends AbstractTestCase
     {
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert PHP value');
-        static::assertNull($this->type->convertToPHPValue(new stdClass(), $this->platform));
+        $this->type->convertToPHPValue(new stdClass(), $this->platform);
     }
 
     /**

@@ -34,13 +34,13 @@ export default class extends Controller<HTMLTextAreaElement> {
         Events.stop(event);
 
         const reader  = new FileReader();
-        reader.onload = event => {
-            if (event.target === null) {
+        reader.onload = evt => {
+            if (evt.target === null) {
                 return;
             }
 
             // get data base64 encoded string, and grab just the data string
-            const base64data = (event.target.result as string).replace(/^[^,]+,/, '');
+            const base64data = (evt.target.result as string).replace(/^[^,]+,/, '');
 
             this.assetService.uploadImage(mimeType, base64data)
                 .then(url => {
