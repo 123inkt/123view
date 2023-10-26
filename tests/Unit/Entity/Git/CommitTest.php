@@ -27,7 +27,7 @@ class CommitTest extends AbstractTestCase
         $files      = [new DiffFile()];
         $subject    = "line1";
         $body       = "line2\nline3";
-        $repository = $this->createRepository('example', 'http://example.com/my/repository.git');
+        $repository = $this->createRepository('example', 'https://example.com/my/repository.git');
 
         $this->commit = new Commit($repository, 'parent-hash', 'commit-hash', $author, $this->date, $subject, $body, $refs, $files);
     }

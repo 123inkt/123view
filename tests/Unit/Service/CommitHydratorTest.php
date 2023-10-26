@@ -25,7 +25,7 @@ class CommitHydratorTest extends AbstractTestCase
         FormatPattern::SUBJECT             => 'subject',
         FormatPattern::BODY                => 'body'
     ];
-    private const REPOSITORY = "http://repository.com/";
+    private const REPOSITORY = "https://repository.com/";
 
     private CommitHydrator $hydrator;
 
