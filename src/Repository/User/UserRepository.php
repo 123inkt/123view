@@ -72,7 +72,12 @@ class UserRepository extends ServiceEntityRepository
         if (count($preferredUserIds) === 0) {
             $query->select('*', '0 AS priority');
         } else {
-            $query->select('*', 'IF(`id` IN (' . implode(',', $preferredUserIds) . '), 1, 0) AS priority');
+            $keys = [];
+            foreach ($preferredUserIds as $index => $preferredUserId) {
+                $keys[]                             = ':preferredUserId' . $index;
+                $params['preferredUserId' . $index] = $preferredUserId;
+            }
+            $query->select('*', 'IF(`id` IN (' . implode(',', $keys) . '), 1, 0) AS priority');
         }
         if ($role !== null) {
             $query->andWhere('roles LIKE :role');
