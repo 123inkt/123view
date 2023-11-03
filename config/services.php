@@ -27,6 +27,7 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
+use DR\Review\Security\Webhook\GitlabWebhookAuthenticator;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
@@ -61,7 +62,6 @@ use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -122,6 +122,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([service('.inner')])
         ->autoconfigure(false);
     $services->set(BearerAuthenticator::class);
+    $services->set(GitlabWebhookAuthenticator::class)->arg('$gitlabWebhookSecret', '%env(GITLAB_WEBHOOK_SECRET)%');
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)
