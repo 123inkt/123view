@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Webhook;
 
-use DR\Review\Model\Webhook\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Service\Webhook\Receive\WebhookEventHandler;
 use DR\Utils\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ class GitlabWebhookController
 
         $event = $this->objectSerializer->deserialize(
             $data,
-            NoteEvent::class,
+            PushEvent::class,
             JsonEncoder::FORMAT,
             [
                 DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
