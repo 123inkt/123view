@@ -19,6 +19,8 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
@@ -41,6 +43,7 @@ use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
+use DR\Review\Service\Json\SerializerFactory;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
@@ -50,6 +53,9 @@ use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
+use DR\Review\Service\Webhook\Receive\Gitlab\NoteEventHandler;
+use DR\Review\Service\Webhook\Receive\Gitlab\PushEventHandler;
+use DR\Review\Service\Webhook\Receive\WebhookEventHandler;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
@@ -60,6 +66,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
@@ -192,6 +199,15 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
     $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
+
+    // Webhook handlers
+    $services->set(NoteEventHandler::class)->tag('webhook_handler', ['key' => NoteEvent::class]);
+    $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
+    $services->set(WebhookEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
+
+    // Serializer
+    $services->set(SerializerInterface::class . ' $objectSerializer', SerializerInterface::class)
+        ->factory([inline_service(SerializerFactory::class), 'createObjectSerializer']);
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 };
