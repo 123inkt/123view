@@ -201,7 +201,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
 
     // Webhook handlers
-    $services->set(NoteEventHandler::class)->tag('webhook_handler', ['key' => NoteEvent::class]);
     $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
     $services->set(WebhookEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
 
