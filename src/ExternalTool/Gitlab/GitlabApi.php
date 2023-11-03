@@ -3,19 +3,35 @@ declare(strict_types=1);
 
 namespace DR\Review\ExternalTool\Gitlab;
 
+use DR\Review\Model\Webhook\Gitlab\User;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
 class GitlabApi
 {
-    private HttpClientInterface $client;
-    private CacheInterface      $cache;
+    public function __construct(
+        private readonly HttpClientInterface $gitlabClient,
+        private readonly CacheInterface $gitlabCache,
+        private readonly SerializerInterface $objectSerializer
+    ) {
+    }
 
-    public function __construct(HttpClientInterface $gitlabClient, CacheInterface $gitlabCache)
+    /**
+     * @throws Throwable
+     */
+    public function getUser(int $userId): User
     {
-        $this->client = $gitlabClient;
-        $this->cache  = $gitlabCache;
+        return $this->gitlabCache->get(
+            sprintf("user-id-%d", $userId),
+            function () use ($userId) {
+                $data = $this->gitlabClient->request('GET', sprintf('users/%d', $userId))->getContent();
+
+                return $this->objectSerializer->deserialize($data, User::class, JsonEncoder::FORMAT);
+            }
+        );
     }
 
     /**
@@ -23,10 +39,10 @@ class GitlabApi
      */
     public function getBranchUrl(int $projectId, string $remoteRef): ?string
     {
-        return $this->cache->get(
+        return $this->gitlabCache->get(
             sprintf("branch-url-%s-%s", $projectId, $remoteRef),
             function () use ($projectId, $remoteRef) {
-                $response = $this->client->request(
+                $response = $this->gitlabClient->request(
                     'GET',
                     sprintf('projects/%d/repository/branches/%s', $projectId, $remoteRef)
                 )->toArray(false);
@@ -41,10 +57,10 @@ class GitlabApi
      */
     public function getMergeRequestUrl(int $projectId, string $remoteRef): ?string
     {
-        return $this->cache->get(
+        return $this->gitlabCache->get(
             sprintf("merge-request-url-%s-%s", $projectId, $remoteRef),
             function () use ($projectId, $remoteRef) {
-                $response = $this->client->request(
+                $response = $this->gitlabClient->request(
                     'GET',
                     sprintf('projects/%d/merge_requests', $projectId),
                     [
