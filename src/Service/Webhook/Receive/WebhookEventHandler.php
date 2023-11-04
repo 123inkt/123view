@@ -23,9 +23,9 @@ class WebhookEventHandler implements LoggerAwareInterface
         $this->handlers = iterator_to_array($handlers);
     }
 
-    public function handle(object $event): void
+    public function handle(object $object): void
     {
-        $class = get_class($event);
+        $class = get_class($object);
         if (isset($this->handlers[$class]) === false) {
             $this->logger?->info('WebhookEventHandler: no event handler for {class}', ['class' => $class]);
 
@@ -33,6 +33,9 @@ class WebhookEventHandler implements LoggerAwareInterface
         }
 
         $this->logger?->info('WebhookEventHandler: handling event for {class}', ['class' => $class]);
+
+        /** @var PushEvent $event */
+        $event = $object;
 
         $this->handlers[$class]->handle($event);
     }
