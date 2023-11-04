@@ -4,10 +4,14 @@ declare(strict_types=1);
 namespace DR\Review\Service\Webhook\Receive;
 
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Traversable;
 
-class WebhookEventHandler
+class WebhookEventHandler implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /** @var array<string, WebhookEventHandlerInterface<PushEvent>> */
     private array $handlers;
 
@@ -26,8 +30,12 @@ class WebhookEventHandler
     {
         $class = get_class($event);
         if (isset($this->handlers[$class]) === false) {
+            $this->logger?->info('WebhookEventHandler: no event handler for {class}', ['class' => $class]);
+
             return;
         }
+
+        $this->logger?->info('WebhookEventHandler: handling event for {class}', ['class' => $class]);
 
         $this->handlers[$class]->handle($event);
     }

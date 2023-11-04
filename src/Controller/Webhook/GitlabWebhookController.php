@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Webhook;
 
+use DR\Review\Controller\AbstractController;
 use DR\Review\Service\Webhook\Receive\Gitlab\WebhookRequestDeserializer;
 use DR\Review\Service\Webhook\Receive\WebhookEventHandler;
-use DR\Utils\Assert;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class GitlabWebhookController
+class GitlabWebhookController extends AbstractController
 {
     public function __construct(private readonly WebhookRequestDeserializer $deserializer, private readonly WebhookEventHandler $eventHandler)
     {
@@ -22,7 +22,7 @@ class GitlabWebhookController
     public function __invoke(Request $request): Response
     {
         $eventType = $request->headers->get('X-Gitlab-Event', '');
-        $data      = Assert::notFalse(file_get_contents('php://input'));
+        $data      = $request->getContent();
 
         $event = $this->deserializer->deserialize($eventType, $data);
         if ($event !== null) {
