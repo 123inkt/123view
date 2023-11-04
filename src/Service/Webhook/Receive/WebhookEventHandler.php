@@ -34,9 +34,7 @@ class WebhookEventHandler implements LoggerAwareInterface
 
         $this->logger?->info('WebhookEventHandler: handling event for {class}', ['class' => $class]);
 
-        /** @var PushEvent $event */
-        $event = $object;
-
-        $this->handlers[$class]->handle($event);
+        /** @phpstan-var PushEvent $object */
+        $this->handlers[$class]->handle($object);
     }
 }
