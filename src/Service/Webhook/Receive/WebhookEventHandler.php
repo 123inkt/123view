@@ -8,15 +8,19 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Traversable;
 
+/**
+ * @phpstan-type HandlerKey class-string<PushEvent>
+ * @phpstan-type HandlerValue WebhookEventHandlerInterface<PushEvent>
+ */
 class WebhookEventHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /** @var array<string, WebhookEventHandlerInterface<PushEvent>> */
+    /** @var array<HandlerKey, HandlerValue> */
     private array $handlers;
 
     /**
-     * @param Traversable<string, WebhookEventHandlerInterface<PushEvent>> $handlers
+     * @param Traversable<HandlerKey, HandlerValue> $handlers
      */
     public function __construct(Traversable $handlers)
     {
