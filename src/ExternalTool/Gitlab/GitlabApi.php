@@ -3,35 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\ExternalTool\Gitlab;
 
-use DR\Review\Model\Webhook\Gitlab\User;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
 class GitlabApi
 {
-    public function __construct(
-        private readonly HttpClientInterface $gitlabClient,
-        private readonly CacheInterface $gitlabCache,
-        private readonly SerializerInterface $objectSerializer
-    ) {
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getUser(int $userId): User
+    public function __construct(private readonly HttpClientInterface $gitlabClient, private readonly CacheInterface $gitlabCache)
     {
-        return $this->gitlabCache->get(
-            sprintf("user-id-%d", $userId),
-            function () use ($userId) {
-                $data = $this->gitlabClient->request('GET', sprintf('users/%d', $userId))->getContent();
-
-                return $this->objectSerializer->deserialize($data, User::class, JsonEncoder::FORMAT);
-            }
-        );
     }
 
     /**
