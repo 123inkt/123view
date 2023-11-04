@@ -23,9 +23,6 @@ class WebhookEventHandler implements LoggerAwareInterface
         $this->handlers = iterator_to_array($handlers);
     }
 
-    /**
-     * @phpstan-param PushEvent $event
-     */
     public function handle(object $event): void
     {
         $class = get_class($event);

@@ -10,7 +10,7 @@ use DR\Review\Service\Webhook\Receive\WebhookEventHandlerInterface;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
+use Traversable;
 
 #[CoversClass(WebhookEventHandler::class)]
 class WebhookEventHandlerTest extends AbstractTestCase
@@ -22,13 +22,16 @@ class WebhookEventHandlerTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->handler      = $this->createMock(WebhookEventHandlerInterface::class);
-        $this->eventHandler = new WebhookEventHandler(new ArrayIterator([stdClass::class => $this->handler]));
+        $this->handler = $this->createMock(WebhookEventHandlerInterface::class);
+
+        /** @var Traversable<string, WebhookEventHandlerInterface<PushEvent>> $iterator */
+        $iterator           = new ArrayIterator([PushEvent::class => $this->handler]);
+        $this->eventHandler = new WebhookEventHandler($iterator);
     }
 
     public function testHandle(): void
     {
-        $object = new stdClass();
+        $object = new PushEvent();
 
         $this->handler->expects(self::once())->method('handle')->with($object);
         $this->eventHandler->handle($object);
