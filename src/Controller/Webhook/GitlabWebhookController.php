@@ -3,40 +3,31 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\Webhook;
 
-use DR\Review\Model\Webhook\Gitlab\PushEvent;
+use DR\Review\Service\Webhook\Receive\Gitlab\WebhookRequestDeserializer;
 use DR\Review\Service\Webhook\Receive\WebhookEventHandler;
 use DR\Utils\Assert;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class GitlabWebhookController
 {
-    public function __construct(private readonly SerializerInterface $objectSerializer, private readonly WebhookEventHandler $eventHandler)
+    public function __construct(private readonly WebhookRequestDeserializer $deserializer, private readonly WebhookEventHandler $eventHandler)
     {
     }
 
     #[Route('/webhook/gitlab', name: self::class, methods: 'POST')]
     #[IsGranted('ROLE_GITLAB_WEBHOOK')]
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
-        $data = Assert::notFalse(file_get_contents('php://input'));
+        $eventType = $request->headers->get('X-Gitlab-Event', '');
+        $data      = Assert::notFalse(file_get_contents('php://input'));
 
-        $event = $this->objectSerializer->deserialize(
-            $data,
-            PushEvent::class,
-            JsonEncoder::FORMAT,
-            [
-                DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
-                AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES            => true
-            ]
-        );
-
-        $this->eventHandler->handle($event);
+        $event = $this->deserializer->deserialize($eventType, $data);
+        if ($event !== null) {
+            $this->eventHandler->handle($event);
+        }
 
         return new Response('OK');
     }
