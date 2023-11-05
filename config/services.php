@@ -19,6 +19,7 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
+use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
@@ -42,6 +43,8 @@ use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
+use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
 use DR\Review\Service\Report\CodeInspection\Parser\CheckStyleIssueParser;
 use DR\Review\Service\Report\CodeInspection\Parser\GitlabIssueParser;
@@ -61,7 +64,6 @@ use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -96,10 +98,12 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
     $services->load('DR\Review\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\Review\MessageHandler\\', __DIR__ . '/../src/MessageHandler');
+    $services->load('DR\Review\RemoteEventConsumer\\', __DIR__ . '/../src/RemoteEventConsumer');
     $services->load('DR\Review\Repository\\', __DIR__ . '/../src/Repository');
     $services->load('DR\Review\Request\\', __DIR__ . '/../src/Request');
     $services->load('DR\Review\Security\Voter\\', __DIR__ . '/../src/Security/Voter');
     $services->load('DR\Review\ViewModelProvider\\', __DIR__ . '/../src/ViewModelProvider');
+    $services->load('DR\Review\Webhook\\', __DIR__ . '/../src/Webhook');
 
     // create empty cache clearer
     $services->set('cache.default_clearer', Psr6CacheClearer::class)->args([[]]);
@@ -191,6 +195,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
     $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
+
+    // Webhook handlers
+    $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
+    $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 };

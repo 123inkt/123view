@@ -9,13 +9,8 @@ use Throwable;
 
 class GitlabApi
 {
-    private HttpClientInterface $client;
-    private CacheInterface      $cache;
-
-    public function __construct(HttpClientInterface $gitlabClient, CacheInterface $gitlabCache)
+    public function __construct(private readonly HttpClientInterface $gitlabClient, private readonly CacheInterface $gitlabCache)
     {
-        $this->client = $gitlabClient;
-        $this->cache  = $gitlabCache;
     }
 
     /**
@@ -23,10 +18,10 @@ class GitlabApi
      */
     public function getBranchUrl(int $projectId, string $remoteRef): ?string
     {
-        return $this->cache->get(
+        return $this->gitlabCache->get(
             sprintf("branch-url-%s-%s", $projectId, $remoteRef),
             function () use ($projectId, $remoteRef) {
-                $response = $this->client->request(
+                $response = $this->gitlabClient->request(
                     'GET',
                     sprintf('projects/%d/repository/branches/%s', $projectId, $remoteRef)
                 )->toArray(false);
@@ -41,10 +36,10 @@ class GitlabApi
      */
     public function getMergeRequestUrl(int $projectId, string $remoteRef): ?string
     {
-        return $this->cache->get(
+        return $this->gitlabCache->get(
             sprintf("merge-request-url-%s-%s", $projectId, $remoteRef),
             function () use ($projectId, $remoteRef) {
-                $response = $this->client->request(
+                $response = $this->gitlabClient->request(
                     'GET',
                     sprintf('projects/%d/merge_requests', $projectId),
                     [

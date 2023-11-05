@@ -29,7 +29,7 @@ class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        if (str_starts_with($request->getPathInfo(), '/api/')) {
+        if (str_starts_with($request->getPathInfo(), '/api/') || str_starts_with($request->getPathInfo(), '/webhook/')) {
             return;
         }
 

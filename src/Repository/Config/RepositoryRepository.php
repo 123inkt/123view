@@ -21,6 +21,22 @@ class RepositoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Repository::class);
     }
 
+    public function findByProperty(string $propertyName, string $propertyValue): ?Repository
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->innerJoin('r.repositoryProperties', 'p');
+        $qb->where('p.name = :propertyName');
+        $qb->andWhere('p.value = :propertyValue');
+        $qb->setParameter('propertyName', $propertyName);
+        $qb->setParameter('propertyValue', $propertyValue);
+        $qb->setMaxResults(1);
+
+        /** @var Repository|null $result */
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
     /**
      * @return Repository[]
      */
