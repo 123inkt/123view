@@ -8,6 +8,6 @@ export default class extends Controller {
         document.body.appendChild(iframe);
         iframe.onload  = () => iframe.remove();
         iframe.onerror = () => iframe.remove();
-        iframe.src = (<HTMLAnchorElement>this.element).href;
+        iframe.src = (this.element as HTMLAnchorElement).href;
     }
 }
