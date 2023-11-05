@@ -13,8 +13,6 @@ use DR\Review\Service\Revision\RevisionValidationService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
@@ -26,12 +24,10 @@ class RevisionValidationServiceTest extends AbstractTestCase
     private LockableGitLogService&MockObject $logService;
     private MessageBusInterface&MockObject   $bus;
     private RevisionValidationService        $validationService;
-    private Envelope                         $envelope;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope             = new Envelope(new stdClass(), []);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         $this->revisionRepository   = $this->createMock(RevisionRepository::class);
         $this->logService           = $this->createMock(LockableGitLogService::class);

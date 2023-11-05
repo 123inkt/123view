@@ -16,10 +16,8 @@ use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,11 +31,9 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     private CommentEventMessageFactory&MockObject $messageFactory;
     private TranslatorInterface&MockObject        $translator;
     private MessageBusInterface&MockObject        $bus;
-    private Envelope                              $envelope;
 
     protected function setUp(): void
     {
-        $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentRepository::class);
         $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
         $this->translator        = $this->createMock(TranslatorInterface::class);

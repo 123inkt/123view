@@ -47,7 +47,7 @@ class RuleProcessorTest extends AbstractTestCase
         $this->dispatcher     = $this->createMock(EventDispatcherInterface::class);
 
         $this->ruleProcessor = new RuleProcessor(
-            $this->log,
+            $this->logger,
             $this->gitLogService,
             $this->diffEmphasizer,
             $this->diffService,

@@ -11,19 +11,15 @@ use DR\Review\Message\Revision\ValidateRevisionsMessage;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(ValidateRevisionsController::class)]
 class ValidateRevisionsControllerTest extends AbstractControllerTestCase
 {
     private MessageBusInterface&MockObject $messageBus;
-    private Envelope                       $envelope;
 
     protected function setUp(): void
     {
-        $this->envelope   = new Envelope(new stdClass(), []);
         $this->messageBus = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }

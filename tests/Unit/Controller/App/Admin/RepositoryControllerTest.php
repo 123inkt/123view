@@ -13,11 +13,9 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\EditRepositoryViewModel;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -27,12 +25,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class RepositoryControllerTest extends AbstractControllerTestCase
 {
     private RepositoryRepository&MockObject $repositoryRepository;
-    private MessageBusInterface&MockObject $messageBus;
-    private Envelope $envelope;
+    private MessageBusInterface&MockObject  $messageBus;
 
     protected function setUp(): void
     {
-        $this->envelope             = new Envelope(new stdClass(), []);
         $this->messageBus           = $this->createMock(MessageBusInterface::class);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         parent::setUp();
