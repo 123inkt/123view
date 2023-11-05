@@ -114,7 +114,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(LoginService::class);
     $services->set(UserChecker::class);
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
-    $services->set(ContentSecurityPolicyResponseSubscriber::class)->arg('$hostname', '%env(APP_HOSTNAME)%');
+    $services->set(ContentSecurityPolicyResponseSubscriber::class)
+        ->arg('$hostname', '%env(APP_HOSTNAME)%')
+        ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%')
+        ->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
     $services->set('monolog.formatter.line', LineFormatter::class)
         ->arg('$format', "[%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%extra%%\n")

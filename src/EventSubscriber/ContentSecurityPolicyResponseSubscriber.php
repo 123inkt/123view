@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly string $hostname)
+    public function __construct(private readonly string $hostname, private readonly bool $ideUrlEnabled, private readonly string $ideUrlPattern)
     {
     }
 
@@ -23,9 +23,19 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
         // only allow content from own host.
         // allow image svg+xml
         // allow websocket to connect to any port.
-        $policy = sprintf("default-src 'self'; img-src 'self' data:; object-src: 'none'; connect-src 'self' %s:*", $this->hostname);
+        $policy = [
+            "default-src 'self'",
+            "img-src 'self' data:",
+            "object-src: 'none'",
+            sprintf("connect-src 'self' %s:*", $this->hostname),
+        ];
 
-        $response->headers->set("Content-Security-Policy", $policy);
+        // if IDE url is allowed, allow iframe host from http or https url
+        if ($this->ideUrlEnabled && preg_match('#^(https?://[^:/]+)#', $this->ideUrlPattern, $matches) === 1) {
+            $policy[] = sprintf("frame-src %s:*", $matches[1]);
+        }
+
+        $response->headers->set("Content-Security-Policy", implode(';', $policy));
     }
 
     /**
