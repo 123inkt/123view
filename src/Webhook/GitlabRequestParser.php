@@ -5,6 +5,8 @@ namespace DR\Review\Webhook;
 
 use DR\Review\RemoteEvent\GitlabRemoteEvent;
 use DR\Utils\Assert;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\ChainRequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher\IsJsonRequestMatcher;
@@ -19,8 +21,10 @@ use Symfony\Component\Webhook\Exception\RejectWebhookException;
  * @see https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
  * @see https://symfony.com/blog/new-in-symfony-6-3-webhook-and-remoteevent-components
  */
-class GitlabRequestParser extends AbstractRequestParser
+class GitlabRequestParser extends AbstractRequestParser implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private const SUPPORTED_EVENTS = ['Push Hook'];
 
     protected function getRequestMatcher(): RequestMatcherInterface
@@ -52,6 +56,8 @@ class GitlabRequestParser extends AbstractRequestParser
         $eventId   = $request->headers->get('X-Gitlab-Event-UUID', '');
         $eventType = Assert::string($request->headers->get('X-Gitlab-Event'));
         if (in_array($eventType, self::SUPPORTED_EVENTS, true) === false) {
+            $this->logger?->info('GitlabRequestParser: Unsupported event type {eventType}', ['eventType' => $eventType]);
+
             return null;
         }
 

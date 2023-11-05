@@ -6,17 +6,27 @@ namespace DR\Review\Tests\Unit\Repository\Config;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\RepositoryFixtures;
+use DR\Review\Tests\DataFixtures\RepositoryPropertyFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Config\RepositoryRepository
- * @covers ::__construct
- */
+#[CoversClass(RepositoryRepository::class)]
 class RepositoryRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::findByUpdateRevisions
+     * @throws Exception
+     */
+    public function testFindByProperty(): void
+    {
+        $repositoryRepository = self::getService(RepositoryRepository::class);
+
+        static::assertNotNull($repositoryRepository->findByProperty('propertyKey', 'propertyValue'));
+        static::assertNull($repositoryRepository->findByProperty('propertyKey', 'foobar'));
+        static::assertNull($repositoryRepository->findByProperty('foobar', 'propertyValue'));
+    }
+
+    /**
      * @throws Exception
      */
     public function testFindByUpdateRevisionsWithinRange(): void
@@ -32,7 +42,6 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findByUpdateRevisions
      * @throws Exception
      */
     public function testFindByUpdateRevisionsOutsideRange(): void
@@ -48,7 +57,6 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findByValidateRevisions
      * @throws Exception
      */
     public function testFindByValidateRevisionsWithinRange(): void
@@ -64,7 +72,6 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findByValidateRevisions
      * @throws Exception
      */
     public function testFindByValidateRevisionsOutsideRange(): void
@@ -84,6 +91,6 @@ class RepositoryRepositoryTest extends AbstractRepositoryTestCase
      */
     protected function getFixtures(): array
     {
-        return [RepositoryFixtures::class];
+        return [RepositoryFixtures::class, RepositoryPropertyFixtures::class];
     }
 }
