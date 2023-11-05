@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Webhook\Receive;
+namespace DR\Review\Service\RemoteEvent;
 
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
@@ -12,7 +12,7 @@ use Traversable;
  * @phpstan-type HandlerKey class-string<PushEvent>
  * @phpstan-type HandlerValue WebhookEventHandlerInterface<PushEvent>
  */
-class WebhookEventHandler implements LoggerAwareInterface
+class RemoteEventHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -31,12 +31,12 @@ class WebhookEventHandler implements LoggerAwareInterface
     {
         $class = get_class($object);
         if (isset($this->handlers[$class]) === false) {
-            $this->logger?->info('WebhookEventHandler: no event handler for {class}', ['class' => $class]);
+            $this->logger?->info('RemoteEventHandler: no event handler for {class}', ['class' => $class]);
 
             return;
         }
 
-        $this->logger?->info('WebhookEventHandler: handling event for {class}', ['class' => $class]);
+        $this->logger?->info('RemoteEventHandler: handling event for {class}', ['class' => $class]);
 
         /** @phpstan-var PushEvent $object */
         $this->handlers[$class]->handle($object);

@@ -8,6 +8,7 @@ use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use DR\Review\Message\Revision\ValidateRevisionsMessage;
+use Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {
@@ -22,6 +23,7 @@ return static function (FrameworkConfig $framework): void {
     $messenger->transport('sync')->dsn('sync://');
 
     // https://symfony.com/doc/current/messenger.html#routing-messages-to-a-transport
+    $messenger->routing(ConsumeRemoteEventMessage::class)->senders(['async_messages']);
     $messenger->routing(FetchRepositoryRevisionsMessage::class)->senders(['async_revisions']);
     $messenger->routing(CommitAddedMessage::class)->senders(['async_revisions']);
     $messenger->routing(CommitRemovedMessage::class)->senders(['async_revisions']);

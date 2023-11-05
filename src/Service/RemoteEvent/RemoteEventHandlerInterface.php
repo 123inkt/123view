@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Webhook\Receive;
+namespace DR\Review\Service\RemoteEvent;
 
 /**
  * @template T of object
  */
-interface WebhookEventHandlerInterface
+interface RemoteEventHandlerInterface
 {
     /**
      * @param T $event

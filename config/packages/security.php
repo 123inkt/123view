@@ -9,7 +9,6 @@ use DR\Review\Entity\User\User;
 use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\UserChecker;
-use DR\Review\Security\Webhook\GitlabWebhookAuthenticator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
@@ -35,11 +34,6 @@ return static function (SecurityConfig $security): void {
         ->pattern('^/api')
         ->stateless(true)
         ->customAuthenticators([BearerAuthenticator::class]);
-
-    $security->firewall('webhook')
-        ->pattern('^/webhook/gitlab')
-        ->stateless(true)
-        ->customAuthenticators([GitlabWebhookAuthenticator::class]);
 
     $security->firewall('main')
         ->lazy(true)

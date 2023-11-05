@@ -666,6 +666,18 @@
             "./config/routes/web_profiler.yaml"
         ]
     },
+    "symfony/webhook": {
+        "version": "6.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.3",
+            "ref": "0bc853a74c98e448116ba53e118a7b6b3cdf9a03"
+        },
+        "files": [
+            "./config/routes/webhook.yaml"
+        ]
+    },
     "symfony/webpack-encore-bundle": {
         "version": "1.16",
         "recipe": {

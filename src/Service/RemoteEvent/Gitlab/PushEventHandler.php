@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Webhook\Receive\Gitlab;
+namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use Doctrine\ORM\NonUniqueResultException;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Review\Service\Webhook\Receive\WebhookEventHandlerInterface;
+use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
- * @implements WebhookEventHandlerInterface<PushEvent>
+ * @implements RemoteEventHandlerInterface<PushEvent>
  */
-class PushEventHandler implements WebhookEventHandlerInterface, LoggerAwareInterface
+class PushEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

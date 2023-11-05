@@ -45,6 +45,8 @@ use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
 use DR\Review\Service\Json\SerializerFactory;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
+use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
 use DR\Review\Service\Report\CodeInspection\Parser\CheckStyleIssueParser;
 use DR\Review\Service\Report\CodeInspection\Parser\GitlabIssueParser;
@@ -52,10 +54,9 @@ use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
-use DR\Review\Service\Webhook\Receive\Gitlab\PushEventHandler;
-use DR\Review\Service\Webhook\Receive\WebhookEventHandler;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
+use DR\Review\Webhook\GitlabRequestParser;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use Monolog\Formatter\LineFormatter;
@@ -101,10 +102,12 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\Twig\\', __DIR__ . '/../src/Twig/*Extension.php');
     $services->load('DR\Review\ExternalTool\\', __DIR__ . '/../src/ExternalTool');
     $services->load('DR\Review\MessageHandler\\', __DIR__ . '/../src/MessageHandler');
+    $services->load('DR\Review\RemoteEventConsumer\\', __DIR__ . '/../src/RemoteEventConsumer');
     $services->load('DR\Review\Repository\\', __DIR__ . '/../src/Repository');
     $services->load('DR\Review\Request\\', __DIR__ . '/../src/Request');
     $services->load('DR\Review\Security\Voter\\', __DIR__ . '/../src/Security/Voter');
     $services->load('DR\Review\ViewModelProvider\\', __DIR__ . '/../src/ViewModelProvider');
+    $services->load('DR\Review\Webhook\\', __DIR__ . '/../src/Webhook');
 
     // create empty cache clearer
     $services->set('cache.default_clearer', Psr6CacheClearer::class)->args([[]]);
@@ -200,7 +203,8 @@ return static function (ContainerConfigurator $container): void {
 
     // Webhook handlers
     $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
-    $services->set(WebhookEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
+    $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
+    $services->set(GitlabRequestParser::class);
 
     // Serializer
     $services->set(SerializerInterface::class . ' $objectSerializer', SerializerInterface::class)

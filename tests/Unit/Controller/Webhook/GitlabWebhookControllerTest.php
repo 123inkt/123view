@@ -6,8 +6,8 @@ namespace DR\Review\Tests\Unit\Controller\Webhook;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\Webhook\GitlabWebhookController;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
-use DR\Review\Service\Webhook\Receive\Gitlab\WebhookRequestDeserializer;
-use DR\Review\Service\Webhook\Receive\WebhookEventHandler;
+use DR\Review\Service\RemoteEvent\Gitlab\RemoteEventPayloadDenormalizer;
+use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,13 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
 #[CoversClass(GitlabWebhookController::class)]
 class GitlabWebhookControllerTest extends AbstractControllerTestCase
 {
-    private WebhookRequestDeserializer&MockObject $deserializer;
-    private WebhookEventHandler&MockObject        $eventHandler;
+    private RemoteEventPayloadDenormalizer&MockObject $deserializer;
+    private RemoteEventHandler&MockObject             $eventHandler;
 
     protected function setUp(): void
     {
-        $this->deserializer = $this->createMock(WebhookRequestDeserializer::class);
-        $this->eventHandler = $this->createMock(WebhookEventHandler::class);
+        $this->deserializer = $this->createMock(RemoteEventPayloadDenormalizer::class);
+        $this->eventHandler = $this->createMock(RemoteEventHandler::class);
         parent::setUp();
     }
 
