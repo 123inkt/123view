@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
-use Doctrine\ORM\NonUniqueResultException;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
@@ -24,9 +23,6 @@ class PushEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
     {
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
     public function handle(object $event): void
     {
         Assert::isInstanceOf($event, PushEvent::class);

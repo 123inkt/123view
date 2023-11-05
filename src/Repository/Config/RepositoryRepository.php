@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Repository\Config;
 
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Repository\Repository;
@@ -22,9 +21,6 @@ class RepositoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Repository::class);
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
     public function findByProperty(string $propertyName, string $propertyValue): ?Repository
     {
         $qb = $this->createQueryBuilder('r');
