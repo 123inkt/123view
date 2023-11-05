@@ -13,6 +13,7 @@ use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use RuntimeException;
 
 #[CoversClass(CodeReviewProcessor::class)]
 class CodeReviewProcessorTest extends AbstractTestCase
@@ -33,8 +34,9 @@ class CodeReviewProcessorTest extends AbstractTestCase
 
     public function testProcessShouldSkipNonReview(): void
     {
-        $this->reviewRepository->expects(self::never())->method('save');
-        static::assertSame('foobar', $this->reviewProcessor->process('foobar', new Patch()));
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Expecting value to be instance of ' . CodeReview::class);
+        $this->reviewProcessor->process('foobar', new Patch());
     }
 
     public function testProcessShouldNotEmitEvent(): void

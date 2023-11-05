@@ -11,6 +11,9 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Utils\Assert;
 
+/**
+ * @implements ProcessorInterface<CodeReview>
+ */
 class CodeReviewProcessor implements ProcessorInterface
 {
     public function __construct(
@@ -22,14 +25,10 @@ class CodeReviewProcessor implements ProcessorInterface
 
     /**
      * @inheritDoc
-     * @phpstan-ignore-next-line
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        if ($data instanceof CodeReview === false) {
-            return $data;
-        }
-
+        Assert::isInstanceOf($data, CodeReview::class);
         $data->setUpdateTimestamp(time());
 
         // save changes

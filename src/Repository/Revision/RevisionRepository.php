@@ -104,7 +104,10 @@ class RevisionRepository extends ServiceEntityRepository
             $query->andWhere($attached ? 'r.review IS NOT NULL' : 'r.review IS NULL');
         }
 
-        return new Paginator($query->getQuery(), true);
+        /** @var Paginator<Revision> $paginator */
+        $paginator = new Paginator($query->getQuery(), true);
+
+        return $paginator;
     }
 
     /**
