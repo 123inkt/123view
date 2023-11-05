@@ -35,7 +35,7 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
             $policy[] = sprintf("frame-src %s:*", $matches[1]);
         }
 
-        $response->headers->set("Content-Security-Policy", implode(';', $policy));
+        $response->headers->set("Content-Security-Policy", implode('; ', $policy));
     }
 
     /**
