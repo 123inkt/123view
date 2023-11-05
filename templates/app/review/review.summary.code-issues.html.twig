@@ -7,17 +7,18 @@
         {%- for file,issues in inspectionIssueViewModel.getGroupByFile() -%}
             <ul>
                 <li>
-                    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review, filePath: file}) }}"
-                       class="d-block">{{ file }}</a>
-
+                    <div>
+                        <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review, filePath: file}) }}">{{ file }}</a>
+                        {{ ide_button(file, issues[0].lineNumber) }}
+                    </div>
                     <ul>
-                    {% for issue in issues %}
-                        <li>
-                            <span class="fw-bold">{{ issue.report.inspectionId }}</span>
-                            <code>{{ 'line'|trans|lower }}:{{ issue.lineNumber }}</code>
-                            <span>{{ issue.message }}</span>
-                        </li>
-                    {% endfor %}
+                        {% for issue in issues %}
+                            <li>
+                                <span class="fw-bold">{{ issue.report.inspectionId }}</span>
+                                <code>{{ 'line'|trans|lower }}:{{ issue.lineNumber }}</code>
+                                <span>{{ issue.message }}</span>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </li>
             </ul>

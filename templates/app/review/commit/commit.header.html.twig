@@ -45,6 +45,9 @@
             {%- endif -%}
         {%- endif -%}
 
+        {# open in editor #}
+        {{ ide_button(file.filePathAfter ?? file.filePathBefore) }}
+
         <div class="float-end pe-2">
             {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
             {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
