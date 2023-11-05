@@ -53,6 +53,7 @@ use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Webhook\WebhookExecutionService;
+use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
@@ -147,6 +148,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DiffFileParser::class);
     $services->set(JBDiff::class);
     $services->set(CssToInlineStyles::class);
+    $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_PATTERN)%', '%env(IDE_URL_TITLE)%']);
     $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
