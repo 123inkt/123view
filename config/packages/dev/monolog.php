@@ -44,6 +44,13 @@ return static function (MonologConfig $monolog) {
         ->maxFiles(1)
         ->channels()->elements(["app"]);
 
+    $monolog->handler('docker')
+        ->type('stream')
+        ->level('debug')
+        ->path('php://stderr')
+        ->formatter('monolog.formatter.line')
+        ->channels()->elements(["!event"]);
+
     $monolog->handler('console')
         ->type('console')
         ->level('debug')

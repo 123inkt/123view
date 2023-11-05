@@ -8,6 +8,7 @@ use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use DR\Review\Message\Revision\ValidateRevisionsMessage;
+use Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {
@@ -20,6 +21,9 @@ return static function (FrameworkConfig $framework): void {
     $messenger->transport('async_delay_mail')->dsn('%env(MESSENGER_TRANSPORT_DSN)%mail');
     $messenger->transport('failed')->dsn('doctrine://default?queue_name=failed');
     $messenger->transport('sync')->dsn('sync://');
+
+    // Webhook + RemoteEvent handling
+    $messenger->routing(ConsumeRemoteEventMessage::class)->senders(['async_messages']);
 
     // https://symfony.com/doc/current/messenger.html#routing-messages-to-a-transport
     $messenger->routing(FetchRepositoryRevisionsMessage::class)->senders(['async_revisions']);
