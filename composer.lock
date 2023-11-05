@@ -657,16 +657,16 @@
         },
         {
             "name": "digitalrevolution/utils",
-            "version": "v1.4.0",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/utils.git",
-                "reference": "79fb0cdf91b9bff56801fa4614aee6f69deb5157"
+                "reference": "ed9f2352e022752172ba1e120a80671bb3b9e4d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/utils/zipball/79fb0cdf91b9bff56801fa4614aee6f69deb5157",
-                "reference": "79fb0cdf91b9bff56801fa4614aee6f69deb5157",
+                "url": "https://api.github.com/repos/123inkt/utils/zipball/ed9f2352e022752172ba1e120a80671bb3b9e4d6",
+                "reference": "ed9f2352e022752172ba1e120a80671bb3b9e4d6",
                 "shasum": ""
             },
             "require": {
@@ -696,9 +696,9 @@
             "description": "A library for everyday use utility classes",
             "support": {
                 "issues": "https://github.com/123inkt/utils/issues",
-                "source": "https://github.com/123inkt/utils/tree/v1.4.0"
+                "source": "https://github.com/123inkt/utils/tree/v1.7.1"
             },
-            "time": "2023-07-26T19:08:07+00:00"
+            "time": "2023-10-31T19:27:34+00:00"
         },
         {
             "name": "doctrine/annotations",
