@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use stdClass;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(PushEventHandler::class)]
@@ -22,12 +21,10 @@ class PushEventHandlerTest extends AbstractTestCase
     private RepositoryRepository&MockObject $repository;
     private MessageBusInterface&MockObject  $bus;
     private PushEventHandler                $eventHandler;
-    private Envelope                        $envelope;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->envelope     = new Envelope(new stdClass(), []);
         $this->repository   = $this->createMock(RepositoryRepository::class);
         $this->bus          = $this->createMock(MessageBusInterface::class);
         $this->eventHandler = new PushEventHandler($this->repository, $this->bus);
