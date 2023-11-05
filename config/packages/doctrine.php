@@ -53,6 +53,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
     $doctrineConfig->orm()->autoGenerateProxyClasses(true);
     $doctrineConfig->orm()->defaultEntityManager('default');
     $em = $doctrineConfig->orm()->entityManager('default');
+    $em->reportFieldsWhereDeclared(true);
     $em->autoMapping(true);
     $em->connection('default');
     $em->namingStrategy('doctrine.orm.naming_strategy.underscore_number_aware');
