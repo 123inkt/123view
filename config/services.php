@@ -28,7 +28,6 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
-use DR\Review\Security\Webhook\GitlabWebhookAuthenticator;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
@@ -42,7 +41,6 @@ use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
-use DR\Review\Service\Json\SerializerFactory;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
@@ -56,7 +54,6 @@ use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
-use DR\Review\Webhook\GitlabRequestParser;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use Monolog\Formatter\LineFormatter;
@@ -65,7 +62,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
@@ -130,7 +126,6 @@ return static function (ContainerConfigurator $container): void {
         ->args([service('.inner')])
         ->autoconfigure(false);
     $services->set(BearerAuthenticator::class);
-    $services->set(GitlabWebhookAuthenticator::class)->arg('$gitlabWebhookSecret', '%env(GITLAB_WEBHOOK_SECRET)%');
 
     // Register AzureAd provider, for SSO
     $services->set(Azure::class)
@@ -204,11 +199,6 @@ return static function (ContainerConfigurator $container): void {
     // Webhook handlers
     $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
     $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
-    $services->set(GitlabRequestParser::class);
-
-    // Serializer
-    $services->set(SerializerInterface::class . ' $objectSerializer', SerializerInterface::class)
-        ->factory([inline_service(SerializerFactory::class), 'createObjectSerializer']);
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 };
