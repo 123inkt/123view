@@ -15,11 +15,9 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -32,11 +30,9 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
     private CommentReplyRepository&MockObject $replyRepository;
     private TranslatorInterface&MockObject    $translator;
     private MessageBusInterface&MockObject    $bus;
-    private Envelope                          $envelope;
 
     public function setUp(): void
     {
-        $this->envelope        = new Envelope(new stdClass(), []);
         $this->replyRepository = $this->createMock(CommentReplyRepository::class);
         $this->translator      = $this->createMock(TranslatorInterface::class);
         $this->bus             = $this->createMock(MessageBusInterface::class);

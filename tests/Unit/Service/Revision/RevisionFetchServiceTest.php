@@ -15,8 +15,6 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use stdClass;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 use function DR\PHPUnitExtensions\Mock\consecutive;
@@ -28,13 +26,11 @@ class RevisionFetchServiceTest extends AbstractTestCase
     private RevisionRepository&MockObject            $revisionRepository;
     private RevisionFactory&MockObject               $revisionFactory;
     private MessageBusInterface&MockObject           $bus;
-    private Envelope                                 $envelope;
     private RevisionFetchService                     $fetchService;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope              = new Envelope(new stdClass(), []);
         $this->remoteRevisionService = $this->createMock(GitFetchRemoteRevisionService::class);
         $this->revisionRepository    = $this->createMock(RevisionRepository::class);
         $this->revisionFactory       = $this->createMock(RevisionFactory::class);

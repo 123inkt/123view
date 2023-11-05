@@ -10,12 +10,10 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(ValidateRevisionsCommand::class)]
@@ -24,12 +22,10 @@ class ValidateRevisionsCommandTest extends AbstractTestCase
     private RepositoryRepository&MockObject $repositoryRepository;
     private MessageBusInterface&MockObject  $bus;
     private ValidateRevisionsCommand        $command;
-    private Envelope                        $envelope;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope             = new Envelope(new stdClass(), []);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         $this->bus                  = $this->createMock(MessageBusInterface::class);
         $this->command              = new ValidateRevisionsCommand($this->repositoryRepository, $this->bus);

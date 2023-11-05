@@ -16,24 +16,20 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\EditCredentialViewModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(CredentialController::class)]
 class CredentialControllerTest extends AbstractControllerTestCase
 {
     private RepositoryCredentialRepository&MockObject $credentialRepository;
-    private RepositoryRepository&MockObject $repositoryRepository;
-    private MessageBusInterface&MockObject $messageBus;
-    private Envelope $envelope;
+    private RepositoryRepository&MockObject           $repositoryRepository;
+    private MessageBusInterface&MockObject            $messageBus;
 
     protected function setUp(): void
     {
-        $this->envelope             = new Envelope(new stdClass(), []);
         $this->messageBus           = $this->createMock(MessageBusInterface::class);
         $this->credentialRepository = $this->createMock(RepositoryCredentialRepository::class);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);

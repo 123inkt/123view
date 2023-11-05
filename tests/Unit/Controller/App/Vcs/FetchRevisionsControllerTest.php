@@ -9,9 +9,7 @@ use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -23,14 +21,12 @@ class FetchRevisionsControllerTest extends AbstractTestCase
     private RepositoryRepository&MockObject $repositoryRepository;
     private MessageBusInterface&MockObject  $bus;
     private FetchRevisionsController        $controller;
-    private Envelope                        $envelope;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         $this->bus                  = $this->createMock(MessageBusInterface::class);
-        $this->envelope             = new Envelope(new stdClass(), []);
         $this->controller           = new FetchRevisionsController($this->repositoryRepository, $this->bus);
     }
 

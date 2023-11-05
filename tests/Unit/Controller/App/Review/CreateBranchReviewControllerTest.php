@@ -18,10 +18,8 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(CreateBranchReviewController::class)]
@@ -31,11 +29,9 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
     private CodeReviewRevisionService&MockObject $revisionService;
     private CodeReviewRepository&MockObject      $reviewRepository;
     private MessageBusInterface&MockObject       $messageBus;
-    private Envelope                             $envelope;
 
     protected function setUp(): void
     {
-        $this->envelope              = new Envelope(new stdClass(), []);
         $this->reviewCreationService = $this->createMock(CodeReviewCreationService::class);
         $this->revisionService       = $this->createMock(CodeReviewRevisionService::class);
         $this->reviewRepository      = $this->createMock(CodeReviewRepository::class);

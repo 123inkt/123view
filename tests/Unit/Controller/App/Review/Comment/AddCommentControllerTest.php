@@ -16,11 +16,9 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -32,11 +30,9 @@ class AddCommentControllerTest extends AbstractControllerTestCase
     private CommentRepository&MockObject          $commentRepository;
     private CommentEventMessageFactory&MockObject $messageFactory;
     private MessageBusInterface&MockObject        $bus;
-    private Envelope                              $envelope;
 
     public function setUp(): void
     {
-        $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentRepository::class);
         $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);

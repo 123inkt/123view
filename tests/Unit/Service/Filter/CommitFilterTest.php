@@ -24,7 +24,7 @@ class CommitFilterTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->filter = new CommitFilter($this->log, new DefinitionFileMatcher(), new DefinitionSubjectMatcher());
+        $this->filter = new CommitFilter($this->logger, new DefinitionFileMatcher(), new DefinitionSubjectMatcher());
     }
 
     /**

@@ -24,7 +24,7 @@ class DiffParserTest extends AbstractTestCase
     {
         parent::setUp();
         $this->fileParser = $this->createMock(DiffFileParser::class);
-        $this->parser     = new DiffParser($this->log, $this->fileParser);
+        $this->parser     = new DiffParser($this->logger, $this->fileParser);
     }
 
     /**

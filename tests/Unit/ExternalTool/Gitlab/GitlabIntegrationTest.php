@@ -25,7 +25,7 @@ class GitlabIntegrationTest extends AbstractTestCase
     {
         parent::setUp();
         $this->api         = $this->createMock(GitlabApi::class);
-        $this->integration = new GitlabIntegration($this->log, 'https://gitlab.example.com/', $this->api);
+        $this->integration = new GitlabIntegration($this->logger, 'https://gitlab.example.com/', $this->api);
     }
 
     /**
@@ -43,7 +43,7 @@ class GitlabIntegrationTest extends AbstractTestCase
     public function testOnCommitEventShouldSkipOnMissingGitlabApiUrl(): void
     {
         $this->api         = $this->createMock(GitlabApi::class);
-        $this->integration = new GitlabIntegration($this->log, '', $this->api);
+        $this->integration = new GitlabIntegration($this->logger, '', $this->api);
 
         // setup mock
         $this->api->expects(static::never())->method('getMergeRequestUrl');

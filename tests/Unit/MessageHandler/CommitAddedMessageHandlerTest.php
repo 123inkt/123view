@@ -14,8 +14,6 @@ use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
@@ -31,12 +29,10 @@ class CommitAddedMessageHandlerTest extends AbstractTestCase
     private RevisionFactory&MockObject        $revisionFactory;
     private MessageBusInterface&MockObject    $bus;
     private CommitAddedMessageHandler         $messageHandler;
-    private Envelope                          $envelope;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope             = new Envelope(new stdClass(), []);
         $this->showService          = $this->createMock(LockableGitShowService::class);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         $this->revisionRepository   = $this->createMock(RevisionRepository::class);

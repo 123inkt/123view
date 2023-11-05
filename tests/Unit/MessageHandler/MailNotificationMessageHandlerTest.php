@@ -24,13 +24,11 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
 {
     private MailNotificationHandlerProvider&MockObject $handlerProvider;
     private MessageBusInterface&MockObject             $bus;
-    private Envelope                                   $envelope;
     private MailNotificationMessageHandler             $handler;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope        = new Envelope(new stdClass(), []);
         $this->handlerProvider = $this->createMock(MailNotificationHandlerProvider::class);
         $this->bus             = $this->createMock(MessageBusInterface::class);
         $this->handler         = new MailNotificationMessageHandler($this->handlerProvider, $this->bus, 1000);

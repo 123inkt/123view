@@ -16,19 +16,16 @@ use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Log\LoggerInterface;
 
 #[CoversClass(DiffLineChangeSetDiffer::class)]
 class DiffLineChangeSetDifferTest extends AbstractTestCase
 {
-    private LoggerInterface&MockObject $logger;
-    private JBDiff&MockObject          $jbdiff;
-    private DiffLineChangeSetDiffer    $differ;
+    private JBDiff&MockObject       $jbdiff;
+    private DiffLineChangeSetDiffer $differ;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->logger = $this->createMock(LoggerInterface::class);
         $this->jbdiff = $this->createMock(JBDiff::class);
         $this->differ = new DiffLineChangeSetDiffer(null, $this->jbdiff);
         $this->differ->setLogger($this->logger);
