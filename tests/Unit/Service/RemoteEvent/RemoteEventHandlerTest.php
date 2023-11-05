@@ -24,7 +24,7 @@ class RemoteEventHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->handler = $this->createMock(RemoteEventHandlerInterface::class);
 
-        /** @var Traversable<string, RemoteEventHandlerInterface<PushEvent>> $iterator */
+        /** @var Traversable<class-string<PushEvent>, RemoteEventHandlerInterface<PushEvent>> $iterator */
         $iterator           = new ArrayIterator([PushEvent::class => $this->handler]);
         $this->eventHandler = new RemoteEventHandler($iterator);
     }

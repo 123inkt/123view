@@ -10,7 +10,7 @@ use Traversable;
 
 /**
  * @phpstan-type HandlerKey class-string<PushEvent>
- * @phpstan-type HandlerValue WebhookEventHandlerInterface<PushEvent>
+ * @phpstan-type HandlerValue RemoteEventHandlerInterface<PushEvent>
  */
 class RemoteEventHandler implements LoggerAwareInterface
 {
