@@ -14,9 +14,7 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(AddCommentReactionController::class)]
@@ -24,11 +22,9 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
 {
     private CommentReplyRepository&MockObject $commentRepository;
     private MessageBusInterface&MockObject    $bus;
-    private Envelope                          $envelope;
 
     protected function setUp(): void
     {
-        $this->envelope          = new Envelope(new stdClass(), []);
         $this->commentRepository = $this->createMock(CommentReplyRepository::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();

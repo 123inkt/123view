@@ -23,7 +23,6 @@ use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
@@ -36,14 +35,12 @@ class ReviewEventServiceTest extends AbstractTestCase
 {
     private MessageBusInterface&MockObject $bus;
     private ReviewEventService             $service;
-    private Envelope                       $envelope;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->envelope = new Envelope(new stdClass(), []);
-        $this->bus      = $this->createMock(MessageBusInterface::class);
-        $this->service  = new ReviewEventService($this->bus);
+        $this->bus = $this->createMock(MessageBusInterface::class);
+        $this->service = new ReviewEventService($this->bus);
     }
 
     /**
