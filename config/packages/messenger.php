@@ -23,7 +23,7 @@ return static function (FrameworkConfig $framework): void {
     $messenger->transport('sync')->dsn('sync://');
 
     // Webhook + RemoteEvent handling
-    $messenger->routing(ConsumeRemoteEventMessage::class)->senders(['sync']);
+    $messenger->routing(ConsumeRemoteEventMessage::class)->senders(['async_messages']);
 
     // https://symfony.com/doc/current/messenger.html#routing-messages-to-a-transport
     $messenger->routing(FetchRepositoryRevisionsMessage::class)->senders(['async_revisions']);
