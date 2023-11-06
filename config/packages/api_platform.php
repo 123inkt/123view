@@ -8,7 +8,8 @@ return static function (ApiPlatformConfig $config): void {
     $config->title('%env(APP_NAME)% API')
         ->version('1.0.0')
         ->showWebby(false)
-        ->keepLegacyInflector(false)
+        ->eventListenersBackwardCompatibilityLayer(false)
+        //->keepLegacyInflector(false)
         ->pathSegmentNameGenerator('api_platform.metadata.path_segment_name_generator.dash');
 
     $config->mapping()->paths(['%kernel.project_dir%/src/Entity']);
