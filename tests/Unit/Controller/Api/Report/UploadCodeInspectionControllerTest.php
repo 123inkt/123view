@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[CoversClass(UploadCodeInspectionController::class)]
@@ -41,6 +42,19 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
+        ($this->controller)($request, 'repository', 'hash');
+    }
+
+    public function testInvokeEmptyBody(): void
+    {
+        $request = $this->createMock(UploadCodeInspectionRequest::class);
+        $request->method('getData')->willReturn('');
+        $repository = new Repository();
+
+        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+
+        $this->expectException(BadRequestHttpException::class);
+        $this->expectExceptionMessage('Body cannot be empty.');
         ($this->controller)($request, 'repository', 'hash');
     }
 
