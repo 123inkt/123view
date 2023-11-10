@@ -17,8 +17,14 @@
 
     <div class="list-group">
         {% for notification in notificationViewModel.notifications %}
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\NotificationRuleMailController', {id: notification.id}) }}"
+               class="list-group-item list-group-item-action"
+               target="_mail"
+            >
                 <b>{{ notification.notifyTimestamp|date('d M Y H:i:s') }}</b>
+
+                [{{- app_name -}}] New revisions for:
+
                 {{ notification.rule.name }}
             </a>
         {% endfor %}
