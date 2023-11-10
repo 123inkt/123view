@@ -1,0 +1,28 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <h1 class="mt-2">{{ 'notification.history'|trans }}</h1>
+
+    <ul class="nav nav-tabs mb-2">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Notification\\RulesController') }}">{{ 'rules'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">{{ 'history'|trans }}</a>
+        </li>
+    </ul>
+
+    <div class="list-group">
+        {% for notification in notificationViewModel.notifications %}
+            <a href="#" class="list-group-item list-group-item-action">
+                <b>{{ notification.notifyTimestamp|date('d M Y H:i:s') }}</b>
+                {{ notification.rule.name }}
+            </a>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
