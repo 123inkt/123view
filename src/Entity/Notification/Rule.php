@@ -43,14 +43,19 @@ class Rule
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $filters;
 
+    /** @phpstan-var Collection<int, Filter> */
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: RuleNotification::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $notifications;
+
     #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
     private ?RuleOptions $ruleOptions;
 
     public function __construct()
     {
-        $this->repositories = new ArrayCollection();
-        $this->recipients   = new ArrayCollection();
-        $this->filters      = new ArrayCollection();
+        $this->repositories  = new ArrayCollection();
+        $this->recipients    = new ArrayCollection();
+        $this->filters       = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -173,6 +178,24 @@ class Rule
         $this->filters->removeElement($filter);
 
         return $this;
+    }
+
+    /**
+     * @param Collection<int, RuleNotification> $notifications
+     */
+    public function setRuleNotifications(Collection $notifications): self
+    {
+        $this->notifications = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RuleNotification>
+     */
+    public function getRuleNotifications(): Collection
+    {
+        return $this->notifications;
     }
 
     public function getRuleOptions(): ?RuleOptions
