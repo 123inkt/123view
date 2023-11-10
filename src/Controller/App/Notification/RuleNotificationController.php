@@ -9,6 +9,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Notification\Frequency;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Notification\RuleNotification;
+use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\Service\RuleProcessor;
@@ -20,9 +21,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
-class NotificationRuleMailController extends AbstractController
+class RuleNotificationController extends AbstractController
 {
-    public function __construct(private readonly RuleProcessor $ruleProcessor)
+    public function __construct(private readonly RuleProcessor $ruleProcessor, private readonly RuleNotificationRepository $notificationRepository)
     {
     }
 
@@ -46,6 +47,9 @@ class NotificationRuleMailController extends AbstractController
         // render mail
         $response = $this->render('mail/mail.commits.html.twig', ['viewModel' => new CommitsViewModel($commits, $options->getTheme() ?? 'upsource')]);
         $response->headers->set('Content-Security-Policy', "");
+
+        // mark notification as read
+        $this->notificationRepository->save($notification->setRead(true), true);
 
         return $response;
     }

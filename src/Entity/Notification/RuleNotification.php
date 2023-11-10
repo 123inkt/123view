@@ -19,6 +19,9 @@ class RuleNotification
     #[ORM\JoinColumn(nullable: false)]
     private Rule $rule;
 
+    #[ORM\Column('`read`', options: ['default' => false])]
+    private bool $read = false;
+
     #[ORM\Column]
     private int $notifyTimestamp;
 
@@ -45,6 +48,18 @@ class RuleNotification
     public function setRule(Rule $rule): self
     {
         $this->rule = $rule;
+
+        return $this;
+    }
+
+    public function isRead(): bool
+    {
+        return $this->read;
+    }
+
+    public function setRead(bool $read): self
+    {
+        $this->read = $read;
 
         return $this;
     }
