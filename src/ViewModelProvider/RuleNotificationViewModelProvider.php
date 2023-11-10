@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use DR\Review\Entity\Notification\RuleNotificationReadEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\ViewModel\App\Notification\RuleNotificationViewModel;
@@ -13,9 +14,9 @@ class RuleNotificationViewModelProvider
     {
     }
 
-    public function getNotificationsViewModel(): RuleNotificationViewModel
+    public function getNotificationsViewModel(?RuleNotificationReadEnum $filter): RuleNotificationViewModel
     {
-        $notifications = $this->user === null ? [] : $this->notificationRepository->getNotificationsForUser($this->user);
+        $notifications = $this->user === null ? [] : $this->notificationRepository->getNotificationsForUser($this->user, $filter);
 
         return new RuleNotificationViewModel($notifications);
     }

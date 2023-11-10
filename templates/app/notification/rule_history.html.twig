@@ -15,12 +15,18 @@
         </li>
     </ul>
 
+    <div class="ps-2 pb-2">
+        {{ 'show'|trans|capitalize }}:
+        <a href="?filter=">{{ 'all'|trans }}</a>
+        <a href="?filter=unread">{{ 'unread'|trans }}</a>
+        <a href="?filter=read">{{ 'read'|trans }}</a>
+    </div>
+
     <div class="list-group">
         {% for notification in notificationViewModel.notifications %}
             <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleNotificationController', {id: notification.id}) }}"
                class="list-group-item list-group-item-action {% if not notification.read %}fw-bold{% endif %}"
-               target="_mail"
-            >
+               target="_mail">
                 {{ notification.notifyTimestamp|date('d M Y H:i:s') }} -
 
                 [{{- app_name -}}] New revisions for:

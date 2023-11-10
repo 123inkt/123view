@@ -320,4 +320,8 @@ return [
     'history'                                     => 'History',
     'notification.history'                        => 'Notification history',
     'notification.rules'                          => 'Notification rules',
+    'show'                                        => 'show',
+    'all'                                         => 'all',
+    'read'                                        => 'read',
+    'unread'                                      => 'unread',
 ];
