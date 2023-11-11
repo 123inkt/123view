@@ -12,33 +12,33 @@
             "groupName": "eslint, stylelint packages",
             "groupSlug": "linters",
             "matchPackagePrefixes": [
-                "stylelint",
-                "sass",
+                "@typescript-eslint",
                 "eslint",
-                "@typescript-eslint"
+                "sass",
+                "stylelint"
             ]
         },
         {
             "groupName": "stimulus packages",
             "groupSlug": "stimulus",
             "matchPackagePrefixes": [
-                "stimulus",
                 "@hotwired/stimulus",
-                "@symfony/stimulus-bridge"
+                "@symfony/stimulus-bridge",
+                "stimulus"
             ]
         },
         {
             "groupName": "webpack packages",
             "groupSlug": "webpack",
             "matchPackagePrefixes": [
-                "webpack",
+                "@babel",
+                "@symfony/webpack-encore",
+                "core-js",
+                "regenerator-runtime",
                 "ts-loader",
                 "ts-node",
                 "typescript",
-                "@babel",
-                "regenerator-runtime",
-                "core-js",
-                "@symfony/webpack-encore"
+                "webpack"
             ]
         }
     ]
