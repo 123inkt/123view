@@ -20,9 +20,8 @@ class RuleNotificationExtensionTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user                   = new User();
         $this->notificationRepository = $this->createMock(RuleNotificationRepository::class);
-        $this->extension              = new RuleNotificationExtension($this->user, $this->notificationRepository);
+        $this->extension              = new RuleNotificationExtension(new User(), $this->notificationRepository);
     }
 
     /**
