@@ -26,8 +26,9 @@
 
                     {%- set notificationCount =  notificationViewModel.getNotificationCount(rule) -%}
 
-                    {%- if notificationCount > 0 and rule != notificationViewModel.selectedRule-%}
-                        <span class="ms-1 badge rounded-pill bg-primary">
+                    {%- if notificationCount > 0 -%}
+                        {% set bg_color = rule == notificationViewModel.selectedRule ? 'bg-warning' : 'bg-primary' %}
+                        <span class="ms-1 badge rounded-pill {{ bg_color }}">
                             {{- notificationCount -}}
                         </span>
                     {%- endif -%}

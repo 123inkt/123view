@@ -12,7 +12,13 @@
                 <a class="nav-link active" href="#">{{ 'rules'|trans }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleHistoryController') }}">{{ 'history'|trans }}</a>
+                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleHistoryController') }}">
+                    {{ 'history'|trans }}
+                    {%- set notification_count = rule_notification_count() -%}
+                    {%- if notification_count > 0 -%}
+                        <span class="ms-1 badge rounded-pill bg-primary">{{ notification_count }}</span>
+                    {%- endif -%}
+                </a>
             </li>
         </ul>
 

@@ -31,13 +31,14 @@ class RuleNotificationRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      */
-    public function getNotificationCountForUser(User $user): int
+    public function getUnreadNotificationCountForUser(User $user): int
     {
         $query = $this->createQueryBuilder('n')
             ->select('count(n.id)')
             ->innerJoin('n.rule', 'r')
             ->where('r.user = :user')
             ->setParameter('user', $user)
+            ->andWhere('n.read = 0')
             ->getQuery();
 
         return Assert::integer($query->getSingleScalarResult());
