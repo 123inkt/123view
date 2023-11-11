@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Notification;
 
 use Doctrine\DBAL\Exception;
+use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Notification\RuleNotificationViewModel;
 use DR\Review\ViewModelProvider\RuleNotificationViewModelProvider;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class RuleHistoryController
+class RuleHistoryController extends AbstractController
 {
     public function __construct(private readonly RuleNotificationViewModelProvider $viewModelProvider)
     {
