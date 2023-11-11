@@ -10,6 +10,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Mail\CommitMailService;
+use DR\Review\Service\Notification\RuleNotificationService;
 use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Service\RuleProcessor;
 use DR\Review\Tests\AbstractTestCase;
@@ -23,12 +24,13 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[CoversClass(MailCommand::class)]
 class MailCommandTest extends AbstractTestCase
 {
-    private RuleProcessor&MockObject        $ruleProcessor;
-    private RuleRepository&MockObject       $ruleRepository;
-    private RevisionFetchService&MockObject $revisionFetchService;
-    private CommitMailService&MockObject    $mailService;
-    private MailCommand                     $command;
-    private User                            $user;
+    private RuleProcessor&MockObject           $ruleProcessor;
+    private RuleRepository&MockObject          $ruleRepository;
+    private RevisionFetchService&MockObject    $revisionFetchService;
+    private RuleNotificationService&MockObject $notificationService;
+    private CommitMailService&MockObject       $mailService;
+    private MailCommand                        $command;
+    private User                               $user;
 
     protected function setUp(): void
     {
@@ -39,8 +41,15 @@ class MailCommandTest extends AbstractTestCase
         $this->ruleProcessor        = $this->createMock(RuleProcessor::class);
         $this->ruleRepository       = $this->createMock(RuleRepository::class);
         $this->revisionFetchService = $this->createMock(RevisionFetchService::class);
+        $this->notificationService  = $this->createMock(RuleNotificationService::class);
         $this->mailService          = $this->createMock(CommitMailService::class);
-        $this->command              = new MailCommand($this->ruleRepository, $this->ruleProcessor, $this->revisionFetchService, $this->mailService);
+        $this->command              = new MailCommand(
+            $this->ruleRepository,
+            $this->ruleProcessor,
+            $this->revisionFetchService,
+            $this->notificationService,
+            $this->mailService
+        );
     }
 
     public function testConfigure(): void
@@ -72,6 +81,7 @@ class MailCommandTest extends AbstractTestCase
         // setup mocks
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
         $this->revisionFetchService->expects(self::once())->method('fetchRevisionsForRules')->with([$rule]);
+        $this->notificationService->expects(self::never())->method('addRuleNotification');
         $this->ruleProcessor
             ->expects(static::once())
             ->method('processRule')
@@ -95,6 +105,7 @@ class MailCommandTest extends AbstractTestCase
         // setup mocks
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
         $this->revisionFetchService->expects(self::once())->method('fetchRevisionsForRules')->with([$rule]);
+        $this->notificationService->expects(self::once())->method('addRuleNotification')->with($rule);
         $this->ruleProcessor
             ->expects(static::once())
             ->method('processRule')
@@ -121,6 +132,7 @@ class MailCommandTest extends AbstractTestCase
         // setup mocks
         $this->ruleRepository->expects(self::once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
         $this->revisionFetchService->expects(self::once())->method('fetchRevisionsForRules')->with([$rule]);
+        $this->notificationService->expects(self::never())->method('addRuleNotification');
         $this->ruleProcessor->expects(static::never())->method('processRule');
         $this->mailService->expects(self::never())->method('sendCommitsMail');
 
