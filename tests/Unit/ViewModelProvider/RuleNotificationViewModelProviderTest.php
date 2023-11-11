@@ -69,8 +69,8 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
             ->with(['rule' => $rule, 'read' => 0], ['createTimestamp' => 'DESC'], 100)
             ->willReturn([$notification]);
 
-        $expected = new RuleNotificationViewModel($rule, [123 => 5], [123 => $rule], [$notification], true);;
+        $expected = new RuleNotificationViewModel($rule, [123 => 5], [123 => $rule], [$notification], true);
+
         static::assertEquals($expected, $this->viewModelProvider->getNotificationsViewModel(123, true));
     }
-
 }
