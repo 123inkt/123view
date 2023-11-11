@@ -5,31 +5,41 @@
     ],
     "packageRules": [
         {
-            "groupName": "stylelint packages",
-            "groupSlug": "stylelint",
+            "matchDepTypes": ["devDependencies"],
+            "automerge": true
+        },
+        {
+            "groupName": "eslint, stylelint packages",
+            "groupSlug": "all",
             "matchPackagePrefixes": [
-                "stylelint"
+                "stylelint",
+                "sass",
+                "eslint",
+                "@typescript-eslint"
             ]
         },
         {
-            "groupName": "sass packages",
-            "groupSlug": "sass",
+            "groupName": "stimulus packages",
+            "groupSlug": "all",
             "matchPackagePrefixes": [
-                "sass"
-            ]
-        },
-        {
-            "groupName": "eslint packages",
-            "groupSlug": "eslint",
-            "matchPackagePrefixes": [
-                "eslint"
+                "stimulus",
+                "@hotwired/stimulus",
+                "@symfony/stimulus-bridge",
+                "@typescript-eslint"
             ]
         },
         {
             "groupName": "webpack packages",
-            "groupSlug": "webpack",
+            "groupSlug": "all",
             "matchPackagePrefixes": [
-                "webpack"
+                "webpack",
+                "ts-loader",
+                "ts-node",
+                "typescript",
+                "@babel",
+                "regenerator-runtime",
+                "core-js",
+                "@symfony/webpack-encore"
             ]
         }
     ]
