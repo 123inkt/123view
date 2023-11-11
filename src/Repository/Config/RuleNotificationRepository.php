@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace DR\Review\Repository\Config;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Entity\User\User;
+use DR\Utils\Assert;
 
 /**
  * @extends ServiceEntityRepository<RuleNotification>
@@ -24,6 +26,21 @@ class RuleNotificationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RuleNotification::class);
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function getNotificationCountForUser(User $user): int
+    {
+        $query = $this->createQueryBuilder('n')
+            ->select('count(n.id)')
+            ->innerJoin('n.rule', 'r')
+            ->where('r.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+
+        return Assert::integer($query->getSingleScalarResult());
     }
 
     /**

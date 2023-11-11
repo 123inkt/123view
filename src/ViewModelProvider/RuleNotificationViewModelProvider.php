@@ -26,19 +26,15 @@ class RuleNotificationViewModelProvider
     public function getNotificationsViewModel(?int $ruleId, bool $unread): RuleNotificationViewModel
     {
         $notificationCount = $this->notificationRepository->getUnreadNotificationPerRuleCount($this->user);
-        $notifications     = [];
 
         $rules = $this->ruleRepository->findBy(['user' => $this->user, 'active' => true], ['name' => 'ASC'], 100);
         $rules = Arrays::reindex($rules, static fn(Rule $rule) => $rule->getId());
 
-        $selectedRule = null;
+        $selectedRule  = null;
+        $notifications = [];
         if (count($rules) > 0) {
-            $selectedRule = $rules[$ruleId ?? 0] ?? Arrays::first($rules);
-            $filter       = ['rule' => $selectedRule];
-            if ($unread) {
-                $filter['read'] = 0;
-            }
-
+            $selectedRule  = $rules[$ruleId ?? 0] ?? Arrays::first($rules);
+            $filter        = ['rule' => $selectedRule] + ($unread ? ['read' => 0] : []);
             $notifications = $this->notificationRepository->findBy($filter, ['createTimestamp' => 'DESC'], 100);
         }
 
