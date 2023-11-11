@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Notification;
 
 use Doctrine\DBAL\Exception;
-use DR\Review\Entity\Notification\RuleNotificationReadEnum;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Notification\RuleNotificationViewModel;
 use DR\Review\ViewModelProvider\RuleNotificationViewModelProvider;
