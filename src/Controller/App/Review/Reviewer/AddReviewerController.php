@@ -49,7 +49,7 @@ class AddReviewerController extends AbstractController
         $reviewer = $this->reviewerService->addReviewer($review, $user);
         $this->codeReviewRepository->save($review, true);
 
-        $userId = (int)$this->getUser()->getId();
+        $userId = $this->getUser()->getId();
         $this->eventService->reviewerAdded($review, $reviewer, $userId, true);
         $this->eventService->reviewReviewerStateChanged($review, $reviewerState, $userId);
 

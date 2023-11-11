@@ -32,13 +32,13 @@ class ReviewEventService
     public function reviewerAdded(CodeReview $review, CodeReviewer $reviewer, int $byUserId, bool $added): void
     {
         if ($added) {
-            $this->bus->dispatch(new ReviewerAdded((int)$review->getId(), (int)$reviewer->getUser()->getId(), $byUserId));
+            $this->bus->dispatch(new ReviewerAdded((int)$review->getId(), $reviewer->getUser()->getId(), $byUserId));
         }
     }
 
     public function reviewerRemoved(CodeReview $review, CodeReviewer $reviewer, int $byUserId): void
     {
-        $this->bus->dispatch(new ReviewerRemoved((int)$review->getId(), (int)$reviewer->getUser()->getId(), $byUserId));
+        $this->bus->dispatch(new ReviewerRemoved((int)$review->getId(), $reviewer->getUser()->getId(), $byUserId));
     }
 
     public function reviewerStateChanged(CodeReview $review, CodeReviewer $reviewer, string $previousState): void
@@ -50,7 +50,7 @@ class ReviewEventService
         $event = new ReviewerStateChanged(
             (int)$review->getId(),
             (int)$reviewer->getId(),
-            (int)$reviewer->getUser()->getId(),
+            $reviewer->getUser()->getId(),
             $previousState,
             $reviewer->getState()
         );

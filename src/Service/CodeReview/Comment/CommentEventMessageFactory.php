@@ -18,7 +18,7 @@ class CommentEventMessageFactory
         return new CommentAdded(
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
-            (int)$user->getId(),
+            $user->getId(),
             $comment->getLineReference()->filePath,
             $comment->getMessage()
         );
@@ -29,7 +29,7 @@ class CommentEventMessageFactory
         return new CommentUpdated(
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
-            (int)$user->getId(),
+            $user->getId(),
             $comment->getLineReference()->filePath,
             $comment->getMessage(),
             $originalComment
@@ -41,7 +41,7 @@ class CommentEventMessageFactory
         return new CommentResolved(
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
-            (int)$user->getId(),
+            $user->getId(),
             $comment->getLineReference()->filePath,
         );
     }
@@ -51,7 +51,7 @@ class CommentEventMessageFactory
         return new CommentUnresolved(
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
-            (int)$user->getId(),
+            $user->getId(),
             $comment->getLineReference()->filePath,
         );
     }
@@ -61,7 +61,7 @@ class CommentEventMessageFactory
         return new CommentRemoved(
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
-            (int)$user->getId(),
+            $user->getId(),
             $comment->getLineReference()->filePath,
             $comment->getMessage(),
         );

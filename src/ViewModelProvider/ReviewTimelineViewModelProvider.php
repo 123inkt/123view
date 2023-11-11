@@ -59,7 +59,7 @@ class ReviewTimelineViewModelProvider
      */
     public function getTimelineViewModelForFeed(User $user, array $events, ?Repository $repository = null): TimelineViewModel
     {
-        $activities      = $this->activityRepository->findForUser((int)$user->getId(), $events, $repository);
+        $activities      = $this->activityRepository->findForUser($user->getId(), $events, $repository);
         $timelineEntries = [];
 
         // create TimelineEntryViewModel entries

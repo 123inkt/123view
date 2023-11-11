@@ -58,7 +58,7 @@ class DetachRevisionController extends AbstractController
         $this->reviewRepository->save($review, true);
 
         // notify subscribers
-        $this->eventService->revisionsDetached($review, $detachedRevisions, (int)$this->getUser()->getId());
+        $this->eventService->revisionsDetached($review, $detachedRevisions, $this->getUser()->getId());
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }

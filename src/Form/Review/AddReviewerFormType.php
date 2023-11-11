@@ -66,7 +66,7 @@ class AddReviewerFormType extends AbstractType
     private function getUserChoices(CodeReview $review): array
     {
         // filter out users already on the review
-        $userIds = array_map(static fn($reviewer) => (int)$reviewer->getUser()->getId(), $review->getReviewers()->toArray());
+        $userIds = array_map(static fn($reviewer) => $reviewer->getUser()->getId(), $review->getReviewers()->toArray());
 
         return $this->userRepository->findUsersWithExclusion($userIds);
     }

@@ -29,7 +29,7 @@ class ServiceEntityRepositoryTest extends AbstractRepositoryTestCase
         $this->userRepository->remove($user, true);
         static::assertNull($this->userRepository->findOneBy(['email' => 'sherlock@example.com']));
 
-        $user->setId(null);
+        $user->setId(123);
         $this->userRepository->save($user, true);
 
         static::assertNotNull($this->userRepository->findOneBy(['email' => 'sherlock@example.com']));
