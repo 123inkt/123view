@@ -49,7 +49,7 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(ChangeReviewerStateRequest::class);
         $request->expects(self::once())->method('getState')->willReturn(CodeReviewerStateType::ACCEPTED);
 
-        $user     = new User();
+        $user     = (new User())->setId(789);
         $reviewer = new CodeReviewer();
         $reviewer->setUser($user);
         $review = new CodeReview();
@@ -62,7 +62,7 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         $this->objectManager->expects(self::exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
         $this->objectManager->expects(self::once())->method('flush');
 
-        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, false);
+        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 789, false);
         $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN);
         $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN);
 
