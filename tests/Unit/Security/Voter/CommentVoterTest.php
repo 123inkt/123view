@@ -21,7 +21,7 @@ class CommentVoterTest extends AbstractTestCase
      */
     public function testSupports(): void
     {
-        $user    = new User();
+        $user    = (new User())->setId(789);
         $comment = new Comment();
         $comment->setUser($user);
 

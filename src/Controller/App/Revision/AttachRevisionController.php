@@ -44,7 +44,7 @@ class AttachRevisionController extends AbstractController
 
         if (count($attach) > 0) {
             $this->reviewService->addRevisions($review, $attach);
-            $this->eventService->revisionsAdded($review, $revisions, (int)$this->getUser()->getId());
+            $this->eventService->revisionsAdded($review, $revisions, $this->getUser()->getId());
 
             $this->addFlash(
                 'success',

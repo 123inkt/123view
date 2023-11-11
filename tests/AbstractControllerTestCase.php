@@ -20,6 +20,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Environment;
 
 abstract class AbstractControllerTestCase extends AbstractTestCase
 {
@@ -127,6 +128,17 @@ abstract class AbstractControllerTestCase extends AbstractTestCase
         }
 
         $this->expectGenerateUrl($route, $parameters)->willReturn($redirectTo);
+    }
+
+    /**
+     * @param array<string, int|string|object> $parameters
+     */
+    public function expectRender(string $view, array $parameters = [], string $renderOutput = 'output'): void
+    {
+        $twig = $this->createMock(Environment::class);
+        $this->container->set('twig', $twig);
+
+        $twig->expects(self::once())->method('render')->with($view, $parameters)->willReturn($renderOutput);
     }
 
     /**

@@ -21,7 +21,7 @@ class RuleVoterTest extends AbstractTestCase
      */
     public function testSupports(): void
     {
-        $user = new User();
+        $user = (new User())->setId(789);
         $rule = new Rule();
         $rule->setUser($user);
 

@@ -46,7 +46,7 @@ class RemoveReviewerController extends AbstractController
         $em->persist($review);
         $em->flush();
 
-        $userId = (int)$this->getUser()->getId();
+        $userId = $this->getUser()->getId();
         $this->eventService->reviewerRemoved($review, $reviewer, $userId);
         $this->eventService->reviewReviewerStateChanged($review, $reviewerState, $userId);
         $this->eventService->reviewStateChanged($review, $reviewState, $userId);

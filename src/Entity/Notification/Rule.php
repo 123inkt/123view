@@ -17,7 +17,7 @@ class Rule
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'rules')]
     #[ORM\JoinColumn(nullable: false)]
@@ -36,21 +36,26 @@ class Rule
     private Collection $repositories;
 
     /** @phpstan-var Collection<int, Recipient> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, cascade: ['persist', 'remove'])]
     private Collection $recipients;
 
     /** @phpstan-var Collection<int, Filter> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, cascade: ['persist', 'remove'])]
     private Collection $filters;
+
+    /** @phpstan-var Collection<int, RuleNotification> */
+    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: RuleNotification::class, cascade: ['persist', 'remove'])]
+    private Collection $notifications;
 
     #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
     private ?RuleOptions $ruleOptions;
 
     public function __construct()
     {
-        $this->repositories = new ArrayCollection();
-        $this->recipients   = new ArrayCollection();
-        $this->filters      = new ArrayCollection();
+        $this->repositories  = new ArrayCollection();
+        $this->recipients    = new ArrayCollection();
+        $this->filters       = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -60,7 +65,7 @@ class Rule
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -173,6 +178,24 @@ class Rule
         $this->filters->removeElement($filter);
 
         return $this;
+    }
+
+    /**
+     * @param Collection<int, RuleNotification> $notifications
+     */
+    public function setRuleNotifications(Collection $notifications): self
+    {
+        $this->notifications = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RuleNotification>
+     */
+    public function getRuleNotifications(): Collection
+    {
+        return $this->notifications;
     }
 
     public function getRuleOptions(): ?RuleOptions

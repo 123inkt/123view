@@ -21,7 +21,7 @@ class UserAccessTokenVoterTest extends AbstractTestCase
      */
     public function testSupports(): void
     {
-        $user = new User();
+        $user = (new User())->setId(789);
         $rule = new UserAccessToken();
         $rule->setUser($user);
 

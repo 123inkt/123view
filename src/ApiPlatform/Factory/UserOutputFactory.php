@@ -10,6 +10,6 @@ class UserOutputFactory
 {
     public function create(User $user): UserOutput
     {
-        return new UserOutput((int)$user->getId(), $user->getName(), $user->getEmail());
+        return new UserOutput($user->getId(), $user->getName(), $user->getEmail());
     }
 }

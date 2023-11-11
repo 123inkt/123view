@@ -316,5 +316,14 @@ return [
     'you'                                         => 'You',
     'authentication.type'                         => 'Authentication type',
     'revalidate.revisions'                        => 'Validate revisions',
-    'repository.schedule.validate_revisions'      => 'Revision validation successfully scheduled'
+    'repository.schedule.validate_revisions'      => 'Revision validation successfully scheduled',
+    'history'                                     => 'History',
+    'notification.history'                        => 'Notification history',
+    'notification.rules'                          => 'Notification rules',
+    'show'                                        => 'show',
+    'all'                                         => 'all',
+    'read'                                        => 'read',
+    'unread'                                      => 'unread',
+    'no.notifications'                            => 'No notifications',
+    'no.unread.notifications'                     => 'No unread notifications',
 ];

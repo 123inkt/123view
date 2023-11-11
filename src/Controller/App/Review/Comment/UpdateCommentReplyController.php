@@ -53,7 +53,7 @@ class UpdateCommentReplyController extends AbstractController
                 new CommentReplyUpdated(
                     (int)$reply->getComment()->getReview()->getId(),
                     (int)$reply->getId(),
-                    (int)$this->getUser()->getId(),
+                    $this->getUser()->getId(),
                     $originalComment
                 )
             );

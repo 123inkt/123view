@@ -9,39 +9,19 @@ use DR\Review\Entity\Notification\Recipient;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Notification\Rule
- * @covers ::__construct
- */
+#[CoversClass(Rule::class)]
 class RuleTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::setName
-     * @covers ::getName
-     * @covers ::setUser
-     * @covers ::getUser
-     * @covers ::setRuleOptions
-     * @covers ::getRuleOptions
-     * @covers ::setActive
-     * @covers ::isActive
-     */
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
         $config->setExcludedMethods(['getRepositories', 'addRepository', 'getRecipients', 'addRecipient', 'getFilters', 'addFilter']);
 
-        static::assertNull((new Rule())->getId());
         static::assertAccessorPairs(Rule::class, $config);
     }
 
-    /**
-     * @covers ::getRepositories
-     * @covers ::addRepository
-     * @covers ::removeRepository
-     */
     public function testGetRepositories(): void
     {
         $rule = new Rule();
@@ -55,11 +35,6 @@ class RuleTest extends AbstractTestCase
         static::assertCount(0, $rule->getRepositories());
     }
 
-    /**
-     * @covers ::getRecipients
-     * @covers ::addRecipient
-     * @covers ::removeRecipient
-     */
     public function testGetRecipients(): void
     {
         $rule = new Rule();
@@ -73,11 +48,6 @@ class RuleTest extends AbstractTestCase
         static::assertCount(0, $rule->getRecipients());
     }
 
-    /**
-     * @covers ::getFilters
-     * @covers ::addFilter
-     * @covers ::removeFilter
-     */
     public function testGetFilters(): void
     {
         $rule = new Rule();

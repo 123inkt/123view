@@ -30,8 +30,9 @@ class CommentMentionService
 
         // create new mention on comment
         $userMentions = [];
+        /** @var User $user */
         foreach ($mentions as $user) {
-            $userMentions[] = (new UserMention())->setUserId((int)$user->getId())->setComment($comment);
+            $userMentions[] = (new UserMention())->setUserId($user->getId())->setComment($comment);
         }
         $this->mentionRepository->saveAll($comment, $userMentions);
     }
@@ -47,7 +48,7 @@ class CommentMentionService
         }
 
         if ($this->users === null) {
-            $this->users = Arrays::mapAssoc($this->userRepository->findAll(), static fn(User $user) => [(int)$user->getId(), $user]);
+            $this->users = Arrays::mapAssoc($this->userRepository->findAll(), static fn(User $user) => [$user->getId(), $user]);
         }
 
         // match @mention to user

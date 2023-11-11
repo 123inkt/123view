@@ -9,6 +9,7 @@ use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Mail\CommitMailService;
+use DR\Review\Service\Notification\RuleNotificationService;
 use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Service\RuleProcessor;
 use DR\Utils\Assert;
@@ -31,6 +32,7 @@ class MailCommand extends Command implements LoggerAwareInterface
         private readonly RuleRepository $ruleRepository,
         private readonly RuleProcessor $ruleProcessor,
         private readonly RevisionFetchService $revisionFetchService,
+        private readonly RuleNotificationService $notificationService,
         private readonly CommitMailService $mailService
     ) {
         parent::__construct();
@@ -75,6 +77,9 @@ class MailCommand extends Command implements LoggerAwareInterface
                     $this->logger?->info('Found 0 new commits, ending...');
                     continue;
                 }
+
+                // register notification
+                $this->notificationService->addRuleNotification($rule, $period);
 
                 // send mail
                 $this->mailService->sendCommitsMail($ruleConfig, $commits);

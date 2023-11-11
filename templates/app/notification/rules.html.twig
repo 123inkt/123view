@@ -5,7 +5,22 @@
     {% include 'app/flash/flashes.html.twig' %}
 
     {% if rulesModel.rules|length > 0 %}
-        <h1 class="mt-2">{{ 'rules'|trans }}</h1>
+        <h1 class="mt-2">{{ 'notification.rules'|trans }}</h1>
+
+        <ul class="nav nav-tabs mb-2">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">{{ 'rules'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleHistoryController') }}">
+                    {{ 'history'|trans }}
+                    {%- set notification_count = rule_notification_count() -%}
+                    {%- if notification_count > 0 -%}
+                        <span class="ms-1 badge rounded-pill bg-primary">{{ notification_count }}</span>
+                    {%- endif -%}
+                </a>
+            </li>
+        </ul>
 
         <table class="table table-bordered table-hover rule-table">
             <thead>

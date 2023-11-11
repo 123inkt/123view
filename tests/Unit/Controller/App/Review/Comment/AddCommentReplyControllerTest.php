@@ -81,7 +81,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $comment->setId(456);
         $comment->setReview($review);
         $data = ['message' => 'my-comment'];
-        $user = new User();
+        $user = (new User())->setId(789);
         $this->expectGetUser($user);
 
         $this->expectCreateForm(AddCommentReplyFormType::class, null, ['comment' => $comment])

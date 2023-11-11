@@ -53,7 +53,7 @@ class ChangeReviewerStateController extends AbstractController
         $em->flush();
 
         // dispatch events
-        $userId = (int)$this->getUser()->getId();
+        $userId = $this->getUser()->getId();
         $this->eventService->reviewerAdded($review, $userReviewer, $userId, $reviewerAdded);
         $this->eventService->reviewerStateChanged($review, $userReviewer, $reviewerState);
         $this->eventService->reviewReviewerStateChanged($review, $reviewReviewerState, $userId);

@@ -37,7 +37,7 @@ class CodeReviewProcessor implements ProcessorInterface
         // dispatch events if state was changed
         if ($data->isPropertyChanged(CodeReview::PROP_STATE)) {
             $originalState = Assert::string($data->getOriginalValue(CodeReview::PROP_STATE));
-            $this->eventService->reviewStateChanged($data, $originalState, (int)$this->user->getId());
+            $this->eventService->reviewStateChanged($data, $originalState, $this->user->getId());
         }
 
         return $data;

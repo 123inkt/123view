@@ -43,7 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
@@ -85,14 +85,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->replies   = new ArrayCollection();
     }
 
-    public function setId(?int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

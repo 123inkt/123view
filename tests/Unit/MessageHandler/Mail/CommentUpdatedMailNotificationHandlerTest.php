@@ -78,7 +78,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setReview($review);
         $comment->setMessage('comment2');
-        $user = new User();
+        $user = (new User())->setId(789);
 
         $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
         $this->mentionService->expects(self::exactly(2))

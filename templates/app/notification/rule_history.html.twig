@@ -1,0 +1,77 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <h1 class="mt-2">{{ 'notification.history'|trans }}</h1>
+
+    <ul class="nav nav-tabs mb-2">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Notification\\RulesController') }}">{{ 'rules'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">{{ 'history'|trans }}</a>
+        </li>
+    </ul>
+
+    <div class="rule-history-grid-layout">
+        <div class="list-group">
+            {% for rule in notificationViewModel.rules %}
+                <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleHistoryController', {ruleId: rule.id, filter: notificationViewModel.unread ? 'unread' : '' }) }}"
+                   class="list-group-item list-group-item-action {% if rule == notificationViewModel.selectedRule %}active{% endif %}"
+                   {% if rule == notificationViewModel.selectedRule %}aria-current="true"{% endif %}
+                >
+                    {{- rule.name -}}
+
+                    {%- set notificationCount =  notificationViewModel.getNotificationCount(rule) -%}
+
+                    {%- if notificationCount > 0 -%}
+                        {% set bg_color = rule == notificationViewModel.selectedRule ? 'bg-warning' : 'bg-primary' %}
+                        <span class="ms-1 badge rounded-pill {{ bg_color }}">
+                            {{- notificationCount -}}
+                        </span>
+                    {%- endif -%}
+                </a>
+            {% endfor %}
+        </div>
+
+        <div>
+            {% if notificationViewModel.selectedRule %}
+                <div class="ps-2 pb-2">
+                    {{ 'show'|trans|capitalize }}:
+                    {% if  notificationViewModel.unread %}
+                        <a href="{{ url_query_params({ruleId: notificationViewModel.selectedRule.id, filter: ''}) }}">{{ 'all'|trans }}</a>
+                        <span>{{ 'unread'|trans }}</span>
+                    {% else %}
+                        <span>{{ 'all'|trans }}</span>
+                        <a href="{{ url_query_params({ruleId: notificationViewModel.selectedRule.id, filter: 'unread'}) }}">{{ 'unread'|trans }}</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="list-group">
+                {% for notification in notificationViewModel.notifications %}
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleNotificationController', {id: notification.id}) }}"
+                       class="list-group-item list-group-item-action {% if not notification.read %}fw-bold{% endif %}"
+                       target="_mail">
+                        {{ notification.notifyTimestamp|date('d M Y H:i:s') }} -
+
+                        [{{- app_name -}}] New revisions for:
+
+                        {{ notification.rule.name }}
+                    </a>
+                {% else %}
+                    <div class="mt-3 text-secondary text-center">
+                        {% if notificationViewModel.unread %}
+                            {{ 'no.unread.notifications'|trans }}
+                        {% else %}
+                            {{ 'no.notifications'|trans }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

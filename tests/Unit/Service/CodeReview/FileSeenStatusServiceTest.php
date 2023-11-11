@@ -90,7 +90,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
     public function testMarkAsUnseenNonExistingFile(): void
     {
         $review   = new CodeReview();
-        $user     = new User();
+        $user     = (new User())->setId(789);
         $filepath = 'filepath';
 
         $this->statusRepository->expects(self::once())->method('findOneBy')->willReturn(null);

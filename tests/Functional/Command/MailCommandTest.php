@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Functional\Command;
 
 use DR\Review\Git\GitRepository;
 use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
@@ -43,6 +44,7 @@ class MailCommandTest extends AbstractKernelTestCase
 
         // register mock repository service
         self::getContainer()->set(RuleRepository::class, $this->ruleRepository);
+        self::getContainer()->set(RuleNotificationRepository::class, $this->createMock(RuleNotificationRepository::class));
         self::getContainer()->set(ExternalLinkRepository::class, $this->linkRepository);
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
         self::getContainer()->set(RevisionFetchService::class, $this->createMock(RevisionFetchService::class));
