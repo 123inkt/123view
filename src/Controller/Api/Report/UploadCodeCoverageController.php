@@ -13,6 +13,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -35,6 +36,9 @@ class UploadCodeCoverageController extends AbstractController implements LoggerA
         $repository = $this->repositoryRepository->findOneBy(['name' => $repositoryName]);
         if ($repository === null) {
             throw new NotFoundHttpException();
+        }
+        if (strlen(trim($request->getData())) === 0) {
+            throw new BadRequestHttpException('Body cannot be empty.');
         }
 
         $format   = $request->getFormat();
