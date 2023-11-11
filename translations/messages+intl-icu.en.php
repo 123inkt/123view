@@ -324,4 +324,6 @@ return [
     'all'                                         => 'all',
     'read'                                        => 'read',
     'unread'                                      => 'unread',
+    'no.notifications'                            => 'No notifications',
+    'no.unread.notifications'                     => 'No unread notifications',
 ];

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\Repository\Config;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Notification\RuleNotification;
-use DR\Review\Entity\Notification\RuleNotificationReadEnum;
 use DR\Review\Entity\User\User;
 
 /**
@@ -27,24 +27,25 @@ class RuleNotificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return RuleNotification[]
+     * @return array<int, int>
+     * @throws Exception
      */
-    public function getNotificationsForUser(User $user, ?RuleNotificationReadEnum $filter): array
+    public function getUnreadNotificationPerRuleCount(User $user): array
     {
-        $qb = $this->createQueryBuilder('n')
-            ->innerJoin('n.rule', 'r')
-            ->where('r.user = :user')
-            ->setParameter('user', $user)
-            ->orderBy('n.createTimestamp', 'DESC')
-            ->setMaxResults(100);
+        $conn  = $this->getEntityManager()->getConnection();
+        $query = $conn->createQueryBuilder()
+            ->select('r.id', 'COUNT(1) AS `count`')
+            ->from('rule_notification', 'n')
+            ->innerJoin('n', 'rule', 'r', 'r.id = n.rule_id')
+            ->innerJoin('r', 'user', 'u', 'u.id = r.user_id')
+            ->where('u.id = :userId')
+            ->setParameter('userId', $user->getId())
+            ->andWhere('r.active = 1')
+            ->andWhere('n.read = 0')
+            ->groupBy('r.id');
 
-        if ($filter !== null) {
-            $qb->andWhere('n.read = :read')
-                ->setParameter('read', $filter === RuleNotificationReadEnum::READ ? 1 : 0);
-        }
-
-        /** @var RuleNotification[] $result */
-        $result = $qb->getQuery()->getResult();
+        /** @var array<int, int> $result */
+        $result = $conn->executeQuery($query->getSQL(), $query->getParameters())->fetchAllKeyValue();
 
         return $result;
     }

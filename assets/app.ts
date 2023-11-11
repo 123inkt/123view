@@ -18,6 +18,7 @@ import './styles/repository.branch-list.scss';
 import './styles/markdown.scss';
 import './styles/comment.scss';
 import './styles/user-settings.scss';
+import './styles/rules.scss';
 
 // start the Stimulus application
 import './ts/stimulus';
