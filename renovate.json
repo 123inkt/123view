@@ -24,8 +24,7 @@
             "matchPackagePrefixes": [
                 "stimulus",
                 "@hotwired/stimulus",
-                "@symfony/stimulus-bridge",
-                "@typescript-eslint"
+                "@symfony/stimulus-bridge"
             ]
         },
         {
