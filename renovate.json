@@ -10,7 +10,7 @@
         },
         {
             "groupName": "eslint, stylelint packages",
-            "groupSlug": "all",
+            "groupSlug": "linters",
             "matchPackagePrefixes": [
                 "stylelint",
                 "sass",
@@ -20,7 +20,7 @@
         },
         {
             "groupName": "stimulus packages",
-            "groupSlug": "all",
+            "groupSlug": "stimulus",
             "matchPackagePrefixes": [
                 "stimulus",
                 "@hotwired/stimulus",
@@ -30,7 +30,7 @@
         },
         {
             "groupName": "webpack packages",
-            "groupSlug": "all",
+            "groupSlug": "webpack",
             "matchPackagePrefixes": [
                 "webpack",
                 "ts-loader",
