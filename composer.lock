@@ -9535,16 +9535,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v6.3.6",
+            "version": "v6.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "999ede244507c32b8e43aebaa10e9fce20de7c97"
+                "reference": "81acabba9046550e89634876ca64bfcd3c06aa0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/999ede244507c32b8e43aebaa10e9fce20de7c97",
-                "reference": "999ede244507c32b8e43aebaa10e9fce20de7c97",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/81acabba9046550e89634876ca64bfcd3c06aa0a",
+                "reference": "81acabba9046550e89634876ca64bfcd3c06aa0a",
                 "shasum": ""
             },
             "require": {
@@ -9599,7 +9599,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v6.3.6"
+                "source": "https://github.com/symfony/var-dumper/tree/v6.3.8"
             },
             "funding": [
                 {
@@ -9615,7 +9615,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-12T18:45:56+00:00"
+            "time": "2023-11-08T10:42:36+00:00"
         },
         {
             "name": "symfony/var-exporter",
@@ -9776,16 +9776,16 @@
         },
         {
             "name": "symfony/webhook",
-            "version": "v6.3.0",
+            "version": "v6.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/webhook.git",
-                "reference": "e1e0c85b92447745bcff20dd110fd85783174dc0"
+                "reference": "f046879e814721e6a97cb9b9009141be60832f47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/webhook/zipball/e1e0c85b92447745bcff20dd110fd85783174dc0",
-                "reference": "e1e0c85b92447745bcff20dd110fd85783174dc0",
+                "url": "https://api.github.com/repos/symfony/webhook/zipball/f046879e814721e6a97cb9b9009141be60832f47",
+                "reference": "f046879e814721e6a97cb9b9009141be60832f47",
                 "shasum": ""
             },
             "require": {
@@ -9824,7 +9824,7 @@
                 "webhook"
             ],
             "support": {
-                "source": "https://github.com/symfony/webhook/tree/v6.3.0"
+                "source": "https://github.com/symfony/webhook/tree/v6.3.8"
             },
             "funding": [
                 {
@@ -9840,7 +9840,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-21T14:42:22+00:00"
+            "time": "2023-11-06T08:29:40+00:00"
         },
         {
             "name": "symfony/webpack-encore-bundle",
