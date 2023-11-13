@@ -65,6 +65,11 @@ class Rule
         return $this;
     }
 
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
     public function getId(): int
     {
         return $this->id;
