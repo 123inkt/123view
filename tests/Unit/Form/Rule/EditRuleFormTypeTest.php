@@ -8,16 +8,14 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Form\Rule\EditRuleFormType;
 use DR\Review\Form\Rule\RuleType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Rule\EditRuleFormType
- * @covers ::__construct
- */
+#[CoversClass(EditRuleFormType::class)]
 class EditRuleFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -30,9 +28,6 @@ class EditRuleFormTypeTest extends AbstractTestCase
         $this->type         = new EditRuleFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url  = 'https://123view/add/rule';
