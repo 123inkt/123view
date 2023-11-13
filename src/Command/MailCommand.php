@@ -79,10 +79,10 @@ class MailCommand extends Command implements LoggerAwareInterface
                 }
 
                 // register notification
-                $this->notificationService->addRuleNotification($rule, $period);
+                $notification = $this->notificationService->addRuleNotification($rule, $period);
 
                 // send mail
-                $this->mailService->sendCommitsMail($ruleConfig, $commits);
+                $this->mailService->sendCommitsMail($ruleConfig, $commits, $notification);
             } catch (Throwable $exception) {
                 $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;
