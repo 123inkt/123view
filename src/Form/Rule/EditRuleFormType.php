@@ -24,7 +24,12 @@ class EditRuleFormType extends AbstractType
         /** @var array{rule: Rule|null} $data */
         $data = $options['data'];
 
-        $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $data['rule']?->getId()]));
+        $ruleId = null;
+        if (isset($data['rule']) && $data['rule']->hasId()) {
+            $ruleId = $data['rule']->getId();
+        }
+
+        $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $ruleId]));
         $builder->setMethod('POST');
         $builder->add('rule', RuleType::class);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
