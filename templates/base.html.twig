@@ -122,7 +122,9 @@
 
                                         {%- set notification_count = rule_notification_count() -%}
                                         {%- if notification_count > 0 -%}
-                                            <span class="ms-1 badge rounded-pill bg-primary">{{ notification_count }}</span>
+                                            <span class="ms-1 badge rounded-pill bg-primary">
+                                                {{ notification_count > 99 ? '99+' : notification_count }}
+                                            </span>
                                         {%- endif -%}
                                     </a>
                                 </li>
