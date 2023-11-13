@@ -7,6 +7,7 @@ use DatePeriod;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Repository\Config\RuleNotificationRepository;
+use DR\Utils\Assert;
 
 class RuleNotificationService
 {
@@ -18,7 +19,7 @@ class RuleNotificationService
     {
         $notification = new RuleNotification();
         $notification->setRule($rule);
-        $notification->setNotifyTimestamp($period->start->getTimestamp());
+        $notification->setNotifyTimestamp(Assert::notNull($period->end)->getTimestamp());
         $notification->setCreateTimestamp(time());
         $this->repository->save($notification, true);
     }
