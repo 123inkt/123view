@@ -11,7 +11,7 @@ class CommitsViewModel
     /**
      * @param Commit[] $commits
      */
-    public function __construct(public readonly array $commits, public readonly string $theme, public readonly string $notificationReadUrl)
+    public function __construct(public readonly array $commits, public readonly string $theme, public readonly ?string $notificationReadUrl = null)
     {
     }
 

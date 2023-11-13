@@ -21,10 +21,10 @@ class RuleNotificationReadController extends AbstractController
     }
 
     #[Route('/app/rules/rule/{id<\d+>?}/{token}', self::class, methods: 'GET')]
-    public function __invoke(#[MapEntity] RuleNotification $notification, int $userId, string $token): Response
+    public function __invoke(#[MapEntity] RuleNotification $notification, string $token): Response
     {
         $generatedToken = $this->tokenGenerator->generate($notification);
-        if (hash_equals($generatedToken, $token)) {
+        if (hash_equals($generatedToken, $token) === false) {
             throw new BadRequestHttpException('Invalid token');
         }
 

@@ -13,7 +13,7 @@ use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\Service\RuleProcessor;
-use DR\Review\ViewModel\Mail\CommitsViewModel;
+use DR\Review\ViewModelProvider\Mail\CommitsViewModelProvider;
 use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +23,11 @@ use Throwable;
 
 class RuleNotificationController extends AbstractController
 {
-    public function __construct(private readonly RuleProcessor $ruleProcessor, private readonly RuleNotificationRepository $notificationRepository)
-    {
+    public function __construct(
+        private readonly RuleProcessor $ruleProcessor,
+        private readonly RuleNotificationRepository $notificationRepository,
+        private readonly CommitsViewModelProvider $viewModelProvider
+    ) {
     }
 
     /**
@@ -45,7 +48,8 @@ class RuleNotificationController extends AbstractController
         $commits = $this->ruleProcessor->processRule(new RuleConfiguration(Frequency::getPeriod($currentTime, $frequency), $rule));
 
         // render mail
-        $response = $this->render('mail/mail.commits.html.twig', ['viewModel' => new CommitsViewModel($commits, $options->getTheme() ?? 'upsource')]);
+        $viewModel = $this->viewModelProvider->getCommitsViewModel($commits, $rule, $notification);
+        $response  = $this->render('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
         $response->headers->set('Content-Security-Policy', "");
 
         // mark notification as read

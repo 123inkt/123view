@@ -5,6 +5,7 @@ namespace DR\Review\ViewModelProvider\Mail;
 
 use DR\Review\Controller\App\Notification\RuleNotificationReadController;
 use DR\Review\Doctrine\Type\MailThemeType;
+use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Service\Notification\RuleNotificationTokenGenerator;
@@ -19,6 +20,9 @@ class CommitsViewModelProvider
     ) {
     }
 
+    /**
+     * @param Commit[] $commits
+     */
     public function getCommitsViewModel(array $commits, Rule $rule, RuleNotification $notification): CommitsViewModel
     {
         $token = $this->tokenGenerator->generate($notification);
