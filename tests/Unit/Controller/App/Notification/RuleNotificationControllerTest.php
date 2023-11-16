@@ -16,6 +16,7 @@ use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\Service\RuleProcessor;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\Mail\CommitsViewModel;
+use DR\Review\ViewModelProvider\Mail\CommitsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -25,11 +26,13 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
 {
     private RuleProcessor&MockObject              $ruleProcessor;
     private RuleNotificationRepository&MockObject $notificationRepository;
+    private CommitsViewModelProvider&MockObject   $viewModelProvider;
 
     protected function setUp(): void
     {
         $this->ruleProcessor          = $this->createMock(RuleProcessor::class);
         $this->notificationRepository = $this->createMock(RuleNotificationRepository::class);
+        $this->viewModelProvider      = $this->createMock(CommitsViewModelProvider::class);
         parent::setUp();
     }
 
@@ -57,9 +60,12 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $notification->setRule($rule);
         $commit = $this->createMock(Commit::class);
 
+        $viewModel = new CommitsViewModel([$commit], MailThemeType::DARCULA);
+
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleProcessor->expects(self::once())->method('processRule')->with()->willReturn([$commit]);
-        $this->expectRender('mail/mail.commits.html.twig', ['viewModel' => new CommitsViewModel([$commit], MailThemeType::DARCULA)]);
+        $this->viewModelProvider->expects(self::once())->method('getCommitsViewModel')->with([$commit], $rule, $notification)->willReturn($viewModel);
+        $this->expectRender('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
         $this->notificationRepository->expects(self::once())->method('save')->with($notification);
 
         $response = ($this->controller)($notification);
@@ -70,6 +76,6 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new RuleNotificationController($this->ruleProcessor, $this->notificationRepository);
+        return new RuleNotificationController($this->ruleProcessor, $this->notificationRepository, $this->viewModelProvider);
     }
 }
