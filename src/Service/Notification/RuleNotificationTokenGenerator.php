@@ -15,7 +15,7 @@ class RuleNotificationTokenGenerator
     {
         $notificationId  = $notification->getId();
         $notifyTimestamp = $notification->getNotifyTimestamp();
-        $createTimestamp = $notification->getNotifyTimestamp();
+        $createTimestamp = $notification->getCreateTimestamp();
         $userId          = $notification->getRule()->getUser()->getId();
 
         $string = sprintf(
