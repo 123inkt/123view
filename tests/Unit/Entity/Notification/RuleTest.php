@@ -22,6 +22,14 @@ class RuleTest extends AbstractTestCase
         static::assertAccessorPairs(Rule::class, $config);
     }
 
+    public function testId(): void
+    {
+        $rule = new Rule();
+        static::assertFalse($rule->hasId());
+        $rule->setId(1);
+        static::assertSame(1, $rule->getId());
+    }
+
     public function testGetRepositories(): void
     {
         $rule = new Rule();
