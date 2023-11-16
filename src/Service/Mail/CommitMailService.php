@@ -5,7 +5,8 @@ namespace DR\Review\Service\Mail;
 
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\RuleConfiguration;
-use DR\Review\ViewModel\Mail\CommitsViewModel;
+use DR\Review\Entity\Notification\RuleNotification;
+use DR\Review\ViewModelProvider\Mail\CommitsViewModelProvider;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -17,8 +18,12 @@ class CommitMailService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private string $applicationName, private MailerInterface $mailer, private MailSubjectFormatter $subjectFormatter)
-    {
+    public function __construct(
+        private readonly string $applicationName,
+        private readonly MailerInterface $mailer,
+        private readonly MailSubjectFormatter $subjectFormatter,
+        private readonly CommitsViewModelProvider $viewModelProvider
+    ) {
     }
 
     /**
@@ -26,7 +31,7 @@ class CommitMailService implements LoggerAwareInterface
      *
      * @throws TransportExceptionInterface
      */
-    public function sendCommitsMail(RuleConfiguration $config, array $commits): void
+    public function sendCommitsMail(RuleConfiguration $config, array $commits, RuleNotification $notification): void
     {
         $rule    = $config->rule;
         $subject = $rule->getRuleOptions()?->getSubject() ?? sprintf('[%s] New revisions for: {name}', $this->applicationName);
@@ -36,7 +41,7 @@ class CommitMailService implements LoggerAwareInterface
             ->subject($this->subjectFormatter->format($subject, $rule, $commits))
             ->htmlTemplate('mail/mail.commits.html.twig')
             ->text('')
-            ->context(['viewModel' => new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? 'upsource')]);
+            ->context(['viewModel' => $this->viewModelProvider->getCommitsViewModel($commits, $rule, $notification)]);
 
         foreach ($rule->getRecipients() as $recipient) {
             $email->addTo(new Address($recipient->getEmail(), $recipient->getName() ?? ''));

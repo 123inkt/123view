@@ -15,12 +15,14 @@ class RuleNotificationService
     {
     }
 
-    public function addRuleNotification(Rule $rule, DatePeriod $period): void
+    public function addRuleNotification(Rule $rule, DatePeriod $period): RuleNotification
     {
         $notification = new RuleNotification();
         $notification->setRule($rule);
         $notification->setNotifyTimestamp(Assert::notNull($period->end)->getTimestamp());
         $notification->setCreateTimestamp(time());
         $this->repository->save($notification, true);
+
+        return $notification;
     }
 }
