@@ -15,7 +15,7 @@ class RuleNotification
     #[ORM\Column]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Rule::class, inversedBy: 'notifications')]
+    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist'], inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
     private Rule $rule;
 

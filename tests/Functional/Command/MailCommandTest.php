@@ -42,9 +42,12 @@ class MailCommandTest extends AbstractKernelTestCase
         $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
         $this->messageCollector  = new MessageEventCollector();
 
+        $notificationRepository = $this->createMock(RuleNotificationRepository::class);
+        $notificationRepository->method('save')->willReturnCallback(static fn($notification) => $notification->setId(123));
+
         // register mock repository service
         self::getContainer()->set(RuleRepository::class, $this->ruleRepository);
-        self::getContainer()->set(RuleNotificationRepository::class, $this->createMock(RuleNotificationRepository::class));
+        self::getContainer()->set(RuleNotificationRepository::class, $notificationRepository);
         self::getContainer()->set(ExternalLinkRepository::class, $this->linkRepository);
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
         self::getContainer()->set(RevisionFetchService::class, $this->createMock(RevisionFetchService::class));

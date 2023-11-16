@@ -17,6 +17,7 @@ return [
     (new Rule())
         ->setUser(
             (new User())
+                ->setId(123)
                 ->setName($name)
                 ->setEmail($email)
                 ->setRoles([Roles::ROLE_USER])
