@@ -29,8 +29,10 @@ class RuleNotificationReadController extends AbstractController
             throw new BadRequestHttpException('Invalid token');
         }
 
-        $notification->setRead(true);
-        $this->notificationRepository->save($notification, true);
+        if ($notification->isRead() === false) {
+            $notification->setRead(true);
+            $this->notificationRepository->save($notification, true);
+        }
 
         return new BinaryFileResponse(dirname(__DIR__, 4) . '/assets/images/1x1.png', headers: ['Cache-Control' => 'no-cache, no-store']);
     }
