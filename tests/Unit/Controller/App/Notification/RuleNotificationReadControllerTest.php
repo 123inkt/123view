@@ -29,9 +29,21 @@ class RuleNotificationReadControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $notification = new RuleNotification();
+        $notification->setRead(false);
 
         $this->tokenGenerator->expects(self::once())->method('generate')->with($notification)->willReturn('token');
         $this->notificationRepository->expects(self::once())->method('save')->with($notification, true);
+
+        ($this->controller)($notification, 'token');
+    }
+
+    public function testInvokeAlreadyRead(): void
+    {
+        $notification = new RuleNotification();
+        $notification->setRead(true);
+
+        $this->tokenGenerator->expects(self::once())->method('generate')->with($notification)->willReturn('token');
+        $this->notificationRepository->expects(self::never())->method('save');
 
         ($this->controller)($notification, 'token');
     }

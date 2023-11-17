@@ -8,6 +8,7 @@ use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Service\Notification\RuleNotificationTokenGenerator;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +21,7 @@ class RuleNotificationReadController extends AbstractController
     ) {
     }
 
-    #[Route('/app/rules/rule/{id<\d+>?}/{token}', self::class, methods: 'GET')]
+    #[Route('/public/rule/notification/read/{id<\d+>}/{token}', self::class, methods: 'GET')]
     public function __invoke(#[MapEntity] RuleNotification $notification, string $token): Response
     {
         $generatedToken = $this->tokenGenerator->generate($notification);
@@ -28,9 +29,11 @@ class RuleNotificationReadController extends AbstractController
             throw new BadRequestHttpException('Invalid token');
         }
 
-        $notification->setRead(true);
-        $this->notificationRepository->save($notification, true);
+        if ($notification->isRead() === false) {
+            $notification->setRead(true);
+            $this->notificationRepository->save($notification, true);
+        }
 
-        return new Response('', Response::HTTP_OK, ['Content-Type' => 'image/png']);
+        return new BinaryFileResponse(dirname(__DIR__, 4) . '/assets/images/1x1.png', headers: ['Cache-Control' => 'no-cache, no-store']);
     }
 }
