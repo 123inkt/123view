@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Git\Diff;
 
+use DR\Review\Utility\FileUtil;
 use SplFileInfo;
 
 class DiffFile
@@ -80,6 +81,13 @@ class DiffFile
         }
 
         return $this->filePathBefore !== $this->filePathAfter;
+    }
+
+    public function isImage(): bool
+    {
+        $mimeType = FileUtil::getMimeType($this->getPathname());
+
+        return $mimeType !== null && FileUtil::isImage($mimeType);
     }
 
     public function getFileMode(): string

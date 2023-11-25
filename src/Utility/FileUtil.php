@@ -30,6 +30,20 @@ class FileUtil
         return null;
     }
 
+    public static function isImage(string $mimeType): bool
+    {
+        return in_array(
+            $mimeType,
+            [
+                'image/png',
+                'image/jpg',
+                'image/gif',
+                'image/svg+xml',
+            ],
+            true
+        );
+    }
+
     public static function isBinary(string $mimeType): bool
     {
         return in_array(

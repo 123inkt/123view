@@ -1,0 +1,10 @@
+{% if file.image and not file.deleted %}
+    <div class="diff-file__file-image-preview">
+        {% set revision = fileDiffViewModel.revisions|last %}
+        <img src="{{ path('DR\\Review\\Controller\\App\\Project\\ViewRevisionFileController', {id: revision.id, file: file.pathname}) }}"
+             class="diff-file__file-image-preview-image"
+             alt="">
+    </div>
+{% else %}
+    <div></div>
+{% endif %}

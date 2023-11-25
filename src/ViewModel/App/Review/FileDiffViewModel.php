@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\ViewModel\App\Review;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
 use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
@@ -16,6 +17,8 @@ class FileDiffViewModel
     private ?ReplyCommentViewModel $replyCommentForm     = null;
     private ?HighlightedFile       $highlightedFile      = null;
     private ?CodeQualityViewModel  $codeQualityViewModel = null;
+    /** @var Revision[] */
+    private array $revisions = [];
 
     public function __construct(public readonly DiffFile $selectedFile, public readonly ReviewDiffModeEnum $diffMode)
     {
@@ -67,5 +70,23 @@ class FileDiffViewModel
     public function setCodeQualityViewModel(?CodeQualityViewModel $codeQualityViewModel): void
     {
         $this->codeQualityViewModel = $codeQualityViewModel;
+    }
+
+    /**
+     * @return Revision[]
+     */
+    public function getRevisions(): array
+    {
+        return $this->revisions;
+    }
+
+    /**
+     * @param Revision[] $revisions
+     */
+    public function setRevisions(array $revisions): self
+    {
+        $this->revisions = $revisions;
+
+        return $this;
     }
 }

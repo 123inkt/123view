@@ -22,7 +22,7 @@
 
 .review-grid-layout .review-grid-code {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
 }
 
 .review-grid-layout .review-grid-header .review-heading {
@@ -31,6 +31,13 @@
 
 .review--description {
     font-size: 0.8rem;
+}
+
+.diff-file__file-image-preview {
+    padding: 5px 20px;
+    background-color: #efefef;
+    border: 1px solid #cccccc;
+    margin-bottom: 5px;
 }
 
 .review-file-tree--directories {
