@@ -21,6 +21,7 @@ class DiffFile
     public ?string $hashEnd   = null;
 
     public bool $hasMergeConflict = false;
+    public bool $binary           = false;
 
     /** @var DiffBlock[] */
     private array $blocks = [];

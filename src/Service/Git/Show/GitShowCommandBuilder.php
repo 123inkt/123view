@@ -79,6 +79,13 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function base64encode(): self
+    {
+        $this->arguments['base64'] = '| base64';
+
+        return $this;
+    }
+
     public function command(): string
     {
         return 'show';
