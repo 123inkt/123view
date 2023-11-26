@@ -7,6 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Project\ViewRevisionFileController;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Show\LockableGitShowService;
+use DR\Review\Service\Markdown\MarkdownConverterService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,11 +17,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[CoversClass(ViewRevisionFileController::class)]
 class ViewRevisionFileControllerTest extends AbstractControllerTestCase
 {
-    private LockableGitShowService&MockObject $showService;
+    private LockableGitShowService&MockObject   $showService;
+    private MarkdownConverterService&MockObject $converter;
 
     protected function setUp(): void
     {
         $this->showService = $this->createMock(LockableGitShowService::class);
+        $this->converter   = $this->createMock(MarkdownConverterService::class);
         parent::setUp();
     }
 
@@ -38,6 +41,20 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         self::assertSame('public', $response->headers->get('Cache-Control'));
     }
 
+    public function testInvokeWithMarkdown(): void
+    {
+        $request  = new Request(['file' => 'readme.md']);
+        $revision = new Revision();
+
+        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'readme.md', true)->willReturn('markdown');
+        $this->converter->expects(self::once())->method('convert')->with('markdown')->willReturn('html');
+
+        $response = ($this->controller)($request, $revision);
+        self::assertSame('html', $response->getContent());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
     public function testInvokeInvalidMimetype(): void
     {
         $request  = new Request(['file' => 'text/plain']);
@@ -52,6 +69,6 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new ViewRevisionFileController($this->showService);
+        return new ViewRevisionFileController($this->showService, $this->converter);
     }
 }
