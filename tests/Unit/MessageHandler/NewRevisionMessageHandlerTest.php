@@ -17,16 +17,16 @@ use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\Review\MessageHandler\NewRevisionMessageHandler
- * @covers ::__construct
  * @suppressWarnings(PHPMD.CouplingBetweenObjects)
  */
+#[CoversClass(NewRevisionMessageHandler::class)]
 class NewRevisionMessageHandlerTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
@@ -58,7 +58,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeShouldOnlyHandleSupportedRevisions(): void
@@ -74,7 +73,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeShouldOnlyHandleIfRevisionCanBeMatchedToReview(): void
@@ -91,7 +89,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeShouldHandleNewReview(): void
@@ -114,7 +111,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeShouldHandleReopenClosedReview(): void
@@ -158,7 +154,6 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeShouldResetRegistryManagerOnException(): void

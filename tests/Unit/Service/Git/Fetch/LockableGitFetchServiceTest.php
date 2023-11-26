@@ -10,12 +10,10 @@ use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Fetch\LockableGitFetchService
- * @covers ::__construct
- */
+#[CoversClass(LockableGitFetchService::class)]
 class LockableGitFetchServiceTest extends AbstractTestCase
 {
     private GitRepositoryLockManager&MockObject $lockManager;
@@ -31,7 +29,6 @@ class LockableGitFetchServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fetch
      * @throws Exception
      */
     public function testFetch(): void

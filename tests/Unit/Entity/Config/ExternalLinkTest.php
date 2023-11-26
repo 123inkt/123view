@@ -5,19 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Config;
 
 use DR\Review\Entity\Config\ExternalLink;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Config\ExternalLink
- */
+#[CoversClass(ExternalLink::class)]
 class ExternalLinkTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getId
-     * @covers ::setUrl
-     * @covers ::getUrl
-     * @covers ::setPattern
-     * @covers ::getPattern
-     */
     public function testAccessorPairs(): void
     {
         static::assertNull((new ExternalLink())->getId());

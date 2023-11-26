@@ -24,11 +24,10 @@ use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Exception;
 use Parsica\Parsica\Parser;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Review\CodeReviewRepository
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewRepository::class)]
+#[CoversClass(QueryBuilder::class)]
 class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
 {
     private CodeReviewRepository $repository;
@@ -49,7 +48,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getCreateProjectId
      * @throws Exception
      */
     public function testGetCreateProjectId(): void
@@ -62,7 +60,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findOneByReferenceId
      * @throws Exception
      */
     public function testFindOneByReferenceId(): void
@@ -73,7 +70,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findOneByCommitHash
      * @throws Exception
      */
     public function testFindOneByCommitHash(): void
@@ -91,7 +87,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findByUrl
      * @throws Exception
      */
     public function testFindByUrl(): void
@@ -104,8 +99,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getPaginatorForSearchQuery
-     * @covers \DR\Review\Repository\Review\CodeReviewQueryBuilder
      * @throws Exception
      */
     public function testGetPaginatorForSearchQuery(): void
@@ -148,8 +141,6 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getPaginatorForSearchQuery
-     * @covers \DR\Review\Repository\Review\CodeReviewQueryBuilder
      * @throws Exception
      */
     public function testGetPaginatorForSearchQueryOneReviewTwoRevisions(): void

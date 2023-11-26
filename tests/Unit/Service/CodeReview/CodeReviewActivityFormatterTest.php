@@ -19,15 +19,13 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityVariableFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityFormatter::class)]
 class CodeReviewActivityFormatterTest extends AbstractTestCase
 {
     private TranslatorInterface&MockObject $translator;
@@ -52,11 +50,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatDefaultEvent(): void
     {
         $user = new User();
@@ -75,11 +68,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatReviewerEvent(): void
     {
         $user = new User();
@@ -100,11 +88,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatReviewerStateChangedEvent(): void
     {
         $user = new User();
@@ -124,11 +107,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatRevisionAddedEvent(): void
     {
         $user = new User();
@@ -152,11 +130,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatRevisionAddedEventWithAbsentRevision(): void
     {
         $user = new User();
@@ -176,11 +149,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatCommentEvent(): void
     {
         $user = new User();
@@ -208,11 +176,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatDeletedCommentEvent(): void
     {
         $user = new User();
@@ -231,11 +194,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatCommentReplyEvent(): void
     {
         $user = new User();
@@ -253,11 +211,6 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
-    /**
-     * @covers ::format
-     * @covers ::addCustomParams
-     * @covers ::getTranslationId
-     */
     public function testFormatUnknownEvent(): void
     {
         $user = new User();

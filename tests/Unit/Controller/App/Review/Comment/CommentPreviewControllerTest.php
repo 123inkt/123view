@@ -10,13 +10,11 @@ use DR\Review\Request\Comment\CommentPreviewRequest;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Markdown\MarkdownConverterService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\CommentPreviewController
- * @covers ::__construct
- */
+#[CoversClass(CommentPreviewController::class)]
 class CommentPreviewControllerTest extends AbstractControllerTestCase
 {
     private MarkdownConverterService&MockObject $markdownService;
@@ -29,9 +27,6 @@ class CommentPreviewControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $user = new User();

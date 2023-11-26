@@ -12,12 +12,10 @@ use DR\Review\Repository\Webhook\WebhookRepository;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Service\Webhook\WebhookNotifier;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Webhook\WebhookNotifier
- * @covers ::__construct
- */
+#[CoversClass(WebhookNotifier::class)]
 class WebhookNotifierTest extends AbstractTestCase
 {
     private WebhookRepository&MockObject       $webhookRepository;
@@ -34,9 +32,6 @@ class WebhookNotifierTest extends AbstractTestCase
         $this->notifier          = new WebhookNotifier($this->webhookRepository, $this->executionService, $this->reviewRepository);
     }
 
-    /**
-     * @covers ::notify
-     */
     public function testNotifyUnknownReview(): void
     {
         $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
@@ -48,9 +43,6 @@ class WebhookNotifierTest extends AbstractTestCase
         $this->notifier->notify($event);
     }
 
-    /**
-     * @covers ::notify
-     */
     public function testNotify(): void
     {
         $repository = new Repository();

@@ -12,13 +12,11 @@ use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Service\Mail\CommentMailService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler
- * @covers ::__construct
- */
+#[CoversClass(CommentReplyAddedMailNotificationHandler::class)]
 class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
 {
     private CommentMailService&MockObject            $mailService;
@@ -33,16 +31,12 @@ class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
         $this->handler         = new CommentReplyAddedMailNotificationHandler($this->mailService, $this->replyRepository);
     }
 
-    /**
-     * @covers ::accepts
-     */
     public function testAccepts(): void
     {
         static::assertSame(CommentReplyAdded::class, CommentReplyAddedMailNotificationHandler::accepts());
     }
 
     /**
-     * @covers ::handle
      * @throws Throwable
      */
     public function testHandleAbsentCommentShouldReturnEarly(): void
@@ -52,7 +46,6 @@ class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handle
      * @throws Throwable
      */
     public function testHandleCommentStatusAlreadyHandled(): void
@@ -65,7 +58,6 @@ class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handle
      * @throws Throwable
      */
     public function testHandle(): void

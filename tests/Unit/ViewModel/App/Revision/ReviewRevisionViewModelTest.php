@@ -6,17 +6,12 @@ namespace DR\Review\Tests\Unit\ViewModel\App\Revision;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\FormView;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel
- * @covers ::__construct
- */
+#[CoversClass(ReviewRevisionViewModel::class)]
 class ReviewRevisionViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getRevision
-     */
     public function testGetRevision(): void
     {
         $revision = new Revision();

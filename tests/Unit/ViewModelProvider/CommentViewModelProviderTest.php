@@ -20,13 +20,11 @@ use DR\Review\Model\Review\Action\EditCommentReplyAction;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\CommentViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(CommentViewModelProvider::class)]
 class CommentViewModelProviderTest extends AbstractTestCase
 {
     private FormFactoryInterface&MockObject $formFactory;
@@ -41,9 +39,6 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $this->provider    = new CommentViewModelProvider($this->formFactory, $this->diffFinder);
     }
 
-    /**
-     * @covers ::getAddCommentViewModel
-     */
     public function testGetAddCommentViewModel(): void
     {
         $reference            = new LineReference('filePath', 1, 2, 3);
@@ -63,18 +58,12 @@ class CommentViewModelProviderTest extends AbstractTestCase
         static::assertSame($line, $viewModel->diffLine);
     }
 
-    /**
-     * @covers ::getEditCommentViewModel
-     */
     public function testGetEditCommentViewModelNullCommentShouldReturnNull(): void
     {
         $action = new EditCommentAction(null);
         static::assertNull($this->provider->getEditCommentViewModel($action));
     }
 
-    /**
-     * @covers ::getEditCommentViewModel
-     */
     public function testGetEditCommentViewModel(): void
     {
         $comment = new Comment();
@@ -89,18 +78,12 @@ class CommentViewModelProviderTest extends AbstractTestCase
         static::assertSame($comment, $viewModel->comment);
     }
 
-    /**
-     * @covers ::getReplyCommentViewModel
-     */
     public function testGetReplyCommentViewModelNullCommentShouldReturnNull(): void
     {
         $action = new AddCommentReplyAction(null);
         static::assertNull($this->provider->getReplyCommentViewModel($action));
     }
 
-    /**
-     * @covers ::getReplyCommentViewModel
-     */
     public function testGetReplyCommentViewModel(): void
     {
         $comment = new Comment();
@@ -115,18 +98,12 @@ class CommentViewModelProviderTest extends AbstractTestCase
         static::assertSame($comment, $viewModel->comment);
     }
 
-    /**
-     * @covers ::getEditCommentReplyViewModel
-     */
     public function testGetEditCommentReplyViewModelNullCommentShouldReturnNull(): void
     {
         $action = new EditCommentReplyAction(null);
         static::assertNull($this->provider->getEditCommentReplyViewModel($action));
     }
 
-    /**
-     * @covers ::getEditCommentReplyViewModel
-     */
     public function testGetEditCommentReplyViewModel(): void
     {
         $reply  = new CommentReply();

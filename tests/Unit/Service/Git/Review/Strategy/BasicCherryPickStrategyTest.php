@@ -17,12 +17,10 @@ use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy
- * @covers ::__construct
- */
+#[CoversClass(BasicCherryPickStrategy::class)]
 class BasicCherryPickStrategyTest extends AbstractTestCase
 {
     private GitCheckoutService&MockObject        $checkoutService;
@@ -47,7 +45,6 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
      * @throws RepositoryException|ParseException
      */
     public function testGetDiffFilesSuccessful(): void
@@ -69,7 +66,6 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
      * @throws RepositoryException|ParseException
      */
     public function testGetDiffFilesCherryPickFailure(): void
@@ -94,7 +90,6 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
      * @throws RepositoryException|ParseException
      */
     public function testGetDiffFilesFailure(): void

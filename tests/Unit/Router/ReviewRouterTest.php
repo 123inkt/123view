@@ -8,6 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Router\ReviewRouter;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -17,10 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
-/**
- * @coversDefaultClass \DR\Review\Router\ReviewRouter
- * @covers ::__construct
- */
+#[CoversClass(ReviewRouter::class)]
 class ReviewRouterTest extends AbstractTestCase
 {
     private Router&MockObject $router;
@@ -33,9 +31,6 @@ class ReviewRouterTest extends AbstractTestCase
         $this->reviewRouter = new ReviewRouter($this->router);
     }
 
-    /**
-     * @covers ::setContext
-     */
     public function testSetContext(): void
     {
         $context = new RequestContext();
@@ -43,9 +38,6 @@ class ReviewRouterTest extends AbstractTestCase
         $this->reviewRouter->setContext($context);
     }
 
-    /**
-     * @covers ::getContext
-     */
     public function testGetContext(): void
     {
         $context = new RequestContext();
@@ -53,9 +45,6 @@ class ReviewRouterTest extends AbstractTestCase
         static::assertSame($context, $this->reviewRouter->getContext());
     }
 
-    /**
-     * @covers ::getRouteCollection
-     */
     public function testGetRouteCollection(): void
     {
         $collection = new RouteCollection();
@@ -63,9 +52,6 @@ class ReviewRouterTest extends AbstractTestCase
         static::assertSame($collection, $this->reviewRouter->getRouteCollection());
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateReviewControllerRequiresReviewProperty(): void
     {
         $this->expectException(InvalidParameterException::class);
@@ -73,9 +59,6 @@ class ReviewRouterTest extends AbstractTestCase
         $this->reviewRouter->generate(ReviewController::class);
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateReviewControllerRequiresCodeReview(): void
     {
         $this->expectException(InvalidParameterException::class);
@@ -83,9 +66,6 @@ class ReviewRouterTest extends AbstractTestCase
         $this->reviewRouter->generate(ReviewController::class, ['review' => new stdClass()]);
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateReviewControllerGenerateReviewRoute(): void
     {
         $repository = new Repository();
@@ -102,9 +82,6 @@ class ReviewRouterTest extends AbstractTestCase
         static::assertSame('url', $actualUrl);
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateReviewController(): void
     {
         $params        = ['foo' => 'bar'];
@@ -118,9 +95,6 @@ class ReviewRouterTest extends AbstractTestCase
         static::assertSame('url', $actualUrl);
     }
 
-    /**
-     * @covers ::match
-     */
     public function testMatch(): void
     {
         $pathinfo = 'pathinfo';
@@ -129,9 +103,6 @@ class ReviewRouterTest extends AbstractTestCase
         static::assertSame($result, $this->reviewRouter->match($pathinfo));
     }
 
-    /**
-     * @covers ::matchRequest
-     */
     public function testMatchRequest(): void
     {
         $request = new Request();
@@ -140,9 +111,6 @@ class ReviewRouterTest extends AbstractTestCase
         static::assertSame($result, $this->reviewRouter->matchRequest($request));
     }
 
-    /**
-     * @covers ::warmUp
-     */
     public function testWarmUp(): void
     {
         $result = ['foo' => 'bar'];

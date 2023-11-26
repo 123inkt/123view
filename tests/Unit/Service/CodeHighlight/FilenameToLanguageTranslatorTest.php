@@ -5,16 +5,13 @@ namespace DR\Review\Tests\Unit\Service\CodeHighlight;
 
 use DR\Review\Service\CodeHighlight\FilenameToLanguageTranslator;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeHighlight\FilenameToLanguageTranslator
- */
+#[CoversClass(FilenameToLanguageTranslator::class)]
 class FilenameToLanguageTranslatorTest extends AbstractTestCase
 {
-    /**
-     * @dataProvider dataProvider
-     * @covers ::translate
-     */
+    #[DataProvider('dataProvider')]
     public function testTranslate(string $filename, ?string $expectedLanguage): void
     {
         $translator     = new FilenameToLanguageTranslator();

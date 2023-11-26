@@ -12,15 +12,12 @@ use DR\Review\Tests\DataFixtures\CommentFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\User\UserRepository
- * @covers ::__construct
- */
+#[CoversClass(UserRepository::class)]
 class UserRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::findBySearchQuery
      * @throws Exception
      */
     public function testFindBySearchQuery(): void
@@ -33,7 +30,6 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findBySearchQuery
      * @throws Exception
      */
     public function testFindBySearchQueryWithoutPreferredUsers(): void
@@ -45,7 +41,6 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findBySearchQuery
      * @throws Exception
      */
     public function testFindBySearchQueryShouldExcludeBanned(): void
@@ -58,7 +53,6 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::findUsersWithExclusion
      * @throws Exception
      */
     public function testFindUsersWithExclusion(): void
@@ -73,7 +67,6 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getNewUserCount
      * @throws Exception
      */
     public function testGetNewUserCount(): void
@@ -94,7 +87,6 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getUserCount
      * @throws Exception
      */
     public function testGetUserCount(): void
@@ -109,7 +101,6 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getActors
      * @throws Exception
      */
     public function testGetActors(): void

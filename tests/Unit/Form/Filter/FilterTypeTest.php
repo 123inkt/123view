@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Form\Filter;
 use DR\Review\Entity\Notification\Filter;
 use DR\Review\Form\Filter\FilterType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,14 +14,9 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Filter\FilterType
- */
+#[CoversClass(FilterType::class)]
 class FilterTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -34,9 +30,6 @@ class FilterTypeTest extends AbstractTestCase
         $type->buildForm($builder, []);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();

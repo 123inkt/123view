@@ -8,15 +8,11 @@ use DR\Review\Service\Parser\Unified\UnifiedLineParser;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Parser\Unified\UnifiedLineParser
- */
+#[CoversClass(UnifiedLineParser::class)]
 class UnifiedLineParserTest extends AbstractTestCase
 {
-    /**
-     * @covers ::parse
-     */
     public function testParseEmptyString(): void
     {
         $parser = new UnifiedLineParser();
@@ -25,9 +21,6 @@ class UnifiedLineParserTest extends AbstractTestCase
         $parser->parse('');
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseInvalidString(): void
     {
         $parser = new UnifiedLineParser();
@@ -36,9 +29,6 @@ class UnifiedLineParserTest extends AbstractTestCase
         $parser->parse('~');
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseAddition(): void
     {
         $parser = new UnifiedLineParser();
@@ -49,9 +39,6 @@ class UnifiedLineParserTest extends AbstractTestCase
         static::assertSame('addition', $line->changes->first()->code);
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseRemoval(): void
     {
         $parser = new UnifiedLineParser();
@@ -62,9 +49,6 @@ class UnifiedLineParserTest extends AbstractTestCase
         static::assertSame('removal', $line->changes->first()->code);
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseUnchanged(): void
     {
         $parser = new UnifiedLineParser();
@@ -75,9 +59,6 @@ class UnifiedLineParserTest extends AbstractTestCase
         static::assertSame('unchanged', $line->changes->first()->code);
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseComment(): void
     {
         $parser = new UnifiedLineParser();

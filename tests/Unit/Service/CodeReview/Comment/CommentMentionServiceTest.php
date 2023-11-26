@@ -10,12 +10,10 @@ use DR\Review\Repository\Review\UserMentionRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Comment\CommentMentionService
- * @covers ::__construct
- */
+#[CoversClass(CommentMentionService::class)]
 class CommentMentionServiceTest extends AbstractTestCase
 {
     private UserRepository&MockObject        $userRepository;
@@ -30,9 +28,6 @@ class CommentMentionServiceTest extends AbstractTestCase
         $this->mentionService    = new CommentMentionService($this->userRepository, $this->mentionRepository);
     }
 
-    /**
-     * @covers ::updateMentions
-     */
     public function testUpdateMentionsCommentWithoutMentions(): void
     {
         $comment = new Comment();
@@ -43,9 +38,6 @@ class CommentMentionServiceTest extends AbstractTestCase
         $this->mentionService->updateMentions($comment);
     }
 
-    /**
-     * @covers ::updateMentions
-     */
     public function testUpdateMentions(): void
     {
         $comment = new Comment();
@@ -75,17 +67,11 @@ class CommentMentionServiceTest extends AbstractTestCase
         $this->mentionService->updateMentions($comment);
     }
 
-    /**
-     * @covers ::getMentionedUsers
-     */
     public function testGetMentionedUsersNoMentionNoUser(): void
     {
         static::assertSame([], $this->mentionService->getMentionedUsers('foobar'));
     }
 
-    /**
-     * @covers ::getMentionedUsers
-     */
     public function testGetMentionedUsersMentionedUserShouldMatch(): void
     {
         $user = new User();
@@ -99,9 +85,6 @@ class CommentMentionServiceTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::getMentionedUsers
-     */
     public function testGetMentionedUsersUnknownUserShouldNotMatch(): void
     {
         $this->userRepository->expects(self::once())->method('findAll')->willReturn([]);
@@ -109,9 +92,6 @@ class CommentMentionServiceTest extends AbstractTestCase
         static::assertSame([], $this->mentionService->getMentionedUsers('foobar @user:123[Sherlock holmes] foobar'));
     }
 
-    /**
-     * @covers ::replaceMentionedUsers
-     */
     public function testReplaceMentionedUsers(): void
     {
         $user = new User();

@@ -5,22 +5,16 @@ namespace DR\Review\Tests\Unit\Input;
 
 use DR\Review\Input\AddExternalLinkInput;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-/**
- * @coversDefaultClass \DR\Review\Input\AddExternalLinkInput
- * @covers ::__construct
- */
+#[CoversClass(AddExternalLinkInput::class)]
 class AddExternalLinkInputTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getUrl
-     * @covers ::getPattern
-     */
     public function testGetUrl(): void
     {
         $definition     = new InputDefinition(
@@ -36,9 +30,6 @@ class AddExternalLinkInputTest extends AbstractTestCase
         static::assertSame('https://url/', $validatedInput->getUrl());
     }
 
-    /**
-     * @covers ::getValidationRules
-     */
     public function testGetValidationRules(): void
     {
         $validatedInput = new AddExternalLinkInput($this->createMock(InputInterface::class), new ConstraintViolationList());

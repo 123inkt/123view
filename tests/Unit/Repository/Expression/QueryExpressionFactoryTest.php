@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Repository\Expression;
 
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Comparison;
+use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\Expr\Orx;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
 use DR\Review\QueryParser\Term\Operator\NotOperator;
 use DR\Review\QueryParser\Term\Operator\OrOperator;
@@ -28,7 +31,7 @@ class QueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateFromSingleExpression(): void
     {
-        $expression = $this->createMock(Expr\Comparison::class);
+        $expression = $this->createMock(Comparison::class);
         $term       = $this->createMock(TermInterface::class);
 
         $factory = new QueryExpressionFactory([static fn($val) => $val === $term ? $expression : null]);
@@ -39,20 +42,20 @@ class QueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateFromNotOperator(): void
     {
-        $expression = $this->createMock(Expr\Comparison::class);
+        $expression = $this->createMock(Comparison::class);
         $term       = $this->createMock(TermInterface::class);
         $operator   = new NotOperator($term);
 
         $factory = new QueryExpressionFactory([static fn() => $expression]);
         [$actualExpression,] = $factory->createFrom($operator);
 
-        static::assertInstanceOf(Expr\Func::class, $actualExpression);
+        static::assertInstanceOf(Func::class, $actualExpression);
         static::assertSame('NOT', $actualExpression->getName());
     }
 
     public function testCreateFromAndOperator(): void
     {
-        $expression = new Expr\Comparison('left', '=', 'right');
+        $expression = new Comparison('left', '=', 'right');
         $termLeft   = $this->createMock(TermInterface::class);
         $termRight  = $this->createMock(TermInterface::class);
         $operator   = new AndOperator($termLeft, $termRight);
@@ -60,12 +63,12 @@ class QueryExpressionFactoryTest extends AbstractTestCase
         $factory = new QueryExpressionFactory([static fn() => $expression]);
         [$actualExpression,] = $factory->createFrom($operator);
 
-        static::assertInstanceOf(Expr\Andx::class, $actualExpression);
+        static::assertInstanceOf(Andx::class, $actualExpression);
     }
 
     public function testCreateFromOrOperator(): void
     {
-        $expression = new Expr\Comparison('left', '=', 'right');
+        $expression = new Comparison('left', '=', 'right');
         $termLeft   = $this->createMock(TermInterface::class);
         $termRight  = $this->createMock(TermInterface::class);
         $operator   = new OrOperator($termLeft, $termRight);
@@ -73,6 +76,6 @@ class QueryExpressionFactoryTest extends AbstractTestCase
         $factory = new QueryExpressionFactory([static fn() => $expression]);
         [$actualExpression,] = $factory->createFrom($operator);
 
-        static::assertInstanceOf(Expr\Orx::class, $actualExpression);
+        static::assertInstanceOf(Orx::class, $actualExpression);
     }
 }

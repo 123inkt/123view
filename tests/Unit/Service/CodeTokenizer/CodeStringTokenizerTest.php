@@ -7,10 +7,9 @@ use DR\Review\Service\CodeTokenizer\CodeStringTokenizer;
 use DR\Review\Service\CodeTokenizer\StringReader;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeTokenizer\CodeStringTokenizer
- */
+#[CoversClass(CodeStringTokenizer::class)]
 class CodeStringTokenizerTest extends AbstractTestCase
 {
     private CodeStringTokenizer $tokenizer;
@@ -21,9 +20,6 @@ class CodeStringTokenizerTest extends AbstractTestCase
         $this->tokenizer = new CodeStringTokenizer();
     }
 
-    /**
-     * @covers ::readString
-     */
     public function testReadStringFailure(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -31,9 +27,6 @@ class CodeStringTokenizerTest extends AbstractTestCase
         $this->tokenizer->readString(new StringReader('invalid'));
     }
 
-    /**
-     * @covers ::readString
-     */
     public function testReadString(): void
     {
         static::assertSame('"foobar"', $this->tokenizer->readString(new StringReader('"foobar"')));

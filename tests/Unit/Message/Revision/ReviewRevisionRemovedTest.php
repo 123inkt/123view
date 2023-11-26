@@ -5,19 +5,11 @@ namespace DR\Review\Tests\Unit\Message\Revision;
 
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Message\Revision\ReviewRevisionRemoved
- */
+#[CoversClass(ReviewRevisionRemoved::class)]
 class ReviewRevisionRemovedTest extends AbstractMessageEventTestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::getName
-     * @covers ::getReviewId
-     * @covers ::getUserId
-     * @covers ::getPayload
-     */
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(

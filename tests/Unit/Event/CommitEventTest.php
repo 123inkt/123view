@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Event;
 
 use DR\Review\Event\CommitEvent;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Event\CommitEvent
- * @covers ::__construct
- */
+#[CoversClass(CommitEvent::class)]
 class CommitEventTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $commit = $this->createCommit();

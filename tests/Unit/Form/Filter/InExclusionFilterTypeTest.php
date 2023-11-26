@@ -7,17 +7,13 @@ use DR\Review\Form\Filter\FilterCollectionType;
 use DR\Review\Form\Filter\InExclusionFilterType;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Transformer\FilterCollectionTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\FormBuilderInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Filter\InExclusionFilterType
- */
+#[CoversClass(InExclusionFilterType::class)]
 class InExclusionFilterTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);

@@ -6,16 +6,11 @@ namespace DR\Review\Tests\Unit\ViewModel\Mail;
 use DR\Review\Entity\Git\Author;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\Mail\CommitsViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\Mail\CommitsViewModel
- * @covers ::__construct
- */
+#[CoversClass(CommitsViewModel::class)]
 class CommitsViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getAuthors
-     */
     public function testGetAuthors(): void
     {
         $commitA = $this->createCommit(new Author('Sherlock', 'sherlock@example.com'));

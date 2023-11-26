@@ -12,14 +12,14 @@ use DR\Review\Security\SessionKeys;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @extends AbstractRequestTestCase<ReviewRequest>
- * @coversDefaultClass \DR\Review\Request\Review\ReviewRequest
- * @covers ::__construct
  */
+#[CoversClass(ReviewRequest::class)]
 class ReviewRequestTest extends AbstractRequestTestCase
 {
     private CodeReviewActionFactory&MockObject $actionFactory;
@@ -30,27 +30,18 @@ class ReviewRequestTest extends AbstractRequestTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::getFilePath
-     */
     public function testGetFilePath(): void
     {
         $this->request->query->set('filePath', 'foobar');
         static::assertSame('foobar', $this->validatedRequest->getFilePath());
     }
 
-    /**
-     * @covers ::getTab
-     */
     public function testGetTab(): void
     {
         $this->request->query->set('tab', 'revisions');
         static::assertSame('revisions', $this->validatedRequest->getTab());
     }
 
-    /**
-     * @covers ::getAction
-     */
     public function testGetAction(): void
     {
         $action = $this->createMock(AbstractReviewAction::class);
@@ -60,9 +51,6 @@ class ReviewRequestTest extends AbstractRequestTestCase
         static::assertSame($action, $this->validatedRequest->getAction());
     }
 
-    /**
-     * @covers ::getComparisonPolicy
-     */
     public function testGetComparePolicy(): void
     {
         $session = $this->createMock(Session::class);
@@ -74,9 +62,6 @@ class ReviewRequestTest extends AbstractRequestTestCase
         static::assertSame(DiffComparePolicy::IGNORE, $this->validatedRequest->getComparisonPolicy());
     }
 
-    /**
-     * @covers ::getComparisonPolicy
-     */
     public function testGetComparePolicyFromSession(): void
     {
         $session = $this->createMock(Session::class);
@@ -93,9 +78,6 @@ class ReviewRequestTest extends AbstractRequestTestCase
         static::assertSame(DiffComparePolicy::TRIM, $this->validatedRequest->getComparisonPolicy());
     }
 
-    /**
-     * @covers ::getDiffMode
-     */
     public function testGetDiffMode(): void
     {
         $session = $this->createMock(Session::class);
@@ -107,9 +89,6 @@ class ReviewRequestTest extends AbstractRequestTestCase
         static::assertSame(ReviewDiffModeEnum::UNIFIED, $this->validatedRequest->getDiffMode());
     }
 
-    /**
-     * @covers ::getDiffMode
-     */
     public function testGetDiffModeFromSession(): void
     {
         $session = $this->createMock(Session::class);
@@ -127,7 +106,6 @@ class ReviewRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

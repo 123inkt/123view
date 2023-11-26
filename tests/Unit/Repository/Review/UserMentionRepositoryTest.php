@@ -12,15 +12,12 @@ use DR\Review\Tests\DataFixtures\CommentFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Review\UserMentionRepository
- * @covers ::__construct
- */
+#[CoversClass(UserMentionRepository::class)]
 class UserMentionRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::saveAll
      * @throws Exception
      */
     public function testSaveAll(): void

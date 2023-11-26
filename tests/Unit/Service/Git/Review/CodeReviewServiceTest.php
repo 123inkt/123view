@@ -15,12 +15,10 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Review\CodeReviewService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Review\CodeReviewService
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewService::class)]
 class CodeReviewServiceTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
@@ -44,9 +42,6 @@ class CodeReviewServiceTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::addRevisions
-     */
     public function testAddRevisionsAndPersist(): void
     {
         $revisionA = new Revision();
@@ -73,9 +68,6 @@ class CodeReviewServiceTest extends AbstractTestCase
         static::assertSame(CodeReviewerStateType::OPEN, $reviewer->getState());
     }
 
-    /**
-     * @covers ::addRevisions
-     */
     public function testAddRevisionsShouldSkipReviewers(): void
     {
         $revision = new Revision();

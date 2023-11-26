@@ -8,11 +8,10 @@ use Doctrine\DBAL\Types\ConversionException;
 use DR\Review\Doctrine\Type\NotificationStatusType;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-/**
- * @coversDefaultClass \DR\Review\Doctrine\Type\NotificationStatusType
- */
+#[CoversClass(NotificationStatusType::class)]
 class NotificationStatusTypeTest extends AbstractTestCase
 {
     private NotificationStatusType $statusType;
@@ -24,7 +23,6 @@ class NotificationStatusTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToPHPValue
      * @throws ConversionException
      */
     public function testConvertToPHPValueNullValueShouldBeIgnore(): void
@@ -33,7 +31,6 @@ class NotificationStatusTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToPHPValue
      * @throws ConversionException
      */
     public function testConvertToPHPValueInvalidDataTypeShouldThrowException(): void
@@ -44,7 +41,6 @@ class NotificationStatusTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToPHPValue
      * @throws ConversionException
      */
     public function testConvertToPHPValueIntZeroShouldBeNull(): void
@@ -54,7 +50,6 @@ class NotificationStatusTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToPHPValue
      * @throws ConversionException
      */
     public function testConvertToPHPValue(): void
@@ -64,32 +59,22 @@ class NotificationStatusTypeTest extends AbstractTestCase
         static::assertSame(123, $status->getStatus());
     }
 
-    /**
-     * @covers ::getName
-     */
     public function testGetName(): void
     {
         static::assertSame('type_notification_status', $this->statusType->getName());
     }
 
-    /**
-     * @covers ::getSQLDeclaration
-     */
     public function testGetSQLDeclaration(): void
     {
         static::assertSame('INT UNSIGNED', $this->statusType->getSQLDeclaration([], $this->createMock(AbstractPlatform::class)));
     }
 
-    /**
-     * @covers ::canRequireSQLConversion
-     */
     public function testCanRequireSQLConversion(): void
     {
         static::assertTrue($this->statusType->canRequireSQLConversion());
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValueNullShouldReturnNull(): void
@@ -98,7 +83,6 @@ class NotificationStatusTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValueInvalidTypeShouldThrowException(): void
@@ -109,7 +93,6 @@ class NotificationStatusTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValue(): void

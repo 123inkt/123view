@@ -8,13 +8,11 @@ use Doctrine\DBAL\Types\ConversionException;
 use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
-/**
- * @coversDefaultClass \DR\Review\Doctrine\Type\UriType
- * @covers ::__construct
- */
+#[CoversClass(UriType::class)]
 class UriTypeTest extends AbstractTestCase
 {
     private AbstractPlatform&MockObject $platform;
@@ -27,9 +25,6 @@ class UriTypeTest extends AbstractTestCase
         $this->type     = new UriType();
     }
 
-    /**
-     * @covers ::getSQLDeclaration
-     */
     public function testGetSQLDeclaration(): void
     {
         $column = ['length' => 100];
@@ -39,16 +34,12 @@ class UriTypeTest extends AbstractTestCase
         static::assertSame('varchar', $this->type->getSQLDeclaration($column, $this->platform));
     }
 
-    /**
-     * @covers ::getName
-     */
     public function testGetName(): void
     {
         static::assertSame(UriType::TYPE, $this->type->getName());
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValueFailure(): void
@@ -59,7 +50,6 @@ class UriTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValue(): void
@@ -72,7 +62,6 @@ class UriTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToPHPValue
      * @throws ConversionException
      */
     public function testConvertToPHPValueFailure(): void
@@ -83,7 +72,6 @@ class UriTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToPHPValue
      * @throws ConversionException
      */
     public function testConvertToPHPValue(): void

@@ -8,36 +8,27 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Entity\Asset\Asset;
 use DR\Review\Request\Asset\AddAssetRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @extends AbstractRequestTestCase<AddAssetRequest>
- * @coversDefaultClass \DR\Review\Request\Asset\AddAssetRequest
- * @covers ::__construct
  */
+#[CoversClass(AddAssetRequest::class)]
 class AddAssetRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getMimeType
-     */
     public function testGetMimeType(): void
     {
         $this->request->request->set('mimeType', 'mime-type');
         static::assertSame('mime-type', $this->validatedRequest->getMimeType());
     }
 
-    /**
-     * @covers ::getData
-     */
     public function testGetData(): void
     {
         $this->request->request->set('data', base64_encode('foobar'));
         static::assertSame('foobar', $this->validatedRequest->getData());
     }
 
-    /**
-     * @covers ::getData
-     */
     public function testGetDataInvalidBase64Decode(): void
     {
         $this->request->request->set('data', '#foobar');
@@ -47,7 +38,6 @@ class AddAssetRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

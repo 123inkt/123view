@@ -12,15 +12,12 @@ use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Config\RuleRepository
- * @covers ::__construct
- */
+#[CoversClass(RuleRepository::class)]
 class RuleRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::getActiveRulesForFrequency
      * @throws Exception
      */
     public function testGetActiveRulesForFrequency(): void

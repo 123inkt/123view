@@ -15,14 +15,12 @@ use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\GitRepositoryService
- * @covers ::__construct
- */
+#[CoversClass(GitRepositoryService::class)]
 class GitRepositoryServiceTest extends AbstractTestCase
 {
     private const CACHE_DIRECTORY = "/cache/directory/";
@@ -46,8 +44,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRepository
-     * @covers ::tryGetRepository
      * @throws RepositoryException
      */
     public function testGetRepositoryWithoutCache(): void
@@ -66,8 +62,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRepository
-     * @covers ::tryGetRepository
      * @throws RepositoryException
      */
     public function testGetRepositoryWithCredentials(): void
@@ -90,8 +84,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRepository
-     * @covers ::tryGetRepository
      * @throws RepositoryException
      */
     public function testGetRepositoryWithCache(): void
@@ -109,8 +101,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRepository
-     * @covers ::tryGetRepository
      * @throws RepositoryException
      */
     public function testGetRepositoryWithGitException(): void
@@ -131,8 +121,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRepository
-     * @covers ::tryGetRepository
      * @throws RepositoryException
      */
     public function testGetRepositoryWithException(): void

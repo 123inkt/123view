@@ -10,16 +10,11 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentVisibility;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Comment\CommentsViewModel
- * @covers ::__construct
- */
+#[CoversClass(CommentsViewModel::class)]
 class CommentsViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testGetDetachedComments(): void
     {
         $comment   = new Comment();
@@ -27,9 +22,6 @@ class CommentsViewModelTest extends AbstractTestCase
         static::assertSame([$comment], $viewModel->detachedComments);
     }
 
-    /**
-     * @covers ::isCommentVisible
-     */
     public function testIsCommentVisibleAll(): void
     {
         $commentA = (new Comment())->setState(CommentStateType::OPEN);
@@ -40,9 +32,6 @@ class CommentsViewModelTest extends AbstractTestCase
         static::assertTrue($viewModel->isCommentVisible($commentB));
     }
 
-    /**
-     * @covers ::isCommentVisible
-     */
     public function testIsCommentVisibleUnresolvedOnly(): void
     {
         $commentA = (new Comment())->setState(CommentStateType::OPEN);
@@ -53,9 +42,6 @@ class CommentsViewModelTest extends AbstractTestCase
         static::assertFalse($viewModel->isCommentVisible($commentB));
     }
 
-    /**
-     * @covers ::isCommentVisible
-     */
     public function testIsCommentVisibleNone(): void
     {
         $commentA = (new Comment())->setState(CommentStateType::OPEN);
@@ -66,9 +52,6 @@ class CommentsViewModelTest extends AbstractTestCase
         static::assertFalse($viewModel->isCommentVisible($commentB));
     }
 
-    /**
-     * @covers ::getComments
-     */
     public function testGetComments(): void
     {
         $lineA = new DiffLine(DiffLine::STATE_UNCHANGED, []);

@@ -5,16 +5,12 @@ namespace DR\Review\Tests\Unit\Controller\Auth\SingleSignOn;
 
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController
- */
+#[CoversClass(AzureAdCallbackController::class)]
 class AzureAdCallbackControllerTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $this->expectException(RuntimeException::class);

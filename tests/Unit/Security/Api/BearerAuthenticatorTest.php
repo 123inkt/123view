@@ -9,16 +9,14 @@ use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-/**
- * @coversDefaultClass \DR\Review\Security\Api\BearerAuthenticator
- * @covers ::__construct
- */
+#[CoversClass(BearerAuthenticator::class)]
 class BearerAuthenticatorTest extends AbstractTestCase
 {
     private UserAccessTokenRepository&MockObject $tokenRepository;
@@ -31,54 +29,36 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $this->authenticator   = new BearerAuthenticator($this->tokenRepository);
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupports(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/api/test', 'HTTP_AUTHORIZATION' => 'Bearer 123view']);
         static::assertTrue($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupportsShouldSkipDocs(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/api/docs', 'HTTP_AUTHORIZATION' => 'Bearer 123view']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupportsShouldSkipNonApiRequests(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/app/test']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupportsShouldSkipAbsentAuthHeader(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/api/test']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupportsShouldOnlyAcceptBearerAuthHeader(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/api/test', 'HTTP_AUTHORIZATION' => 'JWT 123view']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::authenticate
-     */
     public function testAuthenticateShouldThrowExceptionOnAbsentToken(): void
     {
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer 123view']);
@@ -90,9 +70,6 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $this->authenticator->authenticate($request);
     }
 
-    /**
-     * @covers ::authenticate
-     */
     public function testAuthenticateShouldThrowExceptionOnInsufficientPermission(): void
     {
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer 123view']);
@@ -108,9 +85,6 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $this->authenticator->authenticate($request);
     }
 
-    /**
-     * @covers ::authenticate
-     */
     public function testAuthenticateShouldSucceed(): void
     {
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer 123view']);
@@ -133,17 +107,11 @@ class BearerAuthenticatorTest extends AbstractTestCase
         static::assertNotNull($token->getUseTimestamp());
     }
 
-    /**
-     * @covers ::onAuthenticationSuccess
-     */
     public function testOnAuthenticationSuccess(): void
     {
         static::assertNull($this->authenticator->onAuthenticationSuccess(new Request(), $this->createMock(TokenInterface::class), 'main'));
     }
 
-    /**
-     * @covers ::onAuthenticationFailure
-     */
     public function testOnAuthenticationFailure(): void
     {
         static::assertNull($this->authenticator->onAuthenticationFailure(new Request(), new AuthenticationException()));

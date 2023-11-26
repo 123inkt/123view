@@ -11,16 +11,11 @@ use ApiPlatform\OpenApi\Model\Paths;
 use ApiPlatform\OpenApi\OpenApi;
 use DR\Review\ApiPlatform\OpenApi\OpenApiParameterIterator;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\OpenApi\OpenApiParameterIterator
- * @covers ::__construct
- */
+#[CoversClass(OpenApiParameterIterator::class)]
 class OpenApiParameterIteratorTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getIterator
-     */
     public function testGetIterator(): void
     {
         $parameterA = new Parameter('with', 'description', description: 'foobar');

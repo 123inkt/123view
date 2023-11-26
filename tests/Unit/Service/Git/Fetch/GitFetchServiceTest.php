@@ -14,12 +14,10 @@ use DR\Review\Service\Parser\Fetch\GitFetchParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Fetch\GitFetchService
- * @covers ::__construct
- */
+#[CoversClass(GitFetchService::class)]
 class GitFetchServiceTest extends AbstractTestCase
 {
     private GitCommandBuilderFactory&MockObject $commandBuilderFactory;
@@ -41,7 +39,6 @@ class GitFetchServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fetch
      * @throws Exception
      */
     public function testFetch(): void

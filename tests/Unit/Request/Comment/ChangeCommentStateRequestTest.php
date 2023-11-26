@@ -8,16 +8,14 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @extends AbstractRequestTestCase<ChangeCommentStateRequest>
- * @coversDefaultClass \DR\Review\Request\Comment\ChangeCommentStateRequest
  */
+#[CoversClass(ChangeCommentStateRequest::class)]
 class ChangeCommentStateRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getState
-     */
     public function testGetState(): void
     {
         $this->request->request->set('state', 'foobar');
@@ -25,7 +23,6 @@ class ChangeCommentStateRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

@@ -10,12 +10,10 @@ use DR\Review\Entity\User\UserAccessToken;
 use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Security\Voter\UserAccessTokenVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\User\DeleteUserAccessTokenController
- * @covers ::__construct
- */
+#[CoversClass(DeleteUserAccessTokenController::class)]
 class DeleteUserAccessTokenControllerTest extends AbstractControllerTestCase
 {
     private UserAccessTokenRepository&MockObject $tokenRepository;
@@ -26,9 +24,6 @@ class DeleteUserAccessTokenControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $token = new UserAccessToken();

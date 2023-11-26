@@ -12,14 +12,12 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\User\UserSettingViewModel;
 use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\User\UserSettingController
- * @covers ::__construct
- */
+#[CoversClass(UserSettingController::class)]
 class UserSettingControllerTest extends AbstractControllerTestCase
 {
     private UserSettingViewModelProvider&MockObject $provider;
@@ -32,9 +30,6 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeIsNotSubmitted(): void
     {
         $request = new Request();
@@ -55,9 +50,6 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         static::assertEquals(['settingViewModel' => $viewModel], $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeIsSubmitted(): void
     {
         $request = new Request();

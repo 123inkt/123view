@@ -7,16 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Notification\Filter;
 use DR\Review\Service\Filter\DefinitionSubjectMatcher;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Filter\DefinitionSubjectMatcher
- */
+#[CoversClass(DefinitionSubjectMatcher::class)]
 class DefinitionSubjectMatcherTest extends AbstractTestCase
 {
-    /**
-     * @covers ::matches
-     */
     public function testMatchesShouldFail(): void
     {
         $commit = $this->createCommit();
@@ -29,9 +25,6 @@ class DefinitionSubjectMatcherTest extends AbstractTestCase
         $matcher->matches($commit, new ArrayCollection([$filter]));
     }
 
-    /**
-     * @covers ::matches
-     */
     public function testMatchesShouldMatch(): void
     {
         $commit          = $this->createCommit();
@@ -44,9 +37,6 @@ class DefinitionSubjectMatcherTest extends AbstractTestCase
         static::assertTrue($matcher->matches($commit, new ArrayCollection([$filter])));
     }
 
-    /**
-     * @covers ::matches
-     */
     public function testMatchesShouldNotMatch(): void
     {
         $commit          = $this->createCommit();

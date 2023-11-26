@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Service\Revision;
 
 use DR\Review\Service\Revision\RevisionTitleNormalizer;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Revision\RevisionTitleNormalizer
- */
+#[CoversClass(RevisionTitleNormalizer::class)]
 class RevisionTitleNormalizerTest extends AbstractTestCase
 {
-    /**
-     * @covers ::normalize
-     */
     public function testNormalize(): void
     {
         $normalizer = new RevisionTitleNormalizer();

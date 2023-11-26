@@ -9,16 +9,14 @@ use DR\Review\Security\AzureAd\LoginSuccess;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use TheNetworg\OAuth2\Client\Token\AccessToken;
 
-/**
- * @coversDefaultClass \DR\Review\Security\AzureAd\LoginService
- * @covers ::__construct
- */
+#[CoversClass(LoginService::class)]
 class LoginServiceTest extends AbstractTestCase
 {
     private Azure&MockObject               $azureProvider;
@@ -35,9 +33,6 @@ class LoginServiceTest extends AbstractTestCase
         $this->service              = new LoginService($this->azureProvider, $this->translator);
     }
 
-    /**
-     * @covers ::handleLogin
-     */
     public function testHandleLoginWasCancelled(): void
     {
         $request = new Request(
@@ -56,9 +51,6 @@ class LoginServiceTest extends AbstractTestCase
         static::assertInstanceOf(LoginFailure::class, $result);
     }
 
-    /**
-     * @covers ::handleLogin
-     */
     public function testHandleLoginErrorOccurred(): void
     {
         $request = new Request(
@@ -77,9 +69,6 @@ class LoginServiceTest extends AbstractTestCase
         static::assertInstanceOf(LoginFailure::class, $result);
     }
 
-    /**
-     * @covers ::handleLogin
-     */
     public function testHandleLoginRequestShouldHaveCode(): void
     {
         $request = new Request([]);
@@ -90,9 +79,6 @@ class LoginServiceTest extends AbstractTestCase
         static::assertInstanceOf(LoginFailure::class, $result);
     }
 
-    /**
-     * @covers ::handleLogin
-     */
     public function testHandleLoginAzureProviderThrowsException(): void
     {
         $request = new Request(['code' => '123abc']);
@@ -108,9 +94,6 @@ class LoginServiceTest extends AbstractTestCase
         static::assertInstanceOf(LoginFailure::class, $result);
     }
 
-    /**
-     * @covers ::handleLogin
-     */
     public function testHandleLoginAuthTokenHasNoUsername(): void
     {
         $request = new Request(['code' => '123abc']);
@@ -126,9 +109,6 @@ class LoginServiceTest extends AbstractTestCase
         static::assertInstanceOf(LoginFailure::class, $result);
     }
 
-    /**
-     * @covers ::handleLogin
-     */
     public function testHandleLoginSuccess(): void
     {
         $request = new Request(['code' => '123abc']);

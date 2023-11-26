@@ -9,14 +9,12 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Page\BreadcrumbFactory
- * @covers ::__construct
- */
+#[CoversClass(BreadcrumbFactory::class)]
 class BreadcrumbFactoryTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -30,9 +28,6 @@ class BreadcrumbFactoryTest extends AbstractTestCase
         $this->factory      = new BreadcrumbFactory($this->urlGenerator);
     }
 
-    /**
-     * @covers ::createForReview
-     */
     public function testCreateForReview(): void
     {
         $repository = new Repository();
@@ -62,9 +57,6 @@ class BreadcrumbFactoryTest extends AbstractTestCase
         static::assertSame('urlB', $crumbs[1]->url);
     }
 
-    /**
-     * @covers ::createForReviews
-     */
     public function testCreateForReviews(): void
     {
         $repository = new Repository();

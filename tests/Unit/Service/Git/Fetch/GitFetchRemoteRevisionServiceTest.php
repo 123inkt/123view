@@ -12,13 +12,11 @@ use DR\Review\Service\Git\Fetch\LockableGitFetchService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Fetch\GitFetchRemoteRevisionService
- * @covers ::__construct
- */
+#[CoversClass(GitFetchRemoteRevisionService::class)]
 class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
 {
     private LockableGitLogService&MockObject   $logService;
@@ -35,7 +33,6 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fetchRevisionFromRemote
      * @throws Exception
      */
     public function testFetchRevisionFromRemoteBranchUpdate(): void
@@ -57,7 +54,6 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fetchRevisionFromRemote
      * @throws Exception
      */
     public function testFetchRevisionFromRemoteBranchCreation(): void

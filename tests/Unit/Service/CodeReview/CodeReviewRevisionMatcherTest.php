@@ -14,12 +14,10 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Revision\RevisionTitleNormalizer;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\CodeReviewRevisionMatcher
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewRevisionMatcher::class)]
 class CodeReviewRevisionMatcherTest extends AbstractTestCase
 {
     private RevisionTitleNormalizer&MockObject   $titleNormalizer;
@@ -44,17 +42,11 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::isSupported
-     */
     public function testIsSupportedNullIsNot(): void
     {
         static::assertFalse($this->matcher->isSupported(null));
     }
 
-    /**
-     * @covers ::isSupported
-     */
     public function testIsSupportedRepositoryTimestampShouldBeGreaterThanRevisionTimestamp(): void
     {
         $repository = new Repository();
@@ -67,9 +59,6 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         static::assertFalse($this->matcher->isSupported($revision));
     }
 
-    /**
-     * @covers ::isSupported
-     */
     public function testIsSupportedAuthorShouldBeExcluded(): void
     {
         $repository = new Repository();
@@ -83,9 +72,6 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         static::assertFalse($this->matcher->isSupported($revision));
     }
 
-    /**
-     * @covers ::isSupported
-     */
     public function testIsSupported(): void
     {
         $repository = new Repository();
@@ -100,7 +86,6 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::match
      * @throws NonUniqueResultException
      */
     public function testMatchRevisionTitleHasNoMatch(): void
@@ -115,7 +100,6 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::match
      * @throws NonUniqueResultException
      */
     public function testMatchRevisionHasExistingReview(): void
@@ -138,7 +122,6 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::match
      * @throws NonUniqueResultException
      */
     public function testMatchRevisionHasNoReview(): void

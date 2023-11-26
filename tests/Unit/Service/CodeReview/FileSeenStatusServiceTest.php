@@ -11,13 +11,11 @@ use DR\Review\Repository\Review\FileSeenStatusRepository;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\FileSeenStatusService
- * @covers ::__construct
- */
+#[CoversClass(FileSeenStatusService::class)]
 class FileSeenStatusServiceTest extends AbstractTestCase
 {
     private LockableGitDiffTreeService&MockObject $treeService;
@@ -35,9 +33,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service          = new FileSeenStatusService($this->treeService, $this->statusRepository, $this->user);
     }
 
-    /**
-     * @covers ::markAsSeen
-     */
     public function testMarkAsSeenWithFileIsNull(): void
     {
         $review = new CodeReview();
@@ -47,9 +42,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service->markAsSeen($review, $user, null);
     }
 
-    /**
-     * @covers ::markAsSeen
-     */
     public function testMarkAsSeen(): void
     {
         $review   = new CodeReview();
@@ -72,9 +64,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service->markAsSeen($review, $user, $filepath);
     }
 
-    /**
-     * @covers ::markAsUnseen
-     */
     public function testMarkAsUnseenWithoutFile(): void
     {
         $review = new CodeReview();
@@ -84,9 +73,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service->markAsUnseen($review, $user, null);
     }
 
-    /**
-     * @covers ::markAsUnseen
-     */
     public function testMarkAsUnseenNonExistingFile(): void
     {
         $review   = new CodeReview();
@@ -98,9 +84,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
-    /**
-     * @covers ::markAsUnseen
-     */
     public function testMarkAsUnseen(): void
     {
         $review = new CodeReview();
@@ -118,9 +101,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
-    /**
-     * @covers ::markAllAsUnseen
-     */
     public function testMarkAllAsUnseen(): void
     {
         $review = new CodeReview();
@@ -142,9 +122,6 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $this->service->markAllAsUnseen($review, $revision);
     }
 
-    /**
-     * @covers ::getFileSeenStatus
-     */
     public function testGetFileSeenStatus(): void
     {
         $review = new CodeReview();

@@ -11,13 +11,11 @@ use DR\Review\Service\User\UserAccessTokenIssuer;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\User\UserAccessTokenViewModel;
 use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\User\UserAccessTokenController
- * @covers ::__construct
- */
+#[CoversClass(UserAccessTokenController::class)]
 class UserAccessTokenControllerTest extends AbstractControllerTestCase
 {
     private UserAccessTokenIssuer&MockObject        $accessTokenIssuer;
@@ -30,9 +28,6 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeNonSubmitted(): void
     {
         $request   = new Request();
@@ -49,9 +44,6 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
         static::assertSame(['accessTokenModel' => $viewModel], $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeSubmitted(): void
     {
         $request   = new Request();

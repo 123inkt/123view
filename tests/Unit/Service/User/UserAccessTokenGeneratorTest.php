@@ -8,13 +8,11 @@ use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Service\User\UserAccessTokenGenerator;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 
-/**
- * @coversDefaultClass \DR\Review\Service\User\UserAccessTokenGenerator
- * @covers ::__construct
- */
+#[CoversClass(UserAccessTokenGenerator::class)]
 class UserAccessTokenGeneratorTest extends AbstractTestCase
 {
     private UserAccessTokenRepository&MockObject $tokenRepository;
@@ -28,7 +26,6 @@ class UserAccessTokenGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::generate
      * @throws Exception
      */
     public function testGenerateSuccess(): void
@@ -42,7 +39,6 @@ class UserAccessTokenGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::generate
      * @throws Exception
      */
     public function testGenerateFailure(): void

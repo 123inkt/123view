@@ -7,25 +7,20 @@ use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @extends AbstractRequestTestCase<FileSeenStatusRequest>
- * @coversDefaultClass \DR\Review\Request\Review\FileSeenStatusRequest
  */
+#[CoversClass(FileSeenStatusRequest::class)]
 class FileSeenStatusRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getFilePath
-     */
     public function testGetFilePath(): void
     {
         $this->request->request->set('filePath', 'foobar');
         static::assertSame('foobar', $this->validatedRequest->getFilePath());
     }
 
-    /**
-     * @covers ::getSeenStatus
-     */
     public function testGetSeenStatus(): void
     {
         $this->request->request->set('seen', '1');
@@ -33,7 +28,6 @@ class FileSeenStatusRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

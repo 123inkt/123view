@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Git\Diff;
 
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\Diff\DiffChange
- */
+#[CoversClass(DiffChange::class)]
 class DiffChangeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $change = new DiffChange(DiffChange::REMOVED, 'foobar');
@@ -21,9 +17,6 @@ class DiffChangeTest extends AbstractTestCase
         static::assertSame('foobar', $change->code);
     }
 
-    /**
-     * @covers ::append
-     */
     public function testAppend(): void
     {
         $change = new DiffChange(DiffChange::UNCHANGED, 'change ');

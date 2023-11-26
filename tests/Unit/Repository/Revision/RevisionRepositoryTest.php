@@ -11,16 +11,13 @@ use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\RevisionFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Revision\RevisionRepository
- * @covers ::__construct
- */
+#[CoversClass(RevisionRepository::class)]
 class RevisionRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::getRepositoryRevisionCount
      * @throws Throwable
      */
     public function testGetRepositoryRevisionCount(): void
@@ -32,7 +29,6 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::saveAll
      * @throws Throwable
      */
     public function testSaveAll(): void
@@ -56,7 +52,6 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getPaginatorForSearchQuery
      * @throws Exception
      */
     public function testGetPaginatorForSearchQuery(): void
@@ -69,7 +64,6 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getPaginatorForSearchQuery
      * @throws Exception
      */
     public function testGetPaginatorForSearchQueryWithSearchQueryString(): void
@@ -83,7 +77,6 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getPaginatorForSearchQuery
      * @throws Exception
      */
     public function testGetPaginatorForSearchQueryWithCodeReviewAttached(): void
@@ -97,7 +90,6 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @covers ::getCommitHashes
      * @throws Exception
      */
     public function testGetCommitHashes(): void

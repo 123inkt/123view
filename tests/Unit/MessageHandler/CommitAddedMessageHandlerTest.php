@@ -13,14 +13,12 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\CommitAddedMessageHandler
- * @covers ::__construct
- */
+#[CoversClass(CommitAddedMessageHandler::class)]
 class CommitAddedMessageHandlerTest extends AbstractTestCase
 {
     private LockableGitShowService&MockObject $showService;
@@ -48,7 +46,6 @@ class CommitAddedMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeAbsentCommit(): void
@@ -64,7 +61,6 @@ class CommitAddedMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvoke(): void

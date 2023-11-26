@@ -11,12 +11,10 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityProvider::class)]
 class CodeReviewActivityProviderTest extends AbstractTestCase
 {
     private CodeReviewRepository&MockObject $reviewRepository;
@@ -31,9 +29,6 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $this->activityProvider = new CodeReviewActivityProvider($this->reviewRepository, $this->userRepository);
     }
 
-    /**
-     * @covers ::fromEvent
-     */
     public function testFromEvent(): void
     {
         $event  = new ReviewOpened(123, 789);
@@ -54,9 +49,6 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         static::assertGreaterThan(0, $activity->getCreateTimestamp());
     }
 
-    /**
-     * @covers ::fromEvent
-     */
     public function testFromEventAbsentReview(): void
     {
         $event = new ReviewOpened(123, 789);
@@ -67,9 +59,6 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         static::assertNull($this->activityProvider->fromEvent($event));
     }
 
-    /**
-     * @covers ::fromEvent
-     */
     public function testFromEventWithoutUser(): void
     {
         $event  = new ReviewCreated(123, 789);

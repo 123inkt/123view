@@ -9,10 +9,9 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory
- */
+#[CoversClass(CommentEventMessageFactory::class)]
 class CommentEventMessageFactoryTest extends AbstractTestCase
 {
     private CommentEventMessageFactory $factory;
@@ -23,9 +22,6 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $this->factory = new CommentEventMessageFactory();
     }
 
-    /**
-     * @covers ::createAdded
-     */
     public function testCreateAdded(): void
     {
         $user = new User();
@@ -44,9 +40,6 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         static::assertSame('comment-added', $event->getName());
     }
 
-    /**
-     * @covers ::createUpdated
-     */
     public function testCreateUpdated(): void
     {
         $user = new User();
@@ -65,9 +58,6 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         static::assertSame('comment-updated', $event->getName());
     }
 
-    /**
-     * @covers ::createResolved
-     */
     public function testCreateResolved(): void
     {
         $user = new User();
@@ -85,9 +75,6 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         static::assertSame('comment-resolved', $event->getName());
     }
 
-    /**
-     * @covers ::createUnresolved
-     */
     public function testCreateUnresolved(): void
     {
         $user = new User();
@@ -105,9 +92,6 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         static::assertSame('comment-unresolved', $event->getName());
     }
 
-    /**
-     * @covers ::createRemoved
-     */
     public function testCreateRemoved(): void
     {
         $user = new User();

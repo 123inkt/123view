@@ -7,12 +7,10 @@ use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\MentionsExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\MentionsExtension
- * @covers ::__construct
- */
+#[CoversClass(MentionsExtension::class)]
 class MentionsExtensionTest extends AbstractTestCase
 {
     private CommentMentionService&MockObject $mentionService;
@@ -25,17 +23,11 @@ class MentionsExtensionTest extends AbstractTestCase
         $this->extension      = new MentionsExtension($this->mentionService);
     }
 
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         static::assertCount(1, $this->extension->getFilters());
     }
 
-    /**
-     * @covers ::convert
-     */
     public function testConvert(): void
     {
         $user = new User();

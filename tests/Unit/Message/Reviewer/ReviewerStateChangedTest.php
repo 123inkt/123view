@@ -5,19 +5,11 @@ namespace DR\Review\Tests\Unit\Message\Reviewer;
 
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Message\Reviewer\ReviewerStateChanged
- */
+#[CoversClass(ReviewerStateChanged::class)]
 class ReviewerStateChangedTest extends AbstractMessageEventTestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::getName
-     * @covers ::getReviewId
-     * @covers ::getUserId
-     * @covers ::getPayload
-     */
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(

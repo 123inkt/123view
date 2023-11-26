@@ -7,18 +7,14 @@ use DR\Review\Entity\Notification\Filter;
 use DR\Review\Form\Filter\FilterCollectionType;
 use DR\Review\Form\Filter\FilterType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Filter\FilterCollectionType
- */
+#[CoversClass(FilterCollectionType::class)]
 class FilterCollectionTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -42,9 +38,6 @@ class FilterCollectionTypeTest extends AbstractTestCase
         static::assertCount(1, $constraints);
     }
 
-    /**
-     * @covers ::getParent
-     */
     public function testGetParent(): void
     {
         $type = new FilterCollectionType();

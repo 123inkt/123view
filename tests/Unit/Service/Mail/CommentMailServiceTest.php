@@ -11,16 +11,14 @@ use DR\Review\Service\Mail\CommentMailService;
 use DR\Review\Service\Mail\MailRecipientService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Mail\CommentMailService
- * @covers ::__construct
- */
+#[CoversClass(CommentMailService::class)]
 class CommentMailServiceTest extends AbstractTestCase
 {
     private MailerInterface&MockObject              $mailer;
@@ -45,7 +43,6 @@ class CommentMailServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::sendNewCommentMail
      * @throws Throwable
      */
     public function testSendNewCommentMailShouldNotMailWithoutRecipients(): void
@@ -66,7 +63,6 @@ class CommentMailServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::sendNewCommentMail
      * @throws Throwable
      */
     public function testSendNewCommentMailShouldSendMail(): void
@@ -114,7 +110,6 @@ class CommentMailServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::sendNewCommentReplyMail
      * @throws Throwable
      */
     public function testSendNewCommentReplyMailNoMailForEmptyRecipients(): void
@@ -139,7 +134,6 @@ class CommentMailServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::sendNewCommentReplyMail
      * @throws Throwable
      */
     public function testSendNewCommentReplyMail(): void
@@ -179,7 +173,6 @@ class CommentMailServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::sendCommentResolvedMail
      * @throws Throwable
      */
     public function testSendCommentResolvedMailNoRecipientsNoMail(): void
@@ -200,7 +193,6 @@ class CommentMailServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::sendCommentResolvedMail
      * @throws Throwable
      */
     public function testSendCommentResolvedMail(): void

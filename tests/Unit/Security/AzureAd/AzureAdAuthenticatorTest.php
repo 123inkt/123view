@@ -14,6 +14,7 @@ use DR\Review\Security\AzureAd\LoginSuccess;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use JsonException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,10 +26,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-/**
- * @coversDefaultClass \DR\Review\Security\AzureAd\AzureAdAuthenticator
- * @covers ::__construct
- */
+#[CoversClass(AzureAdAuthenticator::class)]
 class AzureAdAuthenticatorTest extends AbstractTestCase
 {
     private LoginService&MockObject            $loginService;
@@ -46,27 +44,18 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $this->authenticator = new AzureAdAuthenticator($this->loginService, $this->badgeFactory, $this->urlGenerator, true);
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupportsFailure(): void
     {
         $request = new Request(server: ['REQUEST_URI' => 'foobar']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::supports
-     */
     public function testSupportsAccepts(): void
     {
         $request = new Request(server: ['REQUEST_URI' => '/single-sign-on/azure-ad/callback']);
         static::assertTrue($this->authenticator->supports($request));
     }
 
-    /**
-     * @covers ::authenticate
-     */
     public function testAuthenticateFailure(): void
     {
         $request = new Request();
@@ -77,9 +66,6 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $this->authenticator->authenticate($request);
     }
 
-    /**
-     * @covers ::authenticate
-     */
     public function testAuthenticateSuccess(): void
     {
         $badge = new UserBadge('email');
@@ -95,7 +81,6 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::onAuthenticationSuccess
      * @throws JsonException
      */
     public function testOnAuthenticationSuccessForNewUser(): void
@@ -110,7 +95,6 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::onAuthenticationSuccess
      * @throws JsonException
      */
     public function testOnAuthenticationSuccess(): void
@@ -125,7 +109,6 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::onAuthenticationSuccess
      * @throws JsonException
      */
     public function testOnAuthenticationSuccessWithNextUrl(): void
@@ -140,9 +123,6 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         static::assertEquals($expect, $result);
     }
 
-    /**
-     * @covers ::onAuthenticationFailure
-     */
     public function testOnAuthenticationFailure(): void
     {
         $url = '/my/test/url';

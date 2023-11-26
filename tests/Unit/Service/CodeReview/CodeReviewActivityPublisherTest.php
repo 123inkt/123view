@@ -13,16 +13,14 @@ use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Tests\AbstractTestCase;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Throwable;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityPublisher::class)]
 class CodeReviewActivityPublisherTest extends AbstractTestCase
 {
     private CodeReviewActivityFormatter&MockObject    $formatter;
@@ -42,7 +40,6 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::publish
      * @throws Throwable
      */
     public function testPublishNoMessageNoPublish(): void
@@ -56,7 +53,6 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::publish
      * @throws Throwable
      */
     public function testPublish(): void

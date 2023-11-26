@@ -6,10 +6,9 @@ namespace DR\Review\Tests\Unit\Transformer;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Transformer\UserProfileRoleTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Transformer\UserProfileRoleTransformer
- */
+#[CoversClass(UserProfileRoleTransformer::class)]
 class UserProfileRoleTransformerTest extends AbstractTestCase
 {
     private UserProfileRoleTransformer $transformer;
@@ -20,18 +19,12 @@ class UserProfileRoleTransformerTest extends AbstractTestCase
         $this->transformer = new UserProfileRoleTransformer();
     }
 
-    /**
-     * @covers ::transform
-     */
     public function testTransform(): void
     {
         static::assertNull($this->transformer->transform(null));
         static::assertSame(Roles::PROFILE_USER, $this->transformer->transform(['ROLE_USER']));
     }
 
-    /**
-     * @covers ::reverseTransform
-     */
     public function testReverseTransform(): void
     {
         static::assertNull($this->transformer->reverseTransform(null));

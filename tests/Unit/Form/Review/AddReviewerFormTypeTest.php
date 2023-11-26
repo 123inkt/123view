@@ -10,6 +10,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,10 +18,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Review\AddReviewerFormType
- * @covers ::__construct
- */
+#[CoversClass(AddReviewerFormType::class)]
 class AddReviewerFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -37,9 +35,6 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         $this->type           = new AddReviewerFormType($this->urlGenerator, $this->userRepository, $this->user);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -51,10 +46,6 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         static::assertSame([CodeReview::class], $introspector->getAllowedTypes('review'));
     }
 
-    /**
-     * @covers ::getUserChoices
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url = 'https://123view/reviewer/add';
@@ -101,9 +92,6 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         $this->type->buildForm($builder, ['review' => $review]);
     }
 
-    /**
-     * @covers ::getBlockPrefix
-     */
     public function testGetBlockPrefix(): void
     {
         static::assertSame('', $this->type->getBlockPrefix());

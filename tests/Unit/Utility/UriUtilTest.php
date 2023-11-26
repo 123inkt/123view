@@ -6,39 +6,26 @@ namespace DR\Review\Tests\Unit\Utility;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\UriUtil;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Utility\UriUtil
- */
+#[CoversClass(UriUtil::class)]
 class UriUtilTest extends AbstractTestCase
 {
-    /**
-     * @covers ::credentials
-     */
     public function testCredentials(): void
     {
         static::assertSame([null, null], UriUtil::credentials(null));
     }
 
-    /**
-     * @covers ::credentials
-     */
     public function testCredentialsUriWithoutCredentials(): void
     {
         static::assertSame([null, null], UriUtil::credentials(Uri::new('https://example.com')));
     }
 
-    /**
-     * @covers ::credentials
-     */
     public function testCredentialsUriWithUsername(): void
     {
         static::assertSame(['shërlock', null], UriUtil::credentials(Uri::new('https://sh%C3%ABrlock@example.com')));
     }
 
-    /**
-     * @covers ::credentials
-     */
     public function testCredentialsUriWithCredentials(): void
     {
         static::assertSame(['sherlock', 'passw*rd'], UriUtil::credentials(Uri::new('https://sherlock:passw%2Ard@example.com')));

@@ -11,16 +11,14 @@ use DR\Review\Form\User\RegistrationFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\Auth\RegistrationController
- * @covers ::__construct
- */
+#[CoversClass(RegistrationController::class)]
 class RegistrationControllerTest extends AbstractControllerTestCase
 {
     private UserPasswordHasherInterface&MockObject $passwordHasher;
@@ -35,9 +33,6 @@ class RegistrationControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testRegisterShowForm(): void
     {
         $request = new Request();
@@ -52,9 +47,6 @@ class RegistrationControllerTest extends AbstractControllerTestCase
         static::assertSame(['registrationForm' => $view], $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testRegisterSubmitFormFirstUser(): void
     {
         $userCount = 0;
@@ -79,9 +71,6 @@ class RegistrationControllerTest extends AbstractControllerTestCase
         ($this->controller)($request);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testRegisterSubmitForm(): void
     {
         $userCount = 1;

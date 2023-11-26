@@ -10,6 +10,7 @@ use DR\Review\Form\Repository\RepositoryChoiceType;
 use DR\Review\Form\Rule\RuleOptionsType;
 use DR\Review\Form\Rule\RuleType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,15 +19,9 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Rule\RuleType
- * @covers ::__construct
- */
+#[CoversClass(RuleType::class)]
 class RuleTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -49,9 +44,6 @@ class RuleTypeTest extends AbstractTestCase
         $type->buildForm($builder, []);
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildFormWithoutRecipients(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -75,9 +67,6 @@ class RuleTypeTest extends AbstractTestCase
         $type->buildForm($builder, []);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();

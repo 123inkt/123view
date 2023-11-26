@@ -18,13 +18,11 @@ use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\ReviewController
- * @covers ::__construct
- */
+#[CoversClass(ReviewController::class)]
 class ReviewControllerTest extends AbstractControllerTestCase
 {
     private ReviewViewModelProvider&MockObject $modelProvider;
@@ -39,9 +37,6 @@ class ReviewControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request = $this->createMock(ReviewRequest::class);
@@ -71,9 +66,6 @@ class ReviewControllerTest extends AbstractControllerTestCase
         static::assertSame($viewModel, $data['reviewModel']);
     }
 
-    /**
-     * @covers ::redirectReviewRoute
-     */
     public function testRedirectReviewRoute(): void
     {
         $request = new Request(['foo' => 'bar']);

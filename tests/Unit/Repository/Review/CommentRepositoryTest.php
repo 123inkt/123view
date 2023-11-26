@@ -8,15 +8,12 @@ use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CommentFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Review\CommentRepository
- * @covers ::__construct
- */
+#[CoversClass(CommentRepository::class)]
 class CommentRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::findByReview
      * @throws Exception
      */
     public function testFindByReview(): void

@@ -18,14 +18,12 @@ use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Log\GitLogService;
 use DR\Review\Service\RuleProcessor;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Service\RuleProcessor
- * @covers ::__construct
- */
+#[CoversClass(RuleProcessor::class)]
 class RuleProcessorTest extends AbstractTestCase
 {
     private GitLogService&MockObject            $gitLogService;
@@ -58,7 +56,6 @@ class RuleProcessorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::processRule
      * @throws Throwable
      */
     public function testProcessRule(): void
@@ -79,8 +76,6 @@ class RuleProcessorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::processRule
-     * @covers ::filter
      * @throws Throwable
      */
     public function testProcessRuleWithExclusionAndInclusions(): void
@@ -111,7 +106,6 @@ class RuleProcessorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::processRule
      * @throws Throwable
      */
     public function testProcessRuleShouldNotSendMailOnNoCommits(): void

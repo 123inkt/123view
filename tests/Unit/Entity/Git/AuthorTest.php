@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Git;
 
 use DR\Review\Entity\Git\Author;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\Author
- */
+#[CoversClass(Author::class)]
 class AuthorTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $author = new Author('name', 'email');

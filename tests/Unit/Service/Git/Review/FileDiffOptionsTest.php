@@ -6,16 +6,11 @@ namespace DR\Review\Tests\Unit\Service\Git\Review;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Review\FileDiffOptions
- * @covers ::__construct
- */
+#[CoversClass(FileDiffOptions::class)]
 class FileDiffOptionsTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $options = new FileDiffOptions(5, DiffComparePolicy::TRIM);

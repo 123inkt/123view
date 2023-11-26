@@ -15,13 +15,11 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityProvider;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\ReviewActivityMessageHandler
- * @covers ::__construct
- */
+#[CoversClass(ReviewActivityMessageHandler::class)]
 class ReviewActivityMessageHandlerTest extends AbstractTestCase
 {
     private CodeReviewActivityProvider&MockObject   $activityProvider;
@@ -49,7 +47,6 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeWithUnsupportedEvent(): void
@@ -61,7 +58,6 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvoke(): void

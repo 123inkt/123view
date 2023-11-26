@@ -15,13 +15,11 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Reviewer\AddReviewerController
- * @covers ::__construct
- */
+#[CoversClass(AddReviewerController::class)]
 class AddReviewerControllerTest extends AbstractControllerTestCase
 {
     private CodeReviewRepository&MockObject $reviewRepository;
@@ -36,9 +34,6 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeNotSubmitted(): void
     {
         $request = new Request();
@@ -53,9 +48,6 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $review);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeSubmittedWithoutUser(): void
     {
         $request = new Request();
@@ -71,9 +63,6 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $review);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeSubmitted(): void
     {
         $request = new Request();

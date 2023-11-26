@@ -17,12 +17,10 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Reviewer\RemoveReviewerController
- * @covers ::__construct
- */
+#[CoversClass(RemoveReviewerController::class)]
 class RemoveReviewerControllerTest extends AbstractControllerTestCase
 {
     private ManagerRegistry&MockObject    $registry;
@@ -38,9 +36,6 @@ class RemoveReviewerControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $reviewerA = new CodeReviewer();

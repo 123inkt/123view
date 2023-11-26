@@ -5,21 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Repository;
 
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Repository\RepositoryProperty
- * @covers ::__construct
- */
+#[CoversClass(RepositoryProperty::class)]
 class RepositoryPropertyTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getRepository
-     * @covers ::setRepository
-     * @covers ::getName
-     * @covers ::setName
-     * @covers ::getValue
-     * @covers ::setValue
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(RepositoryProperty::class);

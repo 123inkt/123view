@@ -7,35 +7,26 @@ use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @extends AbstractRequestTestCase<SearchReviewsRequest>
- * @coversDefaultClass \DR\Review\Request\Reviews\SearchReviewsRequest
- * @covers ::__construct
  */
+#[CoversClass(SearchReviewsRequest::class)]
 class SearchReviewsRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getPage
-     */
     public function testGetPage(): void
     {
         $this->request->query->set('page', '10');
         static::assertSame(10, $this->validatedRequest->getPage());
     }
 
-    /**
-     * @covers ::getOrderBy
-     */
     public function testGetOrderBy(): void
     {
         $this->request->query->set('order-by', 'create-timestamp');
         static::assertSame('create-timestamp', $this->validatedRequest->getOrderBy());
     }
 
-    /**
-     * @covers ::getSearchQuery
-     */
     public function testGetSearchQuery(): void
     {
         $this->request->query->set('search', 'search');
@@ -43,7 +34,6 @@ class SearchReviewsRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

@@ -8,12 +8,10 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\User\UserService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\User\UserService
- * @covers ::__construct
- */
+#[CoversClass(UserService::class)]
 class UserServiceTest extends AbstractTestCase
 {
     private UserRepository&MockObject $userRepository;
@@ -26,9 +24,6 @@ class UserServiceTest extends AbstractTestCase
         $this->service        = new UserService($this->userRepository);
     }
 
-    /**
-     * @covers ::getUsersForRevisions
-     */
     public function testGetUsersForRevisions(): void
     {
         $userA    = new User();
@@ -41,9 +36,6 @@ class UserServiceTest extends AbstractTestCase
         static::assertSame([$userA], $users);
     }
 
-    /**
-     * @covers ::getUsersForRevisions
-     */
     public function testGetUsersForRevisionsWithoutEmail(): void
     {
         $this->userRepository->expects(self::never())->method('findBy');

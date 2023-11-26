@@ -7,14 +7,12 @@ use DR\Review\Entity\User\User;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\UserChecker;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Security\UserChecker
- * @covers ::__construct
- */
+#[CoversClass(UserChecker::class)]
 class UserCheckerTest extends AbstractTestCase
 {
     private TranslatorInterface&MockObject $translator;
@@ -27,9 +25,6 @@ class UserCheckerTest extends AbstractTestCase
         $this->checker    = new UserChecker($this->translator);
     }
 
-    /**
-     * @covers ::checkPreAuth
-     */
     public function testCheckPreAuth(): void
     {
         $userA = new User();

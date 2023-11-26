@@ -7,6 +7,7 @@ use DR\Review\Controller\App\Revision\UpdateRevisionVisibilityController;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -16,10 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Review\Revision\RevisionVisibilityFormType
- * @covers ::__construct
- */
+#[CoversClass(RevisionVisibilityFormType::class)]
 class RevisionVisibilityFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -32,9 +30,6 @@ class RevisionVisibilityFormTypeTest extends AbstractTestCase
         $this->type         = new RevisionVisibilityFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -47,9 +42,6 @@ class RevisionVisibilityFormTypeTest extends AbstractTestCase
         static::assertSame(['int'], $introspector->getAllowedTypes('reviewId'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url      = 'https://123view/revision/visibility';
@@ -76,9 +68,6 @@ class RevisionVisibilityFormTypeTest extends AbstractTestCase
         $this->type->buildForm($builder, ['reviewId' => 123]);
     }
 
-    /**
-     * @covers ::getBlockPrefix
-     */
     public function testGetBlockPrefix(): void
     {
         static::assertSame('', $this->type->getBlockPrefix());

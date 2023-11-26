@@ -17,13 +17,11 @@ use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\OpenApi\OpenApiFactory
- * @covers ::__construct
- */
+#[CoversClass(OpenApiFactory::class)]
 class OpenApiFactoryTest extends AbstractTestCase
 {
     private OpenApiFactoryInterface&MockObject      $openApiFactory;
@@ -41,8 +39,6 @@ class OpenApiFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
-     * @covers ::setParameterDescription
      * @throws Exception
      */
     public function testInvoke(): void

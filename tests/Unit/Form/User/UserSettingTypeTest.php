@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Form\User;
 use DR\Review\Entity\User\UserSetting;
 use DR\Review\Form\User\UserSettingType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,14 +14,9 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\User\UserSettingType
- */
+#[CoversClass(UserSettingType::class)]
 class UserSettingTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -41,9 +37,6 @@ class UserSettingTypeTest extends AbstractTestCase
         $type->buildForm($builder, []);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();

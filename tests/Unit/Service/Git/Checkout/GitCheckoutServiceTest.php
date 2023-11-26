@@ -13,12 +13,10 @@ use DR\Review\Service\Git\Checkout\GitCheckoutService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Checkout\GitCheckoutService
- * @covers ::__construct
- */
+#[CoversClass(GitCheckoutService::class)]
 class GitCheckoutServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -34,7 +32,6 @@ class GitCheckoutServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::checkout
      * @throws RepositoryException
      */
     public function testCheckout(): void
@@ -55,7 +52,6 @@ class GitCheckoutServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::checkoutRevision
      * @throws RepositoryException
      */
     public function testCheckoutRevision(): void

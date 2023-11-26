@@ -14,16 +14,14 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Voter\CommentVoter;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\DeleteCommentController
- * @covers ::__construct
- */
+#[CoversClass(DeleteCommentController::class)]
 class DeleteCommentControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject          $commentRepository;
@@ -38,18 +36,12 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeCommentMissing(): void
     {
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)(null);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $review = new CodeReview();

@@ -7,16 +7,11 @@ use ArrayObject;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerInterface;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider
- * @covers ::__construct
- */
+#[CoversClass(MailNotificationHandlerProvider::class)]
 class MailNotificationHandlerProviderTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getHandler
-     */
     public function testGetHandler(): void
     {
         $handler  = $this->createMock(MailNotificationHandlerInterface::class);

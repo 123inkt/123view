@@ -9,13 +9,13 @@ use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Request\Comment\GetCommentThreadRequest;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @extends AbstractRequestTestCase<GetCommentThreadRequest>
- * @coversDefaultClass \DR\Review\Request\Comment\GetCommentThreadRequest
- * @covers ::__construct
  */
+#[CoversClass(GetCommentThreadRequest::class)]
 class GetCommentThreadRequestTest extends AbstractRequestTestCase
 {
     private CodeReviewActionFactory&MockObject $actionFactory;
@@ -26,9 +26,6 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::getAction
-     */
     public function testGetAction(): void
     {
         $action = $this->createMock(AbstractReviewAction::class);
@@ -39,7 +36,6 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

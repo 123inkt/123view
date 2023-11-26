@@ -7,15 +7,11 @@ use DR\Review\Entity\Git\Fetch\BranchCreation;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Service\Parser\Fetch\GitFetchParser;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Parser\Fetch\GitFetchParser
- */
+#[CoversClass(GitFetchParser::class)]
 class GitFetchParserTest extends AbstractTestCase
 {
-    /**
-     * @covers ::parse
-     */
     public function testParse(): void
     {
         $parser = new GitFetchParser();

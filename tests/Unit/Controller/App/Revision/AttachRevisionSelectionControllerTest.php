@@ -10,13 +10,11 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Revision\AttachRevisionsViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Revision\AttachRevisionSelectionController
- * @covers ::__construct
- */
+#[CoversClass(AttachRevisionSelectionController::class)]
 class AttachRevisionSelectionControllerTest extends AbstractTestCase
 {
     private RevisionViewModelProvider&MockObject $viewModelProvider;
@@ -29,9 +27,6 @@ class AttachRevisionSelectionControllerTest extends AbstractTestCase
         $this->controller        = new AttachRevisionSelectionController($this->viewModelProvider);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request    = new Request(['search' => 'search', 'page' => 123]);

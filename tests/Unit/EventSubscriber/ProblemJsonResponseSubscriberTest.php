@@ -8,16 +8,14 @@ use DR\Review\Response\ProblemJsonResponse;
 use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * @coversDefaultClass \DR\Review\EventSubscriber\ProblemJsonResponseSubscriber
- * @covers ::__construct
- */
+#[CoversClass(ProblemJsonResponseSubscriber::class)]
 class ProblemJsonResponseSubscriberTest extends AbstractTestCase
 {
     private ProblemJsonResponseFactory&MockObject $responseFactory;
@@ -30,9 +28,6 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
         $this->subscriber      = new ProblemJsonResponseSubscriber($this->responseFactory);
     }
 
-    /**
-     * @covers ::onKernelException
-     */
     public function testOnKernelExceptionShouldSkipNonApiUrls(): void
     {
         $request = new Request();
@@ -48,9 +43,6 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
         $this->subscriber->onKernelException($event);
     }
 
-    /**
-     * @covers ::onKernelException
-     */
     public function testOnKernelException(): void
     {
         $exception = new Exception();
@@ -69,9 +61,6 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
         static::assertSame($response, $event->getResponse());
     }
 
-    /**
-     * @covers ::getSubscribedEvents
-     */
     public function testGetSubscribedEvents(): void
     {
         $expected = [KernelEvents::EXCEPTION => ['onKernelException', 2]];

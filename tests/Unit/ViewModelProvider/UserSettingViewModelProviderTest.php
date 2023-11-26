@@ -8,14 +8,12 @@ use DR\Review\Entity\User\UserAccessToken;
 use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\UserSettingViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(UserSettingViewModelProvider::class)]
 class UserSettingViewModelProviderTest extends AbstractTestCase
 {
     private User                                 $user;
@@ -30,9 +28,6 @@ class UserSettingViewModelProviderTest extends AbstractTestCase
         $this->viewModelProvider = new UserSettingViewModelProvider($this->user, $this->tokenRepository);
     }
 
-    /**
-     * @covers ::getUserSettingViewModel
-     */
     public function testGetUserSettingViewModel(): void
     {
         $formView = $this->createMock(FormView::class);
@@ -44,9 +39,6 @@ class UserSettingViewModelProviderTest extends AbstractTestCase
         static::assertSame($formView, $model->settingForm);
     }
 
-    /**
-     * @covers ::getUserAccessTokenViewModel
-     */
     public function testGetUserAccessTokenViewModel(): void
     {
         $formView    = $this->createMock(FormView::class);

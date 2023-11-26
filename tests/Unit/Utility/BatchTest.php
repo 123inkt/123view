@@ -6,20 +6,13 @@ namespace DR\Review\Tests\Unit\Utility;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\Helper\MockCallableClass;
 use DR\Review\Utility\Batch;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Utility\Batch
- * @covers ::__construct
- */
+#[CoversClass(Batch::class)]
 class BatchTest extends AbstractTestCase
 {
-    /**
-     * @covers ::addAll
-     * @covers ::add
-     * @covers ::flush
-     */
     public function testBatch(): void
     {
         $classA = new stdClass();

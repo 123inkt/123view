@@ -7,15 +7,13 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Form\Repository\RepositoryChoiceType;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Repository\RepositoryChoiceType
- * @covers ::__construct
- */
+#[CoversClass(RepositoryChoiceType::class)]
 class RepositoryChoiceTypeTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject $repository;
@@ -26,9 +24,6 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         $this->repository = $this->createMock(RepositoryRepository::class);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -57,9 +52,6 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         static::assertCount(1, $constraints);
     }
 
-    /**
-     * @covers ::getParent
-     */
     public function testGetParent(): void
     {
         $type = new RepositoryChoiceType($this->repository);

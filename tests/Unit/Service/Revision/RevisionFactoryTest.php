@@ -10,15 +10,11 @@ use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Revision\RevisionFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Revision\RevisionFactory
- */
+#[CoversClass(RevisionFactory::class)]
 class RevisionFactoryTest extends AbstractTestCase
 {
-    /**
-     * @covers ::createFromCommit
-     */
     public function testCreateFromCommit(): void
     {
         $date       = new DateTime();
@@ -42,9 +38,6 @@ class RevisionFactoryTest extends AbstractTestCase
         static::assertSame($date->getTimestamp(), $revision->getCreateTimestamp());
     }
 
-    /**
-     * @covers ::createFromCommit
-     */
     public function testCreateFromCommitShouldIgnoreRefIsHash(): void
     {
         $author = new Author('Sherlock', 'holmes@example.com');

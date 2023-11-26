@@ -7,10 +7,9 @@ use DR\Review\Entity\User\User;
 use DR\Review\Service\Asset\AssetFactory;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Utils\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Asset\AssetFactory
- */
+#[CoversClass(AssetFactory::class)]
 class AssetFactoryTest extends AbstractTestCase
 {
     private AssetFactory $assetFactory;
@@ -21,9 +20,6 @@ class AssetFactoryTest extends AbstractTestCase
         $this->assetFactory = new AssetFactory();
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreate(): void
     {
         $user  = new User();

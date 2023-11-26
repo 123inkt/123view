@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\DiffTree;
 
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitDiffTreeCommandBuilder::class)]
 class GitDiffTreeCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = [
@@ -25,21 +23,11 @@ class GitDiffTreeCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitDiffTreeCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
     public function testBuildDefaults(): void
     {
         static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
-    /**
-     * @covers ::noCommitId
-     * @covers ::nameOnly
-     * @covers ::recurseSubTree
-     * @covers ::hash
-     * @covers ::build
-     */
     public function testBuildOptions(): void
     {
         $actual = $this->builder
@@ -62,17 +50,11 @@ class GitDiffTreeCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('diff-tree', $this->builder->command());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame('git diff-tree', (string)$this->builder);

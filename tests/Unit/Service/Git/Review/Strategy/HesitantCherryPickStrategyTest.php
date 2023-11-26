@@ -15,14 +15,12 @@ use DR\Review\Service\Git\GitRepositoryResetManager;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy
- * @covers ::__construct
- */
+#[CoversClass(HesitantCherryPickStrategy::class)]
 class HesitantCherryPickStrategyTest extends AbstractTestCase
 {
     private GitCheckoutService&MockObject        $checkoutService;
@@ -50,7 +48,6 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
      * @throws Throwable
      */
     public function testGetDiffFilesSingleRevision(): void
@@ -65,8 +62,6 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
-     * @covers ::tryCherryPick
      * @throws Throwable
      */
     public function testGetDiffFilesTwoSuccessfulRevisions(): void
@@ -93,8 +88,6 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFiles
-     * @covers ::tryCherryPick
      * @throws Throwable
      */
     public function testGetDiffFilesTwoUnsuccessfulRevisions(): void

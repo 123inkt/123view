@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\Clean;
 
 use DR\Review\Service\Git\Clean\GitCleanCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Clean\GitCleanCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitCleanCommandBuilder::class)]
 class GitCleanCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = ['git', 'clean'];
@@ -22,20 +20,11 @@ class GitCleanCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitCleanCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
     public function testBuildDefaults(): void
     {
         static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
-    /**
-     * @covers ::force
-     * @covers ::skipIgnoreRules
-     * @covers ::recurseDirectories
-     * @covers ::build
-     */
     public function testBuildWithOptions(): void
     {
         static::assertSame(
@@ -44,17 +33,11 @@ class GitCleanCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('clean', $this->builder->command());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame(

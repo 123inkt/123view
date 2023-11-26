@@ -12,11 +12,9 @@ use DR\Review\Service\Filter\CommitFilter;
 use DR\Review\Service\Filter\DefinitionFileMatcher;
 use DR\Review\Service\Filter\DefinitionSubjectMatcher;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Filter\CommitFilter
- * @covers ::__construct
- */
+#[CoversClass(CommitFilter::class)]
 class CommitFilterTest extends AbstractTestCase
 {
     private CommitFilter $filter;
@@ -27,11 +25,6 @@ class CommitFilterTest extends AbstractTestCase
         $this->filter = new CommitFilter($this->logger, new DefinitionFileMatcher(), new DefinitionSubjectMatcher());
     }
 
-    /**
-     * @covers ::include
-     * @covers ::exclude
-     * @covers ::fileFilter
-     */
     public function testIncludeAndExcludeByAuthor(): void
     {
         $filter = new Filter();
@@ -46,11 +39,6 @@ class CommitFilterTest extends AbstractTestCase
         static::assertSame([0 => $commitA], $this->filter->include([$commitA, $commitB], $collection));
     }
 
-    /**
-     * @covers ::include
-     * @covers ::exclude
-     * @covers ::fileFilter
-     */
     public function testIncludeAndExcludeBySubject(): void
     {
         $filter = new Filter();
@@ -67,11 +55,6 @@ class CommitFilterTest extends AbstractTestCase
         static::assertSame([0 => $commitA], $this->filter->include([$commitA, $commitB], $collection));
     }
 
-    /**
-     * @covers ::include
-     * @covers ::exclude
-     * @covers ::fileFilter
-     */
     public function testExcludeByFile(): void
     {
         $filter = new Filter();
@@ -96,11 +79,6 @@ class CommitFilterTest extends AbstractTestCase
         static::assertSame($fileB, reset($result[0]->files));
     }
 
-    /**
-     * @covers ::include
-     * @covers ::exclude
-     * @covers ::fileFilter
-     */
     public function testIncludeByFile(): void
     {
         $filter = new Filter();

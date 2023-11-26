@@ -9,12 +9,10 @@ use DR\Review\Event\CommitEvent;
 use DR\Review\EventSubscriber\AddReviewToCommitSubscriber;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\EventSubscriber\AddReviewToCommitSubscriber
- * @covers ::__construct
- */
+#[CoversClass(AddReviewToCommitSubscriber::class)]
 class AddReviewToCommitSubscriberTest extends AbstractTestCase
 {
     private CodeReviewRepository&MockObject $reviewRepository;
@@ -27,9 +25,6 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
         $this->subscriber       = new AddReviewToCommitSubscriber($this->reviewRepository);
     }
 
-    /**
-     * @covers ::getSubscribedEvents
-     */
     public function testGetSubscribedEvents(): void
     {
         $expected = [CommitEvent::class => ['onCommitEvent']];
@@ -38,7 +33,6 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::onCommitEvent
      * @throws NonUniqueResultException
      */
     public function testOnCommitEventShouldSkipReviewWithoutRepository(): void
@@ -50,7 +44,6 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::onCommitEvent
      * @throws NonUniqueResultException
      */
     public function testOnCommitEvent(): void

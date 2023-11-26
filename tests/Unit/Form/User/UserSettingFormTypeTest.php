@@ -7,16 +7,14 @@ use DR\Review\Controller\App\User\UserSettingController;
 use DR\Review\Form\User\UserSettingFormType;
 use DR\Review\Form\User\UserSettingType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\User\UserSettingFormType
- * @covers ::__construct
- */
+#[CoversClass(UserSettingFormType::class)]
 class UserSettingFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -29,9 +27,6 @@ class UserSettingFormTypeTest extends AbstractTestCase
         $this->type         = new UserSettingFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url = 'https://123view/user/settings';

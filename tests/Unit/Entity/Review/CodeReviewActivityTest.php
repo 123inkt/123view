@@ -5,35 +5,16 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\CodeReviewActivity
- */
+#[CoversClass(CodeReviewActivity::class)]
 class CodeReviewActivityTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getId
-     * @covers ::setId
-     * @covers ::getUser
-     * @covers ::setUser
-     * @covers ::getReview
-     * @covers ::setReview
-     * @covers ::getEventName
-     * @covers ::setEventName
-     * @covers ::getData
-     * @covers ::getDataValue
-     * @covers ::setData
-     * @covers ::getCreateTimestamp
-     * @covers ::setCreateTimestamp
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(CodeReviewActivity::class);
     }
 
-    /**
-     * @covers ::getDataValue
-     */
     public function testGetDataValue(): void
     {
         $activity = new CodeReviewActivity();

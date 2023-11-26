@@ -8,19 +8,14 @@ use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @coversDefaultClass \DR\Review\Response\ProblemJsonResponseFactory
- * @covers ::__construct
- */
+#[CoversClass(ProblemJsonResponseFactory::class)]
 class ProblemJsonResponseFactoryTest extends AbstractTestCase
 {
-    /**
-     * @covers ::createFromThrowable
-     */
     public function testCreateFromThrowableHandlesHttpExceptionWithoutMessage(): void
     {
         $throwable = new HttpException(Response::HTTP_NOT_FOUND);
@@ -30,9 +25,6 @@ class ProblemJsonResponseFactoryTest extends AbstractTestCase
         static::assertSame('{"type":"about:blank","status":404,"detail":[]}', $response->getContent());
     }
 
-    /**
-     * @covers ::createFromThrowable
-     */
     public function testCreateFromThrowableHandlesHttpExceptionWithMessage(): void
     {
         $throwable = new HttpException(Response::HTTP_BAD_REQUEST, 'fooBar');
@@ -42,9 +34,6 @@ class ProblemJsonResponseFactoryTest extends AbstractTestCase
         static::assertSame('{"type":"about:blank","title":"fooBar","status":400,"detail":[]}', $response->getContent());
     }
 
-    /**
-     * @covers ::createFromThrowable
-     */
     public function testCreateFromThrowableHandlesAccessDeniedException(): void
     {
         $throwable = new AccessDeniedException('fooBar');
@@ -55,7 +44,6 @@ class ProblemJsonResponseFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::createFromThrowable
      * @throws JsonException
      */
     public function testCreateFromThrowableHandlesShowDetailsOnDebug(): void
@@ -71,9 +59,6 @@ class ProblemJsonResponseFactoryTest extends AbstractTestCase
         static::assertNotEmpty($data['detail']);
     }
 
-    /**
-     * @covers ::createFromThrowable
-     */
     public function testCreateFromThrowableReturnsEmptyResponseWhenProductionOrMessageEmpty(): void
     {
         $throwable = new Exception();

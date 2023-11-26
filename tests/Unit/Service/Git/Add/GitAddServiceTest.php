@@ -12,12 +12,10 @@ use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Add\GitAddService
- * @covers ::__construct
- */
+#[CoversClass(GitAddService::class)]
 class GitAddServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -33,7 +31,6 @@ class GitAddServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::add
      * @throws RepositoryException
      */
     public function testAdd(): void

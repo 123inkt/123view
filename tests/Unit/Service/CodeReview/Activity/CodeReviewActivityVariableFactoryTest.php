@@ -9,13 +9,11 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Model\Review\ActivityVariable;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityVariableFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityVariableFactory
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityVariableFactory::class)]
 class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject  $urlGenerator;
@@ -28,9 +26,6 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
         $this->service      = new CodeReviewActivityVariableFactory($this->urlGenerator);
     }
 
-    /**
-     * @covers ::createFromComment
-     */
     public function testCreateFromComment(): void
     {
         $review = new CodeReview();
@@ -52,9 +47,6 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
         static::assertSame('<a href="https://url/#focus:comment:123">filepath</a>', $activity->value);
     }
 
-    /**
-     * @covers ::createParams
-     */
     public function testCreateParams(): void
     {
         $variableA = new ActivityVariable('escape', 'foo & bar');

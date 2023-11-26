@@ -8,19 +8,11 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel
- * @covers ::__construct
- */
+#[CoversClass(TimelineEntryViewModel::class)]
 class TimelineEntryViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getComment
-     * @covers ::setComment
-     * @covers ::getRevision
-     * @covers ::setRevision
-     */
     public function testAccessorPairs(): void
     {
         $activity = new CodeReviewActivity();

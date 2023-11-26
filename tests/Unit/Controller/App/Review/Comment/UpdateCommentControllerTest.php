@@ -14,6 +14,7 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Voter\CommentVoter;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\UpdateCommentController
- * @covers ::__construct
- */
+#[CoversClass(UpdateCommentController::class)]
 class UpdateCommentControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject          $commentRepository;
@@ -41,9 +39,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeCommentMissing(): void
     {
         $response = ($this->controller)(new Request(), null);
@@ -51,9 +46,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeIsNotSubmitted(): void
     {
         $request = new Request();
@@ -73,10 +65,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::refererRedirect
-     */
     public function testInvokeIsSubmittedWithoutChanges(): void
     {
         $request = new Request();
@@ -102,9 +90,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         static::assertEqualsWithDelta(time(), $comment->getUpdateTimestamp(), 10);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeIsSubmittedWithChanges(): void
     {
         $request = new Request();

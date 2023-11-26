@@ -7,16 +7,14 @@ use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Comment\CommentPreviewRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @extends AbstractRequestTestCase<CommentPreviewRequest>
- * @coversDefaultClass \DR\Review\Request\Comment\CommentPreviewRequest
  */
+#[CoversClass(CommentPreviewRequest::class)]
 class CommentPreviewRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getMessage
-     */
     public function testGetState(): void
     {
         $this->request->query->set('message', 'foobar');
@@ -24,7 +22,6 @@ class CommentPreviewRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

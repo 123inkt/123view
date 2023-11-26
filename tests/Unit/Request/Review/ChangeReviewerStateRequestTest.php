@@ -8,16 +8,14 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Request\Review\ChangeReviewerStateRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @extends AbstractRequestTestCase<ChangeReviewerStateRequest>
- * @coversDefaultClass \DR\Review\Request\Review\ChangeReviewerStateRequest
  */
+#[CoversClass(ChangeReviewerStateRequest::class)]
 class ChangeReviewerStateRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getState
-     */
     public function testGetState(): void
     {
         $this->request->request->set('state', 'foobar');
@@ -25,7 +23,6 @@ class ChangeReviewerStateRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

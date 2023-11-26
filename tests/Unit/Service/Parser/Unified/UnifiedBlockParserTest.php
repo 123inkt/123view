@@ -9,11 +9,9 @@ use DR\Review\Git\LineReader;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Parser\Unified\UnifiedBlockParser
- * @covers ::__construct
- */
+#[CoversClass(UnifiedBlockParser::class)]
 class UnifiedBlockParserTest extends AbstractTestCase
 {
     private UnifiedBlockParser $parser;
@@ -24,9 +22,6 @@ class UnifiedBlockParserTest extends AbstractTestCase
         $this->parser = new UnifiedBlockParser(new UnifiedLineParser());
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseAdded(): void
     {
         $reader = new LineReader(["+added"]);
@@ -35,9 +30,6 @@ class UnifiedBlockParserTest extends AbstractTestCase
         self::assertDiffChange(DiffChange::ADDED, 'added', $block->lines[0]->changes->first());
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseRemoved(): void
     {
         $reader = new LineReader(["-removed"]);
@@ -46,9 +38,6 @@ class UnifiedBlockParserTest extends AbstractTestCase
         self::assertDiffChange(DiffChange::REMOVED, 'removed', $block->lines[0]->changes->first());
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseUnchanged(): void
     {
         $reader = new LineReader([" unchanged"]);
@@ -57,9 +46,6 @@ class UnifiedBlockParserTest extends AbstractTestCase
         self::assertDiffChange(DiffChange::UNCHANGED, 'unchanged', $block->lines[0]->changes->first());
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseComment(): void
     {
         $reader = new LineReader(["\comment"]);
@@ -67,9 +53,6 @@ class UnifiedBlockParserTest extends AbstractTestCase
         static::assertCount(0, $block->lines);
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseSkipEmptyStrings(): void
     {
         $reader = new LineReader([""]);
@@ -77,9 +60,6 @@ class UnifiedBlockParserTest extends AbstractTestCase
         static::assertCount(0, $block->lines);
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseLineNumbers(): void
     {
         $reader = new LineReader(

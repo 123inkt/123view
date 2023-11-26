@@ -7,10 +7,9 @@ use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\Parameter;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor
- */
+#[CoversClass(OperationParameterDocumentor::class)]
 class OperationParameterDocumentorTest extends AbstractTestCase
 {
     private OperationParameterDocumentor $documentor;
@@ -21,9 +20,6 @@ class OperationParameterDocumentorTest extends AbstractTestCase
         $this->documentor = new OperationParameterDocumentor();
     }
 
-    /**
-     * @covers ::getDescription
-     */
     public function testGetDescription(): void
     {
         $parameter = new Parameter('review.id', 'in');
@@ -33,9 +29,6 @@ class OperationParameterDocumentorTest extends AbstractTestCase
         static::assertSame('Exact search for the review id of the activity', $result);
     }
 
-    /**
-     * @covers ::getDescription
-     */
     public function testGetDescriptionMiss(): void
     {
         $parameter = new Parameter('foo', 'in');

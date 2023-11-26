@@ -14,14 +14,12 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Revision\DetachRevisionController
- * @covers ::__construct
- */
+#[CoversClass(DetachRevisionController::class)]
 class DetachRevisionControllerTest extends AbstractControllerTestCase
 {
     private CodeReviewRepository&MockObject $reviewRepository;
@@ -36,9 +34,6 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeBadFormSubmit(): void
     {
         $request = new Request();
@@ -58,9 +53,6 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $review);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeValidFormSubmit(): void
     {
         $request = new Request();

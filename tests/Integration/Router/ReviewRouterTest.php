@@ -8,11 +8,10 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Tests\AbstractKernelTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ReviewRouterTest extends AbstractKernelTestCase
 {
     /**

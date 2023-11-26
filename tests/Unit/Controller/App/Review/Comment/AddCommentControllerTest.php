@@ -15,16 +15,14 @@ use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\AddCommentController
- * @covers ::__construct
- */
+#[CoversClass(AddCommentController::class)]
 class AddCommentControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject          $commentRepository;
@@ -39,9 +37,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFormNotSubmitted(): void
     {
         $request = new Request();
@@ -57,10 +52,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::refererRedirect
-     */
     public function testInvokeFormSubmitted(): void
     {
         $request = new Request();

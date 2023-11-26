@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\GitDiffCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitDiffCommandBuilder::class)]
 class GitDiffCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = [
@@ -25,22 +23,11 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitDiffCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
     public function testBuildDefaults(): void
     {
         static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
-    /**
-     * @covers ::ignoreSpaceChange
-     * @covers ::ignoreBlankLines
-     * @covers ::ignoreAllSpace
-     * @covers ::ignoreSpaceAtEol
-     * @covers ::ignoreCrAtEol
-     * @covers ::build
-     */
     public function testBuildSpace(): void
     {
         $actual = $this->builder
@@ -66,12 +53,6 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::hashes
-     * @covers ::hash
-     * @covers ::unified
-     * @covers ::diffAlgorithm
-     */
     public function testBuildOptions(): void
     {
         $actual = $this->builder
@@ -96,17 +77,11 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('diff', $this->builder->command());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame('git diff', (string)$this->builder);

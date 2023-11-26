@@ -16,15 +16,13 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\RevisionViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(RevisionViewModelProvider::class)]
 class RevisionViewModelProviderTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
@@ -48,9 +46,6 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::getRevisionsViewModel
-     */
     public function testGetRevisionsViewModel(): void
     {
         $page        = 10;
@@ -68,9 +63,6 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         static::assertSame($page, $viewModel->paginator->page);
     }
 
-    /**
-     * @covers ::getRevisionViewModel
-     */
     public function testGetRevisionViewModel(): void
     {
         $revision   = new Revision();
@@ -96,9 +88,6 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         static::assertSame([$revision], $viewModel->revisions);
     }
 
-    /**
-     * @covers ::getRevisionViewModel
-     */
     public function testGetRevisionViewModelBranchReview(): void
     {
         $revision   = new Revision();

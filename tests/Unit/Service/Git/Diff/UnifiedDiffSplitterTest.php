@@ -8,10 +8,9 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\UnifiedDiffSplitter
- */
+#[CoversClass(UnifiedDiffSplitter::class)]
 class UnifiedDiffSplitterTest extends AbstractTestCase
 {
     private UnifiedDiffSplitter $splitter;
@@ -22,10 +21,6 @@ class UnifiedDiffSplitterTest extends AbstractTestCase
         $this->splitter = new UnifiedDiffSplitter();
     }
 
-    /**
-     * @covers ::splitFile
-     * @covers ::balanceLines
-     */
     public function testSplitFile(): void
     {
         $diffLineA = new DiffLine(DiffLine::STATE_ADDED, []);

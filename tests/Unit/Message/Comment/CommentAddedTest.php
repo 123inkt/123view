@@ -5,20 +5,11 @@ namespace DR\Review\Tests\Unit\Message\Comment;
 
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Message\Comment\CommentAdded
- */
+#[CoversClass(CommentAdded::class)]
 class CommentAddedTest extends AbstractMessageEventTestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::getName
-     * @covers ::getReviewId
-     * @covers ::getCommentId
-     * @covers ::getUserId
-     * @covers ::getPayload
-     */
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(

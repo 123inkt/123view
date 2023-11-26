@@ -6,10 +6,9 @@ namespace DR\Review\Tests\Unit\Service\CodeTokenizer;
 use DR\Review\Service\CodeTokenizer\CodeCommentTokenizer;
 use DR\Review\Service\CodeTokenizer\StringReader;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeTokenizer\CodeCommentTokenizer
- */
+#[CoversClass(CodeCommentTokenizer::class)]
 class CodeCommentTokenizerTest extends AbstractTestCase
 {
     private CodeCommentTokenizer $tokenizer;
@@ -20,9 +19,6 @@ class CodeCommentTokenizerTest extends AbstractTestCase
         $this->tokenizer = new CodeCommentTokenizer();
     }
 
-    /**
-     * @covers ::isCommentStart
-     */
     public function testIsCommentStart(): void
     {
         static::assertFalse($this->tokenizer->isCommentStart(new StringReader('foobar')));
@@ -30,9 +26,6 @@ class CodeCommentTokenizerTest extends AbstractTestCase
         static::assertTrue($this->tokenizer->isCommentStart(new StringReader('//foobar')));
     }
 
-    /**
-     * @covers ::readComment
-     */
     public function testReadComment(): void
     {
         static::assertSame('', $this->tokenizer->readComment(new StringReader('')));

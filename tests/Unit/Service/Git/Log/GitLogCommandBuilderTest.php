@@ -8,11 +8,9 @@ use DateTimeZone;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Log\GitLogCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitLogCommandBuilder::class)]
 class GitLogCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = [
@@ -28,22 +26,11 @@ class GitLogCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitLogCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
     public function testBuildDefaults(): void
     {
         static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
-    /**
-     * @covers ::ignoreSpaceChange
-     * @covers ::ignoreBlankLines
-     * @covers ::ignoreAllSpace
-     * @covers ::ignoreSpaceAtEol
-     * @covers ::ignoreCrAtEol
-     * @covers ::build
-     */
     public function testBuildSpace(): void
     {
         $actual = $this->builder
@@ -70,20 +57,6 @@ class GitLogCommandBuilderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::remotes
-     * @covers ::topoOrder
-     * @covers ::patch
-     * @covers ::diffAlgorithm
-     * @covers ::decorate
-     * @covers ::format
-     * @covers ::since
-     * @covers ::until
-     * @covers ::noMerges
-     * @covers ::reverse
-     * @covers ::dateOrder
-     * @covers ::maxCount
-     * @covers ::hashRange
-     * @covers ::build
      * @throws Exception
      */
     public function testBuildFormatting(): void
@@ -127,17 +100,11 @@ class GitLogCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('log', $this->builder->command());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame('git log', (string)$this->builder);

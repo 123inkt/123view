@@ -8,10 +8,9 @@ use DR\Review\Git\FormatPattern;
 use DR\Review\Service\CommitHydrator;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CommitHydrator
- */
+#[CoversClass(CommitHydrator::class)]
 class CommitHydratorTest extends AbstractTestCase
 {
     private const DATA       = [
@@ -36,7 +35,6 @@ class CommitHydratorTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::hydrate
      * @throws Exception
      */
     public function testHydrate(): void

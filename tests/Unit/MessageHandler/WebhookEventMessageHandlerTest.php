@@ -7,12 +7,10 @@ use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\MessageHandler\WebhookEventMessageHandler;
 use DR\Review\Service\Webhook\WebhookNotifier;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\WebhookEventMessageHandler
- * @covers ::__construct
- */
+#[CoversClass(WebhookEventMessageHandler::class)]
 class WebhookEventMessageHandlerTest extends AbstractTestCase
 {
     private WebhookNotifier&MockObject $notifier;
@@ -25,9 +23,6 @@ class WebhookEventMessageHandlerTest extends AbstractTestCase
         $this->handler  = new WebhookEventMessageHandler($this->notifier);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $event = $this->createMock(CodeReviewAwareInterface::class);

@@ -10,12 +10,10 @@ use DR\Review\Service\Git\Log\GitLogService;
 use DR\Review\Service\Git\Log\LockableGitLogService;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Log\LockableGitLogService
- * @covers ::__construct
- */
+#[CoversClass(LockableGitLogService::class)]
 class LockableGitLogServiceTest extends AbstractTestCase
 {
     private GitRepositoryLockManager&MockObject $lockManager;
@@ -31,7 +29,6 @@ class LockableGitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitHashes
      * @throws Exception
      */
     public function testGetCommitHashes(): void
@@ -50,7 +47,6 @@ class LockableGitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitsFromRange
      * @throws Exception
      */
     public function testGetCommitsFromRange(): void

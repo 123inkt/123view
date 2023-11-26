@@ -15,12 +15,10 @@ use DR\Review\Service\Git\Log\FormatPatternFactory;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Log\GitLogCommandFactory
- * @covers ::__construct
- */
+#[CoversClass(GitLogCommandFactory::class)]
 class GitLogCommandFactoryTest extends AbstractTestCase
 {
     private GitLogCommandBuilder&MockObject $commandBuilder;
@@ -35,9 +33,6 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $this->factory = new GitLogCommandFactory($factory, new FormatPatternFactory());
     }
 
-    /**
-     * @covers ::fromRule
-     */
     public function testFromRuleWithMinimalOptions(): void
     {
         $rule = new Rule();
@@ -71,9 +66,6 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $this->factory->fromRule($config);
     }
 
-    /**
-     * @covers ::fromRule
-     */
     public function testFromRuleWithAllOptions(): void
     {
         $rule = new Rule();

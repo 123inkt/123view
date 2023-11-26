@@ -5,18 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DR\Review\Entity\Review\UserMention;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\UserMention
- */
+#[CoversClass(UserMention::class)]
 class UserMentionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getComment
-     * @covers ::setComment
-     * @covers ::getUserId
-     * @covers ::setUserId
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(UserMention::class);

@@ -10,11 +10,9 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Utils\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Review\CodeReviewActivityRepository
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityRepository::class)]
 class CodeReviewActivityRepositoryTest extends AbstractRepositoryTestCase
 {
     private CodeReviewActivityRepository $activityRepository;
@@ -27,9 +25,6 @@ class CodeReviewActivityRepositoryTest extends AbstractRepositoryTestCase
         $this->reviewRepository   = static::getService(CodeReviewRepository::class);
     }
 
-    /**
-     * @covers ::findForUser
-     */
     public function testFindForUser(): void
     {
         $actorId = 456;
@@ -47,9 +42,6 @@ class CodeReviewActivityRepositoryTest extends AbstractRepositoryTestCase
         static::assertCount(1, $result);
     }
 
-    /**
-     * @covers ::findForUser
-     */
     public function testFindForUserForRepository(): void
     {
         $actorId = 456;
