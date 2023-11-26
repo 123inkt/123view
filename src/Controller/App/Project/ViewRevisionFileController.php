@@ -8,7 +8,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Git\Show\LockableGitShowService;
-use DR\Review\Utility\FileUtil;
+use DR\Review\Utility\MimeTypes;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,7 @@ class ViewRevisionFileController extends AbstractController
     public function __invoke(Request $request, #[MapEntity] Revision $revision): Response
     {
         $file     = $request->query->getString('file');
-        $mimeType = FileUtil::getMimeType($file);
+        $mimeType = MimeTypes::getMimeType($file);
         if ($mimeType === null) {
             throw new BadRequestHttpException(sprintf('Could not determine mime-type for file "%s"', $file));
         }

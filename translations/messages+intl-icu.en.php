@@ -326,4 +326,6 @@ return [
     'unread'                                      => 'unread',
     'no.notifications'                            => 'No notifications',
     'no.unread.notifications'                     => 'No unread notifications',
+    'binary.file'                                 => 'File is binary',
+    'view.file'                                   => 'View file',
 ];

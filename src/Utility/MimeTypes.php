@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Utility;
 
-class FileUtil
+class MimeTypes
 {
     public static function getMimeType(string $filePath): ?string
     {
