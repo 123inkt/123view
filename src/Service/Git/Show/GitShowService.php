@@ -56,6 +56,6 @@ class GitShowService implements LoggerAwareInterface
 
         $output = $this->repositoryService->getRepository($revision->getRepository())->execute($commandBuilder);
 
-        return $binary ? base64_decode(preg_replace("/\s+/", "", $output), true) : $output;
+        return $binary ? (string)base64_decode((string)preg_replace("/\s+/", "", $output), true) : $output;
     }
 }
