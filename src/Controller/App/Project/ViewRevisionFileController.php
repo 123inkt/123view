@@ -35,7 +35,7 @@ class ViewRevisionFileController extends AbstractController
             throw new BadRequestHttpException(sprintf('Could not determine mime-type for file "%s"', $file));
         }
 
-        $contents = $this->showService->getFileContents($revision, $file, FileUtil::isBinary($mimeType));
+        $contents = $this->showService->getFileContents($revision, $file, true);
 
         return new Response($contents, Response::HTTP_OK, ['Content-Type' => $mimeType, 'Cache-Control' => 'public']);
     }

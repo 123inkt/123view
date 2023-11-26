@@ -34,15 +34,4 @@ class FileUtilTest extends AbstractTestCase
     {
         self::assertSame($expected, FileUtil::isImage($mimeType));
     }
-
-    #[TestWith(['image/png', true])]
-    #[TestWith(['image/jpg', true])]
-    #[TestWith(['image/gif', true])]
-    #[TestWith(['application/pdf', true])]
-    #[TestWith(['text/markdown', false])]
-    #[TestWith(['text/plain', false])]
-    public function testIsBinary(string $mimeType, bool $expected): void
-    {
-        self::assertSame($expected, FileUtil::isBinary($mimeType));
-    }
 }

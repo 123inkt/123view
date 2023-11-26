@@ -20,24 +20,4 @@ class FileUtil
     {
         return str_starts_with($mimeType, 'image/');
     }
-
-    public static function isBinary(string $mimeType): bool
-    {
-        if (self::isImage($mimeType)) {
-            return true;
-        }
-
-        if (str_starts_with($mimeType, 'text/')) {
-            return false;
-        }
-
-        return in_array(
-            $mimeType,
-            [
-                'application/octet-stream',
-                'application/pdf',
-            ],
-            true
-        );
-    }
 }
