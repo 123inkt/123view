@@ -164,6 +164,16 @@ class DiffFileTest extends AbstractTestCase
         static::assertTrue($file->isRename());
     }
 
+    public function testGetMimeType(): void
+    {
+        $file                 = new DiffFile();
+        $file->filePathBefore = 'foobar.txt';
+        static::assertSame('text/plain', $file->getMimeType());
+
+        $file->filePathAfter = 'foobar.jpg';
+        static::assertSame('image/jpeg', $file->getMimeType());
+    }
+
     public function testIsImage(): void
     {
         $file                 = new DiffFile();
