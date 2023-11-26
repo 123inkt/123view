@@ -9,7 +9,7 @@
             <i class="bi bi-file-binary"></i> {{ 'binary.file'|trans }}.
             <a href="{{ path('DR\\Review\\Controller\\App\\Project\\ViewRevisionFileController', {id: revision.id, file: file.pathname}) }}"
                target="_blank">
-                {{ 'view.markdown'|trans }}
+                {{ 'view.file'|trans }}
             </a>
         </div>
     {% elseif file.mimeType == 'text/markdown' %}
@@ -17,7 +17,8 @@
                 {{ stimulus_controller('inline-file-viewer', {file: path('DR\\Review\\Controller\\App\\Project\\ViewRevisionFileController', {id: revision.id, file: file.pathname})}) }}
 
         >
-            <i class="bi bi-filetype-md"></i> <a href="#" {{ stimulus_action('inline-file-viewer', 'viewFile', 'click') }}>{{ 'view.file'|trans }}</a>
+            <i class="bi bi-filetype-md"></i>
+            <a href="#" {{ stimulus_action('inline-file-viewer', 'viewFile', 'click') }}>{{ 'view.markdown'|trans }}</a>
         </div>
     {% endif %}
 {% else %}
