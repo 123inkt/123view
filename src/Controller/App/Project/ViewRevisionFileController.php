@@ -37,6 +37,6 @@ class ViewRevisionFileController extends AbstractController
 
         $contents = $this->showService->getFileContents($revision, $file, FileUtil::isBinary($mimeType));
 
-        return new Response($contents, Response::HTTP_OK, ['Content-Type' => $mimeType]);
+        return new Response($contents, Response::HTTP_OK, ['Content-Type' => $mimeType, 'Cache-Control' => 'public']);
     }
 }
