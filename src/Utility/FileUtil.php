@@ -8,50 +8,33 @@ class FileUtil
 {
     public static function getMimeType(string $filePath): ?string
     {
-        if (preg_match('/\.png$/i', $filePath)) {
-            return 'image/png';
-        }
-        if (preg_match('/\.jpe?g$/i', $filePath)) {
-            return 'image/jpg';
-        }
-        if (preg_match('/\.gif$/i', $filePath)) {
-            return 'image/gif';
-        }
-        if (preg_match('/\.svg$/i', $filePath)) {
-            return 'image/svg+xml';
-        }
-        if (preg_match('/\.pdf$/i', $filePath)) {
-            return 'application/pdf';
-        }
-        if (preg_match('/\.md?$/i', $filePath)) {
-            return 'text/markdown';
-        }
+        static $mimes = null;
+        $mimes ??= require __DIR__ . '/../../resources/mimes/mime-types.php';
 
-        return null;
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+
+        return $mimes[$extension] ?? null;
     }
 
     public static function isImage(string $mimeType): bool
     {
-        return in_array(
-            $mimeType,
-            [
-                'image/png',
-                'image/jpg',
-                'image/gif',
-                'image/svg+xml',
-            ],
-            true
-        );
+        return str_starts_with($mimeType, 'image/');
     }
 
     public static function isBinary(string $mimeType): bool
     {
+        if (self::isImage($mimeType)) {
+            return true;
+        }
+
+        if (str_starts_with($mimeType, 'text/')) {
+            return false;
+        }
+
         return in_array(
             $mimeType,
             [
-                'image/png',
-                'image/jpg',
-                'image/gif',
+                'application/octet-stream',
                 'application/pdf',
             ],
             true

@@ -12,13 +12,13 @@ use PHPUnit\Framework\Attributes\TestWith;
 class FileUtilTest extends AbstractTestCase
 {
     #[TestWith(['test.png', 'image/png'])]
-    #[TestWith(['test.jpg', 'image/jpg'])]
-    #[TestWith(['test.jpeg', 'image/jpg'])]
+    #[TestWith(['test.jpg', 'image/jpeg'])]
+    #[TestWith(['test.jpeg', 'image/jpeg'])]
     #[TestWith(['test.gif', 'image/gif'])]
     #[TestWith(['test.svg', 'image/svg+xml'])]
     #[TestWith(['test.pdf', 'application/pdf'])]
     #[TestWith(['test.md', 'text/markdown'])]
-    #[TestWith(['test.txt', null])]
+    #[TestWith(['test.foo', null])]
     public function testGetMimeType(string $filePath, ?string $expectedMimeType): void
     {
         self::assertSame($expectedMimeType, FileUtil::getMimeType($filePath));
