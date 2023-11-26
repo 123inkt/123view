@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Git\Diff;
 
+use DR\Review\Utility\MimeTypes;
 use SplFileInfo;
 
 class DiffFile
@@ -21,6 +22,7 @@ class DiffFile
     public ?string $hashEnd   = null;
 
     public bool $hasMergeConflict = false;
+    public bool $binary           = false;
 
     /** @var DiffBlock[] */
     private array $blocks = [];
@@ -79,6 +81,18 @@ class DiffFile
         }
 
         return $this->filePathBefore !== $this->filePathAfter;
+    }
+
+    public function getMimeType(): ?string
+    {
+        return MimeTypes::getMimeType($this->getPathname());
+    }
+
+    public function isImage(): bool
+    {
+        $mimeType = MimeTypes::getMimeType($this->getPathname());
+
+        return $mimeType !== null && MimeTypes::isImage($mimeType);
     }
 
     public function getFileMode(): string

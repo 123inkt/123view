@@ -10,13 +10,11 @@ use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Parser\DiffFileParser
- * @covers ::__construct
- */
+#[CoversClass(DiffFileParser::class)]
 class DiffFileParserTest extends AbstractTestCase
 {
     private UnifiedBlockParser&MockObject $blockParser;
@@ -30,8 +28,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
      * @throws ParseException
      */
     public function testParseException(): void
@@ -47,9 +43,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
      * @throws ParseException
      */
     public function testParseNewFile(): void
@@ -76,9 +69,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
      * @throws ParseException
      */
     public function testParseDeleteFile(): void
@@ -105,9 +95,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
      * @throws ParseException
      */
     public function testParseChanges(): void
@@ -133,9 +120,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
      * @throws ParseException
      */
     public function testParseChangesWhereAllOriginalLinesWereRemoved(): void
@@ -161,9 +145,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
      * @throws ParseException
      */
     public function testParseChangesWhereAllOnlyOneLineIsAdded(): void
@@ -189,9 +170,6 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
      * @throws ParseException
      */
     public function testParseFileModeChange(): void
@@ -205,9 +183,18 @@ class DiffFileParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
-     * @covers ::tryParse
-     * @covers ::readFileInfo
+     * @throws ParseException
+     */
+    public function testParseFileBinaryData(): void
+    {
+        // prepare data
+        $contents = "old mode 100644\nnew mode 100755\nBinary files /dev/null and b/test-change-file.xml differ\n";
+
+        $result = $this->parser->parse($contents, new DiffFile());
+        static::assertTrue($result->binary);
+    }
+
+    /**
      * @throws ParseException
      */
     public function testParseMultiBlockChanges(): void

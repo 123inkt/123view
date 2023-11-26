@@ -8,12 +8,10 @@ use DR\Review\Controller\App\Review\Comment\CommentPreviewController;
 use DR\Review\Entity\User\User;
 use DR\Review\Request\Comment\CommentPreviewRequest;
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
+use DR\Review\Service\Markdown\MarkdownConverterService;
 use DR\Review\Tests\AbstractControllerTestCase;
-use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Output\RenderedContentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
-use function PHPUnit\Framework\once;
 
 /**
  * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\CommentPreviewController
@@ -21,12 +19,12 @@ use function PHPUnit\Framework\once;
  */
 class CommentPreviewControllerTest extends AbstractControllerTestCase
 {
-    private MarkdownConverter&MockObject     $markdownService;
-    private CommentMentionService&MockObject $mentionService;
+    private MarkdownConverterService&MockObject $markdownService;
+    private CommentMentionService&MockObject    $mentionService;
 
     protected function setUp(): void
     {
-        $this->markdownService = $this->createMock(MarkdownConverter::class);
+        $this->markdownService = $this->createMock(MarkdownConverterService::class);
         $this->mentionService  = $this->createMock(CommentMentionService::class);
         parent::setUp();
     }
@@ -49,9 +47,7 @@ class CommentPreviewControllerTest extends AbstractControllerTestCase
             ->with('message1', ['@user:123[Sherlock Holmes]' => $user])
             ->willReturn('message2');
 
-        $renderedContent = $this->createMock(RenderedContentInterface::class);
-        $renderedContent->expects(once())->method('getContent')->willReturn('markdown');
-        $this->markdownService->expects(self::once())->method('convert')->with('message2')->willReturn($renderedContent);
+        $this->markdownService->expects(self::once())->method('convert')->with('message2')->willReturn('markdown');
 
         /** @var Response $response */
         $response = ($this->controller)($request);

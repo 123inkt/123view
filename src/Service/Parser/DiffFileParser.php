@@ -79,6 +79,10 @@ class DiffFileParser
                 $fileDiff->filePathAfter = null;
             }
 
+            if (str_starts_with($line, 'Binary files')) {
+                $fileDiff->binary = true;
+            }
+
             if (preg_match('/^index (\w+)\.\.(\w+)/', $line, $matches) !== 1) {
                 continue;
             }

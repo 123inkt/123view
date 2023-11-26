@@ -53,15 +53,14 @@ class ReviewViewModelProvider
             $viewModel->setReviewSummaryViewModel($this->summaryViewModelProvider->getSummaryViewModel($review, $revisions, $fileTree));
             $viewModel->setDescriptionVisible(true);
         } else {
-            $viewModel->setFileDiffViewModel(
-                $this->fileDiffViewModelProvider->getFileDiffViewModel(
-                    $review,
-                    $selectedFile,
-                    $request->getAction(),
-                    $request->getComparisonPolicy(),
-                    $selectedFile->isModified() ? $request->getDiffMode() : ReviewDiffModeEnum::INLINE
-                )
+            $fileDiffViewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel(
+                $review,
+                $selectedFile,
+                $request->getAction(),
+                $request->getComparisonPolicy(),
+                $selectedFile->isModified() ? $request->getDiffMode() : ReviewDiffModeEnum::INLINE
             );
+            $viewModel->setFileDiffViewModel($fileDiffViewModel->setRevisions($visibleRevisions));
             $viewModel->setDescriptionVisible(false);
         }
 

@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\Show;
 
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Show\GitShowCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitShowCommandBuilder::class)]
 class GitShowCommandBuilderTest extends AbstractTestCase
 {
     private GitShowCommandBuilder $builder;
@@ -20,26 +18,11 @@ class GitShowCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitShowCommandBuilder('git');
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('show', $this->builder->command());
     }
 
-    /**
-     * @covers ::startPoint
-     * @covers ::unified
-     * @covers ::ignoreSpaceAtEol
-     * @covers ::ignoreCrAtEol
-     * @covers ::ignoreSpaceChange
-     * @covers ::ignoreAllSpace
-     * @covers ::noPatch
-     * @covers ::format
-     * @covers ::file
-     * @covers ::build
-     */
     public function testBuild(): void
     {
         static::assertSame(
@@ -54,7 +37,8 @@ class GitShowCommandBuilderTest extends AbstractTestCase
                 '--ignore-space-at-eol',
                 '--ignore-cr-at-eol',
                 '--ignore-space-change',
-                '--ignore-all-space'
+                '--ignore-all-space',
+                '| base64'
             ],
             $this->builder->startPoint('foobar')
                 ->unified(5)
@@ -65,20 +49,11 @@ class GitShowCommandBuilderTest extends AbstractTestCase
                 ->ignoreCrAtEol()
                 ->ignoreSpaceChange()
                 ->ignoreAllSpace()
+                ->base64encode()
                 ->build()
         );
     }
 
-    /**
-     * @covers ::startPoint
-     * @covers ::unified
-     * @covers ::ignoreSpaceAtEol
-     * @covers ::ignoreCrAtEol
-     * @covers ::noPatch
-     * @covers ::format
-     * @covers ::file
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame(
