@@ -4,17 +4,16 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Git\Show;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\Show\GitShowService;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Show\LockableGitShowService
- * @covers ::__construct
- */
+#[CoversClass(LockableGitShowService::class)]
 class LockableGitShowServiceTest extends AbstractTestCase
 {
     private GitRepositoryLockManager&MockObject $lockManager;
@@ -30,7 +29,6 @@ class LockableGitShowServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitFromHash
      * @throws Exception
      */
     public function testGetCommitFromHash(): void
@@ -47,5 +45,23 @@ class LockableGitShowServiceTest extends AbstractTestCase
 
         $result = $this->service->getCommitFromHash($repository, 'hash');
         static::assertSame($commit, $result);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetFileContents(): void
+    {
+        $repository = new Repository();
+        $revision   = new Revision();
+        $revision->setRepository($repository);
+
+        $this->lockManager->expects(self::once())
+            ->method('start')
+            ->with($repository)
+            ->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'file', true)->willReturn('output');
+
+        static::assertSame('output', $this->service->getFileContents($revision, 'file', true));
     }
 }

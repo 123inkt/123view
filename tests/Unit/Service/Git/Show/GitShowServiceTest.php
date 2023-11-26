@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Git\Show;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
+use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
@@ -14,12 +16,10 @@ use DR\Review\Service\Parser\GitLogParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Show\GitShowService
- * @covers ::__construct
- */
+#[CoversClass(GitShowService::class)]
 class GitShowServiceTest extends AbstractTestCase
 {
     private GitCommandBuilderFactory&MockObject $builderFactory;
@@ -39,7 +39,6 @@ class GitShowServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitFromHash
      * @throws Exception
      */
     public function testGetCommitFromHash(): void
@@ -62,5 +61,51 @@ class GitShowServiceTest extends AbstractTestCase
         $this->logParser->expects(self::once())->method('parse')->with($repository, 'output')->willReturn([$commit]);
 
         static::assertSame($commit, $this->service->getCommitFromHash($repository, 'hash'));
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function testFileContentsWithBinaryData(): void
+    {
+        $repository = new Repository();
+        $revision   = new Revision();
+        $revision->setRepository($repository);
+        $revision->setCommitHash('hash');
+
+        $commandBuilder = $this->createMock(GitShowCommandBuilder::class);
+        $gitRepository  = $this->createMock(GitRepository::class);
+
+        $commandBuilder->expects(self::once())->method('file')->with('hash', 'file')->willReturnSelf();
+        $commandBuilder->expects(self::once())->method('base64encode')->willReturnSelf();
+        $this->builderFactory->expects(self::once())->method('createShow')->willReturn($commandBuilder);
+
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn(base64_encode('output'));
+
+        static::assertSame('output', $this->service->getFileContents($revision, 'file', true));
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function testFileContentsWithTextData(): void
+    {
+        $repository = new Repository();
+        $revision   = new Revision();
+        $revision->setRepository($repository);
+        $revision->setCommitHash('hash');
+
+        $commandBuilder = $this->createMock(GitShowCommandBuilder::class);
+        $gitRepository  = $this->createMock(GitRepository::class);
+
+        $commandBuilder->expects(self::once())->method('file')->with('hash', 'file')->willReturnSelf();
+        $commandBuilder->expects(self::never())->method('base64encode');
+        $this->builderFactory->expects(self::once())->method('createShow')->willReturn($commandBuilder);
+
+        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
+
+        static::assertSame('output', $this->service->getFileContents($revision, 'file'));
     }
 }
