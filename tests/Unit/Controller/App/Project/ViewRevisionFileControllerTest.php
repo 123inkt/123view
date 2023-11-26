@@ -29,7 +29,7 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $request  = new Request(['file' => 'image.jpg']);
         $revision = new Revision();
 
-        $this->showService->expects(self::once())->method('getFileContents')->willReturn('contents');
+        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'image.jpg', true)->willReturn('contents');
 
         $response = ($this->controller)($request, $revision);
         self::assertSame('contents', $response->getContent());
