@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Twig;
 
-use League\CommonMark\MarkdownConverter;
+use DR\Review\Service\Markdown\MarkdownConverterService;
+use League\CommonMark\Exception\CommonMarkException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class MarkdownExtension extends AbstractExtension
 {
-    public function __construct(private readonly MarkdownConverter $converter)
+    public function __construct(private readonly MarkdownConverterService $converter)
     {
     }
 
@@ -21,11 +22,11 @@ class MarkdownExtension extends AbstractExtension
         return [new TwigFilter('markdown', [$this, 'convert'], ['is_safe' => ['all']])];
     }
 
+    /**
+     * @throws CommonMarkException
+     */
     public function convert(string $string): string
     {
-        $result = $this->converter->convert($string)->getContent();
-
-        // strip <br> after <ul> and <li>
-        return (string)preg_replace('/(<ul>|<\\/li>)\s*<br>/i', '$1', $result);
+        return $this->converter->convert($string);
     }
 }

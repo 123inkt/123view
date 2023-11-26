@@ -83,6 +83,11 @@ class DiffFile
         return $this->filePathBefore !== $this->filePathAfter;
     }
 
+    public function getMimeType(): ?string
+    {
+        return MimeTypes::getMimeType($this->getPathname());
+    }
+
     public function isImage(): bool
     {
         $mimeType = MimeTypes::getMimeType($this->getPathname());

@@ -6,7 +6,7 @@
 
 <div class="review-grid-code">
     {% include 'app/review/commit/commit.header.html.twig' %}
-    {% include 'app/review/commit/commit.file.image-preview.html.twig' %}
+    {% include 'app/review/commit/commit.file.preview.html.twig' %}
 
     <div class="diff-file__file-revision-scrollpane" {{ stimulus_controller('scroll-positioner') }}>
         <div class="diff-file__file-revision-file" {{ stimulus_target('review', 'revisionFile') }}
