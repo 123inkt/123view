@@ -8,17 +8,11 @@ use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\Diff\DiffFile
- */
+#[CoversClass(DiffFile::class)]
 class DiffFileTest extends AbstractTestCase
 {
-    /**
-     * @covers ::removeBlocks
-     * @covers ::getBlocks
-     * @covers ::addBlock
-     */
     public function testGetBlocks(): void
     {
         $file = new DiffFile();
@@ -32,10 +26,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertCount(0, $file->getBlocks());
     }
 
-    /**
-     * @covers ::addBlocks
-     * @covers ::getBlocks
-     */
     public function testAddBlocks(): void
     {
         $file = new DiffFile();
@@ -46,9 +36,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame([$block], $file->getBlocks());
     }
 
-    /**
-     * @covers ::getFileMode
-     */
     public function testGetFileMode(): void
     {
         $file = new DiffFile();
@@ -63,9 +50,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame(DiffFile::FILE_ADDED, $file->getFileMode());
     }
 
-    /**
-     * @covers ::getFile
-     */
     public function testGetFile(): void
     {
         $file = new DiffFile();
@@ -78,9 +62,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame('/foo/after.txt', $file->getFile()?->getPathname());
     }
 
-    /**
-     * @covers ::getFilename
-     */
     public function testGetFilename(): void
     {
         $file = new DiffFile();
@@ -93,9 +74,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame('after.txt', $file->getFilename());
     }
 
-    /**
-     * @covers ::getExtension
-     */
     public function testGetExtension(): void
     {
         $file = new DiffFile();
@@ -108,9 +86,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame('xls', $file->getExtension());
     }
 
-    /**
-     * @covers ::getPathname
-     */
     public function testGetPathname(): void
     {
         $file = new DiffFile();
@@ -123,9 +98,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame('/after/after.txt', $file->getPathname());
     }
 
-    /**
-     * @covers ::getDirname
-     */
     public function testGetDirname(): void
     {
         $file = new DiffFile();
@@ -138,9 +110,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame('/after', $file->getDirname());
     }
 
-    /**
-     * @covers ::isModified
-     */
     public function testIsModified(): void
     {
         $file = new DiffFile();
@@ -153,9 +122,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertTrue($file->isModified());
     }
 
-    /**
-     * @covers ::isDeleted
-     */
     public function testIsDeleted(): void
     {
         $file = new DiffFile();
@@ -170,9 +136,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertFalse($file->isDeleted());
     }
 
-    /**
-     * @covers ::isAdded
-     */
     public function testIsAdded(): void
     {
         $file = new DiffFile();
@@ -187,9 +150,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertFalse($file->isAdded());
     }
 
-    /**
-     * @covers ::isRename
-     */
     public function testIsRename(): void
     {
         $file = new DiffFile();
@@ -204,9 +164,16 @@ class DiffFileTest extends AbstractTestCase
         static::assertTrue($file->isRename());
     }
 
-    /**
-     * @covers ::getLines
-     */
+    public function testIsImage(): void
+    {
+        $file                 = new DiffFile();
+        $file->filePathBefore = 'foobar.txt';
+        static::assertFalse($file->isImage());
+
+        $file->filePathAfter = 'foobar.jpg';
+        static::assertTrue($file->isImage());
+    }
+
     public function testGetLines(): void
     {
         $lineA        = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'line 1')]);
@@ -219,12 +186,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame(['line 2'], $file->getLines());
     }
 
-    /**
-     * @covers ::getNrOfLinesAdded
-     * @covers ::getNrOfLinesRemoved
-     * @covers ::getTotalNrOfLines
-     * @covers ::updateLinesChanged
-     */
     public function testGetNrOfLinesAdded(): void
     {
         // 2 lines added, 1 changed, 1 removed, and 1 unchanged
@@ -250,9 +211,6 @@ class DiffFileTest extends AbstractTestCase
         static::assertSame(4, $file->getTotalNrOfLines());
     }
 
-    /**
-     * @covers ::getMaxLineNumberLength
-     */
     public function testGetMaxLineNumberLength(): void
     {
         $lineA                   = new DiffLine(DiffLine::STATE_UNCHANGED, []);
