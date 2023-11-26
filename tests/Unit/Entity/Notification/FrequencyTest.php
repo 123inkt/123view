@@ -7,15 +7,12 @@ use DateTimeImmutable;
 use DR\Review\Entity\Notification\Frequency;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Notification\Frequency
- */
+#[CoversClass(Frequency::class)]
 class FrequencyTest extends AbstractTestCase
 {
-    /**
-     * @covers ::isValid
-     */
     public function testIsValid(): void
     {
         static::assertTrue(Frequency::isValid(Frequency::ONCE_PER_HOUR));
@@ -27,10 +24,7 @@ class FrequencyTest extends AbstractTestCase
         static::assertFalse(Frequency::isValid('foobar'));
     }
 
-    /**
-     * @covers ::getPeriod
-     * @dataProvider getPeriodDataProvider
-     */
+    #[DataProvider('getPeriodDataProvider')]
     public static function testGetPeriod(string $frequency, DateTimeImmutable $expectedStartTime): void
     {
         $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');
@@ -55,9 +49,6 @@ class FrequencyTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @covers ::getPeriod
-     */
     public function testToGetPeriodInvalidArgument(): void
     {
         $currentTime = new DateTimeImmutable('2021-10-18 22:05:00');

@@ -7,17 +7,12 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Tests\AbstractTestCase;
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-/**
- * @coversDefaultClass \DR\Review\Model\Review\DirectoryTreeNode
- * @covers ::__construct
- */
+#[CoversClass(DirectoryTreeNode::class)]
 class DirectoryTreeNodeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getDirectory
-     */
     public function testGetDirectory(): void
     {
         $nodeA = new DirectoryTreeNode('nodeA');
@@ -28,10 +23,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertNull($node->getDirectory('foobar'));
     }
 
-    /**
-     * @covers ::flatten
-     * @covers ::addNode
-     */
     public function testFlattenEqualPath(): void
     {
         $node = new DirectoryTreeNode('');
@@ -45,10 +36,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertEquals($expected, $node);
     }
 
-    /**
-     * @covers ::flatten
-     * @covers ::addNode
-     */
     public function testFlattenUnevenPath(): void
     {
         $node = new DirectoryTreeNode('');
@@ -66,10 +53,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertEquals($expected, $node);
     }
 
-    /**
-     * @covers ::flatten
-     * @covers ::addNode
-     */
     public function testFlattenEvenSubdirectoryPath(): void
     {
         $node = new DirectoryTreeNode('');
@@ -90,9 +73,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertEquals($expected, $node);
     }
 
-    /**
-     * @covers ::sort
-     */
     public function testSort(): void
     {
         $objA           = new stdClass();
@@ -113,18 +93,12 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertEquals($expected, $node);
     }
 
-    /**
-     * @covers ::addNode
-     */
     public function testAddNodeEmptyPathIsDisallowed(): void
     {
         $this->expectException(LogicException::class);
         (new DirectoryTreeNode(''))->addNode([], new stdClass());
     }
 
-    /**
-     * @covers ::getDirectories
-     */
     public function testGetDirectories(): void
     {
         $nodeA = new DirectoryTreeNode('nodeA');
@@ -134,18 +108,12 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertSame([$nodeA, $nodeB], $node->getDirectories());
     }
 
-    /**
-     * @covers ::getName
-     */
     public function testGetName(): void
     {
         $nodeA = new DirectoryTreeNode('nodeA');
         static::assertSame('nodeA', $nodeA->getName());
     }
 
-    /**
-     * @covers ::isEmpty
-     */
     public function testIsEmpty(): void
     {
         $nodeA = new DirectoryTreeNode('nodeA');
@@ -155,9 +123,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertFalse($nodeB->isEmpty());
     }
 
-    /**
-     * @covers ::getFiles
-     */
     public function testGetFiles(): void
     {
         $objA = new stdClass();
@@ -167,9 +132,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertSame([$objA, $objB], $node->getFiles());
     }
 
-    /**
-     * @covers ::getFilesRecursive
-     */
     public function testGetFilesRecursive(): void
     {
         $objA = new stdClass();
@@ -181,9 +143,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertSame([$objA, $objB], $node->getFilesRecursive());
     }
 
-    /**
-     * @covers ::getFirstFileInTree
-     */
     public function testGetFirstFileInTree(): void
     {
         $objA = new stdClass();
@@ -202,7 +161,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
 
     /**
      * When there are no files in the tree, should return null
-     * @covers ::getFirstFileInTree
      */
     public function testGetFirstFileInTreeEmptyDirectories(): void
     {
@@ -211,9 +169,6 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         static::assertNull($node->getFirstFileInTree());
     }
 
-    /**
-     * @covers ::getFileIterator
-     */
     public function testGetFileIterator(): void
     {
         $fileA = new DiffFile();

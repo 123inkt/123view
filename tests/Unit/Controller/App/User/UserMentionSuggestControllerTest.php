@@ -9,12 +9,10 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Request\User\UserMentionSuggestRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\User\UserMentionSuggestController
- * @covers ::__construct
- */
+#[CoversClass(UserMentionSuggestController::class)]
 class UserMentionSuggestControllerTest extends AbstractTestCase
 {
     private UserRepository&MockObject    $userRepository;
@@ -27,9 +25,6 @@ class UserMentionSuggestControllerTest extends AbstractTestCase
         $this->controller     = new UserMentionSuggestController($this->userRepository);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request = $this->createMock(UserMentionSuggestRequest::class);

@@ -7,12 +7,10 @@ use DR\Review\Service\Markdown\MarkdownConverterService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\MarkdownExtension;
 use League\CommonMark\Exception\CommonMarkException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\MarkdownExtension
- * @covers ::__construct
- */
+#[CoversClass(MarkdownExtension::class)]
 class MarkdownExtensionTest extends AbstractTestCase
 {
     private MarkdownConverterService&MockObject $markdownConverter;
@@ -25,16 +23,12 @@ class MarkdownExtensionTest extends AbstractTestCase
         $this->extension         = new MarkdownExtension($this->markdownConverter);
     }
 
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         static::assertCount(1, $this->extension->getFilters());
     }
 
     /**
-     * @covers ::convert
      * @throws CommonMarkException
      */
     public function testConvert(): void

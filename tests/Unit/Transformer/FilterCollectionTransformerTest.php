@@ -7,10 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Notification\Filter;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Transformer\FilterCollectionTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Transformer\FilterCollectionTransformer
- */
+#[CoversClass(FilterCollectionTransformer::class)]
 class FilterCollectionTransformerTest extends AbstractTestCase
 {
     private FilterCollectionTransformer $transformer;
@@ -21,17 +20,11 @@ class FilterCollectionTransformerTest extends AbstractTestCase
         $this->transformer = new FilterCollectionTransformer();
     }
 
-    /**
-     * @covers ::transform
-     */
     public function testTransformValueMustBeCollection(): void
     {
         static::assertNull($this->transformer->transform(null));
     }
 
-    /**
-     * @covers ::transform
-     */
     public function testTransformCollection(): void
     {
         $filterA    = (new Filter())->setInclusion(true);
@@ -47,17 +40,11 @@ class FilterCollectionTransformerTest extends AbstractTestCase
         static::assertEquals($expect, $result);
     }
 
-    /**
-     * @covers ::reverseTransform
-     */
     public function testReverseTransformValueMustBeArray(): void
     {
         static::assertNull($this->transformer->reverseTransform(null));
     }
 
-    /**
-     * @covers ::reverseTransform
-     */
     public function testReverseTransform(): void
     {
         $filterA = (new Filter())->setInclusion(true);

@@ -10,11 +10,10 @@ use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AuthenticationTest extends AbstractFunctionalTestCase
 {
     /**

@@ -10,15 +10,13 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
 use DR\Review\Service\CodeHighlight\HighlightedFileService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\CacheItem;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeHighlight\CacheableHighlightedFileService
- * @covers ::__construct
- */
+#[CoversClass(CacheableHighlightedFileService::class)]
 class CacheableHighlightedFileServiceTest extends AbstractTestCase
 {
     private AbstractAdapter&MockObject        $cache;
@@ -34,7 +32,6 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws InvalidArgumentException
      */
     public function testGetHighlightedFileCacheHit(): void
@@ -70,7 +67,6 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws InvalidArgumentException
      */
     public function testGetHighlightedFileCacheMiss(): void
@@ -98,7 +94,6 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws InvalidArgumentException
      */
     public function testGetHighlightedFileFailure(): void

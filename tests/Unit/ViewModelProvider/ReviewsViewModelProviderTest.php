@@ -14,12 +14,10 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewsViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(ReviewsViewModelProvider::class)]
 class ReviewsViewModelProviderTest extends AbstractTestCase
 {
     private User                                       $user;
@@ -36,9 +34,6 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
         $this->provider                  = new ReviewsViewModelProvider($this->user, $this->reviewRepository, $this->timelineViewModelProvider);
     }
 
-    /**
-     * @covers ::getSearchReviewsViewModel
-     */
     public function testGetSearchReviewsViewModel(): void
     {
         $paginator = $this->createMock(Paginator::class);
@@ -60,9 +55,6 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
         static::assertSame('search', $viewModel->searchQuery);
     }
 
-    /**
-     * @covers ::getReviewsViewModel
-     */
     public function testGetReviewsViewModel(): void
     {
         $repository = new Repository();

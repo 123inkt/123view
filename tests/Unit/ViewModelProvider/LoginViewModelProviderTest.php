@@ -8,6 +8,7 @@ use DR\Review\Form\User\LoginFormType;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\Authentication\LoginViewModel;
 use DR\Review\ViewModelProvider\LoginViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -16,10 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\LoginViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(LoginViewModelProvider::class)]
 class LoginViewModelProviderTest extends AbstractTestCase
 {
     private FormFactoryInterface&MockObject  $formFactory;
@@ -36,9 +34,6 @@ class LoginViewModelProviderTest extends AbstractTestCase
         $this->provider     = new LoginViewModelProvider($this->formFactory, $this->urlGenerator, $this->utils);
     }
 
-    /**
-     * @covers ::getLoginViewModel
-     */
     public function testGetLoginViewModel(): void
     {
         $request = new Request(['next' => 'next']);

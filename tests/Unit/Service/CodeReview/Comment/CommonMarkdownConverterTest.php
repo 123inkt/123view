@@ -6,16 +6,12 @@ namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Tests\AbstractTestCase;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter
- */
+#[CoversClass(CommonMarkdownConverter::class)]
 class CommonMarkdownConverterTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $converter   = new CommonMarkdownConverter();

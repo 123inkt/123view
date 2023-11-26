@@ -6,40 +6,17 @@ namespace DR\Review\Tests\Unit\Entity\User;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Review\Entity\User\UserSetting;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\User\UserSetting
- */
+#[CoversClass(UserSetting::class)]
 class UserSettingTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::getUser
-     * @covers ::setUser
-     * @covers ::getColorTheme
-     * @covers ::setColorTheme
-     * @covers ::isMailCommentAdded
-     * @covers ::setMailCommentAdded
-     * @covers ::isMailCommentResolved
-     * @covers ::setMailCommentResolved
-     * @covers ::isMailCommentReplied
-     * @covers ::setMailCommentReplied
-     * @covers ::hasBrowserNotificationEvent
-     * @covers ::getBrowserNotificationEvents
-     * @covers ::setBrowserNotificationEvents
-     */
     public function testAccessorPairs(): void
     {
         $config = (new ConstraintConfig())->setExcludedMethods(['getBrowserNotificationEvents']);
         static::assertAccessorPairs(UserSetting::class, $config);
     }
 
-    /**
-     * @covers ::getBrowserNotificationEvents
-     * @covers ::setBrowserNotificationEvents
-     * @covers ::hasBrowserNotificationEvent
-     */
     public function testBrowserNotificationEvents(): void
     {
         $setting = new UserSetting();

@@ -17,13 +17,11 @@ use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(ReviewTimelineViewModelProvider::class)]
 class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 {
     private CodeReviewActivityRepository&MockObject   $activityRepository;
@@ -50,9 +48,6 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::getTimelineViewModel
-     */
     public function testGetTimelineViewModel(): void
     {
         $activityA = new CodeReviewActivity();
@@ -79,9 +74,6 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         static::assertSame('message', $timeline->message);
     }
 
-    /**
-     * @covers ::getTimelineViewModel
-     */
     public function testGetTimelineViewModelWithComment(): void
     {
         $activity = new CodeReviewActivity();
@@ -109,9 +101,6 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         static::assertSame($comment, $timeline->getComment());
     }
 
-    /**
-     * @covers ::getTimelineViewModel
-     */
     public function testGetTimelineViewModelWithRevision(): void
     {
         $activity = new CodeReviewActivity();
@@ -138,9 +127,6 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         static::assertSame($revision, $timeline->getRevision());
     }
 
-    /**
-     * @covers ::getTimelineViewModelForFeed
-     */
     public function testGetTimelineViewModelForFeed(): void
     {
         $user = new User();

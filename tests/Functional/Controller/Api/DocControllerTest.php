@@ -7,10 +7,9 @@ use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Utils\Assert;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class DocControllerTest extends AbstractFunctionalTestCase
 {
     public function testHtmlDocs(): void

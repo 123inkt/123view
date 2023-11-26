@@ -8,16 +8,14 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Request\Comment\AddCommentRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @extends AbstractRequestTestCase<AddCommentRequest>
- * @coversDefaultClass \DR\Review\Request\Comment\AddCommentRequest
  */
+#[CoversClass(AddCommentRequest::class)]
 class AddCommentRequestTest extends AbstractRequestTestCase
 {
-    /**
-     * @covers ::getLineReference
-     */
     public function testGetLineReference(): void
     {
         $this->request->query->set('filePath', 'filePath');
@@ -28,7 +26,6 @@ class AddCommentRequestTest extends AbstractRequestTestCase
     }
 
     /**
-     * @covers ::getValidationRules
      * @throws InvalidRuleException
      */
     public function testGetValidationRules(): void

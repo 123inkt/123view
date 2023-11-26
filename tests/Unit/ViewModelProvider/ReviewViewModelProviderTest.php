@@ -24,15 +24,15 @@ use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass \DR\Review\ViewModelProvider\ReviewViewModelProvider
- * @covers ::__construct
  * @suppressWarnings(PHPMD.CouplingBetweenObjects)
  */
+#[CoversClass(ReviewViewModelProvider::class)]
 class ReviewViewModelProviderTest extends AbstractTestCase
 {
     private FileDiffViewModelProvider&MockObject      $fileDiffProvider;
@@ -69,7 +69,6 @@ class ReviewViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getViewModel
      * @throws Throwable
      */
     public function testGetViewModelSidebarOverview(): void
@@ -113,7 +112,6 @@ class ReviewViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getViewModel
      * @throws Throwable
      */
     public function testGetViewModelWithoutSelectedFile(): void

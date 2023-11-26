@@ -8,13 +8,11 @@ use DR\Review\Exception\ParseException;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Parser\DiffParser
- * @covers ::__construct
- */
+#[CoversClass(DiffParser::class)]
 class DiffParserTest extends AbstractTestCase
 {
     private DiffParser                $parser;
@@ -28,7 +26,6 @@ class DiffParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws ParseException
      */
     public function testParseDeletionsOnly(): void
@@ -38,7 +35,6 @@ class DiffParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws ParseException
      */
     public function testParseSingleFile(): void
@@ -57,7 +53,6 @@ class DiffParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws ParseException
      */
     public function testParseSingleFileWithNew(): void
@@ -77,7 +72,6 @@ class DiffParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws ParseException
      */
     public function testParseTwoFiles(): void

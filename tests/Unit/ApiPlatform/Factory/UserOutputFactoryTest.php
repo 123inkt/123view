@@ -6,10 +6,9 @@ namespace DR\Review\Tests\Unit\ApiPlatform\Factory;
 use DR\Review\ApiPlatform\Factory\UserOutputFactory;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\Factory\UserOutputFactory
- */
+#[CoversClass(UserOutputFactory::class)]
 class UserOutputFactoryTest extends AbstractTestCase
 {
     private UserOutputFactory $outputFactory;
@@ -20,9 +19,6 @@ class UserOutputFactoryTest extends AbstractTestCase
         $this->outputFactory = new UserOutputFactory();
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreate(): void
     {
         $user = new User();

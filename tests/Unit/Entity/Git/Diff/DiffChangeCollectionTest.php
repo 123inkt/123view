@@ -7,17 +7,11 @@ use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffChangeCollection;
 use DR\Review\Tests\AbstractTestCase;
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\Diff\DiffChangeCollection
- * @covers ::__construct
- */
+#[CoversClass(DiffChangeCollection::class)]
 class DiffChangeCollectionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::add
-     * @covers ::toArray
-     */
     public function testAdd(): void
     {
         $emptyChange = new DiffChange(DiffChange::ADDED, '');
@@ -30,10 +24,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertSame([$change], $collection->toArray());
     }
 
-    /**
-     * @covers ::add
-     * @covers ::toArray
-     */
     public function testAddConcatSimilar(): void
     {
         $changeA = new DiffChange(DiffChange::ADDED, 'foo');
@@ -46,18 +36,12 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertEquals([new DiffChange(DiffChange::ADDED, 'foobar')], $collection->toArray());
     }
 
-    /**
-     * @covers ::lastOrNull
-     */
     public function testLastOrNull(): void
     {
         $collection = new DiffChangeCollection();
         static::assertNull($collection->lastOrNull());
     }
 
-    /**
-     * @covers ::lastOrNull
-     */
     public function testLastOrNullWithValue(): void
     {
         $changeA = new DiffChange(DiffChange::ADDED, 'foo');
@@ -70,9 +54,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertSame($changeB, $collection->lastOrNull());
     }
 
-    /**
-     * @covers ::first
-     */
     public function testFirst(): void
     {
         $collection = new DiffChangeCollection();
@@ -80,9 +61,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         $collection->first();
     }
 
-    /**
-     * @covers ::first
-     */
     public function testFirstWithValues(): void
     {
         $changeA = new DiffChange(DiffChange::ADDED, 'foo');
@@ -95,18 +73,12 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertSame($changeA, $collection->first());
     }
 
-    /**
-     * @covers ::firstOrNull
-     */
     public function testFirstOrNull(): void
     {
         $collection = new DiffChangeCollection();
         static::assertNull($collection->firstOrNull());
     }
 
-    /**
-     * @covers ::firstOrNull
-     */
     public function testFirstOrNullWithValue(): void
     {
         $changeA = new DiffChange(DiffChange::ADDED, 'foo');
@@ -119,9 +91,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertSame($changeA, $collection->firstOrNull());
     }
 
-    /**
-     * @covers ::count
-     */
     public function testCount(): void
     {
         $change = new DiffChange(DiffChange::ADDED, 'foobar');
@@ -133,9 +102,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertCount(1, $collection);
     }
 
-    /**
-     * @covers ::clear
-     */
     public function testClear(): void
     {
         $change     = new DiffChange(DiffChange::ADDED, 'foobar');
@@ -147,9 +113,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertCount(0, $collection);
     }
 
-    /**
-     * @covers ::getIterator
-     */
     public function testIterator(): void
     {
         $change = new DiffChange(DiffChange::ADDED, 'foobar');
@@ -160,9 +123,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertSame([$change], iterator_to_array($collection->getIterator()));
     }
 
-    /**
-     * @covers ::get
-     */
     public function testGet(): void
     {
         $change = new DiffChange(DiffChange::ADDED, 'foo');
@@ -173,9 +133,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         static::assertSame($change, $collection->get(0));
     }
 
-    /**
-     * @covers ::get
-     */
     public function testGetShouldThrowExceptionOnOutOfBounds(): void
     {
         $collection = new DiffChangeCollection();
@@ -184,9 +141,6 @@ class DiffChangeCollectionTest extends AbstractTestCase
         $collection->get(0);
     }
 
-    /**
-     * @covers ::getOrNull
-     */
     public function testGetOrNull(): void
     {
         $change = new DiffChange(DiffChange::ADDED, 'foo');

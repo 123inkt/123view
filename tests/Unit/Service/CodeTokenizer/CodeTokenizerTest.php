@@ -7,11 +7,9 @@ use DR\Review\Service\CodeTokenizer\CodeCommentTokenizer;
 use DR\Review\Service\CodeTokenizer\CodeStringTokenizer;
 use DR\Review\Service\CodeTokenizer\CodeTokenizer;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeTokenizer\CodeTokenizer
- * @covers ::__construct
- */
+#[CoversClass(CodeTokenizer::class)]
 class CodeTokenizerTest extends AbstractTestCase
 {
     private CodeTokenizer $tokenizer;
@@ -22,17 +20,11 @@ class CodeTokenizerTest extends AbstractTestCase
         $this->tokenizer = new CodeTokenizer(new CodeStringTokenizer(), new CodeCommentTokenizer());
     }
 
-    /**
-     * @covers ::tokenize
-     */
     public function testTokenize(): void
     {
         static::assertSame([[CodeTokenizer::TOKEN_CODE, 'foobar']], $this->tokenizer->tokenize('foobar'));
     }
 
-    /**
-     * @covers ::tokenize
-     */
     public function testTokenizeWithString(): void
     {
         static::assertSame(
@@ -46,9 +38,6 @@ class CodeTokenizerTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::tokenize
-     */
     public function testTokenizeWithComment(): void
     {
         static::assertSame(

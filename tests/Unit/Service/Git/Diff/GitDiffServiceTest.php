@@ -21,12 +21,10 @@ use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\GitDiffService
- * @covers ::__construct
- */
+#[CoversClass(GitDiffService::class)]
 class GitDiffServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -51,7 +49,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBundledDiff
      * @throws Exception
      */
     public function testGetBundledDiff(): void
@@ -78,7 +75,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBundledDiff
      * @throws Exception
      */
     public function testGetBundledDiffShouldSkipOnSingleHash(): void
@@ -94,7 +90,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFromRevision
      * @throws Exception
      */
     public function testGetDiffFromRevision(): void
@@ -122,7 +117,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getDiffFromRevision
      * @throws Exception
      */
     public function testGetDiffFromRevisionWithIgnoreSpace(): void
@@ -150,7 +144,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBundledDiffFromRevisions
      * @throws Exception
      */
     public function testGetBundledDiffFromRevisions(): void
@@ -176,7 +169,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBundledDiffFromRevisions
      * @throws Exception
      */
     public function testGetBundledDiffFromRevisionsIgnoreAllSpaceChange(): void
@@ -202,7 +194,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBundledDiffFromBranch
      * @throws Exception
      */
     public function testGetBundledDiffFromBranch(): void
@@ -228,7 +219,6 @@ class GitDiffServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBundledDiffFromBranch
      * @throws Exception
      */
     public function testGetBundledDiffFromBranchIgnoreAllSpaceChange(): void

@@ -8,14 +8,12 @@ use DR\Review\Entity\Config\ExternalLink;
 use DR\Review\Repository\Config\ExternalLinkRepository;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @coversDefaultClass \DR\Review\Command\ExternalLink\ListExternalLinksCommand
- * @covers ::__construct
- */
+#[CoversClass(ListExternalLinksCommand::class)]
 class ListExternalLinksCommandTest extends AbstractTestCase
 {
     private ExternalLinkRepository&MockObject $linkRepository;
@@ -29,7 +27,6 @@ class ListExternalLinksCommandTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::execute
      * @throws Exception
      */
     public function testExecute(): void
@@ -47,7 +44,6 @@ class ListExternalLinksCommandTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::execute
      * @throws Exception
      */
     public function testExecuteEmptyList(): void

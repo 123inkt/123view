@@ -5,20 +5,11 @@ namespace DR\Review\Tests\Unit\Service\CodeTokenizer;
 
 use DR\Review\Service\CodeTokenizer\StringReader;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeTokenizer\StringReader
- * @covers ::__construct
- */
+#[CoversClass(StringReader::class)]
 class StringReaderTest extends AbstractTestCase
 {
-    /**
-     * @covers ::next
-     * @covers ::peek
-     * @covers ::current
-     * @covers ::prev
-     * @covers ::eol
-     */
     public function testNext(): void
     {
         $reader = new StringReader("foobar");

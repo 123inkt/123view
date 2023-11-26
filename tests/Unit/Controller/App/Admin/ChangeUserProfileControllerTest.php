@@ -10,13 +10,11 @@ use DR\Review\Entity\User\User;
 use DR\Review\Form\User\UserProfileFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Admin\ChangeUserProfileController
- * @covers ::__construct
- */
+#[CoversClass(ChangeUserProfileController::class)]
 class ChangeUserProfileControllerTest extends AbstractControllerTestCase
 {
     private UserRepository&MockObject $userRepository;
@@ -27,9 +25,6 @@ class ChangeUserProfileControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeInvalidFormShouldNotSave(): void
     {
         $user    = new User();
@@ -44,9 +39,6 @@ class ChangeUserProfileControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $user);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeShouldSave(): void
     {
         $user    = new User();

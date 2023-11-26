@@ -5,15 +5,12 @@ namespace DR\Review\Tests\Unit\Twig;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\HtmlMailExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\HtmlMailExtension
- */
+#[CoversClass(HtmlMailExtension::class)]
 class HtmlMailExtensionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         $extension = new HtmlMailExtension();
@@ -25,10 +22,7 @@ class HtmlMailExtensionTest extends AbstractTestCase
         static::assertSame('html_mail', $filter->getName());
     }
 
-    /**
-     * @dataProvider  dataProvider
-     * @covers ::convert
-     */
+    #[DataProvider('dataProvider')]
     public function testConvert(string $html, string $expected): void
     {
         static::assertSame($expected, (new HtmlMailExtension())->convert($html));

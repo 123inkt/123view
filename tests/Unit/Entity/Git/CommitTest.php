@@ -9,10 +9,9 @@ use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\Commit
- */
+#[CoversClass(Commit::class)]
 class CommitTest extends AbstractTestCase
 {
     private Commit   $commit;
@@ -32,9 +31,6 @@ class CommitTest extends AbstractTestCase
         $this->commit = new Commit($repository, 'parent-hash', 'commit-hash', $author, $this->date, $subject, $body, $refs, $files);
     }
 
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         static::assertSame(['commit-hash'], $this->commit->commitHashes);
@@ -45,17 +41,11 @@ class CommitTest extends AbstractTestCase
         static::assertNotEmpty($this->commit->files);
     }
 
-    /**
-     * @covers ::getRepositoryName
-     */
     public function testGetRepositoryName(): void
     {
         static::assertSame('repository', $this->commit->getRepositoryName());
     }
 
-    /**
-     * @covers ::getRemoteRef
-     */
     public function testGetRemoteRef(): void
     {
         static::assertSame('foobar', $this->commit->getRemoteRef());

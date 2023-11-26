@@ -13,12 +13,10 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Review\ChangeReviewStateRequest;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\ChangeReviewStateController
- * @covers ::__construct
- */
+#[CoversClass(ChangeReviewStateController::class)]
 class ChangeReviewStateControllerTest extends AbstractControllerTestCase
 {
     private CodeReviewRepository&MockObject $reviewRepository;
@@ -31,9 +29,6 @@ class ChangeReviewStateControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request = $this->createMock(ChangeReviewStateRequest::class);

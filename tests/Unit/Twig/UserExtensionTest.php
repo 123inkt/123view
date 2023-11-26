@@ -6,13 +6,11 @@ namespace DR\Review\Tests\Unit\Twig;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\UserExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\UserExtension
- * @covers ::__construct
- */
+#[CoversClass(UserExtension::class)]
 class UserExtensionTest extends AbstractTestCase
 {
     private UserRepository&MockObject $userRepository;
@@ -26,7 +24,6 @@ class UserExtensionTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getUserCount
      * @throws Throwable
      */
     public function testGetUserCount(): void
@@ -35,9 +32,6 @@ class UserExtensionTest extends AbstractTestCase
         static::assertSame(5, $this->extension->getUserCount());
     }
 
-    /**
-     * @covers ::getFunctions
-     */
     public function testGetFunctions(): void
     {
         $functions = $this->extension->getFunctions();

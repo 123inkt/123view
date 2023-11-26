@@ -17,13 +17,11 @@ use DR\Review\Request\Review\ChangeReviewerStateRequest;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Reviewer\ChangeReviewerStateController
- * @covers ::__construct
- */
+#[CoversClass(ChangeReviewerStateController::class)]
 class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
 {
     private ManagerRegistry&MockObject     $registry;
@@ -41,9 +39,6 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeExistingReviewerChangesState(): void
     {
         $request = $this->createMock(ChangeReviewerStateRequest::class);
@@ -71,9 +66,6 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $review);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeNewReviewerChangesState(): void
     {
         $request = $this->createMock(ChangeReviewerStateRequest::class);

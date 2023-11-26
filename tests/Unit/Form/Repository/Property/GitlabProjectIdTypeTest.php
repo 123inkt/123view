@@ -7,26 +7,19 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Repository\Property\GitlabProjectIdType
- */
+#[CoversClass(GitlabProjectIdType::class)]
 class GitlabProjectIdTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getParent
-     */
     public function testGetParent(): void
     {
         static::assertSame(IntegerType::class, (new GitlabProjectIdType())->getParent());
     }
 
-    /**
-     * @covers ::setProperty
-     */
     public function testSetProperty(): void
     {
         $repositoryA = new Repository();
@@ -41,9 +34,6 @@ class GitlabProjectIdTypeTest extends AbstractTestCase
         static::assertNull($type->getProperty($repositoryB));
     }
 
-    /**
-     * @covers ::getProperty
-     */
     public function testGetProperty(): void
     {
         $repositoryA = new Repository();
@@ -55,9 +45,6 @@ class GitlabProjectIdTypeTest extends AbstractTestCase
         static::assertSame(10, $type->getProperty($repositoryB));
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();

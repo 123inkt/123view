@@ -13,6 +13,7 @@ use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Rule\EditRuleViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,10 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Notification\RuleController
- * @covers ::__construct
- */
+#[CoversClass(RuleController::class)]
 class RuleControllerTest extends AbstractControllerTestCase
 {
     private RuleRepository&MockObject $ruleRepository;
@@ -36,9 +34,6 @@ class RuleControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeUserIsNotRuleOwner(): void
     {
         $userB = new User();
@@ -50,9 +45,6 @@ class RuleControllerTest extends AbstractControllerTestCase
         ($this->controller)(new Request(), $rule);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeUnknownRuleId(): void
     {
         $this->expectException(NotFoundHttpException::class);
@@ -60,9 +52,6 @@ class RuleControllerTest extends AbstractControllerTestCase
         ($this->controller)(new Request([], [], ['id' => -1]), null);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeWithUser(): void
     {
         $request = new Request();
@@ -83,9 +72,6 @@ class RuleControllerTest extends AbstractControllerTestCase
         static::assertEquals($expected, $response);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeWithUserNotSubmitted(): void
     {
         $request = new Request();

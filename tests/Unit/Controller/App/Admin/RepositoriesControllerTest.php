@@ -9,12 +9,10 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\RepositoriesViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Admin\RepositoriesController
- * @covers ::__construct
- */
+#[CoversClass(RepositoriesController::class)]
 class RepositoriesControllerTest extends AbstractControllerTestCase
 {
     private RepositoryRepository&MockObject $repositoryRepository;
@@ -25,9 +23,6 @@ class RepositoriesControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $repository = new Repository();

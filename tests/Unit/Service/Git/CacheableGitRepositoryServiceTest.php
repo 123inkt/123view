@@ -10,13 +10,12 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\CacheableGitRepositoryService
- */
+#[CoversClass(CacheableGitRepositoryService::class)]
 class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {
     private const CACHE_DIRECTORY = "/cache/directory";
@@ -40,7 +39,6 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRepository
      * @throws RepositoryException
      */
     public function testGetRepositoryWithoutCache(): void

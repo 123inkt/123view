@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Form\User;
 
 use DR\Review\Form\User\LoginFormType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -14,14 +15,9 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\User\LoginFormType
- */
+#[CoversClass(LoginFormType::class)]
 class LoginFormTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -36,9 +32,6 @@ class LoginFormTypeTest extends AbstractTestCase
         static::assertSame(['string', 'null'], $introspector->getAllowedTypes('targetPath'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -59,9 +52,6 @@ class LoginFormTypeTest extends AbstractTestCase
         $type->buildForm($builder, ['targetPath' => 'path']);
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildFormWithoutTargetPath(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -81,9 +71,6 @@ class LoginFormTypeTest extends AbstractTestCase
         $type->buildForm($builder, []);
     }
 
-    /**
-     * @covers ::getBlockPrefix
-     */
     public function testGetBlockPrefix(): void
     {
         $type = new LoginFormType();

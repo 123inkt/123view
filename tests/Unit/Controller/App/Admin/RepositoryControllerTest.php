@@ -12,16 +12,14 @@ use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Admin\EditRepositoryViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Admin\RepositoryController
- * @covers ::__construct
- */
+#[CoversClass(RepositoryController::class)]
 class RepositoryControllerTest extends AbstractControllerTestCase
 {
     private RepositoryRepository&MockObject $repositoryRepository;
@@ -34,9 +32,6 @@ class RepositoryControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeRepositoryNotFound(): void
     {
         $request = new Request(attributes: ['id' => 123]);
@@ -46,9 +41,6 @@ class RepositoryControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, null);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFormNotSubmitted(): void
     {
         $request    = new Request();
@@ -67,9 +59,6 @@ class RepositoryControllerTest extends AbstractControllerTestCase
         static::assertEquals(['editRepositoryModel' => new EditRepositoryViewModel($repository, $formView)], $actual);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFormIsSubmitted(): void
     {
         $request    = new Request();

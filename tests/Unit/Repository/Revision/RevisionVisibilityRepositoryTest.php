@@ -14,16 +14,12 @@ use DR\Review\Tests\DataFixtures\RevisionFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Revision\RevisionVisibilityRepository
- * @covers ::__construct
- */
+#[CoversClass(RevisionVisibilityRepository::class)]
 class RevisionVisibilityRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::saveAll
-     * @covers ::removeAll
      * @throws Exception
      */
     public function testSaveAll(): void

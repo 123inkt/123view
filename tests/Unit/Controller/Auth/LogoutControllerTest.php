@@ -5,16 +5,12 @@ namespace DR\Review\Tests\Unit\Controller\Auth;
 
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\Auth\LogoutController
- */
+#[CoversClass(LogoutController::class)]
 class LogoutControllerTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $this->expectException(RuntimeException::class);

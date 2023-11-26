@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Service\Git\Log;
 
 use DR\Review\Service\Git\Log\FormatPatternFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Log\FormatPatternFactory
- */
+#[CoversClass(FormatPatternFactory::class)]
 class FormatPatternFactoryTest extends AbstractTestCase
 {
-    /**
-     * @covers ::createPattern
-     */
     public function testCreatePattern(): void
     {
         $expected = FormatPatternFactory::COMMIT_DELIMITER .

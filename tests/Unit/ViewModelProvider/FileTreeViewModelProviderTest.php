@@ -11,12 +11,10 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\FileTreeViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(FileTreeViewModelProvider::class)]
 class FileTreeViewModelProviderTest extends AbstractTestCase
 {
     private FileSeenStatusService&MockObject $fileStatusService;
@@ -29,9 +27,6 @@ class FileTreeViewModelProviderTest extends AbstractTestCase
         $this->provider          = new FileTreeViewModelProvider($this->fileStatusService);
     }
 
-    /**
-     * @covers ::getFileTreeViewModel
-     */
     public function testGetFileTreeViewModel(): void
     {
         $comment = new Comment();

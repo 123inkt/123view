@@ -7,10 +7,9 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\FileTreeGenerator;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\FileTreeGenerator
- */
+#[CoversClass(FileTreeGenerator::class)]
 class FileTreeGeneratorTest extends AbstractTestCase
 {
     private FileTreeGenerator $generator;
@@ -21,9 +20,6 @@ class FileTreeGeneratorTest extends AbstractTestCase
         $this->generator = new FileTreeGenerator();
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateEqualFilePath(): void
     {
         $diffFileA                = new DiffFile();
@@ -47,9 +43,6 @@ class FileTreeGeneratorTest extends AbstractTestCase
         static::assertEquals($expected, $node);
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateUnevenFilePath(): void
     {
         $diffFileA                = new DiffFile();

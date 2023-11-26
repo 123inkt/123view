@@ -8,14 +8,12 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Vcs\FetchRevisionsController
- * @covers ::__construct
- */
+#[CoversClass(FetchRevisionsController::class)]
 class FetchRevisionsControllerTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject $repositoryRepository;
@@ -30,9 +28,6 @@ class FetchRevisionsControllerTest extends AbstractTestCase
         $this->controller           = new FetchRevisionsController($this->repositoryRepository, $this->bus);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFindById(): void
     {
         $repository = new Repository();
@@ -45,9 +40,6 @@ class FetchRevisionsControllerTest extends AbstractTestCase
         static::assertEquals(new Response('Accepted'), $response);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFindByName(): void
     {
         $repository = new Repository();
@@ -60,9 +52,6 @@ class FetchRevisionsControllerTest extends AbstractTestCase
         static::assertEquals(new Response('Accepted'), $response);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeUnknownRepository(): void
     {
         $this->repositoryRepository->expects(self::once())->method('find')->with('123')->willReturn(null);

@@ -8,11 +8,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\Commit\CommitBundler;
 use DR\Review\Service\Git\Commit\CommitCombiner;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Commit\CommitBundler
- * @covers ::__construct
- */
+#[CoversClass(CommitBundler::class)]
 class CommitBundlerTest extends AbstractTestCase
 {
     private CommitBundler $bundler;
@@ -25,11 +23,6 @@ class CommitBundlerTest extends AbstractTestCase
         $this->bundler = new CommitBundler($combiner);
     }
 
-    /**
-     * @covers ::equals
-     * @covers ::getGroupedCommits
-     * @covers ::bundle
-     */
     public function testBundleShouldGroupCommits(): void
     {
         $commitA               = $this->createCommit();
@@ -44,11 +37,6 @@ class CommitBundlerTest extends AbstractTestCase
         static::assertSame([$commitA], $result);
     }
 
-    /**
-     * @covers ::equals
-     * @covers ::getGroupedCommits
-     * @covers ::bundle
-     */
     public function testBundleShouldGroupMultipleCommits(): void
     {
         $commitA               = $this->createCommit();
@@ -66,11 +54,6 @@ class CommitBundlerTest extends AbstractTestCase
         static::assertSame([$commitA], $result);
     }
 
-    /**
-     * @covers ::equals
-     * @covers ::getGroupedCommits
-     * @covers ::bundle
-     */
     public function testBundleShouldNotGroupCommitsIfEmailDiffers(): void
     {
         $commitA             = $this->createCommit(new Author('jane', 'jane@example.com'));
@@ -81,11 +64,6 @@ class CommitBundlerTest extends AbstractTestCase
         static::assertSame([$commitA, $commitB], $result);
     }
 
-    /**
-     * @covers ::equals
-     * @covers ::getGroupedCommits
-     * @covers ::bundle
-     */
     public function testBundleShouldNotGroupCommitsIfSubjectDiffers(): void
     {
         $commitA             = $this->createCommit();
@@ -99,11 +77,6 @@ class CommitBundlerTest extends AbstractTestCase
         static::assertSame([$commitA, $commitB], $result);
     }
 
-    /**
-     * @covers ::equals
-     * @covers ::getGroupedCommits
-     * @covers ::bundle
-     */
     public function testBundleShouldNotGroupCommitsIfRemoteDiffers(): void
     {
         $commitA             = $this->createCommit();
@@ -117,11 +90,6 @@ class CommitBundlerTest extends AbstractTestCase
         static::assertSame([$commitA, $commitB], $result);
     }
 
-    /**
-     * @covers ::equals
-     * @covers ::getGroupedCommits
-     * @covers ::bundle
-     */
     public function testBundleShouldNotGroupCommitsIfRepositoryDiffers(): void
     {
         $commitA = $this->createCommit();

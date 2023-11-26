@@ -9,6 +9,7 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,10 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Review\AddCommentFormType
- * @covers ::__construct
- */
+#[CoversClass(AddCommentFormType::class)]
 class AddCommentFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -34,9 +32,6 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $this->type         = new AddCommentFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -50,9 +45,6 @@ class AddCommentFormTypeTest extends AbstractTestCase
         static::assertSame([CodeReview::class], $introspector->getAllowedTypes('review'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url    = 'https://123view/comment/add';

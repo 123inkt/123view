@@ -14,14 +14,12 @@ use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Revision\UpdateRevisionVisibilityController
- * @covers ::__construct
- */
+#[CoversClass(UpdateRevisionVisibilityController::class)]
 class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
 {
     private RevisionVisibilityService&MockObject    $visibilityService;
@@ -34,9 +32,6 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeBadSubmit(): void
     {
         $user = new User();
@@ -66,9 +61,6 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, $review);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $user = new User();

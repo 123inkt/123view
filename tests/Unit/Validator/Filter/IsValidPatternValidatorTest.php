@@ -7,18 +7,16 @@ use DR\Review\Doctrine\Type\FilterType as EntityFilterType;
 use DR\Review\Entity\Notification\Filter;
 use DR\Review\Validator\Filter\IsValidPattern;
 use DR\Review\Validator\Filter\IsValidPatternValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @coversDefaultClass \DR\Review\Validator\Filter\IsValidPatternValidator
  * @extends ConstraintValidatorTestCase<IsValidPatternValidator>
  */
+#[CoversClass(IsValidPatternValidator::class)]
 class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @covers ::validate
-     */
     public function testValidateShouldOnlyAcceptFilter(): void
     {
         $this->expectException(RuntimeException::class);
@@ -26,9 +24,6 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate(null, $this->constraint);
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateAuthorPatternWithInvalidEmailShouldFail(): void
     {
         $filter = new Filter();
@@ -39,9 +34,6 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation(IsValidPattern::MESSAGE_EMAIL)->atPath('property.path.pattern')->assertRaised();
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateAuthorPatternWithValidEmailShouldPass(): void
     {
         $filter = new Filter();
@@ -52,9 +44,6 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateSubjectPatternWithInvalidRegexShouldFail(): void
     {
         $filter = new Filter();
@@ -65,9 +54,6 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation(IsValidPattern::MESSAGE_REGEX)->atPath('property.path.pattern')->assertRaised();
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateFilePatternWithInvalidRegexShouldFail(): void
     {
         $filter = new Filter();
@@ -78,9 +64,6 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation(IsValidPattern::MESSAGE_REGEX)->atPath('property.path.pattern')->assertRaised();
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateSubjectPatternWithValidRegexShouldPass(): void
     {
         $filter = new Filter();
@@ -91,9 +74,6 @@ class IsValidPatternValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateInvalidTypeShouldThrowException(): void
     {
         $filter = new Filter();

@@ -10,12 +10,10 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\Factory\CodeReviewActivityOutputFactory
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityOutputFactory::class)]
 class CodeReviewActivityOutputFactoryTest extends AbstractTestCase
 {
     private UserOutputFactory&MockObject       $userOutputFactory;
@@ -30,9 +28,6 @@ class CodeReviewActivityOutputFactoryTest extends AbstractTestCase
         $this->outputFactory       = new CodeReviewActivityOutputFactory($this->userOutputFactory, $this->reviewOutputFactory);
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreate(): void
     {
         $user = new User();

@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\ViewModel\App\Rule;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Rule\EditRuleViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Rule\EditRuleViewModel
- */
+#[CoversClass(EditRuleViewModel::class)]
 class EditRuleViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setForm
-     * @covers ::getForm
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(EditRuleViewModel::class);

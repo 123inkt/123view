@@ -7,18 +7,14 @@ use DR\Review\Entity\Notification\Recipient;
 use DR\Review\Form\Recipient\RecipientCollectionType;
 use DR\Review\Form\Recipient\RecipientType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Recipient\RecipientCollectionType
- */
+#[CoversClass(RecipientCollectionType::class)]
 class RecipientCollectionTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -43,9 +39,6 @@ class RecipientCollectionTypeTest extends AbstractTestCase
         static::assertCount(1, $constraints);
     }
 
-    /**
-     * @covers ::getParent
-     */
     public function testGetParent(): void
     {
         $type = new RecipientCollectionType();

@@ -6,15 +6,11 @@ namespace DR\Review\Tests\Unit\Utility;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Icon;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Utility\Icon
- */
+#[CoversClass(Icon::class)]
 class IconTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getBase64
-     */
     public function testGetBase64(): void
     {
         $path = vfsStream::setup()->url() . '/example.png';

@@ -15,16 +15,14 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\ChangeCommentStateController
- * @covers ::__construct
- */
+#[CoversClass(ChangeCommentStateController::class)]
 class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject          $commentRepository;
@@ -41,9 +39,6 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeCommentMissing(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
@@ -53,10 +48,6 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::getUser
-     */
     public function testInvoke(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
@@ -84,10 +75,6 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::getUser
-     */
     public function testInvokeWithUnresolvedComment(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
@@ -115,9 +102,6 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeShouldNotDispatchIfStateDidNotChange(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);

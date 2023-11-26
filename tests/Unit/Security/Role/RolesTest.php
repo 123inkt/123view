@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Security\Role;
 
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Security\Role\Roles
- */
+#[CoversClass(Roles::class)]
 class RolesTest extends AbstractTestCase
 {
-    /**
-     * @covers ::rolesToProfile
-     */
     public function testRolesToProfile(): void
     {
         static::assertSame(Roles::PROFILE_NEW, Roles::rolesToProfile([]));
@@ -22,9 +18,6 @@ class RolesTest extends AbstractTestCase
         static::assertSame(Roles::PROFILE_BANNED, Roles::rolesToProfile([Roles::ROLE_BANNED]));
     }
 
-    /**
-     * @covers ::profileToRoles
-     */
     public function testProfileToRoles(): void
     {
         static::assertSame([], Roles::profileToRoles(Roles::PROFILE_NEW));

@@ -7,11 +7,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Project\ProjectsViewModel
- * @covers ::__construct
- */
+#[CoversClass(ProjectsViewModel::class)]
 class ProjectsViewModelTest extends AbstractTestCase
 {
     private TimelineViewModel $viewModel;
@@ -22,10 +20,6 @@ class ProjectsViewModelTest extends AbstractTestCase
         $this->viewModel = $this->createMock(TimelineViewModel::class);
     }
 
-    /**
-     * @covers ::getFavoriteRepositories
-     * @covers ::getRegularRepositories
-     */
     public function testGetRepositories(): void
     {
         $repositoryA = new Repository();

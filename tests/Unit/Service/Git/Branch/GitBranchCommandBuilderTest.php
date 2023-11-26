@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\Branch;
 
 use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Branch\GitBranchCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitBranchCommandBuilder::class)]
 class GitBranchCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = ['git', 'branch'];
@@ -22,36 +20,21 @@ class GitBranchCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitBranchCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
     public function testBuildDefaults(): void
     {
         static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
-    /**
-     * @covers ::remote
-     * @covers ::merged
-     * @covers ::delete
-     * @covers ::build
-     */
     public function testBuildMethods(): void
     {
         static::assertSame(['git', 'branch', '-D branchName', '--merged', '-r'], $this->builder->delete('branchName')->merged()->remote()->build());
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('branch', $this->builder->command());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame('git branch -D branchName', (string)$this->builder->delete('branchName'));

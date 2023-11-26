@@ -13,13 +13,11 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActionFactory
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActionFactory::class)]
 class CodeReviewActionFactoryTest extends AbstractTestCase
 {
     private CommentRepository&MockObject      $commentRepository;
@@ -34,17 +32,11 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
         $this->factory           = new CodeReviewActionFactory($this->commentRepository, $this->replyRepository);
     }
 
-    /**
-     * @covers ::createFromRequest
-     */
     public function testCreateFromRequestAbsentAction(): void
     {
         static::assertNull($this->factory->createFromRequest(new Request()));
     }
 
-    /**
-     * @covers ::createFromRequest
-     */
     public function testCreateFromRequestAddCommentAction(): void
     {
         $request = new Request(['action' => 'add-comment:5:6:7', 'filePath' => '/foo/bar/text.txt']);
@@ -57,9 +49,6 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
         static::assertSame(7, $action->lineReference->lineAfter);
     }
 
-    /**
-     * @covers ::createFromRequest
-     */
     public function testCreateFromRequestAddCommentReplyAction(): void
     {
         $comment = new Comment();
@@ -71,9 +60,6 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
         static::assertSame($comment, $action->comment);
     }
 
-    /**
-     * @covers ::createFromRequest
-     */
     public function testCreateFromRequestEditCommentAction(): void
     {
         $comment = new Comment();
@@ -85,9 +71,6 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
         static::assertSame($comment, $action->comment);
     }
 
-    /**
-     * @covers ::createFromRequest
-     */
     public function testCreateFromRequestEditCommentReplyAction(): void
     {
         $comment = new CommentReply();
@@ -99,9 +82,6 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
         static::assertSame($comment, $action->reply);
     }
 
-    /**
-     * @covers ::createFromRequest
-     */
     public function testCreateFromRequestUnknownAction(): void
     {
         $request = new Request(['action' => 'foobar:8']);

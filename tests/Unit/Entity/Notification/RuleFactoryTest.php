@@ -6,15 +6,11 @@ namespace DR\Review\Tests\Unit\Entity\Notification;
 use DR\Review\Entity\Notification\RuleFactory;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Notification\RuleFactory
- */
+#[CoversClass(RuleFactory::class)]
 class RuleFactoryTest extends AbstractTestCase
 {
-    /**
-     * @covers ::createDefault
-     */
     public function testCreateDefault(): void
     {
         $user = new User();

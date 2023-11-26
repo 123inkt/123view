@@ -11,14 +11,12 @@ use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Parser\GitLogParser;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueError;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Parser\GitLogParser
- * @covers ::__construct
- */
+#[CoversClass(GitLogParser::class)]
 class GitLogParserTest extends AbstractTestCase
 {
     private GitLogParser                    $parser;
@@ -35,9 +33,6 @@ class GitLogParserTest extends AbstractTestCase
         $this->parser         = new GitLogParser($this->patternFactory, $this->hydrator, $this->diffParser);
     }
 
-    /**
-     * @covers ::getPattern
-     */
     public function testGetPattern(): void
     {
         $this->patternFactory->expects(static::once())->method('createPattern')->willReturn('foobar');
@@ -45,7 +40,6 @@ class GitLogParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws Exception
      */
     public function testParseIncorrectPatternParts(): void
@@ -62,7 +56,6 @@ class GitLogParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws Exception
      */
     public function testParseSingleCommit(): void
@@ -87,7 +80,6 @@ class GitLogParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws Exception
      */
     public function testParseMultiCommit(): void
@@ -117,7 +109,6 @@ class GitLogParserTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::parse
      * @throws Exception
      */
     public function testParseMultiCommitWithLimit(): void

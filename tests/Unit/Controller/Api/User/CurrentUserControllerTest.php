@@ -7,16 +7,12 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\Api\User\CurrentUserController;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\Api\User\CurrentUserController
- */
+#[CoversClass(CurrentUserController::class)]
 class CurrentUserControllerTest extends AbstractControllerTestCase
 {
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $user = new User();

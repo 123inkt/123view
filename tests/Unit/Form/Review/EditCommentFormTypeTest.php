@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Form\Review\EditCommentFormType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,10 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Review\EditCommentFormType
- * @covers ::__construct
- */
+#[CoversClass(EditCommentFormType::class)]
 class EditCommentFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -32,9 +30,6 @@ class EditCommentFormTypeTest extends AbstractTestCase
         $this->type         = new EditCommentFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -46,9 +41,6 @@ class EditCommentFormTypeTest extends AbstractTestCase
         static::assertSame(Comment::class, $introspector->getDefault('data_class'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url     = 'https://123view/comment/update';

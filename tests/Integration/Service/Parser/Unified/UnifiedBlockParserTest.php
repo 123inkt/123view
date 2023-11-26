@@ -13,10 +13,9 @@ use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UnifiedBlockParserTest extends AbstractTestCase
 {
     private UnifiedBlockParser $parser;

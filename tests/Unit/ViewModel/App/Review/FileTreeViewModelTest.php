@@ -14,12 +14,11 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Review\FileTreeViewModel
- * @covers ::__construct
- */
+#[CoversClass(FileTreeViewModel::class)]
 class FileTreeViewModelTest extends AbstractTestCase
 {
     private FileSeenStatusCollection&MockObject $statusCollection;
@@ -44,9 +43,6 @@ class FileTreeViewModelTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::getChangeSummary
-     */
     public function testGetChangeSummary(): void
     {
         $fileA = $this->createMock(DiffFile::class);
@@ -61,10 +57,7 @@ class FileTreeViewModelTest extends AbstractTestCase
         static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
     }
 
-    /**
-     * @dataProvider fileSelectedDataProvider
-     * @covers ::isFileSelected
-     */
+    #[DataProvider('fileSelectedDataProvider')]
     public function testIsFileSelected(?DiffFile $selectedFile, DiffFile $file, bool $selected): void
     {
         $viewModel = new FileTreeViewModel(
@@ -99,9 +92,6 @@ class FileTreeViewModelTest extends AbstractTestCase
         yield [$fileA, $fileB, false];
     }
 
-    /**
-     * @covers ::isFileSeen
-     */
     public function testIsFileSeen(): void
     {
         $this->statusCollection->expects(self::once())->method('isSeen')->with('filepath')->willReturn(true);
@@ -112,9 +102,6 @@ class FileTreeViewModelTest extends AbstractTestCase
         static::assertTrue($this->viewModel->isFileSeen($file));
     }
 
-    /**
-     * @covers ::getCommentsForFile
-     */
     public function testGetCommentsForFile(): void
     {
         $commentA = new Comment();

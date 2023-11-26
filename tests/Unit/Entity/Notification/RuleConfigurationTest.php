@@ -7,15 +7,11 @@ use DatePeriod;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Notification\RuleConfiguration
- */
+#[CoversClass(RuleConfiguration::class)]
 class RuleConfigurationTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $period = $this->createMock(DatePeriod::class);

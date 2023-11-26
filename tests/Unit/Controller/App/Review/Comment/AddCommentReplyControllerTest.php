@@ -13,6 +13,7 @@ use DR\Review\Form\Review\AddCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\AddCommentReplyController
- * @covers ::__construct
- */
+#[CoversClass(AddCommentReplyController::class)]
 class AddCommentReplyControllerTest extends AbstractControllerTestCase
 {
     private CommentReplyRepository&MockObject $commentRepository;
@@ -38,9 +36,6 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeCommentMissing(): void
     {
         $response = ($this->controller)(new Request(), null);
@@ -48,9 +43,6 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFormNotSubmitted(): void
     {
         $request = new Request();
@@ -69,9 +61,6 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeFormSubmitted(): void
     {
         $request = new Request();

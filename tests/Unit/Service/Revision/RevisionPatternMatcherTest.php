@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Service\Revision;
 
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Revision\RevisionPatternMatcher
- * @covers ::__construct
- */
+#[CoversClass(RevisionPatternMatcher::class)]
 class RevisionPatternMatcherTest extends AbstractTestCase
 {
-    /**
-     * @covers ::match
-     */
     public function testMatch(): void
     {
         $matcher = new RevisionPatternMatcher('^F#\d+', 'bug');
@@ -23,9 +18,6 @@ class RevisionPatternMatcherTest extends AbstractTestCase
         static::assertSame('F#123', $matcher->match('F#123 foobar'));
     }
 
-    /**
-     * @covers ::match
-     */
     public function testMatchWithGroup(): void
     {
         $matcher = new RevisionPatternMatcher('^F#(?<bug>\d+)', 'bug');

@@ -9,12 +9,10 @@ use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\Diff\GitDiffCommandFactory;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\GitDiffCommandFactory
- * @covers ::__construct
- */
+#[CoversClass(GitDiffCommandFactory::class)]
 class GitDiffCommandFactoryTest extends AbstractTestCase
 {
     private GitDiffCommandBuilder&MockObject $commandBuilder;
@@ -29,9 +27,6 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
         $this->factory = new GitDiffCommandFactory($factory);
     }
 
-    /**
-     * @covers ::diffHashes
-     */
     public function testDiffHashesMinimalOptions(): void
     {
         $rule = new Rule();
@@ -53,9 +48,6 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
         $this->factory->diffHashes($rule, 'startHash', 'endHash');
     }
 
-    /**
-     * @covers ::diffHashes
-     */
     public function testFromRuleWithAllOptions(): void
     {
         $rule = new Rule();

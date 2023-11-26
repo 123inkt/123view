@@ -8,10 +8,9 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\Git\Diff\DiffFileUpdater;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\DiffFileUpdater
- */
+#[CoversClass(DiffFileUpdater::class)]
 class DiffFileUpdaterTest extends AbstractTestCase
 {
     private DiffFileUpdater $updater;
@@ -22,10 +21,6 @@ class DiffFileUpdaterTest extends AbstractTestCase
         $this->updater = new DiffFileUpdater();
     }
 
-    /**
-     * @covers ::update
-     * @covers ::updateBlockVisibility
-     */
     public function testUpdateVisibleLines(): void
     {
         $lineA        = new DiffLine(DiffLine::STATE_UNCHANGED, []);
@@ -46,10 +41,6 @@ class DiffFileUpdaterTest extends AbstractTestCase
         static::assertFalse($lineE->visible);
     }
 
-    /**
-     * @covers ::update
-     * @covers ::updateBlockVisibility
-     */
     public function testUpdateVisibleLinesWithMultipleChanges(): void
     {
         $lineA        = new DiffLine(DiffLine::STATE_ADDED, []);
@@ -70,10 +61,6 @@ class DiffFileUpdaterTest extends AbstractTestCase
         static::assertTrue($lineE->visible);
     }
 
-    /**
-     * @covers ::update
-     * @covers ::removeInvisibleLines
-     */
     public function testUpdateRemoveInvisibleLines(): void
     {
         $lineA        = new DiffLine(DiffLine::STATE_UNCHANGED, []);

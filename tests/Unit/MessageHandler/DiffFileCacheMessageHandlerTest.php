@@ -13,14 +13,12 @@ use DR\Review\MessageHandler\DiffFileCacheMessageHandler;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\DiffFileCacheMessageHandler
- * @covers ::__construct
- */
+#[CoversClass(DiffFileCacheMessageHandler::class)]
 class DiffFileCacheMessageHandlerTest extends AbstractTestCase
 {
     private CodeReviewRepository&MockObject       $reviewRepository;
@@ -37,7 +35,6 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleEvent
      * @throws Throwable
      */
     public function testHandleEventMissingReview(): void
@@ -49,7 +46,6 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleEvent
      * @throws Throwable
      */
     public function testHandleEventNoRevisions(): void
@@ -63,7 +59,6 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleEvent
      * @throws Throwable
      */
     public function testHandleEventBranchReview(): void
@@ -78,7 +73,6 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleEvent
      * @throws Throwable
      */
     public function testHandleEvent(): void
@@ -102,7 +96,6 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleEvent
      * @throws Throwable
      */
     public function testHandleEventShouldContinueOnFailure(): void
@@ -126,7 +119,6 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleEvent
      * @throws Throwable
      */
     public function testHandleEventShouldSkipHighlightingForDeletedFile(): void

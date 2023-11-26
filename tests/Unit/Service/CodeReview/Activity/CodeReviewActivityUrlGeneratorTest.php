@@ -14,13 +14,11 @@ use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityUrlGenerator::class)]
 class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject  $urlGenerator;
@@ -35,9 +33,6 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
         $this->activityUrlGenerator = new CodeReviewActivityUrlGenerator($this->urlGenerator, $this->replyRepository);
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateDefaultActivity(): void
     {
         $review = new CodeReview();
@@ -55,9 +50,6 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
         static::assertSame('url', $this->activityUrlGenerator->generate($activity));
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateCommentActivity(): void
     {
         $review = new CodeReview();
@@ -76,9 +68,6 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
         static::assertSame('url#focus:comment:456', $this->activityUrlGenerator->generate($activity));
     }
 
-    /**
-     * @covers ::generate
-     */
     public function testGenerateReplyActivity(): void
     {
         $comment = new Comment();

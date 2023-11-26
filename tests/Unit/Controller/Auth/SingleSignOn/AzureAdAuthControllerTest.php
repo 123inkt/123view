@@ -7,16 +7,14 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController
- * @covers ::__construct
- */
+#[CoversClass(AzureAdAuthController::class)]
 class AzureAdAuthControllerTest extends AbstractControllerTestCase
 {
     private Azure&MockObject $azureProvider;
@@ -27,9 +25,6 @@ class AzureAdAuthControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request                    = new Request(['foo' => 'bar']);

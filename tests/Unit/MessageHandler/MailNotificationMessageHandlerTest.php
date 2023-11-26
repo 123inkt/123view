@@ -9,6 +9,7 @@ use DR\Review\MessageHandler\Mail\MailNotificationHandlerInterface;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
@@ -16,10 +17,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\MailNotificationMessageHandler
- * @covers ::__construct
- */
+#[CoversClass(MailNotificationMessageHandler::class)]
 class MailNotificationMessageHandlerTest extends AbstractTestCase
 {
     private MailNotificationHandlerProvider&MockObject $handlerProvider;
@@ -35,7 +33,6 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::delayMessage
      * @throws Throwable
      */
     public function testDelayMessage(): void
@@ -64,7 +61,6 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleDelayedMessage
      * @throws Throwable
      */
     public function testHandleDelayedMessageUnknownHandlerShouldSkip(): void
@@ -75,7 +71,6 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::handleDelayedMessage
      * @throws Throwable
      */
     public function testHandleDelayedMessage(): void

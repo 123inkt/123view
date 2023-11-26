@@ -5,16 +5,14 @@ namespace DR\Review\Tests\Unit\ExternalTool\Gitlab;
 
 use DR\Review\ExternalTool\Gitlab\GitlabApi;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\ExternalTool\Gitlab\GitlabApi
- * @covers ::__construct
- */
+#[CoversClass(GitlabApi::class)]
 class GitlabApiTest extends AbstractTestCase
 {
     /** @var MockObject|HttpClientInterface */
@@ -29,7 +27,6 @@ class GitlabApiTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getBranchUrl
      * @throws Throwable
      */
     public function testGetBranchUrl(): void
@@ -56,7 +53,6 @@ class GitlabApiTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getMergeRequestUrl
      * @throws Throwable
      */
     public function testGetMergeRequestUrl(): void

@@ -8,10 +8,9 @@ use Doctrine\DBAL\Types\ConversionException;
 use DR\Review\Doctrine\Type\AbstractEnumType;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Doctrine\Type\AbstractEnumType
- */
+#[CoversClass(AbstractEnumType::class)]
 class AbstractEnumTypeTest extends AbstractTestCase
 {
     private AbstractEnumType $enumType;
@@ -25,9 +24,6 @@ class AbstractEnumTypeTest extends AbstractTestCase
         };
     }
 
-    /**
-     * @covers ::getSQLDeclaration
-     */
     public function testGetSQLDeclaration(): void
     {
         $result = $this->enumType->getSQLDeclaration([], $this->createMock(AbstractPlatform::class));
@@ -35,7 +31,6 @@ class AbstractEnumTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValue(): void
@@ -44,7 +39,6 @@ class AbstractEnumTypeTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::convertToDatabaseValue
      * @throws ConversionException
      */
     public function testConvertToDatabaseValueThrowsExceptionOnInvalidArgument(): void
@@ -54,9 +48,6 @@ class AbstractEnumTypeTest extends AbstractTestCase
         $this->enumType->convertToDatabaseValue('foobar', $this->createMock(AbstractPlatform::class));
     }
 
-    /**
-     * @covers ::getName
-     */
     public function testGetName(): void
     {
         static::assertSame('type', $this->enumType->getName());

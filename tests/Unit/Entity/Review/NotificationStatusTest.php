@@ -5,19 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\NotificationStatus
- * @covers ::__construct
- */
+#[CoversClass(NotificationStatus::class)]
 class NotificationStatusTest extends AbstractTestCase
 {
-    /**
-     * @covers ::hasStatus
-     * @covers ::addStatus
-     * @covers ::removeStatus
-     * @covers ::getStatus
-     */
     public function testAccessorPairs(): void
     {
         $status = new NotificationStatus(0);

@@ -12,10 +12,9 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Review\CodeReviewerService
- */
+#[CoversClass(CodeReviewerService::class)]
 class CodeReviewerServiceTest extends AbstractTestCase
 {
     private CodeReviewerService $service;
@@ -26,9 +25,6 @@ class CodeReviewerServiceTest extends AbstractTestCase
         $this->service = new CodeReviewerService();
     }
 
-    /**
-     * @covers ::addReviewer
-     */
     public function testAddReviewer(): void
     {
         $review = new CodeReview();
@@ -42,9 +38,6 @@ class CodeReviewerServiceTest extends AbstractTestCase
         static::assertSame($user, $reviewer->getUser());
     }
 
-    /**
-     * @covers ::setReviewerState
-     */
     public function testSetReviewerStateAccepted(): void
     {
         $comment = new Comment();
@@ -61,9 +54,6 @@ class CodeReviewerServiceTest extends AbstractTestCase
         static::assertSame(CommentStateType::RESOLVED, $comment->getState());
     }
 
-    /**
-     * @covers ::setReviewerState
-     */
     public function testSetReviewerStateOpen(): void
     {
         $reviewer = new CodeReviewer();

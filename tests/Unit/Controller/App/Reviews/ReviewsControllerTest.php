@@ -16,12 +16,10 @@ use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Reviews\ReviewsController
- * @covers ::__construct
- */
+#[CoversClass(ReviewsController::class)]
 class ReviewsControllerTest extends AbstractControllerTestCase
 {
     private ReviewsViewModelProvider&MockObject     $viewModelProvider;
@@ -38,9 +36,6 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $repository = new Repository();
@@ -66,9 +61,6 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         static::assertSame($viewModel, $result['reviewsModel']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeBadTerms(): void
     {
         $repository = new Repository();

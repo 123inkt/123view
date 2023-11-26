@@ -13,12 +13,10 @@ use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Branch\GitBranchService
- * @covers ::__construct
- */
+#[CoversClass(GitBranchService::class)]
 class GitBranchServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -36,7 +34,6 @@ class GitBranchServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRemoteBranches
      * @throws RepositoryException
      */
     public function testGetRemoteBranches(): void
@@ -58,7 +55,6 @@ class GitBranchServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getRemoteBranches
      * @throws RepositoryException
      */
     public function testGetRemoteBranchesMergedOnly(): void
@@ -80,7 +76,6 @@ class GitBranchServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::deleteBranch
      * @throws RepositoryException
      */
     public function testDeleteBranch(): void
@@ -100,9 +95,6 @@ class GitBranchServiceTest extends AbstractTestCase
         $this->service->deleteBranch($repository, $path);
     }
 
-    /**
-     * @covers ::tryDeleteBranch
-     */
     public function testTryDeleteBranch(): void
     {
         $repository = new Repository();
@@ -120,9 +112,6 @@ class GitBranchServiceTest extends AbstractTestCase
         static::assertTrue($this->service->tryDeleteBranch($repository, $path));
     }
 
-    /**
-     * @covers ::tryDeleteBranch
-     */
     public function testTryDeleteBranchCaptureException(): void
     {
         $repository = new Repository();

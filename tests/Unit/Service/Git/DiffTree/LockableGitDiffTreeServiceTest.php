@@ -10,12 +10,10 @@ use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService
- * @covers ::__construct
- */
+#[CoversClass(LockableGitDiffTreeService::class)]
 class LockableGitDiffTreeServiceTest extends AbstractTestCase
 {
     private GitRepositoryLockManager&MockObject $lockManager;
@@ -31,7 +29,6 @@ class LockableGitDiffTreeServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFilesInRevision
      * @throws Exception
      */
     public function testGetFilesInRevision(): void

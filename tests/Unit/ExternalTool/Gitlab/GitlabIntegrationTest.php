@@ -10,12 +10,10 @@ use DR\Review\ExternalTool\Gitlab\GitlabApi;
 use DR\Review\ExternalTool\Gitlab\GitlabIntegration;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ExternalTool\Gitlab\GitlabIntegration
- * @covers ::__construct
- */
+#[CoversClass(GitlabIntegration::class)]
 class GitlabIntegrationTest extends AbstractTestCase
 {
     private GitlabApi&MockObject $api;
@@ -28,18 +26,11 @@ class GitlabIntegrationTest extends AbstractTestCase
         $this->integration = new GitlabIntegration($this->logger, 'https://gitlab.example.com/', $this->api);
     }
 
-    /**
-     * @covers ::getSubscribedEvents
-     */
     public function testGetSubscribedEvents(): void
     {
         static::assertSame([CommitEvent::class => ['onCommitEvent']], GitlabIntegration::getSubscribedEvents());
     }
 
-    /**
-     * @covers ::onCommitEvent
-     * @covers ::tryAddLink
-     */
     public function testOnCommitEventShouldSkipOnMissingGitlabApiUrl(): void
     {
         $this->api         = $this->createMock(GitlabApi::class);
@@ -51,11 +42,6 @@ class GitlabIntegrationTest extends AbstractTestCase
         $this->integration->onCommitEvent(new CommitEvent($this->createMock(Commit::class)));
     }
 
-    /**
-     * @covers ::onCommitEvent
-     * @covers ::tryAddLink
-     * @covers ::getIcon
-     */
     public function testOnCommitEventShouldSkipOnMissingGitlabProjectId(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
@@ -70,11 +56,6 @@ class GitlabIntegrationTest extends AbstractTestCase
         static::assertEmpty($commit->integrationLinks);
     }
 
-    /**
-     * @covers ::onCommitEvent
-     * @covers ::tryAddLink
-     * @covers ::getIcon
-     */
     public function testOnCommitEventShouldSkipOnNoUrl(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
@@ -98,11 +79,6 @@ class GitlabIntegrationTest extends AbstractTestCase
         static::assertEmpty($commit->integrationLinks);
     }
 
-    /**
-     * @covers ::onCommitEvent
-     * @covers ::tryAddLink
-     * @covers ::getIcon
-     */
     public function testOnCommitEventShouldSkipOnHttpClientException(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');
@@ -119,11 +95,6 @@ class GitlabIntegrationTest extends AbstractTestCase
         static::assertEmpty($commit->integrationLinks);
     }
 
-    /**
-     * @covers ::onCommitEvent
-     * @covers ::tryAddLink
-     * @covers ::getIcon
-     */
     public function testOnCommitEvent(): void
     {
         $repository = $this->createRepository('gitlab', 'https://git.repository.example.com/');

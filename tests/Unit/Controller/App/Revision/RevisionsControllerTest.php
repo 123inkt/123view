@@ -11,13 +11,11 @@ use DR\Review\Service\Page\BreadcrumbFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Revision\RevisionsController
- * @covers ::__construct
- */
+#[CoversClass(RevisionsController::class)]
 class RevisionsControllerTest extends AbstractControllerTestCase
 {
     private BreadcrumbFactory&MockObject         $breadcrumbFactory;
@@ -30,9 +28,6 @@ class RevisionsControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request    = new Request(['search' => 'search', 'page' => '10']);

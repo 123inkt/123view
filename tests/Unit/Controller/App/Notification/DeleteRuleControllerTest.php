@@ -11,15 +11,13 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Notification\DeleteRuleController
- * @covers ::__construct
- */
+#[CoversClass(DeleteRuleController::class)]
 class DeleteRuleControllerTest extends AbstractControllerTestCase
 {
     private RuleRepository&MockObject      $ruleRepository;
@@ -34,9 +32,6 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeUserIsNotRuleOwner(): void
     {
         $userB = new User();
@@ -48,9 +43,6 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
         ($this->controller)($rule);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeWithUser(): void
     {
         $rule = (new Rule())->setUser($this->user)->setName('name');

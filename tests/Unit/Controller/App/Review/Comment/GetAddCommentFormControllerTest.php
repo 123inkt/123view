@@ -10,16 +10,12 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Request\Comment\AddCommentRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\FormView;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\Comment\GetAddCommentFormController
- */
+#[CoversClass(GetAddCommentFormController::class)]
 class GetAddCommentFormControllerTest extends AbstractControllerTestCase
 {
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $lineReference = new LineReference('filepath', 1, 2, 3);

@@ -7,10 +7,9 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Service\Git\Commit\CommitCombiner;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Commit\CommitCombiner
- */
+#[CoversClass(CommitCombiner::class)]
 class CommitCombinerTest extends AbstractTestCase
 {
     private CommitCombiner $combiner;
@@ -21,18 +20,12 @@ class CommitCombinerTest extends AbstractTestCase
         $this->combiner = new CommitCombiner();
     }
 
-    /**
-     * @covers ::combine
-     */
     public function testCombineShouldThrowExceptionOnEmptyArray(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->combiner->combine([]);
     }
 
-    /**
-     * @covers ::combine
-     */
     public function testCombineShouldReturnImmediatelyOnSizeOneCommits(): void
     {
         $commit = $this->createCommit();
@@ -40,10 +33,6 @@ class CommitCombinerTest extends AbstractTestCase
         static::assertSame($commit, $result);
     }
 
-    /**
-     * @covers ::combine
-     * @covers ::merge
-     */
     public function testCombineShouldCombineHashesAndFiles(): void
     {
         $commitA               = $this->createCommit();

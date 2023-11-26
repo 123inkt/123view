@@ -7,6 +7,7 @@ use DR\Review\Controller\App\Admin\ChangeUserProfileController;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\UserProfileFormType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,10 +15,7 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Form\User\UserProfileFormType
- * @covers ::__construct
- */
+#[CoversClass(UserProfileFormType::class)]
 class UserProfileFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -30,9 +28,6 @@ class UserProfileFormTypeTest extends AbstractTestCase
         $this->type         = new UserProfileFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url  = 'https://123view/user/profile';
@@ -56,9 +51,6 @@ class UserProfileFormTypeTest extends AbstractTestCase
         $this->type->buildForm($builder, ['user' => $user]);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();

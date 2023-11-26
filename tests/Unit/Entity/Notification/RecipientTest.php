@@ -5,21 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Notification;
 
 use DR\Review\Entity\Notification\Recipient;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Notification\Recipient
- */
+#[CoversClass(Recipient::class)]
 class RecipientTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getId
-     * @covers ::getName
-     * @covers ::setName
-     * @covers ::getEmail
-     * @covers ::setEmail
-     * @covers ::getRule
-     * @covers ::setRule
-     */
     public function testAccessorPairs(): void
     {
         static::assertNull((new Recipient())->getId());

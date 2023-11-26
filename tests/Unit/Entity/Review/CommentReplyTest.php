@@ -6,37 +6,16 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\CommentReply
- */
+#[CoversClass(CommentReply::class)]
 class CommentReplyTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::getMessage
-     * @covers ::setMessage
-     * @covers ::getCreateTimestamp
-     * @covers ::setCreateTimestamp
-     * @covers ::getUpdateTimestamp
-     * @covers ::setUpdateTimestamp
-     * @covers ::getNotificationStatus
-     * @covers ::setNotificationStatus
-     * @covers ::getComment
-     * @covers ::setComment
-     * @covers ::getUser
-     * @covers ::setUser
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(CommentReply::class);
     }
 
-    /**
-     * @covers ::setNotificationStatus
-     * @covers ::getNotificationStatus
-     */
     public function testNotificationStatus(): void
     {
         $comment = new CommentReply();

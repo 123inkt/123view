@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Model\Review\Highlight;
 
 use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Model\Review\Highlight\HighlightedFile
- * @covers ::__construct
- */
+#[CoversClass(HighlightedFile::class)]
 class HighlightedFileTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getLine
-     */
     public function testGetLine(): void
     {
         $file = new HighlightedFile('filepath', static fn() => [0 => 'line1', 2 => 'line2']);

@@ -10,17 +10,12 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Revision\RevisionsViewModel
- * @covers ::__construct
- */
+#[CoversClass(RevisionsViewModel::class)]
 class RevisionsViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getRevisions
-     */
     public function testGetRevisions(): void
     {
         $repository = new Repository();

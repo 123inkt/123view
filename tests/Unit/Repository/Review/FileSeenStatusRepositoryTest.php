@@ -12,15 +12,12 @@ use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Repository\Review\FileSeenStatusRepository
- * @covers ::__construct
- */
+#[CoversClass(FileSeenStatusRepository::class)]
 class FileSeenStatusRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @covers ::save
      * @throws Exception
      */
     public function testSave(): void

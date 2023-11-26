@@ -9,49 +9,17 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\Comment
- * @covers ::__construct
- */
+#[CoversClass(Comment::class)]
 class CommentTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::getFilePath
-     * @covers ::setFilePath
-     * @covers ::getLineReference
-     * @covers ::setLineReference
-     * @covers ::getState
-     * @covers ::setState
-     * @covers ::getMessage
-     * @covers ::setMessage
-     * @covers ::getCreateTimestamp
-     * @covers ::setCreateTimestamp
-     * @covers ::getUpdateTimestamp
-     * @covers ::setUpdateTimestamp
-     * @covers ::getNotificationStatus
-     * @covers ::setNotificationStatus
-     * @covers ::getReview
-     * @covers ::setReview
-     * @covers ::getUser
-     * @covers ::setUser
-     * @covers ::getReplies
-     * @covers ::setReplies
-     * @covers ::getMentions
-     * @covers ::setMentions
-     */
     public function testAccessorPairs(): void
     {
         $config = (new ConstraintConfig())->setExcludedMethods(['setReplies', 'setLineReference', 'setMentions']);
         static::assertAccessorPairs(Comment::class, $config);
     }
 
-    /**
-     * @covers ::setNotificationStatus
-     * @covers ::getNotificationStatus
-     */
     public function testNotificationStatus(): void
     {
         $comment = new Comment();
@@ -65,10 +33,6 @@ class CommentTest extends AbstractTestCase
         static::assertSame($statusC, $comment->getNotificationStatus());
     }
 
-    /**
-     * @covers ::setLineReference
-     * @covers ::getLineReference
-     */
     public function testLineReference(): void
     {
         $comment = new Comment();
@@ -76,10 +40,6 @@ class CommentTest extends AbstractTestCase
         static::assertEquals(new LineReference('foobar', 1, 2, 3), $comment->getLineReference());
     }
 
-    /**
-     * @covers ::getReplies
-     * @covers ::setReplies
-     */
     public function testReplies(): void
     {
         $collection = new ArrayCollection();
@@ -91,10 +51,6 @@ class CommentTest extends AbstractTestCase
         static::assertSame($collection, $comment->getReplies());
     }
 
-    /**
-     * @covers ::getMentions
-     * @covers ::setMentions
-     */
     public function testMentions(): void
     {
         $collection = new ArrayCollection();

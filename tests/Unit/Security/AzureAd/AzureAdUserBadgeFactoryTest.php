@@ -8,12 +8,10 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Security\AzureAd\AzureAdUserBadgeFactory
- * @covers ::__construct
- */
+#[CoversClass(AzureAdUserBadgeFactory::class)]
 class AzureAdUserBadgeFactoryTest extends AbstractTestCase
 {
     private UserRepository&MockObject $userRepository;
@@ -27,9 +25,6 @@ class AzureAdUserBadgeFactoryTest extends AbstractTestCase
         $this->factory        = new AzureAdUserBadgeFactory($this->userRepository);
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreateExistingUser(): void
     {
         $user = new User();
@@ -39,9 +34,6 @@ class AzureAdUserBadgeFactoryTest extends AbstractTestCase
         static::assertSame($user, $badge->getUser());
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreateNonExistingUser(): void
     {
         $user = new User();
@@ -61,9 +53,6 @@ class AzureAdUserBadgeFactoryTest extends AbstractTestCase
         static::assertSame($user, $badge->getUser());
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreateFirstNonExistingUser(): void
     {
         $user = new User();

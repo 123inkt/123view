@@ -8,12 +8,10 @@ use DR\Review\Controller\App\Admin\UsersController;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\User\UsersViewModel;
 use DR\Review\ViewModelProvider\UserViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Admin\UsersController
- * @covers ::__construct
- */
+#[CoversClass(UsersController::class)]
 class UsersControllerTest extends AbstractControllerTestCase
 {
     private UserViewModelProvider&MockObject $modelProvider;
@@ -24,9 +22,6 @@ class UsersControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $viewModel = new UsersViewModel([], []);

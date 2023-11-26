@@ -8,16 +8,12 @@ use DR\Review\Controller\App\Notification\RulesController;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Notification\RulesController
- */
+#[CoversClass(RulesController::class)]
 class RulesControllerTest extends AbstractControllerTestCase
 {
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeWithoutUser(): void
     {
         // invoke controller
@@ -27,9 +23,6 @@ class RulesControllerTest extends AbstractControllerTestCase
         ($this->controller)();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $rule = new Rule();

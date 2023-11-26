@@ -16,13 +16,11 @@ use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Review\ReviewFileTreeController
- * @covers ::__construct
- */
+#[CoversClass(ReviewFileTreeController::class)]
 class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 {
     private FileTreeViewModelProvider&MockObject $viewModelProvider;
@@ -39,9 +37,6 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request  = new Request(['filePath' => 'filePath']);

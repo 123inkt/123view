@@ -12,12 +12,10 @@ use DR\Review\Service\Git\Clean\GitCleanService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Clean\GitCleanService
- * @covers ::__construct
- */
+#[CoversClass(GitCleanService::class)]
 class GitCleanServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -33,7 +31,6 @@ class GitCleanServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::forceClean
      * @throws RepositoryException
      */
     public function testForceClean(): void

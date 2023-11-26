@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Git;
 
 use DR\Review\Git\LineReader;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Git\LineReader
- * @covers ::__construct
- */
+#[CoversClass(LineReader::class)]
 class LineReaderTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $lines  = "line1\nline2";
@@ -23,9 +18,6 @@ class LineReaderTest extends AbstractTestCase
         static::assertSame($lines, (string)$reader);
     }
 
-    /**
-     * @covers ::fromString
-     */
     public function testFromString(): void
     {
         $lines  = "line1\nline2";
@@ -34,9 +26,6 @@ class LineReaderTest extends AbstractTestCase
         static::assertSame($lines, (string)$reader);
     }
 
-    /**
-     * @covers ::peek
-     */
     public function testPeek(): void
     {
         $lines  = ["line1", "line2"];
@@ -47,10 +36,6 @@ class LineReaderTest extends AbstractTestCase
         static::assertNull($reader->peek());
     }
 
-    /**
-     * @covers ::current
-     * @covers ::next
-     */
     public function testCurrentAndNext(): void
     {
         $lines  = ["line1", "line2"];

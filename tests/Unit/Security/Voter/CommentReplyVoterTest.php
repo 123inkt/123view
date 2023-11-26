@@ -7,18 +7,13 @@ use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Security\Voter\CommentReplyVoter
- */
+#[CoversClass(CommentReplyVoter::class)]
 class CommentReplyVoterTest extends AbstractTestCase
 {
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupports(): void
     {
         $user    = (new User())->setId(789);
@@ -32,10 +27,6 @@ class CommentReplyVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $comment, [CommentReplyVoter::EDIT]));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsInvalidAttribute(): void
     {
         $user    = new User();
@@ -49,10 +40,6 @@ class CommentReplyVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $comment, ['foobar']));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsInvalidSubject(): void
     {
         $token = $this->createMock(TokenInterface::class);
@@ -62,10 +49,6 @@ class CommentReplyVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, false, [CommentReplyVoter::EDIT]));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsAbsentUser(): void
     {
         $user = new User();
@@ -80,10 +63,6 @@ class CommentReplyVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $comment, [CommentReplyVoter::EDIT]));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsNotRuleOwner(): void
     {
         $user = new User();

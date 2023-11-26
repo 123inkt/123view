@@ -6,24 +6,17 @@ namespace DR\Review\Tests\Unit\Twig;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\StrPadExtension;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\StrPadExtension
- */
+#[CoversClass(StrPadExtension::class)]
 class StrPadExtensionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         $extension = new StrPadExtension();
         static::assertCount(1, $extension->getFilters());
     }
 
-    /**
-     * @covers ::strpad
-     */
     public function testStrPad(): void
     {
         $extension = new StrPadExtension();
@@ -35,9 +28,6 @@ class StrPadExtensionTest extends AbstractTestCase
         static::assertSame('&nbsp;&amp;&nbsp;', $extension->strpad('&', 3, 'both'));
     }
 
-    /**
-     * @covers ::strpad
-     */
     public function testStrPadInvalidArgument(): void
     {
         $extension = new StrPadExtension();

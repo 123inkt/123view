@@ -16,10 +16,9 @@ use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\Tests\AbstractKernelTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MailNotificationHandlerProviderTest extends AbstractKernelTestCase
 {
     /**

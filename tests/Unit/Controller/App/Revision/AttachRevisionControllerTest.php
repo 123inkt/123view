@@ -14,14 +14,12 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\Review\CodeReviewService;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Revision\AttachRevisionController
- * @covers ::__construct
- */
+#[CoversClass(AttachRevisionController::class)]
 class AttachRevisionControllerTest extends AbstractControllerTestCase
 {
     private RevisionRepository&MockObject  $revisionRepository;
@@ -38,9 +36,6 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeAttachRevision(): void
     {
         $request    = new Request(request: ['revision' => [123 => 1]]);
@@ -75,7 +70,6 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
 
     /**
      * Skip attach revision when review repository is not the same as the revision repository
-     * @covers ::__invoke
      */
     public function testInvokeSkipRevision(): void
     {

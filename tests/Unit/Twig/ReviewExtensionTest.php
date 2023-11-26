@@ -6,10 +6,9 @@ namespace DR\Review\Tests\Unit\Twig;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\ReviewExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\ReviewExtension
- */
+#[CoversClass(ReviewExtension::class)]
 class ReviewExtensionTest extends AbstractTestCase
 {
     private ReviewExtension $extension;
@@ -20,17 +19,11 @@ class ReviewExtensionTest extends AbstractTestCase
         $this->extension = new ReviewExtension();
     }
 
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         static::assertCount(1, $this->extension->getFilters());
     }
 
-    /**
-     * @covers ::filePath
-     */
     public function testFilePathWithHash(): void
     {
         $diffFile                = new DiffFile();
@@ -40,9 +33,6 @@ class ReviewExtensionTest extends AbstractTestCase
         static::assertSame("filepath:hash", $this->extension->filePath($diffFile));
     }
 
-    /**
-     * @covers ::filePath
-     */
     public function testFilePathWithoutHash(): void
     {
         $diffFile                = new DiffFile();

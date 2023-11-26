@@ -6,15 +6,11 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 use DR\Review\Entity\Review\FileSeenStatus;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\FileSeenStatusCollection
- */
+#[CoversClass(FileSeenStatusCollection::class)]
 class FileSeenStatusCollectionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::isSeen
-     */
     public function testIsSeen(): void
     {
         $statusA = new FileSeenStatus();

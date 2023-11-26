@@ -6,25 +6,17 @@ namespace DR\Review\Tests\Unit\Twig;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use DR\Review\Twig\InlineCssExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\InlineCssExtension
- * @covers ::__construct
- */
+#[CoversClass(InlineCssExtension::class)]
 class InlineCssExtensionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getFilters
-     */
     public function testGetFilters(): void
     {
         $extension = new InlineCssExtension(new CssToInlineStyles());
         static::assertCount(1, $extension->getFilters());
     }
 
-    /**
-     * @covers ::inlineCss
-     */
     public function testInlineCss(): void
     {
         $inliner = $this->createMock(CssToInlineStyles::class);

@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Form\Review\EditCommentReplyFormType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,10 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Review\EditCommentReplyFormType
- * @covers ::__construct
- */
+#[CoversClass(EditCommentReplyFormType::class)]
 class EditCommentReplyFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -32,9 +30,6 @@ class EditCommentReplyFormTypeTest extends AbstractTestCase
         $this->type         = new EditCommentReplyFormType($this->urlGenerator);
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -46,9 +41,6 @@ class EditCommentReplyFormTypeTest extends AbstractTestCase
         static::assertSame(CommentReply::class, $introspector->getDefault('data_class'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $url   = 'https://123view/comment-reply/update';

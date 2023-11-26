@@ -5,16 +5,12 @@ namespace DR\Review\Tests\Unit\Validator\Filter;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Validator\Filter\IsValidPattern;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @coversDefaultClass \DR\Review\Validator\Filter\IsValidPattern
- */
+#[CoversClass(IsValidPattern::class)]
 class IsValidPatternTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getTargets
-     */
     public function testGetTargets(): void
     {
         $constraint = new IsValidPattern();

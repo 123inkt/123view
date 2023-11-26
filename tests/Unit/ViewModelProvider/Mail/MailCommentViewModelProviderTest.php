@@ -17,14 +17,12 @@ use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\Mail\MailCommentViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(MailCommentViewModelProvider::class)]
 class MailCommentViewModelProviderTest extends AbstractTestCase
 {
     private ReviewDiffServiceInterface&MockObject $diffService;
@@ -44,9 +42,6 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::createCommentViewModel
-     * @covers ::getHeaderTitle
-     * @covers ::getReplies
      * @throws Throwable
      */
     public function testCreateCommentViewModelCommentCreated(): void
@@ -82,9 +77,6 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::createCommentViewModel
-     * @covers ::getHeaderTitle
-     * @covers ::getReplies
      * @throws Throwable
      */
     public function testCreateCommentViewModelCommentReplied(): void
@@ -122,9 +114,6 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::createCommentViewModel
-     * @covers ::getHeaderTitle
-     * @covers ::getReplies
      * @throws Throwable
      */
     public function testCreateCommentViewModelResolvedByUser(): void

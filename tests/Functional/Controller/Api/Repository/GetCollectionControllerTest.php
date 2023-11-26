@@ -10,10 +10,9 @@ use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class GetCollectionControllerTest extends AbstractFunctionalTestCase
 {
     /**

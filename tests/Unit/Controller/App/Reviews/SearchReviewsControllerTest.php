@@ -13,12 +13,10 @@ use DR\Review\Service\CodeReview\Search\ReviewSearchQueryTermFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Reviews\SearchReviewsController
- * @covers ::__construct
- */
+#[CoversClass(SearchReviewsController::class)]
 class SearchReviewsControllerTest extends AbstractControllerTestCase
 {
     private ReviewsViewModelProvider&MockObject     $viewModelProvider;
@@ -33,9 +31,6 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $request = $this->createMock(SearchReviewsRequest::class);
@@ -51,9 +46,6 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
         static::assertSame(['reviewsModel' => $viewModel], $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeBadQuery(): void
     {
         $request = $this->createMock(SearchReviewsRequest::class);

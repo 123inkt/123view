@@ -11,12 +11,10 @@ use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetOptimizer;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer
- * @covers ::__construct
- */
+#[CoversClass(UnifiedDiffEmphasizer::class)]
 class UnifiedDiffEmphasizerTest extends AbstractTestCase
 {
     private DiffLineChangeSetOptimizer&MockObject $optimizer;
@@ -29,9 +27,6 @@ class UnifiedDiffEmphasizerTest extends AbstractTestCase
         $this->emphasizer = new UnifiedDiffEmphasizer($this->optimizer);
     }
 
-    /**
-     * @covers ::emphasizeFile
-     */
     public function testEmphasizeFile(): void
     {
         $line1 = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line1')]);

@@ -8,14 +8,12 @@ use DR\Review\Entity\Config\ExternalLink;
 use DR\Review\Repository\Config\ExternalLinkRepository;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @coversDefaultClass \DR\Review\Command\ExternalLink\RemoveExternalLinkCommand
- * @covers ::__construct
- */
+#[CoversClass(RemoveExternalLinkCommand::class)]
 class RemoveExternalLinkCommandTest extends AbstractTestCase
 {
     private ExternalLinkRepository&MockObject $linkRepository;
@@ -29,8 +27,6 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::configure
-     * @covers ::execute
      * @throws Exception
      */
     public function testExecute(): void
@@ -46,8 +42,6 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::configure
-     * @covers ::execute
      * @throws Exception
      */
     public function testExecuteFailure(): void

@@ -22,15 +22,13 @@ use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Webhook\ReviewEventService
- * @covers ::__construct
- */
+#[CoversClass(ReviewEventService::class)]
 class ReviewEventServiceTest extends AbstractTestCase
 {
     private MessageBusInterface&MockObject $bus;
@@ -43,9 +41,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service = new ReviewEventService($this->bus);
     }
 
-    /**
-     * @covers ::reviewerAdded
-     */
     public function testReviewerAdded(): void
     {
         $user = new User();
@@ -64,9 +59,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->reviewerAdded($review, $reviewer, 5, true);
     }
 
-    /**
-     * @covers ::reviewerRemoved
-     */
     public function testReviewerRemoved(): void
     {
         $user = new User();
@@ -84,9 +76,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->reviewerRemoved($review, $reviewer, 5);
     }
 
-    /**
-     * @covers ::reviewReviewerStateChanged
-     */
     public function testReviewReviewerStateChanged(): void
     {
         $user = new User();
@@ -123,9 +112,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
     }
 
-    /**
-     * @covers ::reviewerStateChanged
-     */
     public function testReviewerStateChanged(): void
     {
         $user = new User();
@@ -149,9 +135,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->reviewerStateChanged($review, $reviewer, CodeReviewerStateType::REJECTED);
     }
 
-    /**
-     * @covers ::reviewStateChanged
-     */
     public function testReviewStateChanged(): void
     {
         $review = new CodeReview();
@@ -177,9 +160,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->reviewStateChanged($review, CodeReviewStateType::OPEN, 5);
     }
 
-    /**
-     * @covers ::revisionsAdded
-     */
     public function testRevisionsAdded(): void
     {
         $revisionA = new Revision();
@@ -205,9 +185,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->revisionsAdded($review, [$revisionA, $revisionB], 5);
     }
 
-    /**
-     * @covers ::revisionsDetached
-     */
     public function testDetachRevisions(): void
     {
         $revisionA = new Revision();
@@ -233,9 +210,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->revisionsDetached($review, [$revisionA, $revisionB], 5);
     }
 
-    /**
-     * @covers ::revisionAddedToReview
-     */
     public function testRevisionAddedToReview(): void
     {
         $revision = new Revision();
@@ -260,9 +234,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->revisionAddedToReview($review, $revision, true, CodeReviewStateType::CLOSED, CodeReviewerStateType::ACCEPTED);
     }
 
-    /**
-     * @covers ::revisionAddedToReview
-     */
     public function testRevisionAddedToReviewWithMinimalEvents(): void
     {
         $revision = new Revision();
@@ -280,9 +251,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->revisionAddedToReview($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
     }
 
-    /**
-     * @covers ::revisionRemovedFromReview
-     */
     public function testRevisionRemovedFromReview(): void
     {
         $revision = new Revision();
@@ -305,9 +273,6 @@ class ReviewEventServiceTest extends AbstractTestCase
         $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::CLOSED);
     }
 
-    /**
-     * @covers ::revisionRemovedFromReview
-     */
     public function testRevisionRemovedFromReviewWithMinimalEvents(): void
     {
         $revision = new Revision();

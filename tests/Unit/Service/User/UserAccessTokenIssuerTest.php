@@ -10,12 +10,10 @@ use DR\Review\Service\User\UserAccessTokenGenerator;
 use DR\Review\Service\User\UserAccessTokenIssuer;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\User\UserAccessTokenIssuer
- * @covers ::__construct
- */
+#[CoversClass(UserAccessTokenIssuer::class)]
 class UserAccessTokenIssuerTest extends AbstractTestCase
 {
     private UserAccessTokenGenerator&MockObject  $generator;
@@ -31,7 +29,6 @@ class UserAccessTokenIssuerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::issue
      * @throws Exception
      */
     public function testIssue(): void

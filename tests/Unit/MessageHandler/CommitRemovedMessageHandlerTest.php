@@ -16,13 +16,11 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\MessageHandler\CommitRemovedMessageHandler
- * @covers ::__construct
- */
+#[CoversClass(CommitRemovedMessageHandler::class)]
 class CommitRemovedMessageHandlerTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject         $repositoryRepository;
@@ -50,7 +48,6 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeAbsentRevision(): void
@@ -66,7 +63,6 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeWithReview(): void
@@ -100,7 +96,6 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::__invoke
      * @throws Throwable
      */
     public function testInvokeWithoutReview(): void

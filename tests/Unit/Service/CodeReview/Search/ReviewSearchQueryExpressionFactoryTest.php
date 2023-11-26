@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\CodeReview\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Comparison;
+use Doctrine\ORM\Query\Expr\Orx;
 use DR\Review\Entity\User\User;
 use DR\Review\QueryParser\Term\Match\MatchFilter;
 use DR\Review\QueryParser\Term\Match\MatchWord;
@@ -37,7 +38,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
         $expression = $this->expressionFactory->createReviewIdExpression(new MatchFilter('id', '123'), $collection);
 
-        static::assertEquals(new Expr\Comparison('r.projectId', '=', ':projectId1'), $expression);
+        static::assertEquals(new Comparison('r.projectId', '=', ':projectId1'), $expression);
         static::assertSame(['projectId1' => '123'], $collection->toArray());
     }
 
@@ -53,7 +54,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
         $expression = $this->expressionFactory->createReviewStateExpression(new MatchFilter('state', 'open'), $collection);
 
-        static::assertEquals(new Expr\Comparison('r.state', '=', ':state1'), $expression);
+        static::assertEquals(new Comparison('r.state', '=', ':state1'), $expression);
         static::assertSame(['state1' => 'open'], $collection->toArray());
     }
 
@@ -70,7 +71,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
         $expression = $this->expressionFactory->createReviewAuthorExpression(new MatchFilter('author', 'me'), $collection);
 
-        static::assertEquals(new Expr\Comparison('rv.authorEmail', '=', ':authorEmail1'), $expression);
+        static::assertEquals(new Comparison('rv.authorEmail', '=', ':authorEmail1'), $expression);
         static::assertSame(['authorEmail1' => 'email'], $collection->toArray());
     }
 
@@ -81,10 +82,10 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
         $expression = $this->expressionFactory->createReviewAuthorExpression(new MatchFilter('author', 'sherlock'), $collection);
 
         static::assertEquals(
-            new Expr\Orx(
+            new Orx(
                 [
-                    new Expr\Comparison('rv.authorEmail', 'LIKE', ':authorEmail1'),
-                    new Expr\Comparison('rv.authorName', 'LIKE', ':authorEmail1')
+                    new Comparison('rv.authorEmail', 'LIKE', ':authorEmail1'),
+                    new Comparison('rv.authorName', 'LIKE', ':authorEmail1')
                 ]
             ),
             $expression
@@ -104,7 +105,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createReviewReviewerExpression(new MatchFilter('reviewer', 'me'), $collection);
 
-        static::assertEquals(new Expr\Comparison('u.email', '=', ':reviewerEmail1'), $expression);
+        static::assertEquals(new Comparison('u.email', '=', ':reviewerEmail1'), $expression);
         static::assertSame(['reviewerEmail1' => 'email'], $collection->toArray());
     }
 
@@ -114,10 +115,10 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
         $expression = $this->expressionFactory->createReviewReviewerExpression(new MatchFilter('reviewer', 'sherlock'), $collection);
 
         static::assertEquals(
-            new Expr\Orx(
+            new Orx(
                 [
-                    new Expr\Comparison('u.email', 'LIKE', ':reviewerEmail1'),
-                    new Expr\Comparison('u.name', 'LIKE', ':reviewerEmail1')
+                    new Comparison('u.email', 'LIKE', ':reviewerEmail1'),
+                    new Comparison('u.name', 'LIKE', ':reviewerEmail1')
                 ]
             ),
             $expression
@@ -135,7 +136,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createSearchExpression(new MatchWord('search'), $collection);
 
-        static::assertEquals(new Expr\Comparison('r.title', 'LIKE', ':title2'), $expression);
+        static::assertEquals(new Comparison('r.title', 'LIKE', ':title2'), $expression);
         static::assertSame(['title2' => '%search%'], $collection->toArray());
     }
 
@@ -145,10 +146,10 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
         $expression = $this->expressionFactory->createSearchExpression(new MatchWord('123'), $collection);
 
         static::assertEquals(
-            new Expr\Orx(
+            new Orx(
                 [
-                    new Expr\Comparison('r.projectId', '=', ':projectId1'),
-                    new Expr\Comparison('r.title', 'LIKE', ':title2')
+                    new Comparison('r.projectId', '=', ':projectId1'),
+                    new Comparison('r.title', 'LIKE', ':title2')
                 ]
             ),
             $expression

@@ -5,30 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Webhook;
 
 use DR\Review\Entity\Webhook\WebhookActivity;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Webhook\WebhookActivity
- */
+#[CoversClass(WebhookActivity::class)]
 class WebhookActivityTest extends AbstractTestCase
 {
-    /**
-     * @covers ::setId
-     * @covers ::getId
-     * @covers ::getRequest
-     * @covers ::setRequest
-     * @covers ::getRequestHeaders
-     * @covers ::setRequestHeaders
-     * @covers ::getStatusCode
-     * @covers ::setStatusCode
-     * @covers ::getResponse
-     * @covers ::setResponse
-     * @covers ::getResponseHeaders
-     * @covers ::setResponseHeaders
-     * @covers ::getCreateTimestamp
-     * @covers ::setCreateTimestamp
-     * @covers ::getWebhook
-     * @covers ::setWebhook
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(WebhookActivity::class);

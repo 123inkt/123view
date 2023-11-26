@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Response;
 
 use DR\Review\Response\ProblemJsonResponse;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Response\ProblemJsonResponse
- * @covers ::__construct
- */
+#[CoversClass(ProblemJsonResponse::class)]
 class ProblemJsonResponseTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $response = new ProblemJsonResponse(['foobar' => 'foobar'], 300, ['foo' => 'bar'], false);

@@ -8,13 +8,11 @@ use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Project\ProjectsController
- * @covers ::__construct
- */
+#[CoversClass(ProjectsController::class)]
 class ProjectsControllerTest extends AbstractControllerTestCase
 {
     private ProjectsViewModelProvider&MockObject $viewModelProvider;
@@ -27,9 +25,6 @@ class ProjectsControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $viewModel = $this->createMock(ProjectsViewModel::class);

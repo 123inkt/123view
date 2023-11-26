@@ -5,11 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Git\Fetch;
 
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Fetch\GitFetchCommandBuilder
- * @covers ::__construct
- */
+#[CoversClass(GitFetchCommandBuilder::class)]
 class GitFetchCommandBuilderTest extends AbstractTestCase
 {
     private const DEFAULTS = ['git', 'fetch'];
@@ -22,21 +20,11 @@ class GitFetchCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitFetchCommandBuilder('git');
     }
 
-    /**
-     * @covers ::build
-     */
     public function testBuildDefaults(): void
     {
         static::assertSame(self::DEFAULTS, $this->builder->build());
     }
 
-    /**
-     * @covers ::verbose
-     * @covers ::all
-     * @covers ::prune
-     * @covers ::noTags
-     * @covers ::build
-     */
     public function testBuildWithOptions(): void
     {
         static::assertSame(
@@ -45,17 +33,11 @@ class GitFetchCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::command
-     */
     public function testCommand(): void
     {
         static::assertSame('fetch', $this->builder->command());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         static::assertSame(

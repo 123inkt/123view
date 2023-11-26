@@ -6,16 +6,11 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Review\LineReference
- * @covers ::__construct
- */
+#[CoversClass(LineReference::class)]
 class LineReferenceTest extends AbstractTestCase
 {
-    /**
-     * @covers ::fromString
-     */
     public function testFromString(): void
     {
         $reference = LineReference::fromString('foo/bar:1:2:3');
@@ -25,9 +20,6 @@ class LineReferenceTest extends AbstractTestCase
         static::assertSame(3, $reference->lineAfter);
     }
 
-    /**
-     * @covers ::fromString
-     */
     public function testFromStringInvalidReference(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -35,9 +27,6 @@ class LineReferenceTest extends AbstractTestCase
         LineReference::fromString('foobar');
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $string = 'foo/bar:1:2:3';

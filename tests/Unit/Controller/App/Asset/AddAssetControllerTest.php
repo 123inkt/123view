@@ -12,12 +12,10 @@ use DR\Review\Repository\Asset\AssetRepository;
 use DR\Review\Request\Asset\AddAssetRequest;
 use DR\Review\Service\Asset\AssetFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Asset\AddAssetController
- * @covers ::__construct
- */
+#[CoversClass(AddAssetController::class)]
 class AddAssetControllerTest extends AbstractControllerTestCase
 {
     private AssetRepository&MockObject $assetRepository;
@@ -30,9 +28,6 @@ class AddAssetControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $asset = new Asset();

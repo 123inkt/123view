@@ -13,14 +13,12 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewOutputFactory::class)]
 class CodeReviewOutputFactoryTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -35,9 +33,6 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         $this->factory           = new CodeReviewOutputFactory($this->urlGenerator, $this->userOutputFactory);
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreate(): void
     {
         // setup dependencies

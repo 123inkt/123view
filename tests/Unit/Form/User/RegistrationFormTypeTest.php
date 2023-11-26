@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Form\User;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\User\RegistrationFormType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,14 +16,9 @@ use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\Form\User\RegistrationFormType
- */
+#[CoversClass(RegistrationFormType::class)]
 class RegistrationFormTypeTest extends AbstractTestCase
 {
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -34,9 +30,6 @@ class RegistrationFormTypeTest extends AbstractTestCase
         static::assertSame(User::class, $introspector->getDefault('data_class'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);

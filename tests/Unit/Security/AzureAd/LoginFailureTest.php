@@ -5,25 +5,16 @@ namespace DR\Review\Tests\Unit\Security\AzureAd;
 
 use DR\Review\Security\AzureAd\LoginFailure;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Security\AzureAd\LoginFailure
- * @covers ::__construct
- */
+#[CoversClass(LoginFailure::class)]
 class LoginFailureTest extends AbstractTestCase
 {
-    /**
-     * @covers ::isSuccess
-     * @covers ::getMessage
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(LoginFailure::class);
     }
 
-    /**
-     * @covers ::isSuccess
-     */
     public function testIsSuccess(): void
     {
         $success = new LoginFailure('message');

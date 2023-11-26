@@ -8,14 +8,12 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Command\Revision\FetchRevisionsCommand
- * @covers ::__construct
- */
+#[CoversClass(FetchRevisionsCommand::class)]
 class FetchRevisionsCommandTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject $repositoryRepository;
@@ -30,9 +28,6 @@ class FetchRevisionsCommandTest extends AbstractTestCase
         $this->command              = new FetchRevisionsCommand($this->repositoryRepository, $this->bus);
     }
 
-    /**
-     * @covers ::execute
-     */
     public function testCommandInvalidFrequency(): void
     {
         $repository = new Repository();

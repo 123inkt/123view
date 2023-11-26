@@ -6,14 +6,13 @@ namespace DR\Review\Tests\Unit\Form\Review\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Form\Review\Revision\RevisionVisibilityType;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @coversDefaultClass \DR\Review\Form\Review\Revision\RevisionVisibilityType
- */
+#[CoversClass(RevisionVisibilityType::class)]
 class RevisionVisibilityTypeTest extends AbstractTestCase
 {
     private RevisionVisibilityType $type;
@@ -24,9 +23,6 @@ class RevisionVisibilityTypeTest extends AbstractTestCase
         $this->type = new RevisionVisibilityType();
     }
 
-    /**
-     * @covers ::configureOptions
-     */
     public function testConfigureOptions(): void
     {
         $resolver     = new OptionsResolver();
@@ -39,9 +35,6 @@ class RevisionVisibilityTypeTest extends AbstractTestCase
         static::assertSame(['string'], $introspector->getAllowedTypes('form_id'));
     }
 
-    /**
-     * @covers ::buildForm
-     */
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);

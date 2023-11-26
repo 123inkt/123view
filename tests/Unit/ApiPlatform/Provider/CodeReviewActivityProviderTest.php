@@ -13,12 +13,10 @@ use DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewActivityProvider::class)]
 class CodeReviewActivityProviderTest extends AbstractTestCase
 {
     /** @var MockObject&ProviderInterface<CodeReviewActivity> */
@@ -34,9 +32,6 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $this->activityProvider   = new CodeReviewActivityProvider($this->collectionProvider, $this->outputFactory);
     }
 
-    /**
-     * @covers ::provide
-     */
     public function testProvideShouldOnlySupportGetCollection(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -44,9 +39,6 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $this->activityProvider->provide(new Get());
     }
 
-    /**
-     * @covers ::provide
-     */
     public function testProvide(): void
     {
         $operation = new GetCollection();

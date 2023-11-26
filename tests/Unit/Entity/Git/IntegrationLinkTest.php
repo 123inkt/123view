@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Entity\Git;
 
 use DR\Review\Entity\Git\IntegrationLink;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\IntegrationLink
- * @covers ::__construct
- */
+#[CoversClass(IntegrationLink::class)]
 class IntegrationLinkTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $link = new IntegrationLink('url', 'image', 'text');

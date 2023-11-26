@@ -6,15 +6,11 @@ namespace DR\Review\Tests\Unit\Controller\App\Asset;
 use DR\Review\Controller\App\Asset\GetAssetController;
 use DR\Review\Entity\Asset\Asset;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\App\Asset\GetAssetController
- */
+#[CoversClass(GetAssetController::class)]
 class GetAssetControllerTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         /** @var resource $stream */

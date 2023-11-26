@@ -21,13 +21,11 @@ use DR\Review\ViewModelProvider\CodeQualityViewModelProvider;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\FileDiffViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(FileDiffViewModelProvider::class)]
 class FileDiffViewModelProviderTest extends AbstractTestCase
 {
     private CommentViewModelProvider&MockObject        $commentModelProvider;
@@ -61,7 +59,6 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
     public function testGetFileDiffViewModelInline(): void
@@ -86,7 +83,6 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
     public function testGetFileDiffViewModelUnified(): void
@@ -108,7 +104,6 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
     public function testGetFileDiffViewModelSideBySide(): void
@@ -133,7 +128,6 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
     public function testGetFileDiffViewModelNoHighlightIfFileIsDeleted(): void
@@ -150,7 +144,6 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFileDiffViewModel
      * @throws Throwable
      */
     public function testGetFileDiffViewModelAddCommentReply(): void

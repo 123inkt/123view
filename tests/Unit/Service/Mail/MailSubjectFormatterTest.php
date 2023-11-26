@@ -8,15 +8,11 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Mail\MailSubjectFormatter;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Mail\MailSubjectFormatter
- */
+#[CoversClass(MailSubjectFormatter::class)]
 class MailSubjectFormatterTest extends AbstractTestCase
 {
-    /**
-     * @covers ::format
-     */
     public function testFormatAllVariables(): void
     {
         $rule = new Rule();
@@ -32,9 +28,6 @@ class MailSubjectFormatterTest extends AbstractTestCase
         static::assertSame('name Sherlock repository', $result);
     }
 
-    /**
-     * @covers ::format
-     */
     public function testFormatEmptyVariables(): void
     {
         $rule    = (new Rule())->setName('');

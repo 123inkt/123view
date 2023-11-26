@@ -7,14 +7,12 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Tests\AbstractTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\GitRepositoryLockManager
- * @covers ::__construct
- */
+#[CoversClass(GitRepositoryLockManager::class)]
 class GitRepositoryLockManagerTest extends AbstractTestCase
 {
     private string                   $cacheDirectory;
@@ -29,9 +27,6 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         $this->lockManager    = new GitRepositoryLockManager($this->cacheDirectory, $this->filesystem);
     }
 
-    /**
-     * @covers ::start
-     */
     public function testStartCacheDirectoryDoesNotExist(): void
     {
         $repository = new Repository();
@@ -45,9 +40,6 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         static::assertSame('result', $this->lockManager->start($repository, static fn() => 'result'));
     }
 
-    /**
-     * @covers ::start
-     */
     public function testStartCacheDirectoryDoesExist(): void
     {
         $repository = new Repository();
@@ -61,9 +53,6 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         static::assertSame('result', $this->lockManager->start($repository, static fn() => 'result'));
     }
 
-    /**
-     * @covers ::start
-     */
     public function testStartShouldBubbleExceptions(): void
     {
         $repository = new Repository();

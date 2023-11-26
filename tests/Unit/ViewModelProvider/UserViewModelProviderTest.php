@@ -9,15 +9,13 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\UserViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\UserViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(UserViewModelProvider::class)]
 class UserViewModelProviderTest extends AbstractTestCase
 {
     private FormFactoryInterface&MockObject $formFactory;
@@ -32,9 +30,6 @@ class UserViewModelProviderTest extends AbstractTestCase
         $this->provider       = new UserViewModelProvider($this->formFactory, $this->userRepository);
     }
 
-    /**
-     * @covers ::getUsersViewModel
-     */
     public function testGetUsersViewModel(): void
     {
         $user = new User();
@@ -53,9 +48,6 @@ class UserViewModelProviderTest extends AbstractTestCase
         static::assertSame([123 => $formView], $viewModel->forms);
     }
 
-    /**
-     * @covers ::getUsersViewModel
-     */
     public function testGetUsersViewModelWithSortedUsers(): void
     {
         $userA = new User();

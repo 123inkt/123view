@@ -9,10 +9,9 @@ use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class DiffFileParserTest extends AbstractTestCase
 {
     private DiffFileParser $parser;

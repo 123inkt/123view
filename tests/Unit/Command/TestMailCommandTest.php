@@ -5,15 +5,13 @@ namespace DR\Review\Tests\Unit\Command;
 
 use DR\Review\Command\TestMailCommand;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Mailer\MailerInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Command\TestMailCommand
- * @covers ::__construct
- */
+#[CoversClass(TestMailCommand::class)]
 class TestMailCommandTest extends AbstractTestCase
 {
     private MailerInterface&MockObject $mailer;
@@ -26,9 +24,6 @@ class TestMailCommandTest extends AbstractTestCase
         $this->command = new TestMailCommand($this->mailer);
     }
 
-    /**
-     * @covers ::configure
-     */
     public function testConfigure(): void
     {
         static::assertSame('test:mail', $this->command->getName());
@@ -40,9 +35,6 @@ class TestMailCommandTest extends AbstractTestCase
         static::assertSame('address', $arguments['address']->getName());
     }
 
-    /**
-     * @covers ::execute
-     */
     public function testCommandInvalidConfig(): void
     {
         $commandTester = new CommandTester($this->command);

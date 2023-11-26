@@ -17,12 +17,10 @@ use DR\Review\Entity\User\User;
 use DR\Review\Service\User\UserService;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ApiPlatform\Provider\CodeReviewProvider
- * @covers ::__construct
- */
+#[CoversClass(CodeReviewProvider::class)]
 class CodeReviewProviderTest extends AbstractTestCase
 {
     /** @var MockObject&ProviderInterface<CodeReview> */
@@ -40,9 +38,6 @@ class CodeReviewProviderTest extends AbstractTestCase
         $this->reviewProvider      = new CodeReviewProvider($this->collectionProvider, $this->reviewOutputFactory, $this->userService);
     }
 
-    /**
-     * @covers ::provide
-     */
     public function testProvideShouldOnlySupportGetCollection(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -50,9 +45,6 @@ class CodeReviewProviderTest extends AbstractTestCase
         $this->reviewProvider->provide(new Get());
     }
 
-    /**
-     * @covers ::provide
-     */
     public function testProvide(): void
     {
         $user      = new User();

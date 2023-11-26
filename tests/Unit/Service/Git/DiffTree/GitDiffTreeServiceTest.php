@@ -13,12 +13,10 @@ use DR\Review\Service\Git\DiffTree\GitDiffTreeService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\DiffTree\GitDiffTreeService
- * @covers ::__construct
- */
+#[CoversClass(GitDiffTreeService::class)]
 class GitDiffTreeServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -34,7 +32,6 @@ class GitDiffTreeServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getFilesInRevision
      * @throws RepositoryException
      */
     public function testGetFilesInRevision(): void

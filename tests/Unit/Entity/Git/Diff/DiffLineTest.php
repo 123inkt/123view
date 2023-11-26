@@ -6,15 +6,11 @@ namespace DR\Review\Tests\Unit\Entity\Git\Diff;
 use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Entity\Git\Diff\DiffLine
- */
+#[CoversClass(DiffLine::class)]
 class DiffLineTest extends AbstractTestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $changes = [new DiffChange(DiffChange::REMOVED, 'foobar')];
@@ -24,18 +20,12 @@ class DiffLineTest extends AbstractTestCase
         static::assertSame($changes, $line->changes->toArray());
     }
 
-    /**
-     * @covers ::isEmpty
-     */
     public function testIsEmpty(): void
     {
         static::assertTrue((new DiffLine(DiffLine::STATE_EMPTY, []))->isEmpty());
         static::assertFalse((new DiffLine(DiffLine::STATE_CHANGED, []))->isEmpty());
     }
 
-    /**
-     * @covers ::getLine
-     */
     public function testGetLine(): void
     {
         $changes = [new DiffChange(DiffChange::UNCHANGED, 'foo'), new DiffChange(DiffChange::ADDED, 'bar')];

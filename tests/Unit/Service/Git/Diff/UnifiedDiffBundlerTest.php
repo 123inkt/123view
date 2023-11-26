@@ -11,12 +11,10 @@ use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Diff\UnifiedDiffBundler
- * @covers ::__construct
- */
+#[CoversClass(UnifiedDiffBundler::class)]
 class UnifiedDiffBundlerTest extends AbstractTestCase
 {
     private DiffLineChangeSetBundler&MockObject $setBundler;
@@ -29,10 +27,6 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $this->bundler    = new UnifiedDiffBundler($this->setBundler);
     }
 
-    /**
-     * @covers ::bundleFile
-     * @covers ::bundleLines
-     */
     public function testBundleFile(): void
     {
         $line1 = new DiffLine(DiffLine::STATE_REMOVED, [new DiffChange(DiffChange::REMOVED, 'line1')]);
@@ -48,9 +42,6 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         static::assertSame($file, $this->bundler->bundleFile($file, DiffComparePolicy::IGNORE));
     }
 
-    /**
-     * @covers ::bundleLines
-     */
     public function testBundleLines(): void
     {
         $line1 = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line1')]);
@@ -64,9 +55,6 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         static::assertSame([$line1, $line2, $line4], $result);
     }
 
-    /**
-     * @covers ::bundleLines
-     */
     public function testBundleLinesNotBundleable(): void
     {
         $line1 = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line1')]);

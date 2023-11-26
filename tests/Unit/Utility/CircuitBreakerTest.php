@@ -5,17 +5,14 @@ namespace DR\Review\Tests\Unit\Utility;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\CircuitBreaker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 use Throwable;
 
-/**
- * @coversDefaultClass \DR\Review\Utility\CircuitBreaker
- * @covers ::__construct
- */
+#[CoversClass(CircuitBreaker::class)]
 class CircuitBreakerTest extends AbstractTestCase
 {
     /**
-     * @covers ::execute
      * @throws Throwable
      */
     public function testExecuteShouldSucceedAfterTwoAttempts(): void
@@ -35,9 +32,6 @@ class CircuitBreakerTest extends AbstractTestCase
         static::assertTrue($result);
     }
 
-    /**
-     * @covers ::execute
-     */
     public function testExecuteShouldFailAfterTwoAttempts(): void
     {
         $attempt        = 0;

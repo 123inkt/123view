@@ -5,16 +5,11 @@ namespace DR\Review\Tests\Unit\Service\CodeHighlight;
 
 use DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter
- */
+#[CoversClass(HighlightHtmlLineSplitter::class)]
 class HtmlLineSplitterTest extends AbstractTestCase
 {
-    /**
-     * @covers ::split
-     * @covers ::splitLines
-     */
     public function testSplitStringWithoutNewline(): void
     {
         $splitter = new HighlightHtmlLineSplitter();
@@ -22,10 +17,6 @@ class HtmlLineSplitterTest extends AbstractTestCase
         static::assertSame(["<span>foobar</span>"], $splitter->split("<span>foobar</span>"));
     }
 
-    /**
-     * @covers ::split
-     * @covers ::splitLines
-     */
     public function testSplitStringWithSingleNewLine(): void
     {
         $splitter = new HighlightHtmlLineSplitter();
@@ -33,10 +24,6 @@ class HtmlLineSplitterTest extends AbstractTestCase
         static::assertSame(["<span>foo</span>", "<span>bar</span>"], $splitter->split("<span>foo\nbar</span>"));
     }
 
-    /**
-     * @covers ::split
-     * @covers ::splitLines
-     */
     public function testSplitStringWithNestedTags(): void
     {
         $splitter = new HighlightHtmlLineSplitter();
@@ -47,10 +34,6 @@ class HtmlLineSplitterTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::split
-     * @covers ::splitLines
-     */
     public function testSplitStringWithMultipleNewlines(): void
     {
         $splitter = new HighlightHtmlLineSplitter();

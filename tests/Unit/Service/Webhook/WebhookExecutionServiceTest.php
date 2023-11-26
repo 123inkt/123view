@@ -9,15 +9,13 @@ use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Repository\Webhook\WebhookActivityRepository;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Webhook\WebhookExecutionService
- * @covers ::__construct
- */
+#[CoversClass(WebhookExecutionService::class)]
 class WebhookExecutionServiceTest extends AbstractTestCase
 {
     private WebhookActivityRepository&MockObject $activityRepository;
@@ -32,10 +30,6 @@ class WebhookExecutionServiceTest extends AbstractTestCase
         $this->service            = new WebhookExecutionService($this->activityRepository, $this->httpClient);
     }
 
-    /**
-     * @covers ::execute
-     * @covers ::tryExecute
-     */
     public function testExecuteSuccessfulWithoutRetry(): void
     {
         $event = $this->createMock(CodeReviewAwareInterface::class);
@@ -72,10 +66,6 @@ class WebhookExecutionServiceTest extends AbstractTestCase
         $this->service->execute($webhook, $event);
     }
 
-    /**
-     * @covers ::execute
-     * @covers ::tryExecute
-     */
     public function testExecuteFailure(): void
     {
         $event = $this->createMock(CodeReviewAwareInterface::class);

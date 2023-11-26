@@ -16,13 +16,11 @@ use DR\Review\Service\CodeReview\DiffComparePolicyProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\CommentsViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(CommentsViewModelProvider::class)]
 class CommentsViewModelProviderTest extends AbstractTestCase
 {
     private CommentRepository&MockObject         $commentRepository;
@@ -46,9 +44,6 @@ class CommentsViewModelProviderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @covers ::getCommentsViewModel
-     */
     public function testGetCommentsViewModel(): void
     {
         $commentA = new Comment();

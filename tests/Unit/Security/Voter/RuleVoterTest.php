@@ -7,18 +7,13 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\Voter\RuleVoter;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Security\Voter\RuleVoter
- */
+#[CoversClass(RuleVoter::class)]
 class RuleVoterTest extends AbstractTestCase
 {
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupports(): void
     {
         $user = (new User())->setId(789);
@@ -32,10 +27,6 @@ class RuleVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $rule, [RuleVoter::EDIT]));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsInvalidAttribute(): void
     {
         $user = new User();
@@ -49,10 +40,6 @@ class RuleVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $rule, ['foobar']));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsInvalidSubject(): void
     {
         $token = $this->createMock(TokenInterface::class);
@@ -62,10 +49,6 @@ class RuleVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, false, [RuleVoter::EDIT]));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsAbsentUser(): void
     {
         $user = new User();
@@ -80,10 +63,6 @@ class RuleVoterTest extends AbstractTestCase
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $rule, [RuleVoter::EDIT]));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::voteOnAttribute
-     */
     public function testSupportsNotRuleOwner(): void
     {
         $user = new User();

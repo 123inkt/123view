@@ -5,18 +5,13 @@ namespace DR\Review\Tests\Unit\Twig;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\UrlQueryExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\UrlQueryExtension
- * @covers ::__construct
- */
+#[CoversClass(UrlQueryExtension::class)]
 class UrlQueryExtensionTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getFunctions
-     */
     public function testGetFunctions(): void
     {
         $extension = new UrlQueryExtension($this->createRequestStack());
@@ -28,9 +23,6 @@ class UrlQueryExtensionTest extends AbstractTestCase
         static::assertSame('url_query_params', $function->getName());
     }
 
-    /**
-     * @covers ::getUrlQuery
-     */
     public function testGetUrlQueryWithoutParams(): void
     {
         $request   = new Request(['foo' => 'bar']);
@@ -38,18 +30,12 @@ class UrlQueryExtensionTest extends AbstractTestCase
         static::assertSame('?foo=bar', $extension->getUrlQuery([]));
     }
 
-    /**
-     * @covers ::getUrlQuery
-     */
     public function testGetUrlWithoutRequest(): void
     {
         $extension = new UrlQueryExtension(new RequestStack());
         static::assertSame('?foo=bar', $extension->getUrlQuery(['foo' => 'bar']));
     }
 
-    /**
-     * @covers ::getUrlQuery
-     */
     public function testGetUrlQueryReplaceParams(): void
     {
         $request   = new Request(['foo' => 'bar']);
@@ -57,9 +43,6 @@ class UrlQueryExtensionTest extends AbstractTestCase
         static::assertSame('?foo=replaced', $extension->getUrlQuery(['foo' => 'replaced']));
     }
 
-    /**
-     * @covers ::getUrlQuery
-     */
     public function testGetUrlQueryAppendParams(): void
     {
         $request   = new Request(['foo' => 'bar']);

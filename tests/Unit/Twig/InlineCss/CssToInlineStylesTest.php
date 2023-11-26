@@ -6,16 +6,12 @@ namespace DR\Review\Tests\Unit\Twig\InlineCss;
 use DOMDocument;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Yep\Reflection\ReflectionClass;
 
-/**
- * @coversDefaultClass \DR\Review\Twig\InlineCss\CssToInlineStyles
- */
+#[CoversClass(CssToInlineStyles::class)]
 class CssToInlineStylesTest extends AbstractTestCase
 {
-    /**
-     * @covers ::createDomDocumentFromHtml
-     */
     public function testCreateDomDocumentFromHtml(): void
     {
         $html = '<html><body></body></html>';

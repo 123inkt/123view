@@ -5,15 +5,11 @@ namespace DR\Review\Tests\Unit\Utility;
 
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Strings;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\Utility\Strings
- */
+#[CoversClass(Strings::class)]
 class StringsTest extends AbstractTestCase
 {
-    /**
-     * @covers ::findPrefix
-     */
     public function testFindPrefix(): void
     {
         static::assertSame('', Strings::findPrefix('a', 'b'));
@@ -28,9 +24,6 @@ class StringsTest extends AbstractTestCase
         static::assertSame('ab', Strings::findPrefix('abc', 'abd'));
     }
 
-    /**
-     * @covers ::findSuffix
-     */
     public function testFindSuffix(): void
     {
         static::assertSame('', Strings::findSuffix('a', 'b'));
@@ -45,9 +38,6 @@ class StringsTest extends AbstractTestCase
         static::assertSame('bc', Strings::findSuffix('abc', 'dbc'));
     }
 
-    /**
-     * @covers ::replace
-     */
     public function testReplace(): void
     {
         static::assertSame('', Strings::replace("foobar", "foo", "bar"));
@@ -55,9 +45,6 @@ class StringsTest extends AbstractTestCase
         static::assertSame('foo', Strings::replace("foobar", "", "bar"));
     }
 
-    /**
-     * @covers ::replacePrefix
-     */
     public function testReplacePrefix(): void
     {
         static::assertSame("bar", Strings::replacePrefix("foobar", "foo"));
@@ -65,9 +52,6 @@ class StringsTest extends AbstractTestCase
         static::assertSame("foobar", Strings::replacePrefix("foobar", ""));
     }
 
-    /**
-     * @covers ::replaceSuffix
-     */
     public function testReplaceSuffix(): void
     {
         static::assertSame("foo", Strings::replaceSuffix("foobar", "bar"));

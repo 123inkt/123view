@@ -13,16 +13,11 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModel\App\Review\ReviewsViewModel
- * @covers ::__construct
- */
+#[CoversClass(ReviewsViewModel::class)]
 class ReviewsViewModelTest extends AbstractTestCase
 {
-    /**
-     * @covers ::getReviews
-     */
     public function testAccessorPairs(): void
     {
         $reviews    = [new CodeReview()];
@@ -38,9 +33,6 @@ class ReviewsViewModelTest extends AbstractTestCase
         static::assertSame($reviews, $viewModel->getReviews());
     }
 
-    /**
-     * @covers ::getAuthors
-     */
     public function testGetAuthors(): void
     {
         $reviews    = [new CodeReview()];

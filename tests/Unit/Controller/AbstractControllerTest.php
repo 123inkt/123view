@@ -6,19 +6,15 @@ namespace DR\Review\Tests\Unit\Controller;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\AbstractController
- */
+#[CoversClass(AbstractController::class)]
 class AbstractControllerTest extends AbstractControllerTestCase
 {
-    /**
-     * @covers ::getUser
-     */
     public function testGetUser(): void
     {
         $user = new User();
@@ -27,9 +23,6 @@ class AbstractControllerTest extends AbstractControllerTestCase
         static::assertSame($user, $this->controller->getUser());
     }
 
-    /**
-     * @covers ::getUser
-     */
     public function testGetUserShouldThrowExceptionOnAbsentUser(): void
     {
         $this->expectGetUser(null);
@@ -39,9 +32,6 @@ class AbstractControllerTest extends AbstractControllerTestCase
         $this->controller->getUser();
     }
 
-    /**
-     * @covers ::refererRedirect
-     */
     public function testRefererRedirect(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => 'referer']);
@@ -53,9 +43,6 @@ class AbstractControllerTest extends AbstractControllerTestCase
         static::assertEquals(new RedirectResponse('referer'), $response);
     }
 
-    /**
-     * @covers ::refererRedirect
-     */
     public function testRefererRedirectInvalidRefererShouldBeSkipped(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => false]);
@@ -69,9 +56,6 @@ class AbstractControllerTest extends AbstractControllerTestCase
         static::assertEquals(new RedirectResponse('url'), $response);
     }
 
-    /**
-     * @covers ::refererRedirect
-     */
     public function testRefererRedirectShouldFilterQueryParam(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => 'https://referer?foo=bar&action=great']);

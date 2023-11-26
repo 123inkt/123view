@@ -12,16 +12,14 @@ use DR\Review\Service\CodeHighlight\HighlightedFileService;
 use DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Service\CodeHighlight\HighlightedFileService
- * @covers ::__construct
- */
+#[CoversClass(HighlightedFileService::class)]
 class HighlightedFileServiceTest extends AbstractTestCase
 {
     private FilenameToLanguageTranslator&MockObject $translator;
@@ -39,7 +37,6 @@ class HighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws Exception
      */
     public function testGetHighlightedFileUnknownLanguage(): void
@@ -56,7 +53,6 @@ class HighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws Exception
      */
     public function testGetHighlightedFile(): void
@@ -85,7 +81,6 @@ class HighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws Exception
      */
     public function testGetHighlightedFileRequestFailure(): void
@@ -103,7 +98,6 @@ class HighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::fromDiffFile
      * @throws Exception
      */
     public function testGetHighlightedFileBadResponse(): void

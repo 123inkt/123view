@@ -12,6 +12,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\Authentication\LoginViewModel;
 use DR\Review\ViewModelProvider\LoginViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,10 +21,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \DR\Review\Controller\Auth\LoginController
- * @covers ::__construct
- */
+#[CoversClass(LoginController::class)]
 class LoginControllerTest extends AbstractControllerTestCase
 {
     private TranslatorInterface&MockObject    $translator;
@@ -40,9 +38,6 @@ class LoginControllerTest extends AbstractControllerTestCase
         parent::setUp();
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $user = new User();
@@ -61,9 +56,6 @@ class LoginControllerTest extends AbstractControllerTestCase
         static::assertSame(['page_title' => 'page_title', 'loginModel' => $viewModel], $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeShouldRedirectUser(): void
     {
         $user = new User();
@@ -78,9 +70,6 @@ class LoginControllerTest extends AbstractControllerTestCase
         static::assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvokeShouldRedirectNewUser(): void
     {
         $user    = new User();

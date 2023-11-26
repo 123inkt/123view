@@ -23,12 +23,10 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\Helper\MockGitRepositoryLockManager;
 use Exception;
 use League\Uri\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\Service\Git\Log\GitLogService
- * @covers ::__construct
- */
+#[CoversClass(GitLogService::class)]
 class GitLogServiceTest extends AbstractTestCase
 {
     private CacheableGitRepositoryService&MockObject $repositoryService;
@@ -57,7 +55,6 @@ class GitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommits
      * @throws Exception
      */
     public function testGetCommits(): void
@@ -85,7 +82,6 @@ class GitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitHashes
      * @throws Exception
      */
     public function testGetCommitHashes(): void
@@ -108,7 +104,6 @@ class GitLogServiceTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getCommitsFromRange
      * @throws Exception
      */
     public function testGetCommitsFromRange(): void

@@ -7,6 +7,7 @@ use DR\Review\Controller\Auth\LoginController;
 use DR\Review\EventSubscriber\AccessDeniedExceptionSubscriber;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @coversDefaultClass \DR\Review\EventSubscriber\AccessDeniedExceptionSubscriber
- * @covers ::__construct
- */
+#[CoversClass(AccessDeniedExceptionSubscriber::class)]
 class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
@@ -35,9 +33,6 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         $this->subscriber   = new AccessDeniedExceptionSubscriber($this->urlGenerator);
     }
 
-    /**
-     * @covers ::getSubscribedEvents
-     */
     public function testGetSubscribedEvents(): void
     {
         $expected = [KernelEvents::EXCEPTION => ['onKernelException', 2]];
@@ -45,9 +40,6 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         static::assertSame($expected, $result);
     }
 
-    /**
-     * @covers ::onKernelException
-     */
     public function testOnKernelExceptionOnlyAcceptAccessDeniedException(): void
     {
         $this->urlGenerator->expects(self::never())->method('generate');
@@ -61,9 +53,6 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         $this->subscriber->onKernelException($event);
     }
 
-    /**
-     * @covers ::onKernelException
-     */
     public function testOnKernelExceptionShouldSkipApiCalls(): void
     {
         $this->urlGenerator->expects(self::never())->method('generate');
@@ -77,9 +66,6 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         $this->subscriber->onKernelException($event);
     }
 
-    /**
-     * @covers ::onKernelException
-     */
     public function testOnKernelExceptionShouldRedirect(): void
     {
         $this->urlGenerator

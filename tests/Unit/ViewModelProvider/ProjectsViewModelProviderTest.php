@@ -12,12 +12,10 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @coversDefaultClass \DR\Review\ViewModelProvider\ProjectsViewModelProvider
- * @covers ::__construct
- */
+#[CoversClass(ProjectsViewModelProvider::class)]
 class ProjectsViewModelProviderTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject            $repositoryRepository;
@@ -42,7 +40,6 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @covers ::getProjectsViewModel
      * @throws Exception
      */
     public function testGetProjectsViewModel(): void
