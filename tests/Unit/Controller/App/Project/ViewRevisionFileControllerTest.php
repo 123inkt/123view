@@ -37,7 +37,7 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $response = ($this->controller)($request, $revision);
         self::assertSame('contents', $response->getContent());
         self::assertSame(200, $response->getStatusCode());
-        self::assertSame('image/jpg', $response->headers->get('Content-Type'));
+        self::assertSame('image/jpeg', $response->headers->get('Content-Type'));
         self::assertSame('public', $response->headers->get('Cache-Control'));
     }
 
