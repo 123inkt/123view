@@ -9,16 +9,15 @@
             <i class="bi bi-file-binary"></i> {{ 'binary.file'|trans }}.
             <a href="{{ path('DR\\Review\\Controller\\App\\Project\\ViewRevisionFileController', {id: revision.id, file: file.pathname}) }}"
                target="_blank">
-                {{ 'view.file'|trans }}
+                {{ 'view.markdown'|trans }}
             </a>
         </div>
     {% elseif file.mimeType == 'text/markdown' %}
-        <div class="diff-file__file-preview">
-            <i class="bi bi-filetype-md"></i>
-            <a href="{{ path('DR\\Review\\Controller\\App\\Project\\ViewRevisionFileController', {id: revision.id, file: file.pathname}) }}"
-               target="_blank">
-                {{ 'view.file'|trans }}
-            </a>
+        <div class="diff-file__file-preview"
+                {{ stimulus_controller('inline-file-viewer', {file: path('DR\\Review\\Controller\\App\\Project\\ViewRevisionFileController', {id: revision.id, file: file.pathname})}) }}
+
+        >
+            <i class="bi bi-filetype-md"></i> <a href="#" {{ stimulus_action('inline-file-viewer', 'viewFile', 'click') }}>{{ 'view.file'|trans }}</a>
         </div>
     {% endif %}
 {% else %}
