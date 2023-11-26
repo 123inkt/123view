@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Twig;
 
+use DR\Review\Service\Markdown\MarkdownConverterService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\MarkdownExtension;
-use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Output\RenderedContentInterface;
+use League\CommonMark\Exception\CommonMarkException;
 use PHPUnit\Framework\MockObject\MockObject;
-use function PHPUnit\Framework\once;
 
 /**
  * @coversDefaultClass \DR\Review\Twig\MarkdownExtension
@@ -16,13 +15,13 @@ use function PHPUnit\Framework\once;
  */
 class MarkdownExtensionTest extends AbstractTestCase
 {
-    private MarkdownConverter&MockObject $markdownConverter;
-    private MarkdownExtension            $extension;
+    private MarkdownConverterService&MockObject $markdownConverter;
+    private MarkdownExtension                   $extension;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->markdownConverter = $this->createMock(MarkdownConverter::class);
+        $this->markdownConverter = $this->createMock(MarkdownConverterService::class);
         $this->extension         = new MarkdownExtension($this->markdownConverter);
     }
 
@@ -36,16 +35,12 @@ class MarkdownExtensionTest extends AbstractTestCase
 
     /**
      * @covers ::convert
+     * @throws CommonMarkException
      */
     public function testConvert(): void
     {
-        $string = 'string';
+        $this->markdownConverter->expects(self::once())->method('convert')->with('string')->willReturn("markdown: string");
 
-        $renderedContent = $this->createMock(RenderedContentInterface::class);
-        $renderedContent->expects(once())->method('getContent')->willReturn("markdown: " . $string);
-
-        $this->markdownConverter->expects(self::once())->method('convert')->with($string)->willReturn($renderedContent);
-
-        static::assertSame("markdown: string", $this->extension->convert($string));
+        static::assertSame("markdown: string", $this->extension->convert('string'));
     }
 }
