@@ -10752,16 +10752,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-file-coverage-inspection.git",
-                "reference": "3708c55022b1b9dbea792a2b584085f317eeb40f"
+                "reference": "cfbf1ba093edf7b74beda5b31e725d71c785f903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/3708c55022b1b9dbea792a2b584085f317eeb40f",
-                "reference": "3708c55022b1b9dbea792a2b584085f317eeb40f",
+                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/cfbf1ba093edf7b74beda5b31e725d71c785f903",
+                "reference": "cfbf1ba093edf7b74beda5b31e725d71c785f903",
                 "shasum": ""
             },
             "require": {
@@ -10769,21 +10769,20 @@
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "ext-xmlwriter": "*",
-                "php": ">=7.4",
-                "symfony/console": "^5.1 || ^6.0",
-                "symfony/polyfill-php80": "^1.24"
+                "php": ">=8.1",
+                "symfony/console": "^6.2 || ^7.0"
             },
             "require-dev": {
                 "digitalrevolution/accessorpair-constraint": ">= 2.1.7",
                 "mikey179/vfsstream": "^1.6.7",
-                "phpmd/phpmd": "@stable",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^1.4",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "phpstan/phpstan-strict-rules": "^1.1",
-                "phpunit/phpunit": "^9.5",
+                "phpmd/phpmd": "^2.14",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpunit/phpunit": "^9.6",
                 "roave/security-advisories": "dev-latest",
-                "squizlabs/php_codesniffer": "^3.6"
+                "squizlabs/php_codesniffer": "^3.7"
             },
             "bin": [
                 "bin/phpfci"
@@ -10801,9 +10800,9 @@
             "description": "Configurable phpunit file coverage inspection",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-file-coverage-inspection/issues",
-                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v2.0.0"
+                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v2.1.0"
             },
-            "time": "2023-03-28T16:29:35+00:00"
+            "time": "2023-12-05T10:31:20+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
