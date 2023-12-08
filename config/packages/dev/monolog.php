@@ -44,6 +44,14 @@ return static function (MonologConfig $monolog) {
         ->maxFiles(1)
         ->channels()->elements(["app"]);
 
+    $monolog->handler('deprecations')
+        ->type('rotating_file')
+        ->path('%kernel.logs_dir%/deprecations.%kernel.environment%.log')
+        ->level('debug')
+        ->formatter('monolog.formatter.line')
+        ->maxFiles(1)
+        ->channels()->elements(["deprecation"]);
+
     $monolog->handler('docker')
         ->type('stream')
         ->level('debug')

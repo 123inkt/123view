@@ -45,7 +45,7 @@
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition">
         <properties>
-            <property name="minLineLength" value="151"/>
+            <property name="maxLineLength" value="151"/>
         </properties>
     </rule>
     <rule ref="SlevomatCodingStandard.ControlStructures.UselessIfConditionWithReturn"/>
