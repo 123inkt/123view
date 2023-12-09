@@ -19,8 +19,8 @@ return static function (MonologConfig $monolog) {
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
         ->level('info')
         ->formatter('monolog.formatter.line')
-        ->channels()->elements(["!event", "!console", "!deprecation"])
-        ->maxFiles(10);
+        ->maxFiles(10)
+        ->channels()->elements(["!event", "!console", "!deprecation"]);
 
     $monolog->handler('error_fingers_crossed')
         ->type('fingers_crossed')
