@@ -50,7 +50,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
         ]
     );
 
-    $doctrineConfig->orm()->enableLazyGhostObjects(true);
+    $doctrineConfig->orm()->enableLazyGhostObjects(false);
     $doctrineConfig->orm()->autoGenerateProxyClasses(true);
     $doctrineConfig->orm()->defaultEntityManager('default');
     $em = $doctrineConfig->orm()->entityManager('default');
