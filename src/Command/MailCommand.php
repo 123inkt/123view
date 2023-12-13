@@ -81,12 +81,12 @@ class MailCommand extends Command implements LoggerAwareInterface
 
                 // register notification
                 $notification = null;
-                if ($rule->getRuleOptions()->hasSendType(NotificationSendType::BROWSER)) {
+                if (Assert::notNull($rule->getRuleOptions())->hasSendType(NotificationSendType::BROWSER)) {
                     $notification = $this->notificationService->addRuleNotification($rule, $period);
                 }
 
                 // send mail
-                if ($rule->getRuleOptions()->hasSendType(NotificationSendType::MAIL)) {
+                if (Assert::notNull($rule->getRuleOptions())->hasSendType(NotificationSendType::MAIL)) {
                     $this->mailService->sendCommitsMail($ruleConfig, $commits, $notification);
                 }
             } catch (Throwable $exception) {
