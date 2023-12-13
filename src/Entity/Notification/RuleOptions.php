@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Doctrine\Type\FrequencyType;
 use DR\Review\Doctrine\Type\MailThemeType;
+use DR\Review\Doctrine\Type\NotificationSendType;
 use DR\Review\Repository\Config\RuleOptionsRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,9 @@ class RuleOptions
 
     #[ORM\Column(type: FrequencyType::TYPE)]
     private string $frequency = FrequencyType::ONCE_PER_HOUR;
+
+    #[ORM\Column(type: NotificationSendType::TYPE, options: ['default' => NotificationSendType::BOTH])]
+    private string $sendType = NotificationSendType::BOTH;
 
     #[ORM\Column(type: DiffAlgorithmType::TYPE)]
     private string $diffAlgorithm = DiffAlgorithmType::MYERS;
@@ -75,6 +79,18 @@ class RuleOptions
     public function setFrequency(string $frequency): self
     {
         $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    public function getSendType(): string
+    {
+        return $this->sendType;
+    }
+
+    public function setSendType(string $sendType): self
+    {
+        $this->sendType = $sendType;
 
         return $this;
     }

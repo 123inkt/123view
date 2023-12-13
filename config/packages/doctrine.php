@@ -13,6 +13,7 @@ use DR\Review\Doctrine\Type\FilterType;
 use DR\Review\Doctrine\Type\FrequencyType;
 use DR\Review\Doctrine\Type\LineCoverageType;
 use DR\Review\Doctrine\Type\MailThemeType;
+use DR\Review\Doctrine\Type\NotificationSendType;
 use DR\Review\Doctrine\Type\NotificationStatusType;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\Review\Doctrine\Type\UriType;
@@ -42,6 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     FrequencyType::TYPE                 => FrequencyType::class,
                     LineCoverageType::TYPE              => LineCoverageType::class,
                     MailThemeType::TYPE                 => MailThemeType::class,
+                    NotificationSendType::TYPE          => NotificationSendType::class,
                     NotificationStatusType::TYPE        => NotificationStatusType::class,
                     SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class,
                     UriType::TYPE                       => UriType::class,
