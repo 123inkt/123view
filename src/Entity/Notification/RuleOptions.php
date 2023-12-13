@@ -88,6 +88,15 @@ class RuleOptions
         return $this->sendType;
     }
 
+    public function hasSendType(string $sendType): bool
+    {
+        if ($this->sendType === NotificationSendType::BOTH) {
+            return true;
+        }
+
+        return $this->sendType === $sendType;
+    }
+
     public function setSendType(string $sendType): self
     {
         $this->sendType = $sendType;

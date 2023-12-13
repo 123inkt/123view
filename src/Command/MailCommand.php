@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Command;
 
 use DateTimeImmutable;
+use DR\Review\Doctrine\Type\NotificationSendType;
 use DR\Review\Entity\Notification\Frequency;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Repository\Config\RuleRepository;
@@ -79,10 +80,15 @@ class MailCommand extends Command implements LoggerAwareInterface
                 }
 
                 // register notification
-                $notification = $this->notificationService->addRuleNotification($rule, $period);
+                $notification = null;
+                if ($rule->getRuleOptions()->hasSendType(NotificationSendType::BROWSER)) {
+                    $notification = $this->notificationService->addRuleNotification($rule, $period);
+                }
 
                 // send mail
-                $this->mailService->sendCommitsMail($ruleConfig, $commits, $notification);
+                if ($rule->getRuleOptions()->hasSendType(NotificationSendType::MAIL)) {
+                    $this->mailService->sendCommitsMail($ruleConfig, $commits, $notification);
+                }
             } catch (Throwable $exception) {
                 $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
                 $exitCode = self::FAILURE;
