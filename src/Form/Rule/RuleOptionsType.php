@@ -5,6 +5,7 @@ namespace DR\Review\Form\Rule;
 
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Doctrine\Type\MailThemeType;
+use DR\Review\Doctrine\Type\NotificationSendType;
 use DR\Review\Entity\Notification\Frequency;
 use DR\Review\Entity\Notification\RuleOptions;
 use Symfony\Component\Form\AbstractType;
@@ -51,6 +52,16 @@ class RuleOptionsType extends AbstractType
             ]
         );
         $builder->add('subject', TextType::class, ['required' => false, 'label' => 'mail.subject']);
+        $builder->add('sendType', ChoiceType::class, [
+            'label'                     => false,
+            'choices'                   => [
+                'send.type.mail'    => NotificationSendType::MAIL,
+                'send.type.browser' => NotificationSendType::BROWSER,
+                'send.type.both'    => NotificationSendType::BOTH,
+            ],
+            'multiple'                  => false,
+            'expanded'                  => false,
+        ]);
         $builder->add(
             'diffAlgorithm',
             ChoiceType::class,

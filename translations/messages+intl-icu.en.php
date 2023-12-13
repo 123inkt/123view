@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 // phpcs:ignoreFile
+
 return [
     'Are you sure you want to delete this rule?'  => 'Are you sure you want to delete this rule?',
     'At least {{ limit }} recipient is required'  => 'At least {{ limit }} recipient is required',
@@ -104,7 +105,7 @@ return [
     'file.too.large'                              => 'File too large to view hidden lines',
     'files'                                       => 'Files',
     'filter.explanation.author'                   => 'In- or exclude a commit from a specific author. The pattern should match the email of the author.',
-    'filter.explanation.file'                     => 'In- or exclude a file from a commit by regex. The pattern will be matched against the relative path of the file in the project. For example <code>composer.json</code> or <code>src/Controller/ExampleController.php</code>',
+    'filter.explanation.file'                     => 'In- or exclude a file from a commit by regex. The pattern will be matched against the relative path of the file in the project. For example <code>composer.json</code> or <code>src/Controller/ExampleController.php</code>. Example: <code>#^src/Controller/#</code>.',
     'filter.explanation.subject'                  => 'In- or exclude a commit with a specific commit message. The pattern will be matched against the first line of the message.',
     'filter.type.author'                          => 'Author',
     'filter.type.file'                            => 'File (regex)',
@@ -329,4 +330,9 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'send.type.label'                             => 'Send type',
+    'send.type.mail'                              => 'Mail only',
+    'send.type.browser'                           => 'Browser only',
+    'send.type.both'                              => 'Mail and browser',
+    'send.type.explanation'                       => 'You can choose to receive the notification via mail, browser only or both.'
 ];

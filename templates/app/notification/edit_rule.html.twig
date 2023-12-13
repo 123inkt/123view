@@ -73,6 +73,15 @@
         {% include '/app/notification/filters.html.twig' with {filters: form.rule.filters.inclusions, title: 'include.commits'|trans} %}
         {% include '/app/notification/filters.html.twig' with {filters: form.rule.filters.exclusions, title: 'exclude.commits'|trans} %}
 
+        {# sending #}
+        <fieldset class="mb-4 row">
+            <legend>{{ 'send.type.label'|trans }}</legend>
+            {{ form_row(form.rule.ruleOptions.sendType) }}
+            <small class="form-text" {{ stimulus_target('edit-rule', 'explanation') }}>
+                {{ 'send.type.explanation'|trans }}
+            </small>
+        </fieldset>
+
         {# advanced #}
         <fieldset class="mb-4 row">
             <legend>{{ 'advanced'|trans }}</legend>
