@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Command;
 use DR\Review\Command\MailCommand;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
+use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Security\Role\Roles;
@@ -100,6 +101,7 @@ class MailCommandTest extends AbstractTestCase
         $rule = new Rule();
         $rule->setName('foobar');
         $rule->setUser($this->user);
+        $rule->setRuleOptions(new RuleOptions());
         $commits = [$this->createCommit()];
 
         // setup mocks
