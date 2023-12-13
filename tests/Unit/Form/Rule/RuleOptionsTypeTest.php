@@ -22,13 +22,14 @@ class RuleOptionsTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(9))
+        $builder->expects(self::exactly(10))
             ->method('add')
             ->with(
                 ...consecutive(
                     ['frequency', ChoiceType::class,],
                     ['theme', ChoiceType::class],
                     ['subject', TextType::class],
+                    ['sendType', ChoiceType::class],
                     ['diffAlgorithm', ChoiceType::class],
                     ['ignoreSpaceAtEol', CheckboxType::class],
                     ['ignoreSpaceChange', CheckboxType::class],

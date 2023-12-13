@@ -23,13 +23,16 @@ class CommitsViewModelProvider
     /**
      * @param Commit[] $commits
      */
-    public function getCommitsViewModel(array $commits, Rule $rule, RuleNotification $notification): CommitsViewModel
+    public function getCommitsViewModel(array $commits, Rule $rule, ?RuleNotification $notification): CommitsViewModel
     {
-        $token = $this->tokenGenerator->generate($notification);
-        $url   = $this->urlGenerator->generate(
-            RuleNotificationReadController::class,
-            ['id' => $notification->getId(), 'token' => $token]
-        );
+        $url = null;
+        if ($notification !== null) {
+            $token = $this->tokenGenerator->generate($notification);
+            $url   = $this->urlGenerator->generate(
+                RuleNotificationReadController::class,
+                ['id' => $notification->getId(), 'token' => $token]
+            );
+        }
 
         return new CommitsViewModel($commits, $rule->getRuleOptions()?->getTheme() ?? MailThemeType::UPSOURCE, $url);
     }

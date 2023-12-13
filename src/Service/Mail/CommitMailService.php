@@ -31,7 +31,7 @@ class CommitMailService implements LoggerAwareInterface
      *
      * @throws TransportExceptionInterface
      */
-    public function sendCommitsMail(RuleConfiguration $config, array $commits, RuleNotification $notification): void
+    public function sendCommitsMail(RuleConfiguration $config, array $commits, ?RuleNotification $notification): void
     {
         $rule    = $config->rule;
         $subject = $rule->getRuleOptions()?->getSubject() ?? sprintf('[%s] New revisions for: {name}', $this->applicationName);
