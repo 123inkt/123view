@@ -5,6 +5,7 @@ namespace DR\Review\Form\Repository;
 
 use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
+use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
@@ -60,6 +61,20 @@ class RepositoryType extends AbstractType
                 'choices'                     => $this->credentialRepository->findBy([], ['name' => 'ASC']),
                 'choice_value'                => static fn(?RepositoryCredential $credential) => $credential?->getId(),
                 'choice_label'                => static fn(?RepositoryCredential $credential) => $credential?->getName(),
+            ]
+        );
+        $builder->add(
+            'gitType',
+            ChoiceType::class,
+            [
+                'label'    => 'git.type',
+                'choices'  => [
+                    'git.type.gitlab' => RepositoryGitType::GITLAB,
+                    'git.type.github' => RepositoryGitType::GITHUB,
+                    'git.type.other'  => RepositoryGitType::OTHER,
+                ],
+                'expanded' => false,
+                'multiple' => false,
             ]
         );
         $builder->add(
