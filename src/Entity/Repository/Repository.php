@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -66,6 +67,9 @@ class Repository implements EquatableInterface
     #[ORM\ManyToOne(targetEntity: RepositoryCredential::class)]
     #[JoinColumn(name: 'credential_id', referencedColumnName: 'id')]
     private ?RepositoryCredential $credential = null;
+
+    #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, options: ['default' => RepositoryGitType::OTHER])]
+    private string $gitType = RepositoryGitType::OTHER;
 
     #[ORM\Column]
     private bool $favorite = false;
@@ -198,6 +202,24 @@ class Repository implements EquatableInterface
     public function setCredential(?RepositoryCredential $credential): self
     {
         $this->credential = $credential;
+
+        return $this;
+    }
+
+    /**
+     * @return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER
+     */
+    public function getGitType(): string
+    {
+        return $this->gitType;
+    }
+
+    /**
+     * @param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER $gitType
+     */
+    public function setGitType(string $gitType): self
+    {
+        $this->gitType = $gitType;
 
         return $this;
     }

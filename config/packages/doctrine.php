@@ -15,6 +15,7 @@ use DR\Review\Doctrine\Type\LineCoverageType;
 use DR\Review\Doctrine\Type\MailThemeType;
 use DR\Review\Doctrine\Type\NotificationSendType;
 use DR\Review\Doctrine\Type\NotificationStatusType;
+use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\Review\Doctrine\Type\UriType;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains;
@@ -45,6 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator, DoctrineCo
                     MailThemeType::TYPE                 => MailThemeType::class,
                     NotificationSendType::TYPE          => NotificationSendType::class,
                     NotificationStatusType::TYPE        => NotificationStatusType::class,
+                    RepositoryGitType::TYPE             => RepositoryGitType::class,
                     SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class,
                     UriType::TYPE                       => UriType::class,
                 ]

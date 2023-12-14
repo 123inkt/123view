@@ -334,5 +334,9 @@ return [
     'send.type.mail'                              => 'Mail only',
     'send.type.browser'                           => 'Browser only',
     'send.type.both'                              => 'Mail and browser',
-    'send.type.explanation'                       => 'You can choose to receive the notification via mail, browser only or both.'
+    'send.type.explanation'                       => 'You can choose to receive the notification via mail, browser only or both.',
+    'git.type'                                    => 'Git repository type',
+    'git.type.gitlab'                             => 'Gitlab',
+    'git.type.github'                             => 'Github',
+    'git.type.other'                              => 'Other',
 ];

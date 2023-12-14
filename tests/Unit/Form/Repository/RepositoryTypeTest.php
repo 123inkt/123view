@@ -42,7 +42,7 @@ class RepositoryTypeTest extends AbstractTestCase
 
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(10))
+        $builder->expects(self::exactly(11))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -53,6 +53,7 @@ class RepositoryTypeTest extends AbstractTestCase
                     ['mainBranchName', TextType::class],
                     ['url', UrlType::class],
                     ['credential', ChoiceType::class],
+                    ['gitType', ChoiceType::class],
                     ['updateRevisionsInterval', IntegerType::class],
                     ['validateRevisionsInterval', IntegerType::class],
                     ['gitlabProjectId', GitlabProjectIdType::class],
