@@ -208,7 +208,7 @@ class Repository implements EquatableInterface
     }
 
     /**
-     * @return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER
+     * @phpstan-return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER
      */
     public function getGitType(): string
     {
@@ -216,7 +216,7 @@ class Repository implements EquatableInterface
     }
 
     /**
-     * @param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER $gitType
+     * @phpstan-param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER $gitType
      */
     public function setGitType(string $gitType): self
     {

@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Entity\Repository;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
+use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Tests\AbstractTestCase;
@@ -18,7 +19,7 @@ class RepositoryTest extends AbstractTestCase
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['addRepositoryProperty', 'getRepositoryProperties', 'getReviews', 'getRevisions']);
+        $config->setExcludedMethods(['addRepositoryProperty', 'getRepositoryProperties', 'getReviews', 'getRevisions', 'setGitType', 'getGitType']);
 
         static::assertNull((new Repository())->getId());
         static::assertAccessorPairs(Repository::class, $config);
@@ -40,6 +41,15 @@ class RepositoryTest extends AbstractTestCase
 
         static::assertNull($repository->getRepositoryProperty('foobar'));
         static::assertSame('value', $repository->getRepositoryProperty('property'));
+    }
+
+    public function testGitType(): void
+    {
+        $repository = new Repository();
+        static::assertSame(RepositoryGitType::OTHER, $repository->getGitType());
+
+        $repository->setGitType(RepositoryGitType::GITHUB);
+        static::assertSame(RepositoryGitType::GITHUB, $repository->getGitType());
     }
 
     public function testRepositoryPropertyAccessors(): void
