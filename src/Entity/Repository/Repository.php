@@ -68,6 +68,7 @@ class Repository implements EquatableInterface
     #[JoinColumn(name: 'credential_id', referencedColumnName: 'id')]
     private ?RepositoryCredential $credential = null;
 
+    /** @phpstan-var RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER  */
     #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, options: ['default' => RepositoryGitType::OTHER])]
     private string $gitType = RepositoryGitType::OTHER;
 
