@@ -9,8 +9,8 @@ use Stringable;
 class LineReference implements Stringable
 {
     public function __construct(
-        public readonly ?string $oldFilePath = null,
-        public readonly string $filePath = '',
+        public readonly ?string $oldPath = null,
+        public readonly ?string $newPath = null,
         public readonly int $line = 1,
         public readonly int $offset = 0,
         public readonly int $lineAfter = 1,
@@ -21,10 +21,11 @@ class LineReference implements Stringable
     public static function fromString(string $reference): LineReference
     {
         if (preg_match('/^(.*?):(.*?):(\d+):(\d+):(\d+):(.)$/', $reference, $matches) === 1) {
-            $oldFilePath = $matches[1] === 'null' ? null : $matches[1];
-            $state       = LineReferenceStateEnum::from($matches[6]);
+            $oldPath = $matches[1] === '' ? null : $matches[1];
+            $newPath = $matches[2] === '' ? null : $matches[2];
+            $state   = LineReferenceStateEnum::from($matches[6]);
 
-            return new LineReference($oldFilePath, $matches[2], (int)$matches[3], (int)$matches[4], (int)$matches[5], $state);
+            return new LineReference($oldPath, $newPath, (int)$matches[3], (int)$matches[4], (int)$matches[5], $state);
         }
 
         if (preg_match('/^(.*):(\d+):(\d+):(\d+)$/', $reference, $matches) === 1) {
@@ -37,6 +38,6 @@ class LineReference implements Stringable
 
     public function __toString(): string
     {
-        return sprintf('%s:%s:%d:%d:%d:%s', $this->oldFilePath, $this->filePath, $this->line, $this->offset, $this->lineAfter, $this->state->value);
+        return sprintf('%s:%s:%d:%d:%d:%s', $this->oldPath, $this->newPath, $this->line, $this->offset, $this->lineAfter, $this->state->value);
     }
 }

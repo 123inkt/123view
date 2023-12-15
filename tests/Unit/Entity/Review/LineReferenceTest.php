@@ -15,8 +15,8 @@ class LineReferenceTest extends AbstractTestCase
     public function testFromStringLegacyFormat(): void
     {
         $reference = LineReference::fromString('foo/bar:1:0:1');
-        static::assertNull($reference->oldFilePath);
-        static::assertSame('foo/bar', $reference->filePath);
+        static::assertNull($reference->oldPath);
+        static::assertSame('foo/bar', $reference->newPath);
         static::assertSame(1, $reference->line);
         static::assertSame(0, $reference->offset);
         static::assertSame(1, $reference->lineAfter);
@@ -26,8 +26,8 @@ class LineReferenceTest extends AbstractTestCase
     public function testFromStringCurrentFormat(): void
     {
         $reference = LineReference::fromString('old/path:new/path:1:2:3:A');
-        static::assertSame('old/path', $reference->oldFilePath);
-        static::assertSame('new/path', $reference->filePath);
+        static::assertSame('old/path', $reference->oldPath);
+        static::assertSame('new/path', $reference->newPath);
         static::assertSame(1, $reference->line);
         static::assertSame(2, $reference->offset);
         static::assertSame(3, $reference->lineAfter);

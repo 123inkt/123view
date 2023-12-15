@@ -47,7 +47,7 @@ class AddCommentController extends AbstractController
         $comment = new Comment();
         $comment->setUser($user);
         $comment->setReview($review);
-        $comment->setFilePath($lineReference->filePath);
+        $comment->setFilePath($lineReference->oldPath ?? $lineReference->newPath);
         $comment->setLineReference($lineReference);
         $comment->setMessage($data['message']);
         $comment->setCreateTimestamp(time());

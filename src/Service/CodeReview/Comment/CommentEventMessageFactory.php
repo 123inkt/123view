@@ -19,7 +19,7 @@ class CommentEventMessageFactory
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
-            $comment->getLineReference()->filePath,
+            $comment->getFilePath(),
             $comment->getMessage()
         );
     }
@@ -30,7 +30,7 @@ class CommentEventMessageFactory
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
-            $comment->getLineReference()->filePath,
+            $comment->getFilePath(),
             $comment->getMessage(),
             $originalComment
         );
@@ -42,7 +42,7 @@ class CommentEventMessageFactory
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
-            $comment->getLineReference()->filePath,
+            $comment->getFilePath(),
         );
     }
 
@@ -52,7 +52,7 @@ class CommentEventMessageFactory
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
-            $comment->getLineReference()->filePath,
+            $comment->getFilePath(),
         );
     }
 
@@ -62,7 +62,7 @@ class CommentEventMessageFactory
             (int)$comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
-            $comment->getLineReference()->filePath,
+            $comment->getFilePath(),
             $comment->getMessage(),
         );
     }
