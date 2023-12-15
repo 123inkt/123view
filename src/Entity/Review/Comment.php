@@ -30,6 +30,9 @@ class Comment
     #[ORM\Column(type: 'string', length: 20, options: ['default' => CommentStateType::OPEN])]
     private string $state = CommentStateType::OPEN;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $extReferenceId = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
 
@@ -106,6 +109,18 @@ class Comment
     public function setState(string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getExtReferenceId(): ?string
+    {
+        return $this->extReferenceId;
+    }
+
+    public function setExtReferenceId(?string $extReferenceId): self
+    {
+        $this->extReferenceId = $extReferenceId;
 
         return $this;
     }
