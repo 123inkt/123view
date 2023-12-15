@@ -68,9 +68,9 @@ class Repository implements EquatableInterface
     #[JoinColumn(name: 'credential_id', referencedColumnName: 'id')]
     private ?RepositoryCredential $credential = null;
 
-    /** @phpstan-var RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER  */
-    #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, options: ['default' => RepositoryGitType::OTHER])]
-    private string $gitType = RepositoryGitType::OTHER;
+    /** @phpstan-var RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null */
+    #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, nullable: true)]
+    private ?string $gitType = null;
 
     #[ORM\Column]
     private bool $favorite = false;
@@ -208,17 +208,17 @@ class Repository implements EquatableInterface
     }
 
     /**
-     * @phpstan-return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER
+     * @phpstan-return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null
      */
-    public function getGitType(): string
+    public function getGitType(): ?string
     {
         return $this->gitType;
     }
 
     /**
-     * @phpstan-param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|RepositoryGitType::OTHER $gitType
+     * @phpstan-param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null $gitType
      */
-    public function setGitType(string $gitType): self
+    public function setGitType(?string $gitType): self
     {
         $this->gitType = $gitType;
 

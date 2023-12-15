@@ -65,6 +65,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $rules;
 
+    /** @phpstan-var Collection<int, GitAccessToken> */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GitAccessToken::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private Collection $tokens;
+
     /** @phpstan-var Collection<int, CodeReviewer> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
@@ -80,6 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function __construct()
     {
         $this->rules     = new ArrayCollection();
+        $this->tokens    = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
         $this->comments  = new ArrayCollection();
         $this->replies   = new ArrayCollection();
@@ -216,6 +221,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function eraseCredentials(): void
     {
         // no credentials, authentication via SSO only.
+    }
+
+    /**
+     * @return Collection<int, GitAccessToken>
+     */
+    public function getGitAccessTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * @param Collection<int, GitAccessToken> $tokens
+     */
+    public function setGitAccessTokens(Collection $tokens): self
+    {
+        $this->tokens = $tokens;
+
+        return $this;
     }
 
     /**

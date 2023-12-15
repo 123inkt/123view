@@ -339,4 +339,8 @@ return [
     'git.type.gitlab'                             => 'Gitlab',
     'git.type.github'                             => 'Github',
     'git.type.other'                              => 'Other',
+    'git.integration'                             => 'Git integration',
+    'access.token.saved.success'                  => 'Access token successfully saved',
+    'gitlab.access.token' => 'Gitlab access token',
+    'gitlab.access.token.help' => 'The <code>access token</code> with `api` access in Gitlab. Allows to sync comments from and to Gitlab merge requests. <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" target="_blank">Create a personal access token</a>.',
 ];

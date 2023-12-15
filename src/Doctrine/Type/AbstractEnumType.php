@@ -28,8 +28,12 @@ abstract class AbstractEnumType extends Type
     /**
      * @inheritDoc
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
+        if ($value === null) {
+            return null;
+        }
+
         if (is_string($value) === false || in_array($value, static::VALUES, true) === false) {
             throw new InvalidArgumentException("Invalid value '" . $value . "' for type '" . static::TYPE . "'.");
         }

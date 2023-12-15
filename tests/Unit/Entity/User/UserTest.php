@@ -17,7 +17,7 @@ class UserTest extends AbstractTestCase
     public function testAccessorPairs(): void
     {
         $config = new ConstraintConfig();
-        $config->setExcludedMethods(['getRules', 'addRule', 'getReviewers', 'getComments', 'getReplies', 'getMentions']);
+        $config->setExcludedMethods(['getRules', 'addRule', 'getReviewers', 'getComments', 'getReplies', 'getMentions', 'getGitAccessTokens']);
 
         static::assertAccessorPairs(User::class, $config);
     }
@@ -55,6 +55,17 @@ class UserTest extends AbstractTestCase
         $user    = new User();
         $user->setSetting($setting);
         static::assertSame($setting, $user->getSetting());
+    }
+
+    public function testGitAccessTokens(): void
+    {
+        $collection = new ArrayCollection();
+
+        $user = new User();
+        static::assertInstanceOf(ArrayCollection::class, $user->getGitAccessTokens());
+
+        $user->setGitAccessTokens($collection);
+        static::assertSame($collection, $user->getGitAccessTokens());
     }
 
     public function testReviewers(): void

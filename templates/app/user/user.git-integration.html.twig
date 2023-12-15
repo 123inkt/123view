@@ -1,0 +1,25 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1 class="mb-4 mt-2">{{ 'git.integration'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserSettingController') }}">{{ 'settings'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserAccessTokenController') }}">{{ 'access.tokens'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">{{ 'git.integration'|trans }}</a>
+        </li>
+    </ul>
+
+    <div class="mt-4">
+        <h2>{{ 'gitlab.access.token'|trans }}</h2>
+        {{ 'gitlab.integration.help'|trans }}
+        {{ form(gitIntegrationViewModel.form) }}
+    </div>
+{% endblock %}

@@ -35,6 +35,7 @@ class AbstractEnumTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValue(): void
     {
+        static::assertNull($this->enumType->convertToDatabaseValue(null, $this->createMock(AbstractPlatform::class)));
         static::assertSame('foo', $this->enumType->convertToDatabaseValue('foo', $this->createMock(AbstractPlatform::class)));
     }
 
