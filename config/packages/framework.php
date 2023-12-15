@@ -9,4 +9,5 @@ return static function (FrameworkConfig $framework): void {
     $framework->httpMethodOverride(true);
     $framework->phpErrors()->log(true)->throw(true);
     $framework->handleAllThrowables(true);
+    $framework->annotations()->enabled(false);
 };
