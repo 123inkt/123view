@@ -29,18 +29,7 @@ class LineReference implements Stringable
 
         if (preg_match('/^(.*):(\d+):(\d+):(\d+)$/', $reference, $matches) === 1) {
             // backwards compat line reference (file:line:offset:lineAfter)
-            $line      = (int)$matches[2];
-            $offset    = (int)$matches[3];
-            $lineAfter = (int)$matches[4];
-            $state     = LineReferenceStateEnum::Unknown;
-
-            if ($offset > 0) {
-                $state = LineReferenceStateEnum::Added;
-            } elseif ($lineAfter === 0) {
-                $state = LineReferenceStateEnum::Deleted;
-            }
-
-            return new LineReference(null, $matches[1], $line, $offset, $lineAfter, $state);
+            return new LineReference(null, $matches[1], (int)$matches[2], (int)$matches[3], (int)$matches[4], LineReferenceStateEnum::Unknown);
         }
 
         throw new InvalidArgumentException('Invalid reference: ' . $reference);

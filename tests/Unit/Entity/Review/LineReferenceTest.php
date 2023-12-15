@@ -12,29 +12,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(LineReference::class)]
 class LineReferenceTest extends AbstractTestCase
 {
-    public function testFromStringLegacyFormatAdded(): void
-    {
-        $reference = LineReference::fromString('foo/bar:1:2:3');
-        static::assertNull($reference->oldFilePath);
-        static::assertSame('foo/bar', $reference->filePath);
-        static::assertSame(1, $reference->line);
-        static::assertSame(2, $reference->offset);
-        static::assertSame(3, $reference->lineAfter);
-        static::assertSame(LineReferenceStateEnum::Added, $reference->state);
-    }
-
-    public function testFromStringLegacyFormatDeleted(): void
-    {
-        $reference = LineReference::fromString('foo/bar:1:0:0');
-        static::assertNull($reference->oldFilePath);
-        static::assertSame('foo/bar', $reference->filePath);
-        static::assertSame(1, $reference->line);
-        static::assertSame(0, $reference->offset);
-        static::assertSame(0, $reference->lineAfter);
-        static::assertSame(LineReferenceStateEnum::Deleted, $reference->state);
-    }
-
-    public function testFromStringLegacyFormatUnknown(): void
+    public function testFromStringLegacyFormat(): void
     {
         $reference = LineReference::fromString('foo/bar:1:0:1');
         static::assertNull($reference->oldFilePath);
