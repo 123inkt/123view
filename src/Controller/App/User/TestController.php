@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\User;
 
-use DR\Review\Entity\Review\LineReferenceStateEnum;
-use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Api\Gitlab\Version;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
@@ -46,28 +44,35 @@ class TestController
         /** @var Version $version */
         $version = Arrays::first($versions);
 
-        foreach ([2558, 2559] as $commentId) {
-            $comment       = $this->commentRepository->find($commentId);
-            $lineReference = $comment->getLineReference();
+        foreach ([2558] as $commentId) {
+            $comment = $this->commentRepository->find($commentId);
 
-            $position               = new Position();
-            $position->positionType = 'text';
-            $position->headSha      = $version->headCommitSha;
-            $position->startSha     = $version->startCommitSha;
-            $position->baseSha      = $version->baseCommitSha;
-            $position->oldPath      = $lineReference->oldPath;
-            $position->newPath      = $lineReference->newPath;
+            [$mergeRequestIId, $discussionId, $noteId] = explode(':', $comment->getExtReferenceId());
 
-            if ($lineReference->state === LineReferenceStateEnum::Added || $lineReference->state === LineReferenceStateEnum::Modified) {
-                $position->newLine = $lineReference->lineAfter;
-            } elseif ($lineReference->state === LineReferenceStateEnum::Deleted) {
-                $position->oldLine = $lineReference->line;
-            } else {
-                $position->oldLine = $lineReference->line;
-                $position->newLine = $lineReference->lineAfter;
-            }
+            $api->discussions()->update($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $comment->getMessage() . ' updated!');
 
-            $api->discussions()->create($projectId, $mergeRequestIId, $position, $comment->getMessage());
+            //$lineReference = $comment->getLineReference();
+            //
+            //$position               = new Position();
+            //$position->positionType = 'text';
+            //$position->headSha      = $version->headCommitSha;
+            //$position->startSha     = $version->startCommitSha;
+            //$position->baseSha      = $version->baseCommitSha;
+            //$position->oldPath      = $lineReference->oldPath;
+            //$position->newPath      = $lineReference->newPath;
+            //
+            //if ($lineReference->state === LineReferenceStateEnum::Added || $lineReference->state === LineReferenceStateEnum::Modified) {
+            //    $position->newLine = $lineReference->lineAfter;
+            //} elseif ($lineReference->state === LineReferenceStateEnum::Deleted) {
+            //    $position->oldLine = $lineReference->line;
+            //} else {
+            //    $position->oldLine = $lineReference->line;
+            //    $position->newLine = $lineReference->lineAfter;
+            //}
+            //
+            //$referenceId = $api->discussions()->create($projectId, $mergeRequestIId, $position, $comment->getMessage());
+            //$comment->setExtReferenceId($referenceId);
+            //$this->commentRepository->save($comment, true);
         }
 
         return new JsonResponse([]);

@@ -38,18 +38,21 @@ class Discussions
             ['body' => Arrays::removeNull($postBody)]
         )->toArray();
 
-        // TODO
-        return (string)$response['id'];
+        $discussionId = (string)$response['id'];
+        $noteId       = (string)$response['notes'][0]['id'];
+
+        return sprintf('%s:%s:%s', $mergeRequestIId, $discussionId, $noteId);
     }
 
     /**
      * @throws Throwable
+     * @link https://docs.gitlab.com/ee/api/discussions.html#modify-an-existing-merge-request-thread-note
      */
-    public function update(int $projectId, int $mergeRequestIId, int $discussionId, string $body): void
+    public function update(int $projectId, int $mergeRequestIId, string $discussionId, string $noteId, string $body): void
     {
         $this->client->request(
             'PUT',
-            sprintf('projects/%d/merge_requests/%d/discussions/%d', $projectId, $mergeRequestIId, $discussionId),
+            sprintf('projects/%d/merge_requests/%d/discussions/%s/notes/%s', $projectId, $mergeRequestIId, $discussionId, $noteId),
             ['query' => ['body' => $body]]
         );
     }
@@ -58,12 +61,21 @@ class Discussions
      * @throws Throwable
      * @link https://docs.gitlab.com/ee/api/discussions.html#resolve-a-merge-request-thread
      */
-    public function resolve(int $projectId, int $mergeRequestIId, int $discussionId, bool $resolve = true): void
+    public function resolve(int $projectId, int $mergeRequestIId, string $discussionId, bool $resolve = true): void
     {
         $this->client->request(
             'PUT',
             sprintf('projects/%d/merge_requests/%d/discussions/%d', $projectId, $mergeRequestIId, $discussionId),
             ['query' => ['resolved' => $resolve ? 'true' : 'false']]
         );
+    }
+
+    /**
+     * @throws Throwable
+     * @link https://docs.gitlab.com/ee/api/discussions.html#delete-a-merge-request-thread-note
+     */
+    public function delete(int $projectId, int $mergeRequestIId, string $discussionId): void
+    {
+        $this->client->request('DELETE', sprintf('projects/%d/merge_requests/%d/discussions/%d', $projectId, $mergeRequestIId, $discussionId));
     }
 }
