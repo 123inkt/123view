@@ -103,6 +103,9 @@ class CodeReview
     #[Groups(['code_review_write'])]
     private string $state = CodeReviewStateType::OPEN;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $extReferenceId = null;
+
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
     private array $actors = [];
@@ -217,6 +220,18 @@ class CodeReview
     public function setState(string $state): self
     {
         $this->state = $this->propertyChange(self::PROP_STATE, $this->state, $state);
+
+        return $this;
+    }
+
+    public function getExtReferenceId(): ?string
+    {
+        return $this->extReferenceId;
+    }
+
+    public function setExtReferenceId(?string $extReferenceId): self
+    {
+        $this->extReferenceId = $extReferenceId;
 
         return $this;
     }

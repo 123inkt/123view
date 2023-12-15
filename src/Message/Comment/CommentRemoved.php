@@ -14,7 +14,8 @@ class CommentRemoved implements AsyncMessageInterface, CommentEventInterface
         public readonly int $commentId,
         public readonly int $byUserId,
         public readonly string $file,
-        public readonly string $message
+        public readonly string $message,
+        public readonly ?string $extReferenceId
     ) {
     }
 

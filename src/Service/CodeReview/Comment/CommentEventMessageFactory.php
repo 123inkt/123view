@@ -64,6 +64,7 @@ class CommentEventMessageFactory
             $user->getId(),
             $comment->getFilePath(),
             $comment->getMessage(),
+            $comment->getExtReferenceId()
         );
     }
 }

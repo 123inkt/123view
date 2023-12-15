@@ -74,8 +74,11 @@ class Discussions
      * @throws Throwable
      * @link https://docs.gitlab.com/ee/api/discussions.html#delete-a-merge-request-thread-note
      */
-    public function delete(int $projectId, int $mergeRequestIId, string $discussionId): void
+    public function delete(int $projectId, int $mergeRequestIId, string $discussionId, string $noteId): void
     {
-        $this->client->request('DELETE', sprintf('projects/%d/merge_requests/%d/discussions/%d', $projectId, $mergeRequestIId, $discussionId));
+        $this->client->request(
+            'DELETE',
+            sprintf('projects/%d/merge_requests/%d/discussions/%s/notes/%s', $projectId, $mergeRequestIId, $discussionId, $noteId)
+        );
     }
 }

@@ -20,7 +20,7 @@ use Throwable;
 class TestController
 {
     public function __construct(
-        private readonly string $apiUrl,
+        private readonly string $gitlabApiUrl,
         private readonly string $token,
         private readonly HttpClientInterface $client,
         private readonly SerializerInterface $serializer,
@@ -35,7 +35,7 @@ class TestController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): Response
     {
-        $client = $this->client->withOptions(['base_uri' => $this->apiUrl, 'headers' => ['PRIVATE-TOKEN' => $this->token]]);
+        $client = $this->client->withOptions(['base_uri' => $this->gitlabApiUrl, 'headers' => ['PRIVATE-TOKEN' => $this->token]]);
 
         $projectId       = 72;
         $mergeRequestIId = 178;
