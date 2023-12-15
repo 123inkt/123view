@@ -19,28 +19,29 @@ class AddCommentRequestTest extends AbstractRequestTestCase
 {
     public function testGetLineReference(): void
     {
-        $this->request->query->set('oldFilePath', 'oldPath');
-        $this->request->query->set('filePath', 'newPath');
+        $this->request->query->set('oldPath', 'oldPath');
+        $this->request->query->set('newPath', 'newPath');
         $this->request->query->set('line', '123');
         $this->request->query->set('offset', '456');
         $this->request->query->set('lineAfter', '789');
+        $this->request->query->set('headSha', 'sha');
         $this->request->query->set('state', 'A');
         static::assertEquals(
-            new LineReference('oldPath', 'newPath', 123, 456, 789, LineReferenceStateEnum::Added),
+            new LineReference('oldPath', 'newPath', 123, 456, 789, 'sha', LineReferenceStateEnum::Added),
             $this->validatedRequest->getLineReference()
         );
     }
 
     public function testGetLineReferenceWithSameFilePath(): void
     {
-        $this->request->query->set('oldFilePath', 'path');
-        $this->request->query->set('filePath', 'path');
+        $this->request->query->set('oldPath', '');
+        $this->request->query->set('newPath', 'path');
         $this->request->query->set('line', '123');
         $this->request->query->set('offset', '456');
         $this->request->query->set('lineAfter', '789');
         $this->request->query->set('state', 'A');
         static::assertEquals(
-            new LineReference(null, 'path', 123, 456, 789, LineReferenceStateEnum::Added),
+            new LineReference(null, 'path', 123, 456, 789, null, LineReferenceStateEnum::Added),
             $this->validatedRequest->getLineReference()
         );
     }
@@ -53,12 +54,13 @@ class AddCommentRequestTest extends AbstractRequestTestCase
         $expected = new ValidationRules(
             [
                 'query' => [
-                    'oldFilePath' => 'required|string',
-                    'filePath'    => 'required|string|filled',
-                    'line'        => 'required|integer:min:1',
-                    'offset'      => 'required|integer:min:0',
-                    'lineAfter'   => 'required|integer:min:1',
-                    'state'       => 'required|in:' . implode(',', LineReferenceStateEnum::values())
+                    'oldPath'   => 'required|string',
+                    'newPath'   => 'required|string',
+                    'line'      => 'required|integer:min:1',
+                    'offset'    => 'required|integer:min:0',
+                    'lineAfter' => 'required|integer:min:1',
+                    'headSha'   => 'required|string|filled',
+                    'state'     => 'required|in:' . implode(',', LineReferenceStateEnum::values())
                 ]
             ]
         );
