@@ -5,7 +5,6 @@ namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractTestCase;
