@@ -12,12 +12,12 @@ class AddCommentRequest extends AbstractValidatedRequest
 {
     public function getLineReference(): LineReference
     {
-        $oldPath = $this->request->query->getString('oldFilePath');
-        $newPath = $this->request->query->getString('filePath');
+        $oldPath = $this->request->query->getString('oldPath');
+        $newPath = $this->request->query->getString('newPath');
 
         return new LineReference(
-            $oldPath === '' || $oldPath === $newPath ? null : $oldPath,
-            $newPath,
+            $oldPath === '' ? null : $oldPath,
+            $newPath === '' ? null : $newPath,
             $this->request->query->getInt('line'),
             $this->request->query->getInt('offset'),
             $this->request->query->getInt('lineAfter'),
@@ -30,12 +30,12 @@ class AddCommentRequest extends AbstractValidatedRequest
         return new ValidationRules(
             [
                 'query' => [
-                    'oldFilePath' => 'required|string',
-                    'filePath'    => 'required|string|filled',
-                    'line'        => 'required|integer:min:1',
-                    'offset'      => 'required|integer:min:0',
-                    'lineAfter'   => 'required|integer:min:1',
-                    'state'       => 'required|in:' . implode(',', LineReferenceStateEnum::values())
+                    'oldPath'   => 'required|string',
+                    'newPath'   => 'required|string',
+                    'line'      => 'required|integer:min:1',
+                    'offset'    => 'required|integer:min:0',
+                    'lineAfter' => 'required|integer:min:1',
+                    'state'     => 'required|in:' . implode(',', LineReferenceStateEnum::values())
                 ]
             ]
         );

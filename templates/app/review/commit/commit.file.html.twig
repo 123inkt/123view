@@ -10,7 +10,7 @@
 
     <div class="diff-file__file-revision-scrollpane" {{ stimulus_controller('scroll-positioner') }}>
         <div class="diff-file__file-revision-file" {{ stimulus_target('review', 'revisionFile') }}
-             data-file="{{ file.filePathAfter ?? file.filePathBefore }}">
+             data-old-path="{{ file.filePathBefore }}" data-new-path="{{ file.filePathAfter }}">
             {%- if file.blocks -%}
                 {%- for detachedComment in commentsViewModel.detachedComments -%}
                     {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true, visible: commentsViewModel.isCommentVisible(detachedComment)} -%}

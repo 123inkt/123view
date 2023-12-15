@@ -23,6 +23,18 @@
     {{- line_visible ? '' : ' diff-file__diff-line-hidden' -}}
 {%- endmacro -%}
 
+{%- macro line_state(line) -%}
+    {%- if line.state == 1 -%}
+        A
+    {%- elseif line.state == 2 -%}
+        D
+    {%- elseif line.state == 3 -%}
+        M
+    {%- else -%}
+        U
+    {%- endif -%}
+{%- endmacro -%}
+
 {%- macro gutter_double(line, lineNrLengthBefore, lineNrLengthAfter) -%}
     {%- apply spaceless -%}
         <span class="diff-file__line-gutter" data-action="click->review#addComment">

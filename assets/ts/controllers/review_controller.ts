@@ -17,10 +17,12 @@ export default class extends Controller {
         this.commentService
             .getAddCommentForm(
                 this.addCommentUrlValue,
-                DataSet.string(this.revisionFileTarget, 'file'),
+                DataSet.string(this.revisionFileTarget, 'oldPath'),
+                DataSet.string(this.revisionFileTarget, 'newPath'),
                 DataSet.int(line, 'line'),
                 DataSet.int(line, 'lineOffset'),
-                DataSet.int(line, 'lineAfter')
+                DataSet.int(line, 'lineAfter'),
+                DataSet.string(line, 'lineState')
             )
             .then(form => {
                 this.commentFormTargets.forEach(el => el.remove());
