@@ -25,12 +25,13 @@ class LineReferenceTest extends AbstractTestCase
 
     public function testFromStringCurrentFormat(): void
     {
-        $reference = LineReference::fromString('old/path:new/path:1:2:3:A');
+        $reference = LineReference::fromString('old/path:new/path:1:2:3:commitSha:A');
         static::assertSame('old/path', $reference->oldPath);
         static::assertSame('new/path', $reference->newPath);
         static::assertSame(1, $reference->line);
         static::assertSame(2, $reference->offset);
         static::assertSame(3, $reference->lineAfter);
+        static::assertSame('commitSha', $reference->headSha);
         static::assertSame(LineReferenceStateEnum::Added, $reference->state);
     }
 
@@ -43,7 +44,7 @@ class LineReferenceTest extends AbstractTestCase
 
     public function testToString(): void
     {
-        $reference = LineReference::fromString('foo:bar:1:2:3:M');
-        static::assertSame('foo:bar:1:2:3:M', (string)$reference);
+        $reference = LineReference::fromString('foo:bar:1:2:3:commitSha:M');
+        static::assertSame('foo:bar:1:2:3:commitSha:M', (string)$reference);
     }
 }

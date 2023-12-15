@@ -13,6 +13,7 @@
             {{ stimulus_target('review', 'revisionFile') }}
          data-old-path="{{ file.filePathBefore }}"
          data-new-path="{{ file.filePathAfter }}"
+         data-head-sha="{{ fileDiffViewModel.headSha }}"
     >
         <div class="diff-side-by-side--column-layout" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
 

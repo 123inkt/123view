@@ -21,6 +21,7 @@ class AddCommentRequest extends AbstractValidatedRequest
             $this->request->query->getInt('line'),
             $this->request->query->getInt('offset'),
             $this->request->query->getInt('lineAfter'),
+            $this->request->query->getString('headSha'),
             LineReferenceStateEnum::from($this->request->query->getString('state')),
         );
     }
@@ -35,6 +36,7 @@ class AddCommentRequest extends AbstractValidatedRequest
                     'line'      => 'required|integer:min:1',
                     'offset'    => 'required|integer:min:0',
                     'lineAfter' => 'required|integer:min:1',
+                    'headSha'   => 'required|string|filled',
                     'state'     => 'required|in:' . implode(',', LineReferenceStateEnum::values())
                 ]
             ]

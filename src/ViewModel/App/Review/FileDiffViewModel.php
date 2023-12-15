@@ -8,6 +8,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
 use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
+use DR\Utils\Arrays;
 
 class FileDiffViewModel
 {
@@ -78,6 +79,11 @@ class FileDiffViewModel
     public function getRevisions(): array
     {
         return $this->revisions;
+    }
+
+    public function getHeadSha(): ?string
+    {
+        return Arrays::lastOrNull($this->revisions)?->getCommitHash();
     }
 
     /**

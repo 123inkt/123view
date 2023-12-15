@@ -11,9 +11,9 @@ export default class CommentService {
             .then((response) => response.data);
     }
 
-    public getAddCommentForm(url: string, oldPath: string, newPath: string, line: number, offset: number, lineAfter: number, state: string): Promise<HTMLElement> {
+    public getAddCommentForm(url: string, oldPath: string, newPath: string, line: number, offset: number, lineAfter: number, headSha: string, state: string): Promise<HTMLElement> {
         return this.client
-            .get(url, {params: {oldPath, newPath, line, offset, lineAfter, state}})
+            .get(url, {params: {oldPath, newPath, line, offset, lineAfter, state, headSha}})
             .then(response => response.data)
             .then(html => Elements.create(html));
     }

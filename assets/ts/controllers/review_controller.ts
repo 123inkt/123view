@@ -22,6 +22,7 @@ export default class extends Controller {
                 DataSet.int(line, 'line'),
                 DataSet.int(line, 'lineOffset'),
                 DataSet.int(line, 'lineAfter'),
+                DataSet.string(this.revisionFileTarget, 'headSha'),
                 DataSet.string(line, 'lineState')
             )
             .then(form => {
