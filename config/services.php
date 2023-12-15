@@ -10,6 +10,7 @@ use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
+use DR\Review\Controller\App\User\TestController;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
@@ -213,4 +214,9 @@ return static function (ContainerConfigurator $container): void {
 
     // Gitlab integration
     $services->set(GitlabService::class)->arg('$gitlabApi', inline_service(GitlabApi::class)->arg('$client', service('gitlab.client')));
+
+    $services->set(TestController::class)
+        ->arg('$apiUrl', '%env(GITLAB_API_URL)%api/v4/')
+        ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%')
+        ->tag('controller.service_arguments');
 };

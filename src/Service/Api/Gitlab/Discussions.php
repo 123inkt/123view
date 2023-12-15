@@ -18,7 +18,7 @@ class Discussions
      * @throws Throwable
      * @link https://docs.gitlab.com/ee/api/discussions.html#create-a-new-thread-in-the-merge-request-diff
      */
-    public function create(int $projectId, int $mergeRequestIId, Position $position, string $body): int
+    public function create(int $projectId, int $mergeRequestIId, Position $position, string $body): string
     {
         $postBody = [
             'position[position_type]' => $position->positionType,
@@ -39,7 +39,7 @@ class Discussions
         )->toArray();
 
         // TODO
-        return 0;
+        return (string)$response['id'];
     }
 
     /**
