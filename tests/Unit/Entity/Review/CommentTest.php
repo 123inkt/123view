@@ -36,8 +36,8 @@ class CommentTest extends AbstractTestCase
     public function testLineReference(): void
     {
         $comment = new Comment();
-        $comment->setLineReference(new LineReference('foobar', 1, 2, 3));
-        static::assertEquals(new LineReference('foobar', 1, 2, 3), $comment->getLineReference());
+        $comment->setLineReference(new LineReference('foobar', 'foobar', 1, 2, 3));
+        static::assertEquals(new LineReference('foobar', 'foobar', 1, 2, 3), $comment->getLineReference());
     }
 
     public function testReplies(): void

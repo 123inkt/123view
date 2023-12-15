@@ -11,6 +11,7 @@ use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
+use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +48,7 @@ class AddCommentController extends AbstractController
         $comment = new Comment();
         $comment->setUser($user);
         $comment->setReview($review);
-        $comment->setFilePath($lineReference->filePath);
+        $comment->setFilePath(Assert::notNull($lineReference->oldPath ?? $lineReference->newPath));
         $comment->setLineReference($lineReference);
         $comment->setMessage($data['message']);
         $comment->setCreateTimestamp(time());

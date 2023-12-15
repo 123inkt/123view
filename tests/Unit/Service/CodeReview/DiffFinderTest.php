@@ -83,22 +83,22 @@ class DiffFinderTest extends AbstractTestCase
         // match line 100 => expect before: 100, after: 101
         static::assertSame(
             ['before' => [$lineA], 'after' => [$lineB]],
-            $this->finder->findLinesAround($file, new LineReference('', 100, 0, 100), 1)
+            $this->finder->findLinesAround($file, new LineReference('', '', 100, 0, 100), 1)
         );
 
         // match line 101 => expect before:  101, after: 102
         static::assertSame(
             ['before' => [$lineB], 'after' => [$lineC]],
-            $this->finder->findLinesAround($file, new LineReference('', 101, 0, 101), 1)
+            $this->finder->findLinesAround($file, new LineReference('', '', 101, 0, 101), 1)
         );
 
         // match line 101 => expect before:  101, after: 102, margin 2
         static::assertSame(
             ['before' => [$lineA, $lineB], 'after' => [$lineC, $lineD]],
-            $this->finder->findLinesAround($file, new LineReference('', 101, 0, 101), 2)
+            $this->finder->findLinesAround($file, new LineReference('', '', 101, 0, 101), 2)
         );
 
-        static::assertNull($this->finder->findLinesAround($file, new LineReference('', 105, 0, 105), 1));
+        static::assertNull($this->finder->findLinesAround($file, new LineReference('', '', 105, 0, 105), 1));
     }
 
     public function testFindLineInLines(): void
@@ -108,9 +108,9 @@ class DiffFinderTest extends AbstractTestCase
         $this->referenceMatcher->expects(self::exactly(3))->method('exactMatch')->willReturn($line, null, null);
         $this->referenceMatcher->expects(self::exactly(2))->method('bestEffortMatch')->willReturn($line, null);
 
-        static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', 100, 0, 100)));
-        static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', 100, 1, 100)));
-        static::assertNull($this->finder->findLineInLines([$line], new LineReference('', 100, 1, 100)));
+        static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', '', 100, 0, 100)));
+        static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', '', 100, 1, 100)));
+        static::assertNull($this->finder->findLineInLines([$line], new LineReference('', '', 100, 1, 100)));
     }
 
     public function testFindLineInFile(): void
@@ -125,8 +125,8 @@ class DiffFinderTest extends AbstractTestCase
         $file->addBlock($block);
         $file->filePathAfter = '/path/to/file/foobar.txt';
 
-        static::assertNull($this->finder->findLineInFile($file, new LineReference('', 99, 0, 99)));
-        static::assertSame($line, $this->finder->findLineInFile($file, new LineReference('', 100, 0, 100)));
+        static::assertNull($this->finder->findLineInFile($file, new LineReference('', '', 99, 0, 99)));
+        static::assertSame($line, $this->finder->findLineInFile($file, new LineReference('', '', 100, 0, 100)));
     }
 
     public function testFineLineInBlockForNewFile(): void
@@ -140,8 +140,8 @@ class DiffFinderTest extends AbstractTestCase
         $file                = new DiffFile();
         $file->filePathAfter = '/path/to/file/foobar.txt';
 
-        static::assertNull($this->finder->findLineInBlock($file, $block, new LineReference('', 99, 0, 99)));
-        static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
+        static::assertNull($this->finder->findLineInBlock($file, $block, new LineReference('', '', 99, 0, 99)));
+        static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', '', 100, 0, 100)));
     }
 
     public function testFineLineInBlockForLines(): void
@@ -159,7 +159,7 @@ class DiffFinderTest extends AbstractTestCase
 
         $this->referenceMatcher->expects(self::once())->method('exactMatch')->willReturn($line);
 
-        static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', 100, 0, 100)));
+        static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', '', 100, 0, 100)));
     }
 
     public function testFindLineInNewFile(): void
@@ -172,8 +172,8 @@ class DiffFinderTest extends AbstractTestCase
 
         $lines = [99 => $lineA, 100 => $lineB];
 
-        static::assertNull($this->finder->findLineInNewFile($lines, new LineReference('', 99, 0, 99)));
-        static::assertSame($lineA, $this->finder->findLineInNewFile($lines, new LineReference('', 100, 0, 100)));
-        static::assertSame($lineB, $this->finder->findLineInNewFile($lines, new LineReference('', 101, 0, 101)));
+        static::assertNull($this->finder->findLineInNewFile($lines, new LineReference('', '', 99, 0, 99)));
+        static::assertSame($lineA, $this->finder->findLineInNewFile($lines, new LineReference('', '', 100, 0, 100)));
+        static::assertSame($lineB, $this->finder->findLineInNewFile($lines, new LineReference('', '', 101, 0, 101)));
     }
 }

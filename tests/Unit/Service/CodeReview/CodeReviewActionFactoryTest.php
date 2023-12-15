@@ -43,7 +43,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
         $action  = $this->factory->createFromRequest($request);
         static::assertInstanceOf(AddCommentAction::class, $action);
 
-        static::assertSame('/foo/bar/text.txt', $action->lineReference->filePath);
+        static::assertSame('/foo/bar/text.txt', $action->lineReference->newPath);
         static::assertSame(5, $action->lineReference->line);
         static::assertSame(6, $action->lineReference->offset);
         static::assertSame(7, $action->lineReference->lineAfter);

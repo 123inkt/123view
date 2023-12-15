@@ -6,7 +6,6 @@ namespace DR\Review\ViewModelProvider\Mail;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\DiffFinder;
@@ -35,16 +34,15 @@ class MailCommentViewModelProvider
         ?CommentReply $reply = null,
         ?User $resolvedBy = null
     ): CommentViewModel {
-        /** @var LineReference $lineReference */
         $lineReference = $comment->getLineReference();
         $revisions     = $this->revisionService->getRevisions($review);
         $files         = $this->diffService->getDiffForRevisions(Assert::notNull($review->getRepository()), $revisions);
 
         // find selected file
-        $selectedFile = $this->diffFinder->findFileByPath($files, $lineReference->filePath);
+        $selectedFile = $this->diffFinder->findFileByPath($files, $comment->getFilePath());
         $lineRange    = [];
         if ($selectedFile !== null) {
-            $lineRange = $this->diffFinder->findLinesAround($selectedFile, Assert::notNull($lineReference), 6) ?? [];
+            $lineRange = $this->diffFinder->findLinesAround($selectedFile, $lineReference, 6) ?? [];
         }
 
         $headerTitle = $this->getHeaderTitle($comment, $reply, $resolvedBy);

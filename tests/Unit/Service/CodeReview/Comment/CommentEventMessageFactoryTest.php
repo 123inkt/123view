@@ -5,7 +5,6 @@ namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractTestCase;
@@ -28,7 +27,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setFilePath('filepath');
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -46,7 +45,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setFilePath('filepath');
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -64,7 +63,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setFilePath('filepath');
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -81,7 +80,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setFilePath('filepath');
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -98,7 +97,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setFilePath('filepath');
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 

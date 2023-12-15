@@ -18,7 +18,7 @@ class GetAddCommentFormControllerTest extends AbstractControllerTestCase
 {
     public function testInvoke(): void
     {
-        $lineReference = new LineReference('filepath', 1, 2, 3);
+        $lineReference = new LineReference('filepath', 'filepath', 1, 2, 3);
         $request       = $this->createMock(AddCommentRequest::class);
         $request->method('getLineReference')->willReturn($lineReference);
         $review = new CodeReview();

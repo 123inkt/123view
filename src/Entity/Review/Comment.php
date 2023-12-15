@@ -23,7 +23,7 @@ class Comment
     #[ORM\Column(type: 'string', length: 500)]
     private string $filePath;
 
-    #[ORM\Column(type: 'string', length: 500)]
+    #[ORM\Column(type: 'string', length: 2000)]
     private string $lineReference;
 
     // todo change to CommentStateType.

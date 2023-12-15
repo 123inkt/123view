@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\Review\LineReferenceStateEnum;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -11,13 +12,27 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(LineReference::class)]
 class LineReferenceTest extends AbstractTestCase
 {
-    public function testFromString(): void
+    public function testFromStringLegacyFormat(): void
     {
-        $reference = LineReference::fromString('foo/bar:1:2:3');
-        static::assertSame('foo/bar', $reference->filePath);
+        $reference = LineReference::fromString('foo/bar:1:0:1');
+        static::assertNull($reference->oldPath);
+        static::assertSame('foo/bar', $reference->newPath);
+        static::assertSame(1, $reference->line);
+        static::assertSame(0, $reference->offset);
+        static::assertSame(1, $reference->lineAfter);
+        static::assertSame(LineReferenceStateEnum::Unknown, $reference->state);
+    }
+
+    public function testFromStringCurrentFormat(): void
+    {
+        $reference = LineReference::fromString('old/path:new/path:1:2:3:commitSha:A');
+        static::assertSame('old/path', $reference->oldPath);
+        static::assertSame('new/path', $reference->newPath);
         static::assertSame(1, $reference->line);
         static::assertSame(2, $reference->offset);
         static::assertSame(3, $reference->lineAfter);
+        static::assertSame('commitSha', $reference->headSha);
+        static::assertSame(LineReferenceStateEnum::Added, $reference->state);
     }
 
     public function testFromStringInvalidReference(): void
@@ -29,9 +44,7 @@ class LineReferenceTest extends AbstractTestCase
 
     public function testToString(): void
     {
-        $string = 'foo/bar:1:2:3';
-
-        $reference = LineReference::fromString('foo/bar:1:2:3');
-        static::assertSame($string, (string)$reference);
+        $reference = LineReference::fromString('foo:bar:1:2:3:commitSha:M');
+        static::assertSame('foo:bar:1:2:3:commitSha:M', (string)$reference);
     }
 }

@@ -46,8 +46,9 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
      */
     public function testCreateCommentViewModelCommentCreated(): void
     {
-        $reference = new LineReference('reference', 1, 2, 3);
+        $reference = new LineReference(null, 'reference', 1, 2, 3);
         $comment   = (new Comment())->setUser((new User())->setName('name'));
+        $comment->setFilePath('reference');
         $comment->setLineReference($reference);
         $revision   = new Revision();
         $repository = new Repository();
@@ -82,8 +83,9 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     public function testCreateCommentViewModelCommentReplied(): void
     {
         $reply     = (new CommentReply())->setUser((new User())->setName('name'));
-        $reference = new LineReference('reference', 1, 2, 3);
+        $reference = new LineReference(null, 'reference', 1, 2, 3);
         $comment   = new Comment();
+        $comment->setFilePath('reference');
         $comment->setLineReference($reference);
         $comment->getReplies()->add($reply);
         $revision   = new Revision();
@@ -119,8 +121,9 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     public function testCreateCommentViewModelResolvedByUser(): void
     {
         $reply     = new CommentReply();
-        $reference = new LineReference('reference', 1, 2, 3);
+        $reference = new LineReference(null, 'reference', 1, 2, 3);
         $comment   = new Comment();
+        $comment->setFilePath('reference');
         $comment->setLineReference($reference);
         $comment->getReplies()->add($reply);
         $revision   = new Revision();

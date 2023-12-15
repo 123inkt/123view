@@ -50,7 +50,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $url    = 'https://123view/comment/add';
         $review = new CodeReview();
         $review->setId(123);
-        $lineReference = new LineReference('path', 1, 2, 3);
+        $lineReference = new LineReference('path', 'path', 1, 2, 3);
 
         $this->urlGenerator->expects(self::once())
             ->method('generate')

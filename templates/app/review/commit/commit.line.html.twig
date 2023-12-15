@@ -8,7 +8,9 @@
      data-role="diff-line"
      data-line="{{ line_number }}"
      data-line-offset="{{ line_offset }}"
-     data-line-after="{{ line.lineNumberAfter|default('0') }}">
+     data-line-after="{{ line.lineNumberAfter|default('0') }}"
+     data-line-state="{{ macro.line_state(line) }}"
+>
     {%- set codeQualityViewModel = fileDiffViewModel.codeQualityViewModel -%}
 
     {#- gutter -#}
