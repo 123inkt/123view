@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\ExternalTool\Gitlab;
+namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
-use DR\Review\ExternalTool\Gitlab\GitlabApi;
+use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,9 +15,8 @@ use Throwable;
 #[CoversClass(GitlabApi::class)]
 class GitlabApiTest extends AbstractTestCase
 {
-    /** @var MockObject|HttpClientInterface */
-    private HttpClientInterface $client;
-    private GitlabApi           $api;
+    private HttpClientInterface&MockObject $client;
+    private GitlabApi                      $api;
 
     protected function setUp(): void
     {

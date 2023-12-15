@@ -17,7 +17,7 @@ use Throwable;
 class TestController
 {
     public function __construct(
-        private readonly string $token,
+        //private readonly string $token,
         private readonly HttpClientInterface $client,
         private readonly CommentRepository $commentRepository
     ) {

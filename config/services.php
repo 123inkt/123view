@@ -12,6 +12,7 @@ use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
+use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -28,6 +29,7 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
+use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
@@ -208,4 +210,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
+
+    // Gitlab integration
+    $services->set(GitlabService::class)->arg('$gitlabApi', inline_service(GitlabApi::class)->arg('$client', service('gitlab.client')));
 };
