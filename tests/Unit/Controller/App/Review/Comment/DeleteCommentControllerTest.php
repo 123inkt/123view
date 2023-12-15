@@ -48,7 +48,7 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
         $review->setId(456);
         $comment = new Comment();
         $comment->setId(123);
-        $comment->setLineReference(new LineReference('file', 1, 2, 3));
+        $comment->setLineReference(new LineReference('file', 'file', 1, 2, 3));
         $comment->setReview($review);
         $event = new CommentRemoved(1, 2, 3, 'file', 'message');
 

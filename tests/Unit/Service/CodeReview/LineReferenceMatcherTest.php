@@ -25,7 +25,7 @@ class LineReferenceMatcherTest extends AbstractTestCase
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
         $line->lineNumberAfter = 123;
 
-        $reference = new LineReference('/file/path', 10, 20, 123);
+        $reference = new LineReference(null, '/file/path', 10, 20, 123);
 
         static::assertSame($line, $this->matcher->exactMatch([$line], $reference));
     }
@@ -35,7 +35,7 @@ class LineReferenceMatcherTest extends AbstractTestCase
         $line                   = new DiffLine(DiffLine::STATE_CHANGED, []);
         $line->lineNumberBefore = 123;
 
-        $reference = new LineReference('/file/path', 123, 0, 0);
+        $reference = new LineReference(null, '/file/path', 123, 0, 0);
 
         static::assertSame($line, $this->matcher->exactMatch([$line], $reference));
     }
@@ -46,7 +46,7 @@ class LineReferenceMatcherTest extends AbstractTestCase
         $line->lineNumberBefore = 123;
         $line->lineNumberAfter  = 456;
 
-        $reference = new LineReference('/file/path', 123, 0, 456);
+        $reference = new LineReference(null, '/file/path', 123, 0, 456);
 
         static::assertSame($line, $this->matcher->exactMatch([$line], $reference));
     }
@@ -57,7 +57,7 @@ class LineReferenceMatcherTest extends AbstractTestCase
         $line->lineNumberBefore = 123;
         $line->lineNumberAfter  = 456;
 
-        $reference = new LineReference('/file/path', 123, 456, 789);
+        $reference = new LineReference(null, '/file/path', 123, 456, 789);
 
         static::assertNull($this->matcher->exactMatch([$line], $reference));
     }
@@ -81,11 +81,11 @@ class LineReferenceMatcherTest extends AbstractTestCase
 
         $lines = [$lineA, $lineB, $lineC, $lineD];
 
-        static::assertSame($lineA, $this->matcher->bestEffortMatch($lines, new LineReference('', 100, 0, 100)));
-        static::assertSame($lineB, $this->matcher->bestEffortMatch($lines, new LineReference('', 100, 1, 101)));
-        static::assertSame($lineA, $this->matcher->bestEffortMatch($lines, new LineReference('', 100, 4, 100)));
-        static::assertSame($lineC, $this->matcher->bestEffortMatch($lines, new LineReference('', 101, 1, 102)));
-        static::assertSame($lineB, $this->matcher->bestEffortMatch($lines, new LineReference('', 0, 0, 101)));
-        static::assertNull($this->matcher->bestEffortMatch($lines, new LineReference('', 103, 0, 103)));
+        static::assertSame($lineA, $this->matcher->bestEffortMatch($lines, new LineReference(null, '', 100, 0, 100)));
+        static::assertSame($lineB, $this->matcher->bestEffortMatch($lines, new LineReference(null, '', 100, 1, 101)));
+        static::assertSame($lineA, $this->matcher->bestEffortMatch($lines, new LineReference(null, '', 100, 4, 100)));
+        static::assertSame($lineC, $this->matcher->bestEffortMatch($lines, new LineReference(null, '', 101, 1, 102)));
+        static::assertSame($lineB, $this->matcher->bestEffortMatch($lines, new LineReference(null, '', 0, 0, 101)));
+        static::assertNull($this->matcher->bestEffortMatch($lines, new LineReference(null, '', 103, 0, 103)));
     }
 }

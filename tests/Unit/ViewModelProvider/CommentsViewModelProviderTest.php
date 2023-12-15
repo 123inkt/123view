@@ -47,9 +47,9 @@ class CommentsViewModelProviderTest extends AbstractTestCase
     public function testGetCommentsViewModel(): void
     {
         $commentA = new Comment();
-        $commentA->setLineReference(new LineReference('comment-1', 1, 2, 3));
+        $commentA->setLineReference(new LineReference(null, 'comment-1', 1, 2, 3));
         $commentB = new Comment();
-        $commentB->setLineReference(new LineReference('comment-2', 4, 0, 0));
+        $commentB->setLineReference(new LineReference(null, 'comment-2', 4, 0, 0));
         $comments   = [$commentA, $commentB];
         $review     = new CodeReview();
         $file       = new DiffFile();

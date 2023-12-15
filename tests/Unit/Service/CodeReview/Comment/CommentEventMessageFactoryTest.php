@@ -28,7 +28,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setLineReference(new LineReference(null, 'filepath'));
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -46,7 +46,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setLineReference(new LineReference(null, 'filepath'));
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -64,7 +64,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setLineReference(new LineReference(null, 'filepath'));
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -81,7 +81,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setLineReference(new LineReference(null, 'filepath'));
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 
@@ -98,7 +98,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $user->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setLineReference(new LineReference('filepath'));
+        $comment->setLineReference(new LineReference(null, 'filepath'));
         $comment->setMessage('message');
         $comment->setReview(new CodeReview());
 

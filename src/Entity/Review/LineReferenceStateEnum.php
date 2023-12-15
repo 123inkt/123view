@@ -11,4 +11,12 @@ enum LineReferenceStateEnum: string
     case Added = 'A';
     case Deleted = 'D';
     case Unknown = '?';
+
+    /**
+     * @return string[]
+     */
+    public static function values(): array
+    {
+        return array_map(static fn(LineReferenceStateEnum $value): string => $value->value, self::cases());
+    }
 }
