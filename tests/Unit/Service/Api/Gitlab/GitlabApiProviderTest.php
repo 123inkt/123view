@@ -32,7 +32,11 @@ class GitlabApiProviderTest extends AbstractTestCase
         $this->serializer    = $this->createMock(SerializerInterface::class);
         $this->authenticator = $this->createMock(OAuth2Authenticator::class);
         $this->provider      = new GitlabApiProvider(
-            'https://example.com/', $this->logger, $this->httpClient, $this->serializer, $this->authenticator
+            'https://example.com/',
+            $this->logger,
+            $this->httpClient,
+            $this->serializer,
+            $this->authenticator
         );
     }
 

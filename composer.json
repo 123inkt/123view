@@ -143,7 +143,7 @@
         "post-update-cmd": ["@auto-scripts"],
         "check": ["@check:phpstan", "@check:phpmd", "@check:phpcs"],
         "check:phpstan": "@php -dxdebug.mode=off vendor/bin/phpstan analyse",
-        "check:phpmd": "@php vendor/bin/phpmd src,tests text phpmd.xml",
+        "check:phpmd": "@php vendor/bin/phpmd src,tests text phpmd.xml --cache --cache-file var/.phpmd.result-cache.php",
         "check:phpcs": "@php vendor/bin/phpcs src tests",
         "fix": "@fix:phpcbf",
         "fix:phpcbf": "phpcbf src tests",
