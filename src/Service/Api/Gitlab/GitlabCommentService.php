@@ -68,6 +68,25 @@ class GitlabCommentService implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
+    public function resolve(GitlabApi $api, Comment $comment, bool $resolve): void
+    {
+        if ($comment->getExtReferenceId() === null) {
+            return;
+        }
+
+        $projectId = (int)$comment->getReview()->getRepository()->getRepositoryProperty('gitlab-project-id');
+        [$mergeRequestIId, $discussionId,] = explode(':', $comment->getExtReferenceId());
+
+        $this->logger?->info(
+            '(Un)resolving comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
+            ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
+        );
+        $api->discussions()->resolve($projectId, (int)$mergeRequestIId, $discussionId, $resolve);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function delete(GitlabApi $api, Repository $repository, string $extReferenceId): void
     {
         $projectId = (int)$repository->getRepositoryProperty('gitlab-project-id');

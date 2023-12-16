@@ -7,34 +7,41 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Comment\CommentUpdated;
-use DR\Review\MessageHandler\Gitlab\CommentUpdatedMessageHandler;
+use DR\Review\MessageHandler\Gitlab\CommentResolvedMessageHandler;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\GitlabApiProvider;
 use DR\Review\Service\Api\Gitlab\GitlabCommentService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
-#[CoversClass(CommentUpdatedMessageHandler::class)]
-class CommentUpdatedMessageHandlerTest extends AbstractTestCase
+#[CoversClass(CommentResolvedMessageHandler::class)]
+class CommentResolvedMessageHandlerTest extends AbstractTestCase
 {
     private CommentRepository&MockObject    $commentRepository;
+    private UserRepository&MockObject       $userRepository;
     private GitlabApiProvider&MockObject    $apiProvider;
     private GitlabCommentService&MockObject $commentService;
-    private CommentUpdatedMessageHandler    $handler;
+    private CommentResolvedMessageHandler   $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->commentRepository = $this->createMock(CommentRepository::class);
+        $this->userRepository    = $this->createMock(UserRepository::class);
         $this->apiProvider       = $this->createMock(GitlabApiProvider::class);
         $this->commentService    = $this->createMock(GitlabCommentService::class);
-        $this->handler           = new CommentUpdatedMessageHandler(
+        $this->handler           = new CommentResolvedMessageHandler(
             true,
             $this->commentRepository,
+            $this->userRepository,
             $this->apiProvider,
             $this->commentService
         );
@@ -47,13 +54,14 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
     {
         $this->commentRepository->expects(self::never())->method('find');
 
-        $handler = new CommentUpdatedMessageHandler(
+        $handler = new CommentResolvedMessageHandler(
             false,
             $this->commentRepository,
+            $this->userRepository,
             $this->apiProvider,
             $this->commentService
         );
-        ($handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
+        ($handler)(new CommentResolved(111, 222, 333, 'file'));
     }
 
     /**
@@ -69,18 +77,20 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
 
         $comment = new Comment();
         $comment->setReview($review);
-        $comment->setUser($user);
 
         $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
+        $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
         $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
 
-        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
+        ($this->handler)(new CommentResolved(111, 222, 333, 'file'));
     }
 
     /**
      * @throws Throwable
      */
-    public function testInvokeSuccess(): void
+    #[TestWith([new CommentResolved(111, 222, 333, 'file'), true])]
+    #[TestWith([new CommentUnresolved(111, 222, 333, 'file'), false])]
+    public function testInvokeSuccess(CommentUnresolved|CommentResolved $event, bool $resolve): void
     {
         $user       = new User();
         $repository = new Repository();
@@ -96,8 +106,9 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
 
         $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
         $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->commentService->expects(self::once())->method('update')->with($api, $comment);
+        $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
+        $this->commentService->expects(self::once())->method('resolve')->with($api, $comment, $resolve);
 
-        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
+        ($this->handler)($event);
     }
 }
