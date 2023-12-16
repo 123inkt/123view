@@ -90,13 +90,14 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
         $request = new Request(['code' => 'code', 'state' => 'state']);
         $request->setSession($this->session);
 
-        $gitAccessToken = new GitAccessToken();
-        $gitAccessToken->setGitType(RepositoryGitType::GITLAB);
         $user = new User();
-        $user->getGitAccessTokens()->add($gitAccessToken);
         $this->expectGetUser($user);
 
-        $this->authProvider->expects(self::once())->method('getAccessToken')->with('authorization_code', ['code' => 'code'])->willReturn(null);
+        $accessToken = new AccessToken(['access_token' => 'token']);
+
+        $this->authProvider->expects(self::once())->method('getAccessToken')
+            ->with('authorization_code', ['code' => 'code'])
+            ->willReturn($accessToken);
         $this->tokenRepository->expects(self::once())->method('save');
 
         ($this->controller)($request);
