@@ -53,17 +53,17 @@ class GitAccessToken
     }
 
     /**
-     * @phpstan-return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB
+     * @phpstan-return RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null
      */
-    public function getGitType(): string
+    public function getGitType(): ?string
     {
         return $this->gitType;
     }
 
     /**
-     * @phpstan-param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB $gitType
+     * @phpstan-param RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null $gitType
      */
-    public function setGitType(string $gitType): self
+    public function setGitType(?string $gitType): self
     {
         $this->gitType = $gitType;
 

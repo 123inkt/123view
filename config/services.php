@@ -14,10 +14,6 @@ use DR\Review\Controller\App\User\TestController;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
-use DR\Review\Message\Comment\CommentUpdated;
-use DR\Review\MessageHandler\Gitlab\CommentAddedMessageHandler;
-use DR\Review\MessageHandler\Gitlab\CommentDeletedMessageHandler;
-use DR\Review\MessageHandler\Gitlab\CommentUpdatedMessageHandler;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -220,19 +216,5 @@ return static function (ContainerConfigurator $container): void {
 
     // Gitlab integration
     $services->set(GitlabService::class)->arg('$gitlabApi', inline_service(GitlabApi::class)->arg('$client', service('gitlab.client')));
-
-    $services->set(TestController::class)
-        ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%')
-        ->tag('controller.service_arguments');
-
     $services->set(GitlabApiProvider::class)->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
-    $services->get(CommentAddedMessageHandler::class)
-        ->arg('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
-        ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
-    $services->get(CommentUpdatedMessageHandler::class)
-        ->arg('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
-        ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
-    $services->get(CommentDeletedMessageHandler::class)
-        ->arg('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
-        ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
 };

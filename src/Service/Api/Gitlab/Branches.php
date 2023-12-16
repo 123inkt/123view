@@ -33,6 +33,7 @@ class Branches
             return null;
         }
 
+        /** @phpstan-var array{name: string, merged: bool, protected: bool, web_url: string}|null */
         return $response->toArray();
     }
 }

@@ -74,7 +74,9 @@ class RepositoryType extends AbstractType
                     'git.type.other'  => '',
                 ],
                 'setter'   => static function (Repository $repository, string $value): void {
-                    $repository->setGitType($value === '' ? null : $value);
+                    /** @var RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null $value */
+                    $value = $value === '' ? null : $value;
+                    $repository->setGitType($value);
                 },
                 'expanded' => false,
                 'multiple' => false,

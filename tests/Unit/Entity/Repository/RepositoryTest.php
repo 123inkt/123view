@@ -46,7 +46,7 @@ class RepositoryTest extends AbstractTestCase
     public function testGitType(): void
     {
         $repository = new Repository();
-        static::assertSame(RepositoryGitType::OTHER, $repository->getGitType());
+        static::assertSame(null, $repository->getGitType());
 
         $repository->setGitType(RepositoryGitType::GITHUB);
         static::assertSame(RepositoryGitType::GITHUB, $repository->getGitType());

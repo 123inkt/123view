@@ -9,10 +9,10 @@ use DR\Review\Form\User\GitlabAccessTokenFormType;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\GitIntegrationViewModel;
-use DR\Review\ViewModel\App\User\UserAccessTokenViewModel;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -23,13 +23,13 @@ class UserGitIntegrationController extends AbstractController
     }
 
     /**
-     * @return array<string, UserAccessTokenViewModel>
+     * @return array<string, GitIntegrationViewModel>|Response
      * @throws Exception
      */
     #[Route('/app/user/git-integration', self::class, methods: ['GET', 'POST'])]
     #[Template('app/user/user.git-integration.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(Request $request): array
+    public function __invoke(Request $request): array|Response
     {
         $user = $this->getUser();
         $form = $this->createForm(GitlabAccessTokenFormType::class, $user);
@@ -42,6 +42,6 @@ class UserGitIntegrationController extends AbstractController
 
         $this->userRepository->save($user);
 
-        $this->redirectToRoute(UserGitIntegrationController::class);
+        return $this->redirectToRoute(UserGitIntegrationController::class);
     }
 }

@@ -14,7 +14,7 @@ class PositionFactory
     {
         $position               = new Position();
         $position->positionType = 'text';
-        $position->headSha      = $lineReference->headSha; // $version->headCommitSha;
+        $position->headSha      = $lineReference->headSha ?? $version->headCommitSha;
         $position->startSha     = $version->startCommitSha;
         $position->baseSha      = $version->baseCommitSha;
         $position->oldPath      = $lineReference->oldPath;
