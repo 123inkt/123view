@@ -20,11 +20,15 @@ final class Version20231214161008 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE git_access_token (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, git_type ENUM(\'gitlab\', \'github\') NOT NULL, token VARCHAR(255) NOT NULL, INDEX IDX_C01A936A76ED395 (user_id), UNIQUE INDEX user_tokens (user_id, git_type), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE git_access_token (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, git_type ENUM(\'gitlab\', \'github\') NOT NULL, token VARCHAR(1000) NOT NULL, INDEX IDX_C01A936A76ED395 (user_id), UNIQUE INDEX user_tokens (user_id, git_type), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE git_access_token ADD CONSTRAINT FK_C01A936A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE repository CHANGE git_type git_type ENUM(\'gitlab\', \'github\', \'other\') DEFAULT NULL');
         $this->addSql('UPDATE repository SET git_type = NULL WHERE git_type = \'other\'');
         $this->addSql('ALTER TABLE repository CHANGE git_type git_type ENUM(\'gitlab\', \'github\') DEFAULT NULL');
+        $this->addSql('ALTER TABLE comment CHANGE line_reference line_reference VARCHAR(2000) NOT NULL');
+        $this->addSql('ALTER TABLE comment ADD ext_reference_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE comment_reply ADD ext_reference_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE code_review ADD ext_reference_id VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -33,5 +37,9 @@ final class Version20231214161008 extends AbstractMigration
         $this->addSql('ALTER TABLE git_access_token DROP FOREIGN KEY FK_C01A936A76ED395');
         $this->addSql('DROP TABLE git_access_token');
         $this->addSql('ALTER TABLE repository CHANGE git_type git_type VARCHAR(255) DEFAULT \'other\' NOT NULL');
+        $this->addSql('ALTER TABLE comment CHANGE line_reference line_reference VARCHAR(500) NOT NULL');
+        $this->addSql('ALTER TABLE comment DROP ext_reference_id');
+        $this->addSql('ALTER TABLE comment_reply DROP ext_reference_id');
+        $this->addSql('ALTER TABLE code_review DROP ext_reference_id');
     }
 }
