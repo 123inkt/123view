@@ -33,7 +33,7 @@ class OAuth2Authenticator implements LoggerAwareInterface
             $this->logger?->info('Gitlab access token expired, refreshing token for {user}', ['user' => $gitToken->getUser()->getEmail()]);
             $accessToken = $this->gitlabOAuth2Provider->getAccessToken(new RefreshToken(), ['refresh_token' => $accessToken->getRefreshToken()]);
             $gitToken->setToken(Json::encode($accessToken->jsonSerialize()));
-            $this->tokenRepository->save($gitToken);
+            $this->tokenRepository->save($gitToken, true);
         }
 
         $this->logger?->debug('Authenticating request with gitlab access token for {user}', ['user' => $gitToken->getUser()->getEmail()]);
