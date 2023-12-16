@@ -31,7 +31,7 @@ class CommentAddedMessageHandler implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
-    #[AsMessageHandler(fromTransport: 'sync')]
+    #[AsMessageHandler(fromTransport: 'async_messages')]
     public function __invoke(CommentAdded $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false) {

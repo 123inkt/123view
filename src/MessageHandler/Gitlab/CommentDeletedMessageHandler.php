@@ -31,7 +31,7 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
-    #[AsMessageHandler(fromTransport: 'sync')]
+    #[AsMessageHandler(fromTransport: 'async_messages')]
     public function __invoke(CommentRemoved $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false || $event->extReferenceId === null) {

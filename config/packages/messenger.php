@@ -36,7 +36,4 @@ return static function (FrameworkConfig $framework): void {
     $messenger->routing(RepositoryUpdatedMessage::class)->senders(['async_revisions']);
     $messenger->routing(DelayableMessage::class)->senders(['async_delay_mail']);
     $messenger->routing(AsyncMessageInterface::class)->senders(['async_messages']);
-    $messenger->routing(CommentAdded::class)->senders(['sync']);
-    $messenger->routing(CommentRemoved::class)->senders(['sync']);
-    $messenger->routing(CommentUpdated::class)->senders(['sync']);
 };
