@@ -10,6 +10,7 @@ class GitlabApi
 {
     private ?Branches      $branches      = null;
     private ?MergeRequests $mergeRequests = null;
+    private ?Discussions   $discussions   = null;
 
     public function __construct(private readonly HttpClientInterface $client, private readonly SerializerInterface $serializer)
     {

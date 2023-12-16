@@ -35,6 +35,7 @@ use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
+use DR\Review\Service\Api\Gitlab\GitlabApiProvider;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
@@ -87,6 +88,7 @@ return static function (ContainerConfigurator $container): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
+        ->bind('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
@@ -223,6 +225,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%')
         ->tag('controller.service_arguments');
 
+    $services->set(GitlabApiProvider::class)->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
     $services->get(CommentAddedMessageHandler::class)
         ->arg('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
         ->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
