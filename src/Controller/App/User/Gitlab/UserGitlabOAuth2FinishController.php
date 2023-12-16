@@ -38,10 +38,14 @@ class UserGitlabOAuth2FinishController extends AbstractController
         }
 
         if ($request->query->get('state', '') !== $request->getSession()->get('gitlab.oauth2.state')) {
+            $request->getSession()->remove('gitlab.oauth2.state');
+            $request->getSession()->remove('gitlab.oauth2.pkce');
             throw new BadRequestHttpException('Invalid state');
         }
 
         $this->gitlabOAuth2Provider->setPkceCode($request->getSession()->get('gitlab.oauth2.pkce'));
+        $request->getSession()->remove('gitlab.oauth2.state');
+        $request->getSession()->remove('gitlab.oauth2.pkce');
 
         // Try to get an access token using the authorization code grant.
         $accessToken = $this->gitlabOAuth2Provider->getAccessToken('authorization_code', ['code' => $request->query->get('code')]);
