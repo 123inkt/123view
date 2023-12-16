@@ -12,12 +12,6 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserAccessTokenController') }}">{{ 'access.tokens'|trans }}</a>
         </li>
-        {% if app_gitlab_comment_sync %}
-            <li class="nav-item">
-                <a class="nav-link"
-                   href="{{ path('DR\\Review\\Controller\\App\\User\\UserGitIntegrationController') }}">{{ 'git.integration'|trans }}</a>
-            </li>
-        {% endif %}
     </ul>
 
     {{ form_start(settingViewModel.settingForm) }}
