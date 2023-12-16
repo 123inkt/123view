@@ -103,6 +103,10 @@ class CommentAddedMessageHandler implements LoggerAwareInterface
             $position->newLine = $lineReference->lineAfter;
         }
 
+        $this->logger?->info(
+            'Adding comment in gitlab: {projectId} {mergeRequestIId} {comment}',
+            ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'comment' => $comment->getMessage()]
+        );
         $referenceId = $api->discussions()->create($projectId, $mergeRequestIId, $position, $comment->getMessage());
         $comment->setExtReferenceId($referenceId);
         $this->commentRepository->save($comment, true);

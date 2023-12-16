@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\MessageHandler\Gitlab;
 
 use DR\Review\Doctrine\Type\RepositoryGitType;
-use DR\Review\Message\Comment\CommentRemoved;
+use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
-class CommentDeletedMessageHandler implements LoggerAwareInterface
+class CommentUpdatedMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -36,14 +36,16 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
      * @throws Throwable
      */
     #[AsMessageHandler(fromTransport: 'sync')]
-    public function __invoke(CommentRemoved $event): void
+    public function __invoke(CommentUpdated $event): void
     {
-        if ($this->gitlabCommentSyncEnabled === false || $event->extReferenceId === null) {
+        if ($this->gitlabCommentSyncEnabled === false) {
             return;
         }
 
-        $repository = Assert::notNull($this->reviewRepository->find($event->getReviewId()))->getRepository();
-        if ($repository->getGitType() !== RepositoryGitType::GITLAB) {
+        $comment    = Assert::notNull($this->commentRepository->find($event->getCommentId()));
+        $review     = $comment->getReview();
+        $repository = $review->getRepository();
+        if ($repository->getGitType() !== RepositoryGitType::GITLAB || $comment->getExtReferenceId() === null) {
             return;
         }
         $projectId = (int)$repository->getRepositoryProperty('gitlab-project-id');
@@ -53,12 +55,12 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
         );
         $api        = new GitlabApi($httpClient, $this->serializer);
 
-        [$mergeRequestIId, $discussionId, $noteId] = explode(':', $event->extReferenceId);
+        [$mergeRequestIId, $discussionId, $noteId] = explode(':', $comment->getExtReferenceId());
 
         $this->logger?->info(
-            'Deleting comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
+            'Updating comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->delete($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
+        $api->discussions()->update($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $comment->getMessage());
     }
 }
