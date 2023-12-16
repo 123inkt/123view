@@ -51,7 +51,7 @@ class UserGitlabOAuth2FinishController extends AbstractController
         $accessToken = $this->gitlabOAuth2Provider->getAccessToken('authorization_code', ['code' => $request->query->get('code')]);
 
         $user  = $this->getUser();
-        $token = $user->getGitAccessTokens()->findFirst(static fn($token) => $token->getGitType() === RepositoryGitType::GITLAB);
+        $token = $user->getGitAccessTokens()->findFirst(static fn($key, $token) => $token->getGitType() === RepositoryGitType::GITLAB);
 
         // create new if none exists
         if ($token === null) {

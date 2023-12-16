@@ -11,24 +11,34 @@ use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 class GitlabApiProvider
 {
     public function __construct(
-        private readonly string $token,
         private readonly LoggerInterface $logger,
         private readonly HttpClientInterface $httpClient,
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly OAuth2Authenticator $authenticator,
     ) {
     }
 
+    /**
+     * @throws Throwable
+     */
     public function create(Repository $repository, User $user): ?GitlabApi
     {
         if ($repository->getGitType() !== RepositoryGitType::GITLAB) {
             return null;
         }
 
-        // todo get token from user
+        // find gitlab access token
+        $token = $user->getGitAccessTokens()->findFirst(static fn($key, $token) => $token->getGitType() === RepositoryGitType::GITLAB);
+        if ($token === null) {
+            $this->logger->info('No gitlab access token found for user {user}', ['user' => $user->getEmail()]);
+
+            return null;
+        }
 
         $gitlabHost = Assert::notNull($repository->getUrl()->getHost());
         $httpClient = $this->httpClient
@@ -36,7 +46,7 @@ class GitlabApiProvider
                 [
                     'base_uri'      => 'https://' . $gitlabHost . '/api/v4/',
                     'max_redirects' => 0,
-                    'headers'       => ['PRIVATE-TOKEN' => $this->token]
+                    'headers'       => ['Authorization' => $this->authenticator->getAuthorizationHeader($token)],
                 ]
             );
 

@@ -218,7 +218,6 @@ return static function (ContainerConfigurator $container): void {
 
     // Gitlab integration
     $services->set(GitlabService::class)->arg('$gitlabApi', inline_service(GitlabApi::class)->arg('$client', service('gitlab.client')));
-    $services->set(GitlabApiProvider::class)->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
     $services->set(OAuth2ProviderFactory::class)
         ->arg('$gitlabApplicationId', '%env(GITLAB_APPLICATION_ID)%')
         ->arg('$gitlabApplicationSecret', '%env(GITLAB_APPLICATION_SECRET)%');
