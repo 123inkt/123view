@@ -7,7 +7,6 @@ namespace DR\Review\Service\Api\Gitlab;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
-use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -16,6 +15,7 @@ use Throwable;
 class GitlabApiProvider
 {
     public function __construct(
+        private readonly string $gitlabApiUrl,
         private readonly LoggerInterface $logger,
         private readonly HttpClientInterface $httpClient,
         private readonly SerializerInterface $serializer,
@@ -40,11 +40,10 @@ class GitlabApiProvider
             return null;
         }
 
-        $gitlabHost = Assert::notNull($repository->getUrl()->getHost());
         $httpClient = $this->httpClient
             ->withOptions(
                 [
-                    'base_uri'      => 'https://' . $gitlabHost . '/api/v4/',
+                    'base_uri'      => $this->gitlabApiUrl . 'api/v4/',
                     'max_redirects' => 0,
                     'headers'       => ['Authorization' => $this->authenticator->getAuthorizationHeader($token)],
                 ]
