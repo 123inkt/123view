@@ -25,7 +25,7 @@ class GitAccessToken
     #[ORM\Column(type: RepositoryGitType::TYPE, length: 20)]
     private ?string $gitType = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 1000)]
     private string $token;
 
     public function getId(): int

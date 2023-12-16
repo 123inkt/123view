@@ -32,6 +32,7 @@ use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\GitlabApiProvider;
+use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
@@ -62,6 +63,7 @@ use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
+use League\OAuth2\Client\Provider\GenericProvider;
 use Monolog\Formatter\LineFormatter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -217,4 +219,9 @@ return static function (ContainerConfigurator $container): void {
     // Gitlab integration
     $services->set(GitlabService::class)->arg('$gitlabApi', inline_service(GitlabApi::class)->arg('$client', service('gitlab.client')));
     $services->set(GitlabApiProvider::class)->arg('$token', '%env(GITLAB_ACCESS_TOKEN)%');
+    $services->set(OAuth2ProviderFactory::class)
+        ->arg('$gitlabApplicationId', '%env(GITLAB_APPLICATION_ID)%')
+        ->arg('$gitlabApplicationSecret', '%env(GITLAB_APPLICATION_SECRET)%');
+    $services->set(GenericProvider::class. ' $gitlabOAuth2Provider', GenericProvider::class)
+        ->factory([service(OAuth2ProviderFactory::class), 'create']);
 };

@@ -46,6 +46,7 @@
         "doctrine/orm": "^2.12",
         "fdekker/commonmark-ext-emoji": "^1.0",
         "league/commonmark": "^2.3",
+        "league/oauth2-client": "^2.7",
         "league/uri": "^7.0",
         "nesbot/carbon": "^2.64",
         "nette/utils": "^4.0",
