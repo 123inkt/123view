@@ -65,7 +65,7 @@ class Discussions
     {
         $this->client->request(
             'PUT',
-            sprintf('projects/%d/merge_requests/%d/discussions/%d', $projectId, $mergeRequestIId, $discussionId),
+            sprintf('projects/%d/merge_requests/%d/discussions/%s', $projectId, $mergeRequestIId, $discussionId),
             ['query' => ['resolved' => $resolve ? 'true' : 'false']]
         );
     }
