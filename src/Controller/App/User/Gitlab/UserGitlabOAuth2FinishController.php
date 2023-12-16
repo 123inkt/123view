@@ -9,7 +9,6 @@ use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\GitAccessToken;
 use DR\Review\Repository\User\GitAccessTokenRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Utils\Assert;
 use Exception;
 use League\OAuth2\Client\Provider\GenericProvider as OAuth2Provider;
 use Nette\Utils\Json;
@@ -36,17 +35,16 @@ class UserGitlabOAuth2FinishController extends AbstractController
             throw new BadRequestHttpException('Missing `code` query parameter');
         }
 
-        if ($request->query->get('state', '') !== $request->getSession()->get('gitlab.oauth2.state')) {
-            $request->getSession()->remove('gitlab.oauth2.state');
-            $request->getSession()->remove('gitlab.oauth2.pkce');
+        $sessionState = $request->getSession()->get('gitlab.oauth2.state');
+        $sessionPkce  = $request->getSession()->get('gitlab.oauth2.pkce');
+        $request->getSession()->remove('gitlab.oauth2.state');
+        $request->getSession()->remove('gitlab.oauth2.pkce');
+        if (is_string($sessionState) === false || is_string($sessionPkce) === false || $request->query->get('state') !== $sessionState) {
             throw new BadRequestHttpException('Invalid state');
         }
 
-        $this->gitlabOAuth2Provider->setPkceCode(Assert::string($request->getSession()->get('gitlab.oauth2.pkce')));
-        $request->getSession()->remove('gitlab.oauth2.state');
-        $request->getSession()->remove('gitlab.oauth2.pkce');
-
         // Try to get an access token using the authorization code grant.
+        $this->gitlabOAuth2Provider->setPkceCode($sessionPkce);
         $accessToken = $this->gitlabOAuth2Provider->getAccessToken('authorization_code', ['code' => $request->query->get('code')]);
 
         $user  = $this->getUser();

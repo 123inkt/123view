@@ -28,8 +28,7 @@ class UserGitlabOAuth2StartControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $session = $this->createMock(SessionInterface::class);
-        $session->method('set')
-            ->with(...consecutive(['gitlab.oauth2.state', 'state'], ['gitlab.oauth2.pkce', 'pkce']));
+        $session->method('set')->with(...consecutive(['gitlab.oauth2.state', 'state'], ['gitlab.oauth2.pkce', 'pkce']));
 
         $request = new Request();
         $request->setSession($session);
