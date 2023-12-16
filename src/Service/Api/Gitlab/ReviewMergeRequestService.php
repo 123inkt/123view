@@ -27,8 +27,6 @@ class ReviewMergeRequestService implements LoggerAwareInterface
             return (int)$review->getExtReferenceId();
         }
 
-        $projectId = (int)$review->getRepository()->getRepositoryProperty('gitlab-project-id');
-
         $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
         if ($remoteRef === null) {
             $this->logger?->info('No branch name found for review {id}', ['id' => $review->getId()]);
@@ -36,6 +34,7 @@ class ReviewMergeRequestService implements LoggerAwareInterface
             return null;
         }
 
+        $projectId = (int)$review->getRepository()->getRepositoryProperty('gitlab-project-id');
         $mergeRequest = $api->mergeRequests()->findByRemoteRef($projectId, $remoteRef);
         if ($mergeRequest === null) {
             $this->logger?->info('No merge request found for review {id} - {ref}', ['id' => $review->getId(), 'ref' => $remoteRef]);

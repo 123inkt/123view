@@ -8,6 +8,7 @@ use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
 use DR\Utils\Assert;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -15,6 +16,7 @@ class GitlabApiProvider
 {
     public function __construct(
         private readonly string $token,
+        private readonly LoggerInterface $logger,
         private readonly HttpClientInterface $httpClient,
         private readonly SerializerInterface $serializer
     ) {
@@ -38,6 +40,6 @@ class GitlabApiProvider
                 ]
             );
 
-        return new GitlabApi($httpClient, $this->serializer);
+        return new GitlabApi($this->logger, $httpClient, $this->serializer);
     }
 }
