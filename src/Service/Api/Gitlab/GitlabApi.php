@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Api\Gitlab;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -12,8 +13,11 @@ class GitlabApi
     private ?MergeRequests $mergeRequests = null;
     private ?Discussions   $discussions   = null;
 
-    public function __construct(private readonly HttpClientInterface $client, private readonly SerializerInterface $serializer)
-    {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly HttpClientInterface $client,
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     public function discussions(): Discussions
@@ -23,7 +27,7 @@ class GitlabApi
 
     public function branches(): Branches
     {
-        return $this->branches ??= new Branches($this->client);
+        return $this->branches ??= new Branches($this->logger, $this->client);
     }
 
     public function mergeRequests(): MergeRequests
