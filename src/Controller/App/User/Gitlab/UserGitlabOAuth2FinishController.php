@@ -9,6 +9,7 @@ use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\GitAccessToken;
 use DR\Review\Repository\User\GitAccessTokenRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Utils\Assert;
 use Exception;
 use League\OAuth2\Client\Provider\GenericProvider as OAuth2Provider;
 use Nette\Utils\Json;
@@ -20,10 +21,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserGitlabOAuth2FinishController extends AbstractController
 {
-    public function __construct(
-        private readonly OAuth2Provider $gitlabOAuth2Provider,
-        private readonly GitAccessTokenRepository $tokenRepository
-    ) {
+    public function __construct(private readonly OAuth2Provider $gitlabOAuth2Provider, private readonly GitAccessTokenRepository $tokenRepository)
+    {
     }
 
     /**
@@ -43,7 +42,7 @@ class UserGitlabOAuth2FinishController extends AbstractController
             throw new BadRequestHttpException('Invalid state');
         }
 
-        $this->gitlabOAuth2Provider->setPkceCode($request->getSession()->get('gitlab.oauth2.pkce'));
+        $this->gitlabOAuth2Provider->setPkceCode(Assert::string($request->getSession()->get('gitlab.oauth2.pkce')));
         $request->getSession()->remove('gitlab.oauth2.state');
         $request->getSession()->remove('gitlab.oauth2.pkce');
 

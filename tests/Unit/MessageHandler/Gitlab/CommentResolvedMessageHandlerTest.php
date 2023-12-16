@@ -9,7 +9,6 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
-use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\MessageHandler\Gitlab\CommentResolvedMessageHandler;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;

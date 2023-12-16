@@ -5,6 +5,7 @@ namespace DR\Review\Service\Api\Gitlab;
 
 use DR\Review\Entity\User\GitAccessToken;
 use DR\Review\Repository\User\GitAccessTokenRepository;
+use DR\Utils\Assert;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\GenericProvider as OAuth2Provider;
 use League\OAuth2\Client\Token\AccessToken;
@@ -26,7 +27,7 @@ class OAuth2Authenticator implements LoggerAwareInterface
      */
     public function getAuthorizationHeader(GitAccessToken $gitToken): string
     {
-        $accessToken = new AccessToken(Json::decode($gitToken->getToken(), true));
+        $accessToken = new AccessToken(Assert::isArray(Json::decode($gitToken->getToken(), true)));
 
         if ($accessToken->hasExpired()) {
             $this->logger?->info('Gitlab access token expired, refreshing token for {user}', ['user' => $gitToken->getUser()->getEmail()]);
