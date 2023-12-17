@@ -28,7 +28,7 @@ class DiscussionsTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testCreate(): void
+    public function testCreateDiscussion(): void
     {
         $position               = new Position();
         $position->positionType = 'text';
@@ -66,7 +66,24 @@ class DiscussionsTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testUpdate(): void
+    public function testCreateNote(): void
+    {
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('toArray')->willReturn(['id' => 444]);
+
+        $this->client->expects(self::once())
+            ->method('request')
+            ->with('POST', 'projects/111/merge_requests/222/discussions/333/notes', ['query' => ['body' => 'body']])
+            ->willReturn($response);
+
+        $extReferenceId = $this->discussions->createNote(111, 222, '333', 'body');
+        static::assertSame('222:333:444', $extReferenceId);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testUpdateNote(): void
     {
         $this->client->expects(self::once())
             ->method('request')
@@ -90,7 +107,7 @@ class DiscussionsTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testDelete(): void
+    public function testDeleteNote(): void
     {
         $this->client->expects(self::once())
             ->method('request')

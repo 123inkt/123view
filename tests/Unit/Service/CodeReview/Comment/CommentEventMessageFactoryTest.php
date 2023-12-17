@@ -121,7 +121,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setReview((new CodeReview())->setId(444));
 
         $reply = new CommentReply();
-        $reply->setid(555);
+        $reply->setId(555);
         $reply->setMessage('message');
         $reply->setExtReferenceId('external-reference-id');
         $reply->setComment($comment);
