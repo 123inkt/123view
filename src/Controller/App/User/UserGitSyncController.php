@@ -9,7 +9,6 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\UserGitSyncViewModel;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -26,7 +25,7 @@ class UserGitSyncController extends AbstractController
     #[Route('/app/user/git-sync', self::class, methods: 'GET')]
     #[Template('app/user/user.git-sync.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(Request $request): array
+    public function __invoke(): array
     {
         $user  = $this->getUser();
         $token = $user->getGitAccessTokens()->findFirst(static fn($key, $token) => $token->getGitType() === RepositoryGitType::GITLAB);
