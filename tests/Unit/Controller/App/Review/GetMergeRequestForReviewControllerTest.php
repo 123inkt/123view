@@ -10,6 +10,7 @@ use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,11 +20,13 @@ use Throwable;
 #[CoversClass(GetMergeRequestForReviewController::class)]
 class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 {
-    private GitlabService&MockObject $gitlabService;
+    private GitlabService&MockObject             $gitlabService;
+    private CodeReviewRevisionService&MockObject $revisionService;
 
     protected function setUp(): void
     {
-        $this->gitlabService = $this->createMock(GitlabService::class);
+        $this->gitlabService   = $this->createMock(GitlabService::class);
+        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
         parent::setUp();
     }
 
@@ -32,7 +35,7 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeNoGitlabUrl(): void
     {
-        $controller = new GetMergeRequestForReviewController('', $this->gitlabService);
+        $controller = new GetMergeRequestForReviewController('', $this->gitlabService, $this->revisionService);
         $review     = new CodeReview();
 
         $expected = new JsonResponse(null, headers: ['Cache-Control' => 'public']);
@@ -70,8 +73,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
         $review = new CodeReview();
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->gitlabService->expects(self::once())->method('getMergeRequestUrl')->with(123, 'remote-ref')->willReturn('url');
 
         $expected = new JsonResponse(
@@ -84,6 +87,6 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new GetMergeRequestForReviewController('url', $this->gitlabService);
+        return new GetMergeRequestForReviewController('url', $this->gitlabService, $this->revisionService);
     }
 }
