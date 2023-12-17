@@ -39,6 +39,15 @@ ul {
     display: none;
 }
 
+.dr-btn-orange {
+    --bs-btn-color: #e24329;
+    --bs-btn-border-color: #e24329;
+    --bs-btn-hover-bg: #e24329;
+    --bs-btn-hover-border-color: #e24329;
+    --bs-btn-active-bg: #e24329;
+    --bs-btn-active-border-color: #e24329;
+}
+
 .form-control:required,
 .form-select {
     border-left: 4px solid #dc3545;
