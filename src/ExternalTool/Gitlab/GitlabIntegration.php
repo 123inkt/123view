@@ -7,21 +7,17 @@ use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\IntegrationLink;
 use DR\Review\Event\CommitEvent;
 use DR\Review\Utility\Icon;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Throwable;
 
-class GitlabIntegration implements EventSubscriberInterface
+class GitlabIntegration implements EventSubscriberInterface, LoggerAwareInterface
 {
-    private LoggerInterface $log;
-    private string          $gitlabApiUrl;
-    private GitlabApi       $api;
+    use LoggerAwareTrait;
 
-    public function __construct(LoggerInterface $log, string $gitlabApiUrl, GitlabApi $api)
+    public function __construct(private readonly string $gitlabApiUrl, private readonly GitlabService $gitlabService)
     {
-        $this->log          = $log;
-        $this->gitlabApiUrl = $gitlabApiUrl;
-        $this->api          = $api;
     }
 
     public function onCommitEvent(CommitEvent $event): void
@@ -33,7 +29,7 @@ class GitlabIntegration implements EventSubscriberInterface
         try {
             $this->tryAddLink($event->commit);
         } catch (Throwable $e) {
-            $this->log->error('GitlabIntegration: failed to add integration link: ' . $e->getMessage(), ['exception' => $e]);
+            $this->logger?->error('GitlabIntegration: failed to add integration link: ' . $e->getMessage(), ['exception' => $e]);
         }
     }
 
@@ -57,7 +53,8 @@ class GitlabIntegration implements EventSubscriberInterface
             return;
         }
 
-        $url = $this->api->getMergeRequestUrl((int)$projectId, $remoteRef) ?? $this->api->getBranchUrl((int)$projectId, $remoteRef);
+        $url = $this->gitlabService->getMergeRequestUrl((int)$projectId, $remoteRef);
+        $url ??= $this->gitlabService->getBranchUrl((int)$projectId, $remoteRef);
         if ($url === null) {
             return;
         }

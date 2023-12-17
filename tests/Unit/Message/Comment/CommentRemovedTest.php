@@ -13,12 +13,12 @@ class CommentRemovedTest extends AbstractMessageEventTestCase
     public function testAccessors(): void
     {
         static::assertCodeReviewEvent(
-            new CommentRemoved(5, 6, 7, 'file', 'message'),
+            new CommentRemoved(5, 6, 7, 'file', 'message', null),
             'comment-removed',
             5,
             ['commentId' => 6, 'file' => 'file', 'message' => 'message']
         );
-        static::assertCommentEvent(new CommentRemoved(5, 6, 7, 'file', 'message'), 6);
-        static::assertUserAware(new CommentRemoved(5, 6, 7, 'file', 'message'), 7);
+        static::assertCommentEvent(new CommentRemoved(5, 6, 7, 'file', 'message', null), 6);
+        static::assertUserAware(new CommentRemoved(5, 6, 7, 'file', 'message', null), 7);
     }
 }

@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Form\Repository;
 
 use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
+use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
 use DR\Review\Form\Repository\RepositoryType;
@@ -63,6 +64,18 @@ class RepositoryTypeTest extends AbstractTestCase
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
         $type->buildForm($builder, []);
+    }
+
+    public function testSetGitType(): void
+    {
+        $repository = new Repository();
+
+        $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
+        $type->setGitType($repository, RepositoryGitType::GITLAB);
+        static::assertSame(RepositoryGitType::GITLAB, $repository->getGitType());
+
+        $type->setGitType($repository, '');
+        static::assertNull($repository->getGitType());
     }
 
     public function testConfigureOptions(): void

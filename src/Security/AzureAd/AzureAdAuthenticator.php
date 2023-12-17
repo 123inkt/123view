@@ -63,7 +63,7 @@ class AzureAdAuthenticator extends AbstractAuthenticator
 
         $url = null;
         if ($request->query->has('state')) {
-            $url = Assert::isArray(Json::decode($request->query->get('state'), Json::FORCE_ARRAY))['next'] ?? null;
+            $url = Assert::isArray(Json::decode($request->query->get('state'), true))['next'] ?? null;
         }
         $url ??= $this->urlGenerator->generate(ProjectsController::class);
 

@@ -19,6 +19,9 @@ class CommentReply
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $extReferenceId = null;
+
     #[ORM\Column]
     private int $createTimestamp;
 
@@ -56,6 +59,18 @@ class CommentReply
     public function setMessage(string $message): void
     {
         $this->message = $message;
+    }
+
+    public function getExtReferenceId(): ?string
+    {
+        return $this->extReferenceId;
+    }
+
+    public function setExtReferenceId(?string $extReferenceId): self
+    {
+        $this->extReferenceId = $extReferenceId;
+
+        return $this;
     }
 
     public function getCreateTimestamp(): int

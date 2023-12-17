@@ -31,7 +31,7 @@ abstract class AbstractController extends SymfonyAbstractController
         }
 
         if ($referer !== null && count($filter) > 0) {
-            $uri = Http::createFromString($referer);
+            $uri = Http::new($referer);
             parse_str($uri->getQuery(), $queryParams);
             foreach ($filter as $key) {
                 unset($queryParams[$key]);

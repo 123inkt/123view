@@ -38,7 +38,9 @@ class CodeQualityViewModel
 
     public function getCoveragePercentage(): ?float
     {
-        return $this->fileCoverage?->getPercentage() ?? $this->lineCoverage?->getPercentage();
+        $value = $this->fileCoverage?->getPercentage() ?? $this->lineCoverage?->getPercentage();
+
+        return $value === null ? null : (float)$value;
     }
 
     public function getCoverage(?int $lineNumber): ?int

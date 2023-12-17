@@ -71,8 +71,9 @@ class RepositoryType extends AbstractType
                 'choices'  => [
                     'git.type.gitlab' => RepositoryGitType::GITLAB,
                     'git.type.github' => RepositoryGitType::GITHUB,
-                    'git.type.other'  => RepositoryGitType::OTHER,
+                    'git.type.other'  => '',
                 ],
+                'setter'   => [$this, 'setGitType'],
                 'expanded' => false,
                 'multiple' => false,
             ]
@@ -93,6 +94,13 @@ class RepositoryType extends AbstractType
         }
 
         $builder->get('url')->addModelTransformer(new RepositoryUrlTransformer());
+    }
+
+    public function setGitType(Repository $repository, string $value): void
+    {
+        /** @var RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null $value */
+        $value = $value === '' ? null : $value;
+        $repository->setGitType($value);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
