@@ -82,7 +82,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
 
         $this->mergeRequests->expects(self::once())->method('versions')->with(123, 456)->willReturn([$version]);
         $this->positionFactory->expects(self::once())->method('create')->with($version, $lineReference)->willReturn($position);
-        $this->discussions->expects(self::once())->method('create')->with(123, 456, $position, 'message')->willReturn('1:2:3');
+        $this->discussions->expects(self::once())->method('createDiscussion')->with(123, 456, $position, 'message')->willReturn('1:2:3');
         $this->commentRepository->expects(self::once())->method('save')->with($this->comment, true);
 
         $this->service->create($this->api, $this->comment, 456);
@@ -95,7 +95,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
     public function testUpdateAbsentReferenceId(): void
     {
         $this->comment->setExtReferenceId(null);
-        $this->discussions->expects(self::never())->method('update');
+        $this->discussions->expects(self::never())->method('updateNote');
 
         $this->service->update($this->api, $this->comment);
     }
@@ -111,7 +111,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->discussions->expects(self::once())->method('update')->with(111, 222, '333', '444', 'message');
+        $this->discussions->expects(self::once())->method('updateNote')->with(111, 222, '333', '444', 'message');
 
         $this->service->update($this->api, $this->comment);
     }
@@ -150,7 +150,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->discussions->expects(self::once())->method('delete')->with(111, 222, '333', '444');
+        $this->discussions->expects(self::once())->method('deleteNote')->with(111, 222, '333', '444');
 
         $this->service->delete($this->api, $this->repository, '222:333:444');
     }

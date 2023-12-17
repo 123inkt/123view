@@ -24,6 +24,10 @@ class GitlabCommentService implements LoggerAwareInterface
      */
     public function create(GitlabApi $api, Comment $comment, int $mergeRequestIId): void
     {
+        if ($comment->getExtReferenceId() !== null) {
+            return;
+        }
+
         $projectId = (int)$comment->getReview()->getRepository()->getRepositoryProperty('gitlab-project-id');
         $version   = Arrays::firstOrNull($api->mergeRequests()->versions($projectId, $mergeRequestIId));
         if ($version === null) {
@@ -41,7 +45,7 @@ class GitlabCommentService implements LoggerAwareInterface
             'Adding comment in gitlab: {projectId} {mergeRequestIId} {comment}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'comment' => $comment->getMessage()]
         );
-        $referenceId = $api->discussions()->create($projectId, $mergeRequestIId, $position, $comment->getMessage());
+        $referenceId = $api->discussions()->createDiscussion($projectId, $mergeRequestIId, $position, $comment->getMessage());
         $comment->setExtReferenceId($referenceId);
         $this->commentRepository->save($comment, true);
     }
@@ -62,7 +66,7 @@ class GitlabCommentService implements LoggerAwareInterface
             'Updating comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->update($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $comment->getMessage());
+        $api->discussions()->updateNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $comment->getMessage());
     }
 
     /**
@@ -97,6 +101,6 @@ class GitlabCommentService implements LoggerAwareInterface
             'Deleting comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->delete($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
+        $api->discussions()->deleteNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
     }
 }

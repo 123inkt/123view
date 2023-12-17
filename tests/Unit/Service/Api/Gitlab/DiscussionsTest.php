@@ -59,7 +59,7 @@ class DiscussionsTest extends AbstractTestCase
                 ]
             )->willReturn($response);
 
-        $referenceId = $this->discussions->create(111, 222, $position, 'body');
+        $referenceId = $this->discussions->createDiscussion(111, 222, $position, 'body');
         static::assertSame('222:333:444', $referenceId);
     }
 
@@ -72,7 +72,7 @@ class DiscussionsTest extends AbstractTestCase
             ->method('request')
             ->with('PUT', 'projects/111/merge_requests/222/discussions/333/notes/444', ['query' => ['body' => 'body']]);
 
-        $this->discussions->update(111, 222, '333', '444', 'body');
+        $this->discussions->updateNote(111, 222, '333', '444', 'body');
     }
 
     /**
@@ -96,6 +96,6 @@ class DiscussionsTest extends AbstractTestCase
             ->method('request')
             ->with('DELETE', 'projects/111/merge_requests/222/discussions/333/notes/444');
 
-        $this->discussions->delete(111, 222, '333', '444');
+        $this->discussions->deleteNote(111, 222, '333', '444');
     }
 }

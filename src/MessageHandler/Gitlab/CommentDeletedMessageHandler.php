@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\MessageHandler\Gitlab;
 
 use DR\Review\Message\Comment\CommentRemoved;
+use DR\Review\Message\Comment\CommentReplyRemoved;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApiProvider;
@@ -32,14 +33,15 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
      * @throws Throwable
      */
     #[AsMessageHandler(fromTransport: 'async_messages')]
-    public function __invoke(CommentRemoved $event): void
+    public function __invoke(CommentRemoved|CommentReplyRemoved $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false || $event->extReferenceId === null) {
             return;
         }
 
         $repository = Assert::notNull($this->reviewRepository->find($event->getReviewId()))->getRepository();
-        $user       = Assert::notNull($this->userRepository->find($event->getUserId()));
+        $userId     = $event instanceof CommentRemoved ? $event->getUserId() : $event->ownerUserId;
+        $user       = Assert::notNull($this->userRepository->find($userId));
         $api        = $this->apiProvider->create($repository, $user);
         if ($api === null) {
             return;

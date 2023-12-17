@@ -8,16 +8,21 @@ use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\Voter\CommentReplyVoter;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DeleteCommentReplyController extends AbstractController
 {
-    public function __construct(private readonly CommentReplyRepository $replyRepository)
-    {
+    public function __construct(
+        private readonly CommentReplyRepository $replyRepository,
+        private readonly CommentEventMessageFactory $messageFactory,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     #[Route('app/comment-replies/{id<\d+>}', name: self::class, methods: 'DELETE')]
@@ -30,7 +35,9 @@ class DeleteCommentReplyController extends AbstractController
 
         $this->denyAccessUnlessGranted(CommentReplyVoter::DELETE, $reply);
 
+        $event = $this->messageFactory->createReplyRemove($reply, $this->getUser());
         $this->replyRepository->remove($reply, true);
+        $this->bus->dispatch($event);
 
         return $this->json(['success' => true]);
     }
