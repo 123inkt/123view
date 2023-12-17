@@ -35,7 +35,7 @@ class DeleteCommentReplyController extends AbstractController
 
         $this->denyAccessUnlessGranted(CommentReplyVoter::DELETE, $reply);
 
-        $event = $this->messageFactory->createReplyRemove($reply, $this->getUser());
+        $event = $this->messageFactory->createReplyRemoved($reply, $this->getUser());
         $this->replyRepository->remove($reply, true);
         $this->bus->dispatch($event);
 

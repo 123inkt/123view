@@ -7,7 +7,6 @@ namespace DR\Review\MessageHandler\Gitlab;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Repository\Review\CommentReplyRepository;
-use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApiProvider;
 use DR\Review\Service\Api\Gitlab\GitlabCommentReplyService;
 use DR\Utils\Assert;
@@ -22,7 +21,6 @@ class CommentReplyAddedMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly bool $gitlabCommentSyncEnabled,
-        private readonly CommentRepository $commentRepository,
         private readonly CommentReplyRepository $replyRepository,
         private readonly GitlabApiProvider $apiProvider,
         private readonly GitlabCommentReplyService $commentReplyService

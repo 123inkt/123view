@@ -70,12 +70,12 @@ class CommentEventMessageFactory
         );
     }
 
-    public function createReplyRemove(CommentReply $reply, User $user): CommentReplyRemoved
+    public function createReplyRemoved(CommentReply $reply, User $user): CommentReplyRemoved
     {
         return new CommentReplyRemoved(
-            $reply->getComment()->getReview()->getId(),
-            $reply->getComment()->getId(),
-            $reply->getId(),
+            (int)$reply->getComment()->getReview()->getId(),
+            (int)$reply->getComment()->getId(),
+            (int)$reply->getId(),
             $reply->getUser()->getId(),
             $user->getId(),
             $reply->getMessage(),

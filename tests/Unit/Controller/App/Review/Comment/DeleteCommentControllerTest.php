@@ -64,7 +64,7 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
         $this->expectDenyAccessUnlessGranted(CommentVoter::DELETE, $comment);
         $this->commentRepository->expects(self::once())->method('remove')->with($comment, true);
         $this->messageFactory->expects(self::once())->method('createRemoved')->willReturn($commentEvent);
-        $this->messageFactory->expects(self::once())->method('createReplyRemove')->willReturn($replyEvent);
+        $this->messageFactory->expects(self::once())->method('createReplyRemoved')->willReturn($replyEvent);
         $this->bus->expects(self::exactly(2))->method('dispatch')
             ->with(...consecutive([$commentEvent], [$replyEvent]))
             ->willReturn($this->envelope);

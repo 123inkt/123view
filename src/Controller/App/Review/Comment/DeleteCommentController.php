@@ -37,7 +37,7 @@ class DeleteCommentController extends AbstractController
 
         $messages = [$this->messageFactory->createRemoved($comment, $this->getUser())];
         foreach ($comment->getReplies() as $reply) {
-            $messages[] = $this->messageFactory->createReplyRemove($reply, $this->getUser());
+            $messages[] = $this->messageFactory->createReplyRemoved($reply, $this->getUser());
         }
 
         $this->commentRepository->remove($comment, true);
