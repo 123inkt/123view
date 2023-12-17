@@ -1,0 +1,41 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1 class="mb-4 mt-2">{{ 'user.account'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserSettingController') }}">{{ 'settings'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserAccessTokenController') }}">{{ 'access.tokens'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">{{ 'git.sync'|trans }}</a>
+        </li>
+    </ul>
+
+    <h3 class="mt-2">{{ 'git.sync'|trans }}</h3>
+
+    <div>
+        {{ 'git.sync.explanation'|trans }}
+    </div>
+
+    <div class="mt-1">
+        {% if gitSyncModel.gitlabSyncEnabled %}
+            {% if gitSyncModel.hasGitlabToken %}
+                <a class="btn btn-primary" href="{{ path('DR\\Review\\Controller\\App\\User\\Gitlab\\UserGitlabDisconnectController') }}">
+                    {{ 'git.sync.disable'|trans }}
+                </a>
+            {% else %}
+                <a class="btn btn-primary" href="{{ path('DR\\Review\\Controller\\App\\User\\Gitlab\\UserGitlabOAuth2StartController') }}">
+                    {{ 'git.sync.enable'|trans }}
+                </a>
+            {% endif %}
+        {% else %}
+            {{ 'git.sync.disabled'|trans }}
+        {% endif %}
+    </div>
+{% endblock %}

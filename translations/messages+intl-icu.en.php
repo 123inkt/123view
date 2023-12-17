@@ -117,10 +117,17 @@ return [
     'frequency'                                   => 'Frequency',
     'full.name'                                   => 'Full name',
     'git.repositories'                            => 'Git repositories',
+    'git.sync'                                    => 'Comment sync',
+    'git.sync.disable'                            => 'Disable sync',
+    'git.sync.disabled'                           => 'Sync comments is disabled',
+    'git.sync.enable'                             => 'Enable sync',
+    'git.sync.explanation'                        => 'Sync comment creation, updates, delete and resolves to Gitlab.',
     'git.type'                                    => 'Git repository type',
     'git.type.github'                             => 'Github',
     'git.type.gitlab'                             => 'Gitlab',
     'git.type.other'                              => 'Other',
+    'gitlab.comment.sync.disabled'                => 'Success. Comments will no longer be synced to Gitlab.',
+    'gitlab.comment.sync.enabled'                 => 'Success. Comments will be synced to Gitlab from now on.',
     'gitlab.project.id'                           => 'Gitlab project id',
     'gitlab.project.id.help'                      => 'The <code>project id</code> in gitlab for this repository. Allows to show merge requests in notification mails and reviews.',
     'hash'                                        => 'Hash',
@@ -339,5 +346,4 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
-    'gitlab.comment.sync.enabled'                 => 'Success. Comments will be synced to Gitlab from now on.'
 ];
