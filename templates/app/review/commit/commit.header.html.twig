@@ -13,7 +13,9 @@
                     <span class="diff-file__file-change-state text-primary">*</span>
                 {%- endif -%}
                 <span class="diff-file__file-name fw-bold text-primary">{{ file.filename }}</span>
-                <span class="diff-file__directory-name">{{ file.dirname }}</span>
+                {% if file.dirname != '.' %}
+                    <span class="diff-file__directory-name">{{ file.dirname }}</span>
+                {% endif %}
             </div>
 
             {%- if file.rename -%}
