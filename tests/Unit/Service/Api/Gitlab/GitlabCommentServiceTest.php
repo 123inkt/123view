@@ -54,6 +54,16 @@ class GitlabCommentServiceTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testCreateWithExistingReferenceId(): void
+    {
+        $this->comment->setExtReferenceId('external-reference-id');
+        $this->mergeRequests->expects(self::never())->method('versions');
+        $this->service->create($this->api, $this->comment, 456);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testCreateWithoutVersion(): void
     {
         $this->comment->setReview($this->review);
