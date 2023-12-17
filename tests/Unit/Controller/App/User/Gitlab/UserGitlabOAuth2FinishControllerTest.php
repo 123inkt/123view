@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Controller\App\User\Gitlab;
 
 use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\App\User\Gitlab\UserGitlabOAuth2FinishController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\GitAccessToken;
@@ -72,6 +73,7 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
         $accessToken = new AccessToken(['access_token' => 'token']);
 
+        $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
         $this->authProvider->expects(self::once())->method('getAccessToken')
             ->with('authorization_code', ['code' => 'code'])
             ->willReturn($accessToken);
@@ -95,6 +97,7 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
         $accessToken = new AccessToken(['access_token' => 'token']);
 
+        $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
         $this->authProvider->expects(self::once())->method('getAccessToken')
             ->with('authorization_code', ['code' => 'code'])
             ->willReturn($accessToken);

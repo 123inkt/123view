@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\User\Gitlab;
 
 use DR\Review\Controller\AbstractController;
+use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\GitAccessToken;
 use DR\Review\Repository\User\GitAccessTokenRepository;
@@ -61,6 +62,8 @@ class UserGitlabOAuth2FinishController extends AbstractController
         $token->setToken(Json::encode($accessToken));
         $this->tokenRepository->save($token, true);
 
-        return new Response(print_r($request->query->all(), true) . ' ' . print_r($request->request->all(), true));
+        $this->addFlash('success', 'gitlab.comment.sync.enabled');
+
+        return $this->redirectToRoute(ProjectsController::class);
     }
 }
