@@ -4,8 +4,9 @@ import axios from 'axios';
 export default class extends Controller {
     public static targets = ['icon'];
     public static values  = {id: Number};
+
     private readonly declare iconTarget: HTMLElement;
-    private declare idValue: number;
+    private readonly declare idValue: number;
 
     public connect(): void {
         axios.get(`/api/review/${this.idValue}/merge-request`)
