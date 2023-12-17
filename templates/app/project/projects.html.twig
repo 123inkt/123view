@@ -28,8 +28,6 @@
 
 
 {% block page_content %}
-
-
     <div class="projects-grid mt-2">
         <h1>{{ 'projects'|trans }}</h1>
         <h3 class="mt-2">{{ 'news.feed'|trans }}</h3>
@@ -39,5 +37,4 @@
         </div>
         {% include 'app/project/projects.timeline.html.twig' with {timelineViewModel: projectsModel.timeline} %}
     </div>
-
 {% endblock %}

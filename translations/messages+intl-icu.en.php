@@ -339,5 +339,5 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
-    'gitlab.comment.sync.enabled'                 => 'Enabled comment sync to Gitlab'
+    'gitlab.comment.sync.enabled'                 => 'Success. Comments will be synced to Gitlab from now on.'
 ];
