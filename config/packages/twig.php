@@ -14,5 +14,4 @@ return static function (TwigConfig $twig): void {
     $twig->global('app_absolute_url')->value('%env(APP_ABSOLUTE_URL)%');
     $twig->global('app_auth_password')->value('%env(bool:APP_AUTH_PASSWORD)%');
     $twig->global('app_auth_azure_ad')->value('%env(bool:APP_AUTH_AZURE_AD)%');
-    $twig->global('app_gitlab_comment_sync')->value('%env(bool:GITLAB_COMMENT_SYNC)%');
 };

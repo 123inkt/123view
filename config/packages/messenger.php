@@ -2,9 +2,6 @@
 declare(strict_types=1);
 
 use DR\Review\Message\AsyncMessageInterface;
-use DR\Review\Message\Comment\CommentAdded;
-use DR\Review\Message\Comment\CommentRemoved;
-use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Message\Delay\DelayableMessage;
 use DR\Review\Message\Revision\CommitAddedMessage;
 use DR\Review\Message\Revision\CommitRemovedMessage;
