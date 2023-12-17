@@ -73,6 +73,7 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
         $accessToken = new AccessToken(['access_token' => 'token']);
 
+        $this->expectAddFlash('success', 'gitlab.comment.sync.enabled');
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
         $this->authProvider->expects(self::once())->method('getAccessToken')
             ->with('authorization_code', ['code' => 'code'])
@@ -97,6 +98,7 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
         $accessToken = new AccessToken(['access_token' => 'token']);
 
+        $this->expectAddFlash('success', 'gitlab.comment.sync.enabled');
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
         $this->authProvider->expects(self::once())->method('getAccessToken')
             ->with('authorization_code', ['code' => 'code'])
