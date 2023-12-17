@@ -34,6 +34,14 @@
             data-class-before-copy="bi bi-link-45deg"
             data-class-after-copy="bi bi-check-lg"
             data-role="icon"></i></button>
+
+        <a href="#"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="btn btn-outline-primary btn-sm border-0 d-none dr-btn-orange"
+            {{ stimulus_controller('merge-request', {id: review.id}) }}
+        ><i class="bi" {{ stimulus_target('merge-request', 'icon') }}></i>
+        </a>
     </h3>
 
     {% include 'app/flash/flashes.html.twig' %}
