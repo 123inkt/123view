@@ -24,11 +24,9 @@ class GetMergeRequestForReviewController extends AbstractController
     #[Route('/api/review/{id<\d+>}/merge-request', name: self::class, methods: 'GET', stateless: true)]
     public function __invoke(#[MapEntity] CodeReview $review): JsonResponse
     {
-        // @codeCoverageIgnoreStart
         if ($this->gitlabApiUrl === '') {
             return new JsonResponse(null, headers: ['Cache-Control' => 'public']);
         }
-        // @codeCoverageIgnoreEnd
 
         $projectId = $review->getRepository()->getRepositoryProperty('gitlab-project-id');
         if ($projectId === null) {

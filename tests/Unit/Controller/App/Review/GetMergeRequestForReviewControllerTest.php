@@ -14,17 +14,29 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Throwable;
 
 #[CoversClass(GetMergeRequestForReviewController::class)]
 class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 {
-    private GitlabService&MockObject           $gitlabService;
-    private GetMergeRequestForReviewController $service;
+    private GitlabService&MockObject $gitlabService;
 
     protected function setUp(): void
     {
         $this->gitlabService = $this->createMock(GitlabService::class);
         parent::setUp();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testInvokeNoGitlabUrl(): void
+    {
+        $controller = new GetMergeRequestForReviewController('', $this->gitlabService);
+        $review     = new CodeReview();
+
+        $expected = new JsonResponse(null, headers: ['Cache-Control' => 'public']);
+        static::assertEquals($expected, ($controller)($review));
     }
 
     public function testInvokeNoProjectId(): void
