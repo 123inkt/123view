@@ -26,7 +26,8 @@ class RevisionFactory
             $revision->setDescription(mb_substr($commit->body, 0, 255));
 
             $remoteRef = $commit->getRemoteRef();
-            if ($remoteRef !== null && $remoteRef !== $hash) {
+
+            if ($remoteRef !== null && $remoteRef !== $hash && preg_match('/^[a-f0-9]{9}$/', $remoteRef) !== 1) {
                 $revision->setFirstBranch(mb_substr($remoteRef, 0, 255));
             } else {
                 $revision->setFirstBranch(null);
