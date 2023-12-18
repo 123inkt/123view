@@ -36,6 +36,8 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
     public function __invoke(CommentRemoved|CommentReplyRemoved $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false || $event->extReferenceId === null) {
+            $this->logger?->info('Gitlab comment sync disabled or not external reference id');
+
             return;
         }
 
@@ -44,6 +46,8 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
         $user       = Assert::notNull($this->userRepository->find($userId));
         $api        = $this->apiProvider->create($repository, $user);
         if ($api === null) {
+            $this->logger?->info('No api configuration found for comment {comment}', ['comment' => $event->commentId]);
+
             return;
         }
 
