@@ -49,4 +49,16 @@ class RevisionFactoryTest extends AbstractTestCase
         static::assertCount(1, $revisions);
         static::assertNull($revisions[0]->getFirstBranch());
     }
+
+    public function testCreateFromCommitShouldIgnoreSha(): void
+    {
+        $author = new Author('Sherlock', 'holmes@example.com');
+        $commit = new Commit(new Repository(), 'parent', 'commit', $author, Carbon::now(), "subject", "message", 'b930d38ac', []);
+
+        $factory   = new RevisionFactory();
+        $revisions = $factory->createFromCommit($commit);
+
+        static::assertCount(1, $revisions);
+        static::assertNull($revisions[0]->getFirstBranch());
+    }
 }
