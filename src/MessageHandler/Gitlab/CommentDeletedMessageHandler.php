@@ -46,7 +46,7 @@ class CommentDeletedMessageHandler implements LoggerAwareInterface
         $user       = Assert::notNull($this->userRepository->find($userId));
         $api        = $this->apiProvider->create($repository, $user);
         if ($api === null) {
-            $this->logger?->info('No api configuration found for comment {comment}', ['comment' => $event->getCommentId()]);
+            $this->logger?->info('No api configuration found for comment {comment}', ['comment' => $event->commentId]);
 
             return;
         }
