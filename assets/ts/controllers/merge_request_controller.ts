@@ -11,7 +11,7 @@ export default class extends Controller {
     public connect(): void {
         axios.get(`/api/review/${this.idValue}/merge-request`)
             .then((response) => {
-                if (response.data === null) {
+                if (response.data === null || response.data.url === null) {
                     return;
                 }
                 this.element.classList.remove('d-none');
