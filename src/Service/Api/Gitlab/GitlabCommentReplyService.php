@@ -24,6 +24,8 @@ class GitlabCommentReplyService implements LoggerAwareInterface
     {
         $commentReferenceId = $reply->getComment()->getExtReferenceId();
         if ($commentReferenceId === null || $reply->getExtReferenceId() !== null) {
+            $this->logger?->info('Comment reference id is null, or reply already has an external reference id');
+
             return;
         }
 
@@ -46,6 +48,8 @@ class GitlabCommentReplyService implements LoggerAwareInterface
     public function update(GitlabApi $api, CommentReply $reply): void
     {
         if ($reply->getExtReferenceId() === null) {
+            $this->logger?->info('Comment reply has no reference id');
+
             return;
         }
 

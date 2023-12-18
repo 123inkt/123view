@@ -25,6 +25,8 @@ class GitlabCommentService implements LoggerAwareInterface
     public function create(GitlabApi $api, Comment $comment, int $mergeRequestIId): void
     {
         if ($comment->getExtReferenceId() !== null) {
+            $this->logger?->info('Comment already has reference id, unable to create');
+
             return;
         }
 
@@ -56,6 +58,8 @@ class GitlabCommentService implements LoggerAwareInterface
     public function update(GitlabApi $api, Comment $comment): void
     {
         if ($comment->getExtReferenceId() === null) {
+            $this->logger?->info('Comment has no reference id. Unable to update');
+
             return;
         }
 
@@ -75,6 +79,8 @@ class GitlabCommentService implements LoggerAwareInterface
     public function resolve(GitlabApi $api, Comment $comment, bool $resolve): void
     {
         if ($comment->getExtReferenceId() === null) {
+            $this->logger?->info('Comment has no reference id. Unable to resolve');
+
             return;
         }
 
