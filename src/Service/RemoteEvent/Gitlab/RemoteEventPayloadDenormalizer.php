@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\NoteEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -28,7 +29,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
      *
      * @throws ExceptionInterface
      */
-    public function denormalize(string $eventType, array $data): ?PushEvent
+    public function denormalize(string $eventType, array $data): PushEvent|NoteEvent|null
     {
         $eventClass = self::getEventClass($eventType);
         if ($eventClass === null) {
@@ -50,6 +51,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
     {
         return match ($eventType) {
             'Push Hook' => PushEvent::class,
+            'Note Hook' => NoteEvent::class,
             default     => null,
         };
     }
