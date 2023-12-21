@@ -15,8 +15,11 @@ class GitlabCommentService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly PositionFactory $positionFactory, private readonly CommentRepository $commentRepository)
-    {
+    public function __construct(
+        private readonly PositionFactory $positionFactory,
+        private readonly CommentRepository $commentRepository,
+        private readonly GitlabCommentFormatter $commentFormatter,
+    ) {
     }
 
     /**
@@ -47,7 +50,9 @@ class GitlabCommentService implements LoggerAwareInterface
             'Adding comment in gitlab: {projectId} {mergeRequestIId} {comment}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'comment' => $comment->getMessage()]
         );
-        $referenceId = $api->discussions()->createDiscussion($projectId, $mergeRequestIId, $position, $comment->getMessage());
+
+        $message     = $this->commentFormatter->format($comment);
+        $referenceId = $api->discussions()->createDiscussion($projectId, $mergeRequestIId, $position, $message);
         $comment->setExtReferenceId($referenceId);
         $this->commentRepository->save($comment, true);
     }
