@@ -17,6 +17,7 @@ use DR\Review\Service\Api\Gitlab\ReviewMergeRequestService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use RuntimeException;
 use Throwable;
 
 #[CoversClass(CommentAddedMessageHandler::class)]
@@ -127,7 +128,35 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
         $this->mergeRequestService->expects(self::once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
         $this->commentService->expects(self::once())->method('create')->with($api, $comment, 12345);
+        $this->commentService->expects(self::never())->method('updateExtReferenceId');
 
+        ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testInvokeFailureRetry(): void
+    {
+        $user       = new User();
+        $repository = new Repository();
+
+        $review = new CodeReview();
+        $review->setRepository($repository);
+
+        $comment = new Comment();
+        $comment->setReview($review);
+        $comment->setUser($user);
+
+        $api = $this->createMock(GitlabApi::class);
+
+        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->mergeRequestService->expects(self::once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
+        $this->commentService->expects(self::once())->method('create')->with($api, $comment, 12345)->willThrowException(new RuntimeException('foo'));
+        $this->commentService->expects(self::once())->method('updateExtReferenceId')->with($api, $comment, 12345);
+
+        $this->expectException(RuntimeException::class);
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
 }
