@@ -43,9 +43,8 @@ class Discussions
                 sprintf('projects/%d/merge_requests/%d/discussions', $projectId, $mergeRequestIId),
                 ['query' => ['per_page' => $perPage, 'page' => $page]]
             );
-            $page = (int)($response->getHeaders()['x-next-page'][0] ?? -1);
-            $discussions = $response->toArray();
-            yield from $discussions;
+            $page     = (int)($response->getHeaders()['x-next-page'][0] ?? -1);
+            yield from $response->toArray();
         } while ($page > 0);
     }
 
