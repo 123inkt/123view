@@ -104,7 +104,9 @@ class GitlabCommentService implements LoggerAwareInterface
             'Updating comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->updateNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $comment->getMessage());
+
+        $message = $this->commentFormatter->format($comment);
+        $api->discussions()->updateNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $message);
     }
 
     /**

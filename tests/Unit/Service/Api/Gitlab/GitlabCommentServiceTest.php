@@ -149,7 +149,8 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->discussions->expects(self::once())->method('updateNote')->with(111, 222, '333', '444', 'message');
+        $this->commentFormatter->expects(self::once())->method('format')->with($this->comment)->willReturn('formatted');
+        $this->discussions->expects(self::once())->method('updateNote')->with(111, 222, '333', '444', 'formatted');
 
         $this->service->update($this->api, $this->comment);
     }

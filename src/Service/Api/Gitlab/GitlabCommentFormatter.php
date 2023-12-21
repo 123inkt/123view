@@ -13,16 +13,16 @@ class GitlabCommentFormatter implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly string $appAbsoluteUrl, private readonly UrlGeneratorInterface $urlGenerator)
     {
     }
 
     public function format(Comment $comment): string
     {
-        $url = $this->urlGenerator->generate(ReviewController::class, ['review' => $comment->getReview()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->appAbsoluteUrl . $this->urlGenerator->generate(ReviewController::class, ['review' => $comment->getReview()]);
 
         $message = str_replace("\n", "\n<br>", $comment->getMessage());
 
-        return sprintf("%s\n<br>\n<br>*%s*", $message, $url);
+        return sprintf("%s\n<br>\n<br>*123view: %s*", $message, $url);
     }
 }
