@@ -55,6 +55,10 @@ class CommentAddedMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $this->commentService->create($api, $comment, $mergeRequestIId);
+        try {
+            $this->commentService->create($api, $comment, $mergeRequestIId);
+        } finally {
+            $this->commentService->updateExtReferenceId($api, $comment, $mergeRequestIId);
+        }
     }
 }

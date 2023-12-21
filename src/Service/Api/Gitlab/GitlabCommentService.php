@@ -55,6 +55,35 @@ class GitlabCommentService implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
+    public function updateExtReferenceId(GitlabApi $api, Comment $comment, int $mergeRequestIId): void
+    {
+        $projectId = (int)$comment->getReview()->getRepository()->getRepositoryProperty('gitlab-project-id');
+        $reference = $comment->getLineReference();
+
+        foreach ($api->discussions()->getDiscussions($projectId, $mergeRequestIId) as $thread) {
+            foreach ($thread['notes'] as $note) {
+                // try to match body
+                if ($note['body'] !== $comment->getMessage()) {
+                    continue;
+                }
+
+                // should at least match either new path or old path
+                if ($note['position']['old_path'] !== $reference->oldPath && $note['position']['new_path'] !== $reference->newPath) {
+                    continue;
+                }
+
+                // set reference id and save
+                $referenceId = sprintf('%s:%s:%s', $mergeRequestIId, $thread['id'], $note['id']);
+                $this->commentRepository->save($comment->setExtReferenceId($referenceId), true);
+
+                return;
+            }
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function update(GitlabApi $api, Comment $comment): void
     {
         if ($comment->getExtReferenceId() === null) {
