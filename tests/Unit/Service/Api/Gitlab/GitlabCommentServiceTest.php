@@ -102,6 +102,30 @@ class GitlabCommentServiceTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testUpdateExtReferenceId(): void
+    {
+        $lineReference = new LineReference('old', 'new', 1, 2, 3, null, LineReferenceStateEnum::Added);
+        $this->comment->setReview($this->review);
+        $this->comment->setLineReference($lineReference);
+        $this->comment->setMessage('match');
+        $this->review->setRepository($this->repository);
+        $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
+
+        $threads = [
+            ['id' => '1', 'notes' => [['id' => '2', 'body' => 'foobar', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]],
+            ['id' => '2', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'foo', 'new_path' => 'bar']]]],
+            ['id' => '3', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]]
+        ];
+
+        $this->discussions->expects(self::once())->method('getDiscussions')->with(123, 456)->willReturn(static::createGeneratorFrom($threads));
+        $this->commentRepository->expects(self::once())->method('save')->with($this->comment, true);
+
+        $this->service->updateExtReferenceId($this->api, $this->comment, 456);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testUpdateAbsentReferenceId(): void
     {
         $this->comment->setExtReferenceId(null);
