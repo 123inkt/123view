@@ -89,6 +89,7 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
+        ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
         ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
         ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
 

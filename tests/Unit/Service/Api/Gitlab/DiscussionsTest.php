@@ -11,6 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(Discussions::class)]
 class DiscussionsTest extends AbstractTestCase
@@ -23,6 +24,42 @@ class DiscussionsTest extends AbstractTestCase
         parent::setUp();
         $this->client      = $this->createMock(HttpClientInterface::class);
         $this->discussions = new Discussions($this->client);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testGetDiscussions(): void
+    {
+        $discussionA = ['id' => 333, 'notes' => [['id' => 444]]];
+        $discussionB = ['id' => 555, 'notes' => [['id' => 666]]];
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getHeaders')->willReturn(['x-next-page' => ['2']], ['x-next-page' => []]);
+        $response->method('toArray')->willReturn([$discussionA], [$discussionB]);
+
+        $this->client->expects(self::exactly(2))
+            ->method('request')
+            ->with(
+                ...consecutive(
+                    [
+                        'GET',
+                        'projects/111/merge_requests/222/discussions',
+                        ['query' => ['per_page' => 20, 'page' => 1]]
+                    ],
+                    [
+                        'GET',
+                        'projects/111/merge_requests/222/discussions',
+                        ['query' => ['per_page' => 20, 'page' => 2]]
+                    ]
+                )
+            )->willReturn($response);
+
+        $discussions = [];
+        foreach ($this->discussions->getDiscussions(111, 222) as $discussion) {
+            $discussions[] = $discussion;
+        }
+        static::assertSame([$discussionA, $discussionB], $discussions);
     }
 
     /**

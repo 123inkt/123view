@@ -15,8 +15,11 @@ class GitlabCommentService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly PositionFactory $positionFactory, private readonly CommentRepository $commentRepository)
-    {
+    public function __construct(
+        private readonly PositionFactory $positionFactory,
+        private readonly CommentRepository $commentRepository,
+        private readonly GitlabCommentFormatter $commentFormatter,
+    ) {
     }
 
     /**
@@ -47,9 +50,40 @@ class GitlabCommentService implements LoggerAwareInterface
             'Adding comment in gitlab: {projectId} {mergeRequestIId} {comment}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'comment' => $comment->getMessage()]
         );
-        $referenceId = $api->discussions()->createDiscussion($projectId, $mergeRequestIId, $position, $comment->getMessage());
+
+        $message = $this->commentFormatter->format($comment);
+        $referenceId = $api->discussions()->createDiscussion($projectId, $mergeRequestIId, $position, $message);
         $comment->setExtReferenceId($referenceId);
         $this->commentRepository->save($comment, true);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function updateExtReferenceId(GitlabApi $api, Comment $comment, int $mergeRequestIId): void
+    {
+        $projectId = (int)$comment->getReview()->getRepository()->getRepositoryProperty('gitlab-project-id');
+        $reference = $comment->getLineReference();
+
+        foreach ($api->discussions()->getDiscussions($projectId, $mergeRequestIId) as $thread) {
+            foreach ($thread['notes'] as $note) {
+                // try to match body
+                if ($note['body'] !== $comment->getMessage()) {
+                    continue;
+                }
+
+                // should at least match either new path or old path
+                if ($note['position']['old_path'] !== $reference->oldPath && $note['position']['new_path'] !== $reference->newPath) {
+                    continue;
+                }
+
+                // set reference id and save
+                $referenceId = sprintf('%s:%s:%s', $mergeRequestIId, $thread['id'], $note['id']);
+                $this->commentRepository->save($comment->setExtReferenceId($referenceId), true);
+
+                return;
+            }
+        }
     }
 
     /**
@@ -70,7 +104,9 @@ class GitlabCommentService implements LoggerAwareInterface
             'Updating comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->updateNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $comment->getMessage());
+
+        $message = $this->commentFormatter->format($comment);
+        $api->discussions()->updateNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId, $message);
     }
 
     /**
@@ -107,6 +143,12 @@ class GitlabCommentService implements LoggerAwareInterface
             'Deleting comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->deleteNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
+        try {
+            $api->discussions()->deleteNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $exception) {
+            $this->logger?->notice('Failed to remove note from Gitlab', ['exception' => $exception]);
+        }
+        // @codeCoverageIgnoreEnd
     }
 }
