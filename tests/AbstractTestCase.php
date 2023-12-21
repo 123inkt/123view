@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
-use function DR\Review\Tests\Unit\Service\Api\Gitlab\null;
 
 /**
  * @SuppressWarnings(PHPMD.NumberOfChildren)
@@ -20,9 +19,7 @@ abstract class AbstractTestCase extends TestCase
     use AccessorPairAsserter;
     use TestTrait;
 
-    /** @var MockObject&LoggerInterface */
-    protected LoggerInterface $logger;
-
+    protected MockObject&LoggerInterface $logger;
     protected Envelope $envelope;
 
     protected function setUp(): void
