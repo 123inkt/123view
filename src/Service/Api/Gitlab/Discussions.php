@@ -5,6 +5,7 @@ namespace DR\Review\Service\Api\Gitlab;
 
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Utils\Arrays;
+use Generator;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -12,6 +13,40 @@ class Discussions
 {
     public function __construct(private readonly HttpClientInterface $client)
     {
+    }
+
+    /**
+     * @phpstan-return Generator<array{
+     *    id: string,
+     *    notes: array<array{
+     *      id: int,
+     *      body: string,
+     *      position: array{
+     *        base_sha: string,
+     *        start_sha: string,
+     *        head_sha: string,
+     *        old_path: string,
+     *        new_path: string,
+     *      }
+     *    }>
+     * }>
+     * @throws Throwable
+     * @link https://docs.gitlab.com/ee/api/discussions.html#merge-requests
+     * @link https://docs.gitlab.com/ee/api/rest/index.html#pagination-link-header
+     */
+    public function getDiscussions(int $projectId, int $mergeRequestIId, int $perPage = 20): Generator
+    {
+        $page = 1;
+        do {
+            $response = $this->client->request(
+                'GET',
+                sprintf('projects/%d/merge_requests/%d/discussions', $projectId, $mergeRequestIId),
+                ['query' => ['per_page' => $perPage, 'page' => $page]]
+            );
+            $page = (int)($response->getHeaders()['x-next-page'][0] ?? -1);
+            $discussions = $response->toArray();
+            yield from $discussions;
+        } while ($page > 0);
     }
 
     /**
