@@ -51,7 +51,7 @@ class GitlabCommentService implements LoggerAwareInterface
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'comment' => $comment->getMessage()]
         );
 
-        $message     = $this->commentFormatter->format($comment);
+        $message = $this->commentFormatter->format($comment);
         $referenceId = $api->discussions()->createDiscussion($projectId, $mergeRequestIId, $position, $message);
         $comment->setExtReferenceId($referenceId);
         $this->commentRepository->save($comment, true);
@@ -141,6 +141,12 @@ class GitlabCommentService implements LoggerAwareInterface
             'Deleting comment in gitlab: {projectId} {mergeRequestIId} {discussionId}',
             ['projectId' => $projectId, 'mergeRequestIId' => $mergeRequestIId, 'discussionId' => $discussionId]
         );
-        $api->discussions()->deleteNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
+        try {
+            $api->discussions()->deleteNote($projectId, (int)$mergeRequestIId, $discussionId, $noteId);
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $exception) {
+            $this->logger?->notice('Failed to remove note from Gitlab', ['exception' => $exception]);
+        }
+        // @codeCoverageIgnoreEnd
     }
 }
