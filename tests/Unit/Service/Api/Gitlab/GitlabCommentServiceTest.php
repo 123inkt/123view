@@ -14,6 +14,7 @@ use DR\Review\Model\Api\Gitlab\Version;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Api\Gitlab\Discussions;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
+use DR\Review\Service\Api\Gitlab\GitlabCommentFormatter;
 use DR\Review\Service\Api\Gitlab\GitlabCommentService;
 use DR\Review\Service\Api\Gitlab\MergeRequests;
 use DR\Review\Service\Api\Gitlab\PositionFactory;
@@ -25,15 +26,16 @@ use Throwable;
 #[CoversClass(GitlabCommentService::class)]
 class GitlabCommentServiceTest extends AbstractTestCase
 {
-    private PositionFactory&MockObject   $positionFactory;
-    private CommentRepository&MockObject $commentRepository;
-    private GitlabApi&MockObject         $api;
-    private MergeRequests&MockObject     $mergeRequests;
-    private Discussions&MockObject       $discussions;
-    private Comment                      $comment;
-    private CodeReview                   $review;
-    private Repository                   $repository;
-    private GitlabCommentService         $service;
+    private PositionFactory&MockObject        $positionFactory;
+    private CommentRepository&MockObject      $commentRepository;
+    private GitlabCommentFormatter&MockObject $commentFormatter;
+    private GitlabApi&MockObject              $api;
+    private MergeRequests&MockObject          $mergeRequests;
+    private Discussions&MockObject            $discussions;
+    private Comment                           $comment;
+    private CodeReview                        $review;
+    private Repository                        $repository;
+    private GitlabCommentService              $service;
 
     protected function setUp(): void
     {
@@ -48,7 +50,8 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->api->method('discussions')->willReturn($this->discussions);
         $this->positionFactory   = $this->createMock(PositionFactory::class);
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->service           = new GitlabCommentService($this->positionFactory, $this->commentRepository);
+        $this->commentFormatter  = $this->createMock(GitlabCommentFormatter::class);
+        $this->service           = new GitlabCommentService($this->positionFactory, $this->commentRepository, $this->commentFormatter);
     }
 
     /**
@@ -92,11 +95,36 @@ class GitlabCommentServiceTest extends AbstractTestCase
 
         $this->mergeRequests->expects(self::once())->method('versions')->with(123, 456)->willReturn([$version]);
         $this->positionFactory->expects(self::once())->method('create')->with($version, $lineReference)->willReturn($position);
-        $this->discussions->expects(self::once())->method('createDiscussion')->with(123, 456, $position, 'message')->willReturn('1:2:3');
+        $this->commentFormatter->expects(self::once())->method('format')->with($this->comment)->willReturn('formatted');
+        $this->discussions->expects(self::once())->method('createDiscussion')->with(123, 456, $position, 'formatted')->willReturn('1:2:3');
         $this->commentRepository->expects(self::once())->method('save')->with($this->comment, true);
 
         $this->service->create($this->api, $this->comment, 456);
         static::assertSame('1:2:3', $this->comment->getExtReferenceId());
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testUpdateExtReferenceId(): void
+    {
+        $lineReference = new LineReference('old', 'new', 1, 2, 3, null, LineReferenceStateEnum::Added);
+        $this->comment->setReview($this->review);
+        $this->comment->setLineReference($lineReference);
+        $this->comment->setMessage('match');
+        $this->review->setRepository($this->repository);
+        $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
+
+        $threads = [
+            ['id' => '1', 'notes' => [['id' => '2', 'body' => 'foobar', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]],
+            ['id' => '2', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'foo', 'new_path' => 'bar']]]],
+            ['id' => '3', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]]
+        ];
+
+        $this->discussions->expects(self::once())->method('getDiscussions')->with(123, 456)->willReturn(static::createGeneratorFrom($threads));
+        $this->commentRepository->expects(self::once())->method('save')->with($this->comment, true);
+
+        $this->service->updateExtReferenceId($this->api, $this->comment, 456);
     }
 
     /**
@@ -121,7 +149,8 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->discussions->expects(self::once())->method('updateNote')->with(111, 222, '333', '444', 'message');
+        $this->commentFormatter->expects(self::once())->method('format')->with($this->comment)->willReturn('formatted');
+        $this->discussions->expects(self::once())->method('updateNote')->with(111, 222, '333', '444', 'formatted');
 
         $this->service->update($this->api, $this->comment);
     }
