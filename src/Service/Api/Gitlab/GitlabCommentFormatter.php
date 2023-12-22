@@ -19,10 +19,15 @@ class GitlabCommentFormatter implements LoggerAwareInterface
 
     public function format(Comment $comment): string
     {
-        $url = $this->appAbsoluteUrl . $this->urlGenerator->generate(ReviewController::class, ['review' => $comment->getReview()]);
+        $review        = $comment->getReview();
+        $lineReference = $comment->getLineReference();
+        $filePath      = $lineReference->newPath ?? $lineReference->oldPath ?? '';
 
-        $message = str_replace("\n", "\n<br>", $comment->getMessage());
+        $url = $this->appAbsoluteUrl;
+        $url .= $this->urlGenerator->generate(ReviewController::class, ['review' => $review, 'filePath' => $filePath]);
 
-        return sprintf("%s\n<br>\n<br>*123view: %s*", $message, $url);
+        $message = str_replace("\n", "<br>\n", $comment->getMessage());
+
+        return sprintf("%s<br>\n<br>\n*[123view: CR-%d](%s#focus:comment:%d)*", $message, $review->getProjectId(), $url, $comment->getId());
     }
 }
