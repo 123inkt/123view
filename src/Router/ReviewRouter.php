@@ -72,8 +72,8 @@ class ReviewRouter implements RouterInterface, WarmableInterface, RequestMatcher
     /**
      * @inheritDoc
      */
-    public function warmUp(string $cacheDir): array
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
-        return $this->router->warmUp($cacheDir);
+        return $this->router->warmUp($cacheDir, $buildDir);
     }
 }

@@ -1,4 +1,4 @@
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.2-8892BF)](https://php.net/)
 [![Symfony Version](https://img.shields.io/badge/symfony-6.2-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
 [![codecov](https://codecov.io/gh/123inkt/123view/branch/master/graph/badge.svg)](https://app.codecov.io/gh/123inkt/123view)
