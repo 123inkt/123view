@@ -1,4 +1,4 @@
-name: Checking PHP, Scss and Typescript code quality checks
+name: Code quality checks
 
 on:
     push:

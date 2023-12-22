@@ -1,4 +1,4 @@
-name: Testing Symfony with MySQL
+name: Tests
 
 on:
     push:
