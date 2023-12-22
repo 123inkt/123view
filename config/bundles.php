@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 return [
     ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class                              => ['all' => true],
-    Chrisguitarguy\RequestId\ChrisguitarguyRequestIdBundle::class                    => ['all' => true],
+    DR\SymfonyTraceBundle\SymfonyTraceBundle::class                                  => ['all' => true],
     DigitalRevolution\SymfonyRequestValidation\Bundle\RequestValidationBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class                             => ['all' => true],
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class                 => ['all' => true],

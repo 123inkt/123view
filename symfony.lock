@@ -12,9 +12,6 @@
             "./src/ApiResource/.gitignore"
         ]
     },
-    "chrisguitarguy/request-id-bundle": {
-        "version": "v5.1.0"
-    },
     "composer/pcre": {
         "version": "1.0.0"
     },
@@ -32,6 +29,9 @@
     },
     "digitalrevolution/phpunit-file-coverage-inspection": {
         "version": "v1.1.1"
+    },
+    "digitalrevolution/symfony-trace-bundle": {
+        "version": "v0.3.1"
     },
     "doctrine/annotations": {
         "version": "1.0",
