@@ -20,6 +20,12 @@ RUN mkdir -p /etc/nginx/snippets
 COPY ./docker/nginx/snippets/ssl-certificate.conf /etc/nginx/snippets/ssl-certificate.conf
 COPY ./docker/nginx/snippets/ssl-params.conf  /etc/nginx/snippets/ssl-params.conf
 
+# error pages
+COPY ./docker/nginx/error/500.html /usr/share/nginx/html/500.html
+COPY ./docker/nginx/error/502.html /usr/share/nginx/html/502.html
+COPY ./docker/nginx/error/503.html /usr/share/nginx/html/503.html
+COPY ./docker/nginx/error/504.html /usr/share/nginx/html/504.html
+
 ##
 # production
 #
