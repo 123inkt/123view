@@ -12,6 +12,7 @@ use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Tests\AbstractKernelTestCase;
 use DR\Review\Tests\Helper\MessageEventCollector;
+use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -71,7 +72,7 @@ class MailCommandTest extends AbstractKernelTestCase
         $repository->method('execute')->willReturn($this->getFileContents('git-log-commits.txt'));
 
         // start application and find the `mail`-command
-        $command = (new Application(static::$kernel))->find('mail');
+        $command = (new Application(Assert::notNull(static::$kernel)))->find('mail');
 
         // execute command
         $commandTester = new CommandTester($command);
