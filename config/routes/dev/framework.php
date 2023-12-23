@@ -6,5 +6,5 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 return static function (RoutingConfigurator $routes): void {
     $routes->import('@FrameworkBundle/Resources/config/routing/errors.xml')
         ->prefix('/_error')
-        ->stateless(true);
+        ->stateless();
 };
