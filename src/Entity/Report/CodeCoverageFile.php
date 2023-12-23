@@ -29,7 +29,7 @@ class CodeCoverageFile
     #[ORM\Column(type: LineCoverageType::TYPE, length: 60000)]
     private LineCoverage $coverage;
 
-    #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
+    #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class, inversedBy: 'files')]
     #[ORM\JoinColumn(nullable: false)]
     private CodeCoverageReport $report;
 
