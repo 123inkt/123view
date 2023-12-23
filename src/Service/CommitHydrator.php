@@ -22,7 +22,7 @@ class CommitHydrator
     public function hydrate(Repository $repository, array $data, array $files): Commit
     {
         $author     = new Author($data[FormatPattern::AUTHOR_NAME], $data[FormatPattern::AUTHOR_EMAIL]);
-        $authorDate = Carbon::parse($data[FormatPattern::AUTHOR_DATE_ISO8601]);
+        $authorDate = new Carbon($data[FormatPattern::AUTHOR_DATE_ISO8601]);
         $refs       = trim($data[FormatPattern::REF_NAMES]);
         if ($refs === '') {
             $refs = trim($data[FormatPattern::REF_NAME_SOURCE]);
