@@ -37,10 +37,13 @@ class IdeButtonExtension extends AbstractExtension
             return '';
         }
 
+        $search  = ['{file}', '{line}', '%f', '%l'];
+        $replace = [urlencode($file), $line, urlencode($file), $line];
+
         return $this->twig->render(
             '/extension/ide-button.widget.html.twig',
             [
-                'url' => str_ireplace(['{file}', '{line}'], [urlencode($file), $line], $this->url),
+                'url'   => str_ireplace($search, $replace, $this->url),
                 'title' => $this->title
             ]
         );
