@@ -41,7 +41,6 @@
         "digitalrevolution/symfony-request-validation": "^2.0",
         "digitalrevolution/symfony-trace-bundle": "^0.3.1",
         "digitalrevolution/utils": "^1.0",
-        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
