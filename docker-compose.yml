@@ -82,6 +82,8 @@ services:
     mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}
         build:
+            args:
+                VERSION: $MERCURE_VERSION
             context: .
             dockerfile: ./docker/mercure/Dockerfile
         environment:

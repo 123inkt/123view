@@ -26,7 +26,7 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
         $policy = [
             "default-src 'self'",
             "img-src 'self' data:",
-            "object-src: 'none'",
+            "object-src 'none'",
             sprintf("connect-src 'self' %s:*", $this->hostname),
         ];
 

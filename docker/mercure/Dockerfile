@@ -1,4 +1,6 @@
-FROM dunglas/mercure AS base
+ARG VERSION=latest
+
+FROM dunglas/mercure:${VERSION} AS base
 
 ##
 # production
