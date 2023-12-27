@@ -27,7 +27,6 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
             "default-src 'self'",
             "img-src 'self' data:",
             "object-src 'none'",
-            "require-trusted-types-for 'script'",
             "base-uri 'none'",
             sprintf("connect-src 'self' %s:*", $this->hostname),
         ];
