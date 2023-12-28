@@ -33,7 +33,7 @@ class CommentUpdatedMessageHandler implements LoggerAwareInterface
     public function __invoke(CommentUpdated $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false) {
-            $this->logger?->info('Gitlab comment sync disabled');
+            $this->logger?->info('Gitlab comment sync disabled. Comment id: {id}', ['id' => $event->commentId]);
 
             return;
         }
@@ -41,7 +41,7 @@ class CommentUpdatedMessageHandler implements LoggerAwareInterface
         $comment = Assert::notNull($this->commentRepository->find($event->getCommentId()));
         $api     = $this->apiProvider->create($comment->getReview()->getRepository(), $comment->getUser());
         if ($api === null) {
-            $this->logger?->info('No api configuration found for comment {comment}', ['comment' => $event->getCommentId()]);
+            $this->logger?->info('No api configuration found for comment {id}', ['id' => $event->getCommentId()]);
 
             return;
         }
