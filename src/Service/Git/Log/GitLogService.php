@@ -39,6 +39,10 @@ class GitLogService implements LoggerAwareInterface
         $result = [];
 
         foreach ($rule->getRepositories() as $repositoryConfig) {
+            if ($repositoryConfig->isActive() === false) {
+                continue;
+            }
+
             $output = $this->lockManager->start($repositoryConfig, function () use ($ruleConfig, $repositoryConfig) {
                 // clone or pull the repository for the given rule.
                 $repository = $this->cachedRepositoryService->getRepository($repositoryConfig);

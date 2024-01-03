@@ -33,6 +33,7 @@ class RuleRepository extends ServiceEntityRepository
             ->leftJoin('r.ruleOptions', 'o')
             ->andWhere('r.active = :active')
             ->andWhere('o.frequency = :frequency')
+            ->andWhere('rp.active = 1')
             ->setParameter('active', $active ? 1 : 0)
             ->setParameter('frequency', $frequency)
             ->getQuery()
