@@ -57,6 +57,18 @@ class GitLogServiceTest extends AbstractTestCase
     /**
      * @throws Exception
      */
+    public function testGetCommitsShouldIgnoreInactiveRepositories(): void
+    {
+        $repository = (new Repository())->setActive(false);
+        $rule       = (new Rule())->addRepository($repository);
+        $config     = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
+
+        static::assertSame([], $this->logFactory->getCommits($config));
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testGetCommits(): void
     {
         // setup config

@@ -67,7 +67,7 @@ class MailCommand extends Command implements LoggerAwareInterface
 
         $exitCode = self::SUCCESS;
         foreach ($rules as $rule) {
-            if (Assert::notNull($rule->getUser())->hasRole(Roles::ROLE_USER) === false) {
+            if ($rule->getUser()->hasRole(Roles::ROLE_USER) === false) {
                 continue;
             }
 
