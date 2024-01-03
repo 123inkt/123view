@@ -75,11 +75,12 @@ class CommentResolvedMessageHandlerTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $comment = new Comment();
+        $comment->setUser($user);
         $comment->setReview($review);
 
         $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
         $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->apiProvider->expects(self::exactly(2))->method('create')->with($repository, $user)->willReturn(null);
 
         ($this->handler)(new CommentResolved(111, 222, 333, 'file'));
     }
