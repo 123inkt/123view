@@ -47,10 +47,14 @@ class RuleNotificationController extends AbstractController
         // gather commits
         $commits = $this->ruleProcessor->processRule(new RuleConfiguration(Frequency::getPeriod($currentTime, $frequency), $rule));
 
-        // render mail
-        $viewModel = $this->viewModelProvider->getCommitsViewModel($commits, $rule, $notification);
-        $response  = $this->render('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
-        $response->headers->set('Content-Security-Policy', "");
+        if (count($commits) === 0) {
+            $response = new Response('No (more) revisions found for this notification rule', headers: ['Content-Type' => 'text/plain']);
+        } else {
+            // render mail
+            $viewModel = $this->viewModelProvider->getCommitsViewModel($commits, $rule, $notification);
+            $response  = $this->render('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
+            $response->headers->set('Content-Security-Policy', "");
+        }
 
         // mark notification as read
         $this->notificationRepository->save($notification->setRead(true), true);
