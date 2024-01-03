@@ -18,7 +18,7 @@ class RepositoryChoiceType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $repositories = $this->repositoryRepository->findBy([], ['name' => 'ASC']);
+        $repositories = $this->repositoryRepository->findBy(['active' => 1], ['name' => 'ASC']);
         $resolver->setDefaults(
             [
                 'label'                     => 'repository',
