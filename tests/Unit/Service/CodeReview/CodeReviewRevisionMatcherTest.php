@@ -59,6 +59,16 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         static::assertFalse($this->matcher->isSupported($revision));
     }
 
+    public function testIsSupportedShouldBeActive(): void
+    {
+        $repository = new Repository();
+        $repository->setActive(false);
+        $revision   = new Revision();
+        $revision->setRepository($repository);
+
+        static::assertFalse($this->matcher->isSupported($revision));
+    }
+
     public function testIsSupportedAuthorShouldBeExcluded(): void
     {
         $repository = new Repository();
