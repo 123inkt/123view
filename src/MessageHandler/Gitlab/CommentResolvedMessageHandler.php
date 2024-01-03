@@ -41,9 +41,10 @@ class CommentResolvedMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $comment = Assert::notNull($this->commentRepository->find($event->getCommentId()));
-        $user    = Assert::notNull($this->userRepository->find($event->getUserId()));
-        $api     = $this->apiProvider->create($comment->getReview()->getRepository(), $user);
+        $comment    = Assert::notNull($this->commentRepository->find($event->getCommentId()));
+        $repository = $comment->getReview()->getRepository();
+        $user       = Assert::notNull($this->userRepository->find($event->getUserId()));
+        $api        = $this->apiProvider->create($repository, $user) ?? $this->apiProvider->create($repository, $comment->getUser());
         if ($api === null) {
             $this->logger?->info('No api configuration found for comment {id}', ['id' => $event->getCommentId()]);
 
