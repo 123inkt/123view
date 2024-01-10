@@ -19,6 +19,7 @@ use DR\Review\ViewModel\Mail\CommitsViewModel;
 use DR\Review\ViewModelProvider\Mail\CommitsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[CoversClass(RuleNotificationController::class)]
@@ -63,7 +64,7 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $viewModel = new CommitsViewModel([$commit], MailThemeType::DARCULA);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleProcessor->expects(self::once())->method('processRule')->with()->willReturn([$commit]);
+        $this->ruleProcessor->expects(self::once())->method('processRule')->willReturn([$commit]);
         $this->viewModelProvider->expects(self::once())->method('getCommitsViewModel')->with([$commit], $rule, $notification)->willReturn($viewModel);
         $this->expectRender('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
         $this->notificationRepository->expects(self::once())->method('save')->with($notification);
@@ -72,6 +73,27 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
 
         static::assertTrue($response->headers->has('Content-Security-Policy'));
         static::assertTrue($notification->isRead());
+    }
+
+    public function testInvokeNoCommits(): void
+    {
+        $options = new RuleOptions();
+        $options->setFrequency(Frequency::ONCE_PER_DAY);
+        $options->setTheme(MailThemeType::DARCULA);
+        $rule = new Rule();
+        $rule->setRuleOptions($options);
+        $notification = new RuleNotification();
+        $notification->setNotifyTimestamp(123456789);
+        $notification->setRule($rule);
+
+        $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
+        $this->ruleProcessor->expects(self::once())->method('processRule')->willReturn([]);
+        $this->notificationRepository->expects(self::once())->method('save')->with($notification);
+
+        static::assertEquals(
+            new Response('No (more) revisions found for this notification rule', headers: ['Content-Type' => 'text/plain']),
+            ($this->controller)($notification)
+        );
     }
 
     public function getController(): AbstractController
