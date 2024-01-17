@@ -26,7 +26,8 @@ class GitlabCommentFormatter implements LoggerAwareInterface
         $url = $this->appAbsoluteUrl;
         $url .= $this->urlGenerator->generate(ReviewController::class, ['review' => $review, 'filePath' => $filePath]);
 
-        $message = str_replace("\n", "<br>\n", $comment->getMessage());
+        // normalize @user annotation
+        $message = preg_replace('/@user:\d+\[([^]]+)]/', '[$1]', $comment->getMessage());
 
         return sprintf("%s<br>\n<br>\n*[123view: CR-%d](%s#focus:comment:%d)*", $message, $review->getProjectId(), $url, $comment->getId());
     }
