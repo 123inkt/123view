@@ -20,8 +20,6 @@ class Version
     #[SerializedName('merge_request_id')]
     public int     $mergeRequestId;
     public string  $state;
-    #[SerializedName('real_size')]
-    public string  $realSize;
     #[SerializedName('patch_id_sha')]
     public ?string $patchIdSha;
 }
