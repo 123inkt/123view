@@ -59,6 +59,7 @@ return static function (MonologConfig $monolog) {
             ->contentType('text/html');
 
         $monolog->handler('main')->excludedHttpCode()->code(403)->code(404);
+        $monolog->handler('main')->processPsr3Messages()->removeUsedContextFields(true);
     }
 
     $monolog->handler('docker')
@@ -71,4 +72,10 @@ return static function (MonologConfig $monolog) {
         ->level('debug')
         ->processPsr3Messages(false)
         ->channels()->elements(["!event", "!deprecation", "!console"]);
+
+    $monolog->handler('info')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('error_fingers_crossed')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('deprecations')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('docker')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('console')->processPsr3Messages()->removeUsedContextFields(true);
 };

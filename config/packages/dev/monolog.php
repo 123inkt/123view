@@ -67,4 +67,13 @@ return static function (MonologConfig $monolog) {
         ->level('debug')
         ->processPsr3Messages(false)
         ->channels()->elements(["!event", "!deprecation", "!console"]);
+
+    $monolog->handler('main')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('error')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('doctrine')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('git')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('app')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('deprecations')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('docker')->processPsr3Messages()->removeUsedContextFields(true);
+    $monolog->handler('console')->processPsr3Messages()->removeUsedContextFields(true);
 };
