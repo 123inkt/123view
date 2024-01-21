@@ -114,6 +114,9 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "fdekker/log-viewer-bundle": {
+        "version": "v0.1.1"
+    },
     "firebase/php-jwt": {
         "version": "v5.5.1"
     },

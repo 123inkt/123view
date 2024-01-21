@@ -346,4 +346,5 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'logs'                                        => 'Logs',
 ];
