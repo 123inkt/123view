@@ -128,9 +128,6 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%')
         ->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
-    $services->set('monolog.formatter.line', LineFormatter::class)
-        ->arg('$format', "[%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%extra%%\n")
-        ->arg('$dateFormat', "Y-m-d\TH:i:s");
 
     // Configure Api
     $services->set(OperationParameterDocumentor::class);

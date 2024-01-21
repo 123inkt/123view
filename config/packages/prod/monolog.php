@@ -18,7 +18,6 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
         ->level('info')
-        ->formatter('monolog.formatter.line')
         ->maxFiles(10)
         ->channels()->elements(["!event", "!console", "!deprecation"]);
 
@@ -31,14 +30,12 @@ return static function (MonologConfig $monolog) {
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
         ->level('debug')
-        ->formatter('monolog.formatter.line')
         ->maxFiles(10);
 
     $monolog->handler('deprecations')
         ->type('rotating_file')
         ->path('%kernel.logs_dir%/deprecations.%kernel.environment%.log')
         ->level('debug')
-        ->formatter('monolog.formatter.line')
         ->maxFiles(1)
         ->channels()->elements(["deprecation"]);
 
@@ -65,15 +62,13 @@ return static function (MonologConfig $monolog) {
     }
 
     $monolog->handler('docker')
-        ->type('stream')
-        ->level('info')
-        ->path('php://stderr')
-        ->formatter('monolog.formatter.line')
-        ->channels()->elements(["!event", "!deprecation", "!console"]);
+        ->type('error_log')
+        ->level('debug')
+        ->channels()->elements(["!event", "!deprecation"]);
 
     $monolog->handler('console')
         ->type('console')
         ->level('debug')
-        ->formatter('monolog.formatter.line')
-        ->channels()->elements(["!event", "!deprecation"]);
+        ->processPsr3Messages(false)
+        ->channels()->elements(["!event", "!deprecation", "!console"]);
 };
