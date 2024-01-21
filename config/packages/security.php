@@ -8,6 +8,7 @@ use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Security\UserChecker;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
@@ -55,8 +56,6 @@ return static function (SecurityConfig $security): void {
         ->path(LogoutController::class)
         ->target(LoginController::class);
 
-    // require IS_AUTHENTICATED_FULLY for /app/*
-    $security->accessControl()
-        ->path('^/app')
-        ->roles(['IS_AUTHENTICATED_FULLY']);
+    $security->accessControl()->path('^/app')->roles(['IS_AUTHENTICATED_FULLY']);
+    $security->accessControl()->path('^/log-viewer')->roles([Roles::ROLE_ADMIN]);
 };
