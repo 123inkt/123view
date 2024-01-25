@@ -42,21 +42,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private string $email;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
     /** @var string[]|null */
     #[ORM\Column(type: SpaceSeparatedStringValueType::TYPE, length: 500)]
     private ?array $roles = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $gitlabUserId = null;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
     private ?UserSetting $setting = null;
@@ -131,9 +134,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->password;
     }
 
-    public function setPassword(string $password): User
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getGitlabUserId(): ?int
+    {
+        return $this->gitlabUserId;
+    }
+
+    public function setGitlabUserId(?int $gitlabUserId): self
+    {
+        $this->gitlabUserId = $gitlabUserId;
 
         return $this;
     }

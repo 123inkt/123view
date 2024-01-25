@@ -33,6 +33,7 @@
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
         "ext-mbstring": "*",
         "api-platform/core": "^3.1",
         "czproject/git-php": "^4.0",

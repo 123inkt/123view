@@ -22,6 +22,11 @@ class GitlabApiTest extends AbstractTestCase
         $this->api  = new GitlabApi($this->logger, $client, $serializer);
     }
 
+    public function testUsers(): void
+    {
+        static::assertSame($this->api->users(), $this->api->users());
+    }
+
     public function testBranches(): void
     {
         static::assertSame($this->api->branches(), $this->api->branches());

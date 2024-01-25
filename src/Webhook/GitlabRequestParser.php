@@ -25,7 +25,7 @@ class GitlabRequestParser extends AbstractRequestParser implements LoggerAwareIn
 {
     use LoggerAwareTrait;
 
-    private const SUPPORTED_EVENTS = ['Push Hook'];
+    private const SUPPORTED_EVENTS = ['Push Hook', 'Merge Request Hook'];
 
     protected function getRequestMatcher(): RequestMatcherInterface
     {

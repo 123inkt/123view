@@ -35,6 +35,7 @@ class RevisionFixtures extends Fixture implements DependentFixtureInterface
         $revision->setAuthorEmail('sherlock@example.com');
         $revision->setCommitHash(self::COMMIT_HASH_A);
         $revision->setCreateTimestamp(12345678);
+        $revision->setFirstBranch('first-branch');
         $manager->persist($revision);
 
         $revision = new Revision();
