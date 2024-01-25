@@ -26,7 +26,7 @@ class GitlabUserService
 
         $user = $this->userRepository->findOneBy(['name' => $gitlabUsername]);
         if ($user !== null) {;
-            $this->userRepository->save($user->setGitlabUserId($gitlabUserId));
+            $this->userRepository->save($user->setGitlabUserId($gitlabUserId), true);
 
             return $user;
         }
@@ -38,7 +38,7 @@ class GitlabUserService
 
         $user = $this->userRepository->findOneBy(['email' => $gitlabUser->email]);
         if ($user !== null) {
-            $this->userRepository->save($user->setGitlabUserId($gitlabUserId));
+            $this->userRepository->save($user->setGitlabUserId($gitlabUserId), true);
         }
 
         return $user;
