@@ -17,14 +17,14 @@ class GitlabUserService
     /**
      * @throws Throwable
      */
-    public function getUser(int $gitlabUserId, string $gitlabUsername): ?User
+    public function getUser(int $gitlabUserId, string $gitlabName): ?User
     {
         $user = $this->userRepository->findOneBy(['gitlabUserId' => $gitlabUserId]);
         if ($user !== null) {
             return $user;
         }
 
-        $user = $this->userRepository->findOneBy(['name' => $gitlabUsername]);
+        $user = $this->userRepository->findOneBy(['name' => $gitlabName]);
         if ($user !== null) {;
             $this->userRepository->save($user->setGitlabUserId($gitlabUserId), true);
 

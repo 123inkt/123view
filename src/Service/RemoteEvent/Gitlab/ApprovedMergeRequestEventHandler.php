@@ -7,7 +7,6 @@ use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\CodeReview\ChangeReviewerStateService;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\User\GitlabUserService;
@@ -24,7 +23,6 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly GitlabApi $api,
         private readonly RepositoryRepository $repositoryRepository,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly GitlabUserService $userService,
@@ -58,7 +56,7 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
 
         $this->logger?->info('ApprovedMergeRequestEventHandler: for repository {name}', ['name' => $repository->getName()]);
 
-        $user = $this->userService->getUser($event->user->id, $event->user->username);
+        $user = $this->userService->getUser($event->user->id, $event->user->name);
         if ($user === null) {
             $this->logger?->info('ApprovedMergeRequestEventHandler: unable to resolve user {name}', ['name' => $event->user->username]);
 
