@@ -75,6 +75,7 @@ export default class Mentions {
         const params = new URLSearchParams({search: searchQuery ?? '', preferredUserIds: this.preferredUserIds.join(',')});
         axios
             .get('/app/user/mentions?' + params.toString())
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .then(response => callback(response.data))
             .catch(Function.empty);
     }

@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import type MercureEvent from '../entity/MercureEvent';
 import BrowserNotification from '../lib/BrowserNotification';
 
 export default class extends Controller {
@@ -12,7 +13,7 @@ export default class extends Controller {
     }
 
     private handleNotification(event: Event): void {
-        const data = (event as CustomEvent).detail;
+        const data = (event as CustomEvent<MercureEvent>).detail;
         this.notification.publish(data.title, data.message, 'tag-' + String(data.eventId), data.url);
     }
 }
