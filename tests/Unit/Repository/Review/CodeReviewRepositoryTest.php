@@ -89,6 +89,23 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     /**
      * @throws Exception
      */
+    public function testFindByBranchName(): void
+    {
+        $revisionRepository = static::getService(RevisionRepository::class);
+
+        $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $revision   = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
+        $review     = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
+
+        $revision->setReview($review);
+        $revisionRepository->save($revision, true);
+
+        static::assertSame([$review], $this->repository->findByBranchName((int)$repository->getId(), 'first-branch'));
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testFindByUrl(): void
     {
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
