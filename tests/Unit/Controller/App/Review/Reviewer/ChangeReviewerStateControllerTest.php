@@ -3,39 +3,26 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Reviewer;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Controller\App\Review\Reviewer\ChangeReviewerStateController;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
-use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
 use DR\Review\Request\Review\ChangeReviewerStateRequest;
-use DR\Review\Service\Git\Review\CodeReviewerService;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\CodeReview\ChangeReviewerStateService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(ChangeReviewerStateController::class)]
 class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
 {
-    private ManagerRegistry&MockObject     $registry;
-    private ReviewEventService&MockObject  $eventService;
-    private CodeReviewerService&MockObject $reviewerService;
-    private ObjectManager&MockObject       $objectManager;
+    private ChangeReviewerStateService&MockObject $changeReviewerStateService;
 
     public function setUp(): void
     {
-        $this->objectManager = $this->createMock(ObjectManager::class);
-        $this->registry      = $this->createMock(ManagerRegistry::class);
-        $this->registry->method('getManager')->willReturn($this->objectManager);
-        $this->eventService    = $this->createMock(ReviewEventService::class);
-        $this->reviewerService = $this->createMock(CodeReviewerService::class);
+        $this->changeReviewerStateService = $this->createMock(ChangeReviewerStateService::class);
         parent::setUp();
     }
 
@@ -44,51 +31,11 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(ChangeReviewerStateRequest::class);
         $request->expects(self::once())->method('getState')->willReturn(CodeReviewerStateType::ACCEPTED);
 
-        $user     = (new User())->setId(789);
-        $reviewer = new CodeReviewer();
-        $reviewer->setUser($user);
-        $review = new CodeReview();
-        $review->setId(123);
-        $review->getReviewers()->add($reviewer);
+        $user   = (new User())->setId(789);
+        $review = (new CodeReview())->setId(123);
 
         $this->expectGetUser($user);
-        $this->reviewerService->expects(self::once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
-
-        $this->objectManager->expects(self::exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
-        $this->objectManager->expects(self::once())->method('flush');
-
-        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 789, false);
-        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN);
-
-        $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-
-        ($this->controller)($request, $review);
-    }
-
-    public function testInvokeNewReviewerChangesState(): void
-    {
-        $request = $this->createMock(ChangeReviewerStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CodeReviewerStateType::ACCEPTED);
-
-        $user = new User();
-        $user->setId(456);
-        $reviewer = new CodeReviewer();
-        $reviewer->setUser($user);
-        $review = new CodeReview();
-        $review->setId(123);
-
-        $this->expectGetUser($user);
-        $this->reviewerService->expects(self::once())->method('addReviewer')->with($review, $user)->willReturn($reviewer);
-        $this->reviewerService->expects(self::once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
-
-        $this->objectManager->expects(self::exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
-        $this->objectManager->expects(self::once())->method('flush');
-
-        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 456, true);
-        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN, 456);
-
+        $this->changeReviewerStateService->expects(self::once())->method('changeState')->with($review, $user, CodeReviewerStateType::ACCEPTED);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
@@ -96,6 +43,6 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new ChangeReviewerStateController($this->registry, $this->eventService, $this->reviewerService);
+        return new ChangeReviewerStateController($this->changeReviewerStateService);
     }
 }
