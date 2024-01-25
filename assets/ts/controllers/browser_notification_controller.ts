@@ -1,5 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
-import {MercureEvent} from '../entity/MercureEvent';
+import type {MercureEvent} from '../entity/MercureEvent';
 import BrowserNotification from '../lib/BrowserNotification';
 
 export default class extends Controller {
