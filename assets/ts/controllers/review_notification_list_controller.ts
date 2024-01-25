@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import type MercureEvent from '../entity/MercureEvent';
 
 export default class extends Controller {
     public static targets = ['template'];
@@ -23,7 +24,7 @@ export default class extends Controller {
     }
 
     private handleNotification(event: Event): void {
-        const data = (event as CustomEvent).detail;
+        const data = (event as CustomEvent<MercureEvent>).detail;
 
         // skip notifications from me
         if (data.userId === this.userIdValue) {
@@ -40,8 +41,10 @@ export default class extends Controller {
 
     private createItem(message: string): HTMLElement {
         const clone = this.templateTarget.content.cloneNode(true) as HTMLElement;
-
-        (clone.querySelector('[data-role=item]') as HTMLElement).innerHTML = message;
+        const item  = clone.querySelector<HTMLElement>('[data-role=item]');
+        if (item !== null) {
+            item.innerHTML = message;
+        }
         return clone;
     }
 }
