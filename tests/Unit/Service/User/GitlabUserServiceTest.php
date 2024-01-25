@@ -97,7 +97,6 @@ class GitlabUserServiceTest extends AbstractTestCase
      */
     public function testGetUserUnknownUser(): void
     {
-        $user              = new User();
         $gitlabUser        = new GitlabUser();
         $gitlabUser->email = 'email';
 

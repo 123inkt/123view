@@ -124,6 +124,9 @@ class CodeReviewRepository extends ServiceEntityRepository
         return $review;
     }
 
+    /**
+     * @return CodeReview[]
+     */
     public function findByBranchName(int $repositoryId, string $branchName): array
     {
         /** @var CodeReview[] $reviews */

@@ -65,7 +65,7 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
 
         $this->logger?->info('ApprovedMergeRequestEventHandler: merge request {id} was approved', ['id' => $event->iid]);
 
-        $reviews = $this->reviewRepository->findByBranchName($repository->getId(), $event->sourceBranch);
+        $reviews = $this->reviewRepository->findByBranchName(Assert::notNull($repository->getId()), $event->sourceBranch);
         foreach ($reviews as $review) {
             $this->changeReviewerStateService->changeState($review, $user, CodeReviewerStateType::ACCEPTED);
             $this->logger?->info(
