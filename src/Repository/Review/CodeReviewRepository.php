@@ -123,4 +123,18 @@ class CodeReviewRepository extends ServiceEntityRepository
 
         return $review;
     }
+
+    public function findByBranchName(int $repositoryId, string $branchName): array
+    {
+        /** @var CodeReview[] $reviews */
+        $reviews = $this->createQueryBuilder('c')
+            ->innerJoin('c.revisions', 'r', 'WITH', 'r.firstBranch = :branchName')
+            ->where('c.repository = :repositoryId')
+            ->setParameter('branchName', $branchName)
+            ->setParameter('repositoryId', $repositoryId)
+            ->getQuery()
+            ->getResult();
+
+        return $reviews;
+    }
 }

@@ -15,4 +15,6 @@ class MergeRequestEvent
     public int     $iid;
     #[SerializedPath('[object_attributes][action]')]
     public string  $action;
+    #[SerializedPath('[object_attributes][source_branch]')]
+    public string  $sourceBranch;
 }

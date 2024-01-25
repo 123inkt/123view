@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
+use DR\Review\Service\CodeReview\ChangeReviewerStateService;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\User\GitlabUserService;
 use DR\Utils\Assert;
@@ -23,7 +26,9 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
     public function __construct(
         private readonly GitlabApi $api,
         private readonly RepositoryRepository $repositoryRepository,
-        private readonly GitlabUserService $userService
+        private readonly CodeReviewRepository $reviewRepository,
+        private readonly GitlabUserService $userService,
+        private readonly ChangeReviewerStateService $changeReviewerStateService
     ) {
     }
 
@@ -51,10 +56,24 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
             return;
         }
 
-        $user = $this->userService->getUser($event->user->id, $event->user->username);
-
         $this->logger?->info('ApprovedMergeRequestEventHandler: for repository {name}', ['name' => $repository->getName()]);
 
+        $user = $this->userService->getUser($event->user->id, $event->user->username);
+        if ($user === null) {
+            $this->logger?->info('ApprovedMergeRequestEventHandler: unable to resolve user {name}', ['name' => $event->user->username]);
+
+            return;
+        }
+
         $this->logger?->info('ApprovedMergeRequestEventHandler: merge request {id} was approved', ['id' => $event->iid]);
+
+        $reviews = $this->reviewRepository->findByBranchName($repository->getId(), $event->sourceBranch);
+        foreach ($reviews as $review) {
+            $this->changeReviewerStateService->changeState($review, $user, CodeReviewerStateType::ACCEPTED);
+            $this->logger?->info(
+                'ApprovedMergeRequestEventHandler: user {name} accepted review CR-{id}',
+                ['name' => $event->user->username, 'id' => $review->getProjectId()]
+            );
+        }
     }
 }
