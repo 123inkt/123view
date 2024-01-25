@@ -5,11 +5,13 @@ namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
+use DR\Review\Service\User\GitlabUserService;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 /**
  * @implements RemoteEventHandlerInterface<MergeRequestEvent>
@@ -18,10 +20,17 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly RepositoryRepository $repository, private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly GitlabApi $api,
+        private readonly RepositoryRepository $repositoryRepository,
+        private readonly GitlabUserService $userService
+    ) {
     }
 
+    /**
+     * @phpstan-param MergeRequestEvent $event
+     * @throws Throwable
+     */
     public function handle(object $event): void
     {
         Assert::isInstanceOf($event, MergeRequestEvent::class);
@@ -29,7 +38,7 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
             return;
         }
 
-        $repository = $this->repository->findByProperty('gitlab-project-id', (string)$event->project->id);
+        $repository = $this->repositoryRepository->findByProperty('gitlab-project-id', (string)$event->project->id);
         if ($repository === null) {
             $this->logger?->info('ApprovedMergeRequestEventHandler: no repository found for project id {id}', ['id' => $event->project->id]);
 
@@ -41,6 +50,10 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
 
             return;
         }
+
+        $user = $this->userService->getUser($event->user->id, $event->user->username);
+
+        $this->logger?->info('ApprovedMergeRequestEventHandler: for repository {name}', ['name' => $repository->getName()]);
 
         $this->logger?->info('ApprovedMergeRequestEventHandler: merge request {id} was approved', ['id' => $event->iid]);
     }

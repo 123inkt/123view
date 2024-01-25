@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Model\Webhook\Gitlab;
+namespace DR\Review\Model\Api\Gitlab;
 
 class Project
 {

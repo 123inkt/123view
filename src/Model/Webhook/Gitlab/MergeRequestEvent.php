@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Model\Webhook\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\Project;
+use DR\Review\Model\Api\Gitlab\User;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 class MergeRequestEvent
