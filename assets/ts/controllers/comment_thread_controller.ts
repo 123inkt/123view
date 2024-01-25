@@ -12,7 +12,7 @@ export default class extends Controller<HTMLElement> {
     private readonly declare idValue: number;
     private readonly declare urlValue: string;
 
-    public commentUpdated(event: CustomEvent): void {
+    public commentUpdated(event: CustomEvent<string>): void {
         Events.stop(event);
         if (parseInt(event.detail) !== this.idValue) {
             return;
