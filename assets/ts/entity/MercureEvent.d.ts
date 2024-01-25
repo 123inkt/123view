@@ -1,4 +1,4 @@
-export interface MercureEvent {
+export default interface MercureEvent {
     eventId: 1;
     title: string;
     message: string;
