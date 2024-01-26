@@ -8,6 +8,7 @@ use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -40,7 +41,27 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
 
         $this->logger?->info('RemoteEventPayloadDenormalizer: Denormalizing event type: {eventType}', ['eventType' => $eventType]);
 
-        return $this->objectDenormalizer->denormalize($data, $eventClass, null, self::DENORMALIZE_CONTEXT);
+        try {
+            return $this->objectDenormalizer->denormalize($data, $eventClass, null, self::DENORMALIZE_CONTEXT);
+        } catch (ExceptionInterface $exception) {
+            throw $this->handleException($eventType, $exception);
+        }
+    }
+
+    private function handleException(string $eventType, ExceptionInterface $exception): ExceptionInterface
+    {
+        $context = [
+            'eventType' => $eventType,
+            'exception' => $exception
+        ];
+
+        if ($exception instanceof PartialDenormalizationException) {
+            $context['errors'] = array_map(static fn($error) => $error->getMessage(), $exception->getErrors());
+        }
+
+        $this->logger?->error('Failed to denormalize {eventType}', $context);
+
+        return $exception;
     }
 
     /**

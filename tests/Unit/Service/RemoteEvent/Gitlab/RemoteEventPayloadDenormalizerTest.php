@@ -10,6 +10,8 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 #[CoversClass(RemoteEventPayloadDenormalizer::class)]
@@ -62,5 +64,18 @@ class RemoteEventPayloadDenormalizerTest extends AbstractTestCase
             ->willReturn($event);
 
         static::assertSame($event, $this->denormalizer->denormalize('Merge Request Hook', ['data']));
+    }
+
+    /**
+     * @throws ExceptionInterface
+     */
+    public function testDeserializeDenormalizeException(): void
+    {
+        $exception = new PartialDenormalizationException([], [new NotNormalizableValueException('error')]);
+
+        $this->objectDenormalizer->expects(self::once())->method('denormalize')->willThrowException($exception);
+
+        $this->expectException(PartialDenormalizationException::class);
+        $this->denormalizer->denormalize('Merge Request Hook', ['data']);
     }
 }
