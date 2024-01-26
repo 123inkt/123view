@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent;
 
+use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -38,7 +39,7 @@ class RemoteEventHandler implements LoggerAwareInterface
 
         $this->logger?->info('RemoteEventHandler: handling event for {class}', ['class' => $class]);
 
-        /** @phpstan-var PushEvent $object */
+        /** @phpstan-var PushEvent|MergeRequestEvent $object */
         $this->handlers[$class]->handle($object);
     }
 }
