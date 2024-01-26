@@ -10,8 +10,8 @@ use Psr\Log\LoggerAwareTrait;
 use Traversable;
 
 /**
- * @phpstan-type HandlerKey class-string<PushEvent>
- * @phpstan-type HandlerValue RemoteEventHandlerInterface<PushEvent>
+ * @phpstan-type HandlerKey class-string<PushEvent|MergeRequestEvent>
+ * @phpstan-type HandlerValue RemoteEventHandlerInterface<PushEvent|MergeRequestEvent>
  */
 class RemoteEventHandler implements LoggerAwareInterface
 {
