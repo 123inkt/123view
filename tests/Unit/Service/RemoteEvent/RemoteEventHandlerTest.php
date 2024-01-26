@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\RemoteEvent;
 
 use ArrayIterator;
+use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
@@ -15,7 +16,7 @@ use Traversable;
 #[CoversClass(RemoteEventHandler::class)]
 class RemoteEventHandlerTest extends AbstractTestCase
 {
-    /** @var RemoteEventHandlerInterface<PushEvent>&MockObject */
+    /** @var RemoteEventHandlerInterface<PushEvent|MergeRequestEvent>&MockObject */
     private RemoteEventHandlerInterface&MockObject $handler;
     private RemoteEventHandler                     $eventHandler;
 
@@ -24,7 +25,7 @@ class RemoteEventHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->handler = $this->createMock(RemoteEventHandlerInterface::class);
 
-        /** @var Traversable<class-string<PushEvent>, RemoteEventHandlerInterface<PushEvent>> $iterator */
+        /** @var Traversable<class-string<PushEvent>|class-string<MergeRequestEvent>, RemoteEventHandlerInterface<PushEvent|MergeRequestEvent>> $iterator */
         $iterator           = new ArrayIterator([PushEvent::class => $this->handler]);
         $this->eventHandler = new RemoteEventHandler($iterator);
     }
