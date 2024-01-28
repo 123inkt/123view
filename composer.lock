@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f0f91de29ddb3b0673e7c130a610389",
+    "content-hash": "555512b676ee59bb5b20cd5d865de376",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2174,16 +2174,16 @@
         },
         {
             "name": "fdekker/log-viewer-bundle",
-            "version": "v0.2.0",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/symfony-log-viewer-bundle.git",
-                "reference": "233d81ff2fa1ec06d6925ff4e7b416815948366d"
+                "reference": "22ad0f54e510cf1ad2a0daf466a2b7273f9d192a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/233d81ff2fa1ec06d6925ff4e7b416815948366d",
-                "reference": "233d81ff2fa1ec06d6925ff4e7b416815948366d",
+                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/22ad0f54e510cf1ad2a0daf466a2b7273f9d192a",
+                "reference": "22ad0f54e510cf1ad2a0daf466a2b7273f9d192a",
                 "shasum": ""
             },
             "require": {
@@ -2257,9 +2257,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frankdekker/symfony-log-viewer-bundle/issues",
-                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v0.2.0"
+                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v0.4.0"
             },
-            "time": "2024-01-21T22:38:16+00:00"
+            "time": "2024-01-28T16:50:44+00:00"
         },
         {
             "name": "firebase/php-jwt",
