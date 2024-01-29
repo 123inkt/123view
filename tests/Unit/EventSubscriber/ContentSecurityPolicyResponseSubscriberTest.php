@@ -40,7 +40,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $subscriber->onResponse($event);
 
         static::assertSame(
-            "default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; " .
+            "default-src 'self' https://cdn.jsdelivr.net/npm/bootstrap; img-src 'self' data:; object-src 'none'; base-uri 'none'; " .
             "connect-src 'self' host:*; frame-src http://localhost:*",
             $response->headers->get("Content-Security-Policy")
         );
@@ -54,7 +54,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $subscriber->onResponse($event);
 
         static::assertSame(
-            "default-src 'self'; img-src 'self' data:; object-src 'none';" .
+            "default-src 'self' https://cdn.jsdelivr.net/npm/bootstrap; img-src 'self' data:; object-src 'none';" .
             " base-uri 'none'; connect-src 'self' host:*",
             $response->headers->get("Content-Security-Policy")
         );
