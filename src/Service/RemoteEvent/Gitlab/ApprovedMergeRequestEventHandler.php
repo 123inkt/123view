@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -67,6 +68,10 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
 
         $reviews = $this->reviewRepository->findByBranchName(Assert::notNull($repository->getId()), $event->sourceBranch);
         foreach ($reviews as $review) {
+            if ($review->getState() === CodeReviewStateType::CLOSED) {
+                continue;
+            }
+
             $this->changeReviewerStateService->changeState($review, $user, CodeReviewerStateType::ACCEPTED);
             $this->logger?->info(
                 'ApprovedMergeRequestEventHandler: user {name} accepted review CR-{id}',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
@@ -111,6 +112,34 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects(self::once())->method('getUser')->with(789, 'name')->willReturn(null);
+
+        $this->handler->handle($event);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testHandleReviewsSkipClosedReview(): void
+    {
+        $user                = new GitlabUser();
+        $user->id            = 789;
+        $user->name          = 'name';
+        $project             = new Project();
+        $project->id         = 123;
+        $event               = new MergeRequestEvent();
+        $event->project      = $project;
+        $event->user         = $user;
+        $event->sourceBranch = 'branch';
+        $event->action       = 'approved';
+
+        $user       = new User();
+        $review     = (new CodeReview())->setState(CodeReviewStateType::CLOSED);
+        $repository = (new Repository())->setId(456)->setActive(true);
+
+        $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
+        $this->userService->expects(self::once())->method('getUser')->with(789, 'name')->willReturn($user);
+        $this->reviewRepository->expects(self::once())->method('findByBranchName')->with(456, 'branch')->willReturn([$review]);
+        $this->changeReviewerStateService->expects(self::never())->method('changeState');
 
         $this->handler->handle($event);
     }
