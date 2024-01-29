@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "555512b676ee59bb5b20cd5d865de376",
+    "content-hash": "aba035e15faeaa675815db08dbb2a55f",
     "packages": [
         {
             "name": "api-platform/core",
@@ -564,16 +564,16 @@
         },
         {
             "name": "digitalrevolution/symfony-trace-bundle",
-            "version": "v0.4.0",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/symfony-trace-bundle.git",
-                "reference": "daa863b231bf7da872fcd2064a0d60ee55c70d3f"
+                "reference": "db92c7b7aa21487bd389d49e4dad831e934aa478"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/symfony-trace-bundle/zipball/daa863b231bf7da872fcd2064a0d60ee55c70d3f",
-                "reference": "daa863b231bf7da872fcd2064a0d60ee55c70d3f",
+                "url": "https://api.github.com/repos/123inkt/symfony-trace-bundle/zipball/db92c7b7aa21487bd389d49e4dad831e934aa478",
+                "reference": "db92c7b7aa21487bd389d49e4dad831e934aa478",
                 "shasum": ""
             },
             "require": {
@@ -633,9 +633,9 @@
             "description": "Add tracing to your Symfony application. ",
             "support": {
                 "issues": "https://github.com/123inkt/symfony-trace-bundle/issues",
-                "source": "https://github.com/123inkt/symfony-trace-bundle/tree/v0.4.0"
+                "source": "https://github.com/123inkt/symfony-trace-bundle/tree/v0.4.1"
             },
-            "time": "2024-01-09T22:10:53+00:00"
+            "time": "2024-01-10T18:23:19+00:00"
         },
         {
             "name": "digitalrevolution/symfony-validation-shorthand",
