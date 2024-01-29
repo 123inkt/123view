@@ -24,7 +24,7 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
         // allow image svg+xml
         // allow websocket to connect to any port.
         $policy = [
-            "default-src 'self' https://cdn.jsdelivr.net/npm/bootstrap",
+            "default-src 'self' https://cdn.jsdelivr.net",
             "img-src 'self' data:",
             "object-src 'none'",
             "base-uri 'none'",
