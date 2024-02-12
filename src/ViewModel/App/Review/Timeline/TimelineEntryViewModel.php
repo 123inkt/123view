@@ -5,12 +5,14 @@ namespace DR\Review\ViewModel\App\Review\Timeline;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Revision\Revision;
 
 class TimelineEntryViewModel
 {
-    private ?Comment  $comment  = null;
-    private ?Revision $revision = null;
+    private ?Comment      $comment  = null;
+    private ?CommentReply $reply    = null;
+    private ?Revision     $revision = null;
 
     /**
      * @param non-empty-array<CodeReviewActivity> $activities
@@ -24,9 +26,18 @@ class TimelineEntryViewModel
         return $this->comment;
     }
 
-    public function setComment(?Comment $comment): self
+    public function getReply(): ?CommentReply
     {
-        $this->comment = $comment;
+        return $this->reply;
+    }
+
+    public function setCommentOrReply(Comment|CommentReply|null $comment): self
+    {
+        if ($comment instanceof Comment) {
+            $this->comment = $comment;
+        } elseif ($comment instanceof CommentReply) {
+            $this->reply = $comment;
+        }
 
         return $this;
     }

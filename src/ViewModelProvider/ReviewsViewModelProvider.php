@@ -7,6 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewOpened;
@@ -25,6 +26,7 @@ class ReviewsViewModelProvider
         ReviewOpened::NAME,
         CommentAdded::NAME,
         CommentResolved::NAME,
+        CommentReplyAdded::NAME
     ];
 
     public function __construct(

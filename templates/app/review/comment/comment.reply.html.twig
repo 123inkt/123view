@@ -1,4 +1,7 @@
-<div class="comment__reply" data-reply-id="{{ reply.id }}">
+{# reply:  CommentReply #}
+{# indented: bool|null #}
+
+<div class="comment__reply {% if indented is defined and not indented %}comment__reply--no-indent{% endif %}" data-reply-id="{{ reply.id }}">
     <div class="comment__author_and_time">
         <span class="comment__author">{{ reply.user.name }}</span>
         <span class="comment__datetime" title="{{ reply.updateTimestamp|format_datetime('full', 'full') }}">

@@ -109,7 +109,7 @@ class CodeReviewActivityFormatter
 
         // add message
         if ($activity->getEventName() === CommentReplyAdded::NAME) {
-            $params[] = new Variable('message', (string)$activity->getDataValue('message'));
+            $params[] = new Variable('file', basename((string)$activity->getDataValue('file')));
         }
 
         return $params;
