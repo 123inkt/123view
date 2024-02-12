@@ -55,7 +55,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
             $this->apiProvider,
             $this->commentService
         );
-        ($handler)(new CommentReplyAdded(111, 222, 333, 'message'));
+        ($handler)(new CommentReplyAdded(111, 222, 333, 'message', 'file'));
     }
 
     /**
@@ -79,7 +79,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
         $this->replyRepository->expects(self::once())->method('find')->with(222)->willReturn($reply);
         $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
 
-        ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message'));
+        ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message', 'file'));
     }
 
     /**
@@ -106,7 +106,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
         $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
         $this->commentService->expects(self::once())->method('create')->with($api, $reply);
 
-        ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message'));
+        ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message', 'file'));
     }
 
     /**

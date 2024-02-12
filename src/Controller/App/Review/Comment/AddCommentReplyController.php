@@ -45,7 +45,7 @@ class AddCommentReplyController extends AbstractController
         /** @var array{message: string} $data */
         $data = $form->getData();
 
-        $user  = $this->getUser();
+        $user = $this->getUser();
         $reply = new CommentReply();
         $reply->setUser($user);
         $reply->setComment($comment);
@@ -56,7 +56,13 @@ class AddCommentReplyController extends AbstractController
         $this->replyRepository->save($reply, true);
 
         $this->bus->dispatch(
-            new CommentReplyAdded((int)$comment->getReview()->getId(), (int)$reply->getId(), $user->getId(), $data['message'])
+            new CommentReplyAdded(
+                (int)$comment->getReview()->getId(),
+                (int)$reply->getId(),
+                $user->getId(),
+                $data['message'],
+                $comment->getFilePath()
+            )
         );
 
         return $this->json(['success' => true, 'commentId' => $comment->getId()]);
