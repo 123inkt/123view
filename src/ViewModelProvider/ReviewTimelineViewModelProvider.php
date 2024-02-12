@@ -77,5 +77,4 @@ class ReviewTimelineViewModelProvider
 
         return new TimelineViewModel($timelineEntries);
     }
-
 }

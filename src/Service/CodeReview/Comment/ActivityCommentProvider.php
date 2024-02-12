@@ -13,10 +13,8 @@ use DR\Review\Repository\Review\CommentRepository;
 
 class ActivityCommentProvider
 {
-    public function __construct(
-        private readonly CommentRepository $commentRepository,
-        private readonly CommentReplyRepository $replyRepository,
-    ) {
+    public function __construct(private readonly CommentRepository $commentRepository, private readonly CommentReplyRepository $replyRepository)
+    {
     }
 
     public function getCommentFor(CodeReviewActivity $activity): Comment|CommentReply|null
