@@ -9,12 +9,11 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
-use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
-use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
+use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -26,7 +25,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 {
     private CodeReviewActivityRepository&MockObject   $activityRepository;
     private CodeReviewActivityFormatter&MockObject    $activityFormatter;
-    private CommentRepository&MockObject              $commentRepository;
+    private ActivityCommentProvider&MockObject        $commentProvider;
     private CodeReviewActivityUrlGenerator&MockObject $urlGenerator;
     private ReviewTimelineViewModelProvider           $provider;
     private User                                      $user;
@@ -37,12 +36,12 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $this->user               = new User();
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
         $this->activityFormatter  = $this->createMock(CodeReviewActivityFormatter::class);
-        $this->commentRepository  = $this->createMock(CommentRepository::class);
+        $this->commentProvider    = $this->createMock(ActivityCommentProvider::class);
         $this->urlGenerator       = $this->createMock(CodeReviewActivityUrlGenerator::class);
         $this->provider           = new ReviewTimelineViewModelProvider(
             $this->activityRepository,
             $this->activityFormatter,
-            $this->commentRepository,
+            $this->commentProvider,
             $this->urlGenerator,
             $this->user
         );
@@ -127,31 +126,33 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         static::assertSame($revision, $timeline->getRevision());
     }
 
+    public function testGetTimelineViewModelForFeedShouldSkip(): void
+    {
+        $user     = (new User())->setId(789);
+        $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME);
+
+        $this->activityRepository->expects(self::once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
+        $this->activityFormatter->expects(self::once())->method('format')->with($activity, $user)->willReturn(null);
+        $this->commentProvider->expects(self::never())->method('getCommentFor');
+        $this->urlGenerator->expects(self::never())->method('generate');
+
+        $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
+        static::assertCount(0, $viewModel->entries);
+    }
+
     public function testGetTimelineViewModelForFeed(): void
     {
-        $user = new User();
-        $user->setId(789);
-        $activityA = new CodeReviewActivity();
-        $activityA->setEventName(CommentAdded::NAME);
-        $activityA->setData(['commentId' => 456]);
-        $activityB = new CodeReviewActivity();
-        $activityC = new CodeReviewActivity();
-        $activityC->setEventName(ReviewAccepted::NAME);
-        $review = new CodeReview();
-        $review->setId(123);
+        $user     = (new User())->setId(789);
+        $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME);
+        $comment  = new Comment();
 
-        $this->activityRepository->expects(self::once())
-            ->method('findForUser')
-            ->with(789, [CommentAdded::NAME])
-            ->willReturn([$activityA, $activityB, $activityC]);
-        $this->activityFormatter->expects(self::exactly(3))
-            ->method('format')
-            ->with(...consecutive([$activityA, $user], [$activityB, $user], [$activityC, $user]))
-            ->willReturn('activityA', null, 'activityC');
-        $this->commentRepository->expects(self::once())->method('find')->with(456)->willReturn(null);
-        $this->urlGenerator->expects(self::once())->method('generate')->with($activityC)->willReturn('url');
+        $this->activityRepository->expects(self::once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
+        $this->activityFormatter->expects(self::once())->method('format')->with($activity, $user)->willReturn('activityA');
+        $this->commentProvider->expects(self::once())->method('getCommentFor')->with($activity)->willReturn($comment);
+        $this->urlGenerator->expects(self::once())->method('generate')->with($activity)->willReturn('url');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(1, $viewModel->entries);
+        static::assertSame($comment, $viewModel->entries[0]->getComment());
     }
 }
