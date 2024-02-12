@@ -64,13 +64,10 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     public function testInvokeFormSubmitted(): void
     {
         $request = new Request();
-        $review  = new CodeReview();
-        $review->setId(123);
-        $comment = new Comment();
-        $comment->setId(456);
-        $comment->setReview($review);
-        $data = ['message' => 'my-comment'];
-        $user = (new User())->setId(789);
+        $review  = (new CodeReview())->setId(123);
+        $comment = (new Comment())->setId(456)->setFilePath('file')->setReview($review);
+        $data    = ['message' => 'my-comment'];
+        $user    = (new User())->setId(789);
         $this->expectGetUser($user);
 
         $this->expectCreateForm(AddCommentReplyFormType::class, null, ['comment' => $comment])

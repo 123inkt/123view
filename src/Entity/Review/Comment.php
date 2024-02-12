@@ -84,9 +84,11 @@ class Comment
         return $this->filePath;
     }
 
-    public function setFilePath(string $filePath): void
+    public function setFilePath(string $filePath): self
     {
         $this->filePath = $filePath;
+
+        return $this;
     }
 
     public function getLineReference(): LineReference
@@ -178,9 +180,11 @@ class Comment
         return $this->review;
     }
 
-    public function setReview(CodeReview $review): void
+    public function setReview(CodeReview $review): self
     {
         $this->review = $review;
+
+        return $this;
     }
 
     public function getUser(): User

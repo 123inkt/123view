@@ -12,6 +12,12 @@
                     {% include 'app/review/comment/comment.html.twig' with {comment: entry.comment, detached: false, editCommentForm: null, replyCommentForm: null, visible: true} %}
                 {% endif %}
 
+                {% if entry.reply is not same as (null) %}
+                    <div class="comment__comment-thread">
+                        {% include 'app/review/comment/comment.reply.html.twig' with {reply: entry.reply, indented: false} %}
+                    </div>
+                {% endif %}
+
                 <div class="text-secondary small clearfix">
                     <span class="pe-1 small">
                         {{ activity.review.repository.displayName ~ ':' }}
