@@ -13,6 +13,7 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\ErrorHandler\ErrorHandler;
 
 abstract class AbstractFunctionalTestCase extends WebTestCase
 {
@@ -79,13 +80,28 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      */
     private function restoreExceptionHandler(): void
     {
+        $res = [];
+
         while (true) {
             $previousHandler = set_exception_handler(static fn() => null);
             restore_exception_handler();
+
+            if (is_array($previousHandler) && $previousHandler[0] instanceof ErrorHandler && $previousHandler[1] === 'handleException') {
+                restore_exception_handler();
+                continue;
+            }
+
             if ($previousHandler === null) {
                 break;
             }
+
+            $res[] = $previousHandler;
             restore_exception_handler();
+        }
+
+        $res = array_reverse($res);
+        foreach ($res as $handler) {
+            set_exception_handler($handler);
         }
     }
 }
