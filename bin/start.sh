@@ -50,12 +50,6 @@ fi
 docker compose stop
 
 ##
-# setup network
-#
-docker network rm 123view-network || true
-#docker network create --driver bridge 123view-network || true
-
-##
 # remove cache directory
 #
 rm -rf ${SOURCEDIR}/var/cache
