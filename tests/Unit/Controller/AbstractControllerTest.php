@@ -69,12 +69,6 @@ class AbstractControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        /** @var AbstractController&callable $mock */
-        $mock = $this->getMockForAbstractClass(
-            originalClassName      : AbstractController::class,
-            callOriginalConstructor: false
-        );
-
-        return $mock;
+        return new class() extends AbstractController {};
     }
 }
