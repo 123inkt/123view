@@ -69,6 +69,11 @@ class AbstractControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new class() extends AbstractController {};
+        return new class () extends AbstractController {
+            public function __invoke(): void
+            {
+                // nothing
+            }
+        };
     }
 }
