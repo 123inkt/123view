@@ -50,11 +50,11 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         $this->databaseTool = null;
         $this->entityManager?->close();
         $this->entityManager = null;
+        $this->restoreExceptionHandler();
     }
 
     /**
      * @template T of object
-     *
      * @param class-string<T> $serviceId
      *
      * @return T
@@ -72,4 +72,20 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      * @return class-string[]
      */
     abstract protected function getFixtures(): array;
+
+    /**
+     * After the kernel completes, remove all exception handlers
+     * @link https://github.com/symfony/symfony/issues/53812#issuecomment-1958859357
+     */
+    private function restoreExceptionHandler(): void
+    {
+        while (true) {
+            $previousHandler = set_exception_handler(static fn() => null);
+            restore_exception_handler();
+            if ($previousHandler === null) {
+                break;
+            }
+            restore_exception_handler();
+        }
+    }
 }
