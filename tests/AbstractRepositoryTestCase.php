@@ -90,6 +90,8 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
             $previousHandler = set_exception_handler(static fn() => null);
             restore_exception_handler();
 
+            var_dump($previousHandler);
+
             if (is_array($previousHandler) && $previousHandler[0] instanceof ErrorHandler && $previousHandler[1] === 'handleException') {
                 restore_exception_handler();
                 continue;
