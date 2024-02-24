@@ -11,10 +11,11 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\ErrorHandler\ErrorHandler;
 
 abstract class AbstractRepositoryTestCase extends KernelTestCase
 {
+    use ExceptionHandlerTrait;
+
     protected ?AbstractDatabaseTool $databaseTool;
     protected ?EntityManager        $entityManager;
     protected KernelBrowser         $client;
@@ -77,37 +78,4 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
      * @return class-string[]
      */
     abstract protected function getFixtures(): array;
-
-    /**
-     * After the kernel completes, remove all exception handlers
-     * @link https://github.com/symfony/symfony/issues/53812#issuecomment-1958859357
-     */
-    private function restoreExceptionHandler(): void
-    {
-        $res = [];
-
-        while (true) {
-            $previousHandler = set_exception_handler(static fn() => null);
-            restore_exception_handler();
-
-            var_dump($previousHandler);
-
-            if (is_array($previousHandler) && $previousHandler[0] instanceof ErrorHandler && $previousHandler[1] === 'handleException') {
-                restore_exception_handler();
-                continue;
-            }
-
-            if ($previousHandler === null) {
-                break;
-            }
-
-            $res[] = $previousHandler;
-            restore_exception_handler();
-        }
-
-        $res = array_reverse($res);
-        foreach ($res as $handler) {
-            set_exception_handler($handler);
-        }
-    }
 }

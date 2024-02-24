@@ -13,10 +13,11 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\ErrorHandler\ErrorHandler;
 
 abstract class AbstractFunctionalTestCase extends WebTestCase
 {
+    use ExceptionHandlerTrait;
+
     protected ?AbstractDatabaseTool   $databaseTool;
     protected ?EntityManagerInterface $entityManager;
     protected KernelBrowser           $client;
@@ -27,6 +28,8 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
+        static::assertCount(0, $this->getExceptionHandlers());
+
         parent::setUp();
         $this->client        = static::createClient(['environment' => 'test', 'debug' => 'false']);
         $this->databaseTool  = Assert::isInstanceOf(static::getContainer()->get(DatabaseToolCollection::class), DatabaseToolCollection::class)->get();
@@ -51,7 +54,10 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         $this->databaseTool = null;
         $this->entityManager?->close();
         $this->entityManager = null;
+
+        static::assertCount(1, $this->getExceptionHandlers());
         $this->restoreExceptionHandler();
+        static::assertCount(0, $this->getExceptionHandlers());
     }
 
     /**
@@ -73,37 +79,4 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      * @return class-string[]
      */
     abstract protected function getFixtures(): array;
-
-    /**
-     * After the kernel completes, remove all exception handlers
-     * @link https://github.com/symfony/symfony/issues/53812#issuecomment-1958859357
-     */
-    private function restoreExceptionHandler(): void
-    {
-        $res = [];
-
-        while (true) {
-            $previousHandler = set_exception_handler(static fn() => null);
-            restore_exception_handler();
-
-            var_dump($previousHandler);
-
-            if (is_array($previousHandler) && $previousHandler[0] instanceof ErrorHandler && $previousHandler[1] === 'handleException') {
-                restore_exception_handler();
-                continue;
-            }
-
-            if ($previousHandler === null) {
-                break;
-            }
-
-            $res[] = $previousHandler;
-            restore_exception_handler();
-        }
-
-        $res = array_reverse($res);
-        foreach ($res as $handler) {
-            set_exception_handler($handler);
-        }
-    }
 }
