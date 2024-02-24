@@ -16,8 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractFunctionalTestCase extends WebTestCase
 {
-    use ExceptionHandlerTrait;
-
     protected ?AbstractDatabaseTool   $databaseTool;
     protected ?EntityManagerInterface $entityManager;
     protected KernelBrowser           $client;
@@ -28,9 +26,6 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
-        //$this->restoreExceptionHandler();
-        //static::assertCount(0, $this->getExceptionHandlers(), 'setup: ' . $this->dumpExceptionHandlers());
-
         parent::setUp();
         $this->client        = static::createClient(['environment' => 'test', 'debug' => 'false']);
         $this->databaseTool  = Assert::isInstanceOf(static::getContainer()->get(DatabaseToolCollection::class), DatabaseToolCollection::class)->get();
@@ -55,19 +50,11 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         $this->databaseTool = null;
         $this->entityManager?->close();
         $this->entityManager = null;
-
-        //static::assertCount(1, $this->getExceptionHandlers(), 'teardown: ' . $this->dumpExceptionHandlers());
-        //$this->restoreExceptionHandler();
-        //static::assertCount(0, $this->getExceptionHandlers(), 'teardown: Exception handlers were not restored');
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        $test = true;
     }
 
     /**
      * @template T of object
+     *
      * @param class-string<T> $serviceId
      *
      * @return T
