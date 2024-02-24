@@ -28,6 +28,7 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
+        $this->restoreExceptionHandler();
         static::assertCount(0, $this->getExceptionHandlers(), 'setup: ' . $this->dumpExceptionHandlers());
 
         parent::setUp();
