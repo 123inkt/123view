@@ -10,6 +10,8 @@ jobs:
     test:
         name: Symfony (PHP 8.2)
         runs-on: ubuntu-latest
+        env:
+            SYMFONY_DEPRECATIONS_HELPER: disabled
 
         # Docs: https://docs.github.com/en/actions/using-containerized-services
         services:
@@ -62,7 +64,7 @@ jobs:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
             -   name: Run functional and integration test suite
-                run: SYMFONY_DEPRECATIONS_HELPER=disabled php -dmax_execution_time=300 vendor/bin/phpunit --testsuite functional,integration
+                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite functional,integration
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
