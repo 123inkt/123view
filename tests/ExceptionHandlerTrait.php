@@ -8,6 +8,26 @@ use Symfony\Component\ErrorHandler\ErrorHandler;
 
 trait ExceptionHandlerTrait
 {
+    protected function dumpExceptionHandlers(): string
+    {
+        $result   = [];
+        $handlers = $this->getExceptionHandlers();
+
+        foreach ($handlers as $handler) {
+            if (is_array($handler)) {
+                $result[] = get_class($handler[0]) . '::' . $handler[1];
+            } elseif (is_object($handler)) {
+                $result[] = get_class($handler);
+            } elseif (is_string($handler) === false) {
+                $result[] = gettype($handler);
+            } else {
+                $result[] = $handler;
+            }
+        }
+
+        return implode(', ', $result);
+    }
+
     protected function getExceptionHandlers(): array
     {
         $res = [];
