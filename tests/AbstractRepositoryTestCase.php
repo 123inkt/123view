@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AbstractRepositoryTestCase extends KernelTestCase
 {
+    use ExceptionHandlerTrait;
+
     protected ?AbstractDatabaseTool $databaseTool;
     protected ?EntityManager        $entityManager;
     protected KernelBrowser         $client;
@@ -54,11 +56,11 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
             $this->entityManager->close();
         }
         $this->entityManager = null;
+        $this->restoreExceptionHandler();
     }
 
     /**
      * @template T of object
-     *
      * @param class-string<T> $serviceId
      *
      * @return T
