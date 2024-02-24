@@ -28,7 +28,7 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
-        static::assertCount(0, $this->getExceptionHandlers(), $this->dumpExceptionHandlers());
+        static::assertCount(0, $this->getExceptionHandlers(), 'setup: ' . $this->dumpExceptionHandlers());
 
         parent::setUp();
         $this->client        = static::createClient(['environment' => 'test', 'debug' => 'false']);
@@ -55,9 +55,9 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         $this->entityManager?->close();
         $this->entityManager = null;
 
-        static::assertCount(1, $this->getExceptionHandlers(), $this->dumpExceptionHandlers());
+        static::assertCount(1, $this->getExceptionHandlers(), 'teardown: ' . $this->dumpExceptionHandlers());
         $this->restoreExceptionHandler();
-        static::assertCount(0, $this->getExceptionHandlers(), 'Exception handlers were not restored');
+        static::assertCount(0, $this->getExceptionHandlers(), 'teardown: Exception handlers were not restored');
     }
 
     /**
