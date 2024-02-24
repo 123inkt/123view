@@ -58,7 +58,6 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
 
     /**
      * @template T of object
-     *
      * @param class-string<T> $serviceId
      *
      * @return T
