@@ -46,7 +46,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "fdekker/commonmark-ext-emoji": "^1.0",
-        "fdekker/log-viewer-bundle": "^0.4 || ^0.6",
+        "fdekker/log-viewer-bundle": "^0.4 || ^0.6 || ^0.7",
         "league/commonmark": "^2.3",
         "league/oauth2-client": "^2.7",
         "league/uri": "^7.0",

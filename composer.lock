@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8aa4b752129211c1421676114169a974",
+    "content-hash": "678cadbbd7426aaa52cae1d0783a26a4",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2174,16 +2174,16 @@
         },
         {
             "name": "fdekker/log-viewer-bundle",
-            "version": "v0.6.0",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/symfony-log-viewer-bundle.git",
-                "reference": "211b5fbefbc30e5e287d43cd0bc5b6d23d6a15aa"
+                "reference": "86560e987395123c6ac5d865b556c4c8982ec65e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/211b5fbefbc30e5e287d43cd0bc5b6d23d6a15aa",
-                "reference": "211b5fbefbc30e5e287d43cd0bc5b6d23d6a15aa",
+                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/86560e987395123c6ac5d865b556c4c8982ec65e",
+                "reference": "86560e987395123c6ac5d865b556c4c8982ec65e",
                 "shasum": ""
             },
             "require": {
@@ -2211,12 +2211,13 @@
                 "phpstan/phpstan-phpunit": "^1.3",
                 "phpstan/phpstan-strict-rules": "^1.5",
                 "phpstan/phpstan-symfony": "^1.3",
-                "phpunit/phpunit": "^10.5.6",
+                "phpunit/phpunit": "^10.5 || ^11.0",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.6",
                 "symfony/browser-kit": "^6.0||^7.0",
                 "symfony/console": "^6.0||^7.0",
                 "symfony/css-selector": "^6.0||^7.0",
+                "symfony/http-client": "^6.0||^7.0",
                 "symfony/monolog-bridge": "^6.0||^7.0",
                 "symfony/monolog-bundle": "^3.10",
                 "symfony/phpunit-bridge": "^6.4||^7.0",
@@ -2228,7 +2229,8 @@
                 "twig/twig": "^3.8.0"
             },
             "suggest": {
-                "ext-zip": "To use the zip download feature"
+                "ext-zip": "To use the zip download feature",
+                "symfony/http-client": "Required for the remote hosts feature"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -2257,9 +2259,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frankdekker/symfony-log-viewer-bundle/issues",
-                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v0.6.0"
+                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v0.7.1"
             },
-            "time": "2024-02-08T21:39:14+00:00"
+            "time": "2024-03-03T13:21:07+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -5330,16 +5332,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v7.0.3",
+            "version": "v7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "e915c6684b8e3ae90a4441f6823ebbb40edf0b92"
+                "reference": "47f37af245df8457ea63409fc242b3cc825ce5eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/e915c6684b8e3ae90a4441f6823ebbb40edf0b92",
-                "reference": "e915c6684b8e3ae90a4441f6823ebbb40edf0b92",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/47f37af245df8457ea63409fc242b3cc825ce5eb",
+                "reference": "47f37af245df8457ea63409fc242b3cc825ce5eb",
                 "shasum": ""
             },
             "require": {
@@ -5390,7 +5392,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v7.0.3"
+                "source": "https://github.com/symfony/dependency-injection/tree/v7.0.4"
             },
             "funding": [
                 {
@@ -5406,7 +5408,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-30T08:34:29+00:00"
+            "time": "2024-02-22T20:27:20+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -9485,16 +9487,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v7.0.3",
+            "version": "v7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "1fb79308cb5fc2b44bff6e8af10a5af6812e05b8"
+                "reference": "dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/1fb79308cb5fc2b44bff6e8af10a5af6812e05b8",
-                "reference": "1fb79308cb5fc2b44bff6e8af10a5af6812e05b8",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41",
+                "reference": "dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41",
                 "shasum": ""
             },
             "require": {
@@ -9539,7 +9541,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v7.0.3"
+                "source": "https://github.com/symfony/var-exporter/tree/v7.0.4"
             },
             "funding": [
                 {
@@ -9555,7 +9557,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T15:02:46+00:00"
+            "time": "2024-02-26T10:35:24+00:00"
         },
         {
             "name": "symfony/web-link",
