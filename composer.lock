@@ -5332,16 +5332,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v7.0.3",
+            "version": "v7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "e915c6684b8e3ae90a4441f6823ebbb40edf0b92"
+                "reference": "47f37af245df8457ea63409fc242b3cc825ce5eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/e915c6684b8e3ae90a4441f6823ebbb40edf0b92",
-                "reference": "e915c6684b8e3ae90a4441f6823ebbb40edf0b92",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/47f37af245df8457ea63409fc242b3cc825ce5eb",
+                "reference": "47f37af245df8457ea63409fc242b3cc825ce5eb",
                 "shasum": ""
             },
             "require": {
@@ -5392,7 +5392,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v7.0.3"
+                "source": "https://github.com/symfony/dependency-injection/tree/v7.0.4"
             },
             "funding": [
                 {
@@ -5408,7 +5408,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-30T08:34:29+00:00"
+            "time": "2024-02-22T20:27:20+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -9487,16 +9487,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v7.0.3",
+            "version": "v7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "1fb79308cb5fc2b44bff6e8af10a5af6812e05b8"
+                "reference": "dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/1fb79308cb5fc2b44bff6e8af10a5af6812e05b8",
-                "reference": "1fb79308cb5fc2b44bff6e8af10a5af6812e05b8",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41",
+                "reference": "dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41",
                 "shasum": ""
             },
             "require": {
@@ -9541,7 +9541,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v7.0.3"
+                "source": "https://github.com/symfony/var-exporter/tree/v7.0.4"
             },
             "funding": [
                 {
@@ -9557,7 +9557,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T15:02:46+00:00"
+            "time": "2024-02-26T10:35:24+00:00"
         },
         {
             "name": "symfony/web-link",
@@ -14208,16 +14208,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.55.1",
+            "version": "v1.56.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "11a9d3125c5b93ab4043f0f2e9927fdc55881c17"
+                "reference": "bbb7949ae048363df7c8439abeddef8befd155ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/11a9d3125c5b93ab4043f0f2e9927fdc55881c17",
-                "reference": "11a9d3125c5b93ab4043f0f2e9927fdc55881c17",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/bbb7949ae048363df7c8439abeddef8befd155ce",
+                "reference": "bbb7949ae048363df7c8439abeddef8befd155ce",
                 "shasum": ""
             },
             "require": {
@@ -14280,7 +14280,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.55.1"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.56.0"
             },
             "funding": [
                 {
@@ -14296,7 +14296,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-21T13:41:51+00:00"
+            "time": "2024-03-04T13:36:45+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
