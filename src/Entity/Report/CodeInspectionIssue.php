@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Repository\Report\CodeInspectionIssueRepository;
 
 #[ORM\Entity(repositoryClass: CodeInspectionIssueRepository::class)]
-#[ORM\Index(columns: ['report_id', 'file'], name: 'file_report_idx')]
+#[ORM\Index(name: 'file_report_idx', columns: ['report_id', 'file'])]
 class CodeInspectionIssue
 {
     #[ORM\Id]

@@ -9,7 +9,7 @@ use DR\Review\Doctrine\Type\LineCoverageType;
 use DR\Review\Repository\Report\CodeCoverageFileRepository;
 
 #[ORM\Entity(repositoryClass: CodeCoverageFileRepository::class)]
-#[ORM\Index(columns: ['report_id', 'file'], name: 'report_filepath')]
+#[ORM\Index(name: 'report_filepath', columns: ['report_id', 'file'])]
 class CodeCoverageFile
 {
     #[ORM\Id]

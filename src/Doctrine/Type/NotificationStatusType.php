@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 use DR\Review\Entity\Review\NotificationStatus;
 
@@ -40,7 +41,7 @@ class NotificationStatusType extends Type
         }
 
         if (is_int($value) === false && (is_string($value) === false || is_numeric($value) === false)) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'NotificationStatus']);
+            throw ValueNotConvertible::new($value, 'NotificationStatus');
         }
 
         $intValue = (int)$value;
@@ -64,6 +65,6 @@ class NotificationStatusType extends Type
             return $value->getStatus() === 0 ? null : $value->getStatus();
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'NotificationStatus']);
+        throw InvalidType::new($value, 'NotificationStatus', ['null', 'NotificationStatus']);
     }
 }

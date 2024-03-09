@@ -9,7 +9,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 
 #[ORM\Entity(repositoryClass: RevisionVisibilityRepository::class)]
-#[ORM\Index(columns: ['review_id', 'user_id'], name: 'review_user_idx')]
+#[ORM\Index(name: 'review_user_idx', columns: ['review_id', 'user_id'])]
 class RevisionVisibility
 {
     #[ORM\Id]

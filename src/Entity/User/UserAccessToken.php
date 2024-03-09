@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Repository\User\UserAccessTokenRepository;
 
 #[ORM\Entity(repositoryClass: UserAccessTokenRepository::class)]
-#[ORM\Index(['user_id'], name: 'IDX_USER_ID')]
+#[ORM\Index(name: 'IDX_USER_ID', columns: ['user_id'])]
 #[ORM\UniqueConstraint('IDX_TOKEN', ['token'])]
 class UserAccessToken
 {

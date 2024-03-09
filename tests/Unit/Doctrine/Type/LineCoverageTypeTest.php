@@ -56,7 +56,7 @@ class LineCoverageTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueInvalidValue(): void
     {
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert PHP value');
+        $this->expectExceptionMessage('Could not convert database value');
         $this->type->convertToDatabaseValue('foobar', $this->platform);
     }
 

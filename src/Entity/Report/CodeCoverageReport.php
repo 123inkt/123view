@@ -11,9 +11,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Repository\Report\CodeCoverageReportRepository;
 
 #[ORM\Entity(repositoryClass: CodeCoverageReportRepository::class)]
-#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp')]
-#[ORM\Index(columns: ['repository_id', 'create_timestamp'], name: 'repository_create_timestamp')]
-#[ORM\Index(columns: ['repository_id', 'commit_hash'], name: 'repository_commit_hash')]
+#[ORM\Index(name: 'create_timestamp', columns: ['create_timestamp'])]
+#[ORM\Index(name: 'repository_create_timestamp', columns: ['repository_id', 'create_timestamp'])]
+#[ORM\Index(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
 class CodeCoverageReport
 {
     #[ORM\Id]

@@ -36,7 +36,7 @@ class NotificationStatusTypeTest extends AbstractTestCase
     public function testConvertToPHPValueInvalidDataTypeShouldThrowException(): void
     {
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert PHP value \'foobar\' to type type_notification_status.');
+        $this->expectExceptionMessage('Could not convert database value');
         $this->statusType->convertToPHPValue('foobar', $this->createMock(AbstractPlatform::class));
     }
 
@@ -88,7 +88,7 @@ class NotificationStatusTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueInvalidTypeShouldThrowException(): void
     {
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type type_notification_status.');
+        $this->expectExceptionMessage('Could not convert PHP value of type');
         $this->statusType->convertToDatabaseValue(new stdClass(), $this->createMock(AbstractPlatform::class));
     }
 

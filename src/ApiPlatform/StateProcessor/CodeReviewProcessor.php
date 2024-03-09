@@ -12,7 +12,7 @@ use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Utils\Assert;
 
 /**
- * @implements ProcessorInterface<CodeReview>
+ * @implements ProcessorInterface<CodeReview, CodeReview>
  */
 class CodeReviewProcessor implements ProcessorInterface
 {

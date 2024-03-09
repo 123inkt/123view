@@ -22,42 +22,37 @@ use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
-return static function (ContainerConfigurator $containerConfigurator, DoctrineConfig $doctrineConfig): void {
-    $containerConfigurator->extension(
-        'doctrine',
-        [
-            'dbal' => [
-                'url'            => '%env(resolve:DATABASE_URL)%',
-                'server_version' => '%env(MYSQL_VERSION)%',
-                'mapping_types'  => [
-                    'enum' => 'string'
-                ],
-                'types'          => [
-                    AuthenticationType::TYPE            => AuthenticationType::class,
-                    CodeReviewStateType::TYPE           => CodeReviewStateType::class,
-                    CodeReviewType::TYPE                => CodeReviewType::class,
-                    CodeReviewerStateType::TYPE         => CodeReviewerStateType::class,
-                    ColorThemeType::TYPE                => ColorThemeType::class,
-                    CommentStateType::TYPE              => CommentStateType::class,
-                    DiffAlgorithmType::TYPE             => DiffAlgorithmType::class,
-                    FilterType::TYPE                    => FilterType::class,
-                    FrequencyType::TYPE                 => FrequencyType::class,
-                    LineCoverageType::TYPE              => LineCoverageType::class,
-                    MailThemeType::TYPE                 => MailThemeType::class,
-                    NotificationSendType::TYPE          => NotificationSendType::class,
-                    NotificationStatusType::TYPE        => NotificationStatusType::class,
-                    RepositoryGitType::TYPE             => RepositoryGitType::class,
-                    SpaceSeparatedStringValueType::TYPE => SpaceSeparatedStringValueType::class,
-                    UriType::TYPE                       => UriType::class,
-                ]
-            ]
-        ]
-    );
+return static function (ContainerConfigurator $containerConfigurator, DoctrineConfig $config): void {
+    $dbal = $config->dbal();
+    $orm  = $config->orm();
 
-    $doctrineConfig->orm()->enableLazyGhostObjects(false);
-    $doctrineConfig->orm()->autoGenerateProxyClasses(true);
-    $doctrineConfig->orm()->defaultEntityManager('default');
-    $em = $doctrineConfig->orm()->entityManager('default');
+    $dbal->connection('default')
+        ->url('%env(resolve:DATABASE_URL)%')
+        ->serverVersion('%env(MYSQL_VERSION)%')
+        ->mappingType('enum', 'string');
+
+    $dbal->type(AuthenticationType::TYPE)->class(AuthenticationType::class);
+    $dbal->type(CodeReviewStateType::TYPE)->class(CodeReviewStateType::class);
+    $dbal->type(CodeReviewType::TYPE)->class(CodeReviewType::class);
+    $dbal->type(CodeReviewerStateType::TYPE)->class(CodeReviewerStateType::class);
+    $dbal->type(ColorThemeType::TYPE)->class(ColorThemeType::class);
+    $dbal->type(CommentStateType::TYPE)->class(CommentStateType::class);
+    $dbal->type(DiffAlgorithmType::TYPE)->class(DiffAlgorithmType::class);
+    $dbal->type(FilterType::TYPE)->class(FilterType::class);
+    $dbal->type(FrequencyType::TYPE)->class(FrequencyType::class);
+    $dbal->type(LineCoverageType::TYPE)->class(LineCoverageType::class);
+    $dbal->type(MailThemeType::TYPE)->class(MailThemeType::class);
+    $dbal->type(NotificationSendType::TYPE)->class(NotificationSendType::class);
+    $dbal->type(NotificationStatusType::TYPE)->class(NotificationStatusType::class);
+    $dbal->type(RepositoryGitType::TYPE)->class(RepositoryGitType::class);
+    $dbal->type(SpaceSeparatedStringValueType::TYPE)->class(SpaceSeparatedStringValueType::class);
+    $dbal->type(UriType::TYPE)->class(UriType::class);
+
+    $orm->enableLazyGhostObjects(true);
+    $orm->autoGenerateProxyClasses(true);
+    $orm->defaultEntityManager('default');
+
+    $em = $orm->entityManager('default');
     $em->reportFieldsWhereDeclared(true);
     $em->autoMapping(true);
     $em->connection('default');
