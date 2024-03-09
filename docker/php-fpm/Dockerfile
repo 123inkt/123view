@@ -1,4 +1,4 @@
-ARG VERSION=8.1
+ARG VERSION=8.3
 
 ###################################################################################
 # BASE                                                                            #
@@ -8,7 +8,7 @@ ARG VERSION=8.1
 FROM php:${VERSION}-fpm-bullseye AS base
 
 # Install packages and remove libldap due to a known vulnerability and upgrade openssl
-RUN apt-get update && apt-get purge -y libldap-2.4-2 \
+RUN apt-get update \
     && apt-get install -y \
     cron \
     curl \
@@ -31,15 +31,11 @@ RUN apt-get update && apt-get purge -y libldap-2.4-2 \
 
 RUN pecl channel-update pecl.php.net && \
     pecl install apcu && \
-    pecl install amqp-1.11.0 && \
+    pecl install amqp && \
     docker-php-ext-enable apcu && \
     docker-php-ext-enable amqp && \
-    docker-php-source delete
-
-RUN docker-php-ext-install \
-    opcache \
-    pdo_mysql \
-    intl
+    docker-php-source delete && \
+    docker-php-ext-install opcache pdo_mysql intl
 
 ## install git 2.41.0
 RUN curl -sLO https://github.com/git/git/archive/refs/tags/v2.41.0.tar.gz && \
@@ -75,7 +71,7 @@ WORKDIR /app
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
 ## copy production cron
-COPY ./docker/php-fpm/cron/notifications /etc/cron.d/notifications
+COPY ./docker/php-fpm/cron/crontab /etc/cron.d/crontab
 RUN chmod -R 644 /etc/cron.d/
 
 COPY ./docker/php-fpm/conf/production.ini /usr/local/etc/php/conf.d/production.ini
@@ -85,29 +81,18 @@ ENTRYPOINT ["/run/entrypoint.sh"]
 
 
 # syntax=docker/dockerfile:experimental
-FROM base AS test
-ENV APP_ENV=test
-WORKDIR /app
-
-RUN pecl install \
-    pcov \
-    && docker-php-ext-enable pcov
-
-## copy test/dev ini settings
-RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-
-COPY ./docker/php-fpm/conf/development.ini /usr/local/etc/php/conf.d/development.ini
-
-
-# syntax=docker/dockerfile:experimental
-FROM test AS dev
+FROM base AS dev
 ENV APP_ENV=dev
 WORKDIR /app
 
-RUN pecl install \
-    xdebug \
-    && docker-php-ext-enable xdebug
+RUN pecl install pcov && \
+    pecl install xdebug && \
+    docker-php-ext-enable pcov && \
+    docker-php-ext-enable xdebug
 
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+
+COPY ./docker/php-fpm/conf/development.ini /usr/local/etc/php/conf.d/development.ini
 COPY ./docker/php-fpm/run/entrypoint.sh /run/entrypoint.sh
 RUN chmod +x /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
