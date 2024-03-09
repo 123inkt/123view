@@ -36,7 +36,7 @@ class CodeReviewProcessorTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be instance of ' . CodeReview::class);
-        $this->reviewProcessor->process('foobar', new Patch());
+        $this->reviewProcessor->process('foobar', new Patch()); // @phpstan-ignore-line
     }
 
     public function testProcessShouldNotEmitEvent(): void
