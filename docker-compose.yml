@@ -13,6 +13,11 @@ services:
             - ${NGINX_SSL_PORT:-8443}:443
         volumes:
             - ./public:/app/public
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./docker/nginx/error/500.html:/usr/share/nginx/html/500.html:ro
+            - ./docker/nginx/error/502.html:/usr/share/nginx/html/502.html:ro
+            - ./docker/nginx/error/503.html:/usr/share/nginx/html/503.html:ro
+            - ./docker/nginx/error/504.html:/usr/share/nginx/html/504.html:ro
         depends_on:
             - php-fpm
 
