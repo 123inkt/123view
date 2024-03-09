@@ -120,9 +120,6 @@
     "firebase/php-jwt": {
         "version": "v5.5.1"
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.12"
-    },
     "guzzlehttp/guzzle": {
         "version": "7.4.3"
     },
@@ -131,9 +128,6 @@
     },
     "guzzlehttp/psr7": {
         "version": "2.2.1"
-    },
-    "laminas/laminas-code": {
-        "version": "4.5.1"
     },
     "league/oauth2-client": {
         "version": "2.6.1"
