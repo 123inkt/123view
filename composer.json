@@ -54,7 +54,7 @@
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.1",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "scienta/doctrine-json-functions": "^5.2",
+        "scienta/doctrine-json-functions": "^5.2 || ^6.0",
         "spatie/commonmark-highlighter": "^3.0",
         "symfony/amqp-messenger": "^7.0",
         "symfony/asset": "^7.0",
