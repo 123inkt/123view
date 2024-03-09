@@ -4,8 +4,10 @@ version: '3'
 
 services:
     nginx:
-        build:
-            target: prod
+        volumes:
+            - ./docker/ssl/production/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
+            - ./docker/ssl/production/production.crt:/etc/ssl/certs/123view-cert.crt:ro
+            - ./docker/ssl/production/production.key:/etc/ssl/private/123view-cert.key:ro
         restart: unless-stopped
 
     php-fpm:
