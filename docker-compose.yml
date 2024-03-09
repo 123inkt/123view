@@ -86,11 +86,7 @@ services:
 
     mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}
-        build:
-            args:
-                VERSION: $MERCURE_VERSION
-            context: .
-            dockerfile: ./docker/mercure/Dockerfile
+        image: dunglas/mercure:${MERCURE_VERSION}
         environment:
             GLOBAL_OPTIONS: |
                 auto_https    off
