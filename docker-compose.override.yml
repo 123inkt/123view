@@ -4,8 +4,10 @@ version: '3'
 
 services:
     nginx:
-        build:
-            target: dev
+        volumes:
+            - ./docker/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
+            - ./docker/ssl/development/development-self-signed.crt:/etc/ssl/certs/123view-cert.crt:ro
+            - ./docker/ssl/development/development-self-signed.key:/etc/ssl/private/123view-cert.key:ro
 
     php-fpm:
         build:
@@ -39,6 +41,7 @@ services:
             - ${HIGHLIGHTJS_PORT}:${HIGHLIGHTJS_PORT}
 
     mercure:
-        build:
-            target: dev
+        volumes:
+            - ./docker/ssl/development/development-self-signed.crt:/etc/ssl/certs/123view-cert.crt:ro
+            - ./docker/ssl/development/development-self-signed.key:/etc/ssl/private/123view-cert.key:ro
         command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev

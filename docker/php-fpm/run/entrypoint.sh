@@ -4,7 +4,7 @@ set -e
 ##
 # Apply custom php memory limit setting
 #
-sed -i "s/%PHP_MEMORY_LIMIT%/${PHP_MEMORY_LIMIT}/g" /usr/local/etc/php/conf.d/default.ini
+sed -i "s/memory_limit=2G/memory_limit=${PHP_MEMORY_LIMIT}/g" /usr/local/etc/php/conf.d/default.ini
 
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader --no-scripts
