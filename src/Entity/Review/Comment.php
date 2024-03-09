@@ -12,7 +12,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
-#[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
+#[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
 class Comment
 {
     #[ORM\Id]

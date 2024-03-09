@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 
 #[ORM\Entity(RuleNotificationRepository::class)]
-#[ORM\Index(['rule_id'], name: 'IDX_RULE_ID')]
+#[ORM\Index(name: 'IDX_RULE_ID', columns: ['rule_id'])]
 class RuleNotification
 {
     #[ORM\Id]

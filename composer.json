@@ -44,7 +44,7 @@
         "digitalrevolution/utils": "^1.0",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.12",
+        "doctrine/orm": "^2.12 || ^3.1",
         "fdekker/commonmark-ext-emoji": "^1.0",
         "fdekker/log-viewer-bundle": "^0.7",
         "league/commonmark": "^2.3",

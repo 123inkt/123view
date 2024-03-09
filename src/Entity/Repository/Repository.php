@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Constraint;
 #[ApiFilter(BooleanFilter::class, properties: ['active'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'createTimestamp'], arguments: ['orderParameterName' => 'order'])]
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
-#[ORM\Index(columns: ['active'], name: 'active_idx')]
+#[ORM\Index(name: 'active_idx', columns: ['active'])]
 class Repository implements EquatableInterface
 {
     #[ORM\Id]
