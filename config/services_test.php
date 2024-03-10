@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->load('DR\\Review\\Tests\\DataFixtures\\', '../../../tests/DataFixtures/*')->tag('doctrine.fixture.orm');
+    $services->load('DR\\Review\\Tests\\DataFixtures\\', '../tests/DataFixtures/*')->tag('doctrine.fixture.orm');
 
     // make these services public to allow mocking in E2E/Integration test
     $services->get(RuleRepository::class)->public();
