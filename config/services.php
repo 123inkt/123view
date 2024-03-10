@@ -46,6 +46,7 @@ use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
 use DR\Review\Service\Health\DoctrineDbal;
+use DR\Review\Service\Health\MercureHub;
 use DR\Review\Service\Health\OpcacheInternedStrings;
 use DR\Review\Service\Notification\RuleNotificationTokenGenerator;
 use DR\Review\Service\Parser\DiffFileParser;
@@ -228,4 +229,5 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(DoctrineDbal::class)->tag('liip_monitor.check');
     $services->set(OpcacheInternedStrings::class)->tag('liip_monitor.check');
+    $services->set(MercureHub::class)->tag('liip_monitor.check');
 };
