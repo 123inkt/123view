@@ -8,12 +8,15 @@ liip_monitor:
           warning: 70
           critical: 90
 
-        # Checks to see if the APC memory usage is below warning/critical thresholds
+        disk_usage:
+          warning:              70
+          critical:             90
+          path:                 '%kernel.cache_dir%'
+
         apc_memory:
           warning: 70
           critical: 90
 
-        # Checks to see if the APC fragmentation is below warning/critical thresholds
         apc_fragmentation:
           warning: 70
           critical: 90
