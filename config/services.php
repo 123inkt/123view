@@ -45,6 +45,9 @@ use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
+use DR\Review\Service\Health\DoctrineDbal;
+use DR\Review\Service\Health\MercureHub;
+use DR\Review\Service\Health\OpcacheInternedStrings;
 use DR\Review\Service\Notification\RuleNotificationTokenGenerator;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
@@ -223,4 +226,8 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$gitlabApplicationSecret', '%env(GITLAB_APPLICATION_SECRET)%');
     $services->set(GenericProvider::class . ' $gitlabOAuth2Provider', GenericProvider::class)
         ->factory([service(OAuth2ProviderFactory::class), 'create']);
+
+    $services->set(DoctrineDbal::class)->tag('liip_monitor.check');
+    $services->set(OpcacheInternedStrings::class)->tag('liip_monitor.check');
+    $services->set(MercureHub::class)->tag('liip_monitor.check');
 };
