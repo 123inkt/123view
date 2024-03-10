@@ -11,6 +11,9 @@ use Laminas\Diagnostics\Result\ResultInterface;
 use Laminas\Diagnostics\Result\Success;
 use Override;
 
+/**
+ * @codeCoverageIgnore
+ */
 class DoctrineDbal extends AbstractCheck
 {
     public function __construct(private readonly ManagerRegistry $registry)

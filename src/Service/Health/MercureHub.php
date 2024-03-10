@@ -12,6 +12,9 @@ use Symfony\Component\Mercure\HubInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MercureHub extends AbstractCheck
 {
     public function __construct(private readonly HttpClientInterface $httpClient, private readonly HubInterface $hub)

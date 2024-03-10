@@ -11,6 +11,9 @@ use Laminas\Diagnostics\Result\Success;
 use Laminas\Diagnostics\Result\Warning;
 use Override;
 
+/**
+ * @codeCoverageIgnore relies on native opcache_get_status
+ */
 class OpcacheInternedStrings extends AbstractCheck
 {
     private const FAILURE = 5 * 1024;
