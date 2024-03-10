@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Health;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Utils\Assert;
 use Laminas\Diagnostics\Check\AbstractCheck;
@@ -20,11 +21,14 @@ class DoctrineDbal extends AbstractCheck
     {
     }
 
+    /**
+     * @throws Exception
+     */
     #[Override]
     public function check(): ResultInterface
     {
-        $connection = $this->registry->getConnection();
-        $query      = Assert::isInstanceOf($connection->getDatabasePlatform(), AbstractPlatform::class)->getDummySelectSQL();
+        $connection = Assert::isInstanceOf($this->registry->getConnection(), Connection::class);
+        $query      = $connection->getDatabasePlatform()->getDummySelectSQL();
 
         $connection->fetchOne($query);
 
