@@ -1,0 +1,26 @@
+liip_monitor:
+  enable_controller: true
+  checks:
+    groups:
+      default:
+        php_extensions: [ amqp, intl, iconv, pdo_mysql, json ]
+        opcache_memory:
+          warning: 70
+          critical: 90
+
+        # Checks to see if the APC memory usage is below warning/critical thresholds
+        apc_memory:
+          warning: 70
+          critical: 90
+
+        # Checks to see if the APC fragmentation is below warning/critical thresholds
+        apc_fragmentation:
+          warning: 70
+          critical: 90
+
+        # Connection name or an array of connection names
+        doctrine_dbal: 'default'
+
+        rabbit_mq:
+          local:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'

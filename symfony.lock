@@ -132,6 +132,18 @@
     "league/oauth2-client": {
         "version": "2.6.1"
     },
+    "liip/monitor-bundle": {
+        "version": "2.22",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.6",
+            "ref": "02c7cd93304dead890f9042fc2670dd9b0e0c091"
+        },
+        "files": [
+            "./config/packages/monitor.yaml"
+        ]
+    },
     "liip/test-fixtures-bundle": {
         "version": "2.4.1"
     },

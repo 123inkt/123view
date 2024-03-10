@@ -50,6 +50,7 @@
         "league/commonmark": "^2.4",
         "league/oauth2-client": "^2.7",
         "league/uri": "^7.0",
+        "liip/monitor-bundle": "^2.22",
         "nesbot/carbon": "^3.0",
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.1",
