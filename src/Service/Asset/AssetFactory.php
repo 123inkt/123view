@@ -10,16 +10,10 @@ class AssetFactory
 {
     public function create(User $user, string $mimeType, string $binaryData): Asset
     {
-        // create stream
-        /** @var resource $stream */
-        $stream = fopen('php://memory', 'rb+');
-        fwrite($stream, $binaryData);
-        rewind($stream);
-
         $asset = new Asset();
         $asset->setUser($user);
         $asset->setMimeType($mimeType);
-        $asset->setData($stream);
+        $asset->setData($binaryData);
         $asset->setCreateTimestamp(time());
 
         return $asset;

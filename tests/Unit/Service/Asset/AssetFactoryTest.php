@@ -27,7 +27,7 @@ class AssetFactoryTest extends AbstractTestCase
 
         static::assertSame($user, $asset->getUser());
         static::assertSame('mime-type', $asset->getMimeType());
-        static::assertSame('data', stream_get_contents(Assert::notNull($asset->getData())));
+        static::assertSame('data', $asset->getData());
         static::assertEqualsWithDelta(time(), $asset->getCreateTimestamp(), 10);
     }
 }

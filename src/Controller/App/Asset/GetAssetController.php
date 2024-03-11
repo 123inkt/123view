@@ -16,9 +16,6 @@ class GetAssetController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(#[MapEntity] Asset $asset): Response
     {
-        /** @var resource $data */
-        $data = $asset->getData();
-
-        return (new Response((string)stream_get_contents($data), 200, ['Content-Type' => $asset->getMimeType()]))->setPublic();
+        return (new Response($asset->getData(), 200, ['Content-Type' => $asset->getMimeType()]))->setPublic();
     }
 }
