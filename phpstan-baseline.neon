@@ -6,6 +6,11 @@ parameters:
 			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
 
 		-
+			message: "#^Property DR\\\\Review\\\\Entity\\\\Asset\\\\Asset\\:\\:\\$data type mapping mismatch\\: database can contain resource but property expects string\\.$#"
+			count: 1
+			path: src/Entity/Asset/Asset.php
+
+		-
 			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
