@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\Asset;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\Asset\AssetFactory;
 use DR\Review\Tests\AbstractTestCase;
-use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AssetFactory::class)]
