@@ -26,9 +26,8 @@ class Asset
     #[ORM\Column(type: 'string', length: 255)]
     private string $mimeType;
 
-    /** @var resource|null */
     #[ORM\Column(type: 'binary', length: 16777215)]
-    private $data = null;
+    private string $data;
 
     #[ORM\Column(type: 'integer')]
     private int $createTimestamp;
@@ -60,18 +59,12 @@ class Asset
         return $this;
     }
 
-    /**
-     * @return resource|null
-     */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }
 
-    /**
-     * @param resource|null $data
-     */
-    public function setData($data): Asset
+    public function setData(string $data): Asset
     {
         $this->data = $data;
 
