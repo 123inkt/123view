@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1413a5da657d8ef66ace6dabbe5161d",
+    "content-hash": "9e2393b5789648ce96e29f837c144175",
     "packages": [
         {
             "name": "api-platform/core",
@@ -565,16 +565,16 @@
         },
         {
             "name": "digitalrevolution/symfony-trace-bundle",
-            "version": "v0.5.0",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/symfony-trace-bundle.git",
-                "reference": "7854acaf30e74718130b997f5771e440e0e22ecf"
+                "reference": "7d84ab3aa2604ee4085d43eddd4c941a62a0c99d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/symfony-trace-bundle/zipball/7854acaf30e74718130b997f5771e440e0e22ecf",
-                "reference": "7854acaf30e74718130b997f5771e440e0e22ecf",
+                "url": "https://api.github.com/repos/123inkt/symfony-trace-bundle/zipball/7d84ab3aa2604ee4085d43eddd4c941a62a0c99d",
+                "reference": "7d84ab3aa2604ee4085d43eddd4c941a62a0c99d",
                 "shasum": ""
             },
             "require": {
@@ -596,7 +596,7 @@
                 "phpstan/phpstan-phpunit": "^1.3",
                 "phpstan/phpstan-strict-rules": "^1.5",
                 "phpstan/phpstan-symfony": "^1.3",
-                "phpunit/phpunit": "^10.4",
+                "phpunit/phpunit": "^10.4 || ^11.0",
                 "ramsey/uuid": "^4.7",
                 "roave/security-advisories": "dev-latest",
                 "sentry/sentry": "^4.2",
@@ -634,9 +634,9 @@
             "description": "Add tracing to your Symfony application. ",
             "support": {
                 "issues": "https://github.com/123inkt/symfony-trace-bundle/issues",
-                "source": "https://github.com/123inkt/symfony-trace-bundle/tree/v0.5.0"
+                "source": "https://github.com/123inkt/symfony-trace-bundle/tree/v0.6.0"
             },
-            "time": "2024-02-26T19:31:28+00:00"
+            "time": "2024-03-15T07:18:45+00:00"
         },
         {
             "name": "digitalrevolution/symfony-validation-shorthand",
