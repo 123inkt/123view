@@ -76,8 +76,9 @@ jobs:
             -   name: Upload coverage to codecov
                 uses: codecov/codecov-action@v4
                 with:
+                    exclude: resources,tests
                     token: ${{ secrets.CODECOV_TOKEN }}
-                    files: ./.coverage/coverage.xml
+                    directory: ./.coverage
 
             -   name: Check coverage
                 run: test ! -f ./.coverage/coverage.xml || php vendor/bin/phpfci inspect ./.coverage/coverage.xml --exit-code-on-failure --reportText
