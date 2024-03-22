@@ -140,7 +140,6 @@ class Discussions implements LoggerAwareInterface
 
     /**
      * @codeCoverageIgnore
-     * @return array<int|string, mixed>
      * @throws Throwable
      */
     private function responseToJson(ResponseInterface $response): array
