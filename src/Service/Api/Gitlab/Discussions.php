@@ -142,7 +142,7 @@ class Discussions implements LoggerAwareInterface
      * @codeCoverageIgnore
      * @throws Throwable
      */
-    private function responseToJson(ResponseInterface $response): array
+    private function responseToJson(ResponseInterface $response): array // phpcs:ignore
     {
         try {
             return $response->toArray();
