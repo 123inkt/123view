@@ -6,11 +6,16 @@ namespace DR\Review\Service\Api\Gitlab;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Utils\Arrays;
 use Generator;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-class Discussions
+class Discussions implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(private readonly HttpClientInterface $client)
     {
     }
@@ -70,10 +75,11 @@ class Discussions
             'POST',
             sprintf('projects/%d/merge_requests/%d/discussions', $projectId, $mergeRequestIId),
             ['body' => Arrays::removeNull($postBody)]
-        )->toArray();
+        );
 
-        $discussionId = (string)$response['id'];
-        $noteId       = (string)$response['notes'][0]['id'];
+        $data = $this->responseToJson($response);
+        $discussionId = (string)$data['id'];
+        $noteId = (string)$data['notes'][0]['id'];
 
         return sprintf('%s:%s:%s', $mergeRequestIId, $discussionId, $noteId);
     }
@@ -101,9 +107,10 @@ class Discussions
             'POST',
             sprintf('projects/%d/merge_requests/%d/discussions/%s/notes', $projectId, $mergeRequestIId, $discussionId),
             ['query' => ['body' => $message]]
-        )->toArray();
+        );
+        $data     = $this->responseToJson($response);
 
-        return sprintf('%s:%s:%s', $mergeRequestIId, $discussionId, $response['id']);
+        return sprintf('%s:%s:%s', $mergeRequestIId, $discussionId, $data['id']);
     }
 
     /**
@@ -129,5 +136,19 @@ class Discussions
             'DELETE',
             sprintf('projects/%d/merge_requests/%d/discussions/%s/notes/%s', $projectId, $mergeRequestIId, $discussionId, $noteId)
         );
+    }
+
+    /**
+     * @codeCoverageIgnore
+     * @throws Throwable
+     */
+    private function responseToJson(ResponseInterface $response): array // phpcs:ignore
+    {
+        try {
+            return $response->toArray();
+        } catch (Throwable $exception) {
+            $this->logger?->warning('Gitlab discussion api failure: {data}', ['data' => $response->getContent(false)]);
+            throw $exception;
+        }
     }
 }

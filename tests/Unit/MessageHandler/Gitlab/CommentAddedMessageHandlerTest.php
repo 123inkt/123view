@@ -156,7 +156,6 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $this->commentService->expects(self::once())->method('create')->with($api, $comment, 12345)->willThrowException(new RuntimeException('foo'));
         $this->commentService->expects(self::once())->method('updateExtReferenceId')->with($api, $comment, 12345);
 
-        $this->expectException(RuntimeException::class);
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
 }

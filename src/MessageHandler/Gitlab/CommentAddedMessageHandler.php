@@ -59,7 +59,7 @@ class CommentAddedMessageHandler implements LoggerAwareInterface
             $this->commentService->create($api, $comment, $mergeRequestIId);
         } catch (Throwable $exception) {
             $this->commentService->updateExtReferenceId($api, $comment, $mergeRequestIId);
-            throw $exception;
+            $this->logger?->warning("Gitlab comment added but with error", ['exception' => $exception]);
         }
     }
 }

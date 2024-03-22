@@ -24,3 +24,8 @@ parameters:
 			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:matchRequest\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Router/ReviewRouter.php
+
+		-
+			message: "#^Method DR\\\\Review\\\\Service\\\\Api\\\\Gitlab\\\\Discussions\\:\\:responseToJson\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/Api/Gitlab/Discussions.php
