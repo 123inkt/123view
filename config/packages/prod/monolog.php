@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use Symfony\Config\MonologConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 /**
  * Setup summary:
@@ -39,28 +38,26 @@ return static function (MonologConfig $monolog) {
         ->maxFiles(1)
         ->channels()->elements(["deprecation"]);
 
-    if ((string)env('ERROR_MAIL') !== '') {
-        // error mailer
-        $monolog->handler('main')
-            ->type('fingers_crossed')
-            ->level('error')
-            ->handler('deduplicated')
-            ->channels()->elements(['!console']);
-        $monolog->handler('deduplicated')
-            ->type('deduplication')
-            ->handler('symfony_mailer');
-        $monolog->handler('symfony_mailer')
-            ->type('symfony_mailer')
-            ->fromEmail('%env(MAILER_SENDER)%')
-            ->toEmail(['%env(ERROR_MAIL)%'])
-            ->subject('[123view] %%message%%')
-            ->level('error')
-            ->formatter('monolog.formatter.html')
-            ->contentType('text/html');
-
-        $monolog->handler('main')->excludedHttpCode()->code(403)->code(404);
-        $monolog->handler('main')->processPsr3Messages()->removeUsedContextFields(true);
-    }
+    // error mailer
+    $monolog->handler('main')
+        ->type('fingers_crossed')
+        ->level('error')
+        ->handler('deduplicated')
+        ->channels()->elements(['!console']);
+    $monolog->handler('main')->excludedHttpCode(403);
+    $monolog->handler('main')->excludedHttpCode(404);
+    $monolog->handler('main')->excludedHttpCode(405);
+    $monolog->handler('deduplicated')
+        ->type('deduplication')
+        ->handler('symfony_mailer');
+    $monolog->handler('symfony_mailer')
+        ->type('symfony_mailer')
+        ->fromEmail('%env(MAILER_SENDER)%')
+        ->toEmail(['%env(ERROR_MAIL)%'])
+        ->subject('[123view] %%message%%')
+        ->level('error')
+        ->formatter('monolog.formatter.html')
+        ->contentType('text/html');
 
     $monolog->handler('docker')
         ->type('error_log')
@@ -73,6 +70,7 @@ return static function (MonologConfig $monolog) {
         ->processPsr3Messages(false)
         ->channels()->elements(["!event", "!deprecation", "!console"]);
 
+    $monolog->handler('main')->processPsr3Messages()->removeUsedContextFields(true);
     $monolog->handler('info')->processPsr3Messages()->removeUsedContextFields(true);
     $monolog->handler('error_fingers_crossed')->processPsr3Messages()->removeUsedContextFields(true);
     $monolog->handler('deprecations')->processPsr3Messages()->removeUsedContextFields(true);
