@@ -12,7 +12,14 @@
                 *
             {%- endif -%}
         </span>
-        <span class="fileName">{{ file.filename }}</span>
+
+        {%- if commit.review != null -%}
+            <a class="fileName"
+               href="{{ app_absolute_url ~ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: commit.review, filePath: file.pathname}) }}"
+               target="review.{{ commit.review.id }}">{{ file.filename }}</a>
+        {% else %}
+            <span class="fileName">{{ file.filename }}</span>
+        {%- endif -%}
         <span class="directoryName">{{ file.dirname }}</span>
     </div>
 
