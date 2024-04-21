@@ -40,7 +40,7 @@ class Rule
     private Collection $recipients;
 
     /** @phpstan-var Collection<int, Filter> */
-    #[ORM\OneToMany(targetEntity: Filter::class, mappedBy: 'rule', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Filter::class, mappedBy: 'rule', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $filters;
 
     /** @phpstan-var Collection<int, RuleNotification> */
