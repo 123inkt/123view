@@ -347,4 +347,5 @@ return [
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
     'logs'                                        => 'Logs',
+    'mark.all.as.read'                            => 'Mark all as read',
 ];
