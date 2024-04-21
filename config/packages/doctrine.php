@@ -19,10 +19,9 @@ use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Doctrine\Type\SpaceSeparatedStringValueType;
 use DR\Review\Doctrine\Type\UriType;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\DoctrineConfig;
 
-return static function (ContainerConfigurator $containerConfigurator, DoctrineConfig $config): void {
+return static function (DoctrineConfig $config): void {
     $dbal = $config->dbal();
     $orm  = $config->orm();
 

@@ -16,7 +16,7 @@ class Filter
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'filters')]
+    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist'], inversedBy: 'filters')]
     #[ORM\JoinColumn(nullable: false)]
     private Rule $rule;
 
