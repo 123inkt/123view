@@ -36,18 +36,18 @@ class Rule
     private Collection $repositories;
 
     /** @phpstan-var Collection<int, Recipient> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Recipient::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Recipient::class, mappedBy: 'rule', cascade: ['persist', 'remove'])]
     private Collection $recipients;
 
     /** @phpstan-var Collection<int, Filter> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: Filter::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Filter::class, mappedBy: 'rule', cascade: ['persist', 'remove'])]
     private Collection $filters;
 
     /** @phpstan-var Collection<int, RuleNotification> */
-    #[ORM\OneToMany(mappedBy: 'rule', targetEntity: RuleNotification::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: RuleNotification::class, mappedBy: 'rule', cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
-    #[ORM\OneToOne(mappedBy: 'rule', targetEntity: RuleOptions::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: RuleOptions::class, mappedBy: 'rule', cascade: ['persist', 'remove'])]
     private ?RuleOptions $ruleOptions;
 
     public function __construct()
