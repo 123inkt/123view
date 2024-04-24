@@ -52,6 +52,19 @@
     padding: 0;
 }
 
+.review-file-tree--directory.collapsed > .review-file-tree--files,
+.review-file-tree--directory.collapsed > .review-file-tree--directories {
+    display: none;
+}
+
+.review-file-tree--directory-label {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .review-file-tree--files {
     color: var(--review-file-tree-file-color);
     font-size: 0.9rem;
