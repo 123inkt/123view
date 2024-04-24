@@ -48,10 +48,12 @@ export default class extends Controller<HTMLElement> {
 
         if (target.dataset.seenStatus === '1') {
             target.classList.remove('seen');
+            Assert.notNull(parentFile.querySelector<HTMLElement>('[data-role="file-tree-url"]')).dataset.unseen = '1';
             parentFile.classList.add('review-file-tree--unseen');
             target.dataset.seenStatus = '0';
         } else {
             target.classList.add('seen');
+            Assert.notNull(parentFile.querySelector<HTMLElement>('[data-role="file-tree-url"]')).dataset.unseen = '0';
             parentFile.classList.remove('review-file-tree--unseen');
             target.dataset.seenStatus = '1';
         }
