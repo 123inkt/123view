@@ -14,6 +14,7 @@ export default class extends Controller<HTMLElement> {
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
     private reviewId: number             = 0;
+    private isNavigating: boolean        = false;
 
     public connect(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');
@@ -68,7 +69,7 @@ export default class extends Controller<HTMLElement> {
     }
 
     public onNavigate(event: KeyboardEvent): void {
-        if (event.altKey === false || event.shiftKey || ['ArrowUp', 'ArrowDown'].includes(event.key) === false) {
+        if (event.altKey === false || event.shiftKey || this.isNavigating || ['ArrowUp', 'ArrowDown'].includes(event.key) === false) {
             return;
         }
 
@@ -84,6 +85,7 @@ export default class extends Controller<HTMLElement> {
         for (; i < files.length; i++) {
             const file = files[i];
             if (file !== undefined && (event.ctrlKey === false || file.dataset.unseen === '1')) {
+                this.isNavigating = true;
                 window.location.href = String(file.getAttribute('href'));
                 break;
             }
