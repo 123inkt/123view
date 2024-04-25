@@ -4,10 +4,8 @@
     {% if directory.directories|length %}
         <ul class="review-file-tree--directories text-nowrap">
             {% for subdirectory in directory.directories %}
-                <li class="review-file-tree--directory"
-                        {{ stimulus_controller('collapsable-folder') }}
-                        {{ stimulus_action('collapsable-folder', 'toggle', 'click') }}>
-                    <span class="review-file-tree--directory-label">
+                <li class="review-file-tree--directory"{{ stimulus_controller('collapsable-folder') }}>
+                    <span class="review-file-tree--directory-label" {{ stimulus_action('collapsable-folder', 'toggle', 'click') }}>
                         <i class="bi bi-folder-fill icon-directory" {{ stimulus_target('collapsable-folder', 'icon') }}></i>
                         {{ subdirectory.name }}
                     </span>
