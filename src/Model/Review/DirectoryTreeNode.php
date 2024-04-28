@@ -16,8 +16,12 @@ class DirectoryTreeNode
      * @param DirectoryTreeNode<T>[] $directories
      * @param T[]                    $files
      */
-    public function __construct(private string $name, private array $directories = [], private array $files = [])
-    {
+    public function __construct(
+        private ?DirectoryTreeNode $parentNode,
+        private string $name,
+        private array $directories = [],
+        private array $files = []
+    ) {
     }
 
     public function isEmpty(): bool
@@ -28,6 +32,16 @@ class DirectoryTreeNode
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getPathname(): string
+    {
+        $path = [];
+        for ($node = $this; $node->parentNode !== null; $node = $node->parentNode) {
+            array_unshift($path, $node->name);
+        }
+
+        return implode('/', $path);
     }
 
     /**
@@ -153,7 +167,7 @@ class DirectoryTreeNode
         $path         = array_shift($filepath);
         $subdirectory = $this->getDirectory($path);
         if ($subdirectory === null) {
-            $this->directories[] = $subdirectory = new DirectoryTreeNode($path, [], []);
+            $this->directories[] = $subdirectory = new DirectoryTreeNode($this, $path, [], []);
         }
 
         $subdirectory->addNode($filepath, $item);

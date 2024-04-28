@@ -16,7 +16,7 @@ class FileTreeGenerator
     public function generate(array $diffFiles): DirectoryTreeNode
     {
         /** @var DirectoryTreeNode<DiffFile> $node */
-        $node = new DirectoryTreeNode('root');
+        $node = new DirectoryTreeNode(null, 'root');
         foreach ($diffFiles as $file) {
             // create shallow copy of the file diff
             $fileClone = clone $file;

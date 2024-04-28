@@ -44,9 +44,9 @@ class FileTreeViewModel
         return $summary;
     }
 
-    public function isFolderCollapsed(DiffFile $file): bool
+    public function isFolderCollapsed(DirectoryTreeNode $directory): bool
     {
-        return $this->folderCollapseCollection->isCollapsed($file->filePathBefore);
+        return $this->folderCollapseCollection->isCollapsed($directory->getPathname());
     }
 
     public function isFileSeen(DiffFile $file): bool
