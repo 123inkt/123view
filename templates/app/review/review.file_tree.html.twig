@@ -6,7 +6,8 @@
             {% for subdirectory in directory.directories %}
                 <li class="review-file-tree--directory"{{ stimulus_controller('collapsable-folder') }}>
                     <span class="review-file-tree--directory-label" {{ stimulus_action('collapsable-folder', 'toggle', 'click') }}>
-                        <i class="bi bi-folder-fill icon-directory" {{ stimulus_target('collapsable-folder', 'icon') }}></i>
+                        <i class="bi bi-folder-fill icon-directory icon-directory-default"></i>
+                        <i class="bi bi-folder icon-directory icon-directory-collapsed"></i>
                         {{ subdirectory.name }}
                     </span>
                     {{ self.recursiveFileTree(fileTreeModel, subdirectory, treeDepth + 1) }}

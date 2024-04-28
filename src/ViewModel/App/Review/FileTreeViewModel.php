@@ -9,6 +9,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
+use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Model\Review\DirectoryTreeNode;
 
 class FileTreeViewModel
@@ -21,6 +22,7 @@ class FileTreeViewModel
         public readonly CodeReview $review,
         public readonly DirectoryTreeNode $fileTree,
         public readonly Collection $comments,
+        private readonly FolderCollapseStatusCollection $folderCollapseCollection,
         private readonly FileSeenStatusCollection $fileSeenCollection,
         public readonly ?DiffFile $selectedFile
     ) {
@@ -40,6 +42,11 @@ class FileTreeViewModel
         }
 
         return $summary;
+    }
+
+    public function isFolderCollapsed(DiffFile $file): bool
+    {
+        return $this->folderCollapseCollection->isCollapsed($file->filePathBefore);
     }
 
     public function isFileSeen(DiffFile $file): bool
