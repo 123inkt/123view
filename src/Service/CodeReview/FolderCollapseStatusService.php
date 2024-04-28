@@ -8,7 +8,7 @@ use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\FolderCollapseStatusRepository;
 
-class FolderCollapseService
+class FolderCollapseStatusService
 {
     public function __construct(private readonly FolderCollapseStatusRepository $statusRepository, private readonly ?User $user)
     {
@@ -19,5 +19,9 @@ class FolderCollapseService
         $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => (int)$this->user?->getId()]);
 
         return new FolderCollapseStatusCollection($files);
+    }
+
+    public function save(\DR\Review\Entity\Review\FolderCollapseStatus $status)
+    {
     }
 }
