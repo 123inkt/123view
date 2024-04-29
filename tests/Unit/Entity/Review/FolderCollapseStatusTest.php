@@ -13,6 +13,6 @@ class FolderCollapseStatusTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertAccessorPairs(FileSeenStatus::class);
+        static::assertAccessorPairs(FolderCollapseStatus::class);
     }
 }
