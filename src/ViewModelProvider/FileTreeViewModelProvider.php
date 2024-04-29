@@ -15,8 +15,7 @@ class FileTreeViewModelProvider
     public function __construct(
         private readonly FileSeenStatusService $fileStatusService,
         private readonly FolderCollapseStatusService $folderCollapseService
-    )
-    {
+    ) {
     }
 
     /**

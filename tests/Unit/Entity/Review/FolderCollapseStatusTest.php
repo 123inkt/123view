@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Review;
 
-use DR\Review\Entity\Review\FileSeenStatus;
 use DR\Review\Entity\Review\FolderCollapseStatus;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
