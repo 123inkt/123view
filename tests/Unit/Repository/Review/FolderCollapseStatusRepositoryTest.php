@@ -46,6 +46,9 @@ class FolderCollapseStatusRepositoryTest extends AbstractRepositoryTestCase
         $statusB->getId();
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     protected function getFixtures(): array
     {
