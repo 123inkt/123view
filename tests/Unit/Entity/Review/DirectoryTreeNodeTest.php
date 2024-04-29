@@ -182,4 +182,12 @@ class DirectoryTreeNodeTest extends AbstractTestCase
 
         static::assertSame([$fileB, $fileA], iterator_to_array($node->getFileIterator()));
     }
+
+    public function testGetPathname(): void
+    {
+        $node = new DirectoryTreeNode('root');
+        $node->addNode(['path', 'to', 'file.txt'], new stdClass());
+
+        static::assertSame('path', $node->getDirectories()[0]->getPathname());
+    }
 }
