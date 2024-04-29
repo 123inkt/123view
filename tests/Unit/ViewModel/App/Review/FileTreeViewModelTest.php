@@ -10,6 +10,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
+use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
@@ -21,7 +22,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(FileTreeViewModel::class)]
 class FileTreeViewModelTest extends AbstractTestCase
 {
-    private FileSeenStatusCollection&MockObject $statusCollection;
+    private FileSeenStatusCollection&MockObject       $statusCollection;
+    private FolderCollapseStatusCollection&MockObject $folderCollection;
     /** @var DirectoryTreeNode<DiffFile>&MockObject */
     private MockObject&DirectoryTreeNode $directoryNode;
     private FileTreeViewModel            $viewModel;
@@ -32,12 +34,14 @@ class FileTreeViewModelTest extends AbstractTestCase
     {
         parent::setUp();
         $this->statusCollection  = $this->createMock(FileSeenStatusCollection::class);
+        $this->folderCollection  = $this->createMock(FolderCollapseStatusCollection::class);
         $this->directoryNode     = $this->createMock(DirectoryTreeNode::class);
         $this->commentCollection = new ArrayCollection();
         $this->viewModel         = new FileTreeViewModel(
             new CodeReview(),
             $this->directoryNode,
             $this->commentCollection,
+            $this->folderCollection,
             $this->statusCollection,
             new DiffFile()
         );
@@ -57,6 +61,15 @@ class FileTreeViewModelTest extends AbstractTestCase
         static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
     }
 
+    public function testIsFolderCollapsed(): void
+    {
+        $node = $this->createMock(DirectoryTreeNode::class);
+        $node->method('getPathname')->willReturn('folder');
+
+        $this->folderCollection->expects(self::once())->method('isCollapsed')->with('folder')->willReturn(true);
+        static::assertTrue($this->viewModel->isFolderCollapsed($node));
+    }
+
     #[DataProvider('fileSelectedDataProvider')]
     public function testIsFileSelected(?DiffFile $selectedFile, DiffFile $file, bool $selected): void
     {
@@ -64,6 +77,7 @@ class FileTreeViewModelTest extends AbstractTestCase
             new CodeReview(),
             $this->directoryNode,
             $this->commentCollection,
+            $this->folderCollection,
             $this->statusCollection,
             $selectedFile
         );

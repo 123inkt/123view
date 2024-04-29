@@ -4,9 +4,12 @@
     {% if directory.directories|length %}
         <ul class="review-file-tree--directories text-nowrap">
             {% for subdirectory in directory.directories %}
-                <li class="review-file-tree--directory"{{ stimulus_controller('collapsable-folder') }}>
+                {% set collapsed = fileTreeModel.isFolderCollapsed(subdirectory) %}
+                <li class="review-file-tree--directory {{ collapsed ? 'collapsed' : '' }}"
+                        {{ stimulus_controller('collapsable-folder', {reviewId: fileTreeModel.review.id, path: subdirectory.pathname}) }}>
                     <span class="review-file-tree--directory-label" {{ stimulus_action('collapsable-folder', 'toggle', 'click') }}>
-                        <i class="bi bi-folder-fill icon-directory" {{ stimulus_target('collapsable-folder', 'icon') }}></i>
+                        <i class="bi bi-folder-fill icon-directory icon-directory-default"></i>
+                        <i class="bi bi-folder icon-directory icon-directory-collapsed"></i>
                         {{ subdirectory.name }}
                     </span>
                     {{ self.recursiveFileTree(fileTreeModel, subdirectory, treeDepth + 1) }}

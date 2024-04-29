@@ -49,7 +49,7 @@ class ReviewSummaryViewModelProviderTest extends AbstractTestCase
         $file                 = new DiffFile();
         $file->filePathBefore = 'file/path/before';
         $file->filePathAfter  = 'file/path/after';
-        $tree                 = new DirectoryTreeNode('name', [], [$file]);
+        $tree                 = new DirectoryTreeNode('name', null, [], [$file]);
 
         $report = new CodeInspectionReport();
         $issue  = new CodeInspectionIssue();

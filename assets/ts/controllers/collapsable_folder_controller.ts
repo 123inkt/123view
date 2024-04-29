@@ -1,21 +1,22 @@
 import {Controller} from '@hotwired/stimulus';
+import axios from 'axios';
+import Function from '../lib/Function';
 
 export default class extends Controller<HTMLFormElement> {
-    public static targets   = ['icon'];
-    private readonly declare iconTarget: HTMLElement;
-    private isOpen: boolean = true;
+    public static readonly values = {reviewId: Number, path: String};
+    private readonly declare pathValue: number;
+    private readonly declare reviewIdValue: number;
 
     public toggle(): void {
-        if (this.isOpen) {
-            this.isOpen = false;
-            this.element.classList.toggle('collapsed', true);
-            this.iconTarget.classList.remove('bi-folder-fill');
-            this.iconTarget.classList.add('bi-folder');
-        } else {
-            this.isOpen = true;
-            this.element.classList.toggle('collapsed', false);
-            this.iconTarget.classList.add('bi-folder-fill');
-            this.iconTarget.classList.remove('bi-folder');
-        }
+        const collapsed = this.element.classList.contains('collapsed');
+        this.element.classList.toggle('collapsed', !collapsed);
+
+        axios
+            .post(
+                `/app/reviews/${this.reviewIdValue}/folder-collapse-status`,
+                {path: this.pathValue, state: !collapsed ? 'collapsed' : 'expanded'},
+                {headers: {'Content-Type': 'multipart/form-data'}}
+            )
+            .catch(Function.empty);
     }
 }
