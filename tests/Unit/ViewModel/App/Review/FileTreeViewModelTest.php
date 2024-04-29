@@ -61,6 +61,15 @@ class FileTreeViewModelTest extends AbstractTestCase
         static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
     }
 
+    public function testIsFolderCollapsed(): void
+    {
+        $node = $this->createMock(DirectoryTreeNode::class);
+        $node->method('getPathname')->willReturn('folder');
+
+        $this->folderCollection->expects(self::once())->method('isCollapsed')->with('folder')->willReturn(true);
+        static::assertTrue($this->viewModel->isFolderCollapsed($node));
+    }
+
     #[DataProvider('fileSelectedDataProvider')]
     public function testIsFileSelected(?DiffFile $selectedFile, DiffFile $file, bool $selected): void
     {
