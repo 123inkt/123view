@@ -33,7 +33,7 @@ class FolderCollapseStatusRepositoryTest extends AbstractRepositoryTestCase
         $statusA->setReview($review);
         $statusA->setUser($user);
         $statusRepository->save($statusA, true);
-        static::assertNotNull($statusA->getId());
+        static::assertGreaterThan(0, $statusA->getId());
 
         // status with same primary key, should not save
         $statusB = new FolderCollapseStatus();
