@@ -22,6 +22,9 @@ class DirectoryTreeNode
         private array $directories = [],
         private array $files = []
     ) {
+        foreach ($this->directories as $directory) {
+            $directory->parentNode = $this;
+        }
     }
 
     public function isEmpty(): bool
@@ -119,6 +122,9 @@ class DirectoryTreeNode
             }
             $subdirectory      = $this->directories[0];
             $this->directories = $subdirectory->getDirectories();
+            foreach($this->directories as $directory) {
+                $directory->parentNode = $this;
+            }
             $this->files       = $subdirectory->getFiles();
             $this->name        .= '/' . $subdirectory->getName();
         }

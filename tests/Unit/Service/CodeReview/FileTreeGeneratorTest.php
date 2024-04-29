@@ -57,10 +57,12 @@ class FileTreeGeneratorTest extends AbstractTestCase
 
         $expected = new DirectoryTreeNode(
             'root',
+            null,
             [
                 new DirectoryTreeNode(
                     'foo',
-                    [new DirectoryTreeNode('bar', [], [$diffFileB])],
+                    null,
+                    [new DirectoryTreeNode('bar', null, [], [$diffFileB])],
                     [$diffFileA]
                 )
             ]
