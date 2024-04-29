@@ -17,8 +17,8 @@ class DirectoryTreeNode
      * @param T[]                    $files
      */
     public function __construct(
-        private ?DirectoryTreeNode $parentNode,
         private string $name,
+        private ?DirectoryTreeNode $parentNode = null,
         private array $directories = [],
         private array $files = []
     ) {
@@ -167,7 +167,7 @@ class DirectoryTreeNode
         $path         = array_shift($filepath);
         $subdirectory = $this->getDirectory($path);
         if ($subdirectory === null) {
-            $this->directories[] = $subdirectory = new DirectoryTreeNode($this, $path, [], []);
+            $this->directories[] = $subdirectory = new DirectoryTreeNode($path, $this);
         }
 
         $subdirectory->addNode($filepath, $item);

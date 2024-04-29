@@ -18,7 +18,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $nodeA = new DirectoryTreeNode('nodeA');
         $nodeB = new DirectoryTreeNode('nodeB');
 
-        $node = new DirectoryTreeNode('foo', [$nodeA, $nodeB]);
+        $node = new DirectoryTreeNode('foo', null, [$nodeA, $nodeB]);
         static::assertSame($nodeA, $node->getDirectory('nodeA'));
         static::assertNull($node->getDirectory('foobar'));
     }
@@ -32,7 +32,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         // flatten
         $node->flatten();
 
-        $expected = new DirectoryTreeNode('/foo/bar', [], [new stdClass(), new stdClass()]);
+        $expected = new DirectoryTreeNode('/foo/bar', null, [], [new stdClass(), new stdClass()]);
         static::assertEquals($expected, $node);
     }
 
@@ -47,7 +47,8 @@ class DirectoryTreeNodeTest extends AbstractTestCase
 
         $expected = new DirectoryTreeNode(
             '/foo',
-            [new DirectoryTreeNode('bar', [], [new stdClass()])],
+            null,
+            [new DirectoryTreeNode('bar', null, [], [new stdClass()])],
             [new stdClass()]
         );
         static::assertEquals($expected, $node);
@@ -65,9 +66,10 @@ class DirectoryTreeNodeTest extends AbstractTestCase
 
         $expected = new DirectoryTreeNode(
             '',
+            null,
             [
-                new DirectoryTreeNode('src', [], [new stdClass()]),
-                new DirectoryTreeNode('foo/bar', [], [new stdClass(), new stdClass()])
+                new DirectoryTreeNode('src', null, [], [new stdClass()]),
+                new DirectoryTreeNode('foo/bar', null, [], [new stdClass(), new stdClass()])
             ],
         );
         static::assertEquals($expected, $node);
@@ -104,7 +106,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $nodeA = new DirectoryTreeNode('nodeA');
         $nodeB = new DirectoryTreeNode('nodeB');
 
-        $node = new DirectoryTreeNode('foo', [$nodeA, $nodeB]);
+        $node = new DirectoryTreeNode('foo', null, [$nodeA, $nodeB]);
         static::assertSame([$nodeA, $nodeB], $node->getDirectories());
     }
 
@@ -119,7 +121,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $nodeA = new DirectoryTreeNode('nodeA');
         static::assertTrue($nodeA->isEmpty());
 
-        $nodeB = new DirectoryTreeNode('nodeB', [$nodeA]);
+        $nodeB = new DirectoryTreeNode('nodeB', null, [$nodeA]);
         static::assertFalse($nodeB->isEmpty());
     }
 
@@ -128,7 +130,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $objA = new stdClass();
         $objB = new stdClass();
 
-        $node = new DirectoryTreeNode('foo', [], [$objA, $objB]);
+        $node = new DirectoryTreeNode('foo', null, [], [$objA, $objB]);
         static::assertSame([$objA, $objB], $node->getFiles());
     }
 
@@ -137,7 +139,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
         $objA = new stdClass();
         $objB = new stdClass();
 
-        $node = new DirectoryTreeNode('root', [], []);
+        $node = new DirectoryTreeNode('root', null, [], []);
         $node->addNode(['one'], $objA);
         $node->addNode(['one', 'two'], $objB);
         static::assertSame([$objA, $objB], $node->getFilesRecursive());
@@ -165,7 +167,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
     public function testGetFirstFileInTreeEmptyDirectories(): void
     {
         /** @var DirectoryTreeNode<stdClass> $node */
-        $node = new DirectoryTreeNode('foo', [new DirectoryTreeNode('bar')]);
+        $node = new DirectoryTreeNode('foo', null, [new DirectoryTreeNode('bar')]);
         static::assertNull($node->getFirstFileInTree());
     }
 
