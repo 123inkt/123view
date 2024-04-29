@@ -13,8 +13,9 @@ use LogicException;
 class DirectoryTreeNode
 {
     /**
-     * @param DirectoryTreeNode<T>[] $directories
-     * @param T[]                    $files
+     * @param DirectoryTreeNode<T>|null $parentNode
+     * @param DirectoryTreeNode<T>[]    $directories
+     * @param T[]                       $files
      */
     public function __construct(
         private string $name,
@@ -122,11 +123,11 @@ class DirectoryTreeNode
             }
             $subdirectory      = $this->directories[0];
             $this->directories = $subdirectory->getDirectories();
-            foreach($this->directories as $directory) {
+            foreach ($this->directories as $directory) {
                 $directory->parentNode = $this;
             }
-            $this->files       = $subdirectory->getFiles();
-            $this->name        .= '/' . $subdirectory->getName();
+            $this->files = $subdirectory->getFiles();
+            $this->name  .= '/' . $subdirectory->getName();
         }
 
         // flatten subdirectories

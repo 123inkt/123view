@@ -20,8 +20,4 @@ class FolderCollapseStatusService
 
         return new FolderCollapseStatusCollection($files);
     }
-
-    public function save(\DR\Review\Entity\Review\FolderCollapseStatus $status)
-    {
-    }
 }
