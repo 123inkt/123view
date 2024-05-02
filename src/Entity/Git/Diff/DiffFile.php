@@ -221,7 +221,7 @@ class DiffFile
         return $length;
     }
 
-    private function updateLinesChanged(): void
+    public function updateLinesChanged(): void
     {
         $this->linesAdded   = 0;
         $this->linesRemoved = 0;

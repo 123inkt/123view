@@ -65,6 +65,8 @@
                             {{ 'ignore.whitespaces'|trans }}
                         {% elseif comparisonPolicy == 'trim' %}
                             {{ 'trim.whitespaces'|trans }}
+                        {% elseif comparisonPolicy == 'ignore_empty_lines' %}
+                            {{ 'ignore.whitespaces.and.empty.lines'|trans }}
                         {% else %}
                             {{ 'do.not.ignore.whitespaces'|trans }}
                         {% endif %}
@@ -95,6 +97,13 @@
                                 <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
                                         {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces'|trans }}
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item">
+                                <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore_empty_lines'}) }}"
+                                        {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
+                                {{ 'ignore.whitespaces.and.empty.lines'|trans }}
                             </label>
                         </li>
                     </ul>

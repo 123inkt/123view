@@ -10,13 +10,14 @@ enum DiffComparePolicy: string
     case ALL = 'all';
     case TRIM = 'trim';
     case IGNORE = 'ignore';
+    case IGNORE_EMPTY_LINES = 'ignore_empty_lines';
 
     public function toComparisonPolicy(): ComparisonPolicy
     {
         return match ($this) {
-            self::ALL    => ComparisonPolicy::DEFAULT,
-            self::TRIM   => ComparisonPolicy::TRIM_WHITESPACES,
-            self::IGNORE => ComparisonPolicy::IGNORE_WHITESPACES
+            self::ALL                              => ComparisonPolicy::DEFAULT,
+            self::TRIM                             => ComparisonPolicy::TRIM_WHITESPACES,
+            self::IGNORE, self::IGNORE_EMPTY_LINES => ComparisonPolicy::IGNORE_WHITESPACES,
         };
     }
 
