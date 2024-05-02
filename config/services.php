@@ -51,6 +51,7 @@ use DR\Review\Service\Health\OpcacheInternedStrings;
 use DR\Review\Service\Notification\RuleNotificationTokenGenerator;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Service\Parser\PrunableDiffParser;
 use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
@@ -155,6 +156,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(AzureAdUserBadgeFactory::class);
     $services->set(AzureAdAuthenticator::class)->arg('$authenticationEnabled', '%env(bool:APP_AUTH_AZURE_AD)%');
 
+    $services->set(PrunableDiffParser::class);
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
     $services->set(JBDiff::class);

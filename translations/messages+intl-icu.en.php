@@ -348,4 +348,5 @@ return [
     'you'                                         => 'You',
     'logs'                                        => 'Logs',
     'mark.all.as.read'                            => 'Mark all as read',
+    'ignore.whitespaces.and.empty.lines'          => 'Ignore whitespaces and empty lines',
 ];

@@ -15,7 +15,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Review\FileDiffOptions;
-use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Service\Parser\PrunableDiffParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -27,7 +27,7 @@ class GitDiffService implements LoggerAwareInterface
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $builderFactory,
         private readonly GitDiffCommandFactory $commandFactory,
-        private readonly DiffParser $parser
+        private readonly PrunableDiffParser $parser
     ) {
     }
 
@@ -49,7 +49,7 @@ class GitDiffService implements LoggerAwareInterface
         $output = $repository->execute($commandBuilder);
 
         // parse files
-        $commit->files = $this->parser->parse($output);
+        $commit->files = $this->parser->parse($output, null);
 
         return $commit;
     }
@@ -70,14 +70,14 @@ class GitDiffService implements LoggerAwareInterface
 
         if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
             $commandBuilder->ignoreSpaceChange();
-        } elseif ($options?->comparePolicy === DiffComparePolicy::IGNORE) {
+        } elseif (in_array($options?->comparePolicy, [DiffComparePolicy::IGNORE, DiffComparePolicy::IGNORE_EMPTY_LINES], true)) {
             $commandBuilder->ignoreAllSpace();
         }
 
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output);
+        return $this->parser->parse($output, $options?->comparePolicy);
     }
 
     /**
@@ -96,14 +96,14 @@ class GitDiffService implements LoggerAwareInterface
 
         if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
             $commandBuilder->ignoreSpaceChange();
-        } elseif ($options?->comparePolicy === DiffComparePolicy::IGNORE) {
+        } elseif (in_array($options?->comparePolicy, [DiffComparePolicy::IGNORE, DiffComparePolicy::IGNORE_EMPTY_LINES], true)) {
             $commandBuilder->ignoreAllSpace();
         }
 
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output);
+        return $this->parser->parse($output, $options?->comparePolicy);
     }
 
     /**
@@ -126,13 +126,13 @@ class GitDiffService implements LoggerAwareInterface
 
         if ($options?->comparePolicy === DiffComparePolicy::TRIM) {
             $commandBuilder->ignoreSpaceChange();
-        } elseif ($options?->comparePolicy === DiffComparePolicy::IGNORE) {
+        } elseif (in_array($options?->comparePolicy, [DiffComparePolicy::IGNORE, DiffComparePolicy::IGNORE_EMPTY_LINES], true)) {
             $commandBuilder->ignoreAllSpace();
         }
 
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output);
+        return $this->parser->parse($output, $options?->comparePolicy);
     }
 }
