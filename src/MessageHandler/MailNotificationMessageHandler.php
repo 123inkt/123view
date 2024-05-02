@@ -12,7 +12,6 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
-use Symfony\Component\Messenger\Stamp\HandlerArgumentsStamp;
 use Throwable;
 
 class MailNotificationMessageHandler implements LoggerAwareInterface
@@ -36,8 +35,7 @@ class MailNotificationMessageHandler implements LoggerAwareInterface
         $logMessage = 'MailNotificationMessageHandler: delay message for {delay} seconds: {class}';
         $this->logger?->info($logMessage, ['delay' => $this->mailNotificationDelay / 1000, 'class' => get_class($message)]);
 
-        $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp($this->mailNotificationDelay), new HandlerArgumentsStamp(
-            $additionalArguments)]));
+        $this->bus->dispatch(new Envelope(new DelayableMessage($message), [new DelayStamp($this->mailNotificationDelay)]));
     }
 
     /**

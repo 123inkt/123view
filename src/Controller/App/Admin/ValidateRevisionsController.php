@@ -9,6 +9,7 @@ use DR\Review\Message\Revision\ValidateRevisionsMessage;
 use DR\Review\Security\Role\Roles;
 use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,13 +23,12 @@ class ValidateRevisionsController extends AbstractController
 
     #[Route('/app/admin/repository/{id<\d+>}/validate-revisions', self::class, methods: ['GET'])]
     #[IsGranted(Roles::ROLE_ADMIN)]
-    public function __invoke(#[MapEntity] Repository $repository): Response
+    public function __invoke(#[MapEntity] Repository $repository): RedirectResponse
     {
         $this->bus->dispatch(new ValidateRevisionsMessage(Assert::integer($repository->getId())));
 
         $this->addFlash('success', 'repository.schedule.validate_revisions');
 
-        //return new Response('ok', 200);
         return $this->redirectToRoute(RepositoriesController::class);
     }
 }
