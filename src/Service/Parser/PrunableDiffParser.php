@@ -10,10 +10,8 @@ use DR\Review\Service\Git\Diff\UnifiedDiffPruner;
 
 class PrunableDiffParser
 {
-    public function __construct(
-        private readonly DiffParser $diffParser,
-        private readonly UnifiedDiffPruner $pruner,
-    ) {
+    public function __construct(private readonly DiffParser $diffParser, private readonly UnifiedDiffPruner $pruner)
+    {
     }
 
     /**
