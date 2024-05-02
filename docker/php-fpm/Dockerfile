@@ -31,7 +31,7 @@ RUN apt-get update \
 
 RUN pecl channel-update pecl.php.net && \
     pecl install apcu && \
-    pecl install amqp-1.11.0 && \
+    pecl install amqp && \
     docker-php-ext-enable apcu && \
     docker-php-ext-enable amqp && \
     docker-php-source delete && \
