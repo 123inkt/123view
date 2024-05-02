@@ -117,7 +117,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
                     'tab'              => 'string|in:revisions,overview',
                     'diff'             => 'string|in:side-by-side,unified,inline',
                     'action'           => 'string',
-                    'comparisonPolicy' => 'string|in:all,trim,ignore'
+                    'comparisonPolicy' => 'string|in:all,trim,ignore,ignore_empty_lines'
                 ]
             ]
         );
