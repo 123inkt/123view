@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Git\Parser;
+namespace DR\Review\Tests\Unit\Service\Parser;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Exception\ParseException;
