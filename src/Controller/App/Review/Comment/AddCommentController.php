@@ -10,23 +10,18 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddCommentController extends AbstractController
 {
-    public function __construct(
-        private readonly CommentRepository $commentRepository,
-        private readonly CommentEventMessageFactory $messageFactory,
-        private readonly MessageBusInterface $bus
-    ) {
+    public function __construct(private readonly CommentRepository $commentRepository)
+    {
     }
 
     #[Route('app/reviews/{id<\d+>}/add-comment', name: self::class, methods: 'POST')]
@@ -55,7 +50,6 @@ class AddCommentController extends AbstractController
         $comment->setUpdateTimestamp(time());
 
         $this->commentRepository->save($comment, true);
-        $this->bus->dispatch($this->messageFactory->createAdded($comment, $user));
 
         $url = $this->generateUrl(GetCommentThreadController::class, ['id' => (int)$comment->getId()]);
 

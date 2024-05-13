@@ -1,0 +1,86 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\EventSubscriber\Dispatch;
+
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
+use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentRemoved;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUpdated;
+use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
+use DR\Utils\Assert;
+use Symfony\Component\Messenger\MessageBusInterface;
+
+#[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
+#[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
+#[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
+#[AsEntityListener(event: Events::postRemove, method: 'commentRemoved', entity: Comment::class)]
+#[AsEntityListener(event: Events::postFlush, method: 'finish', entity: Comment::class)]
+#[AsDoctrineListener(event: Events::postFlush)]
+class CommentEventSubscriber
+{
+    /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentResolved> */
+    private array $events = [];
+    /** @var array<int, array<string, array{mixed, mixed}>> */
+    private array $updated = [];
+
+    public function __construct(
+        private readonly MessageBusInterface $bus,
+        private readonly CommentEventMessageFactory $messageFactory
+    ) {
+    }
+
+    public function commentAdded(Comment $comment): void
+    {
+        $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
+    }
+
+    public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
+    {
+        $this->updated[$comment->getId()] += $event->getEntityChangeSet();
+    }
+
+    public function commentUpdated(Comment $comment): void
+    {
+        $changeSet = $this->updated[$comment->getId()] ?? null;
+        if ($changeSet === null) {
+            return;
+        }
+
+        if (array_key_exists('message', $changeSet)) {
+            $this->events[] = $this->messageFactory->createUpdated($comment, $comment->getUser(), Assert::string($changeSet['message'][0]));
+        }
+
+        if (array_key_exists('state', $changeSet)) {
+            if ($comment->getState() === CommentStateType::RESOLVED) {
+                $this->events[] = $this->messageFactory->createResolved($comment, $comment->getUser());
+            } else {
+                $this->events[] = $this->messageFactory->createUnresolved($comment, $comment->getUser());
+            }
+        }
+    }
+
+    public function commentRemoved(Comment $comment): void
+    {
+        $this->events[] = $this->messageFactory->createRemoved($comment, $comment->getUser());
+    }
+
+    public function __invoke(): void
+    {
+        $test = true;
+    }
+
+    public function finish(): void
+    {
+        foreach ($this->events as $event) {
+            $this->bus->dispatch($event);
+        }
+        $this->events = [];
+    }
+}
