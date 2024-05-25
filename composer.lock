@@ -2132,16 +2132,16 @@
         },
         {
             "name": "fdekker/log-viewer-bundle",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/symfony-log-viewer-bundle.git",
-                "reference": "361f54ca1ffb6c0197f2d719731daa85cbee4ed4"
+                "reference": "7a9fc318f0bae5963017da5c7e5ddf344104d945"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/361f54ca1ffb6c0197f2d719731daa85cbee4ed4",
-                "reference": "361f54ca1ffb6c0197f2d719731daa85cbee4ed4",
+                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/7a9fc318f0bae5963017da5c7e5ddf344104d945",
+                "reference": "7a9fc318f0bae5963017da5c7e5ddf344104d945",
                 "shasum": ""
             },
             "require": {
@@ -2217,9 +2217,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frankdekker/symfony-log-viewer-bundle/issues",
-                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v1.1.1"
+                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v1.2.0"
             },
-            "time": "2024-03-29T17:18:09+00:00"
+            "time": "2024-05-25T14:39:09+00:00"
         },
         {
             "name": "firebase/php-jwt",
