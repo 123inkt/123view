@@ -8,7 +8,7 @@ return static function (SymfonyTraceConfig $config): void {
     $config->trustRequestHeader(false);
     $config->sendResponseHeader(true);
     $config->enableMonolog(true);
-    $config->enableConsole(true);
+    $config->console()->enabled(true);
     $config->enableMessenger(true);
     $config->enableTwig(true);
     $config->httpClient()->enabled(false);
