@@ -7,6 +7,5 @@ use Symfony\Config\LiipTestFixturesConfig;
 return static function (LiipTestFixturesConfig $config): void {
     $config
         ->keepDatabaseAndSchema(true)
-        ->cacheMetadata(false)
-        ->cacheDb();
+        ->cacheMetadata(false);
 };
