@@ -98,7 +98,7 @@
         "digitalrevolution/phpunit-extensions": "^1.4",
         "digitalrevolution/phpunit-file-coverage-inspection": "^2.1",
         "doctrine/doctrine-fixtures-bundle": "^3.5",
-        "liip/test-fixtures-bundle": "^2.8",
+        "liip/test-fixtures-bundle": "^3.0",
         "mikey179/vfsstream": "^1.6",
         "phpmd/phpmd": "^2.15",
         "phpstan/extension-installer": "^1.3",
