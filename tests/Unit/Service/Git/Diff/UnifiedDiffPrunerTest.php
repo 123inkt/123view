@@ -73,4 +73,34 @@ class UnifiedDiffPrunerTest extends AbstractTestCase
         $this->service->pruneEmptyLines($file);
         static::assertSame(DiffLine::STATE_ADDED, $line->state);
     }
+
+    public function testPruneLinesMultiLines(): void
+    {
+        $lineA  = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'unchanged')]);
+        $lineB  = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, '')]);
+        $lineC  = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'unchanged')]);
+        $block = new DiffBlock();
+        $file  = new DiffFile();
+
+        $block->lines = [$lineA, $lineB, $lineC];
+        $file->addBlock($block);
+
+        $this->service->pruneEmptyLines($file);
+        static::assertSame(DiffLine::STATE_UNCHANGED, $lineB->state);
+    }
+
+    public function testPruneLinesMultiLinesModified(): void
+    {
+        $lineA  = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'unchanged')]);
+        $lineB  = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'code')]);
+        $lineC  = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'unchanged')]);
+        $block = new DiffBlock();
+        $file  = new DiffFile();
+
+        $block->lines = [$lineA, $lineB, $lineC];
+        $file->addBlock($block);
+
+        $this->service->pruneEmptyLines($file);
+        static::assertSame(DiffLine::STATE_ADDED, $lineB->state);
+    }
 }
