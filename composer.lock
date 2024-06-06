@@ -10470,16 +10470,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-file-coverage-inspection.git",
-                "reference": "cfbf1ba093edf7b74beda5b31e725d71c785f903"
+                "reference": "cbd78c5685ca115a1788f5c1656210be3d7b9b11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/cfbf1ba093edf7b74beda5b31e725d71c785f903",
-                "reference": "cfbf1ba093edf7b74beda5b31e725d71c785f903",
+                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/cbd78c5685ca115a1788f5c1656210be3d7b9b11",
+                "reference": "cbd78c5685ca115a1788f5c1656210be3d7b9b11",
                 "shasum": ""
             },
             "require": {
@@ -10518,9 +10518,9 @@
             "description": "Configurable phpunit file coverage inspection",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-file-coverage-inspection/issues",
-                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v2.1.0"
+                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v2.2.0"
             },
-            "time": "2023-12-05T10:31:20+00:00"
+            "time": "2024-06-06T15:11:29+00:00"
         },
         {
             "name": "doctrine/common",
