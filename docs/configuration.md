@@ -48,8 +48,8 @@ Commit message: B#789 my first bug
 - `NGINX_VERSION`: controls the version of nginx.
 - `NGINX_PORT`: controls the port nginx is started on. Default 8080 for dev, 80 for prod.
 - `NGINX_SSL_PORT`: controls the https port for nginx. Default 8443 for dev, 443 for prod.
-- `PHP_VERSION`: controls the php version. Defaults to 8.1
-- `MYSQL_VERSION`: controls the mysql versions. Default to 8.0
+- `PHP_VERSION`: controls the php version. Defaults to 8.3
+- `MYSQL_VERSION`: controls the mysql versions. Default to 8.4
 - `MYSQL_PORT`: controls the mysql port. Default to 3306
 - `MAILER_DSN`: controls the used mail procotol, default to the docker image: `smtp://mail:25`.
 - `HTTP_CLIENT_VERIFY_HOST`: controls if curls VERIFY_HOST is enabled for API calls. `true` recommended for production.
