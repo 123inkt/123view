@@ -12,7 +12,6 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[CoversClass(ViewRevisionFileController::class)]
 class ViewRevisionFileControllerTest extends AbstractControllerTestCase
@@ -57,14 +56,15 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
 
     public function testInvokeInvalidMimetype(): void
     {
-        $request  = new Request(['file' => 'text/plain']);
+        $request  = new Request(['file' => 'readme.cmd']);
         $revision = new Revision();
 
-        $this->showService->expects(self::never())->method('getFileContents');
+        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'readme.cmd', true)->willReturn('text');
 
-        $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('Could not determine mime-type for file "text/plain"');
-        ($this->controller)($request, $revision);
+        $response = ($this->controller)($request, $revision);
+        self::assertSame('text', $response->getContent());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
     public function getController(): AbstractController
