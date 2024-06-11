@@ -5794,16 +5794,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v7.0.7",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "db2a7fab994d67d92356bb39c367db115d9d30f9"
+                "reference": "9fa7f7a21beb22a39a8f3f28618b29e50d7a55a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/db2a7fab994d67d92356bb39c367db115d9d30f9",
-                "reference": "db2a7fab994d67d92356bb39c367db115d9d30f9",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/9fa7f7a21beb22a39a8f3f28618b29e50d7a55a7",
+                "reference": "9fa7f7a21beb22a39a8f3f28618b29e50d7a55a7",
                 "shasum": ""
             },
             "require": {
@@ -5854,7 +5854,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v7.0.7"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -5870,7 +5870,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -10786,16 +10786,16 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "e5d7de2df8000e4d5fd16ce06dca60b078d8d3ee"
+                "reference": "203df6491eb0d2981317030cca06ecd598b48eda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/e5d7de2df8000e4d5fd16ce06dca60b078d8d3ee",
-                "reference": "e5d7de2df8000e4d5fd16ce06dca60b078d8d3ee",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/203df6491eb0d2981317030cca06ecd598b48eda",
+                "reference": "203df6491eb0d2981317030cca06ecd598b48eda",
                 "shasum": ""
             },
             "require": {
@@ -10868,9 +10868,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.0.0"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.0.1"
             },
-            "time": "2024-05-19T11:44:17+00:00"
+            "time": "2024-06-10T11:12:28+00:00"
         },
         {
             "name": "masterminds/html5",
