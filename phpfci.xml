@@ -3,4 +3,7 @@
         xsi:noNamespaceSchemaLocation="vendor/digitalrevolution/phpunit-file-coverage-inspection/resources/phpfci.xsd"
         min-coverage="100"
 >
+    <custom-coverage>
+        <file path="src/Service/Git/Diff/Optimizer/DiffLineChangeSetBundler.php" min="97"/>
+    </custom-coverage>
 </phpfci>
