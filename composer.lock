@@ -10358,23 +10358,23 @@
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
-            "version": "v2.2.1",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/accessorpair-constraint.git",
-                "reference": "a1be063dcf199a0055f09b46fb9b9ed11789b3e4"
+                "reference": "1b488d297632ed65974fb92f58fb78e3107b5734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/a1be063dcf199a0055f09b46fb9b9ed11789b3e4",
-                "reference": "a1be063dcf199a0055f09b46fb9b9ed11789b3e4",
+                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/1b488d297632ed65974fb92f58fb78e3107b5734",
+                "reference": "1b488d297632ed65974fb92f58fb78e3107b5734",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^2.0",
-                "php": ">=7.4",
+                "php": ">=8.1",
                 "phpdocumentor/type-resolver": "^1.7",
-                "phpunit/phpunit": "^9.0 || ^10.0 || ^11.0"
+                "phpunit/phpunit": "^10.0 || ^11.0"
             },
             "require-dev": {
                 "phpmd/phpmd": "@stable",
@@ -10398,9 +10398,9 @@
             "description": "Digital Revolution PHPUnit Constraint for accessorpairs",
             "support": {
                 "issues": "https://github.com/123inkt/accessorpair-constraint/issues",
-                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.2.1"
+                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.3.0"
             },
-            "time": "2024-07-15T12:01:09+00:00"
+            "time": "2024-07-24T11:50:49+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
