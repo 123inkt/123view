@@ -95,8 +95,8 @@ class Repository implements EquatableInterface
 
     /** @phpstan-var Collection<string, RepositoryProperty> */
     #[ORM\OneToMany(
-        mappedBy     : 'repository',
         targetEntity : RepositoryProperty::class,
+        mappedBy     : 'repository',
         cascade      : ['persist', 'remove'],
         orphanRemoval: true,
         indexBy      : 'name'
@@ -104,11 +104,11 @@ class Repository implements EquatableInterface
     private Collection $repositoryProperties;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: Revision::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Revision::class, mappedBy: 'repository', cascade: ['remove'], orphanRemoval: true)]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReview> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: CodeReview::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CodeReview::class, mappedBy: 'repository', cascade: ['remove'], orphanRemoval: true)]
     private Collection $reviews;
 
     public function __construct()

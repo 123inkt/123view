@@ -37,7 +37,7 @@ class CodeInspectionReport
     private int $createTimestamp;
 
     /** @phpstan-var Collection<int, CodeInspectionIssue> */
-    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeInspectionIssue::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CodeInspectionIssue::class, mappedBy: 'report', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $issues;
 
     public function __construct()
