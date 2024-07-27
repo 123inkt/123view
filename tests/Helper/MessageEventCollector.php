@@ -8,7 +8,7 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 class MessageEventCollector
 {
     /** @var MessageEvent[] */
-    private array $events;
+    private array $events = [];
 
     public function onMessage(MessageEvent $event): void
     {
