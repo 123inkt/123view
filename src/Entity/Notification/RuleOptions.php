@@ -19,7 +19,7 @@ class RuleOptions
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'ruleOptions', targetEntity: Rule::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Rule::class, inversedBy: 'ruleOptions', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private Rule $rule;
 

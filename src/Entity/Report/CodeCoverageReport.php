@@ -35,7 +35,7 @@ class CodeCoverageReport
     private Repository $repository;
 
     /** @phpstan-var Collection<int, CodeCoverageFile> */
-    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeCoverageFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CodeCoverageFile::class, mappedBy: 'report', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $files;
 
     public function __construct()

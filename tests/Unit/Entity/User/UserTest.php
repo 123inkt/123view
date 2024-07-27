@@ -22,6 +22,15 @@ class UserTest extends AbstractTestCase
         static::assertAccessorPairs(User::class, $config);
     }
 
+    public function testHasId(): void
+    {
+        $user = new User();
+        static::assertFalse($user->hasId());
+
+        $user->setId(123);
+        static::assertTrue($user->hasId());
+    }
+
     public function testHasRole(): void
     {
         $user = new User();

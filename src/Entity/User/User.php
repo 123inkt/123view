@@ -61,27 +61,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(nullable: true)]
     private ?int $gitlabUserId = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToOne(targetEntity: UserSetting::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private ?UserSetting $setting = null;
 
     /** @phpstan-var Collection<int, Rule> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: Rule::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $rules;
 
     /** @phpstan-var Collection<int, GitAccessToken> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GitAccessToken::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: GitAccessToken::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $tokens;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CodeReviewer::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, Comment> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $comments;
 
     /** @phpstan-var Collection<int, CommentReply> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $replies;
 
     public function __construct()
@@ -98,6 +98,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->id = $id;
 
         return $this;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getId(): int

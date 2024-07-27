@@ -121,16 +121,16 @@ class CodeReview
     private Repository $repository;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false, indexBy: 'id')]
+    #[ORM\OneToMany(targetEntity: Revision::class, mappedBy: 'review', cascade: ['persist'], orphanRemoval: false, indexBy: 'id')]
     #[ORM\OrderBy(["createTimestamp" => "ASC"])]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CodeReviewer::class, mappedBy: 'review', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, Comment> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false, indexBy: 'id')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'review', cascade: ['persist', 'remove'], orphanRemoval: false, indexBy: 'id')]
     private Collection $comments;
 
     public function __construct()

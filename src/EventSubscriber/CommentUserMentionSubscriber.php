@@ -17,7 +17,7 @@ use DR\Utils\Assert;
 #[AsEntityListener(event: Events::postPersist, method: 'commentUpdated', entity: Comment::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'commentReplyUpdated', entity: CommentReply::class)]
 #[AsEntityListener(event: Events::postPersist, method: 'commentReplyUpdated', entity: CommentReply::class)]
-class CommentEventSubscriber
+class CommentUserMentionSubscriber
 {
     public function __construct(private readonly CommentMentionService $mentionService)
     {

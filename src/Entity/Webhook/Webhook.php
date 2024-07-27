@@ -38,7 +38,7 @@ class Webhook
     private Collection $repositories;
 
     /** @phpstan-var Collection<int, WebhookActivity> */
-    #[ORM\OneToMany(mappedBy: 'webhook', targetEntity: WebhookActivity::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: WebhookActivity::class, mappedBy: 'webhook', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $activities;
 
     public function __construct()

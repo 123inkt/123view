@@ -30,7 +30,7 @@ class UserSetting
     #[ORM\Column(length: 10000, options: ['default' => ''])]
     private string $browserNotificationEvents = '';
 
-    #[ORM\OneToOne(inversedBy: 'setting', targetEntity: User::class)]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'setting')]
     private ?User $user = null;
 
     public function setId(int $id): self

@@ -35,7 +35,7 @@ class DeleteCommentController extends AbstractController
 
         $this->denyAccessUnlessGranted(CommentVoter::DELETE, $comment);
 
-        $messages = [$this->messageFactory->createRemoved($comment, $this->getUser())];
+        $messages = [];
         foreach ($comment->getReplies() as $reply) {
             $messages[] = $this->messageFactory->createReplyRemoved($reply, $this->getUser());
         }
