@@ -58,6 +58,20 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $this->eventSubscriber->commentUpdated((new Comment())->setId(123));
     }
 
+    public function testCommentNoStateOrMessageChanges(): void
+    {
+        $event   = $this->createMock(PreUpdateEventArgs::class);
+        $event->method('getEntityChangeSet')->willReturn(['foobar' => ['old', 'new']]);
+        $comment = (new Comment())->setId(123)->setUser(new User());
+
+        $this->messageFactory->expects(self::never())->method('createUpdated');
+        $this->messageFactory->expects(self::never())->method('createResolved');
+        $this->messageFactory->expects(self::never())->method('createUnresolved');
+
+        $this->eventSubscriber->preCommentUpdated($comment, $event);
+        $this->eventSubscriber->commentUpdated($comment);
+    }
+
     public function testCommentUpdatedMessageAndState(): void
     {
         $user    = (new User())->setId(345);
