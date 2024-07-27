@@ -62,12 +62,14 @@ class CommentEventSubscriber implements ResetInterface
             $this->events[] = $this->messageFactory->createUpdated($comment, $comment->getUser(), Assert::string($changeSet['message'][0]));
         }
 
-        if (array_key_exists('state', $changeSet)) {
-            if ($comment->getState() === CommentStateType::RESOLVED) {
-                $this->events[] = $this->messageFactory->createResolved($comment, $comment->getUser());
-            } else {
-                $this->events[] = $this->messageFactory->createUnresolved($comment, $comment->getUser());
-            }
+        if (array_key_exists('state', $changeSet) === false) {
+            return;
+        }
+
+        if ($comment->getState() === CommentStateType::RESOLVED) {
+            $this->events[] = $this->messageFactory->createResolved($comment, $comment->getUser());
+        } else {
+            $this->events[] = $this->messageFactory->createUnresolved($comment, $comment->getUser());
         }
     }
 
