@@ -14,7 +14,6 @@ use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -33,11 +32,7 @@ class ViewRevisionFileController extends AbstractController
     public function __invoke(Request $request, #[MapEntity] Revision $revision): Response
     {
         $file     = $request->query->getString('file');
-        $mimeType = MimeTypes::getMimeType($file);
-        if ($mimeType === null) {
-            throw new BadRequestHttpException(sprintf('Could not determine mime-type for file "%s"', $file));
-        }
-
+        $mimeType = MimeTypes::getMimeType($file) ?? 'text/plain';
         $contents = $this->showService->getFileContents($revision, $file, true);
 
         if ($mimeType === 'text/markdown') {
