@@ -15,6 +15,7 @@ use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Utils\Assert;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
@@ -71,16 +72,15 @@ class CommentEventSubscriber
         $this->events[] = $this->messageFactory->createRemoved($comment, $comment->getUser());
     }
 
-    public function __invoke(): void
-    {
-        $test = true;
-    }
-
+    /**
+     * @throws ExceptionInterface
+     */
     public function finish(): void
     {
-        foreach ($this->events as $event) {
+        $events       = $this->events;
+        $this->events = [];
+        foreach ($events as $event) {
             $this->bus->dispatch($event);
         }
-        $this->events = [];
     }
 }
