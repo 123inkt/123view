@@ -6,9 +6,9 @@ namespace DR\Review\Tests\Unit\Entity;
 use DR\Review\Entity\PropertyChangeTrait;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\Helper\Entity\MockPropertyChangeObject;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 
-#[CoversClass(PropertyChangeTrait::class)]
+#[CoversTrait(PropertyChangeTrait::class)]
 class PropertyChangeTraitTest extends AbstractTestCase
 {
     private MockPropertyChangeObject $objectWithTrait;
