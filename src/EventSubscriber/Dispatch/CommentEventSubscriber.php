@@ -11,6 +11,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Utils\Assert;
@@ -29,15 +30,13 @@ use Symfony\Contracts\Service\ResetInterface;
 #[AsEventListener(event: ConsoleEvents::TERMINATE, method: 'finish')]
 class CommentEventSubscriber implements ResetInterface
 {
-    /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentResolved> */
+    /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
     private array $events = [];
-    /** @var array<int, array<string, array{mixed, mixed}>> */
+    /** @var array<int, mixed[]> */
     private array $updated = [];
 
-    public function __construct(
-        private readonly MessageBusInterface $bus,
-        private readonly CommentEventMessageFactory $messageFactory
-    ) {
+    public function __construct(private readonly MessageBusInterface $bus, private readonly CommentEventMessageFactory $messageFactory)
+    {
     }
 
     public function commentAdded(Comment $comment): void
@@ -47,7 +46,9 @@ class CommentEventSubscriber implements ResetInterface
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
-        $this->updated[$comment->getId()] = $event->getEntityChangeSet();
+        /** @var mixed[] $changeSet */
+        $changeSet                        = $event->getEntityChangeSet();
+        $this->updated[Assert::integer($comment->getId())] = $changeSet;
     }
 
     public function commentUpdated(Comment $comment): void
