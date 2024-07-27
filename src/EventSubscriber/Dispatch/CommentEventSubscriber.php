@@ -47,7 +47,7 @@ class CommentEventSubscriber implements ResetInterface
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
         /** @var mixed[] $changeSet */
-        $changeSet                        = $event->getEntityChangeSet();
+        $changeSet                                         = $event->getEntityChangeSet();
         $this->updated[Assert::integer($comment->getId())] = $changeSet;
     }
 
@@ -75,6 +75,10 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentRemoved(Comment $comment): void
     {
+        if ($comment->getUser()->hasId() === false) {
+            return;
+        }
+
         $this->events[] = $this->messageFactory->createRemoved($comment, $comment->getUser());
     }
 

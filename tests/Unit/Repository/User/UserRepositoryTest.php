@@ -13,6 +13,7 @@ use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Throwable;
 
 #[CoversClass(UserRepository::class)]
 class UserRepositoryTest extends AbstractRepositoryTestCase
@@ -41,7 +42,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function testFindBySearchQueryShouldExcludeBanned(): void
     {
@@ -53,7 +54,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function testFindUsersWithExclusion(): void
     {
@@ -67,7 +68,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function testGetNewUserCount(): void
     {
@@ -87,7 +88,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function testGetUserCount(): void
     {
@@ -101,7 +102,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function testGetActors(): void
     {

@@ -95,4 +95,13 @@ class CommentEventSubscriberTest extends AbstractTestCase
 
         $this->eventSubscriber->commentRemoved($comment);
     }
+
+    public function testCommentRemovedWithoutUser(): void
+    {
+        $comment = (new Comment())->setId(123)->setUser(new User());
+
+        $this->messageFactory->expects(self::never())->method('createRemoved');
+
+        $this->eventSubscriber->commentRemoved($comment);
+    }
 }
