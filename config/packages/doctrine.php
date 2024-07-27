@@ -50,6 +50,7 @@ return static function (DoctrineConfig $config): void {
     $orm->enableLazyGhostObjects(true);
     $orm->autoGenerateProxyClasses(true);
     $orm->defaultEntityManager('default');
+    $orm->controllerResolver()->autoMapping(false);
 
     $em = $orm->entityManager('default');
     $em->reportFieldsWhereDeclared(true);
