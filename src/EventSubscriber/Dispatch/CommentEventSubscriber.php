@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\EventSubscriber\Dispatch;
 
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
@@ -15,16 +14,20 @@ use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Utils\Assert;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
+#[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
-#[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
 #[AsEntityListener(event: Events::postRemove, method: 'commentRemoved', entity: Comment::class)]
-#[AsEntityListener(event: Events::postFlush, method: 'finish', entity: Comment::class)]
-#[AsDoctrineListener(event: Events::postFlush)]
-class CommentEventSubscriber
+#[AsEventListener(event: KernelEvents::TERMINATE, method: 'finish')]
+#[AsEventListener(event: ConsoleEvents::TERMINATE, method: 'finish')]
+class CommentEventSubscriber implements ResetInterface
 {
     /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentResolved> */
     private array $events = [];
@@ -44,7 +47,7 @@ class CommentEventSubscriber
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
-        $this->updated[$comment->getId()] += $event->getEntityChangeSet();
+        $this->updated[$comment->getId()] = $event->getEntityChangeSet();
     }
 
     public function commentUpdated(Comment $comment): void
@@ -70,6 +73,14 @@ class CommentEventSubscriber
     public function commentRemoved(Comment $comment): void
     {
         $this->events[] = $this->messageFactory->createRemoved($comment, $comment->getUser());
+    }
+
+    /**
+     * @throws ExceptionInterface
+     */
+    public function reset(): void
+    {
+        $this->finish();
     }
 
     /**
