@@ -49,6 +49,7 @@ RUN curl -sLO https://github.com/git/git/archive/refs/tags/v2.41.0.tar.gz && \
 
 ## Copy php default configuration
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
+COPY ./docker/php-fpm/conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./docker/php-fpm/conf/opcache.preload.conf /usr/local/etc/php-fpm.d/opcache.preload.conf
 COPY ./docker/php-fpm/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
