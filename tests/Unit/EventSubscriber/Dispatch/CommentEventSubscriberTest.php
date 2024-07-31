@@ -13,12 +13,14 @@ use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(CommentEventSubscriber::class)]
 class CommentEventSubscriberTest extends AbstractTestCase
 {
+    private Security&MockObject                   $security;
     private MessageBusInterface&MockObject        $bus;
     private CommentEventMessageFactory&MockObject $messageFactory;
     private CommentEventSubscriber                $eventSubscriber;
@@ -26,9 +28,10 @@ class CommentEventSubscriberTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->security        = $this->createMock(Security::class);
         $this->bus             = $this->createMock(MessageBusInterface::class);
         $this->messageFactory  = $this->createMock(CommentEventMessageFactory::class);
-        $this->eventSubscriber = new CommentEventSubscriber($this->bus, $this->messageFactory);
+        $this->eventSubscriber = new CommentEventSubscriber($this->security, $this->bus, $this->messageFactory);
     }
 
     /**
@@ -37,9 +40,10 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentAdded(): void
     {
         $user    = (new User())->setId(345);
-        $comment = (new Comment())->setId(123)->setUser($user);
+        $comment = (new Comment())->setId(123);
         $event   = $this->createMock(CommentAdded::class);
 
+        $this->security->expects(self::once())->method('getUser')->willReturn($user);
         $this->messageFactory->expects(self::once())->method('createAdded')->with($comment, $user)->willReturn($event);
         $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
 
@@ -51,6 +55,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
 
     public function testCommentUpdatedNoChanges(): void
     {
+        $this->security->expects(self::once())->method('getUser')->willReturn(new User());
         $this->messageFactory->expects(self::never())->method('createUpdated');
         $this->messageFactory->expects(self::never())->method('createResolved');
         $this->messageFactory->expects(self::never())->method('createUnresolved');
@@ -60,10 +65,11 @@ class CommentEventSubscriberTest extends AbstractTestCase
 
     public function testCommentNoStateOrMessageChanges(): void
     {
-        $event   = $this->createMock(PreUpdateEventArgs::class);
+        $event = $this->createMock(PreUpdateEventArgs::class);
         $event->method('getEntityChangeSet')->willReturn(['foobar' => ['old', 'new']]);
-        $comment = (new Comment())->setId(123)->setUser(new User());
+        $comment = (new Comment())->setId(123);
 
+        $this->security->expects(self::once())->method('getUser')->willReturn(new User());
         $this->messageFactory->expects(self::never())->method('createUpdated');
         $this->messageFactory->expects(self::never())->method('createResolved');
         $this->messageFactory->expects(self::never())->method('createUnresolved');
@@ -75,10 +81,11 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentUpdatedMessageAndState(): void
     {
         $user    = (new User())->setId(345);
-        $comment = (new Comment())->setId(123)->setUser($user)->setState(CommentStateType::RESOLVED);
+        $comment = (new Comment())->setId(123)->setState(CommentStateType::RESOLVED);
         $event   = $this->createMock(PreUpdateEventArgs::class);
         $event->method('getEntityChangeSet')->willReturn(['message' => ['old', 'new'], 'state' => ['before', 'after']]);
 
+        $this->security->expects(self::once())->method('getUser')->willReturn($user);
         $this->messageFactory->expects(self::once())->method('createUpdated')->with($comment, $user, 'old');
         $this->messageFactory->expects(self::once())->method('createResolved')->with($comment, $user);
 
@@ -89,10 +96,11 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentUnresolved(): void
     {
         $user    = (new User())->setId(345);
-        $comment = (new Comment())->setId(123)->setUser($user)->setState(CommentStateType::OPEN);
+        $comment = (new Comment())->setId(123)->setState(CommentStateType::OPEN);
         $event   = $this->createMock(PreUpdateEventArgs::class);
         $event->method('getEntityChangeSet')->willReturn(['state' => ['before', 'after']]);
 
+        $this->security->expects(self::once())->method('getUser')->willReturn($user);
         $this->messageFactory->expects(self::never())->method('createUpdated');
         $this->messageFactory->expects(self::once())->method('createUnresolved')->with($comment, $user);
 
@@ -103,8 +111,9 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentRemoved(): void
     {
         $user    = (new User())->setId(345);
-        $comment = (new Comment())->setId(123)->setUser($user);
+        $comment = (new Comment())->setId(123);
 
+        $this->security->expects(self::once())->method('getUser')->willReturn($user);
         $this->messageFactory->expects(self::once())->method('createRemoved')->with($comment, $user);
 
         $this->eventSubscriber->commentRemoved($comment);
