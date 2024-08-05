@@ -10938,16 +10938,16 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "3.0.1",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "203df6491eb0d2981317030cca06ecd598b48eda"
+                "reference": "c170375e247603a81d3c16efd1a46d22215ec26d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/203df6491eb0d2981317030cca06ecd598b48eda",
-                "reference": "203df6491eb0d2981317030cca06ecd598b48eda",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/c170375e247603a81d3c16efd1a46d22215ec26d",
+                "reference": "c170375e247603a81d3c16efd1a46d22215ec26d",
                 "shasum": ""
             },
             "require": {
@@ -11020,9 +11020,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.0.1"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.1.0"
             },
-            "time": "2024-06-10T11:12:28+00:00"
+            "time": "2024-08-05T20:30:34+00:00"
         },
         {
             "name": "masterminds/html5",
