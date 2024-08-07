@@ -10510,16 +10510,16 @@
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
-            "version": "v2.3.0",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/accessorpair-constraint.git",
-                "reference": "1b488d297632ed65974fb92f58fb78e3107b5734"
+                "reference": "f967dfc45b756895184c5e1f12c1cf14f565f6cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/1b488d297632ed65974fb92f58fb78e3107b5734",
-                "reference": "1b488d297632ed65974fb92f58fb78e3107b5734",
+                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/f967dfc45b756895184c5e1f12c1cf14f565f6cb",
+                "reference": "f967dfc45b756895184c5e1f12c1cf14f565f6cb",
                 "shasum": ""
             },
             "require": {
@@ -10550,9 +10550,9 @@
             "description": "Digital Revolution PHPUnit Constraint for accessorpairs",
             "support": {
                 "issues": "https://github.com/123inkt/accessorpair-constraint/issues",
-                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.3.0"
+                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.3.1"
             },
-            "time": "2024-07-24T11:50:49+00:00"
+            "time": "2024-08-07T15:37:13+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
