@@ -35,8 +35,7 @@
 
 .diff-file__file-preview {
     padding: 5px 20px;
-    background-color: #efefef;
-    border: 1px solid #cccccc;
+    border: 1px solid var(--comment-border-color);
     margin-bottom: 5px;
 }
 
