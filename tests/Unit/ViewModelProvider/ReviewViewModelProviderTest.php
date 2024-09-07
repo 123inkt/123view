@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
@@ -15,6 +16,7 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
@@ -41,6 +43,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
     private FormFactoryInterface&MockObject           $formFactory;
     private FileTreeViewModelProvider&MockObject      $fileTreeModelProvider;
     private RevisionViewModelProvider&MockObject      $revisionModelProvider;
+    private CodeReviewTypeDecider&MockObject          $reviewTypeDecider;
     private ReviewSummaryViewModelProvider&MockObject $summaryViewModelProvider;
     private CodeReviewRevisionService&MockObject      $revisionService;
     private RevisionVisibilityService&MockObject      $visibilityService;
@@ -54,6 +57,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->formFactory              = $this->createMock(FormFactoryInterface::class);
         $this->fileTreeModelProvider    = $this->createMock(FileTreeViewModelProvider::class);
         $this->revisionModelProvider    = $this->createMock(RevisionViewModelProvider::class);
+        $this->reviewTypeDecider        = $this->createMock(CodeReviewTypeDecider::class);
         $this->summaryViewModelProvider = $this->createMock(ReviewSummaryViewModelProvider::class);
         $this->revisionService          = $this->createMock(CodeReviewRevisionService::class);
         $this->visibilityService        = $this->createMock(RevisionVisibilityService::class);
@@ -61,6 +65,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             $this->fileDiffProvider,
             $this->formFactory,
             $this->fileService,
+            $this->reviewTypeDecider,
             $this->fileTreeModelProvider,
             $this->revisionModelProvider,
             $this->summaryViewModelProvider,
@@ -87,6 +92,9 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
         $request = $this->createMock(ReviewRequest::class);
+        $this->reviewTypeDecider->expects(self::once())->method('decide')
+            ->with($review, [$revision], [$revision])
+            ->willReturn(CodeReviewType::BRANCH);
         $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->visibilityService->expects(self::once())
             ->method('getVisibleRevisions')
@@ -130,6 +138,9 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
         $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
 
+        $this->reviewTypeDecider->expects(self::once())->method('decide')
+            ->with($review, [$revision], [$revision])
+            ->willReturn(CodeReviewType::BRANCH);
         $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->visibilityService->expects(self::once())
             ->method('getVisibleRevisions')
@@ -137,7 +148,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             ->willReturnArgument(1);
         $this->fileService->expects(self::once())
             ->method('getFiles')
-            ->with($review, [$revision], $filePath, new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, 'commits'))
+            ->with($review, [$revision], $filePath, new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, 'branch'))
             ->willReturn([$tree, null]);
         $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $this->summaryViewModelProvider->expects(self::once())->method('getSummaryViewModel')->with($review, [$revision], $tree);
