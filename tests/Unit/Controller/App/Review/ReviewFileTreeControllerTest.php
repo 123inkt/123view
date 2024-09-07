@@ -12,6 +12,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
@@ -51,7 +52,7 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
         $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->fileService->expects(self::once())
             ->method('getFiles')
-            ->with($review, [$revision], 'filePath', DiffComparePolicy::ALL)
+            ->with($review, [$revision], 'filePath', new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL))
             ->willReturn([$treeNode, $selectedFile]);
         $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
         $this->viewModelProvider->expects(self::once())

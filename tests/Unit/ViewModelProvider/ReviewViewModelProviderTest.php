@@ -15,6 +15,7 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -136,7 +137,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             ->willReturnArgument(1);
         $this->fileService->expects(self::once())
             ->method('getFiles')
-            ->with($review, [$revision], $filePath, DiffComparePolicy::IGNORE)
+            ->with($review, [$revision], $filePath, new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, 'commits'))
             ->willReturn([$tree, null]);
         $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $this->summaryViewModelProvider->expects(self::once())->method('getSummaryViewModel')->with($review, [$revision], $tree);

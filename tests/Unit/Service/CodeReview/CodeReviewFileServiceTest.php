@@ -11,6 +11,7 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewFileTreeService;
 use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\CacheTestTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -53,6 +54,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
         $revision->setCommitHash('hash');
+        $options = new FileDiffOptions(5, DiffComparePolicy::IGNORE);
 
         $diffFileA = new DiffFile();
         $diffFileB = new DiffFile();
@@ -66,7 +68,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $this->revisionCache->expects(self::once())->method('get')->willReturn($diffFileA);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
-        $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);
+        $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);
     }
 
@@ -80,6 +82,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
         $revision->setCommitHash('hash');
+        $options = new FileDiffOptions(5, DiffComparePolicy::IGNORE);
 
         $diffFileA = new DiffFile();
         $diffFileB = new DiffFile();
@@ -94,7 +97,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $this->revisionCache->expects(self::exactly(3))->method('get')->willReturn(null, null, $diffFileA);
         $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
-        $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);
+        $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);
     }
 }

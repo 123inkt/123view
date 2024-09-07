@@ -87,6 +87,6 @@ class ReviewViewModelProvider
             $reviewType = CodeReviewType::COMMITS;
         }
 
-        return  new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType);
+        return new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType);
     }
 }
