@@ -21,7 +21,7 @@ class UriUtil
             return [null, null];
         }
 
-        $username = isset($matches[1]) ? urldecode($matches[1]) : null;
+        $username = urldecode($matches[1]);
         $username = $username === '' ? null : $username;
 
         $password = isset($matches[2]) ? urldecode($matches[2]) : null;
