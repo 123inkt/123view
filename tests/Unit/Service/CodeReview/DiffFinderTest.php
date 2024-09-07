@@ -78,7 +78,7 @@ class DiffFinderTest extends AbstractTestCase
         $file->filePathAfter  = '/path/to/file/foobar.txt';
         $file->addBlock($block);
 
-        $this->referenceMatcher->method('exactMatch')->willReturn($lineA, $lineB, $lineB);
+        $this->referenceMatcher->expects(self::exactly(4))->method('exactMatch')->willReturn($lineA, $lineB, $lineB, null);
 
         // match line 100 => expect before: 100, after: 101
         static::assertSame(
