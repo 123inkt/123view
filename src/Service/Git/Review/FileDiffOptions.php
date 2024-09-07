@@ -11,7 +11,7 @@ class FileDiffOptions
     public const DEFAULT_LINE_DIFF = 9999999;
 
     /**
-     * @phpstan-param CodeReviewType::*|null $reviewType
+     * @phpstan-param CodeReviewType::COMMITS|CodeReviewType::BRANCH|null $reviewType
      */
     public function __construct(
         public readonly int $unifiedDiffLines,

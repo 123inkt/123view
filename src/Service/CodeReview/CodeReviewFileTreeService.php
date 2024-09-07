@@ -30,7 +30,7 @@ class CodeReviewFileTreeService
      * @return array{0: DirectoryTreeNode<DiffFile>, 1: DiffFile[]}
      * @throws Throwable
      */
-    public function getFileTree(CodeReview $review, array $revisions, ?FileDiffOptions $diffOptions = null): array
+    public function getFileTree(CodeReview $review, array $revisions, FileDiffOptions $diffOptions): array
     {
         $repository = Assert::notNull($review->getRepository());
 

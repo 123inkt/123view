@@ -5,6 +5,7 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
@@ -79,6 +80,10 @@ class ReviewViewModelProvider
         return $viewModel;
     }
 
+    /**
+     * @param Revision[] $revisions
+     * @param Revision[] $visibleRevisions
+     */
     private function createFileDiffOptions(ReviewRequest $request, CodeReview $review, array $revisions, array $visibleRevisions): FileDiffOptions
     {
         if ($review->getType() === CodeReviewType::BRANCH && count($revisions) === count($visibleRevisions)) {
