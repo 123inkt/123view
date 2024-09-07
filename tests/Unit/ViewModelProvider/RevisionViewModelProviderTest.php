@@ -100,7 +100,10 @@ class RevisionViewModelProviderTest extends AbstractTestCase
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $this->user)
             ->willReturn([$visibility]);
-        $this->formFactory->expects(self::never())->method('create');
+        $this->formFactory->expects(self::once())
+            ->method('create')
+            ->with(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
+            ->willReturn($this->createMock(FormInterface::class));
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);
