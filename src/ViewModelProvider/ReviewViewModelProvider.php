@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
-use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -23,6 +22,7 @@ class ReviewViewModelProvider
         private readonly FileDiffViewModelProvider $fileDiffViewModelProvider,
         private readonly FormFactoryInterface $formFactory,
         private readonly CodeReviewFileService $fileService,
+        private readonly CodeReviewTypeDecider $reviewTypeDecider,
         private readonly FileTreeViewModelProvider $fileTreeModelProvider,
         private readonly RevisionViewModelProvider $revisionModelProvider,
         private readonly ReviewSummaryViewModelProvider $summaryViewModelProvider,
@@ -44,11 +44,12 @@ class ReviewViewModelProvider
         $viewModel->setVisibleRevisionCount(count($visibleRevisions));
 
         // get diff files for review
+        $reviewType = $this->reviewTypeDecider->decide($review, $revisions, $visibleRevisions);
         [$fileTree, $selectedFile] = $this->fileService->getFiles(
             $review,
             $visibleRevisions,
             $request->getFilePath(),
-            $this->createFileDiffOptions($request, $review, $revisions, $visibleRevisions)
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType)
         );
 
         // get timeline or file-diff view model
@@ -78,20 +79,5 @@ class ReviewViewModelProvider
         }
 
         return $viewModel;
-    }
-
-    /**
-     * @param Revision[] $revisions
-     * @param Revision[] $visibleRevisions
-     */
-    private function createFileDiffOptions(ReviewRequest $request, CodeReview $review, array $revisions, array $visibleRevisions): FileDiffOptions
-    {
-        if ($review->getType() === CodeReviewType::BRANCH && count($revisions) === count($visibleRevisions)) {
-            $reviewType = CodeReviewType::BRANCH;
-        } else {
-            $reviewType = CodeReviewType::COMMITS;
-        }
-
-        return new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType);
     }
 }
