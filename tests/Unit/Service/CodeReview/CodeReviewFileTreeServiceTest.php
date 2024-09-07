@@ -68,10 +68,9 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $review     = new CodeReview();
-        $review->setType(CodeReviewType::BRANCH);
         $review->setReferenceId('branch');
         $review->setRepository($repository);
-        $options   = new FileDiffOptions(10, DiffComparePolicy::ALL);
+        $options   = new FileDiffOptions(10, DiffComparePolicy::ALL, CodeReviewType::BRANCH);
         $revisions = [new Revision()];
         $files     = [new DiffFile()];
 
