@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
@@ -45,7 +47,7 @@ class ReviewViewModelProvider
             $review,
             $visibleRevisions,
             $request->getFilePath(),
-            $request->getComparisonPolicy()
+            $this->createFileDiffOptions($request, $review, $revisions, $visibleRevisions)
         );
 
         // get timeline or file-diff view model
@@ -75,5 +77,16 @@ class ReviewViewModelProvider
         }
 
         return $viewModel;
+    }
+
+    private function createFileDiffOptions(ReviewRequest $request, CodeReview $review, array $revisions, array $visibleRevisions): FileDiffOptions
+    {
+        if ($review->getType() === CodeReviewType::BRANCH && count($revisions) === count($visibleRevisions)) {
+            $reviewType = CodeReviewType::BRANCH;
+        } else {
+            $reviewType = CodeReviewType::COMMITS;
+        }
+
+        return  new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType);
     }
 }

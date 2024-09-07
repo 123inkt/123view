@@ -26,11 +26,7 @@
 
     <div class="review-grid-sidebar--grid-bottom">
         {% if reviewModel.sidebarTabMode == 'revisions' %}
-            {% if review.type == 'branch' %}
-                {% include 'app/review/review.revisions.branch.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
-            {% else %}
-                {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
-            {% endif %}
+            {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
         {% endif %}
 
         {% if reviewModel.sidebarTabMode == 'overview' %}
