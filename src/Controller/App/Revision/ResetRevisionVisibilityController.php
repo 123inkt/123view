@@ -12,7 +12,6 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -27,7 +26,7 @@ class ResetRevisionVisibilityController extends AbstractController
 
     #[Route('app/reviews/{id<\d+>}/revision-visibility/reset', name: self::class, methods: 'POST')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
+    public function __invoke(#[MapEntity] CodeReview $review): RedirectResponse
     {
         $revisions    = $this->revisionService->getRevisions($review);
         $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->getUser());
