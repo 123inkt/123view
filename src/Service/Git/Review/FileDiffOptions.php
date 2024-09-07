@@ -22,6 +22,6 @@ class FileDiffOptions
 
     public function __toString(): string
     {
-        return sprintf('fdo-%s-%s-%s', $this->unifiedDiffLines, $this->comparePolicy->value, $this->reviewType?->value ?? CodeReviewType::COMMITS);
+        return sprintf('fdo-%s-%s-%s', $this->unifiedDiffLines, $this->comparePolicy->value, $this->reviewType ?? CodeReviewType::COMMITS);
     }
 }
