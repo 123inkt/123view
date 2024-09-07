@@ -39,5 +39,4 @@ class ResetRevisionVisibilityController extends AbstractController
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
-
 }
