@@ -22,7 +22,7 @@
                 </a>
             </li>
             {% if reviewModel.visibleRevisionCount != reviewModel.revisions|length %}
-                <li class="nav-item">
+                <li class="nav-item" title="{{ 'show.all.revisions'|trans }}">
                     <form method="post"
                           action="{{ path('DR\\Review\\Controller\\App\\Revision\\ResetRevisionVisibilityController', {id: review.id}) }}">
                         <button type="submit" class="nav-link" {{ stimulus_controller('button') }}>
