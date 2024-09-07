@@ -21,6 +21,16 @@
                     {% endif %}
                 </a>
             </li>
+            {% if reviewModel.visibleRevisionCount != reviewModel.revisions|length %}
+                <li class="nav-item">
+                    <form method="post"
+                          action="{{ path('DR\\Review\\Controller\\App\\Revision\\ResetRevisionVisibilityController', {id: review.id}) }}">
+                        <button type="submit" class="nav-link" {{ stimulus_controller('button') }}>
+                            <i class="bi-eye-fill"></i> {{ 'all'|trans }}
+                        </button>
+                    </form>
+                </li>
+            {% endif %}
         </ul>
     </div>
 
