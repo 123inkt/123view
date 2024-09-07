@@ -12,6 +12,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Review\CodeReviewService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
@@ -23,6 +24,7 @@ class CodeReviewServiceTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
     private CodeReviewRepository&MockObject      $reviewRepository;
+    private CodeReviewRevisionService&MockObject $revisionService;
     private CodeReviewerRepository&MockObject    $reviewerRepository;
     private RevisionVisibilityService&MockObject $visibilityService;
     private CodeReviewService                    $service;
@@ -32,11 +34,13 @@ class CodeReviewServiceTest extends AbstractTestCase
         parent::setUp();
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
         $this->reviewRepository   = $this->createMock(CodeReviewRepository::class);
+        $this->revisionService    = $this->createMock(CodeReviewRevisionService::class);
         $this->reviewerRepository = $this->createMock(CodeReviewerRepository::class);
         $this->visibilityService  = $this->createMock(RevisionVisibilityService::class);
         $this->service            = new CodeReviewService(
             $this->revisionRepository,
             $this->reviewRepository,
+            $this->revisionService,
             $this->reviewerRepository,
             $this->visibilityService
         );
@@ -51,10 +55,10 @@ class CodeReviewServiceTest extends AbstractTestCase
         $reviewer->setUser($user);
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $review = new CodeReview();
-        $review->getRevisions()->add($revisionA);
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revisionA]);
         $this->revisionRepository->expects(self::once())->method('save')->with($revisionB, true);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
         $this->reviewerRepository->expects(self::once())->method('save')->with($reviewer, true);
@@ -79,6 +83,7 @@ class CodeReviewServiceTest extends AbstractTestCase
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
+        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([]);
         $this->revisionRepository->expects(self::once())->method('save')->with($revision, true);
         $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
         $this->reviewerRepository->expects(self::never())->method('save');

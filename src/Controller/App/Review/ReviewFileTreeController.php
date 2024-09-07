@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
@@ -42,7 +43,7 @@ class ReviewFileTreeController extends AbstractController
             $review,
             $this->revisionService->getRevisions($review),
             $request->query->get('filePath'),
-            $this->sessionService->getDiffComparePolicyForUser()
+            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $this->sessionService->getDiffComparePolicyForUser())
         );
 
         return ['fileTreeModel' => $this->viewModelProvider->getFileTreeViewModel($review, $fileTree, $selectedFile)];

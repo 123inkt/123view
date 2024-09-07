@@ -45,16 +45,15 @@ class RevisionViewModelProvider
         $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->user);
 
         if ($review->getType() === CodeReviewType::COMMITS) {
-            $detachRevisionForm     = $this->formFactory
+            $detachRevisionForm = $this->formFactory
                 ->create(DetachRevisionsFormType::class, null, ['reviewId' => $review->getId(), 'revisions' => $revisions])
                 ->createView();
-            $revisionVisibilityForm = $this->formFactory
-                ->create(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()])
-                ->createView();
         } else {
-            $detachRevisionForm     = null;
-            $revisionVisibilityForm = null;
+            $detachRevisionForm = null;
         }
+        $revisionVisibilityForm = $this->formFactory
+            ->create(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()])
+            ->createView();
 
         return new ReviewRevisionViewModel($revisions, $detachRevisionForm, $revisionVisibilityForm);
     }

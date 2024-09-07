@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Revision;
 
-use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
@@ -30,13 +29,12 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $this->service              = new RevisionVisibilityService($this->user, $this->visibilityRepository);
     }
 
-    public function testGetVisibleRevisionsShouldIgnoreBranchReview(): void
+    public function testGetVisibleRevisionsWithoutVisibility(): void
     {
         $revision = new Revision();
         $review   = new CodeReview();
-        $review->setType(CodeReviewType::BRANCH);
 
-        $this->visibilityRepository->expects(self::never())->method('findBy');
+        $this->visibilityRepository->expects(self::once())->method('findBy')->willReturn([]);
 
         static::assertSame([$revision], $this->service->getVisibleRevisions($review, [$revision]));
     }

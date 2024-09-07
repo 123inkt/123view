@@ -9,6 +9,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,6 +23,7 @@ class UpdateRevisionVisibilityController extends AbstractController
     public function __construct(
         private readonly RevisionVisibilityService $visibilityService,
         private readonly RevisionVisibilityRepository $visibilityRepository,
+        private readonly CodeReviewRevisionService $revisionService
     ) {
     }
 
@@ -29,7 +31,8 @@ class UpdateRevisionVisibilityController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
-        $visibilities = $this->visibilityService->getRevisionVisibilities($review, $review->getRevisions(), $this->getUser());
+        $revisions    = $this->revisionService->getRevisions($review);
+        $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->getUser());
         foreach ($visibilities as $visibility) {
             $visibility->setVisible(false);
         }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview;
 
-use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -29,10 +28,9 @@ class CodeReviewFileService
      * @return array{0: DirectoryTreeNode<DiffFile>, 1: ?DiffFile}
      * @throws Throwable
      */
-    public function getFiles(CodeReview $review, array $revisions, ?string $filePath, DiffComparePolicy $comparePolicy): array
+    public function getFiles(CodeReview $review, array $revisions, ?string $filePath, FileDiffOptions $diffOptions): array
     {
-        $diffOptions = new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $comparePolicy);
-        $cacheKey    = $this->getReviewCacheKey($review, $revisions, $diffOptions);
+        $cacheKey = $this->getReviewCacheKey($review, $revisions, $diffOptions);
 
         $cacheItem = $this->revisionCache->getItem($cacheKey);
         if ($cacheItem->isHit()) {
