@@ -7,6 +7,15 @@
         <span class="comment__datetime" title="{{ reply.updateTimestamp|format_datetime('full', 'full') }}">
             {{ 'on'|trans }} {{ reply.updateTimestamp|format_datetime('short', 'short') }}
         </span>
+        {%- if reply.tag -%}
+            {%- if reply.tag.value == 'suggestion' -%}
+                <span class="badge rounded-pill text-bg-info">{{ 'tag.suggestion'|trans }}</span>
+            {%- elseif reply.tag.value == 'explanation' -%}
+                <span class="badge rounded-pill text-bg-primary">{{ 'tag.explanation'|trans }}</span>
+            {%- else -%}
+                <span class="badge rounded-pill text-bg-success">{{ ('tag.' ~ reply.tag.value)|trans }}</span>
+            {%- endif -%}
+        {%- endif -%}
         {% if reply.user == app.user %}
             <span class="comment__edit">
                 {# edit reply #}
