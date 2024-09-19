@@ -29,6 +29,16 @@
             <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
                 {{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
             </span>
+            {%- if comment.tag -%}
+                {%- if comment.tag.value == 'suggestion' -%}
+                    <span class="badge rounded-pill text-bg-info">{{ 'tag.suggestion'|trans }}</span>
+                {%- elseif comment.tag.value == 'explanation' -%}
+                    <span class="badge rounded-pill text-bg-primary">{{ 'tag.explanation'|trans }}</span>
+                {%- else -%}
+                    <span class="badge rounded-pill text-bg-success">{{ ('tag.' ~ comment.tag.value)|trans }}</span>
+                {%- endif -%}
+            {%- endif -%}
+
             {% if comment.user == app.user %}
                 <span class="comment__edit">
                     {# edit comment #}

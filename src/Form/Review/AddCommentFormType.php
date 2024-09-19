@@ -5,7 +5,9 @@ namespace DR\Review\Form\Review;
 
 use DR\Review\Controller\App\Review\Comment\AddCommentController;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
+use DR\Utils\Assert;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -38,7 +40,11 @@ class AddCommentFormType extends AbstractType
 
         $builder->setAction($this->urlGenerator->generate(AddCommentController::class, ['id' => $review->getId()]));
         $builder->setMethod('POST');
-        $builder->add('lineReference', HiddenType::class, ['data' => (string)$lineReference]);
+        $builder->add(
+            'lineReference',
+            HiddenType::class,
+            ['data' => (string)$lineReference, 'setter' => $this->setter(...)]
+        );
         $builder->add(
             'message',
             CommentType::class,
@@ -47,6 +53,14 @@ class AddCommentFormType extends AbstractType
                 'attr'                        => ['placeholder' => 'leave.a.comment.on.line'],
             ]
         );
+        $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'add.comment']);
+    }
+
+    public function setter(Comment $comment, string $value): void
+    {
+        $lineReference = LineReference::fromString($value);
+        $comment->setLineReference($lineReference);
+        $comment->setFilePath(Assert::notNull($lineReference->oldPath ?? $lineReference->newPath));
     }
 }

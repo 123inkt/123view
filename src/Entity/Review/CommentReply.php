@@ -5,6 +5,7 @@ namespace DR\Review\Entity\Review;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentReplyRepository;
 
@@ -18,6 +19,9 @@ class CommentReply
 
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
+
+    #[ORM\Column(type: CommentTagType::TYPE, nullable: true, enumType: CommentTagEnum::class)]
+    private ?CommentTagEnum $tag;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
@@ -59,6 +63,18 @@ class CommentReply
     public function setMessage(string $message): void
     {
         $this->message = $message;
+    }
+
+    public function getTag(): ?CommentTagEnum
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?CommentTagEnum $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
     }
 
     public function getExtReferenceId(): ?string

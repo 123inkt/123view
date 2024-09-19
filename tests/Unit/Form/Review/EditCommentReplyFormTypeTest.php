@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Form\Review;
 
 use DR\Review\Controller\App\Review\Comment\UpdateCommentReplyController;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Form\Review\EditCommentReplyFormType;
 use DR\Review\Tests\AbstractTestCase;
@@ -55,11 +56,12 @@ class EditCommentReplyFormTypeTest extends AbstractTestCase
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder->expects(self::once())->method('setAction')->with($url);
         $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(2))
+        $builder->expects(self::exactly(3))
             ->method('add')
             ->with(
                 ...consecutive(
                     ['message', CommentType::class],
+                    ['tag', CommentTagType::class],
                     ['save', SubmitType::class, ['label' => 'save']],
                 )
             )->willReturnSelf();

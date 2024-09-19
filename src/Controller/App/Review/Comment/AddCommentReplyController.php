@@ -36,22 +36,20 @@ class AddCommentReplyController extends AbstractController
             return $this->json(['success' => false, 'error' => $this->translator->trans('comment.was.deleted.meanwhile')], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(AddCommentReplyFormType::class, null, ['comment' => $comment]);
+        $user = $this->getUser();
+        $reply = new CommentReply();
+        $reply->setUser($user);
+        $reply->setMessage('');
+        $reply->setTag(null);
+        $reply->setComment($comment);
+        $reply->setCreateTimestamp(time());
+        $reply->setUpdateTimestamp(time());
+
+        $form = $this->createForm(AddCommentReplyFormType::class, $reply, ['comment' => $comment]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
         }
-
-        /** @var array{message: string} $data */
-        $data = $form->getData();
-
-        $user = $this->getUser();
-        $reply = new CommentReply();
-        $reply->setUser($user);
-        $reply->setComment($comment);
-        $reply->setMessage($data['message']);
-        $reply->setCreateTimestamp(time());
-        $reply->setUpdateTimestamp(time());
 
         $this->replyRepository->save($reply, true);
 
@@ -60,7 +58,7 @@ class AddCommentReplyController extends AbstractController
                 (int)$comment->getReview()->getId(),
                 (int)$reply->getId(),
                 $user->getId(),
-                $data['message'],
+                $reply->getMessage(),
                 $comment->getFilePath()
             )
         );
