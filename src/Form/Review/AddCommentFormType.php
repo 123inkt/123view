@@ -5,6 +5,7 @@ namespace DR\Review\Form\Review;
 
 use DR\Review\Controller\App\Review\Comment\AddCommentController;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Utils\Assert;
 use Symfony\Component\Form\AbstractType;
@@ -44,7 +45,7 @@ class AddCommentFormType extends AbstractType
             HiddenType::class,
             [
                 'data' => (string)$lineReference,
-                'setter' => static function (object $comment, string $value): void {
+                'setter' => static function (Comment $comment, string $value): void {
                     $lineReference = LineReference::fromString($value);
                     $comment->setLineReference($lineReference);
                     $comment->setFilePath(Assert::notNull($lineReference->oldPath ?? $lineReference->newPath));

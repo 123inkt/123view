@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\Review;
 
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\CommentTagEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,8 +26,12 @@ class CommentTagType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'getter'   => static fn(object $comment): string => $comment->getTag()?->value ?? '',
+                'getter'   => static function (object $comment): string {
+                    assert($comment instanceof Comment || $comment instanceof CommentReply);
+                    return $comment->getTag()?->value ?? '';
+                },
                 'setter'   => static function (object $comment, string $value): void {
+                    assert($comment instanceof Comment || $comment instanceof CommentReply);
                     $comment->setTag($value === '' ? null : CommentTagEnum::from($value));
                 },
                 'label'    => false,

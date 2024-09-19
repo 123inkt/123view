@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Tests\AbstractTestCase;
+use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -48,10 +49,13 @@ class CommentTagTypeTest extends AbstractTestCase
         ];
         static::assertSame($choices, $introspector->getDefault('choices'));
 
-        static::assertSame('explanation', $introspector->getDefault('getter')((new Comment())->setTag(CommentTagEnum::Explanation)));
+        static::assertSame(
+            'explanation',
+            Assert::isCallable($introspector->getDefault('getter'))((new Comment())->setTag(CommentTagEnum::Explanation))
+        );
 
         $comment = new Comment();
-        $introspector->getDefault('setter')($comment, 'explanation');
+        Assert::isCallable($introspector->getDefault('setter'))($comment, 'explanation');
         static::assertSame(CommentTagEnum::Explanation, $comment->getTag());
     }
 
