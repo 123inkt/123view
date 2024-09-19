@@ -36,7 +36,8 @@ class AddCommentControllerTest extends AbstractControllerTestCase
         $review  = new CodeReview();
         $review->setId(123);
 
-        $this->expectCreateForm(AddCommentFormType::class, null, ['review' => $review])
+        $this->expectGetUser(new User());
+        $this->expectCreateForm(AddCommentFormType::class, static::isInstanceOf(Comment::class), ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
@@ -55,11 +56,10 @@ class AddCommentControllerTest extends AbstractControllerTestCase
         $user = new User();
         $this->expectGetUser($user);
 
-        $this->expectCreateForm(AddCommentFormType::class, null, ['review' => $review])
+        $this->expectCreateForm(AddCommentFormType::class, static::isInstanceOf(Comment::class), ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
-            ->isValidWillReturn(true)
-            ->getDataWillReturn($data);
+            ->isValidWillReturn(true);
 
         $this->commentRepository->expects(self::once())
             ->method('save')
@@ -68,9 +68,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
                     $comment->setId(123);
                     static::assertSame($user, $comment->getUser());
                     static::assertSame($review, $comment->getReview());
-                    static::assertSame('filepath', $comment->getFilePath());
-                    static::assertSame('my-comment', $comment->getMessage());
-                    static::assertEquals(LineReference::fromString('filepath:1:2:3'), $comment->getLineReference());
                     static::assertGreaterThan(0, $comment->getCreateTimestamp());
                     static::assertGreaterThan(0, $comment->getUpdateTimestamp());
 

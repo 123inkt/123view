@@ -45,6 +45,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
 
     public function testInvokeFormNotSubmitted(): void
     {
+        $user    = (new User())->setId(789);
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
@@ -52,7 +53,8 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $comment->setId(456);
         $comment->setReview($review);
 
-        $this->expectCreateForm(AddCommentReplyFormType::class, null, ['comment' => $comment])
+        $this->expectGetUser($user);
+        $this->expectCreateForm(AddCommentReplyFormType::class, static::isInstanceOf(CommentReply::class), ['comment' => $comment])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
@@ -70,11 +72,10 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $user    = (new User())->setId(789);
         $this->expectGetUser($user);
 
-        $this->expectCreateForm(AddCommentReplyFormType::class, null, ['comment' => $comment])
+        $this->expectCreateForm(AddCommentReplyFormType::class, static::isInstanceOf(CommentReply::class), ['comment' => $comment])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
-            ->isValidWillReturn(true)
-            ->getDataWillReturn($data);
+            ->isValidWillReturn(true);
 
         $this->commentRepository->expects(self::once())
             ->method('save')
@@ -82,7 +83,6 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
                 self::callback(static function (CommentReply $reply) use ($user, $comment) {
                     static::assertSame($user, $reply->getUser());
                     static::assertSame($comment, $reply->getComment());
-                    static::assertSame('my-comment', $reply->getMessage());
                     static::assertGreaterThan(0, $reply->getCreateTimestamp());
                     static::assertGreaterThan(0, $reply->getUpdateTimestamp());
 
