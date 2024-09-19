@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 
@@ -36,7 +37,7 @@ class Comment
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
 
-    #[ORM\Column(type: 'string', enumType: CommentTagEnum::class)]
+    #[ORM\Column(type: CommentTagType::TYPE, nullable: true, enumType: CommentTagEnum::class)]
     private ?CommentTagEnum $tag;
 
     #[ORM\Column]

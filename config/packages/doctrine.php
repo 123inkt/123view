@@ -8,6 +8,7 @@ use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Doctrine\Type\ColorThemeType;
 use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Doctrine\Type\FilterType;
 use DR\Review\Doctrine\Type\FrequencyType;
@@ -36,6 +37,7 @@ return static function (DoctrineConfig $config): void {
     $dbal->type(CodeReviewerStateType::TYPE)->class(CodeReviewerStateType::class);
     $dbal->type(ColorThemeType::TYPE)->class(ColorThemeType::class);
     $dbal->type(CommentStateType::TYPE)->class(CommentStateType::class);
+    $dbal->type(CommentTagType::TYPE)->class(CommentTagType::class);
     $dbal->type(DiffAlgorithmType::TYPE)->class(DiffAlgorithmType::class);
     $dbal->type(FilterType::TYPE)->class(FilterType::class);
     $dbal->type(FrequencyType::TYPE)->class(FrequencyType::class);
