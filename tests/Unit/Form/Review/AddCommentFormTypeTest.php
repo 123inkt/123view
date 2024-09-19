@@ -7,6 +7,7 @@ use DR\Review\Controller\App\Review\Comment\AddCommentController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
+use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -60,12 +61,13 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder->expects(self::once())->method('setAction')->with($url);
         $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(3))
+        $builder->expects(self::exactly(4))
             ->method('add')
             ->with(
                 ...consecutive(
                     ['lineReference', HiddenType::class, static::isType('array')],
                     ['message', CommentType::class, static::isType('array')],
+                    ['tag', CommentTagType::class, static::isType('array')],
                     ['save', SubmitType::class, ['label' => 'add.comment']],
                 )
             )->willReturnSelf();
