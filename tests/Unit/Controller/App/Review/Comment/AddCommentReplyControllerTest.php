@@ -68,7 +68,6 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $review  = (new CodeReview())->setId(123);
         $comment = (new Comment())->setId(456)->setFilePath('file')->setReview($review);
-        $data    = ['message' => 'my-comment'];
         $user    = (new User())->setId(789);
         $this->expectGetUser($user);
 
