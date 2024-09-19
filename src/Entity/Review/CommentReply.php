@@ -19,6 +19,9 @@ class CommentReply
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
 
+    #[ORM\Column(type: 'string', enumType: CommentTagEnum::class)]
+    private ?CommentTagEnum $tag;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
 
@@ -59,6 +62,18 @@ class CommentReply
     public function setMessage(string $message): void
     {
         $this->message = $message;
+    }
+
+    public function getTag(): ?CommentTagEnum
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?CommentTagEnum $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
     }
 
     public function getExtReferenceId(): ?string
