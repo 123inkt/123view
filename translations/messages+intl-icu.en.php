@@ -350,4 +350,9 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'tag.none'                                    => 'No tag',
+    'tag.suggestion'                              => 'Suggestion',
+    'tag.nice_to_have'                            => 'Nice to have',
+    'tag.change_request'                          => 'Change request',
+    'tag.explanation'                             => 'Explanation',
 ];

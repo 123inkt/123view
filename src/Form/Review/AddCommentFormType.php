@@ -47,6 +47,7 @@ class AddCommentFormType extends AbstractType
                 'attr'                        => ['placeholder' => 'leave.a.comment.on.line'],
             ]
         );
+        $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'add.comment']);
     }
 }
