@@ -43,14 +43,7 @@ class AddCommentFormType extends AbstractType
         $builder->add(
             'lineReference',
             HiddenType::class,
-            [
-                'data' => (string)$lineReference,
-                'setter' => static function (Comment $comment, string $value): void {
-                    $lineReference = LineReference::fromString($value);
-                    $comment->setLineReference($lineReference);
-                    $comment->setFilePath(Assert::notNull($lineReference->oldPath ?? $lineReference->newPath));
-                },
-            ]
+            ['data' => (string)$lineReference, 'setter' => $this->setter(...)]
         );
         $builder->add(
             'message',
@@ -62,5 +55,12 @@ class AddCommentFormType extends AbstractType
         );
         $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'add.comment']);
+    }
+
+    public function setter(Comment $comment, string $value): void
+    {
+        $lineReference = LineReference::fromString($value);
+        $comment->setLineReference($lineReference);
+        $comment->setFilePath(Assert::notNull($lineReference->oldPath ?? $lineReference->newPath));
     }
 }

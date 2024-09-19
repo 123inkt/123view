@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Form\Review;
 
 use DR\Review\Controller\App\Review\Comment\AddCommentController;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Form\Review\CommentTagType;
@@ -73,5 +74,14 @@ class AddCommentFormTypeTest extends AbstractTestCase
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['review' => $review, 'lineReference' => $lineReference]);
+    }
+
+    public function testSetter(): void
+    {
+        $reference = 'old/path:new/path:1:2:3:commitSha:A';
+        $comment   = new Comment();
+        $this->type->setter($comment, $reference);
+        static::assertEquals(LineReference::fromString($reference), $comment->getLineReference());
+        static::assertSame('old/path', $comment->getFilePath());
     }
 }
