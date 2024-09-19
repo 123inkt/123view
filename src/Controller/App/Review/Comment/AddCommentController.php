@@ -6,11 +6,9 @@ namespace DR\Review\Controller\App\Review\Comment;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,26 +26,20 @@ class AddCommentController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): JsonResponse
     {
-        $form = $this->createForm(AddCommentFormType::class, null, ['review' => $review]);
+        $user    = $this->getUser();
+        $comment = new Comment();
+        $comment->setUser($user);
+        $comment->setMessage('');
+        $comment->setTag(null);
+        $comment->setReview($review);
+        $comment->setCreateTimestamp(time());
+        $comment->setUpdateTimestamp(time());
+
+        $form = $this->createForm(AddCommentFormType::class, $comment, ['review' => $review]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
         }
-
-        /** @var array{lineReference: string, message: string} $data */
-        $data = $form->getData();
-
-        $lineReference = LineReference::fromString($data['lineReference']);
-
-        $user    = $this->getUser();
-        $comment = new Comment();
-        $comment->setUser($user);
-        $comment->setReview($review);
-        $comment->setFilePath(Assert::notNull($lineReference->oldPath ?? $lineReference->newPath));
-        $comment->setLineReference($lineReference);
-        $comment->setMessage($data['message']);
-        $comment->setCreateTimestamp(time());
-        $comment->setUpdateTimestamp(time());
 
         $this->commentRepository->save($comment, true);
 

@@ -24,6 +24,10 @@ class CommentTagType extends AbstractType
 
         $resolver->setDefaults(
             [
+                'getter'      => static fn(object $comment): string => $comment->getTag()?->value ?? '',
+                'setter'      => static function (object $comment, string $value): void {
+                    $comment->setTag($value === '' ? null : CommentTagEnum::from($value));
+                },
                 'label'       => false,
                 'required'    => false,
                 'placeholder' => 'tag.none',
