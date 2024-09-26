@@ -6,12 +6,13 @@ use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {
     $cache = $framework->cache();
-    $cache->app('cache.adapter.filesystem');
+    $cache->app('cache.app.file');
     $cache->directory('%kernel.project_dir%/var/cache/pools');
 
     // application caches
-    $cache->pool('gitlab.cache')->defaultLifetime(3600);
-    $cache->pool('revision.cache')->defaultLifetime(2628000); // 1 month
+    $cache->pool('cache.app.file')->adapters(['cache.adapter.filesystem'])->defaultLifetime('%env(CACHE_APP_LIFETIME)%');
+    $cache->pool('gitlab.cache')->defaultLifetime('%env(CACHE_GITLAB_LIFETIME)%');
+    $cache->pool('revision.cache')->defaultLifetime('%env(CACHE_REVISION_LIFETIME)%'); // 1 month
 
     // doctrine cache
     $cache->pool('doctrine.result_cache_pool')->adapters(['cache.app']);
