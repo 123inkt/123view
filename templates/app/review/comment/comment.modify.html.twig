@@ -8,6 +8,11 @@
 >
     <div class="diff-file__comment_form_max_size">
         {{- form_start(form, {attr: {'data-comment-form-target': 'form'}}) -}}
+
+        <div class="float-end text-secondary">
+            {{ 'comment.markdown.examples'|trans }}
+        </div>
+
         {{- form_widget(form.message, {attr: {'data-comment-form-target': 'textarea', 'data-controller': 'form-submitter textarea-resize textarea-paste'}}) -}}
 
         <div class="position-relative diff-file__comment-mention">
@@ -26,9 +31,7 @@
                     {{ stimulus_controller('button') }}
                     {{ stimulus_action('comment-form', 'cancelComment', 'click') }}
             >{{ 'cancel'|trans }}</button>
-            <span class="float-end text-secondary">
-                {{ 'comment.markdown.examples'|trans }}
-            </span>
+
             {{- form_widget(form.tag, {attr: {class: 'd-inline-block w-auto ms-5'}}) }}
         </div>
         {{- form_end(form) -}}
