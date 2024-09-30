@@ -27,7 +27,7 @@ class DocControllerTest extends AbstractFunctionalTestCase
      */
     public function testJsonDocs(): void
     {
-        $this->client->request('GET', '/api/docs', server: ['HTTP_ACCEPT' => 'application/json']);
+        $this->client->request('GET', '/api/docs', server: ['HTTP_ACCEPT' => 'application/vnd.openapi+json']);
         self::assertResponseIsSuccessful();
 
         $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
