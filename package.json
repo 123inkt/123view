@@ -12,7 +12,7 @@
         "@hotwired/stimulus": "^3.2.2",
         "@symfony/stimulus-bridge": "^3.2.2",
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
-        "@symfony/webpack-encore": "^4.6.1",
+        "@symfony/webpack-encore": "^5.0.0",
         "core-js": "^3.37.1",
         "eslint-config-love": "^62.0.0",
         "regenerator-runtime": "^0.14.1",
