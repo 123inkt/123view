@@ -11,7 +11,7 @@ class GitRevListParser
     public function parseOneLine(string $data): array
     {
         $count = preg_match_all('/^>([a-z0-9]+)/im', $data, $matches);
-        if ($count === 0 || $count === false || isset($matches[1]) === false) {
+        if ($count === 0 || $count === false) {
             return [];
         }
 
