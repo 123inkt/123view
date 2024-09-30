@@ -60,7 +60,7 @@ class CommentMentionService
                 continue;
             }
 
-            $mentions[(string)$matches[0][$i]] = $user;
+            $mentions[$matches[0][$i]] = $user;
         }
 
         return $mentions;

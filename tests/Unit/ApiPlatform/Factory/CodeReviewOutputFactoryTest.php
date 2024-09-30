@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ApiPlatform\Factory;
 
-use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory;
 use DR\Review\ApiPlatform\Factory\UserOutputFactory;
 use DR\Review\ApiPlatform\Output\UserOutput;
@@ -16,6 +15,7 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(CodeReviewOutputFactory::class)]

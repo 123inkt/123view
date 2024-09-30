@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\ApiPlatform\Factory;
 
-use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\ApiPlatform\Output\CodeReviewOutput;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
@@ -11,6 +10,7 @@ use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
 use DR\Utils\Assert;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CodeReviewOutputFactory
 {
