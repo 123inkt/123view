@@ -9,8 +9,6 @@ return static function (ApiPlatformConfig $config): void {
         ->version('1.0.0')
         ->showWebby(false)
         ->useSymfonyListeners(false)
-        ->eventListenersBackwardCompatibilityLayer(false)
-        //->keepLegacyInflector(false)
         ->pathSegmentNameGenerator('api_platform.metadata.path_segment_name_generator.dash');
 
     $config->mapping()->paths(['%kernel.project_dir%/src/Entity']);

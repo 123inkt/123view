@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Form\Repository;
 
-use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
@@ -21,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(RepositoryType::class)]
