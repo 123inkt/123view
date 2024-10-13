@@ -28,7 +28,6 @@ services:
 
     rabbitmq:
         environment:
-            RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS: yes
             RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
             RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
         ports:
