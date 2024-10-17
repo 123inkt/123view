@@ -6,6 +6,7 @@
   <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Git/Diff/DiffFile.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Repository/Repository.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Review/CodeReview.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/GitlabApiProvider.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewMergeRequestService.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/CodeReview/LineReferenceMatcher.php" method="exactMatch"/>
