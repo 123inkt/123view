@@ -99,6 +99,9 @@ class CodeReview
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
     private string $type = CodeReviewType::COMMITS;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $targetBranch = null;
+
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     #[Groups(['code_review_write'])]
     private string $state = CodeReviewStateType::OPEN;
@@ -208,6 +211,21 @@ class CodeReview
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTargetBranch(): ?string
+    {
+        return $this->targetBranch;
+    }
+
+    /**
+     * The target branch if the type=BranchReview
+     */
+    public function setTargetBranch(?string $targetBranch): self
+    {
+        $this->targetBranch = $targetBranch;
 
         return $this;
     }
