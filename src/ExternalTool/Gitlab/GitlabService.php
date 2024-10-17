@@ -31,7 +31,18 @@ class GitlabService
     {
         return $this->gitlabCache->get(
             sprintf("merge-request-url-%s-%s", $projectId, $remoteRef),
-            fn() => $this->gitlabApi->mergeRequests()->findByRemoteRef($projectId, $remoteRef)['web_url'] ?? null
-        );
+            fn() => $this->gitlabApi->mergeRequests()->findByRemoteRef($projectId, $remoteRef)
+        )['web_url'] ?? null;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getMergeRequestTargetBranch(int $projectId, string $remoteRef): ?string
+    {
+        return $this->gitlabCache->get(
+            sprintf("merge-request-url-%s-%s", $projectId, $remoteRef),
+            fn() => $this->gitlabApi->mergeRequests()->findByRemoteRef($projectId, $remoteRef)
+        )['target_branch'] ?? null;
     }
 }

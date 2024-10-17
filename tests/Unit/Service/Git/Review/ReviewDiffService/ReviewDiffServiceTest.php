@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
@@ -121,7 +122,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
     public function testGetDiffForBranch(): void
     {
         $repository = new Repository();
-        $repository->setMainBranchName('master');
+        $review   = (new CodeReview())->setRepository($repository)->setTargetBranch('master');
         $revision = new Revision();
         $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
         $diffFile = new DiffFile();
@@ -131,6 +132,6 @@ class ReviewDiffServiceTest extends AbstractTestCase
             ->with($repository, 'branch', 'origin/master', $options)
             ->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffForBranch($repository, [$revision], 'branch', $options));
+        static::assertSame([$diffFile], $this->service->getDiffForBranch($review, [$revision], 'branch', $options));
     }
 }

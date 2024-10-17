@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
@@ -69,6 +70,7 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
+        $review   = (new CodeReview())->setRepository($repository);
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
@@ -79,9 +81,9 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
             ->with('3d4712e0b02956b159aac6e5871b59d19a992cd0f2050af910dd2d8eba72f0c5')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects(self::once())->method('getDiffForBranch')
-            ->with($repository, [$revision], 'branch', $options)
+            ->with($review, [$revision], 'branch', $options)
             ->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffForBranch($repository, [$revision], 'branch', $options));
+        static::assertSame([$diffFile], $this->service->getDiffForBranch($review, [$revision], 'branch', $options));
     }
 }

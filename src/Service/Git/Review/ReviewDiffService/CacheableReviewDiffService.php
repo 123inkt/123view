@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -34,12 +35,15 @@ class CacheableReviewDiffService implements ReviewDiffServiceInterface
     /**
      * @inheritDoc
      */
-    public function getDiffForBranch(Repository $repository, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
+    public function getDiffForBranch(CodeReview $review, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
     {
         $hashes = array_map(static fn(Revision $revision) => $revision->getCommitHash(), $revisions);
 
-        $key = hash('sha256', sprintf('diff-files-branch %s-%s-%s-%s', $repository->getId(), implode('-', $hashes), $branchName, $options));
+        $key = hash(
+            'sha256',
+            sprintf('diff-files-branch %s-%s-%s-%s', $review->getRepository()->getId(), implode('-', $hashes), $branchName, $options)
+        );
 
-        return $this->revisionCache->get($key, fn() => $this->diffService->getDiffForBranch($repository, $revisions, $branchName, $options));
+        return $this->revisionCache->get($key, fn() => $this->diffService->getDiffForBranch($review, $revisions, $branchName, $options));
     }
 }
