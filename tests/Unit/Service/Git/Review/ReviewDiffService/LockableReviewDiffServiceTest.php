@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\Review\FileDiffOptions;
@@ -57,9 +58,9 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
      */
     public function testGetDiffForBranch(): void
     {
-        $repository = new Repository();
-        $repository->setId(123);
-        $revision = new Revision();
+        $repository = (new Repository())->setId(123);
+        $review     = (new CodeReview())->setRepository($repository);
+        $revision   = new Revision();
         $revision->setCommitHash('hash');
         $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
         $diffFile = new DiffFile();
@@ -67,12 +68,12 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
         $this->lockManager->expects(self::once())
             ->method('start')
             ->with($repository)
-            ->willReturnCallback(static fn($repository, $callback) => $callback());
+            ->willReturnCallback(static fn($review, $callback) => $callback());
         $this->diffService->expects(self::once())
             ->method('getDiffForBranch')
-            ->with($repository, [$revision], 'branch', $options)
+            ->with($review, [$revision], 'branch', $options)
             ->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffForBranch($repository, [$revision], 'branch', $options));
+        static::assertSame([$diffFile], $this->service->getDiffForBranch($review, [$revision], 'branch', $options));
     }
 }
