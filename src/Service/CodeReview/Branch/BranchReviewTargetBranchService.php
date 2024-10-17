@@ -19,7 +19,7 @@ class BranchReviewTargetBranchService
      */
     public function getTargetBranch(Repository $repository, string $branchName): string
     {
-        $targetBranchName = $repository->getMainBranchName();
+        $targetBranchName = null;
         if ($repository->getGitType() === RepositoryGitType::GITLAB) {
             if (strrpos($branchName, '/') !== false) {
                 $branchName = substr($branchName, strrpos($branchName, '/') + 1);
@@ -29,6 +29,6 @@ class BranchReviewTargetBranchService
             $targetBranchName = $this->gitlabService->getMergeRequestTargetBranch((int)$projectId, $branchName);
         }
 
-        return $targetBranchName;
+        return $targetBranchName ?? $repository->getMainBranchName();
     }
 }
