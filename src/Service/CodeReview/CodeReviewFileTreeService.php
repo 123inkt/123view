@@ -38,7 +38,7 @@ class CodeReviewFileTreeService
         if (count($revisions) === 0) {
             $files = [];
         } elseif ($diffOptions->reviewType === CodeReviewType::BRANCH) {
-            $files = $this->diffService->getDiffForBranch($repository, $revisions, (string)$review->getReferenceId(), $diffOptions);
+            $files = $this->diffService->getDiffForBranch($review, $revisions, (string)$review->getReferenceId(), $diffOptions);
         } else {
             $files = $this->diffService->getDiffForRevisions($repository, $revisions, $diffOptions);
         }
