@@ -59,4 +59,17 @@ class GitlabServiceTest extends AbstractTestCase
 
         static::assertSame('url', $this->service->getMergeRequestUrl(111, 'remote-ref'));
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function testGetMergeRequestUrl2(): void
+    {
+        $this->cache->expects(self::once())->method('get')
+            ->with('merge-request-url-111-remote-ref')
+            ->willReturnCallback(static fn($key, $callback) => $callback());
+        $this->mergeRequests->expects(self::once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['target_branch' => 'branch']);
+
+        static::assertSame('branch', $this->service->getMergeRequestTargetBranch(111, 'remote-ref'));
+    }
 }
