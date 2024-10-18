@@ -42,7 +42,7 @@ class RevisionFilesMessageHandler
 
         foreach ($files as $file) {
             $this->revisionFileRepository->save($file);
-            $revision->getFiles()->add($revision);
+            $revision->getFiles()->add($file);
         }
         $this->revisionRepository->save($revision, true);
     }
