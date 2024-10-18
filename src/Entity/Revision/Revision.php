@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Revision;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -46,6 +48,15 @@ class Revision
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'], inversedBy: 'revisions')]
     private ?CodeReview $review = null;
+
+    /** @phpstan-var Collection<int, RevisionFile> */
+    #[ORM\OneToMany(targetEntity: RevisionFile::class, mappedBy: 'revision', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $files;
+
+    public function __construct()
+    {
+        $this->files = new ArrayCollection();
+    }
 
     public function setId(int $id): self
     {
@@ -163,5 +174,23 @@ class Revision
     public function setReview(?CodeReview $review): void
     {
         $this->review = $review;
+    }
+
+    /**
+     * @return Collection<int, RevisionFile>
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param Collection<int, RevisionFile> $files
+     */
+    public function setFiles(Collection $files): Revision
+    {
+        $this->files = $files;
+
+        return $this;
     }
 }

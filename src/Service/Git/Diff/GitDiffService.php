@@ -10,11 +10,13 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Entity\Revision\RevisionFile;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Review\FileDiffOptions;
+use DR\Review\Service\Parser\DiffNumStatParser;
 use DR\Review\Service\Parser\PrunableDiffParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -27,7 +29,8 @@ class GitDiffService implements LoggerAwareInterface
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $builderFactory,
         private readonly GitDiffCommandFactory $commandFactory,
-        private readonly PrunableDiffParser $parser
+        private readonly PrunableDiffParser $parser,
+        private readonly DiffNumStatParser $numStatParser
     ) {
     }
 
@@ -134,5 +137,20 @@ class GitDiffService implements LoggerAwareInterface
 
         // parse files
         return $this->parser->parse($output, $options?->comparePolicy);
+    }
+
+    /**
+     * @return RevisionFile[]
+     * @throws RepositoryException
+     */
+    public function getRevisionFiles(Revision $revision): array
+    {
+        $commandBuilder = $this->builderFactory->createDiff()
+            ->hash($revision->getCommitHash() . '^!')
+            ->numStat();
+
+        $output = $this->repositoryService->getRepository($revision->getRepository())->execute($commandBuilder);
+
+        return $this->numStatParser->parse($revision, $output);
     }
 }

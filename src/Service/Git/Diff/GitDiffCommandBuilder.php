@@ -34,6 +34,13 @@ class GitDiffCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    public function numStat(): self
+    {
+        $this->arguments['num-stat'] = '--numstat';
+
+        return $this;
+    }
+
     public function ignoreCrAtEol(): self
     {
         $this->arguments['ignore-cr-at-eol'] = '--ignore-cr-at-eol';

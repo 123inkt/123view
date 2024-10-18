@@ -8,7 +8,7 @@ use DR\Review\Message\CodeReviewAwareInterface;
 use DR\Review\Message\UserAwareInterface;
 
 /**
- * Message to notify consumers a new revision was added to the a review.
+ * Message to notify consumers a new revision was added to the review.
  */
 class ReviewRevisionAdded implements AsyncMessageInterface, CodeReviewAwareInterface, UserAwareInterface
 {
