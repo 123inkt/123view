@@ -37,5 +37,5 @@
 
 {%- block mercure -%}
     {% set topics = ['/user/' ~ app.user.id, '/review/' ~ review.id] %}
-{#    <div {{ stimulus_controller('server-event') }} data-url="{{ mercure(topics, { subscribe: topics }) }}"></div>#}
+    <div {{ stimulus_controller('server-event') }} data-url="{{ mercure(topics, { subscribe: topics }) }}"></div>
 {%- endblock -%}
