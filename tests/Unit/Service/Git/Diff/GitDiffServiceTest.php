@@ -251,7 +251,7 @@ class GitDiffServiceTest extends AbstractTestCase
     /**
      * @throws RepositoryException
      */
-    public function testGetRevisionFiles()
+    public function testGetRevisionFiles(): void
     {
         $repository = new Repository();
         $revision   = (new Revision())->setCommitHash('target');
