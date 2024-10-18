@@ -13,9 +13,11 @@
                            href="{{ path('DR\\Review\\Controller\\App\\Reviews\\ReviewsController', {id: repository.id}) }}">
                             {{- repository.displayName -}}
 
-                            <small class="d-block text-secondary">
-                                {{ projectsModel.revisionCount[repository.id]|format_number }} {{ 'revisions'|trans|lower }}
-                            </small>
+                            {% if projectsModel.revisionCount[repository.id] is defined %}
+                                <small class="d-block text-secondary">
+                                    {{ projectsModel.revisionCount[repository.id]|format_number }} {{ 'revisions'|trans|lower }}
+                                </small>
+                            {% endif %}
                         </a>
                     {%- endfor -%}
                 </div>
