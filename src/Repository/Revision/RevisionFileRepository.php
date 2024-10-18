@@ -13,6 +13,9 @@ use DR\Review\Entity\Revision\RevisionFile;
  */
 class RevisionFileRepository extends ServiceEntityRepository
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RevisionFile::class);
