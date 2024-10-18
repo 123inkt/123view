@@ -135,4 +135,18 @@ class GitDiffService implements LoggerAwareInterface
         // parse files
         return $this->parser->parse($output, $options?->comparePolicy);
     }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function getRevisionFiles(Revision $revision)
+    {
+        $commandBuilder = $this->builderFactory->createDiff()
+            ->hash($revision->getCommitHash() . '^!')
+            ->numStat();
+
+        $output = $this->repositoryService->getRepository($revision->getRepository())->execute($commandBuilder);
+
+        return $revision->files;
+    }
 }
