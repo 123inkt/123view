@@ -1,7 +1,4 @@
 ## overrides for production
-
-version: '3'
-
 services:
     nginx:
         volumes:

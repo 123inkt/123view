@@ -56,7 +56,7 @@
     {{ inputFieldRow(form.repository.updateRevisionsInterval) }}
     {{ inputFieldRow(form.repository.validateRevisionsInterval) }}
 
-    {% if form.repository.gitlabProjectId %}
+    {% if form.repository.gitlabProjectId is defined %}
         <h4>{{ 'integrations'|trans }}</h4>
         <hr>
         {{ inputFieldRow(form.repository.gitlabProjectId) }}
