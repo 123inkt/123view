@@ -59,6 +59,7 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
             ->hashes('start', 'end')
             ->hash('hash')
             ->unified(5)
+            ->numStat()
             ->diffAlgorithm("foobar")
             ->build();
 
@@ -70,6 +71,7 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
                     'end',
                     'hash',
                     '--unified=5',
+                    '--numstat',
                     '--diff-algorithm="foobar"'
                 ]
             ),
