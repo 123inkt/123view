@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\Filter;
 
+use DR\Review\Entity\Notification\Filter;
 use DR\Review\Transformer\FilterCollectionTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @extends AbstractType<array{inclusions: Filter[], exclusions: Filter[]>
+ */
 class InExclusionFilterType extends AbstractType
 {
     /**
