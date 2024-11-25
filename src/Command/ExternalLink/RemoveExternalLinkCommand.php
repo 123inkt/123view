@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Command\ExternalLink;
 
 use DR\Review\Repository\Config\ExternalLinkRepository;
+use DR\Utils\Assert;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,7 +26,7 @@ class RemoveExternalLinkCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $id   = $input->getArgument('id');
+        $id   = Assert::string($input->getArgument('id'));
         $link = $this->linkRepository->find($id);
         if ($link === null) {
             $output->writeln('<error>No external link found by id: ' . $id);

@@ -29,7 +29,7 @@ class AzureAdAuthController extends AbstractController
     public function __invoke(Request $request): RedirectResponse
     {
         // forward all requests parameters as state
-        $state       = Json::encode(array_filter($request->query->all()));
+        $state       = Json::encode(array_filter($request->query->all(), 'empty'));
         $callbackUrl = $this->generateUrl(AzureAdCallbackController::class, [], UrlGeneratorInterface::ABSOLUTE_URL);
         $options     = ['scope' => $this->provider->scope, 'redirectUri' => $callbackUrl, 'state' => $state];
 

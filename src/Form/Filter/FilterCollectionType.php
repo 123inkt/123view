@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Filter[]>
+ */
 class FilterCollectionType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void

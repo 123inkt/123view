@@ -5,9 +5,6 @@ namespace DR\Review\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- */
 abstract class AbstractKernelTestCase extends KernelTestCase
 {
     use TestTrait;
