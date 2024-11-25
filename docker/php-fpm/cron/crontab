@@ -1,3 +1,4 @@
+MAILTO=""
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 HOME=/app
 0 */1 * * *     www-data     php bin/console mail --frequency=once-per-hour             2>&1
