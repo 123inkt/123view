@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Repository>
+ */
 class RepositoryChoiceType extends AbstractType
 {
     public function __construct(private RepositoryRepository $repositoryRepository)
