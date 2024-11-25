@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @extends AbstractType<array{credential: RepositoryCredential|null}>
+ */
 class EditCredentialFormType extends AbstractType
 {
     public function __construct(private UrlGeneratorInterface $urlGenerator)

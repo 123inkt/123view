@@ -35,6 +35,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
+        "ext-zlib": "*",
         "api-platform/core": "^4.0",
         "czproject/git-php": "^4.2",
         "digitalrevolution/jbdiff": "^1.2",
