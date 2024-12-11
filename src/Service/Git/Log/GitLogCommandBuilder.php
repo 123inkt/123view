@@ -6,9 +6,6 @@ namespace DR\Review\Service\Git\Log;
 use DateTimeInterface;
 use DR\Review\Service\Git\GitCommandBuilderInterface;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
- */
 class GitLogCommandBuilder implements GitCommandBuilderInterface
 {
     /** @var array<string, string> */

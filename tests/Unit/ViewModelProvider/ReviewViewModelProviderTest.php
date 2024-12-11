@@ -32,9 +32,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 
-/**
- * @suppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 #[CoversClass(ReviewViewModelProvider::class)]
 class ReviewViewModelProviderTest extends AbstractTestCase
 {

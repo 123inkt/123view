@@ -12,7 +12,7 @@ use Nette\Utils\JsonException;
 
 class LineCoverageType extends Type
 {
-    public const TYPE = "line_coverage_type";
+    public const string TYPE = "line_coverage_type";
 
     /**
      * @inheritDoc

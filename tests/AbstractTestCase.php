@@ -11,9 +11,6 @@ use Psr\Log\LoggerInterface;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 
-/**
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- */
 abstract class AbstractTestCase extends TestCase
 {
     use AccessorPairAsserter;
