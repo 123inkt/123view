@@ -19,14 +19,17 @@ use DR\Review\Message\Reviewer\ReviewerRemoved;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 class ReviewEventService
 {
-    public function __construct(private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly CodeReviewerStateResolver $reviewerStateResolver,
+        private readonly MessageBusInterface $bus
+    ) {
     }
 
     public function reviewerAdded(CodeReview $review, CodeReviewer $reviewer, int $byUserId, bool $added): void
@@ -59,7 +62,7 @@ class ReviewEventService
 
     public function reviewReviewerStateChanged(CodeReview $review, string $previousReviewerState, int $byUserId): void
     {
-        $reviewerState = $review->getReviewersState();
+        $reviewerState = $this->reviewerStateResolver->getReviewersState($review);
         if ($reviewerState === $previousReviewerState) {
             return;
         }
@@ -122,7 +125,8 @@ class ReviewEventService
         if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
             $events[] = new ReviewOpened((int)$review->getId(), $userId);
         }
-        if ($reviewersState !== CodeReviewerStateType::OPEN && $review->getReviewersState() === CodeReviewerStateType::OPEN) {
+        if ($reviewersState !== CodeReviewerStateType::OPEN
+            && $this->reviewerStateResolver->getReviewersState($review) === CodeReviewerStateType::OPEN) {
             $events[] = new ReviewResumed((int)$review->getId(), $userId);
         }
         $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $userId, $revision->getTitle());

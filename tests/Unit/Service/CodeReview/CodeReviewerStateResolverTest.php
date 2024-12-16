@@ -74,7 +74,6 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
     {
         $review = new CodeReview();
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
-        static::assertSame(CodeReviewerStateType::OPEN, $review->getReviewersState());
 
         $reviewer = new CodeReviewer();
         $reviewer->setUser((new User())->setEmail('email'));
@@ -82,7 +81,6 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
 
         $reviewer->setState(CodeReviewerStateType::REJECTED);
-        static::assertTrue($review->isRejected());
         static::assertSame(CodeReviewerStateType::REJECTED, $this->resolver->getReviewersState($review));
     }
 }
