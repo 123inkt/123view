@@ -12,6 +12,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\MessageHandler\NewRevisionMessageHandler;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;
@@ -31,6 +32,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
     private CodeReviewService&MockObject         $reviewService;
+    private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
     private FileSeenStatusService&MockObject     $seenStatusService;
     private CodeReviewRevisionMatcher&MockObject $reviewRevisionMatcher;
     private ManagerRegistry&MockObject           $registry;
@@ -42,6 +44,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->revisionRepository    = $this->createMock(RevisionRepository::class);
         $this->reviewService         = $this->createMock(CodeReviewService::class);
+        $this->reviewerStateResolver = $this->createMock(CodeReviewerStateResolver::class);
         $this->seenStatusService     = $this->createMock(FileSeenStatusService::class);
         $this->reviewRevisionMatcher = $this->createMock(CodeReviewRevisionMatcher::class);
         $this->registry              = $this->createMock(ManagerRegistry::class);
@@ -49,6 +52,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->messageHandler        = new NewRevisionMessageHandler(
             $this->revisionRepository,
             $this->reviewService,
+            $this->reviewerStateResolver,
             $this->reviewRevisionMatcher,
             $this->seenStatusService,
             $this->registry,
@@ -100,6 +104,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $review = new CodeReview();
 
         $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
         $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
         $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
         $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
@@ -127,6 +132,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $review->getReviewers()->add($reviewer);
 
         $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
         $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
         $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
         $this->reviewService->expects(self::once())
