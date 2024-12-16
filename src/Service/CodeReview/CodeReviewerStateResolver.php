@@ -13,6 +13,8 @@ class CodeReviewerStateResolver
      * Review is rejected when atleast 1 reviewer rejected
      * Review is accepted when _all_ reviewers accepted, but only when the review is not self-reviewed
      * Review is open in other cases
+     *
+     * @return CodeReviewerStateType::OPEN|CodeReviewerStateType::REJECTED|CodeReviewerStateType::ACCEPTED
      */
     public function getReviewersState(CodeReview $review): string
     {
