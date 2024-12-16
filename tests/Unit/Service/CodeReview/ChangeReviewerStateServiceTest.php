@@ -25,6 +25,7 @@ class ChangeReviewerStateServiceTest extends AbstractTestCase
     private ReviewEventService&MockObject        $eventService;
     private CodeReviewerService&MockObject       $reviewerService;
     private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
+    private ObjectManager&MockObject             $objectManager;
     private ChangeReviewerStateService           $service;
 
     public function setUp(): void
