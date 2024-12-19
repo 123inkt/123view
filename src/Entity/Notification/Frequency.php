@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Entity\Notification;
 
 use DateInterval;
+use DateMalformedPeriodStringException;
 use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
@@ -32,6 +33,10 @@ class Frequency
         return in_array($frequency, $valid, true);
     }
 
+    /**
+     * @return DatePeriod<DateTimeImmutable, DateTimeImmutable>
+     * @throws DateMalformedPeriodStringException
+     */
     public static function getPeriod(DateTimeImmutable $currentTime, string $frequency): DatePeriod
     {
         $interval = match ($frequency) {

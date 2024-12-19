@@ -8,6 +8,6 @@ class CodeReviewType extends AbstractEnumType
     public const COMMITS = 'commits';
     public const BRANCH  = 'branch';
 
-    public const TYPE   = 'enum_code_review_type';
-    public const VALUES = [self::COMMITS, self::BRANCH];
+    public const string TYPE   = 'enum_code_review_type';
+    public const array VALUES = [self::COMMITS, self::BRANCH];
 }

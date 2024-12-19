@@ -12,7 +12,7 @@ use League\Uri\Uri;
 
 class UriType extends Type
 {
-    public const TYPE = "uri_type";
+    public const string TYPE = "uri_type";
 
     /**
      * @inheritDoc

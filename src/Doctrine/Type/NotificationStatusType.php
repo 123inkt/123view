@@ -11,7 +11,7 @@ use DR\Review\Entity\Review\NotificationStatus;
 
 class NotificationStatusType extends Type
 {
-    public const TYPE = 'type_notification_status';
+    public const string TYPE = 'type_notification_status';
 
     public function getName(): string
     {

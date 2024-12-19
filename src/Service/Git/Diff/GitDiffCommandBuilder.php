@@ -5,9 +5,6 @@ namespace DR\Review\Service\Git\Diff;
 
 use DR\Review\Service\Git\GitCommandBuilderInterface;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
- */
 class GitDiffCommandBuilder implements GitCommandBuilderInterface
 {
     /** @var array<string, string> */

@@ -19,8 +19,8 @@ class AbstractEnumTypeTest extends AbstractTestCase
     {
         parent::setUp();
         $this->enumType = new class extends AbstractEnumType {
-            public const TYPE   = 'type';
-            public const VALUES = ['foo', 'bar'];
+            public const string   TYPE   = 'type';
+            public const array    VALUES = ['foo', 'bar'];
         };
     }
 
@@ -45,7 +45,7 @@ class AbstractEnumTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid value 'foobar' for type 'type'");
+        $this->expectExceptionMessage("Invalid value 'string' for type 'type'.");
         $this->enumType->convertToDatabaseValue('foobar', $this->createMock(AbstractPlatform::class));
     }
 

@@ -9,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends CollectionType<Recipient[]>
+ */
 class RecipientCollectionType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
