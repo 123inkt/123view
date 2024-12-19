@@ -20,9 +20,6 @@ use DR\Review\Service\Git\RevList\GitRevListCommandBuilder;
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
 use DR\Review\Service\Git\Status\GitStatusCommandBuilder;
 
-/**
- * @suppressWarnings(PHPMD.TooManyPublicMethods)
- */
 class GitCommandBuilderFactory
 {
     public function __construct(private string $git)

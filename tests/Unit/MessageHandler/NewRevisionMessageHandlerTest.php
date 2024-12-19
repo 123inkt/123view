@@ -24,9 +24,6 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
-/**
- * @suppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 #[CoversClass(NewRevisionMessageHandler::class)]
 class NewRevisionMessageHandlerTest extends AbstractTestCase
 {

@@ -12,7 +12,6 @@ class DefinitionFileMatcher
 {
     /**
      * @param ReadableCollection<int, Filter> $filters
-     * @suppressWarnings(PHPMD.ErrorControlOperator)
      */
     public function matches(DiffFile $file, ReadableCollection $filters): bool
     {

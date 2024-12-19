@@ -30,8 +30,8 @@ class RevisionValidationService implements LoggerAwareInterface
         $localHashes  = $this->revisionRepository->getCommitHashes($repository);
         $remoteHashes = $this->logService->getCommitHashes($repository);
 
-        $missing = array_filter(array_diff($remoteHashes, $localHashes));
-        $deleted = array_filter(array_diff($localHashes, $remoteHashes));
+        $missing = array_filter(array_diff($remoteHashes, $localHashes), static fn($val) => $val !== '' && $val !== null);
+        $deleted = array_filter(array_diff($localHashes, $remoteHashes), static fn($val) => $val !== '' && $val !== null);
 
         $this->logger?->info('Found {count} missing hashes in repository {name}', ['count' => count($missing), 'name' => $repository->getName()]);
         $this->logger?->info('Found {count} deleted hashes in repository {name}', ['count' => count($deleted), 'name' => $repository->getName()]);
