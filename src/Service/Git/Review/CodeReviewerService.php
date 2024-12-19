@@ -9,9 +9,14 @@ use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 
 class CodeReviewerService
 {
+    public function __construct(private readonly CodeReviewerStateResolver $reviewerStateResolver)
+    {
+    }
+
     public function addReviewer(CodeReview $review, User $user): CodeReviewer
     {
         $reviewer = new CodeReviewer();
@@ -27,7 +32,7 @@ class CodeReviewerService
     public function setReviewerState(CodeReview $review, CodeReviewer $reviewer, string $state): void
     {
         $reviewer->setState($state);
-        if ($review->isAccepted()) {
+        if ($this->reviewerStateResolver->getReviewersState($review) === CodeReviewerStateType::ACCEPTED) {
             // resolve all comments
             foreach ($review->getComments() as $comment) {
                 $comment->setState(CommentStateType::RESOLVED);

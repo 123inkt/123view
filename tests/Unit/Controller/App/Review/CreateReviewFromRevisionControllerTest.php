@@ -13,7 +13,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\CodeReviewCreationService;
 use DR\Review\Service\Git\Review\CodeReviewService;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,15 +22,15 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[CoversClass(CreateReviewFromRevisionController::class)]
 class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
 {
-    private CodeReviewCreationService&MockObject $reviewCreationService;
-    private CodeReviewService&MockObject         $reviewService;
-    private ReviewEventService&MockObject        $eventService;
+    private CodeReviewCreationService&MockObject  $reviewCreationService;
+    private CodeReviewService&MockObject          $reviewService;
+    private ReviewRevisionEventService&MockObject $eventService;
 
     protected function setUp(): void
     {
         $this->reviewCreationService = $this->createMock(CodeReviewCreationService::class);
         $this->reviewService         = $this->createMock(CodeReviewService::class);
-        $this->eventService          = $this->createMock(ReviewEventService::class);
+        $this->eventService          = $this->createMock(ReviewRevisionEventService::class);
         parent::setUp();
     }
 

@@ -7,10 +7,12 @@ use DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory;
 use DR\Review\ApiPlatform\Factory\UserOutputFactory;
 use DR\Review\ApiPlatform\Output\UserOutput;
 use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,16 +23,18 @@ use function DR\PHPUnitExtensions\Mock\consecutive;
 #[CoversClass(CodeReviewOutputFactory::class)]
 class CodeReviewOutputFactoryTest extends AbstractTestCase
 {
-    private UrlGeneratorInterface&MockObject $urlGenerator;
-    private UserOutputFactory&MockObject     $userOutputFactory;
-    private CodeReviewOutputFactory          $factory;
+    private UrlGeneratorInterface&MockObject     $urlGenerator;
+    private UserOutputFactory&MockObject         $userOutputFactory;
+    private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
+    private CodeReviewOutputFactory              $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->urlGenerator      = $this->createMock(UrlGeneratorInterface::class);
-        $this->userOutputFactory = $this->createMock(UserOutputFactory::class);
-        $this->factory           = new CodeReviewOutputFactory($this->urlGenerator, $this->userOutputFactory);
+        $this->urlGenerator          = $this->createMock(UrlGeneratorInterface::class);
+        $this->userOutputFactory     = $this->createMock(UserOutputFactory::class);
+        $this->reviewerStateResolver = $this->createMock(CodeReviewerStateResolver::class);
+        $this->factory               = new CodeReviewOutputFactory($this->urlGenerator, $this->userOutputFactory, $this->reviewerStateResolver);
     }
 
     public function testCreate(): void
@@ -60,6 +64,7 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL)
             ->willReturn('url');
+        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
         $output = $this->factory->create($review, [$reviewer], [$userB]);
 
@@ -70,7 +75,7 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         static::assertSame('description', $output->description);
         static::assertSame('url', $output->url);
         static::assertSame('open', $output->state);
-        static::assertSame('open', $output->reviewerState);
+        static::assertSame(CodeReviewerStateType::OPEN, $output->reviewerState);
         static::assertNotNull($output->reviewers);
         static::assertCount(1, $output->reviewers);
         static::assertNotNull($output->authors);

@@ -8,14 +8,18 @@ use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Utils\Assert;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CodeReviewOutputFactory
 {
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator, private readonly UserOutputFactory $userOutputFactory)
-    {
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly UserOutputFactory $userOutputFactory,
+        private readonly CodeReviewerStateResolver $reviewerStateResolver
+    ) {
     }
 
     /**
@@ -42,7 +46,7 @@ class CodeReviewOutputFactory
             $review->getDescription(),
             $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL),
             (string)$review->getState(),
-            $review->getReviewersState(),
+            $this->reviewerStateResolver->getReviewersState($review),
             $reviewersOutput,
             $authorOutput,
             $review->getCreateTimestamp(),

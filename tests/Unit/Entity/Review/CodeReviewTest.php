@@ -5,7 +5,6 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Revision\Revision;
@@ -38,33 +37,6 @@ class CodeReviewTest extends AbstractTestCase
         $review->addRevision($revision);
         static::assertSame($review, $revision->getReview());
         static::assertSame($revision, $collection->first());
-    }
-
-    public function testIsAccepted(): void
-    {
-        $review = new CodeReview();
-        static::assertSame(CodeReviewerStateType::OPEN, $review->getReviewersState());
-
-        $reviewer = new CodeReviewer();
-        $review->getReviewers()->add($reviewer);
-        static::assertFalse($review->isAccepted());
-
-        $reviewer->setState(CodeReviewerStateType::ACCEPTED);
-        static::assertTrue($review->isAccepted());
-    }
-
-    public function testIsRejected(): void
-    {
-        $review = new CodeReview();
-        static::assertSame(CodeReviewerStateType::OPEN, $review->getReviewersState());
-
-        $reviewer = new CodeReviewer();
-        $review->getReviewers()->add($reviewer);
-        static::assertFalse($review->isRejected());
-
-        $reviewer->setState(CodeReviewerStateType::REJECTED);
-        static::assertTrue($review->isRejected());
-        static::assertSame(CodeReviewerStateType::REJECTED, $review->getReviewersState());
     }
 
     public function testGetReviewer(): void
