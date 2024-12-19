@@ -43,6 +43,12 @@ parameters:
 			path: src/Controller/Auth/SingleSignOn/AzureAdAuthController.php
 
 		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(string\)\: non\-falsy\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/Type/AbstractEnumType.php
+
+		-
 			message: '#^Property DR\\Review\\Entity\\Asset\\Asset\:\:\$data type mapping mismatch\: database can contain resource but property expects string\.$#'
 			identifier: doctrine.columnType
 			count: 1
@@ -61,14 +67,14 @@ parameters:
 			path: src/Entity/Notification/Frequency.php
 
 		-
-			message: '#^Method DR\\Review\\Entity\\Notification\\RuleConfiguration\:\:__construct\(\) has parameter \$period with generic class DatePeriod but does not specify its types\: TDate, TEnd, TRecurrences$#'
-			identifier: missingType.generics
+			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc tag @param for parameter \$period does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
+			identifier: generics.lessTypes
 			count: 1
 			path: src/Entity/Notification/RuleConfiguration.php
 
 		-
-			message: '#^PHPDoc tag @param has invalid value \(DatePeriod\<DateTimeImmutable, DateTimeImmutable \$period\)\: Unexpected token "\$period", expected ''\>'' at offset 66 on line 2$#'
-			identifier: phpDoc.parseError
+			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc type for property DR\\Review\\Entity\\Notification\\RuleConfiguration\:\:\$period does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
+			identifier: generics.lessTypes
 			count: 1
 			path: src/Entity/Notification/RuleConfiguration.php
 
@@ -83,18 +89,6 @@ parameters:
 			identifier: varTag.type
 			count: 1
 			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
-
-		-
-			message: '#^Class DR\\Review\\Form\\Filter\\InExclusionFilterType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Form/Filter/InExclusionFilterType.php
-
-		-
-			message: '#^PHPDoc tag @extends has invalid value \(AbstractType\<array\{inclusions\: Filter\[\], exclusions\: Filter\[\]\>\)\: Unexpected token "\>", expected ''\}'' at offset 77 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: src/Form/Filter/InExclusionFilterType.php
 
 		-
 			message: '#^Class DR\\Review\\Form\\Recipient\\RecipientCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
@@ -1651,6 +1645,18 @@ parameters:
 			path: tests/Unit/Service/Git/GitRepositoryLockManagerTest.php
 
 		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTimeImmutable, DateTimeImmutable, null\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/Service/Git/Log/GitLogCommandFactoryTest.php
+
+		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTime, DateTime, null\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/Service/Git/Log/GitLogServiceTest.php
+
+		-
 			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
 			identifier: callable.nonCallable
 			count: 2
@@ -1711,6 +1717,12 @@ parameters:
 			path: tests/Unit/Service/Git/Show/LockableGitShowServiceTest.php
 
 		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTime, DateTime, null\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Service/Mail/CommitMailServiceTest.php
+
+		-
 			message: '#^Cannot call method contains\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 2
@@ -1720,6 +1732,12 @@ parameters:
 			message: '#^Parameter \#1 \$callback of static method PHPUnit\\Framework\\Assert\:\:callback\(\) expects callable\(mixed\)\: bool, Closure\(mixed\)\: mixed given\.$#'
 			identifier: argument.type
 			count: 2
+			path: tests/Unit/Service/RuleProcessorTest.php
+
+		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTime, DateTime, null\> given\.$#'
+			identifier: argument.type
+			count: 3
 			path: tests/Unit/Service/RuleProcessorTest.php
 
 		-
