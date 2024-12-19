@@ -11,7 +11,6 @@ use LogicException;
 
 /**
  * @implements IteratorAggregate<DiffChange>
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class DiffChangeCollection implements Countable, IteratorAggregate
 {

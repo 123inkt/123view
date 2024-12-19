@@ -9,6 +9,6 @@ class CodeReviewerStateType extends AbstractEnumType
     public const REJECTED = 'rejected';
     public const ACCEPTED = 'accepted';
 
-    public const    TYPE   = 'enum_code_reviewer_state_type';
-    public const    VALUES = [self::OPEN, self::REJECTED, self::ACCEPTED];
+    public const string  TYPE   = 'enum_code_reviewer_state_type';
+    public const array   VALUES = [self::OPEN, self::REJECTED, self::ACCEPTED];
 }

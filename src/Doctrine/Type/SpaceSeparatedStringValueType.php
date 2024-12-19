@@ -9,7 +9,7 @@ use DR\Utils\Assert;
 
 class SpaceSeparatedStringValueType extends Type
 {
-    public const TYPE = "space_separated_string_type";
+    public const string TYPE = "space_separated_string_type";
 
     /**
      * @inheritDoc

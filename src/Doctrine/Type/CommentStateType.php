@@ -8,6 +8,6 @@ class CommentStateType extends AbstractEnumType
     public const OPEN     = 'open';
     public const RESOLVED = 'resolved';
 
-    public const    TYPE   = 'enum_comment_state_type';
-    public const    VALUES = [self::OPEN, self::RESOLVED];
+    public const string TYPE   = 'enum_comment_state_type';
+    public const array  VALUES = [self::OPEN, self::RESOLVED];
 }
