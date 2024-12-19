@@ -45,7 +45,7 @@ class AbstractEnumTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid value 'foobar' for type 'type'");
+        $this->expectExceptionMessage("Invalid value 'string' for type 'type'.");
         $this->enumType->convertToDatabaseValue('foobar', $this->createMock(AbstractPlatform::class));
     }
 
