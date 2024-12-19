@@ -10,19 +10,23 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversClass(CodeReviewerService::class)]
 class CodeReviewerServiceTest extends AbstractTestCase
 {
-    private CodeReviewerService $service;
+    private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
+    private CodeReviewerService                  $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new CodeReviewerService();
+        $this->reviewerStateResolver = $this->createMock(CodeReviewerStateResolver::class);
+        $this->service               = new CodeReviewerService($this->reviewerStateResolver);
     }
 
     public function testAddReviewer(): void
@@ -48,6 +52,8 @@ class CodeReviewerServiceTest extends AbstractTestCase
         $reviewer = new CodeReviewer();
         $review->getReviewers()->add($reviewer);
 
+        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
+
         $this->service->setReviewerState($review, $reviewer, CodeReviewerStateType::ACCEPTED);
         static::assertSame(CodeReviewerStateType::ACCEPTED, $reviewer->getState());
         static::assertSame(CodeReviewStateType::CLOSED, $review->getState());
@@ -62,6 +68,8 @@ class CodeReviewerServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
+
+        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
         $this->service->setReviewerState($review, $reviewer, CodeReviewerStateType::OPEN);
         static::assertSame(CodeReviewerStateType::OPEN, $reviewer->getState());

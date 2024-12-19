@@ -10,7 +10,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewCreationService;
 use DR\Review\Service\Git\Review\CodeReviewService;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -23,7 +23,7 @@ class CreateReviewFromRevisionController extends AbstractController
     public function __construct(
         private readonly CodeReviewCreationService $reviewCreationService,
         private readonly CodeReviewService $reviewService,
-        private readonly ReviewEventService $eventService,
+        private readonly ReviewRevisionEventService $eventService,
     ) {
     }
 

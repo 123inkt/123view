@@ -9,7 +9,7 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -25,7 +25,7 @@ class CommitRemovedMessageHandler implements LoggerAwareInterface
         private readonly RevisionRepository $revisionRepository,
         private readonly RevisionVisibilityRepository $visibilityRepository,
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly ReviewEventService $eventService
+        private readonly ReviewRevisionEventService $eventService
     ) {
     }
 

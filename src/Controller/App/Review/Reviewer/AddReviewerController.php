@@ -10,6 +10,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\Git\Review\CodeReviewerService;
 use DR\Review\Service\Webhook\ReviewEventService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -23,6 +24,7 @@ class AddReviewerController extends AbstractController
     public function __construct(
         private readonly CodeReviewRepository $codeReviewRepository,
         private readonly CodeReviewerService $reviewerService,
+        private readonly CodeReviewerStateResolver $reviewerStateResolver,
         private readonly ReviewEventService $eventService
     ) {
     }
@@ -31,7 +33,7 @@ class AddReviewerController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): RedirectResponse
     {
-        $reviewerState = $review->getReviewersState();
+        $reviewerState = $this->reviewerStateResolver->getReviewersState($review);
 
         $form = $this->createForm(AddReviewerFormType::class, null, ['review' => $review]);
         $form->handleRequest($request);

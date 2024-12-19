@@ -15,15 +15,15 @@ class ChangeReviewerStateService
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly ReviewEventService $eventService,
-        private readonly CodeReviewerService $reviewerService
+        private readonly CodeReviewerService $reviewerService,
+        private readonly CodeReviewerStateResolver $reviewerStateResolver
     ) {
     }
 
     public function changeState(CodeReview $review, User $user, string $state): void
     {
-        $reviewState = (string)$review->getState();
-
-        $reviewReviewerState = $review->getReviewersState();
+        $reviewState         = (string)$review->getState();
+        $reviewReviewerState = $this->reviewerStateResolver->getReviewersState($review);
         $reviewerAdded       = false;
 
         // get reviewer, or assign one
