@@ -10,5 +10,5 @@ class FilterType extends AbstractEnumType
     public const SUBJECT = 'subject';
 
     public const string TYPE   = 'enum_filter_type';
-    protected const array VALUES = [self::FILE, self::AUTHOR, self::SUBJECT];
+    public const array VALUES = [self::FILE, self::AUTHOR, self::SUBJECT];
 }

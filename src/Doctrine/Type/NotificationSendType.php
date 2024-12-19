@@ -10,5 +10,5 @@ class NotificationSendType extends AbstractEnumType
     public const BOTH    = 'both';
 
     public const string TYPE   = 'enum_notification_send';
-    protected const array  VALUES = [self::MAIL, self::BROWSER, self::BOTH];
+    public const array  VALUES = [self::MAIL, self::BROWSER, self::BOTH];
 }

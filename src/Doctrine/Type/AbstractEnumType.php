@@ -11,7 +11,7 @@ abstract class AbstractEnumType extends Type
 {
     public const string TYPE = '';
     /** @var string[] */
-    protected const array VALUES = [];
+    public const array VALUES = [];
 
     /**
      * @inheritDoc

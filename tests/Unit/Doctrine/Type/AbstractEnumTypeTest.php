@@ -20,7 +20,7 @@ class AbstractEnumTypeTest extends AbstractTestCase
         parent::setUp();
         $this->enumType = new class extends AbstractEnumType {
             public const string   TYPE   = 'type';
-            protected const array VALUES = ['foo', 'bar'];
+            public const array    VALUES = ['foo', 'bar'];
         };
     }
 

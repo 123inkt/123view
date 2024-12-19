@@ -8,7 +8,7 @@ use DR\Review\Entity\Review\CommentTagEnum;
 class CommentTagType extends AbstractEnumType
 {
     public const string TYPE   = 'enum_comment_tag_type';
-    protected const array VALUES = [
+    public const array VALUES = [
         CommentTagEnum::ChangeRequest->value,
         CommentTagEnum::Explanation->value,
         CommentTagEnum::NiceToHave->value,

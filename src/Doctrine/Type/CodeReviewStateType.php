@@ -9,5 +9,5 @@ class CodeReviewStateType extends AbstractEnumType
     public const CLOSED = 'closed';
 
     public const string   TYPE   = 'enum_code_review_state_type';
-    protected const array    VALUES = [self::OPEN, self::CLOSED];
+    public const array    VALUES = [self::OPEN, self::CLOSED];
 }

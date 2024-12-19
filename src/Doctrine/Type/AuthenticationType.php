@@ -8,5 +8,5 @@ class AuthenticationType extends AbstractEnumType
     public const BASIC_AUTH = 'basic-auth';
 
     public const string TYPE   = 'enum_authentication_type';
-    protected const array VALUES = [self::BASIC_AUTH];
+    public const array VALUES = [self::BASIC_AUTH];
 }

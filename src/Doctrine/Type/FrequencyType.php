@@ -19,7 +19,7 @@ class FrequencyType extends AbstractEnumType
     public const ONCE_PER_WEEK        = 'once-per-week';
 
     public const string TYPE   = 'enum_frequency';
-    protected const array VALUES = [
+    public const array VALUES = [
         self::ONCE_PER_HOUR,
         self::ONCE_PER_TWO_HOURS,
         self::ONCE_PER_THREE_HOURS,

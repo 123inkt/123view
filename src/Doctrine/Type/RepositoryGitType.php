@@ -9,5 +9,5 @@ class RepositoryGitType extends AbstractEnumType
     public const GITHUB = 'github';
 
     public const string TYPE   = 'enum_git_type';
-    protected const array VALUES = [self::GITLAB, self::GITHUB];
+    public const array  VALUES = [self::GITLAB, self::GITHUB];
 }

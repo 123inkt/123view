@@ -9,5 +9,5 @@ class MailThemeType extends AbstractEnumType
     public const DARCULA  = 'darcula';
 
     public const string TYPE   = 'enum_mail_theme';
-    protected const array VALUES = [self::UPSOURCE, self::DARCULA];
+    public const array  VALUES = [self::UPSOURCE, self::DARCULA];
 }
