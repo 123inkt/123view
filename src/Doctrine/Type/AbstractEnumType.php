@@ -10,7 +10,6 @@ use InvalidArgumentException;
 abstract class AbstractEnumType extends Type
 {
     public const string TYPE = '';
-    /** @var string[] */
     public const array VALUES = [];
 
     /**

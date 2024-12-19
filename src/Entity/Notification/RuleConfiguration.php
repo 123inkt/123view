@@ -9,7 +9,7 @@ use DateTimeImmutable;
 class RuleConfiguration
 {
     /**
-     * @param DatePeriod<DateTimeImmutable, DateTimeImmutable $period
+     * @param DatePeriod<DateTimeImmutable, DateTimeImmutable> $period
      */
     public function __construct(public readonly DatePeriod $period, public readonly Rule $rule)
     {

@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * @extends AbstractType<array{inclusions: Filter[], exclusions: Filter[]>
+ * @extends AbstractType<array{inclusions: Filter[], exclusions: Filter[]}>
  */
 class InExclusionFilterType extends AbstractType
 {
