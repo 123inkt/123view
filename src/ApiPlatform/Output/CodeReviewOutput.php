@@ -7,7 +7,6 @@ class CodeReviewOutput
 {
     /**
      * @codeCoverageIgnore
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      *
      * @param UserOutput[] $authors
      * @param UserOutput[] $reviewers

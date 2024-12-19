@@ -10,6 +10,7 @@ use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
 use DR\Review\Service\CodeReview\DiffComparePolicyProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 
 class CommentsViewModelProvider
@@ -24,7 +25,7 @@ class CommentsViewModelProvider
 
     public function getCommentsViewModel(CodeReview $review, ?DiffFile $fileBefore, DiffFile $file): CommentsViewModel
     {
-        $comments         = $this->commentRepository->findByReview($review, array_filter([$file->filePathAfter, $file->filePathBefore]));
+        $comments         = $this->commentRepository->findByReview($review, Arrays::removeNull([$file->filePathAfter, $file->filePathBefore]));
         $detachedComments = [];
         $groupedComments  = [];
 

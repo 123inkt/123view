@@ -9,8 +9,8 @@ use InvalidArgumentException;
 
 abstract class AbstractEnumType extends Type
 {
-    public const    TYPE   = '';
-    protected const VALUES = [];
+    public const string TYPE = '';
+    public const array VALUES = [];
 
     /**
      * @inheritDoc
@@ -35,7 +35,7 @@ abstract class AbstractEnumType extends Type
         }
 
         if (is_string($value) === false || in_array($value, static::VALUES, true) === false) {
-            throw new InvalidArgumentException("Invalid value '" . $value . "' for type '" . static::TYPE . "'.");
+            throw new InvalidArgumentException("Invalid value '" . get_debug_type($value) . "' for type '" . static::TYPE . "'.");
         }
 
         return $value;

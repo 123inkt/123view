@@ -1,31 +1,1753 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method DR\\\\Review\\\\ApiPlatform\\\\OpenApi\\\\OpenApiFactory\\:\\:__invoke\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			message: '#^Method DR\\Review\\ApiPlatform\\OpenApi\\OpenApiFactory\:\:__invoke\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
 
 		-
-			message: "#^Property DR\\\\Review\\\\Entity\\\\Asset\\\\Asset\\:\\:\\$data type mapping mismatch\\: database can contain resource but property expects string\\.$#"
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
+
+		-
+			message: '#^Cannot call method getDescription\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
+
+		-
+			message: '#^Generator expects value type array\{ApiPlatform\\OpenApi\\Model\\Operation, ApiPlatform\\OpenApi\\Model\\Parameter\}, array\{ApiPlatform\\OpenApi\\Model\\Operation, mixed\} given\.$#'
+			identifier: generator.valueType
+			count: 1
+			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strtolower expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
+
+		-
+			message: '#^Parameter \$context of method DR\\Review\\ApiPlatform\\StateProcessor\\CodeReviewProcessor\:\:process\(\) has invalid type Illuminate\\Http\\Request\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ApiPlatform/StateProcessor/CodeReviewProcessor.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array\<mixed\>\|bool\|float\|int\|string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Controller/Auth/SingleSignOn/AzureAdAuthController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(string\)\: non\-falsy\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/Type/AbstractEnumType.php
+
+		-
+			message: '#^Property DR\\Review\\Entity\\Asset\\Asset\:\:\$data type mapping mismatch\: database can contain resource but property expects string\.$#'
+			identifier: doctrine.columnType
 			count: 1
 			path: src/Entity/Asset/Asset.php
 
 		-
-			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:generate\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc tag @return does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: src/Entity/Notification/Frequency.php
+
+		-
+			message: '#^Method DR\\Review\\Entity\\Notification\\Frequency\:\:getPeriod\(\) should return DatePeriod\<DateTimeImmutable, DateTimeImmutable\> but returns DatePeriod\<DateTime, DateTimeImmutable, null\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Entity/Notification/Frequency.php
+
+		-
+			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc tag @param for parameter \$period does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: src/Entity/Notification/RuleConfiguration.php
+
+		-
+			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc type for property DR\\Review\\Entity\\Notification\\RuleConfiguration\:\:\$period does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: src/Entity/Notification/RuleConfiguration.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<mixed\> is not subtype of type array\<string, array\{mixed, mixed\}\|Doctrine\\ORM\\PersistentCollection\>\.$#'
+			identifier: varTag.type
+			count: 1
+			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Recipient\\RecipientCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Recipient/RecipientCollectionType.php
+
+		-
+			message: '#^The @extends tag of class DR\\Review\\Form\\Recipient\\RecipientCollectionType describes Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType but the class extends Symfony\\Component\\Form\\AbstractType\.$#'
+			identifier: generics.wrongParent
+			count: 1
+			path: src/Form/Recipient/RecipientCollectionType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Recipient\\RecipientType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Recipient/RecipientType.php
+
+		-
+			message: '#^The @extends tag of class DR\\Review\\Form\\Recipient\\RecipientType describes Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType but the class extends Symfony\\Component\\Form\\AbstractType\.$#'
+			identifier: generics.wrongParent
+			count: 1
+			path: src/Form/Recipient/RecipientType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Repository\\EditRepositoryFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Repository/EditRepositoryFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\AddCommentFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/AddCommentFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\AddCommentReplyFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/AddCommentReplyFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\AddReviewerFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/AddReviewerFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\CommentTagType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/CommentTagType.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Form/Review/CommentTagType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\CommentType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/CommentType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\EditCommentFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/EditCommentFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\EditCommentReplyFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/EditCommentReplyFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\Revision\\DetachRevisionsFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/Revision/DetachRevisionsFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\Revision\\RevisionVisibilityFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/Revision/RevisionVisibilityFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Review\\Revision\\RevisionVisibilityType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Review/Revision/RevisionVisibilityType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Rule\\EditRuleFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Rule/EditRuleFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Rule\\RuleOptionsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Rule/RuleOptionsType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Rule\\RuleType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Rule/RuleType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\User\\AddAccessTokenFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/User/AddAccessTokenFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\User\\LoginFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/User/LoginFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\User\\RegistrationFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/User/RegistrationFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\User\\UserProfileFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/User/UserProfileFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\User\\UserSettingFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/User/UserSettingFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\User\\UserSettingType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/User/UserSettingType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Webhook\\EditWebhookFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Webhook/EditWebhookFormType.php
+
+		-
+			message: '#^Class DR\\Review\\Form\\Webhook\\WebhookType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/Webhook/WebhookType.php
+
+		-
+			message: '#^Parameter \#2 \$code of method Exception\:\:__construct\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/QueryParser/InvalidQueryException.php
+
+		-
+			message: '#^PHPDoc tag @var with type Parsica\\Parsica\\Parser\<T\> is not subtype of type Parsica\\Parsica\\Parser\<null\>\.$#'
+			identifier: varTag.type
+			count: 1
+			path: src/QueryParser/ParserFactory.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Asset\\AssetRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Asset/AssetRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Asset\\AssetRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Asset/AssetRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Asset\\AssetRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Asset/AssetRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Asset\\AssetRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Asset/AssetRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\ExternalLinkRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/ExternalLinkRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\ExternalLinkRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/ExternalLinkRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\ExternalLinkRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/ExternalLinkRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\ExternalLinkRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/ExternalLinkRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\FilterRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/FilterRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\FilterRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/FilterRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\FilterRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/FilterRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\FilterRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/FilterRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RecipientRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RecipientRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RecipientRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RecipientRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RecipientRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RecipientRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RecipientRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RecipientRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryCredentialRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryCredentialRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryCredentialRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryCredentialRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryCredentialRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryCredentialRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryCredentialRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryCredentialRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryPropertyRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryPropertyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryPropertyRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryPropertyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryPropertyRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryPropertyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryPropertyRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryPropertyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RepositoryRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RepositoryRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleNotificationRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleNotificationRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleNotificationRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleNotificationRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleNotificationRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleNotificationRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleNotificationRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleNotificationRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleOptionsRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleOptionsRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleOptionsRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleOptionsRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleOptionsRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleOptionsRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleOptionsRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleOptionsRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Config\\RuleRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Config/RuleRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageFileRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageFileRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageFileRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageFileRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageFileRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageFileRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageFileRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageFileRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageReportRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageReportRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageReportRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeCoverageReportRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeCoverageReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionIssueRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionIssueRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionIssueRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionIssueRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionIssueRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionIssueRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionIssueRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionIssueRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionReportRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionReportRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionReportRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Report\\CodeInspectionReportRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Report/CodeInspectionReportRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewActivityRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewActivityRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewActivityRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewActivityRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewActivityRepository.php
+
+		-
+			message: '#^Method DR\\Review\\Repository\\Review\\CodeReviewQueryBuilder\:\:getQuery\(\) return type with generic class Doctrine\\ORM\\Query does not specify its types\: TKey, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Repository/Review/CodeReviewQueryBuilder.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewerRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewerRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewerRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewerRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewerRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewerRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CodeReviewerRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CodeReviewerRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentReplyRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentReplyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentReplyRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentReplyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentReplyRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentReplyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentReplyRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentReplyRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\CommentRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/CommentRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FileSeenStatusRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FileSeenStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FileSeenStatusRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FileSeenStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FileSeenStatusRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FileSeenStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FileSeenStatusRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FileSeenStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FolderCollapseStatusRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FolderCollapseStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FolderCollapseStatusRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FolderCollapseStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FolderCollapseStatusRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FolderCollapseStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\FolderCollapseStatusRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/FolderCollapseStatusRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\UserMentionRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/UserMentionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\UserMentionRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/UserMentionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\UserMentionRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/UserMentionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Review\\UserMentionRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Review/UserMentionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionRepository.php
+
+		-
+			message: '#^Method DR\\Review\\Repository\\Revision\\RevisionRepository\:\:getCommitHashes\(\) should return array\<string\> but returns list\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Repository/Revision/RevisionRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionVisibilityRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionVisibilityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionVisibilityRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionVisibilityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionVisibilityRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionVisibilityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Revision\\RevisionVisibilityRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Revision/RevisionVisibilityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\GitAccessTokenRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/GitAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\GitAccessTokenRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/GitAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\GitAccessTokenRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/GitAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\GitAccessTokenRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/GitAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserAccessTokenRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserAccessTokenRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserAccessTokenRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserAccessTokenRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserAccessTokenRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserSettingRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserSettingRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookActivityRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookActivityRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookActivityRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookActivityRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookActivityRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\Webhook\\WebhookRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/Webhook/WebhookRepository.php
+
+		-
+			message: '#^Parameter \#1 \$data of class DR\\Review\\Response\\ProblemJsonResponse constructor expects array\<string, array\<string\>\|int\|string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Response/ProblemJsonResponseFactory.php
+
+		-
+			message: '#^Method DR\\Review\\Router\\ReviewRouter\:\:generate\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/Router/ReviewRouter.php
 
 		-
-			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:match\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method DR\\Review\\Router\\ReviewRouter\:\:match\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/Router/ReviewRouter.php
 
 		-
-			message: "#^Method DR\\\\Review\\\\Router\\\\ReviewRouter\\:\\:matchRequest\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method DR\\Review\\Router\\ReviewRouter\:\:matchRequest\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/Router/ReviewRouter.php
 
 		-
-			message: "#^Method DR\\\\Review\\\\Service\\\\Api\\\\Gitlab\\\\Discussions\\:\\:responseToJson\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Parameter \#1 \$url of class Symfony\\Component\\HttpFoundation\\RedirectResponse constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Security/AzureAd/AzureAdAuthenticator.php
+
+		-
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Security/AzureAd/LoginService.php
+
+		-
+			message: '#^Cannot access offset ''preferred_username'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Security/AzureAd/LoginService.php
+
+		-
+			message: '#^Parameter \#1 \$name of class DR\\Review\\Security\\AzureAd\\LoginSuccess constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Security/AzureAd/LoginService.php
+
+		-
+			message: '#^Parameter \#2 \$context of method Psr\\Log\\LoggerInterface\:\:notice\(\) expects array\<mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Security/AzureAd/LoginService.php
+
+		-
+			message: '#^Parameter \#2 \$email of class DR\\Review\\Security\\AzureAd\\LoginSuccess constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Security/AzureAd/LoginService.php
+
+		-
+			message: '#^Class DR\\Review\\Security\\Voter\\CommentReplyVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Security/Voter/CommentReplyVoter.php
+
+		-
+			message: '#^Class DR\\Review\\Security\\Voter\\CommentVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Security/Voter/CommentVoter.php
+
+		-
+			message: '#^Class DR\\Review\\Security\\Voter\\RuleVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Security/Voter/RuleVoter.php
+
+		-
+			message: '#^Class DR\\Review\\Security\\Voter\\UserAccessTokenVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Security/Voter/UserAccessTokenVoter.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
+			message: '#^Generator expects value type array\{id\: string, notes\: array\<array\{id\: int, body\: string, position\: array\{base_sha\: string, start_sha\: string, head_sha\: string, old_path\: string, new_path\: string\}\}\>\}, mixed given\.$#'
+			identifier: generator.valueType
+			count: 1
+			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
+			message: '#^Method DR\\Review\\Service\\Api\\Gitlab\\Discussions\:\:responseToJson\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
+			message: '#^Parameter \#4 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
+			message: '#^Method DR\\Review\\Service\\Api\\Gitlab\\MergeRequests\:\:findByRemoteRef\(\) should return array\{id\: int, iid\: int, title\: string, web_url\: string\}\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/Api/Gitlab/MergeRequests.php
+
+		-
+			message: '#^Parameter \#2 \$closure of class DR\\Review\\Model\\Review\\Highlight\\HighlightedFile constructor expects Closure\(\)\: array\<int, string\>, Closure\(\)\: array\<string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeHighlight/HighlightedFileService.php
+
+		-
+			message: '#^Parameter \#1 \$elements of class DR\\Review\\Entity\\Review\\FileSeenStatusCollection constructor expects array\<int, DR\\Review\\Entity\\Review\\FileSeenStatus\>, array\<DR\\Review\\Entity\\Review\\FileSeenStatus\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/FileSeenStatusService.php
+
+		-
+			message: '#^Parameter \#1 \$elements of class DR\\Review\\Entity\\Review\\FolderCollapseStatusCollection constructor expects array\<int, DR\\Review\\Entity\\Review\\FolderCollapseStatus\>, array\<DR\\Review\\Entity\\Review\\FolderCollapseStatus\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/FolderCollapseStatusService.php
+
+		-
+			message: '#^PHPDoc tag @var with type Parsica\\Parsica\\Parser\<DR\\Review\\QueryParser\\Term\\TermInterface\> is not subtype of type Parsica\\Parsica\\Parser\<array\{DR\\Review\\QueryParser\\Term\\TermInterface\}\|DR\\Review\\QueryParser\\Term\\TermInterface\>\.$#'
+			identifier: varTag.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: src/Service/Git/Branch/GitBranchService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>unifiedDiffLines" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: src/Service/Git/Diff/GitDiffService.php
+
+		-
+			message: '#^Property DR\\Review\\Entity\\Git\\Diff\\DiffBlock\:\:\$lines \(array\<int, DR\\Review\\Entity\\Git\\Diff\\DiffLine\>\) does not accept array\<DR\\Review\\Entity\\Git\\Diff\\DiffLine\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Service/Git/Diff/UnifiedDiffBundler.php
+
+		-
+			message: '#^Property DR\\Review\\Entity\\Git\\Diff\\DiffBlock\:\:\$lines \(array\<int, DR\\Review\\Entity\\Git\\Diff\\DiffLine\>\) does not accept array\<DR\\Review\\Entity\\Git\\Diff\\DiffLine\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Service/Git/Diff/UnifiedDiffEmphasizer.php
+
+		-
+			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: src/Service/Git/Review/Strategy/BasicCherryPickStrategy.php
+
+		-
+			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: src/Service/Git/Review/Strategy/HesitantCherryPickStrategy.php
+
+		-
+			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: src/Service/Git/Review/Strategy/PersistentCherryPickStrategy.php
+
+		-
+			message: '#^Cannot access offset ''free_memory'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Health/OpcacheInternedStrings.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Service/Health/OpcacheInternedStrings.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: src/Service/Mail/MailSubjectFormatter.php
+
+		-
+			message: '#^Method DR\\Review\\Service\\Notification\\RuleNotificationService\:\:addRuleNotification\(\) has parameter \$period with generic class DatePeriod but does not specify its types\: TDate, TEnd, TRecurrences$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Service/Notification/RuleNotificationService.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<string\> is not subtype of native type list\<string\>\|false\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: src/Service/Parser/DiffFileParser.php
+
+		-
+			message: '#^Method DR\\Review\\Service\\RemoteEvent\\Gitlab\\RemoteEventPayloadDenormalizer\:\:denormalize\(\) should return DR\\Review\\Model\\Webhook\\Gitlab\\MergeRequestEvent\|DR\\Review\\Model\\Webhook\\Gitlab\\PushEvent\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/RemoteEvent/Gitlab/RemoteEventPayloadDenormalizer.php
+
+		-
+			message: '#^Cannot access offset ''begin'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot access offset ''check_name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot access offset ''description'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot access offset ''lines'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot access offset ''location'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot access offset ''path'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot access offset ''severity'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Parameter \#1 \$rule of method DR\\Review\\Entity\\Report\\CodeInspectionIssue\:\:setRule\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Parameter \#1 \$severity of method DR\\Review\\Entity\\Report\\CodeInspectionIssue\:\:setSeverity\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Parameter \#1 \$string of function trim expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Parameter \#3 \$filePath of method DR\\Review\\Service\\IO\\FilePathNormalizer\:\:normalize\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Report/CodeInspection/Parser/GitlabIssueParser.php
+
+		-
+			message: '#^Parameter \#2 \$revisions of method DR\\Review\\Repository\\Revision\\RevisionRepository\:\:saveAll\(\) expects array\<DR\\Review\\Entity\\Revision\\Revision\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Revision/RevisionFetchService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: src/Service/Revision/RevisionValidationService.php
+
+		-
+			message: '#^Parameter \#1 \$responseHeaders of method DR\\Review\\Entity\\Webhook\\WebhookActivity\:\:setResponseHeaders\(\) expects array\<string, array\<string\>\|string\>, array\<array\<string\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Webhook/WebhookExecutionService.php
+
+		-
+			message: '#^Parameter \#2 \$replace of function str_ireplace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/IdeButtonExtension.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Utility/MimeTypes.php
+
+		-
+			message: '#^Method DR\\Review\\Utility\\MimeTypes\:\:getMimeType\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Utility/MimeTypes.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/ViewModelProvider/LoginViewModelProvider.php
+
+		-
+			message: '#^Method DR\\Review\\ViewModelProvider\\UserSettingViewModelProvider\:\:getUserAccessTokenViewModel\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ViewModelProvider/UserSettingViewModelProvider.php
+
+		-
+			message: '#^Method DR\\Review\\ViewModelProvider\\UserSettingViewModelProvider\:\:getUserSettingViewModel\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ViewModelProvider/UserSettingViewModelProvider.php
+
+		-
+			message: '#^PHPDoc tag @var with type Symfony\\Component\\EventDispatcher\\EventDispatcherInterface\|null is not subtype of type Symfony\\Component\\HttpKernel\\Debug\\TraceableEventDispatcher\.$#'
+			identifier: varTag.type
+			count: 1
+			path: tests/Functional/Command/MailCommandTest.php
+
+		-
+			message: '#^Cannot access offset ''title'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Functional/Controller/Api/CodeReview/GetCollectionControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''eventName'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Functional/Controller/Api/CodeReviewActivity/GetCollectionControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Functional/Controller/Api/Repository/GetCollectionControllerTest.php
+
+		-
+			message: '#^Binary operation "\." between ''Missing key in data…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: tests/Helper/FormAssertion.php
+
+		-
+			message: '#^Method DR\\Review\\Tests\\Helper\\FormAssertion\:\:__construct\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Helper/FormAssertion.php
+
+		-
+			message: '#^Parameter \#1 \$key of function array_key_exists expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Helper/FormAssertion.php
+
+		-
+			message: '#^PHPDoc tag @var with type Symfony\\Component\\Routing\\RouterInterface is not subtype of type DR\\Review\\Router\\ReviewRouter\.$#'
+			identifier: varTag.type
+			count: 1
+			path: tests/Integration/Router/ReviewRouterTest.php
+
+		-
+			message: '#^Property DR\\Review\\Entity\\Git\\Diff\\DiffBlock\:\:\$lines \(array\<int, DR\\Review\\Entity\\Git\\Diff\\DiffLine\>\) does not accept array\<DR\\Review\\Entity\\Git\\Diff\\DiffLine\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Integration/Service/Parser/Unified/UnifiedBlockParserTest.php
+
+		-
+			message: '#^Cannot access property \$headers on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Unit/Controller/App/Notification/RuleNotificationControllerTest.php
+
+		-
+			message: '#^Cannot call method has\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Controller/App/Notification/RuleNotificationControllerTest.php
+
+		-
+			message: '#^Cannot call method getRules\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Controller/App/Notification/RulesControllerTest.php
+
+		-
+			message: '#^Parameter \#1 \$iterator of function iterator_to_array expects iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Controller/App/Notification/RulesControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of static method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Controller/App/Notification/RulesControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''branchesViewModel'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Project/ProjectBranchesControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Project/ProjectBranchesControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Project/ProjectsControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''projectsModel'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Project/ProjectsControllerTest.php
+
+		-
+			message: '#^Cannot access property \$headers on mixed\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
+
+		-
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
+
+		-
+			message: '#^Cannot call method getContent\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
+
+		-
+			message: '#^Cannot call method getStatusCode\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''comment'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/Unit/Controller/App/Review/Comment/GetCommentThreadControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''breadcrumbs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Review/ReviewControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Review/ReviewControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''reviewModel'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Controller/App/Review/ReviewControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''breadcrumbs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''reviewsModel'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
+
+		-
+			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToDatabaseValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: tests/Unit/Doctrine/Type/LineCoverageTypeTest.php
+
+		-
+			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToPHPValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: tests/Unit/Doctrine/Type/LineCoverageTypeTest.php
+
+		-
+			message: '#^Parameter \#1 \$string1 of function strcmp expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Entity/Review/DirectoryTreeNodeTest.php
+
+		-
+			message: '#^Parameter \#2 \$string2 of function strcmp expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Entity/Review/DirectoryTreeNodeTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 3
+			path: tests/Unit/ExternalTool/Gitlab/GitlabServiceTest.php
+
+		-
+			message: '#^Cannot access offset ''choice_translation_domain'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''choices'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''expanded'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''label'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''multiple'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''placeholder'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''preferred_choices'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Cannot access offset ''required'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Form/Review/AddReviewerFormTypeTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 2
+			path: tests/Unit/MessageHandler/RevisionFilesMessageHandlerTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/CodeHighlight/CacheableHighlightedFileServiceTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Service/CodeReview/Comment/CommentMentionServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/DiffTree/LockableGitDiffTreeServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/Fetch/LockableGitFetchServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/GarbageCollect/LockableGitGarbageCollectServiceTest.php
+
+		-
+			message: '#^Parameter \#1 \$directory of function mkdir expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Service/Git/GitRepositoryLockManagerTest.php
+
+		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTimeImmutable, DateTimeImmutable, null\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/Service/Git/Log/GitLogCommandFactoryTest.php
+
+		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTime, DateTime, null\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/Service/Git/Log/GitLogServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 2
+			path: tests/Unit/Service/Git/Log/LockableGitLogServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/Remote/LockableGitRemoteServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/RevList/CacheableGitRevListServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/RevList/LockableGitRevListServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 2
+			path: tests/Unit/Service/Git/Review/ReviewDiffService/CacheableReviewDiffServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 2
+			path: tests/Unit/Service/Git/Review/ReviewDiffService/LockableReviewDiffServiceTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 3
+			path: tests/Unit/Service/Git/Review/Strategy/BasicCherryPickStrategyTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 2
+			path: tests/Unit/Service/Git/Review/Strategy/HesitantCherryPickStrategyTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: tests/Unit/Service/Git/Review/Strategy/PersistentCherryPickStrategyTest.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 2
+			path: tests/Unit/Service/Git/Show/LockableGitShowServiceTest.php
+
+		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTime, DateTime, null\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Service/Mail/CommitMailServiceTest.php
+
+		-
+			message: '#^Cannot call method contains\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Unit/Service/RuleProcessorTest.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method PHPUnit\\Framework\\Assert\:\:callback\(\) expects callable\(mixed\)\: bool, Closure\(mixed\)\: mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/Service/RuleProcessorTest.php
+
+		-
+			message: '#^Parameter \#1 \$period of class DR\\Review\\Entity\\Notification\\RuleConfiguration constructor expects DatePeriod\<DateTimeImmutable, DateTimeImmutable\>, DatePeriod\<DateTime, DateTime, null\> given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/Unit/Service/RuleProcessorTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/ViewModelProvider/ReviewsViewModelProviderTest.php
+
+		-
+			message: '#^Parameter \#1 \$environment of class DR\\Review\\Kernel constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/object-manager.php
