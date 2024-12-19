@@ -10,7 +10,7 @@ use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -27,7 +27,7 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
         private readonly CodeReviewRevisionMatcher $reviewRevisionMatcher,
         private readonly FileSeenStatusService $seenStatusService,
         private readonly ManagerRegistry $registry,
-        private readonly ReviewEventService $eventService,
+        private readonly ReviewRevisionEventService $eventService,
     ) {
     }
 

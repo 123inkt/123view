@@ -14,7 +14,7 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,7 +27,7 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
     private RevisionRepository&MockObject           $revisionRepository;
     private RevisionVisibilityRepository&MockObject $visibilityRepository;
     private CodeReviewRepository&MockObject         $reviewRepository;
-    private ReviewEventService&MockObject           $eventService;
+    private ReviewRevisionEventService&MockObject   $eventService;
     private CommitRemovedMessageHandler             $messageHandler;
 
     public function setUp(): void
@@ -37,7 +37,7 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository   = $this->createMock(RevisionRepository::class);
         $this->visibilityRepository = $this->createMock(RevisionVisibilityRepository::class);
         $this->reviewRepository     = $this->createMock(CodeReviewRepository::class);
-        $this->eventService         = $this->createMock(ReviewEventService::class);
+        $this->eventService         = $this->createMock(ReviewRevisionEventService::class);
         $this->messageHandler       = new CommitRemovedMessageHandler(
             $this->repositoryRepository,
             $this->revisionRepository,
