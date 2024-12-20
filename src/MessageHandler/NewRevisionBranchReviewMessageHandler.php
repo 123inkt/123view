@@ -41,7 +41,11 @@ class NewRevisionBranchReviewMessageHandler implements LoggerAwareInterface
 
         // find review
         $review = $this->reviewRepository->findOneBy(
-            ['targetBranch' => $revision->getFirstBranch(), 'type' => CodeReviewType::BRANCH, 'repository' => $revision->getRepository()]
+            [
+                'referenceId' => [$revision->getFirstBranch(), 'origin/' . $revision->getFirstBranch()],
+                'type'        => CodeReviewType::BRANCH,
+                'repository'  => $revision->getRepository()
+            ]
         );
         if ($review === null) {
             $this->logger?->info('NewRevisionBranchReviewMessageHandler: no review found for revision {title}', ['title' => $revision->getTitle()]);
