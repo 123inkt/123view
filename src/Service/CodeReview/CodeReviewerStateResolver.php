@@ -43,7 +43,9 @@ class CodeReviewerStateResolver
             $accepted[] = $reviewer;
         }
 
-        $isReviewAccepted = count($accepted) === count($reviewers) && count($selfAccepted) !== count($reviewers);
+        // All reviewers have accepted
+        // Self-accepted must not equal reviewers, unless reviewers is greater than 1
+        $isReviewAccepted = count($accepted) === count($reviewers) && (count($selfAccepted) !== count($reviewers) || count($selfAccepted) > 1);
 
         return $isReviewAccepted ? CodeReviewerStateType::ACCEPTED : CodeReviewerStateType::OPEN;
     }
