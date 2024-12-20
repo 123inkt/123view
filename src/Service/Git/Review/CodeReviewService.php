@@ -5,6 +5,7 @@ namespace DR\Review\Service\Git\Review;
 
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewerRepository;
@@ -32,10 +33,12 @@ class CodeReviewService
     {
         $previousRevisions = $this->revisionService->getRevisions($review);
 
-        foreach ($revisions as $revision) {
-            $revision->setReview($review);
-            $review->getRevisions()->add($revision);
-            $this->revisionRepository->save($revision, true);
+        if ($review->getType() === CodeReviewType::COMMITS) {
+            foreach ($revisions as $revision) {
+                $revision->setReview($review);
+                $review->getRevisions()->add($revision);
+                $this->revisionRepository->save($revision, true);
+            }
         }
 
         $review->setState(CodeReviewStateType::OPEN);
