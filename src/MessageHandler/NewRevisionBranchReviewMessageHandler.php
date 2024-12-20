@@ -38,6 +38,11 @@ class NewRevisionBranchReviewMessageHandler implements LoggerAwareInterface
     {
         $this->logger?->info("NewRevisionBranchReviewMessageHandler: revision: {id}", ['id' => $message->revisionId]);
         $revision = $this->revisionRepository->find($message->revisionId);
+        if ($revision === null) {
+            $this->logger?->info('NewRevisionBranchReviewMessageHandler: no revision found');
+
+            return;
+        }
 
         // find review
         $review = $this->reviewRepository->findOneBy(

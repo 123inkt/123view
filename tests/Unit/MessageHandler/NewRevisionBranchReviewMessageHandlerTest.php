@@ -55,6 +55,16 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testInvokeUnknownRevision(): void
+    {
+        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->reviewRepository->expects(self::never())->method('findOneBy');
+        ($this->messageHandler)(new NewRevisionMessage(123));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testInvokeUnknownReview(): void
     {
         $repository = new Repository();
