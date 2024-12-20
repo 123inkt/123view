@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Output\CodeReviewOutput;
 use DR\Review\ApiPlatform\Provider\CodeReviewProvider;
 use DR\Review\ApiPlatform\StateProcessor\CodeReviewProcessor;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\PropertyChangeTrait;
@@ -369,6 +370,31 @@ class CodeReview
         $this->reviewers = $reviewers;
 
         return $this;
+    }
+
+    /**
+     * Review is rejected when atleast 1 reviewer rejected
+     * Review is accepted when _all_ reviewers accepted
+     * Review is open in other cases
+     */
+    public function getReviewersState(): string
+    {
+        if (count($this->getReviewers()) === 0) {
+            return CodeReviewerStateType::OPEN;
+        }
+
+        $accepted = true;
+        foreach ($this->reviewers as $reviewer) {
+            if ($reviewer->getState() !== CodeReviewerStateType::ACCEPTED) {
+                $accepted = false;
+            }
+
+            if ($reviewer->getState() === CodeReviewerStateType::REJECTED) {
+                return CodeReviewerStateType::REJECTED;
+            }
+        }
+
+        return $accepted ? CodeReviewerStateType::ACCEPTED : CodeReviewerStateType::OPEN;
     }
 
     /**
