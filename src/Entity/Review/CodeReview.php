@@ -95,6 +95,7 @@ class CodeReview
     #[ORM\Column(length: 255)]
     private string $description;
 
+    /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH  */
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
     private string $type = CodeReviewType::COMMITS;
 
@@ -202,11 +203,17 @@ class CodeReview
         return $this;
     }
 
+    /**
+     * @return CodeReviewType::COMMITS|CodeReviewType::BRANCH
+     */
     public function getType(): string
     {
         return $this->type;
     }
 
+    /**
+     * @param CodeReviewType::COMMITS|CodeReviewType::BRANCH $type
+     */
     public function setType(string $type): self
     {
         $this->type = $type;
