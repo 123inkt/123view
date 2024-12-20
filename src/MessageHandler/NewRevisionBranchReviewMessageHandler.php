@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
-use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Review\CodeReviewRepository;
