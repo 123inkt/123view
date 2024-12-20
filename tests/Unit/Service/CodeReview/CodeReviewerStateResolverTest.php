@@ -51,6 +51,27 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
     }
 
+    public function testIsAcceptedSelfAcceptedMultiReviewers(): void
+    {
+        $review   = new CodeReview();
+        $revisionA = (new Revision())->setAuthorEmail('author1');
+        $revisionB = (new Revision())->setAuthorEmail('author2');
+        $review->getRevisions()->add($revisionA);
+        $review->getRevisions()->add($revisionB);
+
+        $reviewerA = new CodeReviewer();
+        $reviewerA->setUser((new User())->setEmail('author1'));
+        $reviewerA->setState(CodeReviewerStateType::ACCEPTED);
+        $review->getReviewers()->add($reviewerA);
+
+        $reviewerB = new CodeReviewer();
+        $reviewerB->setUser((new User())->setEmail('author2'));
+        $reviewerB->setState(CodeReviewerStateType::ACCEPTED);
+        $review->getReviewers()->add($reviewerB);
+
+        static::assertSame(CodeReviewerStateType::ACCEPTED, $this->resolver->getReviewersState($review));
+    }
+
     public function testIsAcceptedButNotSelfAccepted(): void
     {
         $review   = new CodeReview();
