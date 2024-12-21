@@ -28,7 +28,7 @@ services:
             RABBITMQ_DISK_FREE_ABSOLUTE_LIMIT: 1GB
         restart: unless-stopped
 
-    mercure:
+    my_mercure:
         volumes:
             - ./docker/ssl/production/production.crt:/etc/ssl/certs/123view-cert.crt:ro
             - ./docker/ssl/production/production.key:/etc/ssl/private/123view-cert.key:ro
