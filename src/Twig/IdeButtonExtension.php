@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Twig;
 
+use DR\Review\Service\User\IdeUrlPatternProvider;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -14,8 +15,8 @@ class IdeButtonExtension extends AbstractExtension
 {
     public function __construct(
         private readonly bool $enabled,
-        private readonly string $url,
         private readonly string $title,
+        private readonly IdeUrlPatternProvider $ideUrlPatternProvider,
         private readonly Environment $twig,
     ) {
     }
@@ -43,7 +44,7 @@ class IdeButtonExtension extends AbstractExtension
         return $this->twig->render(
             '/extension/ide-button.widget.html.twig',
             [
-                'url'   => str_ireplace($search, $replace, $this->url),
+                'url'   => str_ireplace($search, $replace, $this->ideUrlPatternProvider->getUrl()),
                 'title' => $this->title
             ]
         );

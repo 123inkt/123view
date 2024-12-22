@@ -63,6 +63,7 @@ use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
+use DR\Review\Service\User\IdeUrlPatternProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
@@ -129,8 +130,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)
         ->arg('$hostname', '%env(APP_HOSTNAME)%')
-        ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%')
-        ->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
+        ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%');
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
 
     // Configure Api
@@ -162,13 +162,14 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DiffFileParser::class);
     $services->set(JBDiff::class);
     $services->set(CssToInlineStyles::class);
-    $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_PATTERN)%', '%env(IDE_URL_TITLE)%']);
+    $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_TITLE)%']);
     $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
     $services->set(ParserHasFailedFormatter::class);
     $services->set(RuleNotificationTokenGenerator::class)->arg('$appSecret', '%env(APP_SECRET)%');
     $services->set(UserSettingType::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
+    $services->set(IdeUrlPatternProvider::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
 
     // custom register cache dir
     $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
