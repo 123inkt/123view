@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\EventSubscriber;
 
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
+use DR\Review\Service\User\IdeUrlPatternProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -15,6 +17,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
 #[CoversClass(ContentSecurityPolicyResponseSubscriber::class)]
 class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
 {
+    private IdeUrlPatternProvider&MockObject $ideUrlPatternProvider;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->ideUrlPatternProvider = $this->createMock(IdeUrlPatternProvider::class);
+    }
+
     public function testGetSubscribedEvents(): void
     {
         static::assertSame([KernelEvents::RESPONSE => 'onResponse'], ContentSecurityPolicyResponseSubscriber::getSubscribedEvents());
@@ -25,7 +35,9 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $response = new Response();
         $response->headers->set('Content-Security-Policy', '');
         $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
-        $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, 'url');
+        $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, $this->ideUrlPatternProvider);
+
+        $this->ideUrlPatternProvider->expects(self::never())->method('getUrl');
 
         $subscriber->onResponse($event);
 
@@ -36,7 +48,10 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
     {
         $response   = new Response();
         $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
-        $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, 'http://localhost:8080/file');
+        $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, $this->ideUrlPatternProvider,);
+
+        $this->ideUrlPatternProvider->expects(self::once())->method('getUrl')->willReturn('http://localhost:8080/file');
+
         $subscriber->onResponse($event);
 
         static::assertSame(
@@ -50,7 +65,10 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
     {
         $response   = new Response();
         $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
-        $subscriber = new ContentSecurityPolicyResponseSubscriber('host', false, 'http://localhost:8080/file');
+        $subscriber = new ContentSecurityPolicyResponseSubscriber('host', false, $this->ideUrlPatternProvider);
+
+        $this->ideUrlPatternProvider->expects(self::never())->method('getUrl');
+
         $subscriber->onResponse($event);
 
         static::assertSame(
