@@ -9,6 +9,7 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +22,7 @@ class UserSettingTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(5))
+        $builder->expects(self::exactly(6))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -30,19 +31,20 @@ class UserSettingTypeTest extends AbstractTestCase
                     ['mailCommentReplied', CheckboxType::class],
                     ['mailCommentResolved', CheckboxType::class],
                     ['browserNotificationEvents', ChoiceType::class],
+                    ['ideUrl', TextType::class]
                 )
             )->willReturnSelf();
 
-        $type = new UserSettingType();
+        $type = new UserSettingType('ide-url');
         $type->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
-        $resolver     = new OptionsResolver();
+        $resolver = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
-        $type = new UserSettingType();
+        $type = new UserSettingType('ide-url');
         $type->configureOptions($resolver);
 
         static::assertSame(UserSetting::class, $introspector->getDefault('data_class'));
