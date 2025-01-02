@@ -10544,16 +10544,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
-            "version": "v1.5.2",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-extensions.git",
-                "reference": "25f8e7199f143dbc552962291448196a8bbde315"
+                "reference": "555662ad80e34c3f84c18bc6a176908084199446"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/25f8e7199f143dbc552962291448196a8bbde315",
-                "reference": "25f8e7199f143dbc552962291448196a8bbde315",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/555662ad80e34c3f84c18bc6a176908084199446",
+                "reference": "555662ad80e34c3f84c18bc6a176908084199446",
                 "shasum": ""
             },
             "require": {
@@ -10570,12 +10570,13 @@
                 "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
                 "phpmd/phpmd": "^2.12",
                 "phpstan/extension-installer": "^1.2",
-                "phpstan/phpstan": "^1.9.1",
-                "phpstan/phpstan-phpunit": "^1.2.2",
-                "phpstan/phpstan-strict-rules": "^1.5",
-                "phpstan/phpstan-symfony": "^1.2.16",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpstan/phpstan-symfony": "^2.0",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.7",
+                "symfony/clock": "^6.4||^7.0",
                 "symfony/form": "^6.0||^7.0",
                 "symfony/framework-bundle": "^6.0||^7.0",
                 "symfony/security-core": "^6.0||^7.0",
@@ -10583,6 +10584,7 @@
                 "symfony/validator": "^6.0||^7.0"
             },
             "suggest": {
+                "symfony/clock": "Symfony clock component is required when using the ClockTestTrait",
                 "symfony/form": "Symfony form component is required for testing the controller createForm methods",
                 "symfony/framework-bundle": "Symfony framework bundle is required for the AbstractControllerTestCase",
                 "symfony/security-core": "Symfony security component is required for testing authentication/authorization related methods",
@@ -10604,9 +10606,9 @@
             "description": "A library for phpunit utility and support classes",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-extensions/issues",
-                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.5.2"
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.6.0"
             },
-            "time": "2024-09-24T17:16:04+00:00"
+            "time": "2025-01-02T12:26:53+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
