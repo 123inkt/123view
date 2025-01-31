@@ -8,7 +8,6 @@ use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 #[CoversNothing]
@@ -25,7 +24,7 @@ class UserMeControllerTest extends AbstractFunctionalTestCase
         $this->client->request('GET', '/api/users/me');
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
+        $data = $this->getResponseArray();
         static::assertSame(['id' => $user->getId(), 'name' => 'Sherlock Holmes', 'email' => 'sherlock@example.com'], $data);
     }
 

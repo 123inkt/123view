@@ -9,7 +9,6 @@ use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Utils\Assert;
 use Exception;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,7 +26,7 @@ class AuthenticationTest extends AbstractFunctionalTestCase
         $this->client->request('GET', '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $token->getToken()]);
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
+        $data = $this->getResponseArray();
         static::assertSame(['id' => $user->getId(), 'name' => $user->getName(), 'email' => $user->getEmail()], $data);
     }
 

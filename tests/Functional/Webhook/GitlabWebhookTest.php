@@ -50,6 +50,7 @@ class GitlabWebhookTest extends AbstractFunctionalTestCase
         self::assertResponseIsSuccessful();
 
         $response = $this->client->getResponse();
+        static::assertInstanceOf(Response::class, $response);
         static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
 
