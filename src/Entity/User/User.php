@@ -125,6 +125,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getEmail(): string
     {
         return $this->email;
