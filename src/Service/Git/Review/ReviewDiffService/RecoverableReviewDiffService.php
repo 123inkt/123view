@@ -5,7 +5,6 @@ namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Service\CodeReview\Branch\BranchReviewTargetBranchService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -15,10 +14,8 @@ class RecoverableReviewDiffService implements ReviewDiffServiceInterface, Logger
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private readonly BranchReviewTargetBranchService $targetBranchService,
-        private readonly ReviewDiffServiceInterface $diffService
-    ) {
+    public function __construct(private readonly ReviewDiffServiceInterface $diffService)
+    {
     }
 
     /**
@@ -42,7 +39,7 @@ class RecoverableReviewDiffService implements ReviewDiffServiceInterface, Logger
                 throw $exception;
             }
 
-            $this->logger->notice('Failed to get diff for branch, trying to reset target branch', ['exception' => $exception]);
+            $this->logger?->notice('Failed to get diff for branch, trying to reset target branch', ['exception' => $exception]);
             $review->setTargetBranch($review->getRepository()->getMainBranchName());
         }
 
