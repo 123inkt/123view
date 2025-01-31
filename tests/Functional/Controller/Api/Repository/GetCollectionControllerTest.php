@@ -9,7 +9,6 @@ use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 #[CoversNothing]
@@ -26,8 +25,7 @@ class GetCollectionControllerTest extends AbstractFunctionalTestCase
         $this->client->request('GET', '/api/repositories');
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
-        static::assertIsArray($data);
+        $data = $this->getResponseArray();
         static::assertCount(1, $data);
         static::assertSame('repository', $data[0]['name']);
     }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Functional\Controller\Api;
 
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Utils\Assert;
-use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
@@ -17,7 +15,7 @@ class DocControllerTest extends AbstractFunctionalTestCase
         $this->client->request('GET', '/api/docs', server: ['HTTP_ACCEPT' => 'text/html']);
         self::assertResponseIsSuccessful();
 
-        $content = $this->client->getResponse()->getContent();
+        $content = $this->getResponseContent();
         static::assertIsString($content);
         static::assertStringContainsString('swagger-ui', $content);
     }
@@ -30,7 +28,7 @@ class DocControllerTest extends AbstractFunctionalTestCase
         $this->client->request('GET', '/api/docs', server: ['HTTP_ACCEPT' => 'application/vnd.openapi+json']);
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
+        $data = $this->getResponseArray();
         static::assertIsArray($data);
         static::assertArrayHasKey('openapi', $data);
     }
