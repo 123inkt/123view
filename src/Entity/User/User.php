@@ -23,6 +23,7 @@ use DR\Utils\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -48,6 +49,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(length: 255)]
     private string $name;
 
+    /** @var non-empty-string */
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private string $email;
 
@@ -127,6 +130,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->email;
     }
 
+    /**
+     * @param non-empty-string $email
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;

@@ -6,6 +6,7 @@ namespace DR\Review\Security\AzureAd;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Utils\Assert;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
 class AzureAdUserBadgeFactory
@@ -26,7 +27,7 @@ class AzureAdUserBadgeFactory
                 if ($user !== null) {
                     return $user;
                 }
-                $user = (new User())->setEmail($email)->setName($name);
+                $user = (new User())->setEmail(Assert::nonEmptyString($email))->setName($name);
 
                 // make first user admin
                 if ($this->userRepository->getUserCount() === 0) {
