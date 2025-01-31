@@ -36,7 +36,7 @@ class RecoverableReviewDiffService implements ReviewDiffServiceInterface, Logger
     public function getDiffForBranch(CodeReview $review, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
     {
         try {
-            return $this->getDiffForBranch($review, $revisions, $branchName, $options);
+            return $this->diffService->getDiffForBranch($review, $revisions, $branchName, $options);
         } catch (ProcessFailedException $exception) {
             if ($review->getTargetBranch() === $review->getRepository()->getMainBranchName()) {
                 throw $exception;
