@@ -41,6 +41,7 @@ use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
+use DR\Review\Service\Git\Review\ReviewDiffService\RecoverableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
@@ -191,7 +192,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
 
-    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
+    $services->set('recoverable.review.diff.service', RecoverableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
+    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('recoverable.diff.service'));
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
     $services->set(ReviewRouter::class)->decorate('router')->args([service('.inner')]);
     $services->set(CodeReviewFileService::class)->arg('$revisionCache', service(CacheInterface::class . ' $revisionCache'));
