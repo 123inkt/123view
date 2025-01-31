@@ -193,7 +193,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
 
     $services->set('recoverable.review.diff.service', RecoverableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
-    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('recoverable.diff.service'));
+    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('recoverable.review.diff.service'));
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
     $services->set(ReviewRouter::class)->decorate('router')->args([service('.inner')]);
     $services->set(CodeReviewFileService::class)->arg('$revisionCache', service(CacheInterface::class . ' $revisionCache'));
