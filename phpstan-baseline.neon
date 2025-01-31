@@ -79,6 +79,12 @@ parameters:
 			path: src/Entity/Notification/RuleConfiguration.php
 
 		-
+			message: '#^Property DR\\Review\\Entity\\User\\User\:\:\$email type mapping mismatch\: database can contain string but property expects non\-empty\-string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/Entity/User/User.php
+
+		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
