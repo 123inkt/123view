@@ -10509,30 +10509,30 @@
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
-            "version": "v2.5.0",
+            "version": "v2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/accessorpair-constraint.git",
-                "reference": "4761b7598d1b104ad17665e383e5e6989b4ea1f1"
+                "reference": "b1ed2e4fe2a015313bbc484233abde86e71869cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/4761b7598d1b104ad17665e383e5e6989b4ea1f1",
-                "reference": "4761b7598d1b104ad17665e383e5e6989b4ea1f1",
+                "url": "https://api.github.com/repos/123inkt/accessorpair-constraint/zipball/b1ed2e4fe2a015313bbc484233abde86e71869cb",
+                "reference": "b1ed2e4fe2a015313bbc484233abde86e71869cb",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^2.0",
                 "php": ">=8.1",
                 "phpdocumentor/type-resolver": "^1.9",
-                "phpunit/phpunit": "^10.0 || ^11.0"
+                "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0"
             },
             "require-dev": {
                 "phpmd/phpmd": "@stable",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.6"
             },
@@ -10549,9 +10549,9 @@
             "description": "Digital Revolution PHPUnit Constraint for accessorpairs",
             "support": {
                 "issues": "https://github.com/123inkt/accessorpair-constraint/issues",
-                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.5.0"
+                "source": "https://github.com/123inkt/accessorpair-constraint/tree/v2.6.0"
             },
-            "time": "2024-12-10T11:04:42+00:00"
+            "time": "2025-02-07T17:22:11+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
