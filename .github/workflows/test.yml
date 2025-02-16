@@ -27,10 +27,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v4
-            -   name: Use Node.js 21.x
+            -   name: Use Node.js 22.x
                 uses: actions/setup-node@v4
                 with:
-                    node-version: 21.x
+                    node-version: 22.x
 
             # Docs: https://github.com/shivammathur/setup-php
             -   name: Setup PHP
@@ -64,12 +64,12 @@ jobs:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
             -   name: Run functional and integration test suite
-                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite functional,integration
+                run: php -dmax_execution_time=300 vendor/bin/phpunit --display-deprecations --testsuite functional,integration
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
             -   name: Run unit test suite
-                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml
+                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --display-deprecations --testsuite unit --coverage-clover ./.coverage/coverage.xml
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
