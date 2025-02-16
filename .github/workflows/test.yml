@@ -69,7 +69,7 @@ jobs:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
             -   name: Run unit test suite
-                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml
+                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --display-deprecations --testsuite unit --coverage-clover ./.coverage/coverage.xml
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
