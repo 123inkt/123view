@@ -64,7 +64,7 @@ jobs:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
             -   name: Run functional and integration test suite
-                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite functional,integration
+                run: php -dmax_execution_time=300 vendor/bin/phpunit --display-deprecations --testsuite functional,integration
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
 
