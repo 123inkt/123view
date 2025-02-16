@@ -5,6 +5,7 @@
          requireCoverageMetadata="true"
          failOnRisky="true"
          failOnWarning="true"
+         failOnDeprecation="true"
          failOnIncomplete="true"
          failOnEmptyTestSuite="true"
          beStrictAboutChangesToGlobalState="true"

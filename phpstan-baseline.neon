@@ -1531,6 +1531,12 @@ parameters:
 			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
 
 		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\Builder\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Unit/Controller/App/User/Gitlab/UserGitlabOAuth2StartControllerTest.php
+
+		-
 			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToDatabaseValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
 			count: 1
@@ -1745,6 +1751,18 @@ parameters:
 			identifier: argument.type
 			count: 3
 			path: tests/Unit/Service/RuleProcessorTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\Builder\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Unit/Service/Webhook/WebhookExecutionServiceTest.php
+
+		-
+			message: '#^Cannot call method willReturn\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Unit/Service/Webhook/WebhookExecutionServiceTest.php
 
 		-
 			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
