@@ -97,7 +97,7 @@
     "require-dev": {
         "digitalrevolution/accessorpair-constraint": "^2.2",
         "digitalrevolution/phpunit-extensions": "^1.4",
-        "digitalrevolution/phpunit-file-coverage-inspection": "^2.1",
+        "digitalrevolution/phpunit-file-coverage-inspection": "^3.0",
         "doctrine/doctrine-fixtures-bundle": "^4.0",
         "liip/test-fixtures-bundle": "^3.0",
         "mikey179/vfsstream": "^1.6",
