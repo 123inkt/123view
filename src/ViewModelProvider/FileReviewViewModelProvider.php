@@ -46,6 +46,9 @@ class FileReviewViewModelProvider
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $comparePolicy, $reviewType)
         );
 
-        return $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, null, $comparePolicy, $diffMode);
+        $viewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, null, $comparePolicy, $diffMode);
+        $viewModel->setRevisions($visibleRevisions);
+
+        return $viewModel;
     }
 }
