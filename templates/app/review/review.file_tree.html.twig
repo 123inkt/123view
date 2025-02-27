@@ -30,6 +30,7 @@
                     {%- if fileTreeModel.fileSelected(file) %}{{ stimulus_target('review-file-tree', 'activeFile') }}{% endif %}
                 >
                     <a href="?filePath={{ file|review_file_path|e('url') }}"
+                       data-review-file-path="{{ file|review_file_path }}"
                        data-role="file-tree-url"
                        data-selected="{{ fileTreeModel.fileSelected(file) ? 1 : 0 }}"
                        data-unseen="{{ isFileSeen ? 0 : 1 }}"

@@ -2,6 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
 import Assert from '../lib/Assert';
 import DataSet from '../lib/DataSet';
+import Elements from '../lib/Elements';
 import Events from '../lib/Events';
 import Function from '../lib/Function';
 import ReviewFileTreeService from '../service/ReviewFileTreeService';
@@ -86,9 +87,38 @@ export default class extends Controller<HTMLElement> {
             const file = files[i];
             if (file !== undefined && (event.ctrlKey === false || file.dataset.unseen === '1')) {
                 this.isNavigating = true;
-                window.location.href = String(file.getAttribute('href'));
+                axios.get(`/app/reviews/${this.reviewId}/file-review`, {params: {filePath: file.dataset.reviewFilePath ?? ''}})
+                    .then((response) => {
+                        this.unselectFile(selected);
+                        this.selectFile(file);
+                        document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
+                    })
+                    .finally(() => {
+                        this.isNavigating = false;
+                    });
                 break;
             }
         }
+    }
+
+    private unselectFile(file: HTMLElement | null): void {
+        if (file === null) {
+            return;
+        }
+
+        file.dataset.selected = '0';
+        const row = Elements.closestRole(file, 'review-file-tree-file');
+        row.classList.remove('bg-primary');
+        row.classList.remove('bg-opacity-10');
+    }
+
+    private selectFile(file: HTMLElement): void {
+        file.dataset.selected = '1';
+        file.dataset.unseen   = '0';
+        const row = Elements.closestRole(file, 'review-file-tree-file');
+        row.classList.add('bg-primary');
+        row.classList.add('bg-opacity-10');
+        row.classList.remove('review-file-tree--unseen');
+        row.scrollIntoView({block: 'center'});
     }
 }
