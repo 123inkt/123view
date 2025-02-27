@@ -70,7 +70,7 @@ class ReviewTimelineViewModelProvider
             }
 
             $url   = $this->urlGenerator->generate($activity);
-            $entry = (new TimelineEntryViewModel([$activity], $message, $url));
+            $entry = new TimelineEntryViewModel([$activity], $message, $url);
             $entry->setCommentOrReply($this->commentProvider->getCommentFor($activity));
             $timelineEntries[] = $entry;
         }
