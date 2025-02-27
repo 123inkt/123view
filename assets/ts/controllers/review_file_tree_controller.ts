@@ -89,6 +89,8 @@ export default class extends Controller<HTMLElement> {
                 this.isNavigating = true;
                 axios.get(`/app/reviews/${this.reviewId}/file-review`, {params: {filePath: file.dataset.reviewFilePath ?? ''}})
                     .then((response) => {
+                        this.unselectFile(selected);
+                        this.selectFile(file);
                         document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
                     })
                     .finally(() => {
@@ -97,5 +99,26 @@ export default class extends Controller<HTMLElement> {
                 break;
             }
         }
+    }
+
+    private unselectFile(file: HTMLElement | null): void {
+        if (file === null) {
+            return;
+        }
+
+        file.dataset.selected = '0';
+        const row = Elements.closestRole(file, 'review-file-tree-file');
+        row.classList.remove('bg-primary');
+        row.classList.remove('bg-opacity-10');
+    }
+
+    private selectFile(file: HTMLElement): void {
+        file.dataset.selected = '1';
+        file.dataset.unseen   = '0';
+        const row = Elements.closestRole(file, 'review-file-tree-file');
+        row.classList.add('bg-primary');
+        row.classList.add('bg-opacity-10');
+        row.classList.remove('review-file-tree--unseen');
+        row.scrollIntoView({block: 'center'});
     }
 }
