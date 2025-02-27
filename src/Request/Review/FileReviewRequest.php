@@ -12,9 +12,9 @@ use DR\Utils\Assert;
 
 class FileReviewRequest extends AbstractValidatedRequest
 {
-    public function getFilePath(): ?string
+    public function getFilePath(): string
     {
-        return $this->request->query->get('filePath');
+        return $this->request->query->get('filePath', '');
     }
 
     public function getComparisonPolicy(): DiffComparePolicy
@@ -39,6 +39,6 @@ class FileReviewRequest extends AbstractValidatedRequest
 
     protected function getValidationRules(): ?ValidationRules
     {
-        return new ValidationRules(['query' => ['filePath' => 'string|filled']]);
+        return new ValidationRules(['query' => ['filePath' => 'required|string|filled']]);
     }
 }

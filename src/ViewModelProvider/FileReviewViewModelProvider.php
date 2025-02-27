@@ -12,6 +12,7 @@ use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
+use DR\Utils\Assert;
 use Throwable;
 
 class FileReviewViewModelProvider
@@ -46,7 +47,7 @@ class FileReviewViewModelProvider
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $comparePolicy, $reviewType)
         );
 
-        $viewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel($review, $selectedFile, null, $comparePolicy, $diffMode);
+        $viewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel($review, Assert::notNull($selectedFile), null, $comparePolicy, $diffMode);
         $viewModel->setRevisions($visibleRevisions);
 
         return $viewModel;
