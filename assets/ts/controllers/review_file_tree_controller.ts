@@ -2,6 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 import axios from 'axios';
 import Assert from '../lib/Assert';
 import DataSet from '../lib/DataSet';
+import Elements from '../lib/Elements';
 import Events from '../lib/Events';
 import Function from '../lib/Function';
 import ReviewFileTreeService from '../service/ReviewFileTreeService';
@@ -86,7 +87,13 @@ export default class extends Controller<HTMLElement> {
             const file = files[i];
             if (file !== undefined && (event.ctrlKey === false || file.dataset.unseen === '1')) {
                 this.isNavigating = true;
-                window.location.href = String(file.getAttribute('href'));
+                axios.get(`/app/reviews/${this.reviewId}/file-review`, {params: {filePath: file.dataset.reviewFilePath ?? ''}})
+                    .then((response) => {
+                        document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
+                    })
+                    .finally(() => {
+                        this.isNavigating = false;
+                    });
                 break;
             }
         }
