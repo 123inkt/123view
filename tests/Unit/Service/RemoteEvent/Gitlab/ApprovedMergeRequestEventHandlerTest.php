@@ -161,7 +161,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->action       = 'approved';
 
         $user       = new User();
-        $review     = (new CodeReview());
+        $review     = new CodeReview();
         $repository = (new Repository())->setId(456)->setActive(true);
 
         $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
