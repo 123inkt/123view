@@ -9,13 +9,14 @@ import ReviewFileTreeService from '../service/ReviewFileTreeService';
 import ReviewNotificationService from '../service/ReviewNotificationService';
 
 export default class extends Controller<HTMLElement> {
-    public static targets                = ['activeFile'];
-    private readonly notificationService = new ReviewNotificationService();
-    private readonly fileTreeService     = new ReviewFileTreeService();
+    public static targets                    = ['activeFile'];
+    private readonly notificationService     = new ReviewNotificationService();
+    private readonly fileTreeService         = new ReviewFileTreeService();
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
-    private reviewId: number             = 0;
-    private isNavigating: boolean        = false;
+    private reviewId: number                 = 0;
+    private isNavigating: boolean            = false;
+    private navigationAbort: AbortController = new AbortController;
 
     public connect(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');
@@ -24,6 +25,7 @@ export default class extends Controller<HTMLElement> {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
         document.addEventListener('keyup', this.onNavigate.bind(this));
+        window.addEventListener('popstate', this.onBackTrack.bind(this));
         this.notificationService.subscribe(
             '/review/' + String(this.reviewId),
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
@@ -92,7 +94,7 @@ export default class extends Controller<HTMLElement> {
                     .then((response) => {
                         this.unselectFile(selected);
                         this.selectFile(file);
-                        history.pushState({}, '', String(file.getAttribute('href')))
+                        history.pushState({reviewId: this.reviewId, filePath: file.dataset.reviewFilePath}, '', String(file.getAttribute('href')))
                         document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
                     })
                     .finally(() => {
@@ -103,13 +105,39 @@ export default class extends Controller<HTMLElement> {
         }
     }
 
+    public onBackTrack(event: PopStateEvent): void {
+        const state = <{reviewId: number, filePath: string} | null>event.state;
+        if (state === null) {
+            return;
+        }
+        // get current selected file
+        const selected = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]');
+        const file     = this.element.querySelector<HTMLElement>(`[data-role="file-tree-url"][data-review-file-path="${state.filePath}"]`);
+        if (file === null) {
+            console.info('Unable to find file for filepath', state);
+            return;
+        }
+
+        this.navigationAbort.abort();
+        axios.get(`/app/reviews/${this.reviewId}/file-review`, {
+            params: {filePath: file.dataset.reviewFilePath ?? ''},
+            signal: this.navigationAbort.signal
+        })
+            .then((response) => {
+                this.unselectFile(selected);
+                this.selectFile(file);
+                document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
+            })
+            .catch(() =>{});
+    }
+
     private unselectFile(file: HTMLElement | null): void {
         if (file === null) {
             return;
         }
 
         file.dataset.selected = '0';
-        const row = Elements.closestRole(file, 'review-file-tree-file');
+        const row             = Elements.closestRole(file, 'review-file-tree-file');
         row.classList.remove('bg-primary');
         row.classList.remove('bg-opacity-10');
     }
@@ -117,7 +145,7 @@ export default class extends Controller<HTMLElement> {
     private selectFile(file: HTMLElement): void {
         file.dataset.selected = '1';
         file.dataset.unseen   = '0';
-        const row = Elements.closestRole(file, 'review-file-tree-file');
+        const row             = Elements.closestRole(file, 'review-file-tree-file');
         row.classList.add('bg-primary');
         row.classList.add('bg-opacity-10');
         row.classList.remove('review-file-tree--unseen');
