@@ -70,13 +70,14 @@ export default class extends Controller<HTMLElement> {
     }
 
     public onNavigate(event: KeyboardEvent): void {
-        if (event.altKey === false || event.shiftKey || this.isNavigating || ['ArrowUp', 'ArrowDown'].includes(event.key) === false) {
+        const keys = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
+        if (event.altKey === false || event.shiftKey || this.isNavigating || keys.includes(event.key) === false) {
             return;
         }
 
         const selected = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]');
         let files      = Array.from(this.element.querySelectorAll<HTMLElement>('[data-role="file-tree-url"]'));
-        if (event.key === 'ArrowUp') {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
             files = files.reverse();
         }
 
@@ -91,6 +92,7 @@ export default class extends Controller<HTMLElement> {
                     .then((response) => {
                         this.unselectFile(selected);
                         this.selectFile(file);
+                        history.pushState({}, '', String(file.getAttribute('href')))
                         document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
                     })
                     .finally(() => {
