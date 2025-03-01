@@ -45,6 +45,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     public function testGetProjectsViewModel(): void
     {
         $repository = new Repository();
+        $repository->setDisplayName('repository');
         $timeline   = $this->createMock(TimelineViewModel::class);
 
         $this->repositoryRepository->expects(self::once())
@@ -54,7 +55,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
         $this->revisionRepository->expects(self::once())->method('getRepositoryRevisionCount')->willReturn([5 => 6]);
         $this->viewModelProvider->expects(self::once())->method('getTimelineViewModelForFeed')->with($this->user)->willReturn($timeline);
 
-        $viewModel = $this->provider->getProjectsViewModel();
+        $viewModel = $this->provider->getProjectsViewModel('repo');
         static::assertSame([$repository], $viewModel->repositories);
         static::assertSame([5 => 6], $viewModel->revisionCount);
         static::assertSame($timeline, $viewModel->timeline);

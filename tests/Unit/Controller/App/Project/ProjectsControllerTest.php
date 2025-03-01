@@ -10,6 +10,7 @@ use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(ProjectsController::class)]
@@ -27,12 +28,13 @@ class ProjectsControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
+        $request   = new Request(['search' => 'search']);
         $viewModel = $this->createMock(ProjectsViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getProjectsViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects(self::once())->method('getProjectsViewModel')->with('search')->willReturn($viewModel);
         $this->translator->expects(self::once())->method('trans')->with('projects')->willReturn('Projects');
 
-        $result = ($this->controller)();
+        $result = ($this->controller)($request);
         static::assertSame('Projects', $result['page_title']);
         static::assertSame($viewModel, $result['projectsModel']);
     }

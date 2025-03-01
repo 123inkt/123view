@@ -27,7 +27,7 @@ class ProjectsViewModelTest extends AbstractTestCase
         $repositoryB = new Repository();
         $repositoryB->setFavorite(false);
 
-        $viewModel = new ProjectsViewModel([$repositoryA, $repositoryB], [], $this->viewModel);
+        $viewModel = new ProjectsViewModel([$repositoryA, $repositoryB], [], $this->viewModel, 'search');
         static::assertSame([$repositoryA], $viewModel->getFavoriteRepositories());
         static::assertSame([$repositoryB], $viewModel->getRegularRepositories());
     }
