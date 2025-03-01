@@ -12,4 +12,5 @@ HOME=/app
 15 4 * * *      www-data     php bin/console code-inspection:cleanup                    2>&1
 30 4 * * *      www-data     php bin/console code-coverage:cleanup                      2>&1
 45 4 * * *      www-data     php bin/console webhook:cleanup                            2>&1
+0  5 * * *      www-data     php bin/console review:close-branch-reviews                2>&1
 10 5 * * *      www-data     php -dmax_execution_time=0 bin/console git:garbage-collect 2>&1

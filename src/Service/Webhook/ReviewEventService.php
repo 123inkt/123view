@@ -71,7 +71,7 @@ class ReviewEventService
         }
     }
 
-    public function reviewStateChanged(CodeReview $review, string $reviewState, int $byUserId): void
+    public function reviewStateChanged(CodeReview $review, string $reviewState, ?int $byUserId): void
     {
         if ($review->getState() === $reviewState) {
             return;

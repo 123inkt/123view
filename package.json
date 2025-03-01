@@ -23,7 +23,7 @@
         "stylelint-scss": "^6.4.1",
         "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
-        "typescript": "5.7.*",
+        "typescript": "5.8.*",
         "webpack": "^5.93.0",
         "webpack-cli": "^5.1.4",
         "webpack-notifier": "^1.15.0"
