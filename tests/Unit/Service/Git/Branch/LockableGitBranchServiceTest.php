@@ -36,7 +36,7 @@ class LockableGitBranchServiceTest extends AbstractTestCase
 
         $this->lockManager->expects($this->once())->method('start')
             ->with($repository)
-            ->willReturnCallback(static fn($repository, $callback) => $callback());
+            ->willReturnCallback(static fn($repository, callable $callback) => $callback());
         $this->branchService->expects($this->once())->method('getRemoteBranches')->with($repository, true)->willReturn(['foo']);
 
         static::assertSame(['foo'], $this->service->getRemoteBranches($repository, true));
@@ -48,7 +48,7 @@ class LockableGitBranchServiceTest extends AbstractTestCase
 
         $this->lockManager->expects($this->once())->method('start')
             ->with($repository)
-            ->willReturnCallback(static fn($repository, $callback) => $callback());
+            ->willReturnCallback(static fn($repository, callable $callback) => $callback());
         $this->branchService->expects($this->once())->method('tryDeleteBranch')->with($repository, 'ref')->willReturn(false);
 
         static::assertFalse($this->service->tryDeleteBranch($repository, 'ref'));
@@ -63,10 +63,9 @@ class LockableGitBranchServiceTest extends AbstractTestCase
 
         $this->lockManager->expects($this->once())->method('start')
             ->with($repository)
-            ->willReturnCallback(static fn($repository, $callback) => $callback());
+            ->willReturnCallback(static fn($repository, callable $callback) => $callback());
         $this->branchService->expects($this->once())->method('deleteBranch')->with($repository, true);
 
         $this->service->deleteBranch($repository, 'ref');
     }
-
 }
