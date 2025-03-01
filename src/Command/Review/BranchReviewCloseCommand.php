@@ -16,7 +16,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('review:close-branch-reviews', "Close all branch review for which the branch no longer exists")]
+#[AsCommand('review:close-branch-reviews', "Close all branch reviews for which the branch no longer exists")]
 class BranchReviewCloseCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
