@@ -58,6 +58,8 @@ class Strings
 
     /**
      * Test if all substrings are part of the string
+     *
+     * @param string[] $substrings
      */
     public static function contains(string $string, array $substrings): bool
     {

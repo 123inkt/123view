@@ -60,6 +60,9 @@ class StringsTest extends AbstractTestCase
         static::assertSame("foobar", Strings::replaceSuffix("foobar", ""));
     }
 
+    /**
+     * @param string[] $words
+     */
     #[TestWith(['foo', [], false])]
     #[TestWith(['foo ', ['foo'], true])]
     #[TestWith(['foo bar', ['foo'], true])]
