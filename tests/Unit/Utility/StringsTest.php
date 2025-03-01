@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Utility;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Utility\Strings;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 
 #[CoversClass(Strings::class)]
 class StringsTest extends AbstractTestCase
@@ -57,5 +58,15 @@ class StringsTest extends AbstractTestCase
         static::assertSame("foo", Strings::replaceSuffix("foobar", "bar"));
         static::assertSame("foobar", Strings::replaceSuffix("foobar", "foo"));
         static::assertSame("foobar", Strings::replaceSuffix("foobar", ""));
+    }
+
+    #[TestWith(['foo', [], false])]
+    #[TestWith(['foo ', ['foo'], true])]
+    #[TestWith(['foo bar', ['foo'], true])]
+    #[TestWith(['foo bar', ['foo', 'baz'], false])]
+    #[TestWith(['Foo Bar', ['foo', 'bar'], true])]
+    public function testContains(string $string, array $words, bool $expected): void
+    {
+        static::assertSame($expected, Strings::contains($string, $words));
     }
 }

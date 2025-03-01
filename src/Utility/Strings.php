@@ -61,6 +61,10 @@ class Strings
      */
     public static function contains(string $string, array $substrings): bool
     {
+        if (count($substrings) === 0) {
+            return false;
+        }
+
         foreach ($substrings as $substring) {
             if (stripos($string, $substring) === false) {
                 return false;
