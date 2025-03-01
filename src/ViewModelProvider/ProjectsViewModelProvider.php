@@ -13,7 +13,9 @@ use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Utility\Strings;
 use DR\Review\ViewModel\App\Project\ProjectsViewModel;
+use DR\Utils\Arrays;
 
 class ProjectsViewModelProvider
 {
@@ -37,12 +39,17 @@ class ProjectsViewModelProvider
     /**
      * @throws Exception
      */
-    public function getProjectsViewModel(): ProjectsViewModel
+    public function getProjectsViewModel(string $searchQuery): ProjectsViewModel
     {
         $repositories      = $this->repositoryRepository->findBy(['active' => 1], ['displayName' => 'ASC']);
         $revisionCount     = $this->revisionRepository->getRepositoryRevisionCount();
         $timelineViewModel = $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->user, self::FEED_EVENTS);
 
-        return new ProjectsViewModel($repositories, $revisionCount, $timelineViewModel);
+        if ($searchQuery !== '') {
+            $parts        = Arrays::explode(' ', $searchQuery);
+            $repositories = array_filter($repositories, static fn($repository) => Strings::contains($repository->getDisplayName(), $parts));
+        }
+
+        return new ProjectsViewModel($repositories, $revisionCount, $timelineViewModel, $searchQuery);
     }
 }

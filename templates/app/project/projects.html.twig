@@ -34,6 +34,18 @@
         <h1>{{ 'projects'|trans }}</h1>
         <h3 class="mt-2">{{ 'news.feed'|trans }}</h3>
         <div>
+            <form method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="search" name="search" value="{{ projectsModel.searchQuery }}" class="form-control"
+                            {{ stimulus_controller('search-field') }}
+                           placeholder="{{ 'search'|trans }}"/>
+
+                    {% if projectsModel.searchQuery != '' %}
+                        <a href="?search=" class="btn btn-secondary">&times;</a>
+                    {% endif %}
+                </div>
+            </form>
+
             {{ projectColumns(projectsModel, projectsModel.favoriteRepositories) }}
             {{ projectColumns(projectsModel, projectsModel.regularRepositories) }}
         </div>
