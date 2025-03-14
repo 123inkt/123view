@@ -9,7 +9,7 @@ class RevisionTitleNormalizer
     {
         for ($i = 0; $i < 10; $i++) {
             $titleBefore = $title;
-            $title       = (string)preg_replace('/^Revert\s+"(.*)"$/', '$1', trim($title));
+            $title       = (string)preg_replace('/^(Revert|Reapply)\s+"(.*)"$/', '$2', trim($title));
 
             if ($titleBefore === $title) {
                 break;
