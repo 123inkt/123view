@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace DR\Review\Service\User;
 
 use DR\Review\Entity\User\User;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class IdeUrlPatternProvider
 {
-    public function __construct(private readonly string $ideUrlPattern, private readonly Security $security)
+    public function __construct(private readonly string $ideUrlPattern, private readonly AuthorizationCheckerInterface $security)
     {
     }
 

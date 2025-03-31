@@ -16,12 +16,12 @@ use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Utils\Assert;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
 #[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
@@ -38,7 +38,7 @@ class CommentEventSubscriber implements ResetInterface
     private array $updated = [];
 
     public function __construct(
-        private readonly Security $security,
+        private readonly AuthorizationCheckerInterface $security,
         private readonly MessageBusInterface $bus,
         private readonly CommentEventMessageFactory $messageFactory
     ) {
