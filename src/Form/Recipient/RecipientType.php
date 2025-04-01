@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @extends CollectionType<Recipient>
+ * @extends AbstractType<Recipient>
  */
 class RecipientType extends AbstractType
 {

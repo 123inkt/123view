@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @extends CollectionType<Recipient[]>
+ * @extends AbstractType<Recipient[]>
  */
 class RecipientCollectionType extends AbstractType
 {

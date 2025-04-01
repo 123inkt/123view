@@ -85,36 +85,6 @@ parameters:
 			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
 
 		-
-			message: '#^Class DR\\Review\\Form\\Recipient\\RecipientCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Form/Recipient/RecipientCollectionType.php
-
-		-
-			message: '#^The @extends tag of class DR\\Review\\Form\\Recipient\\RecipientCollectionType describes Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType but the class extends Symfony\\Component\\Form\\AbstractType\.$#'
-			identifier: generics.wrongParent
-			count: 1
-			path: src/Form/Recipient/RecipientCollectionType.php
-
-		-
-			message: '#^Class DR\\Review\\Form\\Recipient\\RecipientType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Form/Recipient/RecipientType.php
-
-		-
-			message: '#^The @extends tag of class DR\\Review\\Form\\Recipient\\RecipientType describes Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType but the class extends Symfony\\Component\\Form\\AbstractType\.$#'
-			identifier: generics.wrongParent
-			count: 1
-			path: src/Form/Recipient/RecipientType.php
-
-		-
-			message: '#^Class DR\\Review\\Form\\Repository\\EditRepositoryFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Form/Repository/EditRepositoryFormType.php
-
-		-
 			message: '#^Class DR\\Review\\Form\\Review\\AddCommentFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -167,18 +137,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: src/Form/Review/Revision/DetachRevisionsFormType.php
-
-		-
-			message: '#^Class DR\\Review\\Form\\Review\\Revision\\RevisionVisibilityFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Form/Review/Revision/RevisionVisibilityFormType.php
-
-		-
-			message: '#^Class DR\\Review\\Form\\Review\\Revision\\RevisionVisibilityType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Form/Review/Revision/RevisionVisibilityType.php
 
 		-
 			message: '#^Class DR\\Review\\Form\\Rule\\EditRuleFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
