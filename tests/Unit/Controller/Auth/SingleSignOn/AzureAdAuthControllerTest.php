@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Controller\Auth\SingleSignOn;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Controller\App\Vcs\FetchRevisionsController;
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdAuthController;
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController;
 use DR\Review\Tests\AbstractControllerTestCase;
@@ -16,7 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 /**
- * @extends AbstractControllerTestCase<FetchRevisionsController>
+ * @extends AbstractControllerTestCase<AzureAdAuthController>
  */
 #[CoversClass(AzureAdAuthController::class)]
 class AzureAdAuthControllerTest extends AbstractControllerTestCase

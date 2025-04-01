@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method DR\\Review\\ApiPlatform\\OpenApi\\OpenApiFactory\:\:__invoke\(\) has parameter \$context with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
-
-		-
 			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
 			identifier: callable.nonCallable
 			count: 1
@@ -29,12 +23,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
-
-		-
-			message: '#^Parameter \$context of method DR\\Review\\ApiPlatform\\StateProcessor\\CodeReviewProcessor\:\:process\(\) has invalid type Illuminate\\Http\\Request\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/ApiPlatform/StateProcessor/CodeReviewProcessor.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between array\<mixed\>\|bool\|float\|int\|string and null will always evaluate to true\.$#'
@@ -1411,130 +1399,10 @@ parameters:
 			path: tests/Integration/Service/Parser/Unified/UnifiedBlockParserTest.php
 
 		-
-			message: '#^Cannot access property \$headers on mixed\.$#'
-			identifier: property.nonObject
+			message: '#^Type DR\\Review\\Controller\\AbstractController in generic type DR\\Review\\Tests\\AbstractControllerTestCase\<DR\\Review\\Controller\\AbstractController\> in PHPDoc tag @extends is not subtype of template type T of callable&Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController of class DR\\Review\\Tests\\AbstractControllerTestCase\.$#'
+			identifier: generics.notSubtype
 			count: 1
-			path: tests/Unit/Controller/App/Notification/RuleNotificationControllerTest.php
-
-		-
-			message: '#^Cannot call method has\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Unit/Controller/App/Notification/RuleNotificationControllerTest.php
-
-		-
-			message: '#^Cannot call method getRules\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Unit/Controller/App/Notification/RulesControllerTest.php
-
-		-
-			message: '#^Parameter \#1 \$iterator of function iterator_to_array expects iterable, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/Controller/App/Notification/RulesControllerTest.php
-
-		-
-			message: '#^Parameter \#2 \$array of static method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/Controller/App/Notification/RulesControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''branchesViewModel'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Project/ProjectBranchesControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Project/ProjectBranchesControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Project/ProjectsControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''projectsModel'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Project/ProjectsControllerTest.php
-
-		-
-			message: '#^Cannot access property \$headers on mixed\.$#'
-			identifier: property.nonObject
-			count: 4
-			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
-
-		-
-			message: '#^Cannot call method get\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 4
-			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
-
-		-
-			message: '#^Cannot call method getContent\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
-
-		-
-			message: '#^Cannot call method getStatusCode\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: tests/Unit/Controller/App/Project/ViewRevisionFileControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''comment'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: tests/Unit/Controller/App/Review/Comment/GetCommentThreadControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''breadcrumbs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Review/ReviewControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Review/ReviewControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''reviewModel'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Unit/Controller/App/Review/ReviewControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''breadcrumbs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''page_title'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''reviewsModel'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: tests/Unit/Controller/App/Reviews/ReviewsControllerTest.php
-
-		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\Builder\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/Controller/App/User/Gitlab/UserGitlabOAuth2StartControllerTest.php
+			path: tests/Unit/Controller/AbstractControllerTest.php
 
 		-
 			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToDatabaseValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
@@ -1619,6 +1487,12 @@ parameters:
 			identifier: callable.nonCallable
 			count: 2
 			path: tests/Unit/MessageHandler/RevisionFilesMessageHandlerTest.php
+
+		-
+			message: '#^Call to method DR\\Review\\Entity\\Review\\FolderCollapseStatus\:\:getId\(\) on a separate line has no effect\.$#'
+			identifier: method.resultUnused
+			count: 1
+			path: tests/Unit/Repository/Review/FolderCollapseStatusRepositoryTest.php
 
 		-
 			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
@@ -1751,18 +1625,6 @@ parameters:
 			identifier: argument.type
 			count: 3
 			path: tests/Unit/Service/RuleProcessorTest.php
-
-		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\Builder\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: tests/Unit/Service/Webhook/WebhookExecutionServiceTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: tests/Unit/Service/Webhook/WebhookExecutionServiceTest.php
 
 		-
 			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'

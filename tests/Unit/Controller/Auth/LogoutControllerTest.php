@@ -9,9 +9,6 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
-/**
- * @extends AbstractControllerTestCase<LogoutController>
- */
 #[CoversClass(LogoutController::class)]
 class LogoutControllerTest extends AbstractTestCase
 {

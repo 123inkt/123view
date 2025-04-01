@@ -13,9 +13,6 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @extends AbstractControllerTestCase<UserMentionSuggestController>
- */
 #[CoversClass(UserMentionSuggestController::class)]
 class UserMentionSuggestControllerTest extends AbstractTestCase
 {

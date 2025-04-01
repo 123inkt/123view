@@ -5,13 +5,9 @@ namespace DR\Review\Tests\Unit\Controller\App\Asset;
 
 use DR\Review\Controller\App\Asset\GetAssetController;
 use DR\Review\Entity\Asset\Asset;
-use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @extends AbstractControllerTestCase<GetAssetController>
- */
 #[CoversClass(GetAssetController::class)]
 class GetAssetControllerTest extends AbstractTestCase
 {

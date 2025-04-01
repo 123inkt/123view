@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Controller\App\Revision;
 use DR\Review\Controller\App\Revision\AttachRevisionSelectionController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Revision\AttachRevisionsViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
@@ -15,9 +14,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @extends AbstractControllerTestCase<AttachRevisionSelectionController>
- */
 #[CoversClass(AttachRevisionSelectionController::class)]
 class AttachRevisionSelectionControllerTest extends AbstractTestCase
 {

@@ -14,9 +14,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @extends AbstractControllerTestCase<FetchRevisionsController>
- */
 #[CoversClass(FetchRevisionsController::class)]
 class FetchRevisionsControllerTest extends AbstractTestCase
 {

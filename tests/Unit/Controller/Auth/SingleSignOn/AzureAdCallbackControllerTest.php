@@ -3,16 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\Auth\SingleSignOn;
 
-use DR\Review\Controller\App\Vcs\FetchRevisionsController;
 use DR\Review\Controller\Auth\SingleSignOn\AzureAdCallbackController;
-use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
-/**
- * @extends AbstractControllerTestCase<FetchRevisionsController>
- */
 #[CoversClass(AzureAdCallbackController::class)]
 class AzureAdCallbackControllerTest extends AbstractTestCase
 {
