@@ -10,7 +10,6 @@ parameters:
   symfony:
     containerXmlPath: var/build/dev/DR_Review_KernelDevDebugContainer.xml
   scanDirectories:
-    - vendor/digitalrevolution/phpunit-extensions/stubs
     - var/build/dev/Symfony/Config
   paths:
     - src
