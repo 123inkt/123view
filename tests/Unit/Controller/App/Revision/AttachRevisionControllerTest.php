@@ -19,6 +19,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<AttachRevisionController>
+ */
 #[CoversClass(AttachRevisionController::class)]
 class AttachRevisionControllerTest extends AbstractControllerTestCase
 {

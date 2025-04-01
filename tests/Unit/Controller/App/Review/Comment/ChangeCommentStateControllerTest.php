@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<ChangeCommentStateController>
+ */
 #[CoversClass(ChangeCommentStateController::class)]
 class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 {

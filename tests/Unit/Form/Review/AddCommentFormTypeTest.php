@@ -66,9 +66,9 @@ class AddCommentFormTypeTest extends AbstractTestCase
             ->method('add')
             ->with(
                 ...consecutive(
-                    ['lineReference', HiddenType::class, static::isType('array')],
-                    ['message', CommentType::class, static::isType('array')],
-                    ['tag', CommentTagType::class, static::isType('array')],
+                    ['lineReference', HiddenType::class, static::isArray()],
+                    ['message', CommentType::class, static::isArray()],
+                    ['tag', CommentTagType::class, static::isArray()],
                     ['save', SubmitType::class, ['label' => 'add.comment']],
                 )
             )->willReturnSelf();

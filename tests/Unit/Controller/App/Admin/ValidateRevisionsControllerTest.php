@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<ValidateRevisionsController>
+ */
 #[CoversClass(ValidateRevisionsController::class)]
 class ValidateRevisionsControllerTest extends AbstractControllerTestCase
 {

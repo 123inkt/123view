@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Form\Review\Revision;
 
 use DR\Review\Controller\App\Revision\UpdateRevisionVisibilityController;
+use DR\Review\Entity\Revision\RevisionVisibility;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -11,6 +12,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @extends AbstractType<array{visibilities: RevisionVisibility[]}>
+ */
 class RevisionVisibilityFormType extends AbstractType
 {
     private const FORM_ID = 'revision-visibility-form';

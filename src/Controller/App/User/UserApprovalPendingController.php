@@ -7,13 +7,13 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserApprovalPendingController extends AbstractController
 {
-    public function __construct(private readonly Security $security)
+    public function __construct(private readonly AuthorizationCheckerInterface $security)
     {
     }
 

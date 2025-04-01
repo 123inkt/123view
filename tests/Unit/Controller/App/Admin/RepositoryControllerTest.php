@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<RepositoryController>
+ */
 #[CoversClass(RepositoryController::class)]
 class RepositoryControllerTest extends AbstractControllerTestCase
 {

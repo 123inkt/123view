@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<RuleNotificationReadController>
+ */
 #[CoversClass(RuleNotificationReadController::class)]
 class RuleNotificationReadControllerTest extends AbstractControllerTestCase
 {

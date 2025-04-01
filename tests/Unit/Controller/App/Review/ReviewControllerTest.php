@@ -22,6 +22,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<ReviewController>
+ */
 #[CoversClass(ReviewController::class)]
 class ReviewControllerTest extends AbstractControllerTestCase
 {

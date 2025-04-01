@@ -17,6 +17,9 @@ use DR\Review\ViewModelProvider\CommentViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<GetCommentThreadController>
+ */
 #[CoversClass(GetCommentThreadController::class)]
 class GetCommentThreadControllerTest extends AbstractControllerTestCase
 {

@@ -15,6 +15,9 @@ use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @extends AbstractControllerTestCase<GetCommentCountController>
+ */
 #[CoversClass(GetCommentCountController::class)]
 class GetCommentCountControllerTest extends AbstractControllerTestCase
 {

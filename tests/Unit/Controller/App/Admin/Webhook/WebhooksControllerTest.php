@@ -11,6 +11,9 @@ use DR\Review\ViewModelProvider\WebhooksViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<WebhooksController>
+ */
 #[CoversClass(WebhooksController::class)]
 class WebhooksControllerTest extends AbstractControllerTestCase
 {

@@ -17,6 +17,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<WebhookController>
+ */
 #[CoversClass(WebhookController::class)]
 class WebhookControllerTest extends AbstractControllerTestCase
 {
