@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace DR\Review\Tests;
 
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase as ExtensionsAbstractControllerTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
+use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Messenger\Envelope;
 
 /**
  * @template T as AbstractController&callable
@@ -14,6 +18,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 abstract class AbstractControllerTestCase extends ExtensionsAbstractControllerTestCase
 {
+    protected MockObject&LoggerInterface $logger;
+    protected Envelope $envelope;
+
+    protected function setUp(): void
+    {
+        $this->envelope = new Envelope(new stdClass(), []);
+        $this->logger   = $this->createMock(LoggerInterface::class);
+        parent::setUp();
+    }
+
     /**
      * @param array<string, int|string|object> $parameters
      */
