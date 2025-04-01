@@ -17,6 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Throwable;
 
+/**
+ * @extends AbstractControllerTestCase<GetMergeRequestForReviewController>
+ */
 #[CoversClass(GetMergeRequestForReviewController::class)]
 class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 {

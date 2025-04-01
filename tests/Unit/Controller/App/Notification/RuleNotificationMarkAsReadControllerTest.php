@@ -13,6 +13,9 @@ use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<RuleNotificationMarkAsReadController>
+ */
 #[CoversClass(RuleNotificationMarkAsReadController::class)]
 class RuleNotificationMarkAsReadControllerTest extends AbstractControllerTestCase
 {

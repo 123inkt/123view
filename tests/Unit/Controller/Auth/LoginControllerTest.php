@@ -21,6 +21,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<LoginController>
+ */
 #[CoversClass(LoginController::class)]
 class LoginControllerTest extends AbstractControllerTestCase
 {

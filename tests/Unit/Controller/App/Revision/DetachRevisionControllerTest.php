@@ -19,6 +19,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<DetachRevisionController>
+ */
 #[CoversClass(DetachRevisionController::class)]
 class DetachRevisionControllerTest extends AbstractControllerTestCase
 {

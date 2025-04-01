@@ -19,6 +19,9 @@ use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<ReviewsController>
+ */
 #[CoversClass(ReviewsController::class)]
 class ReviewsControllerTest extends AbstractControllerTestCase
 {

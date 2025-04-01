@@ -13,6 +13,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Form\FormView;
 
+/**
+ * @extends AbstractControllerTestCase<GetAddCommentFormController>
+ */
 #[CoversClass(GetAddCommentFormController::class)]
 class GetAddCommentFormControllerTest extends AbstractControllerTestCase
 {

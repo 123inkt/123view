@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends AbstractControllerTestCase<AbstractController>
+ */
 #[CoversClass(AbstractController::class)]
 class AbstractControllerTest extends AbstractControllerTestCase
 {

@@ -17,6 +17,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<ResetRevisionVisibilityController>
+ */
 #[CoversClass(ResetRevisionVisibilityController::class)]
 class ResetRevisionVisibilityControllerTest extends AbstractControllerTestCase
 {

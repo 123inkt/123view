@@ -12,6 +12,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\SecurityBundle\Security;
 
+/**
+ * @extends AbstractControllerTestCase<UserApprovalPendingController>
+ */
 #[CoversClass(UserApprovalPendingController::class)]
 class UserApprovalPendingControllerTest extends AbstractControllerTestCase
 {

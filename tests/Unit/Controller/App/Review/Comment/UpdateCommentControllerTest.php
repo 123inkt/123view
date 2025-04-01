@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<UpdateCommentController>
+ */
 #[CoversClass(UpdateCommentController::class)]
 class UpdateCommentControllerTest extends AbstractControllerTestCase
 {

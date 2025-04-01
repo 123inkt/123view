@@ -17,6 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<AddCommentReactionController>
+ */
 #[CoversClass(AddCommentReactionController::class)]
 class AddCommentReactionControllerTest extends AbstractControllerTestCase
 {

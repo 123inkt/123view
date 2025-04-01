@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<AddCommentReplyController>
+ */
 #[CoversClass(AddCommentReplyController::class)]
 class AddCommentReplyControllerTest extends AbstractControllerTestCase
 {

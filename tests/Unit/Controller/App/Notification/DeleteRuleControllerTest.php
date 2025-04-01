@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteRuleController>
+ */
 #[CoversClass(DeleteRuleController::class)]
 class DeleteRuleControllerTest extends AbstractControllerTestCase
 {

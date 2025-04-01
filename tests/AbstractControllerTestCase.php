@@ -4,9 +4,14 @@ declare(strict_types=1);
 namespace DR\Review\Tests;
 
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase as ExtensionsAbstractControllerTestCase;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @template T as AbstractController&callable
+ * @extends ExtensionsAbstractControllerTestCase<T>
+ */
 abstract class AbstractControllerTestCase extends ExtensionsAbstractControllerTestCase
 {
     /**

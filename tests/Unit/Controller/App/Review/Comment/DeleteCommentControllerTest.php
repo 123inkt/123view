@@ -22,6 +22,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteCommentController>
+ */
 #[CoversClass(DeleteCommentController::class)]
 class DeleteCommentControllerTest extends AbstractControllerTestCase
 {

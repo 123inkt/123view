@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<UploadCodeInspectionController>
+ */
 #[CoversClass(UploadCodeInspectionController::class)]
 class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
 {

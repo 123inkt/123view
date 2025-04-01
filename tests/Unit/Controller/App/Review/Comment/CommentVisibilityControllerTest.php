@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @extends AbstractControllerTestCase<CommentVisibilityController>
+ */
 #[CoversClass(CommentVisibilityController::class)]
 class CommentVisibilityControllerTest extends AbstractControllerTestCase
 {

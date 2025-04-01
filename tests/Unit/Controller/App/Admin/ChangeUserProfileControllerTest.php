@@ -14,6 +14,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<ChangeUserProfileController>
+ */
 #[CoversClass(ChangeUserProfileController::class)]
 class ChangeUserProfileControllerTest extends AbstractControllerTestCase
 {

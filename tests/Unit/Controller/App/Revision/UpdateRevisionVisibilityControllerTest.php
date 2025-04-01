@@ -20,6 +20,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<UpdateRevisionVisibilityController>
+ */
 #[CoversClass(UpdateRevisionVisibilityController::class)]
 class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
 {

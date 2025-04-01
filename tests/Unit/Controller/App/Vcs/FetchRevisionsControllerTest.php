@@ -7,12 +7,16 @@ use DR\Review\Controller\App\Vcs\FetchRevisionsController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<FetchRevisionsController>
+ */
 #[CoversClass(FetchRevisionsController::class)]
 class FetchRevisionsControllerTest extends AbstractTestCase
 {

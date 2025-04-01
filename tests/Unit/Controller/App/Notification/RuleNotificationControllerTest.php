@@ -22,6 +22,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends AbstractControllerTestCase<RuleNotificationController>
+ */
 #[CoversClass(RuleNotificationController::class)]
 class RuleNotificationControllerTest extends AbstractControllerTestCase
 {

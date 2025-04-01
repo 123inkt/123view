@@ -11,6 +11,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends AbstractControllerTestCase<RulesController>
+ */
 #[CoversClass(RulesController::class)]
 class RulesControllerTest extends AbstractControllerTestCase
 {

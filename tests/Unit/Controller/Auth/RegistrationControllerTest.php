@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * @extends AbstractControllerTestCase<RegistrationController>
+ */
 #[CoversClass(RegistrationController::class)]
 class RegistrationControllerTest extends AbstractControllerTestCase
 {

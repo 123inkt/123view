@@ -10,6 +10,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @extends AbstractControllerTestCase<CurrentUserController>
+ */
 #[CoversClass(CurrentUserController::class)]
 class CurrentUserControllerTest extends AbstractControllerTestCase
 {
