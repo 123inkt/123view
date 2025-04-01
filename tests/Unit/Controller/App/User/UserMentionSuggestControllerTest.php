@@ -8,7 +8,6 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Request\User\UserMentionSuggestRequest;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
