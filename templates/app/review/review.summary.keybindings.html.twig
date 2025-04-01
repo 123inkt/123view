@@ -3,8 +3,16 @@
 <h5>{{ 'keybindings'|trans }}</h5>
 
 <ul>
-    <li><span class="badge bg-secondary">Alt+down</span> {{ 'keybinding.next.file'|trans }}</li>
-    <li><span class="badge bg-secondary">Alt+up</span> {{ 'keybinding.prev.file'|trans }}</li>
+    <li>
+        <span class="badge bg-secondary">Alt+down</span> |
+        <span class="badge bg-secondary">Alt+right</span>
+        {{ 'keybinding.next.file'|trans }}
+    </li>
+    <li>
+        <span class="badge bg-secondary">Alt+up</span> |
+        <span class="badge bg-secondary">Alt+left</span>
+        {{ 'keybinding.prev.file'|trans }}
+    </li>
 </ul>
 <ul class="mt-3">
     <li><span class="badge bg-secondary">Ctrl+Alt+down</span> {{ 'keybinding.next.unread.file'|trans }}</li>
