@@ -50,7 +50,7 @@ class RepositoryType extends AbstractType
         $builder->add(
             'url',
             UrlType::class,
-            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new Assert\Url()]
+            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new Assert\Url(requireTld: true)]
         );
         $builder->add(
             'credential',
