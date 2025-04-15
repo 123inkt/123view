@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
+/**
+ * @extends AbstractControllerTestCase<UserGitlabOAuth2FinishController>
+ */
 #[CoversClass(UserGitlabOAuth2FinishController::class)]
 class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 {

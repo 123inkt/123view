@@ -12,6 +12,9 @@ use DR\Review\ViewModel\App\Admin\RepositoriesViewModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<RepositoriesController>
+ */
 #[CoversClass(RepositoriesController::class)]
 class RepositoriesControllerTest extends AbstractControllerTestCase
 {

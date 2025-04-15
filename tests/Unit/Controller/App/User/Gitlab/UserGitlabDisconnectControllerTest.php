@@ -14,6 +14,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<UserGitlabDisconnectController>
+ */
 #[CoversClass(UserGitlabDisconnectController::class)]
 class UserGitlabDisconnectControllerTest extends AbstractControllerTestCase
 {

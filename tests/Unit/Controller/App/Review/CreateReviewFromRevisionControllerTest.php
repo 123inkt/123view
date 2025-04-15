@@ -19,6 +19,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<CreateReviewFromRevisionController>
+ */
 #[CoversClass(CreateReviewFromRevisionController::class)]
 class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
 {

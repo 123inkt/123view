@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @extends AbstractControllerTestCase<AddCommentController>
+ */
 #[CoversClass(AddCommentController::class)]
 class AddCommentControllerTest extends AbstractControllerTestCase
 {

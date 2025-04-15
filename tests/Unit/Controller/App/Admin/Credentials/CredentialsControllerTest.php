@@ -11,6 +11,9 @@ use DR\Review\ViewModelProvider\CredentialsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<CredentialsController>
+ */
 #[CoversClass(CredentialsController::class)]
 class CredentialsControllerTest extends AbstractControllerTestCase
 {

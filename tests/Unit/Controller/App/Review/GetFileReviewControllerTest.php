@@ -18,6 +18,9 @@ use DR\Review\ViewModelProvider\FileReviewViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<GetFileReviewController>
+ */
 #[CoversClass(GetFileReviewController::class)]
 class GetFileReviewControllerTest extends AbstractControllerTestCase
 {

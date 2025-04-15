@@ -16,6 +16,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @extends AbstractControllerTestCase<UpdateFolderCollapseStatusController>
+ */
 #[CoversClass(UpdateFolderCollapseStatusController::class)]
 class UpdateFolderCollapseStatusControllerTest extends AbstractControllerTestCase
 {

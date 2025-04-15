@@ -13,6 +13,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<ProjectsController>
+ */
 #[CoversClass(ProjectsController::class)]
 class ProjectsControllerTest extends AbstractControllerTestCase
 {

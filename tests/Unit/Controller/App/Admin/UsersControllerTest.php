@@ -11,6 +11,9 @@ use DR\Review\ViewModelProvider\UserViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<UsersController>
+ */
 #[CoversClass(UsersController::class)]
 class UsersControllerTest extends AbstractControllerTestCase
 {

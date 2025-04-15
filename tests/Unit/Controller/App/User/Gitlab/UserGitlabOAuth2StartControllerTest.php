@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
+/**
+ * @extends AbstractControllerTestCase<UserGitlabOAuth2StartController>
+ */
 #[CoversClass(UserGitlabOAuth2StartController::class)]
 class UserGitlabOAuth2StartControllerTest extends AbstractControllerTestCase
 {

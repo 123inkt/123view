@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
+/**
+ * @extends AbstractControllerTestCase<AzureAdAuthController>
+ */
 #[CoversClass(AzureAdAuthController::class)]
 class AzureAdAuthControllerTest extends AbstractControllerTestCase
 {

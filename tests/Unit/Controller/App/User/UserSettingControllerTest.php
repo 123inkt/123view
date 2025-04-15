@@ -17,6 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<UserSettingController>
+ */
 #[CoversClass(UserSettingController::class)]
 class UserSettingControllerTest extends AbstractControllerTestCase
 {

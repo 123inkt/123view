@@ -15,8 +15,8 @@ use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Assert;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -38,7 +38,7 @@ class CommentEventSubscriber implements ResetInterface
     private array $updated = [];
 
     public function __construct(
-        private readonly Security $security,
+        private readonly UserEntityProvider $userEntityProvider,
         private readonly MessageBusInterface $bus,
         private readonly CommentEventMessageFactory $messageFactory
     ) {
@@ -111,7 +111,7 @@ class CommentEventSubscriber implements ResetInterface
 
     private function getUser(Comment $comment): User
     {
-        $user = $this->security->getUser();
+        $user = $this->userEntityProvider->getUser();
 
         return $user instanceof User ? $user : $comment->getUser();
     }

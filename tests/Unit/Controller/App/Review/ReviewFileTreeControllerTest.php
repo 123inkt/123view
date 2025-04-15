@@ -21,6 +21,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<ReviewFileTreeController>
+ */
 #[CoversClass(ReviewFileTreeController::class)]
 class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 {

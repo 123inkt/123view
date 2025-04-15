@@ -5,14 +5,13 @@ namespace DR\Review\Form\Recipient;
 
 use DR\Review\Entity\Notification\Recipient;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @extends CollectionType<Recipient>
+ * @extends AbstractType<Recipient>
  */
 class RecipientType extends AbstractType
 {

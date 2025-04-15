@@ -21,6 +21,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @extends AbstractControllerTestCase<UpdateFileSeenStatusController>
+ */
 #[CoversClass(UpdateFileSeenStatusController::class)]
 class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 {

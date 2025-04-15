@@ -65,13 +65,13 @@ use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\User\IdeUrlPatternProvider;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use League\OAuth2\Client\Provider\GenericProvider;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
@@ -128,7 +128,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(InputValidator::class);
     $services->set(LoginService::class);
     $services->set(UserChecker::class);
-    $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
+    $services->set(UserEntityProvider::class);
+    $services->set(User::class)->public()->factory([service(UserEntityProvider::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)
         ->arg('$hostname', '%env(APP_HOSTNAME)%')
         ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%');

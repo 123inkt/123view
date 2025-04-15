@@ -13,6 +13,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @extends AbstractControllerTestCase<RuleHistoryController>
+ */
 #[CoversClass(RuleHistoryController::class)]
 class RuleHistoryControllerTest extends AbstractControllerTestCase
 {

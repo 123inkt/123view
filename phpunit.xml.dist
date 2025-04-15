@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.0/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          requireCoverageMetadata="true"
          failOnRisky="true"
@@ -12,14 +12,14 @@
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnPhpunitDeprecations="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          executionOrder="defects"
 >
     <php>
-        <ini name="error_reporting" value="24575"/>
-        <!-- E_ALL^E_DEPRECATED -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+        <ini name="error_reporting" value="24575"/><!-- E_ALL^E_DEPRECATED -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;quiet[]=indirect&amp;quiet[]=other"/>
         <env name="APP_ENV" value="test"/>
         <env name="APP_DEBUG" value="false"/>
     </php>
