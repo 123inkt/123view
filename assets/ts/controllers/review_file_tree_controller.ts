@@ -150,5 +150,8 @@ export default class extends Controller<HTMLElement> {
         row.classList.add('bg-opacity-10');
         row.classList.remove('review-file-tree--unseen');
         row.scrollIntoView({block: 'center'});
+        const fileStatus = Assert.notNull(row.querySelector<HTMLElement>('[data-role~="file-seen-status"]'));
+        fileStatus.classList.add('seen');
+        fileStatus.dataset.seenStatus= '1';
     }
 }
