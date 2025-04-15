@@ -8,20 +8,18 @@ import ReviewFileTreeService from '../service/ReviewFileTreeService';
 import ReviewNotificationService from '../service/ReviewNotificationService';
 
 export default class ReviewFileTreeController extends Controller<HTMLElement> {
-    public static targets                    = ['activeFile'];
-    private readonly notificationService     = new ReviewNotificationService();
-    private readonly fileTreeService         = new ReviewFileTreeService();
+    public static targets                = ['activeFile'];
+    private readonly notificationService = new ReviewNotificationService();
+    private readonly fileTreeService     = new ReviewFileTreeService();
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
-    private reviewId: number                 = 0;
-    private navigationAbort: AbortController = new AbortController;
+    private reviewId: number             = 0;
 
     public connect(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');
         if (this.hasActiveFileTarget) {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
-        window.addEventListener('popstate', this.onBackTrack.bind(this));
         this.notificationService.subscribe(
             '/review/' + String(this.reviewId),
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
@@ -86,6 +84,10 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
         return null;
     }
 
+    public findFile(filePath: string): HTMLElement | null {
+        return this.element.querySelector<HTMLElement>(`[data-role="file-tree-url"][data-review-file-path="${filePath}"]`);
+    }
+
     public selectFile(file: HTMLElement): void {
         this.unselectFile(this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]'));
 
@@ -111,32 +113,4 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
         row.classList.remove('bg-primary');
         row.classList.remove('bg-opacity-10');
     }
-
-    public onBackTrack(event: PopStateEvent): void {
-        const state = <{reviewId: number, filePath: string} | null>event.state;
-        if (state === null) {
-            return;
-        }
-        // get current selected file
-        const selected = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]');
-        const file     = this.element.querySelector<HTMLElement>(`[data-role="file-tree-url"][data-review-file-path="${state.filePath}"]`);
-        if (file === null) {
-            console.info('Unable to find file for filepath', state);
-            return;
-        }
-
-        this.navigationAbort.abort();
-        axios.get(`/app/reviews/${this.reviewId}/file-review`, {
-            params: {filePath: file.dataset.reviewFilePath ?? ''},
-            signal: this.navigationAbort.signal
-        })
-            .then((response) => {
-                this.unselectFile(selected);
-                this.selectFile(file);
-                document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
-            })
-            .catch(() => {
-            });
-    }
-
 }
