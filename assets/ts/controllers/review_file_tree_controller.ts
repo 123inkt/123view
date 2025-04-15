@@ -3,28 +3,24 @@ import axios from 'axios';
 import Assert from '../lib/Assert';
 import DataSet from '../lib/DataSet';
 import Elements from '../lib/Elements';
-import Events from '../lib/Events';
 import Function from '../lib/Function';
 import ReviewFileTreeService from '../service/ReviewFileTreeService';
 import ReviewNotificationService from '../service/ReviewNotificationService';
 
-export default class extends Controller<HTMLElement> {
+export default class ReviewFileTreeController extends Controller<HTMLElement> {
     public static targets                    = ['activeFile'];
     private readonly notificationService     = new ReviewNotificationService();
     private readonly fileTreeService         = new ReviewFileTreeService();
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
     private reviewId: number                 = 0;
-    private isNavigating: boolean            = false;
     private navigationAbort: AbortController = new AbortController;
 
     public connect(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');
-
         if (this.hasActiveFileTarget) {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
-        document.addEventListener('keyup', this.onNavigate.bind(this));
         window.addEventListener('popstate', this.onBackTrack.bind(this));
         this.notificationService.subscribe(
             '/review/' + String(this.reviewId),
@@ -71,38 +67,49 @@ export default class extends Controller<HTMLElement> {
             .catch(Function.empty);
     }
 
-    public onNavigate(event: KeyboardEvent): void {
-        const keys = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
-        if (event.altKey === false || event.shiftKey || this.isNavigating || keys.includes(event.key) === false) {
-            return;
-        }
-
+    public findNextFile(direction: 'up' | 'down', unseen: boolean): HTMLElement | null {
         const selected = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]');
         let files      = Array.from(this.element.querySelectorAll<HTMLElement>('[data-role="file-tree-url"]'));
-        if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+
+        if (direction === 'up') {
             files = files.reverse();
         }
 
-        Events.stop(event);
         let i = selected === null ? 0 : (files.indexOf(selected) + 1);
-
         for (; i < files.length; i++) {
             const file = files[i];
-            if (file !== undefined && (event.ctrlKey === false || file.dataset.unseen === '1')) {
-                this.isNavigating = true;
-                axios.get(`/app/reviews/${this.reviewId}/file-review`, {params: {filePath: file.dataset.reviewFilePath ?? ''}})
-                    .then((response) => {
-                        this.unselectFile(selected);
-                        this.selectFile(file);
-                        history.pushState({reviewId: this.reviewId, filePath: file.dataset.reviewFilePath}, '', String(file.getAttribute('href')))
-                        document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
-                    })
-                    .finally(() => {
-                        this.isNavigating = false;
-                    });
-                break;
+            if (file !== undefined && (unseen === false || file.dataset.unseen === '1')) {
+                return file;
             }
         }
+
+        return null;
+    }
+
+    public selectFile(file: HTMLElement): void {
+        this.unselectFile(this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]'));
+
+        file.dataset.selected = '1';
+        file.dataset.unseen   = '0';
+        const row             = Elements.closestRole(file, 'review-file-tree-file');
+        row.classList.add('bg-primary');
+        row.classList.add('bg-opacity-10');
+        row.classList.remove('review-file-tree--unseen');
+        row.scrollIntoView({block: 'center'});
+        const fileStatus = Assert.notNull(row.querySelector<HTMLElement>('[data-role~="file-seen-status"]'));
+        fileStatus.classList.add('seen');
+        fileStatus.dataset.seenStatus = '1';
+    }
+
+    private unselectFile(file: HTMLElement | null): void {
+        if (file === null) {
+            return;
+        }
+
+        file.dataset.selected = '0';
+        const row             = Elements.closestRole(file, 'review-file-tree-file');
+        row.classList.remove('bg-primary');
+        row.classList.remove('bg-opacity-10');
     }
 
     public onBackTrack(event: PopStateEvent): void {
@@ -128,30 +135,8 @@ export default class extends Controller<HTMLElement> {
                 this.selectFile(file);
                 document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
             })
-            .catch(() =>{});
+            .catch(() => {
+            });
     }
 
-    private unselectFile(file: HTMLElement | null): void {
-        if (file === null) {
-            return;
-        }
-
-        file.dataset.selected = '0';
-        const row             = Elements.closestRole(file, 'review-file-tree-file');
-        row.classList.remove('bg-primary');
-        row.classList.remove('bg-opacity-10');
-    }
-
-    private selectFile(file: HTMLElement): void {
-        file.dataset.selected = '1';
-        file.dataset.unseen   = '0';
-        const row             = Elements.closestRole(file, 'review-file-tree-file');
-        row.classList.add('bg-primary');
-        row.classList.add('bg-opacity-10');
-        row.classList.remove('review-file-tree--unseen');
-        row.scrollIntoView({block: 'center'});
-        const fileStatus = Assert.notNull(row.querySelector<HTMLElement>('[data-role~="file-seen-status"]'));
-        fileStatus.classList.add('seen');
-        fileStatus.dataset.seenStatus= '1';
-    }
 }

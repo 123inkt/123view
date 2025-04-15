@@ -12,7 +12,8 @@
     </div>
 
     <div class="review-grid-layout"
-            {{ stimulus_controller('review review-comment-visibility') }}
+         {{ stimulus_controller('review review-comment-visibility review-navigation') }}
+         data-review-id="{{ review.id }}"
          data-review-add-comment-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetAddCommentFormController', {id: review.id}) }}">
 
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
