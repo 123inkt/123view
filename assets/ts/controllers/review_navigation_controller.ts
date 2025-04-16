@@ -40,9 +40,15 @@ export default class extends Controller<HTMLElement> {
         }
         this.isNavigating = true;
 
-        axios.get(`/app/reviews/${this.reviewId}/file-review`, {params: {filePath: file.dataset.reviewFilePath ?? ''}})
+        this.navigationAbort.abort();
+        this.navigationAbort = new AbortController();
+        axios.get(`/app/reviews/${this.reviewId}/file-review`, {
+            params: {filePath: file.dataset.reviewFilePath ?? ''},
+            signal: this.navigationAbort.signal
+        })
             .then((response) => {
                 controller.selectFile(file);
+                console.log('history push state', )
                 history.pushState({reviewId: this.reviewId, filePath: file.dataset.reviewFilePath}, '', String(file.getAttribute('href')))
                 document.querySelector('[data-role~="file-diff-review"]')?.replaceWith(Elements.create(response.data));
             })
@@ -52,7 +58,6 @@ export default class extends Controller<HTMLElement> {
     }
 
     public onBackTrack(event: PopStateEvent): void {
-        console.log('test');
         const state = <{reviewId: number, filePath: string} | null>event.state;
         if (state === null) {
             return;
@@ -66,6 +71,7 @@ export default class extends Controller<HTMLElement> {
         }
 
         this.navigationAbort.abort();
+        this.navigationAbort = new AbortController();
         axios.get(`/app/reviews/${this.reviewId}/file-review`, {
             params: {filePath: file.dataset.reviewFilePath ?? ''},
             signal: this.navigationAbort.signal
@@ -73,8 +79,7 @@ export default class extends Controller<HTMLElement> {
             .then((response) => {
                 controller.selectFile(file);
                 document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
-            })
-            .catch(() => {});
+            });
     }
 
     private getFileTreeController(): ReviewFileTreeController {
