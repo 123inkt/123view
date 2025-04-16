@@ -12,7 +12,8 @@
     </div>
 
     <div class="review-grid-layout"
-            {{ stimulus_controller('review review-comment-visibility') }}
+         {{ stimulus_controller('review review-comment-visibility review-navigation') }}
+         data-review-id="{{ review.id }}"
          data-review-add-comment-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetAddCommentFormController', {id: review.id}) }}">
 
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
@@ -20,7 +21,7 @@
         {%- include 'app/review/review.sidebar.html.twig' -%}
 
         {%- if reviewModel.reviewSummaryViewModel is not same as (null) -%}
-            <div class="review-grid-code">
+            <div class="review-grid-code" data-role="file-diff-review">
                 {%- include 'app/review/review.summary.html.twig' with {reviewSummaryViewModel: reviewModel.reviewSummaryViewModel} %}
             </div>
         {%- elseif reviewModel.fileDiffViewModel is not same as (null) -%}

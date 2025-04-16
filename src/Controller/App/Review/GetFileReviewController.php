@@ -34,7 +34,7 @@ class GetFileReviewController extends AbstractController
         $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->selectedFile);
 
         $template = 'app/review/commit/commit.file.html.twig';
-        if ($request->getDiffMode() === ReviewDiffModeEnum::SIDE_BY_SIDE) {
+        if ($viewModel->selectedFile->isModified() && $request->getDiffMode() === ReviewDiffModeEnum::SIDE_BY_SIDE) {
             $template = 'app/review/commit/side-by-side/commit.file.html.twig';
         }
 

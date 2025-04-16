@@ -63,10 +63,12 @@ class GetFileReviewControllerTest extends AbstractControllerTestCase
         $request->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $request->method('getDiffMode')->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE);
 
-        $user      = new User();
-        $review    = new CodeReview();
-        $file      = new DiffFile();
-        $viewModel = new FileDiffViewModel($file, ReviewDiffModeEnum::SIDE_BY_SIDE);
+        $user                 = new User();
+        $review               = new CodeReview();
+        $file                 = new DiffFile();
+        $file->filePathBefore = 'before';
+        $file->filePathAfter  = 'after';
+        $viewModel            = new FileDiffViewModel($file, ReviewDiffModeEnum::SIDE_BY_SIDE);
 
         $this->expectGetUser($user);
         $this->modelProvider->expects($this->once())->method('getViewModel')
