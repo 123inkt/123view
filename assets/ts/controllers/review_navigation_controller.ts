@@ -48,7 +48,6 @@ export default class extends Controller<HTMLElement> {
         })
             .then((response) => {
                 controller.selectFile(file);
-                console.log('history push state', )
                 history.pushState({reviewId: this.reviewId, filePath: file.dataset.reviewFilePath}, '', String(file.getAttribute('href')))
                 document.querySelector('[data-role~="file-diff-review"]')?.replaceWith(Elements.create(response.data));
             })
