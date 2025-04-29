@@ -33,7 +33,7 @@
 
     {#- code changes -#}
     <span {% if issues %}class="diff-file__diff-line__code-inspection-issue" title="{{ macro.code_inspection_issues(issues) }}"{% endif %}>
-        {%- if fileDiffViewModel.highlightedFile != null and line.changes|length == 1 and line.state != 2 -%}
+        {%- if fileDiffViewModel.highlightedFile != null and line.changes|length == 1 and line.state != 2 and line.state != 6 -%}
             {{- fileDiffViewModel.highlightedFile.getLine(line.lineNumberAfter ?? line.lineNumberBefore ?? 0)|raw -}}
         {%- else -%}
             {{ macro.changes(line) }}

@@ -29,7 +29,7 @@ class DiffLineStateDeterminator
         return match (key($types)) {
             DiffChange::ADDED     => DiffLine::STATE_ADDED,
             DiffChange::REMOVED   => DiffLine::STATE_REMOVED,
-            DiffChange::UNCHANGED => DiffLine::STATE_UNCHANGED,
+            DiffChange::UNCHANGED => DiffLine::STATE_INLINED,
             default               => DiffLine::STATE_CHANGED,
         };
     }
