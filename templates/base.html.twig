@@ -58,15 +58,23 @@
                         <div class="navbar-nav d-flex">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <form class="d-flex me-5"
+                                    <form {{ stimulus_controller('header_search', {actionReview: path('DR\\Review\\Controller\\App\\Reviews\\SearchReviewsController'), actionCode: path('DR\\Review\\Controller\\App\\Reviews\\SearchReviewsController')} ) }}
+                                            class="d-flex me-5"
                                           method="get"
                                           action="{{ path('DR\\Review\\Controller\\App\\Reviews\\SearchReviewsController') }}">
                                         <div class="input-group">
                                             <input type="search"
                                                    name="search"
                                                    required
-                                                   class="form-control border-secondary text-light bg-contrast"
+                                                   class="form-control border-secondary text-light bg-contrast border-end-1 flex-grow-1"
                                                    placeholder="{{ 'search'|trans }}">
+                                            <select name="mode"
+                                                   class="form-control border-secondary text-light bg-contrast border-start-1"
+                                                    {{ stimulus_action('header_search', 'onModeChange', 'change') }}
+                                            >
+                                                <option value="review">Reviews</option>
+                                                <option value="code">Source code</option>
+                                            </select>
                                             <button class="btn btn-outline-secondary" type="submit">
                                                 <i class="bi bi-search"></i>
                                             </button>
