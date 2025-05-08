@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\Search;
 
-use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\Git\GitRepositoryCacheLocationService;
+use DR\Review\Service\Search\RipGrep\GitFileSearcher;
+use DR\Review\Service\Search\RipGrep\RipGrepProcessExecutor;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class SearchCodeController
 {
     public function __construct(
-        private readonly RepositoryRepository $repository
+        private readonly GitFileSearcher $fileSearcher,
+        private readonly ?Stopwatch $stopwatch
     ) {
     }
 
@@ -28,12 +30,19 @@ class SearchCodeController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array
     {
-        $repositories = $this->repository->findBy(['active' => true]);
+        $searchQuery = $request->query->getString('search');
+        if (strlen($searchQuery) < 3) {
+            throw new BadRequestHttpException('Search query must be at least 3 characters');
+        }
 
-        $finder = new Finder();
+        $this->stopwatch?->start('finder');
 
-        //$finder->files()->ignoreDotFiles(false)->in($cacheDirectory)->exclude(['.git/']);
+        $result = $this->fileSearcher->find($searchQuery);
 
-        return [];
+        echo $result;
+        $this->stopwatch?->stop('finder');
+
+
+        exit();
     }
 }

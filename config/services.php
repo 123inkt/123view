@@ -35,10 +35,9 @@ use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
-use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\GitRepositoryLockManager;
-use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\RecoverableReviewDiffService;
@@ -64,6 +63,7 @@ use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
+use DR\Review\Service\Search\RipGrep\GitFileSearcher;
 use DR\Review\Service\User\IdeUrlPatternProvider;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
@@ -174,9 +174,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(IdeUrlPatternProvider::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
 
     // custom register cache dir
-    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
-    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
     $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitRepositoryLocationService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitFileSearcher::class)->arg('$gitCacheDirectory', "%kernel.project_dir%/var/git/");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)

@@ -22,7 +22,6 @@ use Throwable;
  */
 class GitRepositoryService
 {
-    private readonly string         $cacheDirectory;
     private readonly CircuitBreaker $circuitBreaker;
 
     public function __construct(
@@ -30,10 +29,9 @@ class GitRepositoryService
         private readonly Git $git,
         private readonly Filesystem $filesystem,
         private readonly ?Stopwatch $stopwatch,
-        string $cacheDirectory
+        private readonly GitRepositoryLocationService $locationService
     ) {
         $this->circuitBreaker = new CircuitBreaker(5, 5000);
-        $this->cacheDirectory = $cacheDirectory;
     }
 
     /**
@@ -60,17 +58,15 @@ class GitRepositoryService
      */
     private function tryGetRepository(Repository $repository): GitRepository
     {
-        // create cache directory
-        $this->filesystem->mkdir($this->cacheDirectory);
+        $repositoryDir  = $this->locationService->getLocation($repository);
 
-        $repositoryUrl  = Assert::notNull($repository->getUrl());
-        $repositoryName = Helpers::extractRepositoryNameFromUrl((string)$repositoryUrl);
-        $repositoryDir  = $this->cacheDirectory . $repositoryName . '-' . hash('sha1', (string)$repositoryUrl) . '/';
+        // create cache directory
+        $this->filesystem->mkdir(dirname($repositoryDir));
 
         if ($this->filesystem->exists($repositoryDir . '.git') === false) {
             // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
-            $this->gitLogger->info(sprintf('git: clone repository `%s`.', $repositoryUrl->withUserInfo(null)));
+            $this->gitLogger->info(sprintf('git: clone repository `%s`.', $repository->getUrl()->withUserInfo(null)));
             $this->git->cloneRepository((string)RepositoryUtil::getUriWithCredentials($repository), $repositoryDir);
             $this->stopwatch?->stop('repository.clone');
         }

@@ -24,6 +24,7 @@ RUN apt-get update \
     make \
     netcat-openbsd \
     openssl \
+    ripgrep \
     supervisor \
     wget \
     zip \
