@@ -5,7 +5,6 @@ namespace DR\Review\Controller\App\Search;
 
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Search\RipGrep\GitFileSearcher;
-use DR\Review\Service\Search\RipGrep\RipGrepProcessExecutor;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +40,6 @@ class SearchCodeController
 
         echo $result;
         $this->stopwatch?->stop('finder');
-
 
         exit();
     }

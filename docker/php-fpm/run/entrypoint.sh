@@ -8,12 +8,13 @@ sed -i "s/memory_limit=2G/memory_limit=${PHP_MEMORY_LIMIT}/g" /usr/local/etc/php
 
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader --no-scripts
+    mkdir -p /app/var/cache/dev
 else
     composer install --no-dev --no-interaction --optimize-autoloader --classmap-authoritative --no-scripts
+    mkdir -p /app/var/cache/prod
 fi
 
-mkdir -p /app/var/cache/prod
-chmod -R a+rw /app/var/cache
+chmod -R a+rwx /app/var/cache
 chown www-data:www-data -R /app/var/cache
 
 ##
@@ -33,7 +34,7 @@ php bin/console doctrine:migrations:migrate --no-interaction
 
 printenv > /etc/environment
 mkdir -p /app/var/log
-chmod -R a+rw /app/var
+chmod -R a+rwx /app/var
 chown www-data:www-data -R /app/var
 
 # exec is needed to make supervisord pid 1 and able to receive SIGTERM signal
