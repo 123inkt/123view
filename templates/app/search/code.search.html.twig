@@ -33,7 +33,12 @@
                     <div class="accordion-body">
                         <pre class="d-block">
                             {%- for line in resultFile.lines -%}
-                                <span class="text-danger">{{- line.lineNumber -}}</span> {{- line.line -}}
+                                <div {% if line.type.value == 'match' %}class="bg-success-subtle"{% endif %}>
+                                    {#- show code line -#}
+                                    <span class="text-danger bg-light-gray d-inline-block code-search-line-number">
+                                        {{- line.lineNumber -}}
+                                    </span> {{ line.line -}}
+                                </div>
                             {%- endfor -%}
                         </pre>
                     </div>
