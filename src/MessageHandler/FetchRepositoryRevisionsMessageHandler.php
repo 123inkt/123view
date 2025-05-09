@@ -5,6 +5,8 @@ namespace DR\Review\MessageHandler;
 
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\Reset\GitResetService;
 use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
@@ -18,7 +20,9 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
-        private readonly RevisionFetchService $revisionFetchService
+        private readonly RevisionFetchService $revisionFetchService,
+        private readonly GitRepositoryLockManager $lockManager,
+        private readonly GitResetService $resetService
     ) {
     }
 
@@ -30,6 +34,14 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
     {
         $this->logger?->info("MessageHandler: repository: " . $message->repositoryId);
 
-        $this->revisionFetchService->fetchRevisions(Assert::notNull($this->repositoryRepository->find($message->repositoryId)));
+        $repository = Assert::notNull($this->repositoryRepository->find($message->repositoryId));
+
+        // fetch new revisions
+        $this->revisionFetchService->fetchRevisions($repository);
+
+        // reset main branch to the latest revision
+        $this->lockManager->start($repository, function () use ($repository) {
+            $this->resetService->resetHard($repository, 'origin/' . $repository->getMainBranchName());
+        });
     }
 }
