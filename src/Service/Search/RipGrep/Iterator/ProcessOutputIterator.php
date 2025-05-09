@@ -20,6 +20,17 @@ class ProcessOutputIterator implements IteratorAggregate
     {
     }
 
+    public function __destruct()
+    {
+        if ($this->handle !== null) {
+            try {
+                pclose($this->handle);
+            } catch (Throwable) {
+            }
+            $this->handle = null;
+        }
+    }
+
     public function getIterator(): Traversable
     {
         $handle = Assert::notNull($this->handle);
@@ -34,16 +45,5 @@ class ProcessOutputIterator implements IteratorAggregate
 
         pclose($handle);
         $this->handle = null;
-    }
-
-    public function __destruct()
-    {
-        if ($this->handle !== null) {
-            try {
-                pclose($this->handle);
-            } catch (Throwable) {
-            }
-            $this->handle = null;
-        }
     }
 }

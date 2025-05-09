@@ -48,9 +48,9 @@ class GitFileSearcher
                 $results[] = $current;
                 $current   = null;
             } elseif ($entry['type'] === 'context' && $current !== null) {
-                $current->lines[] = $this->resultLineFactory->createContextFromEntry($entry);
+                $current->addLine($this->resultLineFactory->createContextFromEntry($entry));
             } elseif ($entry['type'] === 'match' && $current !== null) {
-                $current->lines[] = $this->resultLineFactory->createMatchFromEntry($entry);
+                $current->addLine($this->resultLineFactory->createMatchFromEntry($entry));
             }
 
             if (count($results) >= 100) {

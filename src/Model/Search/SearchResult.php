@@ -8,12 +8,23 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class SearchResult
 {
-    public function __construct(
-        public readonly Repository $repository,
-        public readonly SplFileInfo $file
-    ) {
+    /** @var SearchResultLine[] */
+    private array $lines = [];
+
+    public function __construct(public readonly Repository $repository, public readonly SplFileInfo $file)
+    {
     }
 
-    /** @var SearchResultLine[] */
-    public array $lines = [];
+    public function addLine(SearchResultLine $line): void
+    {
+        $this->lines[] = $line;
+    }
+
+    /**
+     * @return SearchResultLine[]
+     */
+    public function getLines(): array
+    {
+        return $this->lines;
+    }
 }

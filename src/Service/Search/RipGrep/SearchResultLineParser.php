@@ -5,8 +5,7 @@ namespace DR\Review\Service\Search\RipGrep;
 
 class SearchResultLineParser
 {
-    public function parse(): void {
-
+    public function parse(): void
+    {
     }
-
 }
