@@ -25,9 +25,11 @@ class ProcessOutputIterator implements IteratorAggregate
         if ($this->handle !== null) {
             try {
                 pclose($this->handle);
+                // @codeCoverageIgnoreStart
             } catch (Throwable) {
                 // Ignore errors on destruct
             }
+            // @codeCoverageIgnoreEnd
             $this->handle = null;
         }
     }

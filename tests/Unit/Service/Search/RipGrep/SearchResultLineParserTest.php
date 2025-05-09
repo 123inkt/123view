@@ -41,6 +41,7 @@ class SearchResultLineParserTest extends AbstractTestCase
         /** @var iterable<int, SearchResultEntry> $iterator */
         $iterator = new ArrayIterator(
             [
+                ['type' => 'end'],
                 ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath']]],
                 ['type' => 'context'],
                 ['type' => 'match'],
