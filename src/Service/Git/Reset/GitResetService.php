@@ -23,9 +23,12 @@ class GitResetService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
-    public function resetHard(Repository $repository): void
+    public function resetHard(Repository $repository, ?string $commitHash = null): void
     {
         $commandBuilder = $this->commandFactory->createReset()->hard();
+        if ($commitHash !== null) {
+            $commandBuilder->commitHash($commitHash);
+        }
 
         // hard reset repository
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
