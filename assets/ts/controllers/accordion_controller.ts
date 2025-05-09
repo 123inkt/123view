@@ -16,6 +16,5 @@ export default class extends Controller<HTMLElement> {
             target.classList.add('collapsed');
             collapse.classList.remove('show');
         }
-        console.log(event);
     }
 }
