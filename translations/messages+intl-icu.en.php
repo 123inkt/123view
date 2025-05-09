@@ -53,6 +53,8 @@ return [
     'closed'                                      => 'Closed',
     'closed.reviews'                              => 'Closed reviews',
     'code.issues'                                 => 'Code inspection issues',
+    'code.search'                                 => 'Code search',
+    'code.search.disclaimer'                      => 'Disclaimer: only searches in the main branch of active repositories',
     'comment.mark.as.resolved'                    => '<em>{userName}</em> marked comment as resolved.',
     'comment.markdown.examples'                   => '**Bold** # Heading > Quote [link text](URL) `<code>`',
     'comment.save.quick.key'                      => 'Ctrl+Enter to save',

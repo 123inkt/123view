@@ -2,8 +2,13 @@
 
 {% block page_content %}
     <div class="mt-2 pb-2 clearfix">
-        <h2 class="float-start pe-3 mb-0">{{ 'search'|trans }}</h2>
+        <h2 class="float-start pe-3 mb-0">{{ 'code.search'|trans }}</h2>
     </div>
+
+    <div class="alert alert-info" role="alert">
+        {{ 'code.search.disclaimer'|trans }}
+    </div>
+
 
     {%- include 'app/flash/flashes.html.twig' -%}
 
