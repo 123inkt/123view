@@ -22,8 +22,7 @@ class GitFileSearcher
     public function __construct(
         private readonly string $gitCacheDirectory,
         private readonly RipGrepProcessExecutor $executor,
-        private readonly SearchResultFactory $resultFactory,
-        private readonly SearchResultLineFactory $resultLineFactory
+        private readonly SearchResultLineParser $parser,
     ) {
     }
 
@@ -39,25 +38,6 @@ class GitFileSearcher
 
         $jsonIterator = new JsonDecodeIterator($this->executor->execute($arguments, $this->gitCacheDirectory));
 
-        $results = [];
-        $current = null;
-        foreach ($jsonIterator as $entry) {
-            if ($entry['type'] === 'begin') {
-                $current = $this->resultFactory->create($entry['data']['path']['text'], $this->gitCacheDirectory, $repositories);
-            } elseif ($entry['type'] === 'end' && $current !== null) {
-                $results[] = $current;
-                $current   = null;
-            } elseif ($entry['type'] === 'context' && $current !== null) {
-                $current->addLine($this->resultLineFactory->createContextFromEntry($entry));
-            } elseif ($entry['type'] === 'match' && $current !== null) {
-                $current->addLine($this->resultLineFactory->createMatchFromEntry($entry));
-            }
-
-            if (count($results) >= 100) {
-                break;
-            }
-        }
-
-        return $results;
+        return $this->parser->parse($jsonIterator, $repositories);
     }
 }

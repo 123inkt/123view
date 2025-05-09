@@ -19,8 +19,10 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
 
     /**
      * @param string[] $arguments
+     *
+     * @return iterable<int, string>
      */
-    public function execute(array $arguments, string $cwd): ProcessOutputIterator
+    public function execute(array $arguments, string $cwd): iterable
     {
         $commandLine = '/usr/bin/rg ' . implode(' ', array_map('escapeshellarg', $arguments));
 
