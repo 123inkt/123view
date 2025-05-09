@@ -5,6 +5,7 @@ namespace DR\Review\Service\Search\RipGrep\Iterator;
 
 use DR\Utils\Assert;
 use IteratorAggregate;
+use Throwable;
 use Traversable;
 
 /**
@@ -38,7 +39,10 @@ class ProcessOutputIterator implements IteratorAggregate
     public function __destruct()
     {
         if ($this->handle !== null) {
-            pclose($this->handle);
+            try {
+                pclose($this->handle);
+            } catch (Throwable) {
+            }
             $this->handle = null;
         }
     }

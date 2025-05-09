@@ -1,0 +1,36 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\Tests\Unit\Service\Search\RipGrep;
+
+use DR\Review\Service\Process\ProcessService;
+use DR\Review\Service\Search\RipGrep\Iterator\ProcessOutputIterator;
+use DR\Review\Service\Search\RipGrep\RipGrepProcessExecutor;
+use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
+
+#[CoversClass(RipGrepProcessExecutor::class)]
+class RipGrepProcessExecutorTest extends AbstractTestCase
+{
+    private ProcessService&MockObject $processService;
+    private RipGrepProcessExecutor    $executor;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->processService = $this->createMock(ProcessService::class);
+        $this->executor       = new RipGrepProcessExecutor($this->processService);
+    }
+
+    public function testExecute(): void
+    {
+        $handle = popen(PHP_BINARY . ' -v', 'r');
+
+        $this->processService->expects(self::once())->method('popen')->with('/usr/bin/rg "foo" "bar"', 'r')->willReturn($handle);
+
+        $iterator = $this->executor->execute(['foo', 'bar'], __DIR__);
+        $expected = new ProcessOutputIterator($handle);
+        static::assertEquals($expected, $iterator);
+    }
+}

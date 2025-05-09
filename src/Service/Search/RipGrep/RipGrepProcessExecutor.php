@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Search\RipGrep;
 
-use DR\Review\Service\ProcessService;
+use DR\Review\Service\Process\ProcessService;
 use DR\Review\Service\Search\RipGrep\Iterator\ProcessOutputIterator;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
