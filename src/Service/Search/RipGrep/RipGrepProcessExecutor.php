@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Search\RipGrep;
 
-use Generator;
+use DR\Review\Service\Search\RipGrep\Iterator\ProcessOutputIterator;
+use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -13,10 +14,8 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
 
     /**
      * @param string[] $arguments
-     *
-     * @return Generator<string>
      */
-    public function execute(array $arguments, string $cwd): Generator
+    public function execute(array $arguments, string $cwd): ProcessOutputIterator
     {
         $commandLine = '/usr/bin/rg ' . implode(' ', array_map('escapeshellarg', $arguments));
 
@@ -27,23 +26,11 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
         chdir($cwd);
 
         $exitCode = 1;
-        $handle   = popen($commandLine, 'r');
+        $handle   = Assert::notFalse(popen($commandLine, 'r'), 'Failed to open process for command: ' . $commandLine);
 
         // restore working directory
         chdir($workingDir);
 
-        if (is_resource($handle)) {
-            while (feof($handle) === false) {
-                $line = fgets($handle);
-                if ($line === false) {
-                    break;
-                }
-                yield $line;
-            }
-
-            $exitCode = pclose($handle);
-        }
-
-        $this->logger?->info('Command exited with exit code {code}', ['code' => $exitCode]);
+        return new ProcessOutputIterator($handle);
     }
 }
