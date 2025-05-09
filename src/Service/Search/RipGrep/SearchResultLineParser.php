@@ -32,12 +32,19 @@ class SearchResultLineParser
         foreach ($iterator as $entry) {
             if ($entry['type'] === 'begin') {
                 $current = $this->resultFactory->create($entry['data']['path']['text'], $this->gitCacheDirectory, $repositories);
-            } elseif ($entry['type'] === 'end' && $current !== null) {
+                continue;
+            }
+
+            if ($current === null) {
+                continue;
+            }
+
+            if ($entry['type'] === 'end') {
                 $results[] = $current;
                 $current   = null;
-            } elseif ($entry['type'] === 'context' && $current !== null) {
+            } elseif ($entry['type'] === 'context') {
                 $current->addLine($this->resultLineFactory->createContextFromEntry($entry));
-            } elseif ($entry['type'] === 'match' && $current !== null) {
+            } elseif ($entry['type'] === 'match') {
                 $current->addLine($this->resultLineFactory->createMatchFromEntry($entry));
             }
 
