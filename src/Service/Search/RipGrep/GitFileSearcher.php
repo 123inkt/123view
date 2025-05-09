@@ -15,7 +15,6 @@ class GitFileSearcher
         '--line-number',
         '--after-context=5',
         '--before-context=5',
-        '--field-context-separator=#',
         '--glob=!.git/',
         '--json'
     ];
