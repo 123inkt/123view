@@ -25,8 +25,7 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
         $workingDir = getcwd();
         chdir($cwd);
 
-        $exitCode = 1;
-        $handle   = Assert::notFalse(popen($commandLine, 'r'), 'Failed to open process for command: ' . $commandLine);
+        $handle = Assert::notFalse(popen($commandLine, 'r'), 'Failed to open process for command: ' . $commandLine);
 
         // restore working directory
         chdir($workingDir);
