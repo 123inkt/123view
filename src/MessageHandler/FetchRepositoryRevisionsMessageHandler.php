@@ -40,7 +40,7 @@ class FetchRepositoryRevisionsMessageHandler implements LoggerAwareInterface
         $this->revisionFetchService->fetchRevisions($repository);
 
         // reset main branch to the latest revision
-        $this->lockManager->start($repository, function () use ($repository) {
+        $this->lockManager->start($repository, function () use ($repository): void {
             $this->resetService->resetHard($repository, 'origin/' . $repository->getMainBranchName());
         });
     }
