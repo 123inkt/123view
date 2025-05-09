@@ -8,6 +8,7 @@ use DR\Review\Model\Search\SearchResult;
 readonly class SearchCodeViewModel
 {
     /**
+     * @codeCoverageIgnore  Simple DTO
      * @param SearchResult[] $files
      */
     public function __construct(public array $files, public string $searchQuery)
