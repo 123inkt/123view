@@ -5,13 +5,24 @@
         <h2 class="float-start pe-3 mb-0">{{ 'search'|trans }}</h2>
     </div>
 
-    Searching code
-
-    <ul>
-        {% for file in files %}
-            <li>{{ file.pathname }}</li>
+    <div class="accordion">
+        {% for resultFile in files %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button">
+                        {{ resultFile.file.relativePathname }}
+                    </button>
+                </h2>
+                <div class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                    <pre class="d-block">
+                        {%- for line in resultFile.lines -%}
+                            <span class="text-danger">{{- line.lineNumber -}}</span> {{- line.line -}}
+                        {%- endfor -%}
+                    </pre>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
-
-
+    </div>
 {% endblock %}

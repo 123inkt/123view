@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Search\RipGrep;
 
-use DR\Review\Model\Search\RipGrep\RipGrepResult;
+use Generator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -13,8 +13,10 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
 
     /**
      * @param string[] $arguments
+     *
+     * @return Generator<string>
      */
-    public function execute(array $arguments, string $cwd): RipGrepResult
+    public function execute(array $arguments, string $cwd): Generator
     {
         $commandLine = '/usr/bin/rg ' . implode(' ', array_map('escapeshellarg', $arguments));
 
@@ -24,14 +26,24 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
         $workingDir = getcwd();
         chdir($cwd);
 
-        // Symfony Process doesn't seem to wait for the process to finish and returns no output.
-        $output = system($commandLine, $exitCode);
+        $exitCode = 1;
+        $handle   = popen($commandLine, 'r');
 
         // restore working directory
         chdir($workingDir);
 
-        $this->logger?->info('Command exited with exit code {code}', ['code' => $exitCode]);
+        if (is_resource($handle)) {
+            while (feof($handle) === false) {
+                $line = fgets($handle);
+                if ($line === false) {
+                    break;
+                }
+                yield $line;
+            }
 
-        return new RipGrepResult($output, $exitCode);
+            $exitCode = pclose($handle);
+        }
+
+        $this->logger?->info('Command exited with exit code {code}', ['code' => $exitCode]);
     }
 }

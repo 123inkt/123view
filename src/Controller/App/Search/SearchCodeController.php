@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Search;
 
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\Search\RipGrep\GitFileSearcher;
+use DR\Review\Service\Search\RipGrep\FileSearcher;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class SearchCodeController
 {
     public function __construct(
-        private readonly GitFileSearcher $fileSearcher,
+        private readonly FileSearcher $fileSearcher,
         private readonly ?Stopwatch $stopwatch
     ) {
     }
@@ -36,11 +36,8 @@ class SearchCodeController
 
         $this->stopwatch?->start('finder');
 
-        $result = $this->fileSearcher->find($searchQuery);
+        $lines = $this->fileSearcher->find($searchQuery);
 
-        echo $result;
-        $this->stopwatch?->stop('finder');
-
-        exit();
+        return ['files' => $lines];
     }
 }
