@@ -42,7 +42,7 @@ class GitFileSearcherTest extends AbstractTestCase
             '--json',
             'searchQuery'
         ];
-        $result     = $this->createStub(SearchResult::class);
+        $result     = static::createStub(SearchResult::class);
         $iterator   = $this->getIterator();
 
         $this->executor->expects($this->once())->method('execute')->with($arguments, '/cache/')->willReturn($iterator);

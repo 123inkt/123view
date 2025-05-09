@@ -17,6 +17,9 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<SearchCodeController>
+ */
 #[CoversClass(SearchCodeController::class)]
 class SearchCodeControllerTest extends AbstractControllerTestCase
 {
