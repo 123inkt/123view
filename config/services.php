@@ -64,6 +64,7 @@ use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
 use DR\Review\Service\Search\RipGrep\GitFileSearcher;
+use DR\Review\Service\Search\RipGrep\SearchResultLineParser;
 use DR\Review\Service\User\IdeUrlPatternProvider;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
@@ -177,6 +178,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
     $services->set(GitRepositoryLocationService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
     $services->set(GitFileSearcher::class)->arg('$gitCacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(SearchResultLineParser::class)->arg('$gitCacheDirectory', "%kernel.project_dir%/var/git/");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)
