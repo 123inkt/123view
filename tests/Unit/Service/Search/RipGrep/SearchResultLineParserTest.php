@@ -8,6 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Search\SearchResult;
 use DR\Review\Model\Search\SearchResultLine;
 use DR\Review\Model\Search\SearchResultLineTypeEnum;
+use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 use DR\Review\Service\Search\RipGrep\SearchResultFactory;
 use DR\Review\Service\Search\RipGrep\SearchResultLineFactory;
 use DR\Review\Service\Search\RipGrep\SearchResultLineParser;
@@ -16,6 +17,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @phpstan-import-type SearchResultEntry from JsonDecodeIterator
+ */
 #[CoversClass(SearchResultLineParser::class)]
 class SearchResultLineParserTest extends AbstractTestCase
 {
@@ -34,7 +38,8 @@ class SearchResultLineParserTest extends AbstractTestCase
     public function testParse(): void
     {
         $repository = new Repository();
-        $iterator   = new ArrayIterator(
+        /** @var iterable<int, SearchResultEntry> $iterator */
+        $iterator = new ArrayIterator(
             [
                 ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath']]],
                 ['type' => 'context'],

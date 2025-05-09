@@ -26,6 +26,7 @@ class ProcessOutputIterator implements IteratorAggregate
             try {
                 pclose($this->handle);
             } catch (Throwable) {
+                // Ignore errors on destruct
             }
             $this->handle = null;
         }
