@@ -5,13 +5,11 @@ namespace DR\Review\Service\Git;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
-use CzProject\GitPhp\Helpers;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
 use DR\Review\Utility\CircuitBreaker;
-use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;

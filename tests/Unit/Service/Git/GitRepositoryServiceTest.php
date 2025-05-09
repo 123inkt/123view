@@ -11,6 +11,7 @@ use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Exception\RepositoryException;
+use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
@@ -23,23 +24,23 @@ use Symfony\Component\Filesystem\Filesystem;
 #[CoversClass(GitRepositoryService::class)]
 class GitRepositoryServiceTest extends AbstractTestCase
 {
-    private const CACHE_DIRECTORY = "/cache/directory/";
-
-    private Filesystem&MockObject $filesystem;
-    private Git&MockObject        $git;
-    private GitRepositoryService  $service;
+    private Filesystem&MockObject                   $filesystem;
+    private Git&MockObject                          $git;
+    private GitRepositoryLocationService&MockObject $locationService;
+    private GitRepositoryService                    $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->git        = $this->createMock(Git::class);
-        $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new GitRepositoryService(
+        $this->git             = $this->createMock(Git::class);
+        $this->filesystem      = $this->createMock(Filesystem::class);
+        $this->locationService = $this->createMock(GitRepositoryLocationService::class);
+        $this->service         = new GitRepositoryService(
             $this->createMock(LoggerInterface::class),
             $this->git,
             $this->filesystem,
             null,
-            self::CACHE_DIRECTORY
+            $this->locationService
         );
     }
 
@@ -54,9 +55,10 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
-        $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
-        $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->with('https://my.repository.com')->willReturn($gitRepository);
+        $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
+        $this->filesystem->expects($this->once())->method('mkdir')->with('/repository');
+        $this->filesystem->expects($this->once())->method('exists')->willReturn(false);
+        $this->git->expects($this->once())->method('cloneRepository')->with('https://my.repository.com')->willReturn($gitRepository);
 
         $this->service->getRepository($repository);
     }
@@ -76,9 +78,10 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $gitRepository = $this->createMock(GitRepository::class);
 
         // setup mocks
-        $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
-        $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->with('https://user:pass@my.repository.com')->willReturn($gitRepository);
+        $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
+        $this->filesystem->expects($this->once())->method('mkdir')->with('/repository');
+        $this->filesystem->expects($this->once())->method('exists')->willReturn(false);
+        $this->git->expects($this->once())->method('cloneRepository')->with('https://user:pass@my.repository.com')->willReturn($gitRepository);
 
         $this->service->getRepository($repository);
     }
@@ -93,8 +96,9 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://my.repository.com'));
 
         // setup mocks
-        $this->filesystem->expects(static::once())->method('mkdir')->with(self::CACHE_DIRECTORY);
-        $this->filesystem->expects(static::once())->method('exists')->willReturn(true);
+        $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
+        $this->filesystem->expects($this->once())->method('mkdir')->with('/repository');
+        $this->filesystem->expects($this->once())->method('exists')->willReturn(true);
         $this->git->expects(static::never())->method('cloneRepository');
 
         $this->service->getRepository($repository);
@@ -111,9 +115,10 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $runnerResult = new RunnerResult('git', 1, ['output'], ['failure']);
 
         // setup mocks
-        $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY);
-        $this->filesystem->expects(static::exactly(5))->method('exists')->willReturn(false);
-        $this->git->expects(static::exactly(5))->method('cloneRepository')->willThrowException(new GitException('exception', 5, null, $runnerResult));
+        $this->locationService->expects($this->exactly(5))->method('getLocation')->with($repository)->willReturn('/repository/dir');
+        $this->filesystem->expects($this->exactly(5))->method('mkdir')->with('/repository');
+        $this->filesystem->expects($this->exactly(5))->method('exists')->willReturn(false);
+        $this->git->expects($this->exactly(5))->method('cloneRepository')->willThrowException(new GitException('exception', 5, null, $runnerResult));
 
         $this->expectException(RepositoryException::class);
         $this->expectExceptionMessage('failure');
@@ -130,9 +135,10 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://my.repository.com'));
 
         // setup mocks
-        $this->filesystem->expects(static::exactly(5))->method('mkdir')->with(self::CACHE_DIRECTORY);
-        $this->filesystem->expects(static::exactly(5))->method('exists')->willReturn(false);
-        $this->git->expects(static::exactly(5))->method('cloneRepository')->willThrowException(new InvalidArgumentException('foobar'));
+        $this->locationService->expects($this->exactly(5))->method('getLocation')->with($repository)->willReturn('/repository/dir');
+        $this->filesystem->expects($this->exactly(5))->method('mkdir')->with('/repository');
+        $this->filesystem->expects($this->exactly(5))->method('exists')->willReturn(false);
+        $this->git->expects($this->exactly(5))->method('cloneRepository')->willThrowException(new InvalidArgumentException('foobar'));
 
         $this->expectException(RepositoryException::class);
         $this->expectExceptionMessage('foobar');

@@ -28,6 +28,7 @@ class SearchCodeController extends AbstractController
 
     /**
      * @throws Exception
+     * @return array{viewModel: SearchCodeViewModel}
      */
     #[Route('app/code/search', name: self::class, methods: 'GET')]
     #[Template('app/search/code.search.html.twig')]

@@ -27,7 +27,7 @@ class RipGrepProcessExecutor implements LoggerAwareInterface
         $this->logger?->info('Executing command `{command}`', ['command' => $commandLine]);
 
         // change working directory
-        $workingDir = getcwd();
+        $workingDir = Assert::string(getcwd());
         chdir($cwd);
 
         $handle = Assert::notFalse($this->processService->popen($commandLine, 'r'), 'Failed to open process for command: ' . $commandLine);

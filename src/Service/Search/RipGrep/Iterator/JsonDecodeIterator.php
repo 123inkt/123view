@@ -30,7 +30,12 @@ class JsonDecodeIterator implements IteratorAggregate
     public function getIterator(): Traversable
     {
         foreach ($this->iterator as $key => $value) {
-            yield $key => Json::decode($value, true);
+            /** @var array{
+             *     type: 'begin'|'context'|'end'|'match',
+             *     data: array{path: array{text: string}, lines: array{text: string}, line_number: int}
+             * } $json */
+            $json = Json::decode($value, true);
+            yield $key => $json;
         }
     }
 }

@@ -33,6 +33,9 @@ class SearchResultFactory
         return new SearchResult($repository, new SplFileInfo($filepath, $basepath . $rootDirectory, $relativeFilepath));
     }
 
+    /**
+     * @param Repository[] $repositories
+     */
     private function getRepository(string $directory, array $repositories): ?Repository
     {
         foreach ($repositories as $repository) {

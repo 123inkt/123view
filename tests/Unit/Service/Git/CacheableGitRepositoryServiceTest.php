@@ -8,6 +8,7 @@ use CzProject\GitPhp\GitRepository;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,8 +19,6 @@ use Symfony\Component\Filesystem\Filesystem;
 #[CoversClass(CacheableGitRepositoryService::class)]
 class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {
-    private const CACHE_DIRECTORY = "/cache/directory";
-
     private Filesystem&MockObject         $filesystem;
     private Git&MockObject                $git;
     private CacheableGitRepositoryService $service;
@@ -34,7 +33,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
             $this->git,
             $this->filesystem,
             null,
-            self::CACHE_DIRECTORY
+            $this->createMock(GitRepositoryLocationService::class)
         );
     }
 
