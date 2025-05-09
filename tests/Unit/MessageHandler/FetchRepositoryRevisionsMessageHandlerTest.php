@@ -69,7 +69,7 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
         $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
         $this->remoteRevisionService->expects($this->once())->method('fetchRevisions')->with($repository);
 
-        $this->lockManager->expects($this->once())->method('start')->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->lockManager->expects($this->once())->method('start')->willReturnCallback(static fn($repository, callable $callback) => $callback());
         $this->resetService->expects($this->once())->method('resetHard')->with($repository, 'origin/master');
 
         ($this->handler)($message);
