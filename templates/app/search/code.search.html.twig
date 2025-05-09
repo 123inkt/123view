@@ -5,8 +5,21 @@
         <h2 class="float-start pe-3 mb-0">{{ 'search'|trans }}</h2>
     </div>
 
+    {%- include 'app/flash/flashes.html.twig' -%}
+
+    <div class="mb-2">
+        <form method="get">
+            <div class="input-group">
+                <input type="search" name="search" value="{{ viewModel.searchQuery }}" class="form-control"
+                        {{ stimulus_controller('search-field') }}
+                       placeholder="{{ 'search.review'|trans }}"/>
+                <a href="?search=" class="btn btn-secondary">&times;</a>
+            </div>
+        </form>
+    </div>
+
     <div class="accordion" {{ stimulus_controller('accordion') }}>
-        {% for resultFile in files %}
+        {% for resultFile in viewModel.files %}
             <div class="accordion-item" data-role="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>

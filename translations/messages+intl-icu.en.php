@@ -277,6 +277,7 @@ return [
     'rules.welcome.description'                   => 'Receive notifications about one or more commits in one or more repositories.',
     'save'                                        => 'Save',
     'search'                                      => 'Search',
+    'search.much.be.minimum.5.characters'         => 'Search query must be at least 5 characters long',
     'search.review'                               => 'Search code review',
     'search.revisions'                            => 'Search revision',
     'send.type.both'                              => 'Mail and browser',
