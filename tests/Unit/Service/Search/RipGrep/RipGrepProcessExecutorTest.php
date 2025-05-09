@@ -26,6 +26,7 @@ class RipGrepProcessExecutorTest extends AbstractTestCase
     public function testExecute(): void
     {
         $handle = popen(PHP_BINARY . ' -v', 'r');
+        static::assertNotFalse($handle);
 
         $this->processService->expects(self::once())->method('popen')->with('/usr/bin/rg "foo" "bar"', 'r')->willReturn($handle);
 
