@@ -40,12 +40,12 @@ class SearchCodeController extends AbstractController
             $this->addFlash('error', $this->translator->trans('search.much.be.minimum.5.characters'));
             $files = [];
         } else {
-            $this->stopwatch?->start('finder');
+            $this->stopwatch?->start('file-search');
 
             $repositories = $this->repositoryRepository->findBy(['active' => true]);
             $files        = $this->fileSearcher->find($searchQuery, $repositories);
 
-            $this->stopwatch?->stop('finder');
+            $this->stopwatch?->stop('file-search');
         }
 
         return ['viewModel' => new SearchCodeViewModel($files, $searchQuery)];
