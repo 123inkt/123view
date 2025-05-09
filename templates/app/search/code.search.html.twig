@@ -5,21 +5,21 @@
         <h2 class="float-start pe-3 mb-0">{{ 'search'|trans }}</h2>
     </div>
 
-    <div class="accordion">
+    <div class="accordion" {{ stimulus_controller('accordion') }}>
         {% for resultFile in files %}
-            <div class="accordion-item">
+            <div class="accordion-item" data-role="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button">
+                    <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>
                         {{ resultFile.file.relativePathname }}
                     </button>
                 </h2>
-                <div class="accordion-collapse collapse">
+                <div class="accordion-collapse collapse" data-role="accordion-collapse">
                     <div class="accordion-body">
-                    <pre class="d-block">
-                        {%- for line in resultFile.lines -%}
-                            <span class="text-danger">{{- line.lineNumber -}}</span> {{- line.line -}}
-                        {%- endfor -%}
-                    </pre>
+                        <pre class="d-block">
+                            {%- for line in resultFile.lines -%}
+                                <span class="text-danger">{{- line.lineNumber -}}</span> {{- line.line -}}
+                            {%- endfor -%}
+                        </pre>
                     </div>
                 </div>
             </div>
