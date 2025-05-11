@@ -77,9 +77,4 @@ class RipGrepCommandBuilder
     {
         return $this->command . ' ' . implode(' ', array_map('escapeshellarg', Arrays::flatten($this->arguments)));
     }
-
-    public function __toString(): string
-    {
-        return $this->command . ' ' . implode(" ", $this->arguments);
-    }
 }
