@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Search\RipGrep;
 
 use DR\Review\Service\Process\ProcessService;
+use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
 use DR\Review\Service\Search\RipGrep\Iterator\ProcessOutputIterator;
-use DR\Review\Service\Search\RipGrep\RipGrepProcessExecutor;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;

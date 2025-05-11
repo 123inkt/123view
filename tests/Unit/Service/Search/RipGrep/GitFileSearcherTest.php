@@ -5,9 +5,9 @@ namespace DR\Review\Tests\Unit\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Search\SearchResult;
+use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
 use DR\Review\Service\Search\RipGrep\GitFileSearcher;
 use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
-use DR\Review\Service\Search\RipGrep\RipGrepProcessExecutor;
 use DR\Review\Service\Search\RipGrep\SearchResultLineParser;
 use DR\Review\Tests\AbstractTestCase;
 use Generator;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Search\RipGrep;
+namespace DR\Review\Service\Search\RipGrep\Command;
 
 use DR\Review\Service\Process\ProcessService;
 use DR\Review\Service\Search\RipGrep\Iterator\ProcessOutputIterator;

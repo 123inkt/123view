@@ -5,6 +5,8 @@ namespace DR\Review\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Search\SearchResult;
+use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilderFactory;
+use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
 use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 
 class GitFileSearcher

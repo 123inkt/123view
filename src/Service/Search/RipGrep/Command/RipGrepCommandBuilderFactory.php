@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Search\RipGrep;
+namespace DR\Review\Service\Search\RipGrep\Command;
 
 class RipGrepCommandBuilderFactory
 {
