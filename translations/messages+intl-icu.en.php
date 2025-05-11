@@ -281,7 +281,6 @@ return [
     'search'                                      => 'Search',
     'search.extension'                            => 'Extension(s)',
     'search.file.extension'                       => 'Search in files with the given file extension. Separate multiple extensions by comma',
-    'search.mode'                                 => 'Search either as is or use regular expression. Example: \'^.*code\'',
     'search.much.be.minimum.5.characters'         => 'Search query must be at least 5 characters long',
     'search.review'                               => 'Search code review',
     'search.revisions'                            => 'Search revision',

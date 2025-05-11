@@ -25,10 +25,6 @@
                        title="{{ 'search.file.extension'|trans }}"
                        value="{{ viewModel.fileExtension }}"
                        class="form-control code-search-file-extension-input"/>
-                <select name="mode" title="{{ search.mode|trans }}" class="form-control max-width-fit-content">
-                    <option value="string" {{ viewModel.searchMode === 'string' ? 'selected' : '' }}>string</option>
-                    <option value="regex" {{ viewModel.searchMode === 'regex' ? 'selected' : '' }}>regex</option>
-                </select>
                 {% if viewModel.searchQuery or viewModel.fileExtension %}
                     <a href="?search=&extension=&mode=" class="btn btn-secondary">&times;</a>
                 {% endif %}
