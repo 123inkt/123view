@@ -18,14 +18,19 @@
                 <input type="search" name="search" value="{{ viewModel.searchQuery }}" class="form-control"
                         {{ stimulus_controller('search-field') }}
                        placeholder="{{ 'search.review'|trans }}"/>
-                <input type="text" name="extension"
+                <input type="text"
+                       name="extension"
                        pattern="^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$"
                        placeholder="{{ 'search.extension'|trans }}"
                        title="{{ 'search.file.extension'|trans }}"
                        value="{{ viewModel.fileExtension }}"
                        class="form-control code-search-file-extension-input"/>
+                <select name="mode" title="{{ search.mode|trans }}" class="form-control max-width-fit-content">
+                    <option value="string" {{ viewModel.searchMode === 'string' ? 'selected' : '' }}>string</option>
+                    <option value="regex" {{ viewModel.searchMode === 'regex' ? 'selected' : '' }}>regex</option>
+                </select>
                 {% if viewModel.searchQuery or viewModel.fileExtension %}
-                    <a href="?search=&extension=" class="btn btn-secondary">&times;</a>
+                    <a href="?search=&extension=&mode=" class="btn btn-secondary">&times;</a>
                 {% endif %}
                 <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
             </div>
