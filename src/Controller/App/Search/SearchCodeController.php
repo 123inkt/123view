@@ -36,7 +36,7 @@ class SearchCodeController extends AbstractController
     public function __invoke(SearchCodeRequest $request): array
     {
         $searchQuery = $request->getSearchQuery();
-        $extension   = $request->getExtension();
+        $extensions  = $request->getExtensions();
         if (strlen($searchQuery) < 5) {
             $this->addFlash('error', $this->translator->trans('search.much.be.minimum.5.characters'));
             $files = [];
@@ -44,11 +44,11 @@ class SearchCodeController extends AbstractController
             $this->stopwatch?->start('file-search');
 
             $repositories = $this->repositoryRepository->findBy(['active' => true]);
-            $files        = $this->fileSearcher->find($searchQuery, $extension, $repositories);
+            $files        = $this->fileSearcher->find($searchQuery, $extensions, $repositories);
 
             $this->stopwatch?->stop('file-search');
         }
 
-        return ['viewModel' => new SearchCodeViewModel($files, $searchQuery, $extension)];
+        return ['viewModel' => new SearchCodeViewModel($files, $searchQuery, $extensions === null ? null : implode(',', $extensions))];
     }
 }

@@ -9,34 +9,29 @@ use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 
 class GitFileSearcher
 {
-    private const DEFAULT_ARGUMENTS = [
-        '--hidden',
-        '--color=never',
-        '--line-number',
-        '--after-context=5',
-        '--before-context=5',
-        '--glob=!.git/',
-        '--json'
-    ];
-
     public function __construct(
         private readonly string $gitCacheDirectory,
+        private readonly RipGrepCommandBuilderFactory $commandBuilderFactory,
         private readonly RipGrepProcessExecutor $executor,
         private readonly SearchResultLineParser $parser,
     ) {
     }
 
     /**
-     * @param Repository[] $repositories
+     * @param non-empty-array<string> $extensions
+     * @param Repository[]            $repositories
      *
      * @return SearchResult[]
      */
-    public function find(string $searchQuery, ?string $extension, array $repositories): array
+    public function find(string $searchQuery, ?array $extensions, array $repositories): array
     {
-        $arguments = self::DEFAULT_ARGUMENTS;
-        array_push($arguments, $searchQuery);
+        $command = $this->commandBuilderFactory->default();
+        $command->search($searchQuery);
+        if ($extensions !== null) {
+            $command->glob('*.{' . implode(',', $extensions) . '}');
+        }
 
-        $jsonIterator = new JsonDecodeIterator($this->executor->execute($arguments, $this->gitCacheDirectory));
+        $jsonIterator = new JsonDecodeIterator($this->executor->execute($command, $this->gitCacheDirectory));
 
         return $this->parser->parse($jsonIterator, $repositories);
     }
