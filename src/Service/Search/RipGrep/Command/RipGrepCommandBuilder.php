@@ -9,7 +9,17 @@ class RipGrepCommandBuilder
 {
     private string $command;
 
-    /** @var array<string, string> */
+    /** @var array{
+     *     hidden?: string,
+     *     color?: string,
+     *     'line-number'?: string,
+     *     'before-context'?: string,
+     *     'after-context'?: string,
+     *     glob?: list<string>,
+     *     json?: string,
+     *     search?: string
+     * }
+     */
     private array $arguments = [];
 
     public function __construct()
@@ -75,6 +85,9 @@ class RipGrepCommandBuilder
 
     public function build(): string
     {
-        return $this->command . ' ' . implode(' ', array_map('escapeshellarg', Arrays::flatten($this->arguments)));
+        /** @var list<string> $values */
+        $values = Arrays::flatten($this->arguments);
+
+        return $this->command . ' ' . implode(' ', array_map('escapeshellarg', $values));
     }
 }
