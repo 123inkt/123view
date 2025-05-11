@@ -31,7 +31,7 @@ class GitFileSearcher
      *
      * @return SearchResult[]
      */
-    public function find(string $searchQuery, array $repositories): array
+    public function find(string $searchQuery, ?string $extension, array $repositories): array
     {
         $arguments = self::DEFAULT_ARGUMENTS;
         array_push($arguments, $searchQuery);
