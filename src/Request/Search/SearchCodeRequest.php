@@ -14,6 +14,13 @@ class SearchCodeRequest extends AbstractValidatedRequest
         return trim($this->request->query->getString('search'));
     }
 
+    public function getSearchMode(): string
+    {
+        $mode = $this->request->query->getString('mode');
+
+        return $mode === '' ? 'string' : $mode;
+    }
+
     /**
      * @return non-empty-array<string>|null
      */
@@ -31,6 +38,7 @@ class SearchCodeRequest extends AbstractValidatedRequest
                 'query' => [
                     'search'    => 'required|string',
                     'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
+                    'mode'      => 'string|in:string,regex',
                 ]
             ]
         );
