@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Service\Search\RipGrep;
+namespace DR\Review\Tests\Unit\Service\Search\RipGrep\Command;
 
 use DR\Review\Service\Process\ProcessService;
+use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilder;
+use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
 use DR\Review\Service\Search\RipGrep\Iterator\ProcessOutputIterator;
-use DR\Review\Service\Search\RipGrep\RipGrepProcessExecutor;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,10 +30,12 @@ class RipGrepProcessExecutorTest extends AbstractTestCase
         static::assertNotFalse($handle);
 
         $command = '/usr/bin/rg ' . escapeshellarg("foo") . ' ' . escapeshellarg("bar");
+        $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
+        $commandBuilder->method('build')->willReturn($command);
 
         $this->processService->expects(self::once())->method('popen')->with($command, 'r')->willReturn($handle);
 
-        $iterator = $this->executor->execute(['foo', 'bar'], __DIR__);
+        $iterator = $this->executor->execute($commandBuilder, __DIR__);
         $expected = new ProcessOutputIterator($handle);
         static::assertEquals($expected, $iterator);
     }

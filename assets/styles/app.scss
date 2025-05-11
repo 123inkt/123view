@@ -52,6 +52,10 @@ ul {
     --bs-btn-active-border-color: #e24329;
 }
 
+.max-width-fit-content {
+    max-width: fit-content;
+}
+
 .form-control:required,
 .form-select {
     border-left: 4px solid #dc3545;
@@ -68,8 +72,4 @@ ul {
 
 .repository-columns > * {
     column-count: 6;
-}
-
-.search-form-mode {
-    max-width: fit-content;
 }
