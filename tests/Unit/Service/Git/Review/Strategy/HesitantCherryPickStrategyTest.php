@@ -8,7 +8,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Checkout\RecoverableGitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
@@ -23,7 +23,7 @@ use function DR\PHPUnitExtensions\Mock\consecutive;
 #[CoversClass(HesitantCherryPickStrategy::class)]
 class HesitantCherryPickStrategyTest extends AbstractTestCase
 {
-    private GitCheckoutService&MockObject        $checkoutService;
+    private RecoverableGitCheckoutService&MockObject        $checkoutService;
     private GitCherryPickService&MockObject      $cherryPickService;
     private GitDiffService&MockObject            $diffService;
     private GitRepositoryResetManager&MockObject $resetManager;
@@ -33,7 +33,7 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->checkoutService    = $this->createMock(GitCheckoutService::class);
+        $this->checkoutService    = $this->createMock(RecoverableGitCheckoutService::class);
         $this->cherryPickService  = $this->createMock(GitCherryPickService::class);
         $this->diffService        = $this->createMock(GitDiffService::class);
         $this->resetManager       = $this->createMock(GitRepositoryResetManager::class);

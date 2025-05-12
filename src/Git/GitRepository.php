@@ -26,6 +26,7 @@ class GitRepository
     /**
      * Execute git command via cli
      * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
+     * @throws ProcessFailedException
      */
     public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
     {

@@ -9,7 +9,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\Add\GitAddService;
-use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Checkout\RecoverableGitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Commit\GitCommitService;
 use DR\Review\Service\Git\Diff\GitDiffService;
@@ -31,7 +31,7 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
         private readonly GitAddService $addService,
         private readonly GitStatusService $statusService,
         private readonly GitCommitService $commitService,
-        private readonly GitCheckoutService $checkoutService,
+        private readonly RecoverableGitCheckoutService $checkoutService,
         private readonly GitCherryPickService $cherryPickService,
         private readonly GitResetService $resetService,
         private readonly GitDiffService $diffService,

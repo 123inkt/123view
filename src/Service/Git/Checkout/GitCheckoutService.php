@@ -10,6 +10,7 @@ use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class GitCheckoutService implements LoggerAwareInterface
 {
@@ -35,7 +36,7 @@ class GitCheckoutService implements LoggerAwareInterface
     }
 
     /**
-     * @throws RepositoryException
+     * @throws RepositoryException|ProcessFailedException
      */
     public function checkoutRevision(Revision $revision): string
     {
