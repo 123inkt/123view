@@ -10,7 +10,6 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Service\Git\Checkout\GitCheckoutService;
 use DR\Review\Service\Git\Checkout\RecoverableGitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
