@@ -5,7 +5,7 @@ namespace DR\Review\Service\Git\Review\Strategy;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Checkout\RecoverableGitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
@@ -19,7 +19,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 class BasicCherryPickStrategy implements ReviewDiffStrategyInterface
 {
     public function __construct(
-        private readonly GitCheckoutService $checkoutService,
+        private readonly RecoverableGitCheckoutService $checkoutService,
         private readonly GitCherryPickService $cherryPickService,
         private readonly GitDiffService $diffService,
         private readonly GitRepositoryResetManager $resetManager,

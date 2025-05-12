@@ -11,7 +11,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\Add\GitAddService;
-use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Checkout\RecoverableGitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Commit\GitCommitService;
 use DR\Review\Service\Git\Diff\GitDiffService;
@@ -27,15 +27,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(PersistentCherryPickStrategy::class)]
 class PersistentCherryPickStrategyTest extends AbstractTestCase
 {
-    private GitAddService&MockObject             $addService;
-    private GitStatusService&MockObject          $statusService;
-    private GitCommitService&MockObject          $commitService;
-    private GitCheckoutService&MockObject        $checkoutService;
-    private GitCherryPickService&MockObject      $cherryPickService;
-    private GitResetService&MockObject           $resetService;
-    private GitDiffService&MockObject            $diffService;
-    private GitRepositoryResetManager&MockObject $resetManager;
-    private PersistentCherryPickStrategy         $strategy;
+    private GitAddService&MockObject                 $addService;
+    private GitStatusService&MockObject              $statusService;
+    private GitCommitService&MockObject              $commitService;
+    private RecoverableGitCheckoutService&MockObject $checkoutService;
+    private GitCherryPickService&MockObject          $cherryPickService;
+    private GitResetService&MockObject               $resetService;
+    private GitDiffService&MockObject                $diffService;
+    private GitRepositoryResetManager&MockObject     $resetManager;
+    private PersistentCherryPickStrategy             $strategy;
 
     protected function setUp(): void
     {
@@ -43,7 +43,7 @@ class PersistentCherryPickStrategyTest extends AbstractTestCase
         $this->addService        = $this->createMock(GitAddService::class);
         $this->statusService     = $this->createMock(GitStatusService::class);
         $this->commitService     = $this->createMock(GitCommitService::class);
-        $this->checkoutService   = $this->createMock(GitCheckoutService::class);
+        $this->checkoutService   = $this->createMock(RecoverableGitCheckoutService::class);
         $this->cherryPickService = $this->createMock(GitCherryPickService::class);
         $this->resetService      = $this->createMock(GitResetService::class);
         $this->diffService       = $this->createMock(GitDiffService::class);
