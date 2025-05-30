@@ -26,7 +26,7 @@ class SearchBranchRequestTest extends AbstractRequestTestCase
      */
     public function testGetValidationRules(): void
     {
-        $expected = new ValidationRules(['query' => ['search' => 'required|string|min:1']]);
+        $expected = new ValidationRules(['query' => ['search' => 'string']]);
         $this->expectGetValidationRules($expected);
 
         $this->validatedRequest->validate();
