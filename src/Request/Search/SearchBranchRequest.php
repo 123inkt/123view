@@ -8,6 +8,9 @@ use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 
 class SearchBranchRequest extends AbstractValidatedRequest
 {
+    /**
+     * @return non-empty-string
+     */
     public function getSearchQuery(): string
     {
         return trim($this->request->query->getString('search'));
@@ -15,6 +18,6 @@ class SearchBranchRequest extends AbstractValidatedRequest
 
     protected function getValidationRules(): ?ValidationRules
     {
-        return new ValidationRules(['query' => ['search' => 'required|string']]);
+        return new ValidationRules(['query' => ['search' => 'required|string|min:1']]);
     }
 }

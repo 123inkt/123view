@@ -18,4 +18,43 @@
         </form>
     </div>
 
+    {% if viewModel.branches %}
+        <table class="table table-bordered table-hover table-sm repository-branch-list mt-3">
+            <tbody>
+            {% for repositoryId, branches in viewModel.branches %}
+                {% set repository = viewModel.repositories[repositoryId] %}
+
+                {% for branch in branches %}
+                    {% set review = viewModel.reviews[repositoryId][branch] ?? null %}
+                    <tr>
+                        <td>
+                            <span class="badge rounded-pill text-bg-primary me-2">{{ repository.displayName }}</span>
+                        </td>
+                        <td>{{ branch }}</td>
+                        <td>
+                            {% if review %}
+                                <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                                    CR-{{ review.projectId }}
+                                </a>
+                            {% else %}
+                                <form method="post"
+                                      action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
+                                    <input type="hidden" name="branch" value="{{ branch }}">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        {{ 'create.branch.review'|trans }}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            {{ 'no.branches.found'|trans }}
+        </div>
+    {% endif %}
+
 {% endblock %}

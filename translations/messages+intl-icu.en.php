@@ -365,4 +365,6 @@ return [
     'you'                                         => 'You',
     'source.code'                                 => 'Source code',
     'branch.search'                               => 'Branch name search',
+    'no.branches.found'                           => 'No branches matching your search query',
+    'no.matches.found'                            => 'No matches found',
 ];
