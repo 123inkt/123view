@@ -68,7 +68,10 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleProcessor->expects($this->once())->method('processRule')->willReturn([$commit]);
-        $this->viewModelProvider->expects($this->once())->method('getCommitsViewModel')->with([$commit], $rule, $notification)->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())
+            ->method('getCommitsViewModel')
+            ->with([$commit], $rule, $notification)
+            ->willReturn($viewModel);
         $this->expectRender('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
         $this->notificationRepository->expects($this->once())->method('save')->with($notification);
 
