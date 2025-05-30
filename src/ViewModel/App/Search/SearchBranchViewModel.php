@@ -9,7 +9,7 @@ use DR\Review\Entity\Review\CodeReview;
 readonly class SearchBranchViewModel
 {
     /**
-     * @codeCoverageIgnore  Simple DTO
+     * @codeCoverageIgnore Simple DTO
      *
      * @param array<int, string[]>                  $branches
      * @param Repository[]                          $repositories
