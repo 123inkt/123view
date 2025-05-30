@@ -47,6 +47,7 @@ class SearchBranchViewModelProvider
         $branches = [];
         foreach ($repositories as $repository) {
             // filter branches based on searchQuery
+            // If the search query is empty, allow all branches. Otherwise, filter branches containing the search query (case-insensitive).
             $branchNames = array_filter(
                 $this->branchService->getRemoteBranches($repository),
                 static fn($branchName) => $searchQuery === '' || stripos($branchName, $searchQuery) !== false
