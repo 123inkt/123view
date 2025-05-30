@@ -49,6 +49,9 @@ class SearchCodeController extends AbstractController
             $this->stopwatch?->stop('file-search');
         }
 
-        return ['viewModel' => new SearchCodeViewModel($files, $searchQuery, $extensions === null ? null : implode(',', $extensions))];
+        return [
+            'page_title'    => $this->translator->trans('code.search'),
+            'viewModel' => new SearchCodeViewModel($files, $searchQuery, $extensions === null ? null : implode(',', $extensions))
+        ];
     }
 }

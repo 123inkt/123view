@@ -11,12 +11,15 @@ use DR\Review\ViewModelProvider\SearchBranchViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 class SearchBranchesController extends AbstractController
 {
-    public function __construct(private readonly SearchBranchViewModelProvider $viewModelProvider)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly SearchBranchViewModelProvider $viewModelProvider
+    ) {
     }
 
     /**
@@ -28,6 +31,9 @@ class SearchBranchesController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(SearchBranchRequest $request): array
     {
-        return ['viewModel' => $this->viewModelProvider->getSearchBranchViewModel($request->getSearchQuery())];
+        return [
+            'page_title' => $this->translator->trans('branch.search'),
+            'viewModel'  => $this->viewModelProvider->getSearchBranchViewModel($request->getSearchQuery())
+        ];
     }
 }
