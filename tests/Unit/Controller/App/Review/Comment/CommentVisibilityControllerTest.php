@@ -27,9 +27,9 @@ class CommentVisibilityControllerTest extends AbstractControllerTestCase
         $request          = new Request();
         $request->setSession($session);
 
-        $validatedRequest->expects(self::once())->method('getRequest')->willReturn($request);
-        $validatedRequest->expects(self::once())->method('getVisibility')->willReturn(CommentVisibility::NONE);
-        $session->expects(self::once())->method('set')->with(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, CommentVisibility::NONE->value);
+        $validatedRequest->expects($this->once())->method('getRequest')->willReturn($request);
+        $validatedRequest->expects($this->once())->method('getVisibility')->willReturn(CommentVisibility::NONE);
+        $session->expects($this->once())->method('set')->with(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, CommentVisibility::NONE->value);
 
         /** @var JsonResponse $response */
         $response = ($this->controller)($validatedRequest);

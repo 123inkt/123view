@@ -35,7 +35,7 @@ class UpdateRepositoryRemoteMessageHandlerTest extends AbstractTestCase
     {
         $event = new RepositoryUpdatedMessage(123);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->remoteService->expects(self::never())->method('updateRemoteUrl');
 
         ($this->messageHandler)($event);
@@ -49,8 +49,8 @@ class UpdateRepositoryRemoteMessageHandlerTest extends AbstractTestCase
         $event      = new RepositoryUpdatedMessage(123);
         $repository = new Repository();
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->remoteService->expects(self::once())->method('updateRemoteUrl')->with($repository);
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->remoteService->expects($this->once())->method('updateRemoteUrl')->with($repository);
 
         ($this->messageHandler)($event);
     }

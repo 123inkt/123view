@@ -60,16 +60,16 @@ class CommentsViewModelProviderTest extends AbstractTestCase
         $file->filePathAfter        = '/path/to/fileAfter';
         $fileBefore->filePathBefore = 'fileBefore';
 
-        $this->commentRepository->expects(self::once())
+        $this->commentRepository->expects($this->once())
             ->method('findByReview')
             ->with($review, ['/path/to/fileAfter', '/path/to/fileBefore'])
             ->willReturn($comments);
-        $this->diffFinder->expects(self::exactly(2))
+        $this->diffFinder->expects($this->exactly(2))
             ->method('findLineInFile')
             ->with(...consecutive([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))
             ->willReturn($line, null);
-        $this->comparePolicyProvider->expects(self::once())->method('getComparePolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $this->visibilityProvider->expects(self::once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
+        $this->comparePolicyProvider->expects($this->once())->method('getComparePolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->visibilityProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
 
         $viewModel = $this->provider->getCommentsViewModel($review, $fileBefore, $file);
         static::assertSame([$commentA], $viewModel->getComments($line));

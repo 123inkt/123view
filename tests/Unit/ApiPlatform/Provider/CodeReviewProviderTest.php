@@ -58,9 +58,9 @@ class CodeReviewProviderTest extends AbstractTestCase
         $output = $this->createMock(CodeReviewOutput::class);
 
         // setup mocks
-        $this->collectionProvider->expects(self::once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$review]));
-        $this->userService->expects(self::once())->method('getUsersForRevisions')->with([$revision])->willReturn([$user]);
-        $this->reviewOutputFactory->expects(self::once())
+        $this->collectionProvider->expects($this->once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$review]));
+        $this->userService->expects($this->once())->method('getUsersForRevisions')->with([$revision])->willReturn([$user]);
+        $this->reviewOutputFactory->expects($this->once())
             ->method('create')
             ->with($review, [$reviewer], [$user])
             ->willReturn($output);

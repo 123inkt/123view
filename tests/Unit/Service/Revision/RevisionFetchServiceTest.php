@@ -57,7 +57,7 @@ class RevisionFetchServiceTest extends AbstractTestCase
         $ruleB->getRepositories()->add((new Repository())->setId(123));
         $ruleB->getRepositories()->add((new Repository())->setId(456));
 
-        $this->remoteRevisionService->expects(self::exactly(2))
+        $this->remoteRevisionService->expects($this->exactly(2))
             ->method('fetchRevisionFromRemote')
             ->with(...consecutive([(new Repository())->setId(123)], [(new Repository())->setId(456)]))
             ->willReturn([]);
@@ -73,7 +73,7 @@ class RevisionFetchServiceTest extends AbstractTestCase
         $rule = new Rule();
         $rule->getRepositories()->add((new Repository())->setId(123));
 
-        $this->remoteRevisionService->expects(self::once())
+        $this->remoteRevisionService->expects($this->once())
             ->method('fetchRevisionFromRemote')
             ->with((new Repository())->setId(123))
             ->willReturn([]);
@@ -92,14 +92,14 @@ class RevisionFetchServiceTest extends AbstractTestCase
         $revisionB = (new Revision())->setCommitHash('commit1');
         $commit    = $this->createCommit();
 
-        $this->remoteRevisionService->expects(self::once())
+        $this->remoteRevisionService->expects($this->once())
             ->method('fetchRevisionFromRemote')
             ->with($repository)
             ->willReturn([$commit]);
 
-        $this->revisionFactory->expects(self::once())->method('createFromCommit')->with($commit)->willReturn([$revisionA, $revisionB]);
-        $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$revisionA])->willReturn([$revisionA]);
-        $this->bus->expects(self::once())
+        $this->revisionFactory->expects($this->once())->method('createFromCommit')->with($commit)->willReturn([$revisionA, $revisionB]);
+        $this->revisionRepository->expects($this->once())->method('saveAll')->with($repository, [$revisionA])->willReturn([$revisionA]);
+        $this->bus->expects($this->once())
             ->method('dispatch')
             ->with(self::isInstanceOf(NewRevisionMessage::class))
             ->willReturn($this->envelope);

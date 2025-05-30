@@ -51,8 +51,8 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
         $rule = (new Rule())->setUser($this->user)->setName('name');
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::DELETE, $rule);
-        $this->ruleRepository->expects(self::once())->method('remove')->with($rule, true);
-        $this->translator->expects(self::once())->method('trans')->willReturn('removed');
+        $this->ruleRepository->expects($this->once())->method('remove')->with($rule, true);
+        $this->translator->expects($this->once())->method('trans')->willReturn('removed');
         $this->expectAddFlash('success', 'removed');
         $this->expectGenerateUrl(RulesController::class)->willReturn('redirect');
 

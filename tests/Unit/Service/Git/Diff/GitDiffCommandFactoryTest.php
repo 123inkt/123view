@@ -36,9 +36,9 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
                 ->setExcludeMergeCommits(false)
         );
 
-        $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreCrAtEol')->willReturnSelf();
 
         $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
         $this->commandBuilder->expects(static::never())->method('ignoreSpaceChange')->willReturnSelf();
@@ -58,14 +58,14 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
                 ->setIgnoreBlankLines(true)
         );
 
-        $this->commandBuilder->expects(static::once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('hashes')->with('startHash', 'endHash')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreCrAtEol')->willReturnSelf();
 
-        $this->commandBuilder->expects(static::once())->method('ignoreSpaceAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreSpaceChange')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreAllSpace')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreBlankLines')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreSpaceChange')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreAllSpace')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreBlankLines')->willReturnSelf();
 
         $this->factory->diffHashes($rule, 'startHash', 'endHash');
     }

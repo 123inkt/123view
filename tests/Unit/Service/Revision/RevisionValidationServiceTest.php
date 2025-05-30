@@ -47,10 +47,10 @@ class RevisionValidationServiceTest extends AbstractTestCase
         $localHashes  = ['old-hash', 'existing-hash'];
         $remoteHashes = ['new-hash', 'existing-hash'];
 
-        $this->repositoryRepository->expects(self::once())->method('save')->with($repository, true);
-        $this->revisionRepository->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn($localHashes);
-        $this->logService->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn($remoteHashes);
-        $this->bus->expects(self::exactly(2))
+        $this->repositoryRepository->expects($this->once())->method('save')->with($repository, true);
+        $this->revisionRepository->expects($this->once())->method('getCommitHashes')->with($repository)->willReturn($localHashes);
+        $this->logService->expects($this->once())->method('getCommitHashes')->with($repository)->willReturn($remoteHashes);
+        $this->bus->expects($this->exactly(2))
             ->method('dispatch')
             ->with(...consecutive([new CommitAddedMessage(123, 'new-hash')], [new CommitRemovedMessage(123, 'old-hash')]))
             ->willReturn($this->envelope);

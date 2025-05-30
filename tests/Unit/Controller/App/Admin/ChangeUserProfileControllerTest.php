@@ -51,7 +51,7 @@ class ChangeUserProfileControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->userRepository->expects(self::once())->method('save')->with($user, true);
+        $this->userRepository->expects($this->once())->method('save')->with($user, true);
         $this->expectAddFlash('success', 'user.profile.saved.successful');
         $this->expectRefererRedirect(UsersController::class);
 

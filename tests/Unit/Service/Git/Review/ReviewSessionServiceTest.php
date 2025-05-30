@@ -32,7 +32,7 @@ class ReviewSessionServiceTest extends AbstractTestCase
     public function testGetDiffComparePolicyForUserWithEmptySession(): void
     {
         $session = $this->createMock(SessionInterface::class);
-        $session->expects(self::once())->method('get')->with('diff-comparison-policy')->willReturn(null);
+        $session->expects($this->once())->method('get')->with('diff-comparison-policy')->willReturn(null);
 
         $request = new Request();
         $request->setSession($session);
@@ -45,7 +45,7 @@ class ReviewSessionServiceTest extends AbstractTestCase
     public function testGetDiffComparePolicyForUser(): void
     {
         $session = $this->createMock(SessionInterface::class);
-        $session->expects(self::once())->method('get')->with('diff-comparison-policy')->willReturn('trim');
+        $session->expects($this->once())->method('get')->with('diff-comparison-policy')->willReturn('trim');
 
         $request = new Request();
         $request->setSession($session);

@@ -30,7 +30,7 @@ class UserServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setAuthorEmail('sherlock@example.com');
 
-        $this->userRepository->expects(self::once())->method('findBy')->with(['email' => ['sherlock@example.com']])->willReturn([$userA]);
+        $this->userRepository->expects($this->once())->method('findBy')->with(['email' => ['sherlock@example.com']])->willReturn([$userA]);
 
         $users = $this->service->getUsersForRevisions([$revision]);
         static::assertSame([$userA], $users);

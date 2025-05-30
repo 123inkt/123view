@@ -56,7 +56,7 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $revision   = new Revision();
         $diffFile   = new DiffFile();
 
-        $this->diffService->expects(self::once())->method('getDiffFromRevision')->with($revision)->willReturn([$diffFile]);
+        $this->diffService->expects($this->once())->method('getDiffFromRevision')->with($revision)->willReturn([$diffFile]);
 
         static::assertSame([$diffFile], $this->strategy->getDiffFiles($repository, [$revision]));
     }
@@ -72,17 +72,17 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $revisions  = [$revisionA, $revisionB];
         $diffFile   = new DiffFile();
 
-        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revisionA)->willReturn('branchName');
-        $this->cherryPickService->expects(self::exactly(2))
+        $this->checkoutService->expects($this->once())->method('checkoutRevision')->with($revisionA)->willReturn('branchName');
+        $this->cherryPickService->expects($this->exactly(2))
             ->method('cherryPickRevisions')
             ->with(...consecutive([[$revisionA]], [[$revisionB]]));
-        $this->resetManager->expects(self::once())
+        $this->resetManager->expects($this->once())
             ->method('start')
             ->with($repository, 'branchName')
             // phpcs:disable
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
         // phpcs:enable
-        $this->cherryPickStrategy->expects(self::once())->method('getDiffFiles')->with($repository, $revisions)->willReturn([$diffFile]);
+        $this->cherryPickStrategy->expects($this->once())->method('getDiffFiles')->with($repository, $revisions)->willReturn([$diffFile]);
 
         static::assertSame([$diffFile], $this->strategy->getDiffFiles($repository, $revisions));
     }
@@ -99,22 +99,22 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $diffFileA  = new DiffFile();
         $diffFileB  = new DiffFile();
 
-        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revisionA)->willReturn('branchName');
+        $this->checkoutService->expects($this->once())->method('checkoutRevision')->with($revisionA)->willReturn('branchName');
 
         // trigger exception on the second cherry-pick
-        $this->cherryPickService->expects(self::exactly(2))
+        $this->cherryPickService->expects($this->exactly(2))
             ->method('cherryPickRevisions')
             ->with(...consecutive([[$revisionA]], [[$revisionB]]))
             ->willReturnOnConsecutiveCalls(new CherryPickResult(true), static::throwException(new RepositoryException()));
-        $this->resetManager->expects(self::once())
+        $this->resetManager->expects($this->once())
             ->method('start')
             ->with($repository, 'branchName')
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
 
         // revisionA will get fetched via tryCherryPick
-        $this->cherryPickStrategy->expects(self::once())->method('getDiffFiles')->with($repository, [$revisionA])->willReturn([$diffFileA]);
+        $this->cherryPickStrategy->expects($this->once())->method('getDiffFiles')->with($repository, [$revisionA])->willReturn([$diffFileA]);
         // revisionB will get fetched via getDiffFromRevision
-        $this->diffService->expects(self::once())->method('getDiffFromRevision')->with($revisionB)->willReturn([$diffFileB]);
+        $this->diffService->expects($this->once())->method('getDiffFromRevision')->with($revisionB)->willReturn([$diffFileB]);
 
         static::assertSame([$diffFileA, $diffFileB], $this->strategy->getDiffFiles($repository, $revisions));
     }

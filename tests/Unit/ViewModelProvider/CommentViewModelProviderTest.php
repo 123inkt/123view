@@ -41,7 +41,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $comment = new Comment();
         $action  = new EditCommentAction($comment);
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(EditCommentFormType::class, $comment, ['comment' => $comment]);
 
@@ -61,7 +61,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $comment = new Comment();
         $action  = new AddCommentReplyAction($comment);
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(AddCommentReplyFormType::class, null, ['comment' => $comment]);
 
@@ -81,7 +81,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $reply  = new CommentReply();
         $action = new EditCommentReplyAction($reply);
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(EditCommentReplyFormType::class, $reply, ['reply' => $reply]);
 

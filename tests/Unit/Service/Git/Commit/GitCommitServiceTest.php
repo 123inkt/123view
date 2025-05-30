@@ -41,13 +41,13 @@ class GitCommitServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://url/'));
 
         $builder = $this->createMock(GitCommitCommandBuilder::class);
-        $builder->expects(self::once())->method('message')->with($message)->willReturnSelf();
-        $builder->expects(self::once())->method('allowEmpty')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createCommit')->willReturn($builder);
+        $builder->expects($this->once())->method('message')->with($message)->willReturnSelf();
+        $builder->expects($this->once())->method('allowEmpty')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createCommit')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
 
         $this->service->commit($repository, $message);
     }

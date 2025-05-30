@@ -77,8 +77,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
         $review = new CodeReview();
         $review->setRepository($repository);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->gitlabService->expects(self::once())->method('getMergeRequestUrl')->with(123, 'remote-ref')->willReturn('url');
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->gitlabService->expects($this->once())->method('getMergeRequestUrl')->with(123, 'remote-ref')->willReturn('url');
 
         $expected = new JsonResponse(
             ['url' => 'url', 'icon' => 'bi-gitlab', 'title' => 'Go to merge request in gitlab'],

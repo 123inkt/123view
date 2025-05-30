@@ -34,8 +34,8 @@ class GarbageCollectGitCommandTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setName('foobar');
 
-        $this->repositoryRepository->expects(static::once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
-        $this->garbageCollectService->expects(static::once())->method('garbageCollect')->with($repository, 'now');
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
+        $this->garbageCollectService->expects($this->once())->method('garbageCollect')->with($repository, 'now');
 
         $commandTester = new CommandTester($this->command);
         static::assertSame(Command::SUCCESS, $commandTester->execute([]));
@@ -46,8 +46,8 @@ class GarbageCollectGitCommandTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setName('foobar');
 
-        $this->repositoryRepository->expects(static::once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
-        $this->garbageCollectService->expects(static::once())->method('garbageCollect')->willThrowException(new RuntimeException('fail'));
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
+        $this->garbageCollectService->expects($this->once())->method('garbageCollect')->willThrowException(new RuntimeException('fail'));
 
         $commandTester = new CommandTester($this->command);
         static::assertSame(Command::SUCCESS, $commandTester->execute([]));

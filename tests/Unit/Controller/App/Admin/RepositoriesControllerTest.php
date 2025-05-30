@@ -31,7 +31,7 @@ class RepositoriesControllerTest extends AbstractControllerTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->repositoryRepository->expects(self::once())->method('findBy')->with([], ['displayName' => 'ASC'])->willReturn([$repository]);
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with([], ['displayName' => 'ASC'])->willReturn([$repository]);
 
         $actual = ($this->controller)();
         static::assertEquals(['repositoriesViewModel' => new RepositoriesViewModel([$repository])], $actual);

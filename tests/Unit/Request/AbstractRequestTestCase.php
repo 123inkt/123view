@@ -49,12 +49,12 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
         $violationList = new ConstraintViolationList();
 
         $this->constraintFactory
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('createConstraint')
             ->with($rules)
             ->willReturn($constraint);
         $this->validator
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('validate')
             ->with(self::isInstanceOf(Request::class), $constraint)
             ->willReturn($violationList);

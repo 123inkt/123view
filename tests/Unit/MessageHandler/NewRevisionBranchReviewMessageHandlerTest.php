@@ -57,7 +57,7 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeUnknownRevision(): void
     {
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->reviewRepository->expects(self::never())->method('findOneBy');
         ($this->messageHandler)(new NewRevisionMessage(123));
     }
@@ -70,8 +70,8 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $revision   = (new Revision())->setRepository($repository)->setFirstBranch('first-branch');
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewRepository->expects(self::once())->method('findOneBy')
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewRepository->expects($this->once())->method('findOneBy')
             ->with(
                 [
                     'referenceId' => ['first-branch', 'origin/first-branch'],
@@ -95,12 +95,12 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
         $revision   = (new Revision())->setRepository($repository)->setFirstBranch('first-branch');
         $review     = (new CodeReview())->setState(CodeReviewStateType::OPEN);
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewRepository->expects(self::once())->method('findOneBy')->willReturn($review);
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->seenStatusService->expects(self::once())->method('markAllAsUnseen')->with($review, $revision);
-        $this->eventService->expects(self::once())
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewRepository->expects($this->once())->method('findOneBy')->willReturn($review);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
+        $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision]);
+        $this->seenStatusService->expects($this->once())->method('markAllAsUnseen')->with($review, $revision);
+        $this->eventService->expects($this->once())
             ->method('revisionAddedToReview')
             ->with($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::ACCEPTED);
 

@@ -37,8 +37,8 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
      */
     public function testGetNotificationsViewModelDefault(): void
     {
-        $this->notificationRepository->expects(self::once())->method('getUnreadNotificationPerRuleCount')->with($this->user)->willReturn([]);
-        $this->ruleRepository->expects(self::once())
+        $this->notificationRepository->expects($this->once())->method('getUnreadNotificationPerRuleCount')->with($this->user)->willReturn([]);
+        $this->ruleRepository->expects($this->once())
             ->method('findBy')
             ->with(['user' => $this->user, 'active' => true], ['name' => 'ASC'], 100)
             ->willReturn([]);
@@ -56,15 +56,15 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
         $rule         = (new Rule())->setId(123);
         $notification = new RuleNotification();
 
-        $this->notificationRepository->expects(self::once())
+        $this->notificationRepository->expects($this->once())
             ->method('getUnreadNotificationPerRuleCount')
             ->with($this->user)
             ->willReturn([123 => 5]);
-        $this->ruleRepository->expects(self::once())
+        $this->ruleRepository->expects($this->once())
             ->method('findBy')
             ->with(['user' => $this->user, 'active' => true], ['name' => 'ASC'], 100)
             ->willReturn([$rule]);
-        $this->notificationRepository->expects(self::once())
+        $this->notificationRepository->expects($this->once())
             ->method('findBy')
             ->with(['rule' => $rule, 'read' => 0], ['createTimestamp' => 'DESC'], 100)
             ->willReturn([$notification]);

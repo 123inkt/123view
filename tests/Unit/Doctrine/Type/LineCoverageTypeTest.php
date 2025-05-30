@@ -29,7 +29,7 @@ class LineCoverageTypeTest extends AbstractTestCase
     {
         $column = ['length' => 100];
 
-        $this->platform->expects(self::once())->method('getBinaryTypeDeclarationSQL')->with($column)->willReturn('varbinary');
+        $this->platform->expects($this->once())->method('getBinaryTypeDeclarationSQL')->with($column)->willReturn('varbinary');
 
         static::assertSame('varbinary', $this->type->getSQLDeclaration($column, $this->platform));
     }

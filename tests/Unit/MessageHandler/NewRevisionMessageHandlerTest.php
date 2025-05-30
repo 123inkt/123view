@@ -66,8 +66,8 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $message  = new NewRevisionMessage(123);
         $revision = new Revision();
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(false);
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(false);
         $this->reviewRevisionMatcher->expects(self::never())->method('match');
 
         ($this->messageHandler)($message);
@@ -82,9 +82,9 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setTitle('title');
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
-        $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn(null);
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(true);
+        $this->reviewRevisionMatcher->expects($this->once())->method('match')->with($revision)->willReturn(null);
 
         ($this->messageHandler)($message);
     }
@@ -100,12 +100,12 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $revision->setCommitHash('hash');
         $review = new CodeReview();
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
-        $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
-        $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->eventService->expects(self::once())
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(true);
+        $this->reviewRevisionMatcher->expects($this->once())->method('match')->with($revision)->willReturn($review);
+        $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision]);
+        $this->eventService->expects($this->once())
             ->method('revisionAddedToReview')
             ->with($review, $revision, true, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
 
@@ -128,11 +128,11 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
-        $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
-        $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
-        $this->reviewService->expects(self::once())
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
+        $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(true);
+        $this->reviewRevisionMatcher->expects($this->once())->method('match')->with($revision)->willReturn($review);
+        $this->reviewService->expects($this->once())
             ->method('addRevisions')
             ->with(
                 static::callback(
@@ -145,8 +145,8 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
                 ),
                 [$revision]
             );
-        $this->seenStatusService->expects(self::once())->method('markAllAsUnseen')->with($review, $revision);
-        $this->eventService->expects(self::once())
+        $this->seenStatusService->expects($this->once())->method('markAllAsUnseen')->with($review, $revision);
+        $this->eventService->expects($this->once())
             ->method('revisionAddedToReview')
             ->with($review, $revision, false, CodeReviewStateType::CLOSED, CodeReviewerStateType::ACCEPTED);
 
@@ -165,11 +165,11 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $revision = new Revision();
         $review   = new CodeReview();
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->reviewRevisionMatcher->expects(self::once())->method('isSupported')->with($revision)->willReturn(true);
-        $this->reviewRevisionMatcher->expects(self::once())->method('match')->with($revision)->willReturn($review);
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision])->willThrowException(new RuntimeException());
-        $this->registry->expects(self::once())->method('resetManager');
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(true);
+        $this->reviewRevisionMatcher->expects($this->once())->method('match')->with($revision)->willReturn($review);
+        $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision])->willThrowException(new RuntimeException());
+        $this->registry->expects($this->once())->method('resetManager');
 
         $this->expectException(RuntimeException::class);
         ($this->messageHandler)($message);

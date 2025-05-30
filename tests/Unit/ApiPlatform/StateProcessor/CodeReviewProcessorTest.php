@@ -43,7 +43,7 @@ class CodeReviewProcessorTest extends AbstractTestCase
     {
         $review = new CodeReview();
 
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
         static::assertSame($review, $this->reviewProcessor->process($review, new Patch()));
     }
 
@@ -52,9 +52,9 @@ class CodeReviewProcessorTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setState(CodeReviewStateType::CLOSED);
 
-        $this->user->expects(self::once())->method('getId')->willReturn(123);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, 'open', 123);
+        $this->user->expects($this->once())->method('getId')->willReturn(123);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->eventService->expects($this->once())->method('reviewStateChanged')->with($review, 'open', 123);
 
         static::assertSame($review, $this->reviewProcessor->process($review, new Patch()));
     }

@@ -33,7 +33,7 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         $repository->setId(123);
         $repository->setName('foobar');
 
-        $this->filesystem->expects(self::once())
+        $this->filesystem->expects($this->once())
             ->method('mkdir')
             ->willReturnCallback(static fn($dir) => mkdir($dir, 0777, true));
 

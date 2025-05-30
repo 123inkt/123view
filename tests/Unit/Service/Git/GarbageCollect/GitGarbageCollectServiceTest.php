@@ -39,13 +39,13 @@ class GitGarbageCollectServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitGarbageCollectCommandBuilder::class);
-        $builder->expects(self::once())->method('prune')->with('date')->willReturnSelf();
-        $builder->expects(self::once())->method('quiet')->willReturnSelf();
-        $this->commandFactory->expects(self::once())->method('createGarbageCollect')->willReturn($builder);
+        $builder->expects($this->once())->method('prune')->with('date')->willReturnSelf();
+        $builder->expects($this->once())->method('quiet')->willReturnSelf();
+        $this->commandFactory->expects($this->once())->method('createGarbageCollect')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $this->service->garbageCollect($repository, 'date');
     }

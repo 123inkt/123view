@@ -33,7 +33,7 @@ class BranchReviewTargetBranchServiceTest extends AbstractTestCase
         $repository = (new Repository())->setGitType('gitlab')->setMainBranchName('main');
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
-        $this->gitlabService->expects(self::once())->method('getMergeRequestTargetBranch')->with(123, 'branch')->willReturn('target-branch');
+        $this->gitlabService->expects($this->once())->method('getMergeRequestTargetBranch')->with(123, 'branch')->willReturn('target-branch');
 
         static::assertSame('target-branch', $this->service->getTargetBranch($repository, 'origin/branch'));
     }

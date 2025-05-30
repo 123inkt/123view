@@ -55,8 +55,8 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->revisionRepository->expects(self::once())->method('findOneBy')->with(['commitHash' => 'hash', 'repository' => 123])->willReturn(null);
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->revisionRepository->expects($this->once())->method('findOneBy')->with(['commitHash' => 'hash', 'repository' => 123])->willReturn(null);
         $this->revisionRepository->expects(self::never())->method('remove');
 
         ($this->messageHandler)(new CommitRemovedMessage(123, 'hash'));
@@ -78,16 +78,16 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
         $revision->setReview($review);
         $review->getRevisions()->add($revision);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->revisionRepository->expects(self::once())
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->revisionRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['commitHash' => 'hash', 'repository' => 123])
             ->willReturn($revision);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('revisionRemovedFromReview')->with($review, $revision, CodeReviewStateType::OPEN);
-        $this->visibilityRepository->expects(self::once())->method('findBy')->willReturn([$visibility]);
-        $this->visibilityRepository->expects(self::once())->method('removeAll')->with([$visibility]);
-        $this->revisionRepository->expects(self::once())->method('remove')->with($revision, true);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->eventService->expects($this->once())->method('revisionRemovedFromReview')->with($review, $revision, CodeReviewStateType::OPEN);
+        $this->visibilityRepository->expects($this->once())->method('findBy')->willReturn([$visibility]);
+        $this->visibilityRepository->expects($this->once())->method('removeAll')->with([$visibility]);
+        $this->revisionRepository->expects($this->once())->method('remove')->with($revision, true);
 
         ($this->messageHandler)(new CommitRemovedMessage(123, 'hash'));
 
@@ -105,16 +105,16 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->revisionRepository->expects(self::once())
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->revisionRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['commitHash' => 'hash', 'repository' => 123])
             ->willReturn($revision);
         $this->reviewRepository->expects(self::never())->method('save');
         $this->eventService->expects(self::never())->method('revisionRemovedFromReview');
-        $this->visibilityRepository->expects(self::once())->method('findBy')->willReturn([]);
-        $this->visibilityRepository->expects(self::once())->method('removeAll')->with([]);
-        $this->revisionRepository->expects(self::once())->method('remove')->with($revision, true);
+        $this->visibilityRepository->expects($this->once())->method('findBy')->willReturn([]);
+        $this->visibilityRepository->expects($this->once())->method('removeAll')->with([]);
+        $this->revisionRepository->expects($this->once())->method('remove')->with($revision, true);
 
         ($this->messageHandler)(new CommitRemovedMessage(123, 'hash'));
     }

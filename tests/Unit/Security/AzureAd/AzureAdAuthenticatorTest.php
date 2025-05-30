@@ -59,7 +59,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     public function testAuthenticateFailure(): void
     {
         $request = new Request();
-        $this->loginService->expects(self::once())->method('handleLogin')->with($request)->willReturn(new LoginFailure('failed'));
+        $this->loginService->expects($this->once())->method('handleLogin')->with($request)->willReturn(new LoginFailure('failed'));
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('failed');
@@ -71,8 +71,8 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $badge = new UserBadge('email');
 
         $request = new Request();
-        $this->loginService->expects(self::once())->method('handleLogin')->with($request)->willReturn(new LoginSuccess('name', 'email'));
-        $this->badgeFactory->expects(self::once())->method('create')->with('email', 'name')->willReturn($badge);
+        $this->loginService->expects($this->once())->method('handleLogin')->with($request)->willReturn(new LoginSuccess('name', 'email'));
+        $this->badgeFactory->expects($this->once())->method('create')->with('email', 'name')->willReturn($badge);
 
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);
@@ -86,7 +86,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     public function testOnAuthenticationSuccessForNewUser(): void
     {
         $url = '/my/test/url';
-        $this->urlGenerator->expects(self::once())->method('generate')->with(UserApprovalPendingController::class)->willReturn($url);
+        $this->urlGenerator->expects($this->once())->method('generate')->with(UserApprovalPendingController::class)->willReturn($url);
 
         $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken(), 'main');
         $expect = new RedirectResponse($url);
@@ -100,7 +100,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     public function testOnAuthenticationSuccess(): void
     {
         $url = '/my/test/url';
-        $this->urlGenerator->expects(self::once())->method('generate')->with(ProjectsController::class)->willReturn($url);
+        $this->urlGenerator->expects($this->once())->method('generate')->with(ProjectsController::class)->willReturn($url);
 
         $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken([Roles::ROLE_USER]), 'main');
         $expect = new RedirectResponse($url);
@@ -127,7 +127,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     {
         $url = '/my/test/url';
         $this->urlGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(LoginController::class)
             ->willReturn($url);

@@ -40,7 +40,7 @@ class MergeRequestsTest extends AbstractTestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->method('toArray')->willReturn([$data]);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('GET', 'projects/111/merge_requests', ['query' => ['scope' => 'all', 'per_page' => 1, 'source_branch' => 'foo']])
             ->willReturn($response);
@@ -56,7 +56,7 @@ class MergeRequestsTest extends AbstractTestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->method('toArray')->willReturn([]);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('GET', 'projects/111/merge_requests', ['query' => ['scope' => 'all', 'per_page' => 1, 'source_branch' => 'foo']])
             ->willReturn($response);
@@ -74,10 +74,10 @@ class MergeRequestsTest extends AbstractTestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getContent')->willReturn('json');
 
-        $this->client->expects(self::once())->method('request')
+        $this->client->expects($this->once())->method('request')
             ->with('GET', 'projects/111/merge_requests/222/versions')
             ->willReturn($response);
-        $this->serializer->expects(self::once())
+        $this->serializer->expects($this->once())
             ->method('deserialize')
             ->with('json', Version::class . '[]', JsonEncoder::FORMAT, [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true])
             ->willReturn([$version]);

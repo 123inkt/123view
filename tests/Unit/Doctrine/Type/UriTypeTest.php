@@ -29,7 +29,7 @@ class UriTypeTest extends AbstractTestCase
     {
         $column = ['length' => 100];
 
-        $this->platform->expects(self::once())->method('getStringTypeDeclarationSQL')->with($column)->willReturn('varchar');
+        $this->platform->expects($this->once())->method('getStringTypeDeclarationSQL')->with($column)->willReturn('varchar');
 
         static::assertSame('varchar', $this->type->getSQLDeclaration($column, $this->platform));
     }

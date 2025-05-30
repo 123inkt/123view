@@ -36,7 +36,7 @@ class GitlabCommentFormatterTest extends AbstractTestCase
         $comment->setMessage("foo\nbar");
         $comment->setReview($review);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review, 'filePath' => 'new/path'])
             ->willReturn('/path/to/review');

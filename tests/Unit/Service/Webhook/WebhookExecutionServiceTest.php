@@ -47,8 +47,8 @@ class WebhookExecutionServiceTest extends AbstractTestCase
         $response->method('getHeaders')->with(false)->willReturn(['response' => 'headers']);
         $response->method('getContent')->with(false)->willReturn('content');
 
-        $this->activityRepository->expects(self::once())->method('save')->with(self::isInstanceOf(WebhookActivity::class), true);
-        $this->httpClient->expects(self::once())
+        $this->activityRepository->expects($this->once())->method('save')->with(self::isInstanceOf(WebhookActivity::class), true);
+        $this->httpClient->expects($this->once())
             ->method('request')
             ->with(
                 'POST',
@@ -78,7 +78,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
         $webhook->setHeaders(['headers' => 'headers']);
         $webhook->setVerifySsl(true);
 
-        $this->httpClient->expects(self::once())
+        $this->httpClient->expects($this->once())
             ->method('request')
             ->willThrowException($this->createMock(TransportExceptionInterface::class));
 

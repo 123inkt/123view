@@ -45,7 +45,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
      */
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->handler->handle(new CommentReplyUpdated(4, 123, 456, 'comment'));
     }
 
@@ -57,8 +57,8 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $comment = new CommentReply();
         $comment->setMessage('comment1');
 
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->mentionService->expects(self::once())->method('getMentionedUsers')->with('comment1')->willReturn([]);
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mentionService->expects($this->once())->method('getMentionedUsers')->with('comment1')->willReturn([]);
         $this->handler->handle(new CommentReplyUpdated(4, 123, 456, 'comment2'));
     }
 
@@ -75,8 +75,8 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $reply->setComment($comment);
         $user = (new User())->setId(789);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($reply);
-        $this->mentionService->expects(self::exactly(2))
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);
+        $this->mentionService->expects($this->exactly(2))
             ->method('getMentionedUsers')
             ->with(...consecutive(['comment2'], ['comment1']))
             ->willReturn([$user], [$user]);
@@ -98,12 +98,12 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $reply->setComment($comment);
         $user = new User();
 
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($reply);
-        $this->mentionService->expects(self::exactly(2))
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);
+        $this->mentionService->expects($this->exactly(2))
             ->method('getMentionedUsers')
             ->with(...consecutive(['comment2'], ['comment1']))
             ->willReturn([$user], []);
-        $this->mailService->expects(self::once())->method('sendNewCommentReplyMail')->with($review, $comment, $reply);
+        $this->mailService->expects($this->once())->method('sendNewCommentReplyMail')->with($review, $comment, $reply);
 
         $this->handler->handle(new CommentReplyUpdated(5, 123, 456, 'comment1'));
     }

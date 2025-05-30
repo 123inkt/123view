@@ -38,12 +38,12 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testBuildForm(): void
     {
-        $this->urlGenerator->expects(self::once())->method('generate')->with(CredentialsController::class)->willReturn('url');
-        $this->credentialRepository->expects(self::once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([]);
+        $this->urlGenerator->expects($this->once())->method('generate')->with(CredentialsController::class)->willReturn('url');
+        $this->credentialRepository->expects($this->once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([]);
 
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(11))
+        $builder->expects($this->exactly(11))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -60,7 +60,7 @@ class RepositoryTypeTest extends AbstractTestCase
                     ['gitlabProjectId', GitlabProjectIdType::class],
                 )
             )->willReturnSelf();
-        $builder->expects(self::once())->method('get')->with('url')->willReturnSelf();
+        $builder->expects($this->once())->method('get')->with('url')->willReturnSelf();
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
         $type->buildForm($builder, []);

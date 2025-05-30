@@ -68,7 +68,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->project = $project;
         $event->action  = 'approved';
 
-        $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn(null);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn(null);
         $this->userService->expects(self::never())->method('getUser');
 
         $this->handler->handle($event);
@@ -87,7 +87,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $repository = (new Repository())->setActive(false);
 
-        $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects(self::never())->method('getUser');
 
         $this->handler->handle($event);
@@ -110,8 +110,8 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $repository = (new Repository())->setActive(true);
 
-        $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
-        $this->userService->expects(self::once())->method('getUser')->with(789, 'name')->willReturn(null);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
+        $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn(null);
 
         $this->handler->handle($event);
     }
@@ -136,9 +136,9 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $review     = (new CodeReview())->setState(CodeReviewStateType::CLOSED);
         $repository = (new Repository())->setId(456)->setActive(true);
 
-        $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
-        $this->userService->expects(self::once())->method('getUser')->with(789, 'name')->willReturn($user);
-        $this->reviewRepository->expects(self::once())->method('findByBranchName')->with(456, 'branch')->willReturn([$review]);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
+        $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);
+        $this->reviewRepository->expects($this->once())->method('findByBranchName')->with(456, 'branch')->willReturn([$review]);
         $this->changeReviewerStateService->expects(self::never())->method('changeState');
 
         $this->handler->handle($event);
@@ -164,10 +164,10 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $review     = new CodeReview();
         $repository = (new Repository())->setId(456)->setActive(true);
 
-        $this->repositoryRepository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
-        $this->userService->expects(self::once())->method('getUser')->with(789, 'name')->willReturn($user);
-        $this->reviewRepository->expects(self::once())->method('findByBranchName')->with(456, 'branch')->willReturn([$review]);
-        $this->changeReviewerStateService->expects(self::once())->method('changeState')->with($review, $user, CodeReviewerStateType::ACCEPTED);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
+        $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);
+        $this->reviewRepository->expects($this->once())->method('findByBranchName')->with(456, 'branch')->willReturn([$review]);
+        $this->changeReviewerStateService->expects($this->once())->method('changeState')->with($review, $user, CodeReviewerStateType::ACCEPTED);
 
         $this->handler->handle($event);
     }

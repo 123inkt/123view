@@ -38,11 +38,11 @@ class ProjectBranchesViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setReferenceId('branch');
 
-        $this->branchService->expects(self::exactly(2))
+        $this->branchService->expects($this->exactly(2))
             ->method('getRemoteBranches')
             ->with($repository)
             ->willReturn(['branchA', 'mergedBranchB', 'foobar'], ['mergedBranchB']);
-        $this->reviewRepository->expects(self::once())
+        $this->reviewRepository->expects($this->once())
             ->method('findBy')
             ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => ['branchA', 'mergedBranchB']])
             ->willReturn([$review]);

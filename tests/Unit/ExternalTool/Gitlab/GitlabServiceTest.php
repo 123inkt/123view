@@ -39,10 +39,10 @@ class GitlabServiceTest extends AbstractTestCase
      */
     public function testGetBranchUrl(): void
     {
-        $this->cache->expects(self::once())->method('get')
+        $this->cache->expects($this->once())->method('get')
             ->with('branch-url-111-remote-ref')
             ->willReturnCallback(static fn($key, $callback) => $callback());
-        $this->branches->expects(self::once())->method('getBranch')->with(111, 'remote-ref')->willReturn(['web_url' => 'url']);
+        $this->branches->expects($this->once())->method('getBranch')->with(111, 'remote-ref')->willReturn(['web_url' => 'url']);
 
         static::assertSame('url', $this->service->getBranchUrl(111, 'remote-ref'));
     }
@@ -52,10 +52,10 @@ class GitlabServiceTest extends AbstractTestCase
      */
     public function testGetMergeRequestUrl(): void
     {
-        $this->cache->expects(self::once())->method('get')
+        $this->cache->expects($this->once())->method('get')
             ->with('merge-request-url-111-remote-ref')
             ->willReturnCallback(static fn($key, $callback) => $callback());
-        $this->mergeRequests->expects(self::once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['web_url' => 'url']);
+        $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['web_url' => 'url']);
 
         static::assertSame('url', $this->service->getMergeRequestUrl(111, 'remote-ref'));
     }
@@ -65,10 +65,10 @@ class GitlabServiceTest extends AbstractTestCase
      */
     public function testGetMergeRequestUrl2(): void
     {
-        $this->cache->expects(self::once())->method('get')
+        $this->cache->expects($this->once())->method('get')
             ->with('merge-request-url-111-remote-ref')
             ->willReturnCallback(static fn($key, $callback) => $callback());
-        $this->mergeRequests->expects(self::once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['target_branch' => 'branch']);
+        $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['target_branch' => 'branch']);
 
         static::assertSame('branch', $this->service->getMergeRequestTargetBranch(111, 'remote-ref'));
     }

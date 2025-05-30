@@ -28,13 +28,13 @@ class UserApprovalPendingControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $this->security->expects(self::once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(false);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(false);
         static::assertSame([], ($this->controller)());
     }
 
     public function testInvokeUserAlreadyHasAccess(): void
     {
-        $this->security->expects(self::once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
         ($this->controller)();
     }

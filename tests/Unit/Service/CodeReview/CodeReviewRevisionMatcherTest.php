@@ -103,8 +103,8 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setTitle('foobar');
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
-        $this->patternMatcher->expects(self::once())->method('match')->with('foobar')->willReturn(null);
+        $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
+        $this->patternMatcher->expects($this->once())->method('match')->with('foobar')->willReturn(null);
 
         static::assertNull($this->matcher->match($revision));
     }
@@ -120,9 +120,9 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
         $review = new CodeReview();
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
-        $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
-        $this->reviewRepository->expects(self::once())
+        $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
+        $this->patternMatcher->expects($this->once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
+        $this->reviewRepository->expects($this->once())
             ->method('findOneByReferenceId')
             ->with(5, 'T#890', CodeReviewType::COMMITS)
             ->willReturn($review);
@@ -142,10 +142,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
         $review = new CodeReview();
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
-        $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
-        $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890', CodeReviewType::COMMITS)->willReturn(null);
-        $this->reviewCreationService->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
+        $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
+        $this->patternMatcher->expects($this->once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
+        $this->reviewRepository->expects($this->once())->method('findOneByReferenceId')->with(5, 'T#890', CodeReviewType::COMMITS)->willReturn(null);
+        $this->reviewCreationService->expects($this->once())->method('createFromRevision')->with($revision)->willReturn($review);
 
         static::assertSame($review, $this->matcher->match($revision));
     }

@@ -72,11 +72,11 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
         $activity->setReview($review);
 
         // setup mocks
-        $this->activityProvider->expects(self::once())->method('fromEvent')->with($event)->willReturn($activity);
-        $this->activityRepository->expects(self::once())->method('save')->with($activity, true);
-        $this->userRepository->expects(self::once())->method('getActors')->with(948)->willReturn([$user]);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->activityPublisher->expects(self::once())->method('publish')->with($activity);
+        $this->activityProvider->expects($this->once())->method('fromEvent')->with($event)->willReturn($activity);
+        $this->activityRepository->expects($this->once())->method('save')->with($activity, true);
+        $this->userRepository->expects($this->once())->method('getActors')->with(948)->willReturn([$user]);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->activityPublisher->expects($this->once())->method('publish')->with($activity);
 
         // execute test
         ($this->messageHandler)($event);

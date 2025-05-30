@@ -36,11 +36,11 @@ class LockableGitLogServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->logService->expects(self::once())->method('getCommitHashes')->with($repository)->willReturn(['hash']);
+        $this->logService->expects($this->once())->method('getCommitHashes')->with($repository)->willReturn(['hash']);
 
         $result = $this->service->getCommitHashes($repository);
         static::assertSame(['hash'], $result);
@@ -55,11 +55,11 @@ class LockableGitLogServiceTest extends AbstractTestCase
         $repository->setId(123);
         $commit = $this->createMock(Commit::class);
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->logService->expects(self::once())->method('getCommitsFromRange')->with($repository, 'fromHash', 'toHash')->willReturn([$commit]);
+        $this->logService->expects($this->once())->method('getCommitsFromRange')->with($repository, 'fromHash', 'toHash')->willReturn([$commit]);
 
         $result = $this->service->getCommitsFromRange($repository, 'fromHash', 'toHash');
         static::assertSame([$commit], $result);

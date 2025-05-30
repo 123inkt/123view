@@ -46,7 +46,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
     {
         $activity = new CodeReviewActivity();
 
-        $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn(null);
+        $this->formatter->expects($this->once())->method('format')->with($activity)->willReturn(null);
         $this->mercureHub->expects(self::never())->method('publish');
 
         $this->service->publish($activity);
@@ -102,10 +102,10 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
             true
         );
 
-        $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn('message');
-        $this->userRepository->expects(self::once())->method('findBy')->with(['id' => [567]])->willReturn([$actor]);
-        $this->urlGenerator->expects(self::once())->method('generate')->with($activity)->willReturn('url');
-        $this->mercureHub->expects(self::exactly(2))
+        $this->formatter->expects($this->once())->method('format')->with($activity)->willReturn('message');
+        $this->userRepository->expects($this->once())->method('findBy')->with(['id' => [567]])->willReturn([$actor]);
+        $this->urlGenerator->expects($this->once())->method('generate')->with($activity)->willReturn('url');
+        $this->mercureHub->expects($this->exactly(2))
             ->method('publish')
             ->with(...consecutive([$reviewUpdate], [$userUpdate]))
             ->willReturn('success');

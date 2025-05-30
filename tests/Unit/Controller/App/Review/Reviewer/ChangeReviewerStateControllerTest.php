@@ -32,13 +32,13 @@ class ChangeReviewerStateControllerTest extends AbstractControllerTestCase
     public function testInvokeExistingReviewerChangesState(): void
     {
         $request = $this->createMock(ChangeReviewerStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CodeReviewerStateType::ACCEPTED);
+        $request->expects($this->once())->method('getState')->willReturn(CodeReviewerStateType::ACCEPTED);
 
         $user   = (new User())->setId(789);
         $review = (new CodeReview())->setId(123);
 
         $this->expectGetUser($user);
-        $this->changeReviewerStateService->expects(self::once())->method('changeState')->with($review, $user, CodeReviewerStateType::ACCEPTED);
+        $this->changeReviewerStateService->expects($this->once())->method('changeState')->with($review, $user, CodeReviewerStateType::ACCEPTED);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);

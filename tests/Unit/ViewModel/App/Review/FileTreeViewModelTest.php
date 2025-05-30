@@ -50,13 +50,13 @@ class FileTreeViewModelTest extends AbstractTestCase
     public function testGetChangeSummary(): void
     {
         $fileA = $this->createMock(DiffFile::class);
-        $fileA->expects(self::once())->method('getNrOfLinesAdded')->willReturn(1);
-        $fileA->expects(self::once())->method('getNrOfLinesRemoved')->willReturn(2);
+        $fileA->expects($this->once())->method('getNrOfLinesAdded')->willReturn(1);
+        $fileA->expects($this->once())->method('getNrOfLinesRemoved')->willReturn(2);
         $fileB = $this->createMock(DiffFile::class);
-        $fileB->expects(self::once())->method('getNrOfLinesAdded')->willReturn(3);
-        $fileB->expects(self::once())->method('getNrOfLinesRemoved')->willReturn(4);
+        $fileB->expects($this->once())->method('getNrOfLinesAdded')->willReturn(3);
+        $fileB->expects($this->once())->method('getNrOfLinesRemoved')->willReturn(4);
 
-        $this->directoryNode->expects(self::once())->method('getFileIterator')->willReturn(new ArrayIterator([$fileA, $fileB]));
+        $this->directoryNode->expects($this->once())->method('getFileIterator')->willReturn(new ArrayIterator([$fileA, $fileB]));
 
         static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
     }
@@ -66,7 +66,7 @@ class FileTreeViewModelTest extends AbstractTestCase
         $node = $this->createMock(DirectoryTreeNode::class);
         $node->method('getPathname')->willReturn('folder');
 
-        $this->folderCollection->expects(self::once())->method('isCollapsed')->with('folder')->willReturn(true);
+        $this->folderCollection->expects($this->once())->method('isCollapsed')->with('folder')->willReturn(true);
         static::assertTrue($this->viewModel->isFolderCollapsed($node));
     }
 
@@ -108,7 +108,7 @@ class FileTreeViewModelTest extends AbstractTestCase
 
     public function testIsFileSeen(): void
     {
-        $this->statusCollection->expects(self::once())->method('isSeen')->with('filepath')->willReturn(true);
+        $this->statusCollection->expects($this->once())->method('isSeen')->with('filepath')->willReturn(true);
 
         $file                = new DiffFile();
         $file->filePathAfter = 'filepath';

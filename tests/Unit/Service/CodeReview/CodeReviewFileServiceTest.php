@@ -64,9 +64,9 @@ class CodeReviewFileServiceTest extends AbstractTestCase
 
         $cacheItem = self::createCacheItem('key', $tree, true);
 
-        $this->revisionCache->expects(self::once())->method('getItem')->willReturn($cacheItem);
-        $this->revisionCache->expects(self::once())->method('get')->willReturn($diffFileA);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+        $this->revisionCache->expects($this->once())->method('getItem')->willReturn($cacheItem);
+        $this->revisionCache->expects($this->once())->method('get')->willReturn($diffFileA);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
         $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);
@@ -92,10 +92,10 @@ class CodeReviewFileServiceTest extends AbstractTestCase
 
         $cacheItem = self::createCacheItem('key', null, false);
 
-        $this->revisionCache->expects(self::once())->method('getItem')->willReturn($cacheItem);
-        $this->fileTreeService->expects(self::once())->method('getFileTree')->with($review, [$revision])->willReturn([$tree, [$diffFileA]]);
-        $this->revisionCache->expects(self::exactly(3))->method('get')->willReturn(null, null, $diffFileA);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+        $this->revisionCache->expects($this->once())->method('getItem')->willReturn($cacheItem);
+        $this->fileTreeService->expects($this->once())->method('getFileTree')->with($review, [$revision])->willReturn([$tree, [$diffFileA]]);
+        $this->revisionCache->expects($this->exactly(3))->method('get')->willReturn(null, null, $diffFileA);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
         $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);

@@ -56,9 +56,9 @@ class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
         $user->setId(123);
 
         $this->expectGetUser($user);
-        $this->reviewCreationService->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->eventService->expects(self::once())->method('revisionAddedToReview')->with(
+        $this->reviewCreationService->expects($this->once())->method('createFromRevision')->with($revision)->willReturn($review);
+        $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision]);
+        $this->eventService->expects($this->once())->method('revisionAddedToReview')->with(
             $review,
             $revision,
             true,

@@ -54,16 +54,16 @@ class ChangeReviewerStateServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->getReviewers()->add($reviewer);
 
-        $this->reviewerService->expects(self::once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
+        $this->reviewerService->expects($this->once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
 
-        $this->objectManager->expects(self::exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
-        $this->objectManager->expects(self::once())->method('flush');
+        $this->objectManager->expects($this->exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
+        $this->objectManager->expects($this->once())->method('flush');
 
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
-        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 789, false);
-        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN);
+        $this->eventService->expects($this->once())->method('reviewerAdded')->with($review, $reviewer, 789, false);
+        $this->eventService->expects($this->once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN);
+        $this->eventService->expects($this->once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN);
 
         $this->service->changeState($review, $user, CodeReviewerStateType::ACCEPTED);
     }
@@ -77,17 +77,17 @@ class ChangeReviewerStateServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->reviewerService->expects(self::once())->method('addReviewer')->with($review, $user)->willReturn($reviewer);
-        $this->reviewerService->expects(self::once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
+        $this->reviewerService->expects($this->once())->method('addReviewer')->with($review, $user)->willReturn($reviewer);
+        $this->reviewerService->expects($this->once())->method('setReviewerState')->with($review, $reviewer, CodeReviewerStateType::ACCEPTED);
 
-        $this->objectManager->expects(self::exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
-        $this->objectManager->expects(self::once())->method('flush');
+        $this->objectManager->expects($this->exactly(2))->method('persist')->with(...consecutive([$review], [$reviewer]));
+        $this->objectManager->expects($this->once())->method('flush');
 
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
-        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 456, true);
-        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN, 456);
+        $this->eventService->expects($this->once())->method('reviewerAdded')->with($review, $reviewer, 456, true);
+        $this->eventService->expects($this->once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
+        $this->eventService->expects($this->once())->method('reviewStateChanged')->with($review, CodeReviewStateType::OPEN, 456);
 
         $this->service->changeState($review, $user, CodeReviewerStateType::ACCEPTED);
     }

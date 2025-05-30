@@ -43,7 +43,7 @@ class RemoteEventPayloadDenormalizerTest extends AbstractTestCase
     {
         $event = new PushEvent();
 
-        $this->objectDenormalizer->expects(self::once())
+        $this->objectDenormalizer->expects($this->once())
             ->method('denormalize')
             ->with(['data'], PushEvent::class, null, ['collect_denormalization_errors' => true, 'allow_extra_attributes' => true])
             ->willReturn($event);
@@ -58,7 +58,7 @@ class RemoteEventPayloadDenormalizerTest extends AbstractTestCase
     {
         $event = new MergeRequestEvent();
 
-        $this->objectDenormalizer->expects(self::once())
+        $this->objectDenormalizer->expects($this->once())
             ->method('denormalize')
             ->with(['data'], MergeRequestEvent::class, null, ['collect_denormalization_errors' => true, 'allow_extra_attributes' => true])
             ->willReturn($event);
@@ -73,7 +73,7 @@ class RemoteEventPayloadDenormalizerTest extends AbstractTestCase
     {
         $exception = new PartialDenormalizationException([], [new NotNormalizableValueException('error')]);
 
-        $this->objectDenormalizer->expects(self::once())->method('denormalize')->willThrowException($exception);
+        $this->objectDenormalizer->expects($this->once())->method('denormalize')->willThrowException($exception);
 
         $this->expectException(PartialDenormalizationException::class);
         $this->denormalizer->denormalize('Merge Request Hook', ['data']);

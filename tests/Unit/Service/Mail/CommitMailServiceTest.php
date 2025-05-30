@@ -62,9 +62,9 @@ class CommitMailServiceTest extends AbstractTestCase
         $viewModel = new CommitsViewModel([], MailThemeType::UPSOURCE);
 
         // assert mailer send argument
-        $this->formatter->expects(self::once())->method('format')->with('subject', $rule, $commits)->willReturn('replaced-subject');
-        $this->viewModelProvider->expects(self::once())->method('getCommitsViewModel')->with($commits, $rule, $notification)->willReturn($viewModel);
-        $this->mailer->expects(static::once())
+        $this->formatter->expects($this->once())->method('format')->with('subject', $rule, $commits)->willReturn('replaced-subject');
+        $this->viewModelProvider->expects($this->once())->method('getCommitsViewModel')->with($commits, $rule, $notification)->willReturn($viewModel);
+        $this->mailer->expects($this->once())
             ->method('send')
             ->with(
                 static::callback(

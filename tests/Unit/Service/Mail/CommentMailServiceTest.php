@@ -54,9 +54,9 @@ class CommentMailServiceTest extends AbstractTestCase
         $review->setProjectId(123);
         $review->setTitle('title');
 
-        $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
-        $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
-        $this->translator->expects(self::once())->method('trans');
+        $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$user]);
+        $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
+        $this->translator->expects($this->once())->method('trans');
         $this->mailer->expects(self::never())->method('send');
 
         $this->service->sendNewCommentMail($review, $comment);
@@ -88,12 +88,12 @@ class CommentMailServiceTest extends AbstractTestCase
         $review->setProjectId(123);
         $review->setTitle('title');
 
-        $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
-        $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
-        $this->translator->expects(self::once())->method('trans')->with('mail.new.comment.subject')->willReturn('subject');
-        $this->viewModelProvider->expects(self::once())->method('createCommentViewModel')->with($review, $comment);
+        $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
+        $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
+        $this->translator->expects($this->once())->method('trans')->with('mail.new.comment.subject')->willReturn('subject');
+        $this->viewModelProvider->expects($this->once())->method('createCommentViewModel')->with($review, $comment);
 
-        $this->mailer->expects(self::once())->method('send')
+        $this->mailer->expects($this->once())->method('send')
             ->with(
                 self::callback(
                     static function (TemplatedEmail $email) {
@@ -124,10 +124,10 @@ class CommentMailServiceTest extends AbstractTestCase
         $review->setProjectId(123);
         $review->setTitle('title');
 
-        $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
-        $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
-        $this->recipientService->expects(self::once())->method('getUsersForReply')->with($comment, $reply)->willReturn([$user]);
-        $this->translator->expects(self::once())->method('trans');
+        $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$user]);
+        $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
+        $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment, $reply)->willReturn([$user]);
+        $this->translator->expects($this->once())->method('trans');
         $this->mailer->expects(self::never())->method('send');
 
         $this->service->sendNewCommentReplyMail($review, $comment, $reply);
@@ -150,13 +150,13 @@ class CommentMailServiceTest extends AbstractTestCase
         $reply->setUser($userA);
         $review = (new CodeReview())->setProjectId(123)->setTitle('title');
 
-        $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
-        $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
-        $this->recipientService->expects(self::once())->method('getUsersForReply')->with($comment, $reply)->willReturn([$userA]);
-        $this->translator->expects(self::once())->method('trans')->with('mail.updated.comment.subject')->willReturn('subject');
-        $this->viewModelProvider->expects(self::once())->method('createCommentViewModel')->with($review, $comment, $reply);
+        $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
+        $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
+        $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment, $reply)->willReturn([$userA]);
+        $this->translator->expects($this->once())->method('trans')->with('mail.updated.comment.subject')->willReturn('subject');
+        $this->viewModelProvider->expects($this->once())->method('createCommentViewModel')->with($review, $comment, $reply);
 
-        $this->mailer->expects(self::once())->method('send')
+        $this->mailer->expects($this->once())->method('send')
             ->with(
                 self::callback(
                     static function (TemplatedEmail $email) {
@@ -183,10 +183,10 @@ class CommentMailServiceTest extends AbstractTestCase
         $review->setProjectId(123);
         $review->setTitle('title');
 
-        $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$user]);
-        $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$user]);
-        $this->recipientService->expects(self::once())->method('getUsersForReply')->with($comment)->willReturn([$user]);
-        $this->translator->expects(self::once())->method('trans');
+        $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$user]);
+        $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
+        $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment)->willReturn([$user]);
+        $this->translator->expects($this->once())->method('trans');
         $this->mailer->expects(self::never())->method('send');
 
         $this->service->sendCommentResolvedMail($review, $comment, (new User())->setId(5));
@@ -207,13 +207,13 @@ class CommentMailServiceTest extends AbstractTestCase
         $comment->setUser($userA);
         $review = (new CodeReview())->setProjectId(123)->setTitle('title');
 
-        $this->recipientService->expects(self::once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
-        $this->recipientService->expects(self::once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
-        $this->recipientService->expects(self::once())->method('getUsersForReply')->with($comment)->willReturn([$userA]);
-        $this->translator->expects(self::once())->method('trans')->with('mail.comment.resolved.subject')->willReturn('subject');
-        $this->viewModelProvider->expects(self::once())->method('createCommentViewModel')->with($review, $comment, null, $userA);
+        $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$userA, $userB, $userC]);
+        $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$userA]);
+        $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment)->willReturn([$userA]);
+        $this->translator->expects($this->once())->method('trans')->with('mail.comment.resolved.subject')->willReturn('subject');
+        $this->viewModelProvider->expects($this->once())->method('createCommentViewModel')->with($review, $comment, null, $userA);
 
-        $this->mailer->expects(self::once())->method('send')
+        $this->mailer->expects($this->once())->method('send')
             ->with(
                 self::callback(
                     static function (TemplatedEmail $email) {

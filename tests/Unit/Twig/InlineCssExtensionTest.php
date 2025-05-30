@@ -20,7 +20,7 @@ class InlineCssExtensionTest extends AbstractTestCase
     public function testInlineCss(): void
     {
         $inliner = $this->createMock(CssToInlineStyles::class);
-        $inliner->expects(static::once())->method('convert')->with('foobar', 'css')->willReturn('html');
+        $inliner->expects($this->once())->method('convert')->with('foobar', 'css')->willReturn('html');
 
         $extension = new InlineCssExtension($inliner);
         $result    = $extension->inlineCss('foobar', 'css');

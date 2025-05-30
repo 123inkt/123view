@@ -29,7 +29,7 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
     public function testGetAction(): void
     {
         $action = $this->createMock(AbstractReviewAction::class);
-        $this->actionFactory->expects(self::once())->method('createFromRequest')->with($this->request)->willReturn($action);
+        $this->actionFactory->expects($this->once())->method('createFromRequest')->with($this->request)->willReturn($action);
 
         $this->request->query->set('action', 'my-action');
         static::assertSame($action, $this->validatedRequest->getAction());

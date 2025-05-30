@@ -75,18 +75,18 @@ class PersistentCherryPickStrategyTest extends AbstractTestCase
         $cherryPickResultA = new CherryPickResult(false, ['conflict-file']);
         $cherryPickResultB = new CherryPickResult(true);
 
-        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revision)->willReturn('branch');
-        $this->resetManager->expects(self::once())
+        $this->checkoutService->expects($this->once())->method('checkoutRevision')->with($revision)->willReturn('branch');
+        $this->resetManager->expects($this->once())
             ->method('start')
             ->with($repository, 'branch')
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
-        $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision])->willReturn($cherryPickResultA);
-        $this->cherryPickService->expects(self::once())->method('cherryPickContinue')->with($repository)->willReturn($cherryPickResultB);
-        $this->statusService->expects(self::once())->method('getModifiedFiles')->with()->willReturn(['modified-file']);
-        $this->addService->expects(self::once())->method('add')->with($repository, 'modified-file');
-        $this->commitService->expects(self::once())->method('commit')->with($repository);
-        $this->resetService->expects(self::once())->method('resetSoft')->with($repository, 'hash~');
-        $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository, $options)->willReturn([$file]);
+        $this->cherryPickService->expects($this->once())->method('cherryPickRevisions')->with([$revision])->willReturn($cherryPickResultA);
+        $this->cherryPickService->expects($this->once())->method('cherryPickContinue')->with($repository)->willReturn($cherryPickResultB);
+        $this->statusService->expects($this->once())->method('getModifiedFiles')->with()->willReturn(['modified-file']);
+        $this->addService->expects($this->once())->method('add')->with($repository, 'modified-file');
+        $this->commitService->expects($this->once())->method('commit')->with($repository);
+        $this->resetService->expects($this->once())->method('resetSoft')->with($repository, 'hash~');
+        $this->diffService->expects($this->once())->method('getBundledDiffFromRevisions')->with($repository, $options)->willReturn([$file]);
 
         $files = $this->strategy->getDiffFiles($repository, [$revision], $options);
         static::assertSame([$file], $files);

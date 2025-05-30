@@ -33,7 +33,7 @@ class UserSettingViewModelProviderTest extends AbstractTestCase
         $formView = $this->createMock(FormView::class);
         $form     = $this->createMock(FormInterface::class);
 
-        $form->expects(self::once())->method('createView')->willReturn($formView);
+        $form->expects($this->once())->method('createView')->willReturn($formView);
 
         $model = $this->viewModelProvider->getUserSettingViewModel($form);
         static::assertSame($formView, $model->settingForm);
@@ -45,8 +45,8 @@ class UserSettingViewModelProviderTest extends AbstractTestCase
         $form        = $this->createMock(FormInterface::class);
         $accessToken = new UserAccessToken();
 
-        $form->expects(self::once())->method('createView')->willReturn($formView);
-        $this->tokenRepository->expects(self::once())
+        $form->expects($this->once())->method('createView')->willReturn($formView);
+        $this->tokenRepository->expects($this->once())
             ->method('findBy')
             ->with(['user' => $this->user], ['createTimestamp' => 'DESC'])
             ->willReturn([$accessToken]);

@@ -56,11 +56,11 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->activityRepository->expects(self::once())
+        $this->activityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123], ['createTimestamp' => 'ASC'])
             ->willReturn([$activityA, $activityB]);
-        $this->activityFormatter->expects(self::exactly(2))
+        $this->activityFormatter->expects($this->exactly(2))
             ->method('format')
             ->with(...consecutive([$activityA, $this->user], [$activityA, $this->user]))
             ->willReturn('message', null);
@@ -84,11 +84,11 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $review->setId(123);
         $review->getComments()->set(456, $comment);
 
-        $this->activityRepository->expects(self::once())
+        $this->activityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123], ['createTimestamp' => 'ASC'])
             ->willReturn([$activity]);
-        $this->activityFormatter->expects(self::once())
+        $this->activityFormatter->expects($this->once())
             ->method('format')
             ->with($activity, $this->user)
             ->willReturn('message');
@@ -110,11 +110,11 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->activityRepository->expects(self::once())
+        $this->activityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123], ['createTimestamp' => 'ASC'])
             ->willReturn([$activity]);
-        $this->activityFormatter->expects(self::once())
+        $this->activityFormatter->expects($this->once())
             ->method('format')
             ->with($activity, $this->user)
             ->willReturn('message');
@@ -131,8 +131,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $user     = (new User())->setId(789);
         $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME);
 
-        $this->activityRepository->expects(self::once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
-        $this->activityFormatter->expects(self::once())->method('format')->with($activity, $user)->willReturn(null);
+        $this->activityRepository->expects($this->once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
+        $this->activityFormatter->expects($this->once())->method('format')->with($activity, $user)->willReturn(null);
         $this->commentProvider->expects(self::never())->method('getCommentFor');
         $this->urlGenerator->expects(self::never())->method('generate');
 
@@ -146,10 +146,10 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME);
         $comment  = new Comment();
 
-        $this->activityRepository->expects(self::once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
-        $this->activityFormatter->expects(self::once())->method('format')->with($activity, $user)->willReturn('activityA');
-        $this->commentProvider->expects(self::once())->method('getCommentFor')->with($activity)->willReturn($comment);
-        $this->urlGenerator->expects(self::once())->method('generate')->with($activity)->willReturn('url');
+        $this->activityRepository->expects($this->once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
+        $this->activityFormatter->expects($this->once())->method('format')->with($activity, $user)->willReturn('activityA');
+        $this->commentProvider->expects($this->once())->method('getCommentFor')->with($activity)->willReturn($comment);
+        $this->urlGenerator->expects($this->once())->method('generate')->with($activity)->willReturn('url');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(1, $viewModel->entries);

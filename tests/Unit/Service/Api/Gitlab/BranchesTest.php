@@ -30,9 +30,9 @@ class BranchesTest extends AbstractTestCase
     public function testGetBranchFailure(): void
     {
         $response = $this->createMock(ResponseInterface::class);
-        $response->expects(self::once())->method('getStatusCode')->willReturn(400);
+        $response->expects($this->once())->method('getStatusCode')->willReturn(400);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('GET', 'projects/123/repository/branches/remote-ref')
             ->willReturn($response);
@@ -46,10 +46,10 @@ class BranchesTest extends AbstractTestCase
     public function testGetBranchSuccess(): void
     {
         $response = $this->createMock(ResponseInterface::class);
-        $response->expects(self::once())->method('getStatusCode')->willReturn(200);
-        $response->expects(self::once())->method('toArray')->willReturn(['foo' => 'bar']);
+        $response->expects($this->once())->method('getStatusCode')->willReturn(200);
+        $response->expects($this->once())->method('toArray')->willReturn(['foo' => 'bar']);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('GET', 'projects/123/repository/branches/remote-ref')
             ->willReturn($response);

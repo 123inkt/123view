@@ -36,9 +36,9 @@ class UserGitlabOAuth2StartControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $request->setSession($session);
 
-        $this->authProvider->expects(self::once())->method('getAuthorizationUrl')->willReturn('url');
-        $this->authProvider->expects(self::once())->method('getState')->willReturn('state');
-        $this->authProvider->expects(self::once())->method('getPkceCode')->willReturn('pkce');
+        $this->authProvider->expects($this->once())->method('getAuthorizationUrl')->willReturn('url');
+        $this->authProvider->expects($this->once())->method('getState')->willReturn('state');
+        $this->authProvider->expects($this->once())->method('getPkceCode')->willReturn('pkce');
 
         $response = ($this->controller)($request);
         static::assertEquals(new RedirectResponse('url'), $response);

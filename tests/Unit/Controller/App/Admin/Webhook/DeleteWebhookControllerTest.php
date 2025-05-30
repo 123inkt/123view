@@ -30,7 +30,7 @@ class DeleteWebhookControllerTest extends AbstractControllerTestCase
     {
         $webhook = new Webhook();
 
-        $this->webhookRepository->expects(self::once())->method('remove')->with($webhook, true);
+        $this->webhookRepository->expects($this->once())->method('remove')->with($webhook, true);
         $this->expectAddFlash('success', 'webhook.successful.removed');
         $this->expectRefererRedirect(WebhooksController::class);
 

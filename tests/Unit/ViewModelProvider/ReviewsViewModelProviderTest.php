@@ -45,7 +45,7 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
 
         $terms = $this->createMock(TermInterface::class);
 
-        $this->reviewRepository->expects(self::once())
+        $this->reviewRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(null, 5, $terms, CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
@@ -70,12 +70,12 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
 
         $terms = $this->createMock(TermInterface::class);
 
-        $this->reviewRepository->expects(self::once())
+        $this->reviewRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(123, 5, $terms, CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
 
-        $this->timelineViewModelProvider->expects(self::once())
+        $this->timelineViewModelProvider->expects($this->once())
             ->method('getTimelineViewModelForFeed')
             ->with($this->user, static::callback(static fn($arg) => count($arg) > 0), $repository)
             ->willReturn($timeline);

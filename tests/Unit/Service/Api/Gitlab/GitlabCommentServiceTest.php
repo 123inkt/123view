@@ -73,7 +73,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
-        $this->mergeRequests->expects(self::once())->method('versions')->with(123, 456)->willReturn([]);
+        $this->mergeRequests->expects($this->once())->method('versions')->with(123, 456)->willReturn([]);
         $this->positionFactory->expects(self::never())->method('create');
 
         $this->service->create($this->api, $this->comment, 456);
@@ -93,11 +93,11 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
-        $this->mergeRequests->expects(self::once())->method('versions')->with(123, 456)->willReturn([$version]);
-        $this->positionFactory->expects(self::once())->method('create')->with($version, $lineReference)->willReturn($position);
-        $this->commentFormatter->expects(self::once())->method('format')->with($this->comment)->willReturn('formatted');
-        $this->discussions->expects(self::once())->method('createDiscussion')->with(123, 456, $position, 'formatted')->willReturn('1:2:3');
-        $this->commentRepository->expects(self::once())->method('save')->with($this->comment, true);
+        $this->mergeRequests->expects($this->once())->method('versions')->with(123, 456)->willReturn([$version]);
+        $this->positionFactory->expects($this->once())->method('create')->with($version, $lineReference)->willReturn($position);
+        $this->commentFormatter->expects($this->once())->method('format')->with($this->comment)->willReturn('formatted');
+        $this->discussions->expects($this->once())->method('createDiscussion')->with(123, 456, $position, 'formatted')->willReturn('1:2:3');
+        $this->commentRepository->expects($this->once())->method('save')->with($this->comment, true);
 
         $this->service->create($this->api, $this->comment, 456);
         static::assertSame('1:2:3', $this->comment->getExtReferenceId());
@@ -121,8 +121,8 @@ class GitlabCommentServiceTest extends AbstractTestCase
             ['id' => '3', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]]
         ];
 
-        $this->discussions->expects(self::once())->method('getDiscussions')->with(123, 456)->willReturn(static::createGeneratorFrom($threads));
-        $this->commentRepository->expects(self::once())->method('save')->with($this->comment, true);
+        $this->discussions->expects($this->once())->method('getDiscussions')->with(123, 456)->willReturn(static::createGeneratorFrom($threads));
+        $this->commentRepository->expects($this->once())->method('save')->with($this->comment, true);
 
         $this->service->updateExtReferenceId($this->api, $this->comment, 456);
     }
@@ -149,8 +149,8 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->commentFormatter->expects(self::once())->method('format')->with($this->comment)->willReturn('formatted');
-        $this->discussions->expects(self::once())->method('updateNote')->with(111, 222, '333', '444', 'formatted');
+        $this->commentFormatter->expects($this->once())->method('format')->with($this->comment)->willReturn('formatted');
+        $this->discussions->expects($this->once())->method('updateNote')->with(111, 222, '333', '444', 'formatted');
 
         $this->service->update($this->api, $this->comment);
     }
@@ -176,7 +176,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->discussions->expects(self::once())->method('resolve')->with(111, 222, '333', true);
+        $this->discussions->expects($this->once())->method('resolve')->with(111, 222, '333', true);
 
         $this->service->resolve($this->api, $this->comment, true);
     }
@@ -189,7 +189,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
-        $this->discussions->expects(self::once())->method('deleteNote')->with(111, 222, '333', '444');
+        $this->discussions->expects($this->once())->method('deleteNote')->with(111, 222, '333', '444');
 
         $this->service->delete($this->api, $this->repository, '222:333:444');
     }

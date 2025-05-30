@@ -42,7 +42,7 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
 
     public function testInvokeNoRevision(): void
     {
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->lockManager->expects(self::never())->method('start');
 
         ($this->handler)(new NewRevisionMessage(123));
@@ -54,9 +54,9 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $revision->setRepository($repository);
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->lockManager->expects(self::once())->method('start')->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->gitDiffService->expects(self::once())->method('getRevisionFiles')->with($revision)->willReturn([]);
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->lockManager->expects($this->once())->method('start')->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->gitDiffService->expects($this->once())->method('getRevisionFiles')->with($revision)->willReturn([]);
         $this->revisionFileRepository->expects(self::never())->method('save');
 
         ($this->handler)(new NewRevisionMessage(123));
@@ -68,11 +68,11 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
         $revision   = (new Revision())->setRepository($repository);
         $file       = new RevisionFile();
 
-        $this->revisionRepository->expects(self::once())->method('find')->with(123)->willReturn($revision);
-        $this->lockManager->expects(self::once())->method('start')->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->gitDiffService->expects(self::once())->method('getRevisionFiles')->with($revision)->willReturn([$file]);
-        $this->revisionFileRepository->expects(self::once())->method('save')->with($file);
-        $this->revisionRepository->expects(self::once())->method('save')->with($revision, true);
+        $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
+        $this->lockManager->expects($this->once())->method('start')->willReturnCallback(static fn($repository, $callback) => $callback());
+        $this->gitDiffService->expects($this->once())->method('getRevisionFiles')->with($revision)->willReturn([$file]);
+        $this->revisionFileRepository->expects($this->once())->method('save')->with($file);
+        $this->revisionRepository->expects($this->once())->method('save')->with($revision, true);
 
         ($this->handler)(new NewRevisionMessage(123));
     }

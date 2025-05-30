@@ -32,7 +32,7 @@ class ValidateRevisionsControllerTest extends AbstractControllerTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->messageBus->expects(self::once())->method('dispatch')->with(new ValidateRevisionsMessage(123))->willReturn($this->envelope);
+        $this->messageBus->expects($this->once())->method('dispatch')->with(new ValidateRevisionsMessage(123))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'repository.schedule.validate_revisions');
         $this->expectRedirectToRoute(RepositoriesController::class)->willReturn('url');
 

@@ -83,10 +83,10 @@ class GitLogServiceTest extends AbstractTestCase
         $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
 
         // setup mocks
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
-        $this->commandFactory->expects(static::once())->method('fromRule')->with($config)->willReturn($commandBuilder);
-        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
-        $this->logParser->expects(static::once())->method('parse')->with($repository, 'output')->willReturn($commits);
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $this->commandFactory->expects($this->once())->method('fromRule')->with($config)->willReturn($commandBuilder);
+        $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn('output');
+        $this->logParser->expects($this->once())->method('parse')->with($repository, 'output')->willReturn($commits);
 
         // execute test
         $actual = $this->logFactory->getCommits($config);
@@ -104,13 +104,13 @@ class GitLogServiceTest extends AbstractTestCase
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);
 
-        $this->commandBuilderFactory->expects(self::once())->method('createLog')->willReturn($logBuilder);
-        $logBuilder->expects(self::once())->method('noMerges')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('remotes')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('format')->with(FormatPattern::COMMIT_HASH)->willReturnSelf();
+        $this->commandBuilderFactory->expects($this->once())->method('createLog')->willReturn($logBuilder);
+        $logBuilder->expects($this->once())->method('noMerges')->willReturnSelf();
+        $logBuilder->expects($this->once())->method('remotes')->willReturnSelf();
+        $logBuilder->expects($this->once())->method('format')->with(FormatPattern::COMMIT_HASH)->willReturnSelf();
 
-        $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn(" #line1\nline2\n ");
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($logBuilder)->willReturn(" #line1\nline2\n ");
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         static::assertSame(['line1', 'line2'], $this->logFactory->getCommitHashes($repository));
     }
@@ -127,15 +127,15 @@ class GitLogServiceTest extends AbstractTestCase
         $logBuilder    = $this->createMock(GitLogCommandBuilder::class);
         $gitRepository = $this->createMock(GitRepository::class);
 
-        $this->commandBuilderFactory->expects(self::once())->method('createLog')->willReturn($logBuilder);
-        $this->patternFactory->expects(self::once())->method('createPattern')->willReturn('pattern');
-        $logBuilder->expects(self::once())->method('noMerges')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('hashRange')->with('foo~1', 'bar')->willReturnSelf();
-        $logBuilder->expects(self::once())->method('format')->with('pattern')->willReturnSelf();
+        $this->commandBuilderFactory->expects($this->once())->method('createLog')->willReturn($logBuilder);
+        $this->patternFactory->expects($this->once())->method('createPattern')->willReturn('pattern');
+        $logBuilder->expects($this->once())->method('noMerges')->willReturnSelf();
+        $logBuilder->expects($this->once())->method('hashRange')->with('foo~1', 'bar')->willReturnSelf();
+        $logBuilder->expects($this->once())->method('format')->with('pattern')->willReturnSelf();
 
-        $gitRepository->expects(static::once())->method('execute')->with($logBuilder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
-        $this->logParser->expects(static::once())->method('parse')->with($repository, 'output')->willReturn($commits);
+        $gitRepository->expects($this->once())->method('execute')->with($logBuilder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $this->logParser->expects($this->once())->method('parse')->with($repository, 'output')->willReturn($commits);
 
         static::assertSame($commits, $this->logFactory->getCommitsFromRange($repository, 'foo', 'bar'));
     }

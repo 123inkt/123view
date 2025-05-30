@@ -46,8 +46,8 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
 
         $output = $this->createMock(CodeReviewActivityOutput::class);
 
-        $this->collectionProvider->expects(self::once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$activity]));
-        $this->outputFactory->expects(self::once())->method('create')->with($activity)->willReturn($output);
+        $this->collectionProvider->expects($this->once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$activity]));
+        $this->outputFactory->expects($this->once())->method('create')->with($activity)->willReturn($output);
 
         $result = $this->activityProvider->provide(new GetCollection());
         static::assertSame([$output], $result);

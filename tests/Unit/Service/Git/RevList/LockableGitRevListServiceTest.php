@@ -36,11 +36,11 @@ class LockableGitRevListServiceTest extends AbstractTestCase
         $repository = new Repository();
         $file       = new DiffFile();
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->revListService->expects(self::once())->method('getCommitsAheadOfMaster')->with($repository, 'branch')->willReturn([$file]);
+        $this->revListService->expects($this->once())->method('getCommitsAheadOfMaster')->with($repository, 'branch')->willReturn([$file]);
 
         $result = $this->service->getCommitsAheadOfMaster($repository, 'branch');
         static::assertSame([$file], $result);

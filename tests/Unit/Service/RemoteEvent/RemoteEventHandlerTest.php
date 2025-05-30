@@ -34,7 +34,7 @@ class RemoteEventHandlerTest extends AbstractTestCase
     {
         $object = new PushEvent();
 
-        $this->handler->expects(self::once())->method('handle')->with($object);
+        $this->handler->expects($this->once())->method('handle')->with($object);
         $this->eventHandler->handle($object);
     }
 

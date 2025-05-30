@@ -33,7 +33,7 @@ class FolderCollapseStatusServiceTest extends AbstractTestCase
         $status = new FolderCollapseStatus();
 
         $review = (new CodeReview())->setId(123);
-        $this->statusRepository->expects(self::once())
+        $this->statusRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 456])
             ->willReturn([$status]);

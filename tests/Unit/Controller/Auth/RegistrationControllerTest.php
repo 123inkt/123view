@@ -65,10 +65,10 @@ class RegistrationControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true)
             ->getWillReturn(['plainPassword' => 'plain']);
-        $this->passwordHasher->expects(self::once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
-        $this->userRepository->expects(self::once())->method('getUserCount')->willReturn($userCount);
-        $this->userRepository->expects(self::once())->method('save')->with($userB, true);
-        $this->security->expects(self::once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
+        $this->passwordHasher->expects($this->once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
+        $this->userRepository->expects($this->once())->method('getUserCount')->willReturn($userCount);
+        $this->userRepository->expects($this->once())->method('save')->with($userB, true);
+        $this->security->expects($this->once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
 
         ($this->controller)($request);
@@ -88,10 +88,10 @@ class RegistrationControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true)
             ->getWillReturn(['plainPassword' => 'plain']);
-        $this->passwordHasher->expects(self::once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
-        $this->userRepository->expects(self::once())->method('getUserCount')->willReturn($userCount);
-        $this->userRepository->expects(self::once())->method('save')->with($userB, true);
-        $this->security->expects(self::once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
+        $this->passwordHasher->expects($this->once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
+        $this->userRepository->expects($this->once())->method('getUserCount')->willReturn($userCount);
+        $this->userRepository->expects($this->once())->method('save')->with($userB, true);
+        $this->security->expects($this->once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
 
         ($this->controller)($request);

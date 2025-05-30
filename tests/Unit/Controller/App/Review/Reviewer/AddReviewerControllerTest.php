@@ -84,12 +84,12 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
             ->getDataWillReturn(['user' => $user]);
 
         $this->expectGetUser($user);
-        $this->reviewerService->expects(self::once())->method('addReviewer')->with($review, $user)->willReturn($reviewer);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewerService->expects($this->once())->method('addReviewer')->with($review, $user)->willReturn($reviewer);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
-        $this->eventService->expects(self::once())->method('reviewerAdded')->with($review, $reviewer, 456, true);
-        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
+        $this->eventService->expects($this->once())->method('reviewerAdded')->with($review, $reviewer, 456, true);
+        $this->eventService->expects($this->once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::OPEN, 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

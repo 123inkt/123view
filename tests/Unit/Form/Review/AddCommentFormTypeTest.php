@@ -54,15 +54,15 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $review->setId(123);
         $lineReference = new LineReference('path', 'path', 1, 2, 3);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(AddCommentController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(4))
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(4))
             ->method('add')
             ->with(
                 ...consecutive(

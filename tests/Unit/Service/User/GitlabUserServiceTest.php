@@ -39,7 +39,7 @@ class GitlabUserServiceTest extends AbstractTestCase
     {
         $user = new User();
 
-        $this->userRepository->expects(self::once())->method('findOneBy')->with(['gitlabUserId' => 123])->willReturn($user);
+        $this->userRepository->expects($this->once())->method('findOneBy')->with(['gitlabUserId' => 123])->willReturn($user);
 
         static::assertSame($user, $this->service->getUser(123, 'username'));
     }
@@ -51,11 +51,11 @@ class GitlabUserServiceTest extends AbstractTestCase
     {
         $user = new User();
 
-        $this->userRepository->expects(self::exactly(2))
+        $this->userRepository->expects($this->exactly(2))
             ->method('findOneBy')
             ->with(...consecutive([['gitlabUserId' => 123]], [['name' => 'username']]))
             ->willReturn(null, $user);
-        $this->userRepository->expects(self::once())->method('save')->with($user, true);
+        $this->userRepository->expects($this->once())->method('save')->with($user, true);
 
         static::assertSame($user, $this->service->getUser(123, 'username'));
     }
@@ -65,10 +65,10 @@ class GitlabUserServiceTest extends AbstractTestCase
      */
     public function testGetUserAbsentInApi(): void
     {
-        $this->userRepository->expects(self::exactly(2))
+        $this->userRepository->expects($this->exactly(2))
             ->method('findOneBy')
             ->willReturn(null, null);
-        $this->users->expects(self::once())->method('getUser')->with(123)->willReturn(null);
+        $this->users->expects($this->once())->method('getUser')->with(123)->willReturn(null);
 
         static::assertNull($this->service->getUser(123, 'username'));
     }
@@ -82,12 +82,12 @@ class GitlabUserServiceTest extends AbstractTestCase
         $gitlabUser        = new GitlabUser();
         $gitlabUser->email = 'email';
 
-        $this->userRepository->expects(self::exactly(3))
+        $this->userRepository->expects($this->exactly(3))
             ->method('findOneBy')
             ->with(...consecutive([['gitlabUserId' => 123]], [['name' => 'username']], [['email' => 'email']]))
             ->willReturn(null, null, $user);
-        $this->users->expects(self::once())->method('getUser')->with(123)->willReturn($gitlabUser);
-        $this->userRepository->expects(self::once())->method('save')->with($user, true);
+        $this->users->expects($this->once())->method('getUser')->with(123)->willReturn($gitlabUser);
+        $this->userRepository->expects($this->once())->method('save')->with($user, true);
 
         static::assertSame($user, $this->service->getUser(123, 'username'));
     }
@@ -100,11 +100,11 @@ class GitlabUserServiceTest extends AbstractTestCase
         $gitlabUser        = new GitlabUser();
         $gitlabUser->email = 'email';
 
-        $this->userRepository->expects(self::exactly(3))
+        $this->userRepository->expects($this->exactly(3))
             ->method('findOneBy')
             ->with(...consecutive([['gitlabUserId' => 123]], [['name' => 'username']], [['email' => 'email']]))
             ->willReturn(null, null, null);
-        $this->users->expects(self::once())->method('getUser')->with(123)->willReturn($gitlabUser);
+        $this->users->expects($this->once())->method('getUser')->with(123)->willReturn($gitlabUser);
 
         static::assertNull($this->service->getUser(123, 'username'));
     }

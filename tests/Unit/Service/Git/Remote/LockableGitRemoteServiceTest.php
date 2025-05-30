@@ -35,11 +35,11 @@ class LockableGitRemoteServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->remoteService->expects(self::once())->method('updateRemoteUrl')->with($repository);
+        $this->remoteService->expects($this->once())->method('updateRemoteUrl')->with($repository);
 
         $this->service->updateRemoteUrl($repository);
     }

@@ -36,7 +36,7 @@ class AzureAdAuthControllerTest extends AbstractControllerTestCase
 
         $this->expectGenerateUrl(AzureAdCallbackController::class, [], UrlGeneratorInterface::ABSOLUTE_URL)->willReturn($url);
         $this->azureProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAuthorizationUrl')
             ->with(
                 self::callback(static function (array $options) use ($url) {

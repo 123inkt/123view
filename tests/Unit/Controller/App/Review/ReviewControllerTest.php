@@ -59,9 +59,9 @@ class ReviewControllerTest extends AbstractControllerTestCase
         $viewModel = new ReviewViewModel($review, []);
         $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile, ReviewDiffModeEnum::INLINE));
 
-        $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);
-        $this->fileSeenService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFile);
-        $this->breadcrumbFactory->expects(self::once())->method('createForReview')->with($review)->willReturn([$breadcrumb]);
+        $this->modelProvider->expects($this->once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);
+        $this->fileSeenService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFile);
+        $this->breadcrumbFactory->expects($this->once())->method('createForReview')->with($review)->willReturn([$breadcrumb]);
 
         $data = ($this->controller)($request, $review);
         static::assertSame('CR-123 - Repository', $data['page_title']);

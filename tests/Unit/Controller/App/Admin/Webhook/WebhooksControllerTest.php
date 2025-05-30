@@ -29,7 +29,7 @@ class WebhooksControllerTest extends AbstractControllerTestCase
     {
         $viewModel = $this->createMock(WebhooksViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getWebhooksViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getWebhooksViewModel')->willReturn($viewModel);
 
         static::assertSame(['webhooksViewModel' => $viewModel], ($this->controller)());
     }

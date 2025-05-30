@@ -53,8 +53,8 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
         $request = new Request();
 
         $this->expectGetUser($user);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->visibilityService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $user)
             ->willReturn([$visibility]);
@@ -82,8 +82,8 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
         $request = new Request();
 
         $this->expectGetUser($user);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->visibilityService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $user)
             ->willReturn([$visibility]);
@@ -91,7 +91,7 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->visibilityRepository->expects(self::once())->method('saveAll')->with([$visibility], true);
+        $this->visibilityRepository->expects($this->once())->method('saveAll')->with([$visibility], true);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);

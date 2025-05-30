@@ -48,12 +48,12 @@ class LoginControllerTest extends AbstractControllerTestCase
         $request   = new Request();
         $viewModel = $this->createMock(LoginViewModel::class);
 
-        $this->userEntityProvider->expects(self::once())->method('getUser')->willReturn(null);
+        $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(null);
 
-        $this->authenticationUtils->expects(self::once())->method('getLastAuthenticationError')->willReturn(new AuthenticationException());
-        $this->translator->expects(self::exactly(2))->method('trans')->willReturn('message', 'page_title');
+        $this->authenticationUtils->expects($this->once())->method('getLastAuthenticationError')->willReturn(new AuthenticationException());
+        $this->translator->expects($this->exactly(2))->method('trans')->willReturn('message', 'page_title');
         $this->expectAddFlash('error', 'message');
-        $this->viewModelProvider->expects(self::once())->method('getLoginViewModel')->with($request)->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getLoginViewModel')->with($request)->willReturn($viewModel);
 
         $result = ($this->controller)($request);
         static::assertSame(['page_title' => 'page_title', 'loginModel' => $viewModel], $result);
@@ -66,7 +66,7 @@ class LoginControllerTest extends AbstractControllerTestCase
         $request = new Request();
 
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('redirect-url');
-        $this->userEntityProvider->expects(self::exactly(2))->method('getUser')->willReturn($user);
+        $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
         $this->translator->expects(self::never())->method('trans');
 
         $result = ($this->controller)($request);
@@ -79,7 +79,7 @@ class LoginControllerTest extends AbstractControllerTestCase
         $request = new Request();
 
         $this->expectRedirectToRoute(UserApprovalPendingController::class)->willReturn('redirect-url');
-        $this->userEntityProvider->expects(self::exactly(2))->method('getUser')->willReturn($user);
+        $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
         $this->translator->expects(self::never())->method('trans');
 
         $result = ($this->controller)($request);

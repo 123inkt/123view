@@ -52,13 +52,13 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
         $selectedFile = new DiffFile();
         $viewModel    = $this->createMock(FileTreeViewModel::class);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->fileService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->fileService->expects($this->once())
             ->method('getFiles')
             ->with($review, [$revision], 'filePath', new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL))
             ->willReturn([$treeNode, $selectedFile]);
-        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
-        $this->viewModelProvider->expects(self::once())
+        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->viewModelProvider->expects($this->once())
             ->method('getFileTreeViewModel')
             ->with($review, $treeNode, $selectedFile)
             ->willReturn($viewModel);

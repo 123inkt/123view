@@ -32,7 +32,7 @@ class RuleNotificationMarkAsReadControllerTest extends AbstractControllerTestCas
     {
         $rule = new Rule();
 
-        $this->notificationRepository->expects(self::once())->method('markAsRead')->with($rule);
+        $this->notificationRepository->expects($this->once())->method('markAsRead')->with($rule);
         $this->expectRefererRedirect(RuleHistoryController::class);
 
         ($this->controller)($rule);

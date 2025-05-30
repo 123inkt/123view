@@ -37,11 +37,11 @@ class LockableGitShowServiceTest extends AbstractTestCase
         $repository->setId(123);
         $commit = $this->createCommit();
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->showService->expects(self::once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn($commit);
+        $this->showService->expects($this->once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn($commit);
 
         $result = $this->service->getCommitFromHash($repository, 'hash');
         static::assertSame($commit, $result);
@@ -56,11 +56,11 @@ class LockableGitShowServiceTest extends AbstractTestCase
         $revision   = new Revision();
         $revision->setRepository($repository);
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'file', true)->willReturn('output');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'file', true)->willReturn('output');
 
         static::assertSame('output', $this->service->getFileContents($revision, 'file', true));
     }

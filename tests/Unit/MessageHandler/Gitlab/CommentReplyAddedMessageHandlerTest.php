@@ -76,8 +76,8 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
         $reply->setComment($comment);
         $reply->setUser($user);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(222)->willReturn($reply);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->replyRepository->expects($this->once())->method('find')->with(222)->willReturn($reply);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
 
         ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message', 'file'));
     }
@@ -102,9 +102,9 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
 
         $api = $this->createMock(GitlabApi::class);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(222)->willReturn($reply);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->commentService->expects(self::once())->method('create')->with($api, $reply);
+        $this->replyRepository->expects($this->once())->method('find')->with(222)->willReturn($reply);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->commentService->expects($this->once())->method('create')->with($api, $reply);
 
         ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message', 'file'));
     }
@@ -129,9 +129,9 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
 
         $api = $this->createMock(GitlabApi::class);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(222)->willReturn($reply);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->commentService->expects(self::once())->method('update')->with($api, $reply);
+        $this->replyRepository->expects($this->once())->method('find')->with(222)->willReturn($reply);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->commentService->expects($this->once())->method('update')->with($api, $reply);
 
         ($this->handler)(new CommentReplyUpdated(111, 222, 333, 'message'));
     }

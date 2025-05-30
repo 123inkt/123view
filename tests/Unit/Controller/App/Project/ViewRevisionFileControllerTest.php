@@ -34,7 +34,7 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $request  = new Request(['file' => 'image.jpg']);
         $revision = new Revision();
 
-        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'image.jpg', true)->willReturn('contents');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'image.jpg', true)->willReturn('contents');
 
         $response = ($this->controller)($request, $revision);
         self::assertSame('contents', $response->getContent());
@@ -48,8 +48,8 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $request  = new Request(['file' => 'readme.md']);
         $revision = new Revision();
 
-        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'readme.md', true)->willReturn('markdown');
-        $this->converter->expects(self::once())->method('convert')->with('markdown')->willReturn('html');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'readme.md', true)->willReturn('markdown');
+        $this->converter->expects($this->once())->method('convert')->with('markdown')->willReturn('html');
 
         $response = ($this->controller)($request, $revision);
         self::assertSame('html', $response->getContent());
@@ -62,7 +62,7 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $request  = new Request(['file' => 'readme.cmd']);
         $revision = new Revision();
 
-        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'readme.cmd', true)->willReturn('text');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'readme.cmd', true)->willReturn('text');
 
         $response = ($this->controller)($request, $revision);
         self::assertSame('text', $response->getContent());

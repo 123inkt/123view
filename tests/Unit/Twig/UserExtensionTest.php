@@ -28,7 +28,7 @@ class UserExtensionTest extends AbstractTestCase
      */
     public function testGetUserCount(): void
     {
-        $this->userRepository->expects(self::once())->method('getNewUserCount')->willReturn(5);
+        $this->userRepository->expects($this->once())->method('getNewUserCount')->willReturn(5);
         static::assertSame(5, $this->extension->getUserCount());
     }
 
