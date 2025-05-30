@@ -39,7 +39,7 @@ class CacheableGitBranchServiceTest extends AbstractTestCase
 
         $this->cache->expects($this->once())->method('get')
             ->with('git-branch-command-123-all')
-            ->willReturnCallback(static fn($key, $callback) => $callback($item));
+            ->willReturnCallback(static fn($key, callable $callback) => $callback($item));
         $this->branchService->expects($this->once())->method('getRemoteBranches')->with($repository, false)->willReturn(['branch']);
 
         $branches = $this->service->getRemoteBranches($repository);
@@ -57,7 +57,7 @@ class CacheableGitBranchServiceTest extends AbstractTestCase
 
         $this->cache->expects($this->once())->method('get')
             ->with('git-branch-command-123-merged')
-            ->willReturnCallback(static fn($key, $callback) => $callback($item));
+            ->willReturnCallback(static fn($key, callable $callback) => $callback($item));
         $this->branchService->expects($this->once())->method('getRemoteBranches')->with($repository, true)->willReturn(['branch']);
 
         $branches = $this->service->getRemoteBranches($repository, true);
