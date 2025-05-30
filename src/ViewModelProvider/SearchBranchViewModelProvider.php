@@ -49,7 +49,7 @@ class SearchBranchViewModelProvider
             // filter branches based on searchQuery
             $branchNames = array_filter(
                 $this->branchService->getRemoteBranches($repository),
-                static fn($branchName) => stripos($branchName, $searchQuery) !== false
+                static fn($branchName) => $searchQuery === '' || stripos($branchName, $searchQuery) !== false
             );
             if (count($branchNames) > 0) {
                 $branches[(int)$repository->getId()] = $branchNames;

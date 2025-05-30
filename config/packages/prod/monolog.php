@@ -44,6 +44,7 @@ return static function (MonologConfig $monolog) {
         ->level('error')
         ->handler('deduplicated')
         ->channels()->elements(['!console']);
+    $monolog->handler('main')->excludedHttpCode(400);
     $monolog->handler('main')->excludedHttpCode(403);
     $monolog->handler('main')->excludedHttpCode(404);
     $monolog->handler('main')->excludedHttpCode(405);
