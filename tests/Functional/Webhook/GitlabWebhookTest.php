@@ -38,7 +38,7 @@ class GitlabWebhookTest extends AbstractFunctionalTestCase
         self::getService(RepositoryPropertyRepository::class)->save($property, true);
 
         // setup mock
-        $this->eventHandler->expects(self::once())->method('handle');
+        $this->eventHandler->expects($this->once())->method('handle');
         self::getContainer()->set(RemoteEventHandler::class, $this->eventHandler);
 
         // setup request

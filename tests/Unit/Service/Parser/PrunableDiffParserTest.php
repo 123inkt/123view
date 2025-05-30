@@ -35,8 +35,8 @@ class PrunableDiffParserTest extends AbstractTestCase
     {
         $file = new DiffFile();
 
-        $this->diffParser->expects(self::once())->method('parse')->with('patch')->willReturn([$file]);
-        $this->pruner->expects(self::once())->method('pruneEmptyLines')->with($file);
+        $this->diffParser->expects($this->once())->method('parse')->with('patch')->willReturn([$file]);
+        $this->pruner->expects($this->once())->method('pruneEmptyLines')->with($file);
 
         $result = $this->parser->parse('patch', DiffComparePolicy::IGNORE_EMPTY_LINES);
         static::assertSame([$file], $result);
@@ -49,7 +49,7 @@ class PrunableDiffParserTest extends AbstractTestCase
     {
         $file = new DiffFile();
 
-        $this->diffParser->expects(self::once())->method('parse')->with('patch')->willReturn([$file]);
+        $this->diffParser->expects($this->once())->method('parse')->with('patch')->willReturn([$file]);
         $this->pruner->expects(self::never())->method('pruneEmptyLines');
 
         $result = $this->parser->parse('patch', DiffComparePolicy::TRIM);

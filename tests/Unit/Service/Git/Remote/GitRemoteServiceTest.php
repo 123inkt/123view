@@ -39,8 +39,8 @@ class GitRemoteServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitRemoteCommandBuilder::class);
-        $builder->expects(self::once())->method('setUrl')->with('origin', 'https://example.com')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createRemote')->willReturn($builder);
+        $builder->expects($this->once())->method('setUrl')->with('origin', 'https://example.com')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createRemote')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');

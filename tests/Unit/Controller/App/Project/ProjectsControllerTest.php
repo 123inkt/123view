@@ -34,8 +34,8 @@ class ProjectsControllerTest extends AbstractControllerTestCase
         $request   = new Request(['search' => 'search']);
         $viewModel = $this->createMock(ProjectsViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getProjectsViewModel')->with('search')->willReturn($viewModel);
-        $this->translator->expects(self::once())->method('trans')->with('projects')->willReturn('Projects');
+        $this->viewModelProvider->expects($this->once())->method('getProjectsViewModel')->with('search')->willReturn($viewModel);
+        $this->translator->expects($this->once())->method('trans')->with('projects')->willReturn('Projects');
 
         $result = ($this->controller)($request);
         static::assertSame('Projects', $result['page_title']);

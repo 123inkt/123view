@@ -34,9 +34,9 @@ class FetchRevisionsCommandTest extends AbstractTestCase
         $repository->setId(123);
         $repository->setName('foobar');
 
-        $this->repositoryRepository->expects(self::once())->method('findByUpdateRevisions')->willReturn([$repository]);
-        $this->repositoryRepository->expects(self::once())->method('save')->with($repository, true);
-        $this->bus->expects(self::once())
+        $this->repositoryRepository->expects($this->once())->method('findByUpdateRevisions')->willReturn([$repository]);
+        $this->repositoryRepository->expects($this->once())->method('save')->with($repository, true);
+        $this->bus->expects($this->once())
             ->method('dispatch')
             ->with(self::isInstanceOf(FetchRepositoryRevisionsMessage::class))
             ->willReturn($this->envelope);

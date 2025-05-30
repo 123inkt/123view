@@ -71,8 +71,8 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
 
         ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
     }
@@ -94,9 +94,9 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
 
         $api = $this->createMock(GitlabApi::class);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->commentService->expects(self::once())->method('update')->with($api, $comment);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->commentService->expects($this->once())->method('update')->with($api, $comment);
 
         ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
     }

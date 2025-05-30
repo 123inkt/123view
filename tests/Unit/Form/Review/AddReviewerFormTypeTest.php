@@ -59,17 +59,17 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         $review->setId(123);
         $review->getReviewers()->add($reviewer);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(AddReviewerController::class, ['id' => 123])
             ->willReturn($url);
 
-        $this->userRepository->expects(self::once())->method('findUsersWithExclusion')->with([789])->willReturn([$user]);
+        $this->userRepository->expects($this->once())->method('findUsersWithExclusion')->with([789])->willReturn([$user]);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::once())
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->once())
             ->method('add')
             ->with(
                 'user',

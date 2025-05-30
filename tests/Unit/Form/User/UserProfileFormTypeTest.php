@@ -34,19 +34,19 @@ class UserProfileFormTypeTest extends AbstractTestCase
         $user = new User();
         $user->setId(123);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ChangeUserProfileController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::once())
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->once())
             ->method('add')
             ->with('roles', ChoiceType::class)
             ->willReturnSelf();
-        $builder->expects(self::once())->method('get')->with('roles')->willReturnSelf();
+        $builder->expects($this->once())->method('get')->with('roles')->willReturnSelf();
 
         $this->type->buildForm($builder, ['user' => $user]);
     }

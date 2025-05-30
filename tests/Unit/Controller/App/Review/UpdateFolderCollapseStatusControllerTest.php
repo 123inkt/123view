@@ -44,7 +44,7 @@ class UpdateFolderCollapseStatusControllerTest extends AbstractControllerTestCas
         $status = (new FolderCollapseStatus())->setReview($review)->setUser($user)->setPath('test');
 
         $this->expectGetUser($user);
-        $this->folderCollapseRepository->expects(self::once())->method('save')->with($status);
+        $this->folderCollapseRepository->expects($this->once())->method('save')->with($status);
 
         $response = ($this->controller)($request, $review);
         static::assertEquals(new Response(status: Response::HTTP_ACCEPTED), $response);
@@ -57,7 +57,7 @@ class UpdateFolderCollapseStatusControllerTest extends AbstractControllerTestCas
         $review  = new CodeReview();
 
         $this->expectGetUser($user);
-        $this->folderCollapseRepository->expects(self::once())
+        $this->folderCollapseRepository->expects($this->once())
             ->method('removeOneBy')
             ->with(['user' => $user, 'review' => $review, 'path' => 'test'], null, true);
 

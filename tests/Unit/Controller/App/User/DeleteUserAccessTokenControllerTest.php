@@ -32,7 +32,7 @@ class DeleteUserAccessTokenControllerTest extends AbstractControllerTestCase
         $token = new UserAccessToken();
 
         $this->expectDenyAccessUnlessGranted(UserAccessTokenVoter::DELETE, $token);
-        $this->tokenRepository->expects(self::once())->method('remove')->with($token, true);
+        $this->tokenRepository->expects($this->once())->method('remove')->with($token, true);
         $this->expectAddFlash('success', 'access.token.deletion.success');
         $this->expectRedirectToRoute(UserAccessTokenController::class)->willReturn('url');
 

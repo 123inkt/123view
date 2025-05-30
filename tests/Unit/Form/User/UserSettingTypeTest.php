@@ -22,7 +22,7 @@ class UserSettingTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(6))
+        $builder->expects($this->exactly(6))
             ->method('add')
             ->with(
                 ...consecutive(

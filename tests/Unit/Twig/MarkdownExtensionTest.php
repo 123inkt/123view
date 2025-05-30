@@ -33,7 +33,7 @@ class MarkdownExtensionTest extends AbstractTestCase
      */
     public function testConvert(): void
     {
-        $this->markdownConverter->expects(self::once())->method('convert')->with('string')->willReturn("markdown: string");
+        $this->markdownConverter->expects($this->once())->method('convert')->with('string')->willReturn("markdown: string");
 
         static::assertSame("markdown: string", $this->extension->convert('string'));
     }

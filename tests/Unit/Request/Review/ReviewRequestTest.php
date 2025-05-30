@@ -45,7 +45,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
     public function testGetAction(): void
     {
         $action = $this->createMock(AbstractReviewAction::class);
-        $this->actionFactory->expects(self::once())->method('createFromRequest')->with($this->request)->willReturn($action);
+        $this->actionFactory->expects($this->once())->method('createFromRequest')->with($this->request)->willReturn($action);
 
         $this->request->query->set('action', 'my-action');
         static::assertSame($action, $this->validatedRequest->getAction());
@@ -67,11 +67,11 @@ class ReviewRequestTest extends AbstractRequestTestCase
         $session = $this->createMock(Session::class);
         $this->request->setSession($session);
 
-        $session->expects(self::once())
+        $session->expects($this->once())
             ->method('get')
             ->with(SessionKeys::DIFF_COMPARISON_POLICY->value)
             ->willReturn(DiffComparePolicy::TRIM->value);
-        $session->expects(self::once())
+        $session->expects($this->once())
             ->method('set')
             ->with(SessionKeys::DIFF_COMPARISON_POLICY->value, DiffComparePolicy::TRIM->value);
 
@@ -94,11 +94,11 @@ class ReviewRequestTest extends AbstractRequestTestCase
         $session = $this->createMock(Session::class);
         $this->request->setSession($session);
 
-        $session->expects(self::once())
+        $session->expects($this->once())
             ->method('get')
             ->with(SessionKeys::REVIEW_DIFF_MODE->value)
             ->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE->value);
-        $session->expects(self::once())
+        $session->expects($this->once())
             ->method('set')
             ->with(SessionKeys::REVIEW_DIFF_MODE->value, ReviewDiffModeEnum::SIDE_BY_SIDE->value);
 

@@ -35,8 +35,8 @@ class MentionsExtensionTest extends AbstractTestCase
         $user->setName('Sherlock Holmes');
         $user->setEmail('sherlock@example.com');
 
-        $this->mentionService->expects(self::once())->method('getMentionedUsers')->willReturn(['@user:123[Frank Dekker]' => $user]);
-        $this->mentionService->expects(self::once())->method('replaceMentionedUsers')
+        $this->mentionService->expects($this->once())->method('getMentionedUsers')->willReturn(['@user:123[Frank Dekker]' => $user]);
+        $this->mentionService->expects($this->once())->method('replaceMentionedUsers')
             ->with('message', ['@user:123[Frank Dekker]' => $user])
             ->willReturn('message');
 

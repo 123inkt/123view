@@ -63,8 +63,8 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
         $this->comment->setExtReferenceId('111:222:333');
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '444'));
 
-        $this->discussions->expects(self::once())->method('createNote')->with(444, 111, 222, 'message')->willReturn('123');
-        $this->replyRepository->expects(self::once())->method('save')->with($this->reply, true);
+        $this->discussions->expects($this->once())->method('createNote')->with(444, 111, 222, 'message')->willReturn('123');
+        $this->replyRepository->expects($this->once())->method('save')->with($this->reply, true);
 
         $this->service->create($this->api, $this->reply);
         static::assertSame('123', $this->reply->getExtReferenceId());
@@ -88,7 +88,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
         $this->reply->setExtReferenceId('111:222:333');
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '444'));
 
-        $this->discussions->expects(self::once())->method('updateNote')->with(444, 111, '222', '333', 'message');
+        $this->discussions->expects($this->once())->method('updateNote')->with(444, 111, '222', '333', 'message');
 
         $this->service->update($this->api, $this->reply);
     }

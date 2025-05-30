@@ -53,10 +53,10 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
 
         $this->diffService->expects(self::never())->method('getDiffForRevisions');
         $this->diffService->expects(self::never())->method('getDiffForBranch');
-        $this->diffFileUpdater->expects(self::once())->method('update')->with([], 6, HighlightedFileService::MAX_LINE_COUNT);
-        $this->treeGenerator->expects(self::once())->method('generate')->with([])->willReturn($treeNode);
-        $treeNode->expects(self::once())->method('flatten')->willReturnSelf();
-        $treeNode->expects(self::once())->method('sort')->willReturnSelf();
+        $this->diffFileUpdater->expects($this->once())->method('update')->with([], 6, HighlightedFileService::MAX_LINE_COUNT);
+        $this->treeGenerator->expects($this->once())->method('generate')->with([])->willReturn($treeNode);
+        $treeNode->expects($this->once())->method('flatten')->willReturnSelf();
+        $treeNode->expects($this->once())->method('sort')->willReturnSelf();
 
         static::assertSame([$treeNode, []], $this->service->getFileTree($review, [], $options));
     }
@@ -76,11 +76,11 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
         /** @var DirectoryTreeNode<DiffFile>&MockObject $treeNode */
         $treeNode = $this->createMock(DirectoryTreeNode::class);
 
-        $this->diffService->expects(self::once())->method('getDiffForBranch')->with($review, $revisions, 'branch', $options)->willReturn($files);
-        $this->diffFileUpdater->expects(self::once())->method('update')->with($files, 6, HighlightedFileService::MAX_LINE_COUNT)->willReturn($files);
-        $this->treeGenerator->expects(self::once())->method('generate')->with($files)->willReturn($treeNode);
-        $treeNode->expects(self::once())->method('flatten')->willReturnSelf();
-        $treeNode->expects(self::once())->method('sort')->willReturnSelf();
+        $this->diffService->expects($this->once())->method('getDiffForBranch')->with($review, $revisions, 'branch', $options)->willReturn($files);
+        $this->diffFileUpdater->expects($this->once())->method('update')->with($files, 6, HighlightedFileService::MAX_LINE_COUNT)->willReturn($files);
+        $this->treeGenerator->expects($this->once())->method('generate')->with($files)->willReturn($treeNode);
+        $treeNode->expects($this->once())->method('flatten')->willReturnSelf();
+        $treeNode->expects($this->once())->method('sort')->willReturnSelf();
 
         static::assertSame([$treeNode, $files], $this->service->getFileTree($review, $revisions, $options));
     }
@@ -101,11 +101,11 @@ class CodeReviewFileTreeServiceTest extends AbstractTestCase
         /** @var DirectoryTreeNode<DiffFile>&MockObject $treeNode */
         $treeNode = $this->createMock(DirectoryTreeNode::class);
 
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, $revisions, $options)->willReturn($files);
-        $this->diffFileUpdater->expects(self::once())->method('update')->with($files, 6, HighlightedFileService::MAX_LINE_COUNT)->willReturn($files);
-        $this->treeGenerator->expects(self::once())->method('generate')->with($files)->willReturn($treeNode);
-        $treeNode->expects(self::once())->method('flatten')->willReturnSelf();
-        $treeNode->expects(self::once())->method('sort')->willReturnSelf();
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, $revisions, $options)->willReturn($files);
+        $this->diffFileUpdater->expects($this->once())->method('update')->with($files, 6, HighlightedFileService::MAX_LINE_COUNT)->willReturn($files);
+        $this->treeGenerator->expects($this->once())->method('generate')->with($files)->willReturn($treeNode);
+        $treeNode->expects($this->once())->method('flatten')->willReturnSelf();
+        $treeNode->expects($this->once())->method('sort')->willReturnSelf();
 
         static::assertSame([$treeNode, $files], $this->service->getFileTree($review, $revisions, $options));
     }

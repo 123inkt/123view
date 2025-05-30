@@ -26,7 +26,7 @@ class WebhookEventMessageHandlerTest extends AbstractTestCase
     public function testInvoke(): void
     {
         $event = $this->createMock(CodeReviewAwareInterface::class);
-        $this->notifier->expects(self::once())->method('notify')->with($event);
+        $this->notifier->expects($this->once())->method('notify')->with($event);
         ($this->handler)($event);
     }
 }

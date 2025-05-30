@@ -61,7 +61,7 @@ class AddCommentControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->commentRepository->expects(self::once())
+        $this->commentRepository->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(static function (Comment $comment) use ($user, $review) {

@@ -48,7 +48,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $user     = new User();
         $filepath = 'filepath';
 
-        $this->statusRepository->expects(self::once())
+        $this->statusRepository->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(
@@ -79,7 +79,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $user     = (new User())->setId(789);
         $filepath = 'filepath';
 
-        $this->statusRepository->expects(self::once())->method('findOneBy')->willReturn(null);
+        $this->statusRepository->expects($this->once())->method('findOneBy')->willReturn(null);
         $this->statusRepository->expects(self::never())->method('remove');
         $this->service->markAsUnseen($review, $user, $filepath);
     }
@@ -93,11 +93,11 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $filepath = 'filepath';
         $status   = new FileSeenStatus();
 
-        $this->statusRepository->expects(self::once())
+        $this->statusRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['review' => 123, 'user' => 456, 'filePath' => 'filepath'])
             ->willReturn($status);
-        $this->statusRepository->expects(self::once())->method('remove')->with($status);
+        $this->statusRepository->expects($this->once())->method('remove')->with($status);
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
@@ -112,12 +112,12 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $statusA = new FileSeenStatus();
         $statusB = new FileSeenStatus();
 
-        $this->treeService->expects(self::once())->method('getFilesInRevision')->with($revision)->willReturn(['filePathBefore', 'filePathAfter']);
-        $this->statusRepository->expects(self::once())
+        $this->treeService->expects($this->once())->method('getFilesInRevision')->with($revision)->willReturn(['filePathBefore', 'filePathAfter']);
+        $this->statusRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
             ->willReturn([$statusA, $statusB]);
-        $this->statusRepository->expects(self::exactly(2))->method('remove')->with(...consecutive([$statusA, false], [$statusB, true]));
+        $this->statusRepository->expects($this->exactly(2))->method('remove')->with(...consecutive([$statusA, false], [$statusB, true]));
 
         $this->service->markAllAsUnseen($review, $revision);
     }
@@ -130,7 +130,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
 
         $status = new FileSeenStatus();
 
-        $this->statusRepository->expects(self::once())
+        $this->statusRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 456])
             ->willReturn([$status]);

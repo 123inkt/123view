@@ -77,8 +77,8 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
@@ -100,9 +100,9 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
 
         $api = $this->createMock(GitlabApi::class);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->mergeRequestService->expects(self::once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(null);
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
@@ -124,10 +124,10 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
 
         $api = $this->createMock(GitlabApi::class);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->mergeRequestService->expects(self::once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
-        $this->commentService->expects(self::once())->method('create')->with($api, $comment, 12345);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
+        $this->commentService->expects($this->once())->method('create')->with($api, $comment, 12345);
         $this->commentService->expects(self::never())->method('updateExtReferenceId');
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
@@ -150,11 +150,11 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
 
         $api = $this->createMock(GitlabApi::class);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->mergeRequestService->expects(self::once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
-        $this->commentService->expects(self::once())->method('create')->with($api, $comment, 12345)->willThrowException(new RuntimeException('foo'));
-        $this->commentService->expects(self::once())->method('updateExtReferenceId')->with($api, $comment, 12345);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
+        $this->commentService->expects($this->once())->method('create')->with($api, $comment, 12345)->willThrowException(new RuntimeException('foo'));
+        $this->commentService->expects($this->once())->method('updateExtReferenceId')->with($api, $comment, 12345);
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }

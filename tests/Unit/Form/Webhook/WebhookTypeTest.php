@@ -24,7 +24,7 @@ class WebhookTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(6))
+        $builder->expects($this->exactly(6))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -36,7 +36,7 @@ class WebhookTypeTest extends AbstractTestCase
                     ['repositories', RepositoryChoiceType::class],
                 )
             )->willReturnSelf();
-        $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();
+        $builder->expects($this->once())->method('get')->with('repositories')->willReturnSelf();
 
         $type = new WebhookType();
         $type->buildForm($builder, []);

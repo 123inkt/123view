@@ -29,7 +29,7 @@ class CredentialsControllerTest extends AbstractControllerTestCase
     {
         $viewModel = $this->createMock(CredentialsViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getCredentialsViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getCredentialsViewModel')->willReturn($viewModel);
 
         static::assertSame(['credentialsViewModel' => $viewModel], ($this->controller)());
     }

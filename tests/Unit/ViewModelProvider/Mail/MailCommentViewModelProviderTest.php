@@ -58,10 +58,10 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
-        $this->diffFinder->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
             ->method('findLinesAround')
             ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
@@ -96,10 +96,10 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
-        $this->diffFinder->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
             ->method('findLinesAround')
             ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
@@ -135,10 +135,10 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
-        $this->diffFinder->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
             ->method('findLinesAround')
             ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);

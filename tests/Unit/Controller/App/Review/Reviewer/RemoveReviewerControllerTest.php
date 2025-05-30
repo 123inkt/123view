@@ -58,15 +58,15 @@ class RemoveReviewerControllerTest extends AbstractControllerTestCase
         $user->setId(456);
 
         $this->expectGetUser($user);
-        $this->objectManager->expects(self::once())->method('remove')->with($reviewerB);
-        $this->objectManager->expects(self::once())->method('persist')->with($review);
-        $this->objectManager->expects(self::once())->method('flush');
+        $this->objectManager->expects($this->once())->method('remove')->with($reviewerB);
+        $this->objectManager->expects($this->once())->method('persist')->with($review);
+        $this->objectManager->expects($this->once())->method('flush');
 
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
 
-        $this->eventService->expects(self::once())->method('reviewerRemoved')->with($review, $reviewerB, 456);
-        $this->eventService->expects(self::once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::ACCEPTED, 456);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED, 456);
+        $this->eventService->expects($this->once())->method('reviewerRemoved')->with($review, $reviewerB, 456);
+        $this->eventService->expects($this->once())->method('reviewReviewerStateChanged')->with($review, CodeReviewerStateType::ACCEPTED, 456);
+        $this->eventService->expects($this->once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED, 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

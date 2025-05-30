@@ -31,15 +31,15 @@ class AddAccessTokenFormTypeTest extends AbstractTestCase
     {
         $url = 'https://123view/user/account-tokens';
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(UserAccessTokenController::class)
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(2))
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(2))
             ->method('add')
             ->with(
                 ...consecutive(

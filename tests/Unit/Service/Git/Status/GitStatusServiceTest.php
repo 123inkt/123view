@@ -41,8 +41,8 @@ class GitStatusServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitStatusCommandBuilder::class);
-        $builder->expects(self::once())->method('porcelain')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createStatus')->willReturn($builder);
+        $builder->expects($this->once())->method('porcelain')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createStatus')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn($output);

@@ -78,9 +78,9 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true)
             ->getDataWillReturn(['rev123' => true, 'rev456' => false]);
 
-        $this->revisionRepository->expects(self::once())->method('save')->with($revisionA);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('revisionsDetached')->with($review, [$revisionA], 456);
+        $this->revisionRepository->expects($this->once())->method('save')->with($revisionA);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->eventService->expects($this->once())->method('revisionsDetached')->with($review, [$revisionA], 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

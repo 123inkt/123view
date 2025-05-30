@@ -41,9 +41,9 @@ class GitResetServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
-        $builder->expects(self::once())->method('hard')->willReturnSelf();
-        $builder->expects(self::once())->method('commitHash')->with($commitHash)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createReset')->willReturn($builder);
+        $builder->expects($this->once())->method('hard')->willReturnSelf();
+        $builder->expects($this->once())->method('commitHash')->with($commitHash)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createReset')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
@@ -63,9 +63,9 @@ class GitResetServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
-        $builder->expects(self::once())->method('soft')->willReturnSelf();
-        $builder->expects(self::once())->method('commitHash')->with($commitHash)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createReset')->willReturn($builder);
+        $builder->expects($this->once())->method('soft')->willReturnSelf();
+        $builder->expects($this->once())->method('commitHash')->with($commitHash)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createReset')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
         $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');

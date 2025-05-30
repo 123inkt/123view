@@ -39,7 +39,7 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
     {
         $message = new CommentAdded(1, 2, 3, 'file', 'message');
 
-        $this->bus->expects(self::once())->method('dispatch')
+        $this->bus->expects($this->once())->method('dispatch')
             ->with(
                 self::callback(
                     static function ($envelope) use ($message) {
@@ -65,7 +65,7 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
      */
     public function testHandleDelayedMessageUnknownHandlerShouldSkip(): void
     {
-        $this->handlerProvider->expects(self::once())->method('getHandler')->with(stdClass::class)->willReturn(null);
+        $this->handlerProvider->expects($this->once())->method('getHandler')->with(stdClass::class)->willReturn(null);
 
         $this->handler->handleDelayedMessage(new DelayableMessage(new stdClass()));
     }
@@ -78,8 +78,8 @@ class MailNotificationMessageHandlerTest extends AbstractTestCase
         $commentAdded        = new CommentAdded(1, 2, 3, 'file', 'message');
         $notificationHandler = $this->createMock(MailNotificationHandlerInterface::class);
 
-        $this->handlerProvider->expects(self::once())->method('getHandler')->with(CommentAdded::class)->willReturn($notificationHandler);
-        $notificationHandler->expects(self::once())->method('handle')->with($commentAdded);
+        $this->handlerProvider->expects($this->once())->method('getHandler')->with(CommentAdded::class)->willReturn($notificationHandler);
+        $notificationHandler->expects($this->once())->method('handle')->with($commentAdded);
 
         $this->handler->handleDelayedMessage(new DelayableMessage($commentAdded));
     }

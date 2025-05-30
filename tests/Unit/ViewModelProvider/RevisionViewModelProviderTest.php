@@ -54,7 +54,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $repository->setId(123);
         $paginator = $this->createMock(Paginator::class);
 
-        $this->revisionRepository->expects(self::once())
+        $this->revisionRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(123, $page, $searchQuery, false)
             ->willReturn($paginator);
@@ -70,11 +70,11 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setId(123);
 
-        $this->visibilityService->expects(self::once())
+        $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $this->user)
             ->willReturn([$visibility]);
-        $this->formFactory->expects(self::exactly(2))
+        $this->formFactory->expects($this->exactly(2))
             ->method('create')
             ->with(
                 ...consecutive(
@@ -96,11 +96,11 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $review->setId(123);
         $review->setType(CodeReviewType::BRANCH);
 
-        $this->visibilityService->expects(self::once())
+        $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $this->user)
             ->willReturn([$visibility]);
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
             ->willReturn($this->createMock(FormInterface::class));

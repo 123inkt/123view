@@ -29,7 +29,7 @@ class ParserHasFailedFormatterTest extends AbstractTestCase
 
     public function testFormatEof(): void
     {
-        $this->translator->expects(self::exactly(2))->method('trans')->willReturn('unexpected', 'expected');
+        $this->translator->expects($this->exactly(2))->method('trans')->willReturn('unexpected', 'expected');
 
         try {
             atLeastOne(satisfy(isDigit()))->tryString('');
@@ -40,7 +40,7 @@ class ParserHasFailedFormatterTest extends AbstractTestCase
 
     public function testFormat(): void
     {
-        $this->translator->expects(self::exactly(2))->method('trans')->willReturn('unexpected', 'expected');
+        $this->translator->expects($this->exactly(2))->method('trans')->willReturn('unexpected', 'expected');
 
         try {
             atLeastOne(satisfy(isDigit()))->tryString('foobar');

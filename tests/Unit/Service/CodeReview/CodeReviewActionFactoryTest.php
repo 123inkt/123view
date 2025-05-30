@@ -52,7 +52,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
     public function testCreateFromRequestAddCommentReplyAction(): void
     {
         $comment = new Comment();
-        $this->commentRepository->expects(self::once())->method('find')->with(8)->willReturn($comment);
+        $this->commentRepository->expects($this->once())->method('find')->with(8)->willReturn($comment);
 
         $request = new Request(['action' => 'add-reply:8']);
         $action  = $this->factory->createFromRequest($request);
@@ -63,7 +63,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
     public function testCreateFromRequestEditCommentAction(): void
     {
         $comment = new Comment();
-        $this->commentRepository->expects(self::once())->method('find')->with(8)->willReturn($comment);
+        $this->commentRepository->expects($this->once())->method('find')->with(8)->willReturn($comment);
 
         $request = new Request(['action' => 'edit-comment:8']);
         $action  = $this->factory->createFromRequest($request);
@@ -74,7 +74,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
     public function testCreateFromRequestEditCommentReplyAction(): void
     {
         $comment = new CommentReply();
-        $this->replyRepository->expects(self::once())->method('find')->with(8)->willReturn($comment);
+        $this->replyRepository->expects($this->once())->method('find')->with(8)->willReturn($comment);
 
         $request = new Request(['action' => 'edit-reply:8']);
         $action  = $this->factory->createFromRequest($request);

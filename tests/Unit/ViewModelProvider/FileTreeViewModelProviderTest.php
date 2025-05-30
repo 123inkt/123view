@@ -42,8 +42,8 @@ class FileTreeViewModelProviderTest extends AbstractTestCase
         $statusCollection = new FileSeenStatusCollection();
         $folderStatusCollection = new FolderCollapseStatusCollection();
 
-        $this->fileStatusService->expects(self::once())->method('getFileSeenStatus')->with($review)->willReturn($statusCollection);
-        $this->folderStatusService->expects(self::once())->method('getFolderCollapseStatus')->with($review)->willReturn($folderStatusCollection);
+        $this->fileStatusService->expects($this->once())->method('getFileSeenStatus')->with($review)->willReturn($statusCollection);
+        $this->folderStatusService->expects($this->once())->method('getFolderCollapseStatus')->with($review)->willReturn($folderStatusCollection);
 
         $viewModel = $this->provider->getFileTreeViewModel($review, $treeNode, $file);
         static::assertSame($review, $viewModel->review);

@@ -44,7 +44,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
 
         $this->expectGetUser($user);
         $this->commentRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(
@@ -57,7 +57,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
                     }
                 )
             );
-        $this->bus->expects(self::once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
+        $this->bus->expects($this->once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
 
         ($this->controller)($request, $comment);
     }

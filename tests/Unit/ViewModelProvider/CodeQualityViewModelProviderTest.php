@@ -59,8 +59,8 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setRepository($repository);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->reportRepository->expects(self::once())->method('findByRevisions')->with($repository, [$revision])->willReturn([]);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([]);
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');
         static::assertEquals(new CodeQualityViewModel([], null), $viewModel);
@@ -78,12 +78,12 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $lineCoverage = new LineCoverage();
         $coverage     = (new CodeCoverageFile())->setCoverage($lineCoverage);
 
-        $this->coverageReportRepository->expects(self::once())->method('findOneByRevisions')
+        $this->coverageReportRepository->expects($this->once())->method('findOneByRevisions')
             ->with($repository, [$revision], 'filepath')
             ->willReturn($coverage);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->reportRepository->expects(self::once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
-        $this->issueRepository->expects(self::once())->method('findBy')->with(['report' => [$report], 'file' => 'filepath'])->willReturn([$issue]);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
+        $this->issueRepository->expects($this->once())->method('findBy')->with(['report' => [$report], 'file' => 'filepath'])->willReturn([$issue]);
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');
         static::assertEquals(new CodeQualityViewModel([$issue], $coverage), $viewModel);

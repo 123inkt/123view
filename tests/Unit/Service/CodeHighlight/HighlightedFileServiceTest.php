@@ -44,7 +44,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $file                = new DiffFile();
         $file->filePathAfter = '';
 
-        $this->translator->expects(self::once())->method('translate')->with('')->willReturn(null);
+        $this->translator->expects($this->once())->method('translate')->with('')->willReturn(null);
 
         $this->httpClient->expects(self::never())->method('request');
         $this->splitter->expects(self::never())->method('split');
@@ -65,14 +65,14 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $file->addBlock($block);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->expects(self::once())->method('getStatusCode')->willReturn(Response::HTTP_OK);
-        $response->expects(self::once())->method('getContent')->willReturn('highlighted-data');
+        $response->expects($this->once())->method('getStatusCode')->willReturn(Response::HTTP_OK);
+        $response->expects($this->once())->method('getContent')->willReturn('highlighted-data');
 
-        $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
-        $this->httpClient->expects(self::once())->method('request')
+        $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
+        $this->httpClient->expects($this->once())->method('request')
             ->with('POST', '', ['query' => ['language' => 'xml'], 'body' => 'file-data'])
             ->willReturn($response);
-        $this->splitter->expects(self::once())->method('split')->with('highlighted-data')->willReturn(['highlighted', 'data']);
+        $this->splitter->expects($this->once())->method('split')->with('highlighted-data')->willReturn(['highlighted', 'data']);
 
         $actual = $this->service->fromDiffFile($file);
         static::assertNotNull($actual);
@@ -91,8 +91,8 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $file->filePathAfter = '/path/to/file.xml';
         $file->addBlock($block);
 
-        $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
-        $this->httpClient->expects(self::once())->method('request')->willThrowException(new RuntimeException('error'));
+        $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
+        $this->httpClient->expects($this->once())->method('request')->willThrowException(new RuntimeException('error'));
 
         static::assertNull($this->service->fromDiffFile($file));
     }
@@ -109,10 +109,10 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $file->addBlock($block);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->expects(self::once())->method('getStatusCode')->willReturn(Response::HTTP_BAD_REQUEST);
+        $response->expects($this->once())->method('getStatusCode')->willReturn(Response::HTTP_BAD_REQUEST);
 
-        $this->translator->expects(self::once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
-        $this->httpClient->expects(self::once())->method('request')->willReturn($response);
+        $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
+        $this->httpClient->expects($this->once())->method('request')->willReturn($response);
 
         static::assertNull($this->service->fromDiffFile($file));
     }

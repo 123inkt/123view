@@ -34,21 +34,21 @@ class ReviewRouterTest extends AbstractTestCase
     public function testSetContext(): void
     {
         $context = new RequestContext();
-        $this->router->expects(self::once())->method('setContext')->with($context);
+        $this->router->expects($this->once())->method('setContext')->with($context);
         $this->reviewRouter->setContext($context);
     }
 
     public function testGetContext(): void
     {
         $context = new RequestContext();
-        $this->router->expects(self::once())->method('getContext')->willReturn($context);
+        $this->router->expects($this->once())->method('getContext')->willReturn($context);
         static::assertSame($context, $this->reviewRouter->getContext());
     }
 
     public function testGetRouteCollection(): void
     {
         $collection = new RouteCollection();
-        $this->router->expects(self::once())->method('getRouteCollection')->willReturn($collection);
+        $this->router->expects($this->once())->method('getRouteCollection')->willReturn($collection);
         static::assertSame($collection, $this->reviewRouter->getRouteCollection());
     }
 
@@ -74,7 +74,7 @@ class ReviewRouterTest extends AbstractTestCase
         $review->setProjectId(123);
         $review->setRepository($repository);
 
-        $this->router->expects(self::once())->method('generate')
+        $this->router->expects($this->once())->method('generate')
             ->with(ReviewController::class, ['repositoryName' => 'repository', 'reviewId' => 123])
             ->willReturn('url');
 
@@ -87,7 +87,7 @@ class ReviewRouterTest extends AbstractTestCase
         $params        = ['foo' => 'bar'];
         $referenceType = UrlGeneratorInterface::RELATIVE_PATH;
 
-        $this->router->expects(self::once())->method('generate')
+        $this->router->expects($this->once())->method('generate')
             ->with('route', $params, $referenceType)
             ->willReturn('url');
 
@@ -99,7 +99,7 @@ class ReviewRouterTest extends AbstractTestCase
     {
         $pathinfo = 'pathinfo';
         $result   = ['foo' => 'bar'];
-        $this->router->expects(self::once())->method('match')->with($pathinfo)->willReturn($result);
+        $this->router->expects($this->once())->method('match')->with($pathinfo)->willReturn($result);
         static::assertSame($result, $this->reviewRouter->match($pathinfo));
     }
 
@@ -107,14 +107,14 @@ class ReviewRouterTest extends AbstractTestCase
     {
         $request = new Request();
         $result  = ['foo' => 'bar'];
-        $this->router->expects(self::once())->method('matchRequest')->with($request)->willReturn($result);
+        $this->router->expects($this->once())->method('matchRequest')->with($request)->willReturn($result);
         static::assertSame($result, $this->reviewRouter->matchRequest($request));
     }
 
     public function testWarmUp(): void
     {
         $result = ['foo' => 'bar'];
-        $this->router->expects(self::once())->method('warmUp')->with('cache-dir')->willReturn($result);
+        $this->router->expects($this->once())->method('warmUp')->with('cache-dir')->willReturn($result);
         static::assertSame($result, $this->reviewRouter->warmUp('cache-dir'));
     }
 }

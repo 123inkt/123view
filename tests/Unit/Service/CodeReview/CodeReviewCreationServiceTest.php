@@ -46,8 +46,8 @@ class CodeReviewCreationServiceTest extends AbstractTestCase
 
         $review = new CodeReview();
 
-        $this->reviewFactory->expects(self::once())->method('createFromRevision')->with($revision, 'reference')->willReturn($review);
-        $this->reviewRepository->expects(self::once())->method('getCreateProjectId')->with(123)->willReturn(789);
+        $this->reviewFactory->expects($this->once())->method('createFromRevision')->with($revision, 'reference')->willReturn($review);
+        $this->reviewRepository->expects($this->once())->method('getCreateProjectId')->with(123)->willReturn(789);
 
         $actualReview = $this->service->createFromRevision($revision, 'reference');
         static::assertSame($review, $actualReview);
@@ -63,9 +63,9 @@ class CodeReviewCreationServiceTest extends AbstractTestCase
         $repository->setId(123);
         $review = new CodeReview();
 
-        $this->reviewFactory->expects(self::once())->method('createFromBranch')->with($repository, 'branch')->willReturn($review);
-        $this->reviewRepository->expects(self::once())->method('getCreateProjectId')->with(123)->willReturn(789);
-        $this->targetBranchService->expects(self::once())->method('getTargetBranch')->with($repository, 'branch')->willReturn('target-branch');
+        $this->reviewFactory->expects($this->once())->method('createFromBranch')->with($repository, 'branch')->willReturn($review);
+        $this->reviewRepository->expects($this->once())->method('getCreateProjectId')->with(123)->willReturn(789);
+        $this->targetBranchService->expects($this->once())->method('getTargetBranch')->with($repository, 'branch')->willReturn('target-branch');
 
         $actualReview = $this->service->createFromBranch($repository, 'branch');
         static::assertSame($review, $actualReview);

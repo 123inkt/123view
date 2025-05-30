@@ -58,7 +58,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $review->setExtReferenceId(null);
         $review->getRevisions()->add($revision);
 
-        $this->logger->expects(self::once())->method('info')->with('No branch name found for review {id}');
+        $this->logger->expects($this->once())->method('info')->with('No branch name found for review {id}');
 
         static::assertNull($this->service->retrieveMergeRequestIID($this->api, $review));
     }
@@ -79,8 +79,8 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $review->getRevisions()->add($revision);
         $review->setRepository($repository);
 
-        $this->logger->expects(self::once())->method('info')->with('No merge request found for review {id} - {ref}');
-        $this->mergeRequests->expects(self::once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(null);
+        $this->logger->expects($this->once())->method('info')->with('No merge request found for review {id} - {ref}');
+        $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(null);
 
         static::assertNull($this->service->retrieveMergeRequestIID($this->api, $review));
     }
@@ -101,8 +101,8 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $review->getRevisions()->add($revision);
         $review->setRepository($repository);
 
-        $this->mergeRequests->expects(self::once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(['iid' => 1111]);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
+        $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(['iid' => 1111]);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
 
         static::assertSame(1111, $this->service->retrieveMergeRequestIID($this->api, $review));
     }

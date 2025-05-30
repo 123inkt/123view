@@ -44,7 +44,7 @@ class RuleNotificationServiceTest extends AbstractTestCase
             ->setNotifyTimestamp(654321)
             ->setCreateTimestamp(123456789);
 
-        $this->repository->expects(self::once())->method('save')->with($expected, true);
+        $this->repository->expects($this->once())->method('save')->with($expected, true);
 
         $this->service->addRuleNotification($rule, $period);
     }

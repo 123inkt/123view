@@ -38,7 +38,7 @@ class FileReviewRequestTest extends AbstractRequestTestCase
         $session = $this->createMock(Session::class);
         $this->request->setSession($session);
 
-        $session->expects(self::once())
+        $session->expects($this->once())
             ->method('get')
             ->with(SessionKeys::DIFF_COMPARISON_POLICY->value)
             ->willReturn(DiffComparePolicy::TRIM->value);
@@ -59,7 +59,7 @@ class FileReviewRequestTest extends AbstractRequestTestCase
         $session = $this->createMock(Session::class);
         $this->request->setSession($session);
 
-        $session->expects(self::once())
+        $session->expects($this->once())
             ->method('get')
             ->with(SessionKeys::REVIEW_DIFF_MODE->value)
             ->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE->value);

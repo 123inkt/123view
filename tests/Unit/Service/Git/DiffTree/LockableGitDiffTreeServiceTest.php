@@ -37,11 +37,11 @@ class LockableGitDiffTreeServiceTest extends AbstractTestCase
         $repository = new Repository();
         $revision->setRepository($repository);
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->treeService->expects(self::once())->method('getFilesInRevision')->with($revision)->willReturn(['file']);
+        $this->treeService->expects($this->once())->method('getFilesInRevision')->with($revision)->willReturn(['file']);
 
         $result = $this->service->getFilesInRevision($revision);
         static::assertSame(['file'], $result);

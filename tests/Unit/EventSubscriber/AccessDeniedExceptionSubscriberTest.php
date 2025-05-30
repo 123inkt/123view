@@ -69,7 +69,7 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
     public function testOnKernelExceptionShouldRedirect(): void
     {
         $this->urlGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(LoginController::class)
             ->willReturn('url');

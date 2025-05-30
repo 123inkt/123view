@@ -41,7 +41,7 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(false);
         $this->expectAddFlash('error', 'access.token.creation.failed');
-        $this->viewModelProvider->expects(self::once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
 
         $result = ($this->controller)($request);
         static::assertSame(['accessTokenModel' => $viewModel], $result);
@@ -60,8 +60,8 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true)
             ->getDataWillReturn(['name' => 'name']);
         $this->expectAddFlash('success', 'access.token.creation.success');
-        $this->accessTokenIssuer->expects(self::once())->method('issue')->with($user, 'name');
-        $this->viewModelProvider->expects(self::once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
+        $this->accessTokenIssuer->expects($this->once())->method('issue')->with($user, 'name');
+        $this->viewModelProvider->expects($this->once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
 
         $result = ($this->controller)($request);
         static::assertSame(['accessTokenModel' => $viewModel], $result);

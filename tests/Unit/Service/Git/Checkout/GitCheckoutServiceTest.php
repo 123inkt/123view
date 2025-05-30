@@ -41,12 +41,12 @@ class GitCheckoutServiceTest extends AbstractTestCase
         $hash = '123abcdef';
 
         $builder = $this->createMock(GitCheckoutCommandBuilder::class);
-        $builder->expects(self::once())->method('startPoint')->with($hash)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createCheckout')->willReturn($builder);
+        $builder->expects($this->once())->method('startPoint')->with($hash)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createCheckout')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
 
         $this->service->checkout($repository, $hash);
     }
@@ -67,13 +67,13 @@ class GitCheckoutServiceTest extends AbstractTestCase
         $branchName = 'repository-5-revision-6';
 
         $builder = $this->createMock(GitCheckoutCommandBuilder::class);
-        $builder->expects(self::once())->method('branch')->with($branchName)->willReturnSelf();
-        $builder->expects(self::once())->method('startPoint')->with($hash . '~')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createCheckout')->willReturn($builder);
+        $builder->expects($this->once())->method('branch')->with($branchName)->willReturnSelf();
+        $builder->expects($this->once())->method('startPoint')->with($hash . '~')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createCheckout')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
 
         $actualBranchName = $this->service->checkoutRevision($revision);
         static::assertSame($branchName, $actualBranchName);

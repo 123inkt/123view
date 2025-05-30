@@ -35,7 +35,7 @@ class AddExternalLinkCommandTest extends AbstractTestCase
     public function testExecute(): void
     {
         $this->linkRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('save')
             ->with((new ExternalLink())->setPattern('pattern')->setUrl('https://url/'));
 

@@ -32,8 +32,8 @@ class ValidateRevisionsMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(12);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->validationService->expects(self::once())->method('validate')->with($repository);
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->validationService->expects($this->once())->method('validate')->with($repository);
 
         $event = new ValidateRevisionsMessage(123);
         ($this->messageHandler)($event);

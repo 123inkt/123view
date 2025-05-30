@@ -36,7 +36,7 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setFilePath('filepath');
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review, 'filePath' => 'filepath'])
             ->willReturn('https://url/');

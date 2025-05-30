@@ -33,7 +33,7 @@ class RipGrepProcessExecutorTest extends AbstractTestCase
         $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
         $commandBuilder->method('build')->willReturn($command);
 
-        $this->processService->expects(self::once())->method('popen')->with($command, 'r')->willReturn($handle);
+        $this->processService->expects($this->once())->method('popen')->with($command, 'r')->willReturn($handle);
 
         $iterator = $this->executor->execute($commandBuilder, __DIR__);
         $expected = new ProcessOutputIterator($handle);

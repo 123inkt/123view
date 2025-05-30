@@ -89,27 +89,27 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
         $request = $this->createMock(ReviewRequest::class);
-        $this->reviewTypeDecider->expects(self::once())->method('decide')
+        $this->reviewTypeDecider->expects($this->once())->method('decide')
             ->with($review, [$revision], [$revision])
             ->willReturn(CodeReviewType::BRANCH);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->visibilityService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())
             ->method('getVisibleRevisions')
             ->with($review, [$revision])
             ->willReturnArgument(1);
-        $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
-        $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
-        $request->expects(self::once())->method('getAction')->willReturn($action);
-        $request->expects(self::exactly(2))->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $request->expects(self::once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
+        $request->expects($this->once())->method('getFilePath')->willReturn($filePath);
+        $request->expects($this->exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
+        $request->expects($this->once())->method('getAction')->willReturn($action);
+        $request->expects($this->exactly(2))->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $request->expects($this->once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
 
-        $this->fileService->expects(self::once())->method('getFiles')->with($review, [$revision], $filePath)->willReturn([$tree, $file]);
+        $this->fileService->expects($this->once())->method('getFiles')->with($review, [$revision], $filePath)->willReturn([$tree, $file]);
         $this->fileDiffProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileDiffViewModel')
             ->with($review, $file, $action, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
-        $this->formFactory->expects(self::once())->method('create')->with(AddReviewerFormType::class, null, ['review' => $review]);
-        $this->fileTreeModelProvider->expects(self::once())->method('getFileTreeViewModel')->with($review, $tree, $file);
+        $this->formFactory->expects($this->once())->method('create')->with(AddReviewerFormType::class, null, ['review' => $review]);
+        $this->fileTreeModelProvider->expects($this->once())->method('getFileTreeViewModel')->with($review, $tree, $file);
 
         $viewModel = $this->modelProvider->getViewModel($review, $request);
         static::assertFalse($viewModel->isDescriptionVisible());
@@ -132,25 +132,25 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $tree->addNode(['path', 'to', 'file.txt'], $file);
 
         $request = $this->createMock(ReviewRequest::class);
-        $request->expects(self::once())->method('getFilePath')->willReturn($filePath);
-        $request->expects(self::exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
+        $request->expects($this->once())->method('getFilePath')->willReturn($filePath);
+        $request->expects($this->exactly(3))->method('getTab')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
 
-        $this->reviewTypeDecider->expects(self::once())->method('decide')
+        $this->reviewTypeDecider->expects($this->once())->method('decide')
             ->with($review, [$revision], [$revision])
             ->willReturn(CodeReviewType::BRANCH);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->visibilityService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())
             ->method('getVisibleRevisions')
             ->with($review, [$revision])
             ->willReturnArgument(1);
-        $this->fileService->expects(self::once())
+        $this->fileService->expects($this->once())
             ->method('getFiles')
             ->with($review, [$revision], $filePath, new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, 'branch'))
             ->willReturn([$tree, null]);
-        $request->expects(self::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $this->summaryViewModelProvider->expects(self::once())->method('getSummaryViewModel')->with($review, [$revision], $tree);
+        $request->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->summaryViewModelProvider->expects($this->once())->method('getSummaryViewModel')->with($review, [$revision], $tree);
         $this->fileDiffProvider->expects(self::never())->method('getFileDiffViewModel');
-        $this->revisionModelProvider->expects(self::once())->method('getRevisionViewModel')->with($review, [$revision]);
+        $this->revisionModelProvider->expects($this->once())->method('getRevisionViewModel')->with($review, [$revision]);
 
         $viewModel = $this->modelProvider->getViewModel($review, $request);
         static::assertTrue($viewModel->isDescriptionVisible());

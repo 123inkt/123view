@@ -48,12 +48,12 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
         $repository->setDisplayName('repository');
         $timeline   = $this->createMock(TimelineViewModel::class);
 
-        $this->repositoryRepository->expects(self::once())
+        $this->repositoryRepository->expects($this->once())
             ->method('findBy')
             ->with(['active' => 1], ['displayName' => 'ASC'])
             ->willReturn([$repository]);
-        $this->revisionRepository->expects(self::once())->method('getRepositoryRevisionCount')->willReturn([5 => 6]);
-        $this->viewModelProvider->expects(self::once())->method('getTimelineViewModelForFeed')->with($this->user)->willReturn($timeline);
+        $this->revisionRepository->expects($this->once())->method('getRepositoryRevisionCount')->willReturn([5 => 6]);
+        $this->viewModelProvider->expects($this->once())->method('getTimelineViewModelForFeed')->with($this->user)->willReturn($timeline);
 
         $viewModel = $this->provider->getProjectsViewModel('repo');
         static::assertSame([$repository], $viewModel->repositories);

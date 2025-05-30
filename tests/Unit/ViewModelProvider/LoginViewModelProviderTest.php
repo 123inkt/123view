@@ -39,15 +39,15 @@ class LoginViewModelProviderTest extends AbstractTestCase
         $request = new Request(['next' => 'next']);
         $view    = $this->createMock(FormView::class);
         $form    = $this->createMock(FormInterface::class);
-        $form->expects(self::once())->method('createView')->willReturn($view);
+        $form->expects($this->once())->method('createView')->willReturn($view);
 
-        $this->utils->expects(self::once())->method('getLastUsername')->willReturn('username');
+        $this->utils->expects($this->once())->method('getLastUsername')->willReturn('username');
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(LoginFormType::class, null, ['username' => 'username', 'targetPath' => 'next'])
             ->willReturn($form);
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(AzureAdAuthController::class, ['next' => 'next'])
             ->willReturn('url');

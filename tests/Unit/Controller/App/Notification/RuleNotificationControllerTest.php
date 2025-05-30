@@ -67,10 +67,10 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $viewModel = new CommitsViewModel([$commit], MailThemeType::DARCULA);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleProcessor->expects(self::once())->method('processRule')->willReturn([$commit]);
-        $this->viewModelProvider->expects(self::once())->method('getCommitsViewModel')->with([$commit], $rule, $notification)->willReturn($viewModel);
+        $this->ruleProcessor->expects($this->once())->method('processRule')->willReturn([$commit]);
+        $this->viewModelProvider->expects($this->once())->method('getCommitsViewModel')->with([$commit], $rule, $notification)->willReturn($viewModel);
         $this->expectRender('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
-        $this->notificationRepository->expects(self::once())->method('save')->with($notification);
+        $this->notificationRepository->expects($this->once())->method('save')->with($notification);
 
         $response = ($this->controller)($notification);
 
@@ -90,8 +90,8 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $notification->setRule($rule);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleProcessor->expects(self::once())->method('processRule')->willReturn([]);
-        $this->notificationRepository->expects(self::once())->method('save')->with($notification);
+        $this->ruleProcessor->expects($this->once())->method('processRule')->willReturn([]);
+        $this->notificationRepository->expects($this->once())->method('save')->with($notification);
 
         static::assertEquals(
             new Response('No (more) revisions found for this notification rule', headers: ['Content-Type' => 'text/plain']),

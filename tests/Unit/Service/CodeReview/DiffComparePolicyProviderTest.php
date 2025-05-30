@@ -44,7 +44,7 @@ class DiffComparePolicyProviderTest extends AbstractTestCase
 
     public function testGetComparePolicy(): void
     {
-        $this->session->expects(self::once())
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionKeys::DIFF_COMPARISON_POLICY->value)
             ->willReturn(DiffComparePolicy::TRIM->value);

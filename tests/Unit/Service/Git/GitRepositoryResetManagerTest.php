@@ -50,11 +50,11 @@ class GitRepositoryResetManagerTest extends AbstractTestCase
         $repository = new Repository();
         $branchName = 'branch';
 
-        $this->cherryPickService->expects(self::once())->method('tryCherryPickAbort')->with($repository)->willReturn(true);
-        $this->resetService->expects(self::once())->method('resetHard')->with($repository);
-        $this->cleanService->expects(self::once())->method('forceClean')->with($repository);
-        $this->checkoutService->expects(self::once())->method('checkout')->with($repository, 'master');
-        $this->branchService->expects(self::once())->method('tryDeleteBranch')->with($repository, $branchName);
+        $this->cherryPickService->expects($this->once())->method('tryCherryPickAbort')->with($repository)->willReturn(true);
+        $this->resetService->expects($this->once())->method('resetHard')->with($repository);
+        $this->cleanService->expects($this->once())->method('forceClean')->with($repository);
+        $this->checkoutService->expects($this->once())->method('checkout')->with($repository, 'master');
+        $this->branchService->expects($this->once())->method('tryDeleteBranch')->with($repository, $branchName);
 
         static::assertTrue($this->service->start($repository, $branchName, static fn() => true));
     }

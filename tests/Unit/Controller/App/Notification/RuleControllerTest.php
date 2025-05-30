@@ -66,7 +66,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isValidWillReturn(true);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::once())->method('save')->with($rule, true);
+        $this->ruleRepository->expects($this->once())->method('save')->with($rule, true);
         $this->expectAddFlash('success', 'rule.successful.saved');
         $this->expectGenerateUrl(RulesController::class)->willReturn('redirect');
 
