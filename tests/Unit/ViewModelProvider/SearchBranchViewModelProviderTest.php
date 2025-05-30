@@ -8,7 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\Service\Git\Branch\CacheableGitBranchService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Search\SearchBranchViewModel;
 use DR\Review\ViewModelProvider\SearchBranchViewModelProvider;
@@ -19,16 +19,16 @@ use Throwable;
 #[CoversClass(SearchBranchViewModelProvider::class)]
 class SearchBranchViewModelProviderTest extends AbstractTestCase
 {
-    private RepositoryRepository&MockObject $repositoryRepository;
-    private GitBranchService&MockObject     $branchService;
-    private CodeReviewRepository&MockObject $reviewRepository;
-    private SearchBranchViewModelProvider   $provider;
+    private RepositoryRepository&MockObject      $repositoryRepository;
+    private CacheableGitBranchService&MockObject $branchService;
+    private CodeReviewRepository&MockObject      $reviewRepository;
+    private SearchBranchViewModelProvider        $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
-        $this->branchService        = $this->createMock(GitBranchService::class);
+        $this->branchService        = $this->createMock(CacheableGitBranchService::class);
         $this->reviewRepository     = $this->createMock(CodeReviewRepository::class);
         $this->provider             = new SearchBranchViewModelProvider($this->repositoryRepository, $this->branchService, $this->reviewRepository);
     }
