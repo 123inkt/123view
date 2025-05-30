@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @extends AbstractControllerTestCase<SearchCodeController>
@@ -41,13 +42,18 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $request->method('getSearchQuery')->willReturn('fail');
         $request->method('getExtensions')->willReturn(null);
 
-        $this->translator->expects($this->once())->method('trans')->with('search.much.be.minimum.5.characters')->willReturn('translation');
-        $this->expectAddFlash('error', 'translation');
+        $this->translator->expects($this->exactly(2))->method('trans')
+            ->with(...consecutive(['search.much.be.minimum.5.characters'], ['code.search']))
+            ->willReturn('translation1', 'translation2');
+        $this->expectAddFlash('error', 'translation1');
         $this->fileSearcher->expects($this->never())->method('find');
 
         $result = ($this->controller)($request);
 
-        static::assertEquals(['viewModel' => new SearchCodeViewModel([], 'fail', null)], $result);
+        static::assertEquals(
+            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel([], 'fail', null)],
+            $result
+        );
     }
 
     public function testInvokeWithSearch(): void
@@ -59,13 +65,16 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $repository    = new Repository();
         $searchResults = [new SearchResult($repository, new SplFileInfo('file', '', ''))];
 
-        $this->translator->expects($this->never())->method('trans');
+        $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->fileSearcher->expects($this->once())->method('find')->with('success', ['json', 'yaml'], [$repository])->willReturn($searchResults);
 
         $result = ($this->controller)($request);
 
-        static::assertEquals(['viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml')], $result);
+        static::assertEquals(
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml')],
+            $result
+        );
     }
 
     public function getController(): AbstractController

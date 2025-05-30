@@ -5,20 +5,20 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\Service\Git\Branch\CacheableGitBranchService;
 use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
 use DR\Utils\Arrays;
+use Throwable;
 
 class ProjectBranchesViewModelProvider
 {
-    public function __construct(private readonly GitBranchService $branchService, private readonly CodeReviewRepository $reviewRepository)
+    public function __construct(private readonly CacheableGitBranchService $branchService, private readonly CodeReviewRepository $reviewRepository)
     {
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Throwable
      */
     public function getProjectBranchesViewModel(Repository $repository, ?string $searchQuery): ProjectBranchesViewModel
     {

@@ -17,6 +17,7 @@
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Log/GitLogCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Show/GitShowCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/ExternalTool/Gitlab/GitlabServiceTest.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/Branch/CacheableGitBranchServiceTest.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/Review/Strategy/HesitantCherryPickStrategyTest.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/Review/Strategy/PersistentCherryPickStrategyTest.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="tests/Unit/ViewModelProvider/ReviewViewModelProviderTest.php"/>

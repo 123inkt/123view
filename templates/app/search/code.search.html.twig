@@ -33,6 +33,7 @@
         </form>
     </div>
 
+    {% if viewModel.files %}
     <div class="accordion" {{ stimulus_controller('accordion') }}>
         {% for resultFile in viewModel.files %}
             <div class="accordion-item" data-role="accordion-item">
@@ -61,4 +62,9 @@
             </div>
         {% endfor %}
     </div>
+    {% else %}
+        <div class="alert alert-warning">
+            {{ 'no.matches.found'|trans }}
+        </div>
+    {% endif %}
 {% endblock %}

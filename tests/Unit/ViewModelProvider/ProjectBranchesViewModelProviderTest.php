@@ -8,7 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\Service\Git\Branch\CacheableGitBranchService;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ProjectBranchesViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -17,14 +17,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(ProjectBranchesViewModelProvider::class)]
 class ProjectBranchesViewModelProviderTest extends AbstractTestCase
 {
-    private GitBranchService&MockObject      $branchService;
-    private CodeReviewRepository&MockObject  $reviewRepository;
-    private ProjectBranchesViewModelProvider $provider;
+    private CacheableGitBranchService&MockObject $branchService;
+    private CodeReviewRepository&MockObject      $reviewRepository;
+    private ProjectBranchesViewModelProvider     $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->branchService    = $this->createMock(GitBranchService::class);
+        $this->branchService    = $this->createMock(CacheableGitBranchService::class);
         $this->reviewRepository = $this->createMock(CodeReviewRepository::class);
         $this->provider         = new ProjectBranchesViewModelProvider($this->branchService, $this->reviewRepository);
     }

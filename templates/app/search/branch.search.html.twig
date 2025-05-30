@@ -1,0 +1,60 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <div class="mt-2 pb-2 clearfix">
+        <h2 class="float-start pe-3 mb-0">{{ 'branch.search'|trans }}</h2>
+    </div>
+
+    {%- include 'app/flash/flashes.html.twig' -%}
+
+    <div class="mb-2">
+        <form method="get">
+            <div class="input-group">
+                <input type="search" name="search" value="{{ viewModel.searchQuery }}" class="form-control"
+                        {{ stimulus_controller('search-field') }}
+                       placeholder="{{ 'search.review'|trans }}"/>
+                <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
+    </div>
+
+    {% if viewModel.branches %}
+        <table class="table table-bordered table-hover table-sm repository-branch-list mt-3">
+            <tbody>
+            {% for repositoryId, branches in viewModel.branches %}
+                {% set repository = viewModel.repositories[repositoryId] %}
+
+                {% for branch in branches %}
+                    {% set review = viewModel.reviews[repositoryId][branch] ?? null %}
+                    <tr>
+                        <td>
+                            <span class="badge rounded-pill text-bg-primary me-2">{{ repository.displayName }}</span>
+                        </td>
+                        <td>{{ branch }}</td>
+                        <td>
+                            {% if review %}
+                                <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                                    CR-{{ review.projectId }}
+                                </a>
+                            {% else %}
+                                <form method="post"
+                                      action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateBranchReviewController', {repositoryId: repository.id}) }}">
+                                    <input type="hidden" name="branch" value="{{ branch }}">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        {{ 'create.branch.review'|trans }}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            {{ 'no.branches.found'|trans }}
+        </div>
+    {% endif %}
+
+{% endblock %}
