@@ -12,6 +12,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @extends AbstractControllerTestCase<SearchBranchesController>
+ */
 #[CoversClass(SearchBranchesController::class)]
 class SearchBranchesControllerTest extends AbstractControllerTestCase
 {
@@ -28,7 +31,7 @@ class SearchBranchesControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(SearchBranchRequest::class);
         $request->method('getSearchQuery')->willReturn('test-query');
 
-        $model = $this->createStub(SearchBranchViewModel::class);
+        $model = static::createStub(SearchBranchViewModel::class);
 
         $this->viewModelProvider->expects($this->once())->method('getSearchBranchViewModel')->with('test-query')->willReturn($model);
 
