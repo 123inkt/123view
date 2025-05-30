@@ -65,7 +65,7 @@ class SearchBranchViewModelProvider
      */
     private function getReviewsFor(array $branches): array
     {
-        if (count($branches) > 0) {
+        if (count($branches) === 0) {
             return [];
         }
 
