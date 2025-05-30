@@ -25,18 +25,24 @@
                 </a>
             {%- endapply -%}
         </div>
+        <input type="search" name="search" class="reviews-list__search-input form-control"
+                {{ stimulus_controller('search-field') }}
+                {{ stimulus_action('component--checkbox-select-all', 'search', 'keyup') }}
+               data-toggle-role="revision"
+               placeholder="{{ 'search.revisions'|trans }}"/>
+
     </h6>
 
     {%- for revision in revisionViewModel.revisions -%}
 
-        <div class="review-revision--grid">
+        <div class="review-revision--grid" data-role="revision">
             <div class="review-revision--selection">
                 {% if review.type != 'branch' %}
                     {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
                 {% endif %}
             </div>
             <div class="review-revision--title-author overflow-hidden">
-                <div class="text-primary">
+                <div class="text-primary" title="{{ revision.title }}" data-role="title">
                     {{ revision.title }}
 
                     {% if revision.firstBranch %}

@@ -16,4 +16,21 @@ export default class extends Controller {
                 .forEach(el => el.checked = target.checked);
         }
     }
+
+    public search(event: Event): void {
+        const target        = event.currentTarget as HTMLInputElement;
+        const search        = target.value.toLowerCase();
+        const role          = target.dataset.toggleRole;
+        const toggleTargets = role === undefined
+            ? this.toggleTargets
+            : this.element.querySelectorAll(`[data-role~="${role}"]`);
+
+        toggleTargets.forEach(el => {
+            if (el.querySelector(`[data-role~="title"]`)?.title.toLowerCase().includes(search)) {
+                el.classList.remove('d-none');
+            } else {
+                el.classList.add('d-none');
+            }
+        });
+    }
 }
