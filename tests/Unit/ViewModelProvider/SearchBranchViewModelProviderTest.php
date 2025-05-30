@@ -49,7 +49,7 @@ class SearchBranchViewModelProviderTest extends AbstractTestCase
 
         $expected = new SearchBranchViewModel(
             [123 => ['branch']],
-            [$repository],
+            [123 => $repository],
             [123 => ['branch' => $review]],
             'branch'
         );

@@ -11,6 +11,7 @@ use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\ViewModel\App\Search\SearchBranchViewModel;
+use DR\Utils\Arrays;
 
 class SearchBranchViewModelProvider
 {
@@ -27,8 +28,10 @@ class SearchBranchViewModelProvider
     public function getSearchBranchViewModel(string $searchQuery): SearchBranchViewModel
     {
         $repositories = $this->repositoryRepository->findBy(['active' => true]);
-        $branches     = $this->getBranchesFor($repositories, $searchQuery);
-        $reviews      = $this->getReviewsFor(array_merge(...$branches));
+        $repositories = Arrays::reindex($repositories, static fn(Repository $repository) => (int)$repository->getId());
+
+        $branches = $this->getBranchesFor($repositories, $searchQuery);
+        $reviews  = $this->getReviewsFor(array_merge(...$branches));
 
         return new SearchBranchViewModel($branches, $repositories, $reviews, $searchQuery);
     }
