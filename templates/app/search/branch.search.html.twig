@@ -1,0 +1,21 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <div class="mt-2 pb-2 clearfix">
+        <h2 class="float-start pe-3 mb-0">{{ 'branch.search'|trans }}</h2>
+    </div>
+
+    {%- include 'app/flash/flashes.html.twig' -%}
+
+    <div class="mb-2">
+        <form method="get">
+            <div class="input-group">
+                <input type="search" name="search" value="{{ viewModel.searchQuery }}" class="form-control"
+                        {{ stimulus_controller('search-field') }}
+                       placeholder="{{ 'search.review'|trans }}"/>
+                <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

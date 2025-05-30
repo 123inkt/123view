@@ -363,4 +363,6 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'source.code'                                 => 'Source code',
+    'branch.search'                               => 'Branch name search',
 ];
