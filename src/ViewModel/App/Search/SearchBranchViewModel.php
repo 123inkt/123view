@@ -11,7 +11,7 @@ readonly class SearchBranchViewModel
     /**
      * @codeCoverageIgnore  Simple DTO
      *
-     * @param string[]                              $branches
+     * @param array<int, string[]>                  $branches
      * @param Repository[]                          $repositories
      * @param array<int, array<string, CodeReview>> $reviews
      */
