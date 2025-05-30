@@ -25,11 +25,17 @@ export default class extends Controller {
             ? this.toggleTargets
             : this.element.querySelectorAll(`[data-role~="${role}"]`);
 
+        if (search === '') {
+            toggleTargets.forEach(el => el.classList.remove('d-none', 'fw-bold'));
+
+            return;
+        }
+
         toggleTargets.forEach(el => {
             if (el.querySelector(`[data-role~="title"]`)?.title.toLowerCase().includes(search)) {
-                el.classList.remove('d-none');
+                el.classList.add('fw-bold');
             } else {
-                el.classList.add('d-none');
+                el.classList.remove('fw-bold');
             }
         });
     }
