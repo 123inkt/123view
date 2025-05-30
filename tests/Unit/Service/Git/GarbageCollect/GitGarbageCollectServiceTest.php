@@ -44,8 +44,8 @@ class GitGarbageCollectServiceTest extends AbstractTestCase
         $this->commandFactory->expects($this->once())->method('createGarbageCollect')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $this->service->garbageCollect($repository, 'date');
     }

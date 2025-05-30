@@ -57,7 +57,7 @@ class GitShowServiceTest extends AbstractTestCase
         $this->patternFactory->expects($this->once())->method('createPattern')->willReturn('pattern');
         $this->builderFactory->expects($this->once())->method('createShow')->willReturn($commandBuilder);
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
-        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
+        $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects($this->once())->method('parse')->with($repository, 'output')->willReturn([$commit]);
 
         static::assertSame($commit, $this->service->getCommitFromHash($repository, 'hash'));
@@ -81,7 +81,7 @@ class GitShowServiceTest extends AbstractTestCase
         $this->builderFactory->expects($this->once())->method('createShow')->willReturn($commandBuilder);
 
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
-        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn(base64_encode('output'));
+        $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn(base64_encode('output'));
 
         static::assertSame('output', $this->service->getFileContents($revision, 'file', true));
     }
@@ -104,7 +104,7 @@ class GitShowServiceTest extends AbstractTestCase
         $this->builderFactory->expects($this->once())->method('createShow')->willReturn($commandBuilder);
 
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
-        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn('output');
+        $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn('output');
 
         static::assertSame('output', $this->service->getFileContents($revision, 'file'));
     }

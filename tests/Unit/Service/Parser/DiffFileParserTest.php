@@ -36,7 +36,7 @@ class DiffFileParserTest extends AbstractTestCase
         $contents = "new file mode 100644\n@@ -0,0 +1,16 @@\n";
 
         // prepare mocks
-        $this->blockParser->expects(static::once())->method('parse')->willThrowException(new Exception('foobar'));
+        $this->blockParser->expects($this->once())->method('parse')->willThrowException(new Exception('foobar'));
 
         $this->expectException(ParseException::class);
         $this->parser->parse($contents, new DiffFile());
@@ -60,7 +60,7 @@ class DiffFileParserTest extends AbstractTestCase
         $block                = new DiffBlock();
 
         // prepare mocks
-        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+        $this->blockParser->expects($this->once())->method('parse')->willReturn($block);
 
         $result = $this->parser->parse($contents, $file);
         static::assertNull($result->filePathBefore);
@@ -86,7 +86,7 @@ class DiffFileParserTest extends AbstractTestCase
         $block                = new DiffBlock();
 
         // prepare mocks
-        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+        $this->blockParser->expects($this->once())->method('parse')->willReturn($block);
 
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
@@ -111,7 +111,7 @@ class DiffFileParserTest extends AbstractTestCase
         $block                = new DiffBlock();
 
         // prepare mocks
-        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+        $this->blockParser->expects($this->once())->method('parse')->willReturn($block);
 
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
@@ -136,7 +136,7 @@ class DiffFileParserTest extends AbstractTestCase
         $block                = new DiffBlock();
 
         // prepare mocks
-        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+        $this->blockParser->expects($this->once())->method('parse')->willReturn($block);
 
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
@@ -161,7 +161,7 @@ class DiffFileParserTest extends AbstractTestCase
         $block                = new DiffBlock();
 
         // prepare mocks
-        $this->blockParser->expects(static::once())->method('parse')->willReturn($block);
+        $this->blockParser->expects($this->once())->method('parse')->willReturn($block);
 
         $result = $this->parser->parse($contents, $file);
         static::assertSame('before', $result->filePathBefore);
@@ -215,7 +215,7 @@ class DiffFileParserTest extends AbstractTestCase
         $blockB               = new DiffBlock();
 
         // prepare mocks
-        $this->blockParser->expects(static::exactly(2))->method('parse')
+        $this->blockParser->expects($this->exactly(2))->method('parse')
             ->with(...consecutive([29, 30], [60, 71]))
             ->willReturn($blockA, $blockB);
 

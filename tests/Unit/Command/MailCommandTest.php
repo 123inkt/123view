@@ -84,7 +84,7 @@ class MailCommandTest extends AbstractTestCase
         $this->revisionFetchService->expects($this->once())->method('fetchRevisionsForRules')->with([$rule]);
         $this->notificationService->expects(self::never())->method('addRuleNotification');
         $this->ruleProcessor
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('processRule')
             ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule))
             ->willReturn([]);
@@ -109,7 +109,7 @@ class MailCommandTest extends AbstractTestCase
         $this->revisionFetchService->expects($this->once())->method('fetchRevisionsForRules')->with([$rule]);
         $this->notificationService->expects($this->once())->method('addRuleNotification')->with($rule);
         $this->ruleProcessor
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('processRule')
             ->with(static::callback(static fn(RuleConfiguration $config) => $config->rule === $rule))
             ->willReturn($commits);
@@ -152,7 +152,7 @@ class MailCommandTest extends AbstractTestCase
         // setup mocks
         $this->ruleRepository->expects($this->once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
         $this->revisionFetchService->expects($this->once())->method('fetchRevisionsForRules')->with([$rule]);
-        $this->ruleProcessor->expects(static::once())->method('processRule')->willThrowException(new Exception('error'));
+        $this->ruleProcessor->expects($this->once())->method('processRule')->willThrowException(new Exception('error'));
 
         $commandTester = new CommandTester($this->command);
         $exitCode      = $commandTester->execute(['--frequency' => 'once-per-hour']);

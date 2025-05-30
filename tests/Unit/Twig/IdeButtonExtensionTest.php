@@ -42,7 +42,7 @@ class IdeButtonExtensionTest extends AbstractTestCase
     public function testCreateLink(): void
     {
         $this->ideUrlPatternProvider->expects($this->once())->method('getUrl')->willReturn('url {file} {line}');
-        $this->twig->expects(static::once())->method('render')->with(
+        $this->twig->expects($this->once())->method('render')->with(
             '/extension/ide-button.widget.html.twig',
             [
                 'url' => 'url file 123',
