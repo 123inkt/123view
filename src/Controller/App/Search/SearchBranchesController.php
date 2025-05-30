@@ -6,7 +6,7 @@ namespace DR\Review\Controller\App\Search;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Request\Search\SearchBranchRequest;
 use DR\Review\Security\Role\Roles;
-use DR\Review\ViewModel\App\Search\SearchCodeViewModel;
+use DR\Review\ViewModel\App\Search\SearchBranchViewModel;
 use DR\Review\ViewModelProvider\SearchBranchViewModelProvider;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -20,7 +20,7 @@ class SearchBranchesController extends AbstractController
     }
 
     /**
-     * @return array{viewModel: SearchCodeViewModel}
+     * @return array{viewModel: SearchBranchViewModel}
      * @throws Exception
      */
     #[Route('app/branch/search', name: self::class, methods: 'GET')]

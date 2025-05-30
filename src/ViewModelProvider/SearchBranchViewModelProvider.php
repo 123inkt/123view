@@ -36,7 +36,7 @@ class SearchBranchViewModelProvider
     /**
      * @param Repository[] $repositories
      *
-     * @return array<int, list<string>> [repositoryId => branchName]
+     * @return array<int, string[]> [repositoryId => branchName[]]
      * @throws RepositoryException
      */
     private function getBranchesFor(array $repositories, string $searchQuery): array
@@ -49,7 +49,7 @@ class SearchBranchViewModelProvider
                 static fn($branchName) => stripos($branchName, $searchQuery) !== false
             );
             if (count($branchNames) > 0) {
-                $branches[$repository->getId()] = $branchNames;
+                $branches[(int)$repository->getId()] = $branchNames;
             }
         }
 
@@ -58,6 +58,9 @@ class SearchBranchViewModelProvider
 
     /**
      * Find all the branch reviews for the given branches
+     *
+     * @param string[] $branches
+     *
      * @return array<int, array<string, CodeReview>>
      */
     private function getReviewsFor(array $branches): array
@@ -71,7 +74,7 @@ class SearchBranchViewModelProvider
         // index by repository and branch name
         $groupedBranchReviews = [];
         foreach ($branchReviews as $branchReview) {
-            $groupedBranchReviews[$branchReview->getRepository()->getId()][$branchReview->getReferenceId()] = $branchReview;
+            $groupedBranchReviews[(int)$branchReview->getRepository()->getId()][(string)$branchReview->getReferenceId()] = $branchReview;
         }
 
         return $groupedBranchReviews;

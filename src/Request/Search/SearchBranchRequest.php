@@ -13,6 +13,7 @@ class SearchBranchRequest extends AbstractValidatedRequest
      */
     public function getSearchQuery(): string
     {
+        /** @phpstan-var non-empty-string */
         return trim($this->request->query->getString('search'));
     }
 
