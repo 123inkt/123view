@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\ViewModelProvider;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Branch\GitBranchService;
@@ -15,6 +14,7 @@ use DR\Review\ViewModel\App\Search\SearchBranchViewModel;
 use DR\Review\ViewModelProvider\SearchBranchViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Throwable;
 
 #[CoversClass(SearchBranchViewModelProvider::class)]
 class SearchBranchViewModelProviderTest extends AbstractTestCase
@@ -34,7 +34,7 @@ class SearchBranchViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Throwable
      */
     public function testGetSearchBranchViewModel(): void
     {
@@ -58,7 +58,7 @@ class SearchBranchViewModelProviderTest extends AbstractTestCase
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Throwable
      */
     public function testGetSearchBranchViewModelWithoutResults(): void
     {

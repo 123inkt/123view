@@ -8,10 +8,10 @@ use DR\Review\Request\Search\SearchBranchRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Search\SearchBranchViewModel;
 use DR\Review\ViewModelProvider\SearchBranchViewModelProvider;
-use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 class SearchBranchesController extends AbstractController
 {
@@ -21,7 +21,7 @@ class SearchBranchesController extends AbstractController
 
     /**
      * @return array{viewModel: SearchBranchViewModel}
-     * @throws Exception
+     * @throws Throwable
      */
     #[Route('app/branch/search', name: self::class, methods: 'GET')]
     #[Template('app/search/branch.search.html.twig')]

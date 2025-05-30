@@ -6,24 +6,24 @@ namespace DR\Review\ViewModelProvider;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Git\Branch\GitBranchService;
+use DR\Review\Service\Git\Branch\CacheableGitBranchService;
 use DR\Review\ViewModel\App\Search\SearchBranchViewModel;
 use DR\Utils\Arrays;
+use Throwable;
 
 class SearchBranchViewModelProvider
 {
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
-        private readonly GitBranchService $branchService,
+        private readonly CacheableGitBranchService $branchService,
         private readonly CodeReviewRepository $reviewRepository
     ) {
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Throwable
      */
     public function getSearchBranchViewModel(string $searchQuery): SearchBranchViewModel
     {
@@ -40,7 +40,7 @@ class SearchBranchViewModelProvider
      * @param Repository[] $repositories
      *
      * @return array<int, string[]> [repositoryId => branchName[]]
-     * @throws RepositoryException
+     * @throws Throwable
      */
     private function getBranchesFor(array $repositories, string $searchQuery): array
     {
