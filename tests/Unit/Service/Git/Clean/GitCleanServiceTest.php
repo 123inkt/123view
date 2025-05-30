@@ -39,14 +39,14 @@ class GitCleanServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitCleanCommandBuilder::class);
-        $builder->expects(self::once())->method('force')->willReturnSelf();
-        $builder->expects(self::once())->method('skipIgnoreRules')->willReturnSelf();
-        $builder->expects(self::once())->method('recurseDirectories')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createClean')->willReturn($builder);
+        $builder->expects($this->once())->method('force')->willReturnSelf();
+        $builder->expects($this->once())->method('skipIgnoreRules')->willReturnSelf();
+        $builder->expects($this->once())->method('recurseDirectories')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createClean')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $this->service->forceClean($repository);
     }

@@ -75,7 +75,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
@@ -101,7 +101,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true);
 
         $this->commentRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(

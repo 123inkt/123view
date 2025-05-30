@@ -56,15 +56,15 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         $review->setCreateTimestamp(1000);
         $review->setUpdateTimestamp(2000);
 
-        $this->userOutputFactory->expects(self::exactly(2))
+        $this->userOutputFactory->expects($this->exactly(2))
             ->method('create')
             ->with(...consecutive([$userA], [$userB]))
             ->willReturn($this->createMock(UserOutput::class));
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL)
             ->willReturn('url');
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
         $output = $this->factory->create($review, [$reviewer], [$userB]);
 

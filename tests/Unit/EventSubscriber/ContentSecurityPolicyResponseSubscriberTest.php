@@ -50,7 +50,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
         $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, $this->ideUrlPatternProvider,);
 
-        $this->ideUrlPatternProvider->expects(self::once())->method('getUrl')->willReturn('http://localhost:8080/file');
+        $this->ideUrlPatternProvider->expects($this->once())->method('getUrl')->willReturn('http://localhost:8080/file');
 
         $subscriber->onResponse($event);
 

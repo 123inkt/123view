@@ -44,7 +44,7 @@ class CommentVisibilityProviderTest extends AbstractTestCase
 
     public function testGetCommentVisibility(): void
     {
-        $this->session->expects(self::once())
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionKeys::REVIEW_COMMENT_VISIBILITY->value)
             ->willReturn(CommentVisibility::UNRESOLVED->value);

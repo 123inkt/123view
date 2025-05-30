@@ -35,7 +35,7 @@ class ChangeReviewStateControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $request = $this->createMock(ChangeReviewStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CodeReviewStateType::OPEN);
+        $request->expects($this->once())->method('getState')->willReturn(CodeReviewStateType::OPEN);
 
         $review = new CodeReview();
         $review->setId(123);
@@ -45,8 +45,8 @@ class ChangeReviewStateControllerTest extends AbstractControllerTestCase
         $user->setId(456);
 
         $this->expectGetUser($user);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED, 456);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->eventService->expects($this->once())->method('reviewStateChanged')->with($review, CodeReviewStateType::CLOSED, 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

@@ -35,7 +35,7 @@ class GitLogParserTest extends AbstractTestCase
 
     public function testGetPattern(): void
     {
-        $this->patternFactory->expects(static::once())->method('createPattern')->willReturn('foobar');
+        $this->patternFactory->expects($this->once())->method('createPattern')->willReturn('foobar');
         static::assertSame('foobar', $this->parser->getPattern());
     }
 
@@ -68,8 +68,8 @@ class GitLogParserTest extends AbstractTestCase
         $commit     = $this->createCommit(null, $files);
 
         // prepare mocks
-        $this->diffParser->expects(static::once())->method('parse')->with('commit-part10')->willReturn($files);
-        $this->hydrator->expects(static::once())
+        $this->diffParser->expects($this->once())->method('parse')->with('commit-part10')->willReturn($files);
+        $this->hydrator->expects($this->once())
             ->method('hydrate')
             ->with($repository, static::callback(static fn($value) => is_array($value)), $files)
             ->willReturn($commit);
@@ -97,10 +97,10 @@ class GitLogParserTest extends AbstractTestCase
         $commitB->refs = null;
 
         // prepare mocks
-        $this->diffParser->expects(static::exactly(2))->method('parse')
+        $this->diffParser->expects($this->exactly(2))->method('parse')
             ->with(...consecutive(['commitA-part10'], ['commitB-part10']))
             ->willReturn([]);
-        $this->hydrator->expects(static::exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
+        $this->hydrator->expects($this->exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
 
         // test it
         $commits = $this->parser->parse($repository, $commitLog);
@@ -122,8 +122,8 @@ class GitLogParserTest extends AbstractTestCase
         $commit = $this->createCommit();
 
         // prepare mocks
-        $this->diffParser->expects(static::once())->method('parse')->with('commitA-part10')->willReturn([]);
-        $this->hydrator->expects(static::once())->method('hydrate')->willReturn($commit);
+        $this->diffParser->expects($this->once())->method('parse')->with('commitA-part10')->willReturn([]);
+        $this->hydrator->expects($this->once())->method('hydrate')->willReturn($commit);
 
         // test it
         $commits = $this->parser->parse(new Repository(), $commitLog, 1);

@@ -48,15 +48,15 @@ class EditCommentReplyFormTypeTest extends AbstractTestCase
         $reply = new CommentReply();
         $reply->setId(123);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(UpdateCommentReplyController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(3))
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(3))
             ->method('add')
             ->with(
                 ...consecutive(

@@ -58,7 +58,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setEventName(ReviewAccepted::NAME);
         $activity->setUser($user);
 
-        $this->translator->expects(self::exactly(2))
+        $this->translator->expects($this->exactly(2))
             ->method('trans')
             ->with(...consecutive(['you'], ['timeline.review.accepted']))
             ->willReturnArgument(0);
@@ -78,11 +78,11 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setEventName(ReviewerAdded::NAME);
         $activity->setData(['userId' => 789]);
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.reviewer.added.by')
             ->willReturnArgument(0);
-        $this->userRepository->expects(self::once())->method('find')->with(789)->willReturn($reviewerUser);
+        $this->userRepository->expects($this->once())->method('find')->with(789)->willReturn($reviewerUser);
         $this->revisionRepository->expects(self::never())->method('find');
 
         $this->formatter->format($activity, $user);
@@ -97,7 +97,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setData(['newState' => "accepted"]);
         $activity->setUser((new User())->setName('user'));
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.reviewer.accepted', ['username' => 'user'])
             ->willReturnArgument(0);
@@ -120,12 +120,12 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setEventName(ReviewRevisionAdded::NAME);
         $activity->setData(['revisionId' => 789]);
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.review.revision.added', ['username' => 'app', 'revision' => 'hash - title'])
             ->willReturnArgument(0);
         $this->userRepository->expects(self::never())->method('find');
-        $this->revisionRepository->expects(self::once())->method('find')->with(789)->willReturn($revision);
+        $this->revisionRepository->expects($this->once())->method('find')->with(789)->willReturn($revision);
 
         $this->formatter->format($activity, $user);
     }
@@ -139,12 +139,12 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setEventName(ReviewRevisionAdded::NAME);
         $activity->setData(['revisionId' => 789, 'title' => 'title']);
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.review.revision.added', ['username' => 'app', 'revision' => 'title'])
             ->willReturnArgument(0);
         $this->userRepository->expects(self::never())->method('find');
-        $this->revisionRepository->expects(self::once())->method('find')->with(789)->willReturn(null);
+        $this->revisionRepository->expects($this->once())->method('find')->with(789)->willReturn(null);
 
         $this->formatter->format($activity, $user);
     }
@@ -168,7 +168,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setEventName(CommentAdded::NAME);
         $activity->setData(['commentId' => 789]);
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#focus:comment:789">filepath</a>'])
             ->willReturnArgument(0);
@@ -186,7 +186,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setData(['commentId' => 789, 'file' => 'filepath']);
         $activity->setReview(new CodeReview());
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
             ->willReturnArgument(0);
@@ -203,7 +203,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity->setEventName(CommentReplyAdded::NAME);
         $activity->setData(['commentId' => 789, 'file' => 'filepath', 'message' => 'message']);
 
-        $this->translator->expects(self::once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with('timeline.comment.reply.added', ['username' => 'app', 'file' => 'filepath'])
             ->willReturnArgument(0);

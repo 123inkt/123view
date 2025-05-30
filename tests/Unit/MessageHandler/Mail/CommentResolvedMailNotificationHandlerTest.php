@@ -45,7 +45,7 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
      */
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->handler->handle(new CommentResolved(4, 123, 5, 'file'));
     }
 
@@ -59,8 +59,8 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
         $comment->setState(CommentStateType::RESOLVED);
         $user = new User();
 
-        $this->userRepository->expects(self::once())->method('find')->with(6)->willReturn($user);
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
+        $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
         $this->mailService->expects(self::never())->method('sendCommentResolvedMail');
         $this->handler->handle(new CommentResolved(5, 123, 6, 'file'));
     }
@@ -77,10 +77,10 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
 
         $user = new User();
 
-        $this->userRepository->expects(self::once())->method('find')->with(6)->willReturn($user);
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->mailService->expects(self::once())->method('sendCommentResolvedMail')->with($review, $comment);
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mailService->expects($this->once())->method('sendCommentResolvedMail')->with($review, $comment);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $this->handler->handle(new CommentResolved(5, 123, 6, 'file'));
 

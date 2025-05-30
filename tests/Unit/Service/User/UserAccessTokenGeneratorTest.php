@@ -30,7 +30,7 @@ class UserAccessTokenGeneratorTest extends AbstractTestCase
      */
     public function testGenerateSuccess(): void
     {
-        $this->tokenRepository->expects(self::once())
+        $this->tokenRepository->expects($this->once())
             ->method('findOneBy')
             ->willReturn(null);
 
@@ -45,7 +45,7 @@ class UserAccessTokenGeneratorTest extends AbstractTestCase
     {
         $token = new UserAccessToken();
 
-        $this->tokenRepository->expects(self::exactly(10))
+        $this->tokenRepository->expects($this->exactly(10))
             ->method('findOneBy')
             ->willReturn($token);
 

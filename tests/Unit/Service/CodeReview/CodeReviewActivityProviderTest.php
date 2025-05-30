@@ -37,8 +37,8 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $user = new User();
         $user->setId(789);
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->userRepository->expects(self::once())->method('find')->with(789)->willReturn($user);
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->userRepository->expects($this->once())->method('find')->with(789)->willReturn($user);
 
         $activity = $this->activityProvider->fromEvent($event);
         static::assertNotNull($activity);
@@ -53,7 +53,7 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
     {
         $event = new ReviewOpened(123, 789);
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->userRepository->expects(self::never())->method('find');
 
         static::assertNull($this->activityProvider->fromEvent($event));
@@ -65,7 +65,7 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
         $this->userRepository->expects(self::never())->method('find');
 
         $this->activityProvider->fromEvent($event);

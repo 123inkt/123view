@@ -79,7 +79,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->commentRepository->expects(self::once())
+        $this->commentRepository->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(static function (CommentReply $reply) use ($user, $comment) {
@@ -93,7 +93,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
                 true
             );
 
-        $this->bus->expects(self::once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
+        $this->bus->expects($this->once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);

@@ -41,8 +41,8 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
         $terms     = $this->createMock(TermInterface::class);
         $viewModel = $this->createMock(ReviewsViewModel::class);
 
-        $this->termFactory->expects(self::once())->method('getSearchTerms')->with('search')->willReturn($terms);
-        $this->viewModelProvider->expects(self::once())->method('getSearchReviewsViewModel')->with($request, $terms)->willReturn($viewModel);
+        $this->termFactory->expects($this->once())->method('getSearchTerms')->with('search')->willReturn($terms);
+        $this->viewModelProvider->expects($this->once())->method('getSearchReviewsViewModel')->with($request, $terms)->willReturn($viewModel);
 
         $result = ($this->controller)($request);
 
@@ -57,9 +57,9 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
         $failure   = $this->createMock(InvalidQueryException::class);
 
         $this->expectAddFlash('error', 'failure');
-        $this->termFactory->expects(self::once())->method('getSearchTerms')->with('search')->willThrowException($failure);
-        $this->failedFormatter->expects(self::once())->method('format')->with($failure)->willReturn('failure');
-        $this->viewModelProvider->expects(self::once())->method('getSearchReviewsViewModel')->with($request, null)->willReturn($viewModel);
+        $this->termFactory->expects($this->once())->method('getSearchTerms')->with('search')->willThrowException($failure);
+        $this->failedFormatter->expects($this->once())->method('format')->with($failure)->willReturn('failure');
+        $this->viewModelProvider->expects($this->once())->method('getSearchReviewsViewModel')->with($request, null)->willReturn($viewModel);
 
         $result = ($this->controller)($request);
 

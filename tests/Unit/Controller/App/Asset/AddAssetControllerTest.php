@@ -38,12 +38,12 @@ class AddAssetControllerTest extends AbstractControllerTestCase
         $user = new User();
 
         $request = $this->createMock(AddAssetRequest::class);
-        $request->expects(self::once())->method('getMimeType')->willReturn('mime-type');
-        $request->expects(self::once())->method('getData')->willReturn('data');
+        $request->expects($this->once())->method('getMimeType')->willReturn('mime-type');
+        $request->expects($this->once())->method('getData')->willReturn('data');
 
         $this->expectGetUser($user);
-        $this->assetFactory->expects(self::once())->method('create')->with($user, 'mime-type', 'data')->willReturn($asset);
-        $this->assetRepository->expects(self::once())->method('save')->with($asset, true);
+        $this->assetFactory->expects($this->once())->method('create')->with($user, 'mime-type', 'data')->willReturn($asset);
+        $this->assetRepository->expects($this->once())->method('save')->with($asset, true);
         $this->expectGenerateUrl(GetAssetController::class, ['id' => 123]);
 
         ($this->controller)($request);

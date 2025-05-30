@@ -44,7 +44,7 @@ class PushEventHandlerTest extends AbstractTestCase
         $event            = new PushEvent();
         $event->projectId = 1;
 
-        $this->repository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn(null);
+        $this->repository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn(null);
         $this->bus->expects(self::never())->method('dispatch');
 
         $this->eventHandler->handle($event);
@@ -56,7 +56,7 @@ class PushEventHandlerTest extends AbstractTestCase
         $event->projectId = 1;
         $repository       = (new Repository())->setActive(false);
 
-        $this->repository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn($repository);
+        $this->repository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn($repository);
         $this->bus->expects(self::never())->method('dispatch');
 
         $this->eventHandler->handle($event);
@@ -70,8 +70,8 @@ class PushEventHandlerTest extends AbstractTestCase
 
         $message = new FetchRepositoryRevisionsMessage(123);
 
-        $this->repository->expects(self::once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn($repository);
-        $this->bus->expects(self::once())->method('dispatch')->with($message)->willReturn($this->envelope);
+        $this->repository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn($repository);
+        $this->bus->expects($this->once())->method('dispatch')->with($message)->willReturn($this->envelope);
 
         $this->eventHandler->handle($event);
     }

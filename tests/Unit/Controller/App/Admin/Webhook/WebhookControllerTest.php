@@ -66,7 +66,7 @@ class WebhookControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->webhookRepository->expects(static::once())->method('save')->with($webhook, true);
+        $this->webhookRepository->expects($this->once())->method('save')->with($webhook, true);
         $this->expectAddFlash('success', 'webhook.successful.saved');
         $this->expectRedirectToRoute(WebhooksController::class)->willReturn('url');
 

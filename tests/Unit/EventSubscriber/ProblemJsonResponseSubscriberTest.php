@@ -55,7 +55,7 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
             new Exception()
         );
 
-        $this->responseFactory->expects(self::once())->method('createFromThrowable')->with($exception)->willReturn($response);
+        $this->responseFactory->expects($this->once())->method('createFromThrowable')->with($exception)->willReturn($response);
 
         $this->subscriber->onKernelException($event);
         static::assertSame($response, $event->getResponse());

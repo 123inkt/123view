@@ -52,7 +52,7 @@ class CodeReviewerServiceTest extends AbstractTestCase
         $reviewer = new CodeReviewer();
         $review->getReviewers()->add($reviewer);
 
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::ACCEPTED);
 
         $this->service->setReviewerState($review, $reviewer, CodeReviewerStateType::ACCEPTED);
         static::assertSame(CodeReviewerStateType::ACCEPTED, $reviewer->getState());
@@ -69,7 +69,7 @@ class CodeReviewerServiceTest extends AbstractTestCase
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
         $this->service->setReviewerState($review, $reviewer, CodeReviewerStateType::OPEN);
         static::assertSame(CodeReviewerStateType::OPEN, $reviewer->getState());

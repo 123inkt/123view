@@ -30,7 +30,7 @@ class DeleteCredentialControllerTest extends AbstractControllerTestCase
     {
         $credential = new RepositoryCredential();
 
-        $this->credentialRepository->expects(self::once())->method('remove')->with($credential, true);
+        $this->credentialRepository->expects($this->once())->method('remove')->with($credential, true);
         $this->expectAddFlash('success', 'credential.successful.removed');
         $this->expectRefererRedirect(CredentialsController::class);
 

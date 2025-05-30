@@ -52,8 +52,8 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
         $review->setType(CodeReviewType::BRANCH);
         $hashes = ['sha1', 'sha2'];
 
-        $this->revListService->expects(self::once())->method('getCommitsAheadOfMaster')->with($repository, 'branch_name')->willReturn($hashes);
-        $this->revisionRepository->expects(self::once())
+        $this->revListService->expects($this->once())->method('getCommitsAheadOfMaster')->with($repository, 'branch_name')->willReturn($hashes);
+        $this->revisionRepository->expects($this->once())
             ->method('findBy')
             ->with(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'ASC'])
             ->willReturn([$revision]);
@@ -74,7 +74,7 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
         $review->setRepository($repository);
         $review->setType(CodeReviewType::BRANCH);
 
-        $this->revListService->expects(self::once())->method('getCommitsAheadOfMaster')
+        $this->revListService->expects($this->once())->method('getCommitsAheadOfMaster')
             ->with($repository, 'branch_name')
             ->willThrowException(new RepositoryException());
         $this->revisionRepository->expects(self::never())->method('findBy');

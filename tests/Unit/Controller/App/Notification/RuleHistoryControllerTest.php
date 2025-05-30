@@ -32,7 +32,7 @@ class RuleHistoryControllerTest extends AbstractControllerTestCase
         $request   = new Request();
         $viewModel = $this->createMock(RuleNotificationViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getNotificationsViewModel')->with(null, false)->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getNotificationsViewModel')->with(null, false)->willReturn($viewModel);
         $this->expectRender('app/notification/rule_history.html.twig', ['notificationViewModel' => $viewModel]);
 
         /** @var Response $response */
@@ -45,7 +45,7 @@ class RuleHistoryControllerTest extends AbstractControllerTestCase
         $request   = new Request(['ruleId' => 123, 'filter' => 'unread']);
         $viewModel = $this->createMock(RuleNotificationViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getNotificationsViewModel')->with(123, true)->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getNotificationsViewModel')->with(123, true)->willReturn($viewModel);
         $this->expectRender('app/notification/rule_history.html.twig', ['notificationViewModel' => $viewModel]);
 
         ($this->controller)($request);

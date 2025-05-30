@@ -76,9 +76,9 @@ class CredentialControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->credentialRepository->expects(static::once())->method('save')->with($credential, true);
-        $this->repositoryRepository->expects(static::once())->method('findBy')->with(['credential' => $credential])->willReturn([$repository]);
-        $this->messageBus->expects(static::once())->method('dispatch')->with(new RepositoryUpdatedMessage(456))->willReturn($this->envelope);
+        $this->credentialRepository->expects($this->once())->method('save')->with($credential, true);
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with(['credential' => $credential])->willReturn([$repository]);
+        $this->messageBus->expects($this->once())->method('dispatch')->with(new RepositoryUpdatedMessage(456))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'credential.successful.saved');
         $this->expectRedirectToRoute(CredentialsController::class)->willReturn('url');
 

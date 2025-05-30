@@ -38,7 +38,7 @@ class DiscussionsTest extends AbstractTestCase
         $response->method('getHeaders')->willReturn(['x-next-page' => ['2']], ['x-next-page' => []]);
         $response->method('toArray')->willReturn([$discussionA], [$discussionB]);
 
-        $this->client->expects(self::exactly(2))
+        $this->client->expects($this->exactly(2))
             ->method('request')
             ->with(
                 ...consecutive(
@@ -78,7 +78,7 @@ class DiscussionsTest extends AbstractTestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->method('toArray')->willReturn(['id' => 333, 'notes' => [['id' => 444]]]);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with(
                 'POST',
@@ -108,7 +108,7 @@ class DiscussionsTest extends AbstractTestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->method('toArray')->willReturn(['id' => 444]);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('POST', 'projects/111/merge_requests/222/discussions/333/notes', ['query' => ['body' => 'body']])
             ->willReturn($response);
@@ -122,7 +122,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testUpdateNote(): void
     {
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('PUT', 'projects/111/merge_requests/222/discussions/333/notes/444', ['query' => ['body' => 'body']]);
 
@@ -134,7 +134,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testResolve(): void
     {
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('PUT', 'projects/111/merge_requests/222/discussions/333', ['query' => ['resolved' => 'true']]);
 
@@ -146,7 +146,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testDeleteNote(): void
     {
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('DELETE', 'projects/111/merge_requests/222/discussions/333/notes/444');
 

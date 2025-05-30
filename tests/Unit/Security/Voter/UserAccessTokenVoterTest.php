@@ -21,7 +21,7 @@ class UserAccessTokenVoterTest extends AbstractTestCase
         $rule->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::once())->method('getUser')->willReturn($user);
+        $token->expects($this->once())->method('getUser')->willReturn($user);
 
         $voter = new UserAccessTokenVoter();
         static::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $rule, [UserAccessTokenVoter::DELETE]));
@@ -57,7 +57,7 @@ class UserAccessTokenVoterTest extends AbstractTestCase
         $rule->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::once())->method('getUser')->willReturn(null);
+        $token->expects($this->once())->method('getUser')->willReturn(null);
 
         $voter = new UserAccessTokenVoter();
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $rule, [UserAccessTokenVoter::DELETE]));
@@ -71,7 +71,7 @@ class UserAccessTokenVoterTest extends AbstractTestCase
         $rule->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::once())->method('getUser')->willReturn((new User())->setId(5));
+        $token->expects($this->once())->method('getUser')->willReturn((new User())->setId(5));
 
         $voter = new UserAccessTokenVoter();
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $rule, [UserAccessTokenVoter::DELETE]));

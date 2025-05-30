@@ -60,13 +60,13 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $user = new User();
         $this->expectGetUser($user);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())
             ->method('getDiffForRevisions')
             ->with($repository, [$revision])
             ->willReturn([$diffFileA, $diffFileB]);
-        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
-        $this->statusService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFileA);
+        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->statusService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFileA);
 
         /** @var Response $response */
         $response = ($this->controller)($request, $review);
@@ -91,13 +91,13 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $user = new User();
         $this->expectGetUser($user);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())
             ->method('getDiffForRevisions')
             ->with($repository, [$revision])
             ->willReturn([$diffFileA, $diffFileB]);
-        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
-        $this->statusService->expects(self::once())->method('markAsUnseen')->with($review, $user, $diffFileA);
+        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->statusService->expects($this->once())->method('markAsUnseen')->with($review, $user, $diffFileA);
 
         /** @var Response $response */
         $response = ($this->controller)($request, $review);
@@ -118,9 +118,9 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
         $diffFile = new DiffFile();
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
-        $this->sessionService->expects(self::once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
+        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
 
         /** @var Response $response */
         $response = ($this->controller)($request, $review);

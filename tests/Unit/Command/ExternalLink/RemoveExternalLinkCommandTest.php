@@ -33,8 +33,8 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
     {
         $link = (new ExternalLink())->setPattern('pattern')->setUrl('url');
 
-        $this->linkRepository->expects(self::once())->method('find')->with('id')->willReturn($link);
-        $this->linkRepository->expects(self::once())->method('remove')->with($link, true);
+        $this->linkRepository->expects($this->once())->method('find')->with('id')->willReturn($link);
+        $this->linkRepository->expects($this->once())->method('remove')->with($link, true);
 
         $tester = new CommandTester($this->command);
         $result = $tester->execute(['id' => 'id']);
@@ -46,7 +46,7 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
      */
     public function testExecuteFailure(): void
     {
-        $this->linkRepository->expects(self::once())->method('find')->with('id')->willReturn(null);
+        $this->linkRepository->expects($this->once())->method('find')->with('id')->willReturn(null);
         $this->linkRepository->expects(self::never())->method('remove');
 
         $tester = new CommandTester($this->command);

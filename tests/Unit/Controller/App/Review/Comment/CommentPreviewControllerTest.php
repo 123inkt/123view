@@ -38,14 +38,14 @@ class CommentPreviewControllerTest extends AbstractControllerTestCase
         $user->setEmail('sherlock@example.com');
 
         $request = $this->createMock(CommentPreviewRequest::class);
-        $request->expects(self::once())->method('getMessage')->willReturn('message1');
+        $request->expects($this->once())->method('getMessage')->willReturn('message1');
 
-        $this->mentionService->expects(self::once())->method('getMentionedUsers')->willReturn(['@user:123[Sherlock Holmes]' => $user]);
-        $this->mentionService->expects(self::once())->method('replaceMentionedUsers')
+        $this->mentionService->expects($this->once())->method('getMentionedUsers')->willReturn(['@user:123[Sherlock Holmes]' => $user]);
+        $this->mentionService->expects($this->once())->method('replaceMentionedUsers')
             ->with('message1', ['@user:123[Sherlock Holmes]' => $user])
             ->willReturn('message2');
 
-        $this->markdownService->expects(self::once())->method('convert')->with('message2')->willReturn('markdown');
+        $this->markdownService->expects($this->once())->method('convert')->with('message2')->willReturn('markdown');
 
         /** @var Response $response */
         $response = ($this->controller)($request);

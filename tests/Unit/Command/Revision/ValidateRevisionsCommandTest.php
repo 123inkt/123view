@@ -39,8 +39,8 @@ class ValidateRevisionsCommandTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->repositoryRepository->expects(self::once())->method('findByValidateRevisions')->willReturn([$repository]);
-        $this->bus->expects(self::once())->method('dispatch')->with(new ValidateRevisionsMessage(123))->willReturn($this->envelope);
+        $this->repositoryRepository->expects($this->once())->method('findByValidateRevisions')->willReturn([$repository]);
+        $this->bus->expects($this->once())->method('dispatch')->with(new ValidateRevisionsMessage(123))->willReturn($this->envelope);
 
         static::assertSame(Command::SUCCESS, $this->command->run(new ArrayInput([]), new NullOutput()));
     }

@@ -45,7 +45,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CommentStateType::RESOLVED);
+        $request->expects($this->once())->method('getState')->willReturn(CommentStateType::RESOLVED);
 
         $review = new CodeReview();
         $review->setId(123);
@@ -54,7 +54,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $comment->setState(CommentStateType::OPEN);
         $comment->setReview($review);
 
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
@@ -64,7 +64,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     public function testInvokeWithUnresolvedComment(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CommentStateType::OPEN);
+        $request->expects($this->once())->method('getState')->willReturn(CommentStateType::OPEN);
 
         $review = new CodeReview();
         $review->setId(123);
@@ -73,7 +73,7 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $comment->setState(CommentStateType::RESOLVED);
         $comment->setReview($review);
 
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);

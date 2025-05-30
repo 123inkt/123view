@@ -28,7 +28,7 @@ class CommentUserMentionSubscriberTest extends AbstractTestCase
     {
         $comment = new Comment();
 
-        $this->mentionService->expects(self::once())->method('updateMentions')->with($comment);
+        $this->mentionService->expects($this->once())->method('updateMentions')->with($comment);
 
         $this->service->commentUpdated($comment);
     }
@@ -39,7 +39,7 @@ class CommentUserMentionSubscriberTest extends AbstractTestCase
         $reply   = new CommentReply();
         $reply->setComment($comment);
 
-        $this->mentionService->expects(self::once())->method('updateMentions')->with($comment);
+        $this->mentionService->expects($this->once())->method('updateMentions')->with($comment);
 
         $this->service->commentReplyUpdated($reply);
     }

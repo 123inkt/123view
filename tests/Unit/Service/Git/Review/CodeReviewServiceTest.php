@@ -58,11 +58,11 @@ class CodeReviewServiceTest extends AbstractTestCase
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revisionA]);
-        $this->revisionRepository->expects(self::once())->method('save')->with($revisionB, true);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->reviewerRepository->expects(self::once())->method('save')->with($reviewer, true);
-        $this->visibilityService->expects(self::once())->method('setRevisionVisibility')->with($review, [$revisionA], $user, false);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revisionA]);
+        $this->revisionRepository->expects($this->once())->method('save')->with($revisionB, true);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->reviewerRepository->expects($this->once())->method('save')->with($reviewer, true);
+        $this->visibilityService->expects($this->once())->method('setRevisionVisibility')->with($review, [$revisionA], $user, false);
 
         $this->service->addRevisions($review, [$revisionB]);
 
@@ -83,9 +83,9 @@ class CodeReviewServiceTest extends AbstractTestCase
         $review->setState(CodeReviewStateType::CLOSED);
         $review->getReviewers()->add($reviewer);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([]);
-        $this->revisionRepository->expects(self::once())->method('save')->with($revision, true);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
+        $this->revisionRepository->expects($this->once())->method('save')->with($revision, true);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
         $this->reviewerRepository->expects(self::never())->method('save');
         $this->visibilityService->expects(self::never())->method('setRevisionVisibility');
 

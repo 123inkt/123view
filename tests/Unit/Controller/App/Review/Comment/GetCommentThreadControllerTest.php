@@ -57,7 +57,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn($action);
 
-        $this->modelProvider->expects(self::once())->method('getEditCommentViewModel')->with($action);
+        $this->modelProvider->expects($this->once())->method('getEditCommentViewModel')->with($action);
 
         $result = ($this->controller)($request, $comment);
         static::assertSame($comment, $result['comment']);
@@ -74,7 +74,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn($action);
 
-        $this->modelProvider->expects(self::once())->method('getReplyCommentViewModel')->with($action);
+        $this->modelProvider->expects($this->once())->method('getReplyCommentViewModel')->with($action);
 
         $result = ($this->controller)($request, $comment);
         static::assertSame($comment, $result['comment']);
@@ -91,7 +91,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn($action);
 
-        $this->modelProvider->expects(self::once())->method('getEditCommentReplyViewModel')->with($action);
+        $this->modelProvider->expects($this->once())->method('getEditCommentReplyViewModel')->with($action);
 
         $result = ($this->controller)($request, $comment);
         static::assertSame($comment, $result['comment']);

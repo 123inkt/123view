@@ -50,13 +50,13 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         $request    = $this->createMock(SearchReviewsRequest::class);
         $request->method('getSearchQuery')->willReturn('searchQuery');
 
-        $this->termFactory->expects(self::once())->method('getSearchTerms')->with('searchQuery')->willReturn($terms);
+        $this->termFactory->expects($this->once())->method('getSearchTerms')->with('searchQuery')->willReturn($terms);
         $this->viewModelProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getReviewsViewModel')
             ->with($request, $terms, $repository)
             ->willReturn($viewModel);
-        $this->breadcrumbFactory->expects(self::once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
+        $this->breadcrumbFactory->expects($this->once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
 
         $result = ($this->controller)($request, $repository);
         static::assertSame('Repository', $result['page_title']);
@@ -76,14 +76,14 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         $failure = $this->createMock(InvalidQueryException::class);
 
         $this->expectAddFlash('error', 'failure');
-        $this->termFactory->expects(self::once())->method('getSearchTerms')->with('searchQuery')->willThrowException($failure);
-        $this->failedFormatter->expects(self::once())->method('format')->with($failure)->willReturn('failure');
+        $this->termFactory->expects($this->once())->method('getSearchTerms')->with('searchQuery')->willThrowException($failure);
+        $this->failedFormatter->expects($this->once())->method('format')->with($failure)->willReturn('failure');
         $this->viewModelProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getReviewsViewModel')
             ->with($request, null, $repository)
             ->willReturn($viewModel);
-        $this->breadcrumbFactory->expects(self::once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
+        $this->breadcrumbFactory->expects($this->once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
 
         $result = ($this->controller)($request, $repository);
         static::assertSame('Repository', $result['page_title']);

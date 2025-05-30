@@ -56,7 +56,7 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
 
         $event = new CommitEvent($commit);
 
-        $this->reviewRepository->expects(self::once())->method('findOneByCommitHash')->with(5, 'commit-hash');
+        $this->reviewRepository->expects($this->once())->method('findOneByCommitHash')->with(5, 'commit-hash');
 
         $this->subscriber->onCommitEvent($event);
     }

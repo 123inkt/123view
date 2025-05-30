@@ -37,11 +37,11 @@ class LockableGitFetchServiceTest extends AbstractTestCase
         $repository->setId(123);
         $change = new BranchUpdate('from', 'to', 'oldBranch', 'newBranch');
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->fetchService->expects(self::once())->method('fetch')->with($repository)->willReturn([$change]);
+        $this->fetchService->expects($this->once())->method('fetch')->with($repository)->willReturn([$change]);
 
         $result = $this->service->fetch($repository);
         static::assertSame([$change], $result);

@@ -30,7 +30,7 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         $introspector = new OptionsResolverIntrospector($resolver);
         $repositories = [new Repository()];
 
-        $this->repository->expects(self::once())->method('findBy')->with(['active' => 1], ['name' => 'ASC'])->willReturn($repositories);
+        $this->repository->expects($this->once())->method('findBy')->with(['active' => 1], ['name' => 'ASC'])->willReturn($repositories);
 
         $type = new RepositoryChoiceType($this->repository);
         $type->configureOptions($resolver);

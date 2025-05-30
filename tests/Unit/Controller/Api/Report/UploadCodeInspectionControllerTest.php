@@ -42,7 +42,7 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
     {
         $request = $this->createMock(UploadCodeInspectionRequest::class);
 
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(null);
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)($request, 'repository', 'hash');
@@ -54,7 +54,7 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         $request->method('getData')->willReturn('');
         $repository = new Repository();
 
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Body cannot be empty.');
@@ -75,15 +75,15 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         $report = new CodeInspectionReport();
         $report->getIssues()->add(new CodeInspectionIssue());
 
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
-        $this->reportFactory->expects(self::once())
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+        $this->reportFactory->expects($this->once())
             ->method('parse')
             ->with($repository, 'hash', 'identifier', 'branchId', 'format', 'basePath', 'subDirectory', 'data')
             ->willReturn($report);
-        $this->reportRepository->expects(self::once())
+        $this->reportRepository->expects($this->once())
             ->method('removeOneBy')
             ->with(['repository' => $repository, 'inspectionId' => 'identifier', 'commitHash' => 'hash']);
-        $this->reportRepository->expects(self::once())->method('save')->with($report, true);
+        $this->reportRepository->expects($this->once())->method('save')->with($report, true);
 
         $response = ($this->controller)($request, 'repository', 'hash');
         static::assertEquals(new JsonResponse(['created' => 1], Response::HTTP_OK), $response);

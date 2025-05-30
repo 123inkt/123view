@@ -35,7 +35,7 @@ class ActivityCommentProviderTest extends AbstractTestCase
         $comment  = new Comment();
         $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME)->setData(['commentId' => '123']);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
         static::assertSame($comment, $this->provider->getCommentFor($activity));
     }
 
@@ -44,7 +44,7 @@ class ActivityCommentProviderTest extends AbstractTestCase
         $reply    = new CommentReply();
         $activity = (new CodeReviewActivity())->setEventName(CommentReplyAdded::NAME)->setData(['commentId' => '123']);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($reply);
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);
         static::assertSame($reply, $this->provider->getCommentFor($activity));
     }
 

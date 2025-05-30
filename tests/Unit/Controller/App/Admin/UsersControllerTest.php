@@ -28,7 +28,7 @@ class UsersControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $viewModel = new UsersViewModel([], []);
-        $this->modelProvider->expects(self::once())->method('getUsersViewModel')->willReturn($viewModel);
+        $this->modelProvider->expects($this->once())->method('getUsersViewModel')->willReturn($viewModel);
 
         static::assertSame(['usersViewModel' => $viewModel], ($this->controller)());
     }

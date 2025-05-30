@@ -40,12 +40,12 @@ class GitAddServiceTest extends AbstractTestCase
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitAddCommandBuilder::class);
-        $builder->expects(self::once())->method('setPath')->with($path)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createAdd')->willReturn($builder);
+        $builder->expects($this->once())->method('setPath')->with($path)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createAdd')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
 
         $this->service->add($repository, $path);
     }

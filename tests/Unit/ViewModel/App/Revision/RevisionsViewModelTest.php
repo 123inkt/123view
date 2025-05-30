@@ -26,7 +26,7 @@ class RevisionsViewModelTest extends AbstractTestCase
         $paginatorViewModel = new PaginatorViewModel($revisions, 5);
         $viewModel          = new RevisionsViewModel($repository, $revisions, $paginatorViewModel, 'search');
 
-        $revisions->expects(self::once())->method('getIterator')->willReturn(new ArrayIterator([$revision]));
+        $revisions->expects($this->once())->method('getIterator')->willReturn(new ArrayIterator([$revision]));
 
         static::assertSame([$revision], $viewModel->getRevisions());
     }

@@ -45,8 +45,8 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCreateTimestamp(time());
 
-        $this->fetchService->expects(self::once())->method('fetch')->with($repository)->willReturn([$change]);
-        $this->logService->expects(self::once())->method('getCommitsFromRange')->with($repository, 'from', 'to')->willReturn([$commit]);
+        $this->fetchService->expects($this->once())->method('fetch')->with($repository)->willReturn([$change]);
+        $this->logService->expects($this->once())->method('getCommitsFromRange')->with($repository, 'from', 'to')->willReturn([$commit]);
 
         $result = $this->service->fetchRevisionFromRemote($repository);
 
@@ -67,8 +67,8 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCreateTimestamp(time());
 
-        $this->fetchService->expects(self::once())->method('fetch')->with($repository)->willReturn([$change]);
-        $this->logService->expects(self::once())
+        $this->fetchService->expects($this->once())->method('fetch')->with($repository)->willReturn([$change]);
+        $this->logService->expects($this->once())
             ->method('getCommitsFromRange')
             ->with($repository, 'origin/main', 'origin/newBranch')
             ->willReturn([$commit]);

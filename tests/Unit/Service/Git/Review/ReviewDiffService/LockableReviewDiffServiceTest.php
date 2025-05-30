@@ -44,11 +44,11 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
         $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
         $diffFile = new DiffFile();
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
 
         static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision], $options));
     }
@@ -65,11 +65,11 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
         $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
         $diffFile = new DiffFile();
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($review, $callback) => $callback());
-        $this->diffService->expects(self::once())
+        $this->diffService->expects($this->once())
             ->method('getDiffForBranch')
             ->with($review, [$revision], 'branch', $options)
             ->willReturn([$diffFile]);

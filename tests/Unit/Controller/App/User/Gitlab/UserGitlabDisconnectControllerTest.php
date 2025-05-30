@@ -38,7 +38,7 @@ class UserGitlabDisconnectControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->expectAddFlash('success', 'gitlab.comment.sync.disabled');
         $this->expectRedirectToRoute(UserGitSyncController::class)->willReturn('url');
-        $this->tokenRepository->expects(self::once())->method('remove')->with($token, true);
+        $this->tokenRepository->expects($this->once())->method('remove')->with($token, true);
 
         ($this->controller)();
     }

@@ -34,7 +34,7 @@ class ListExternalLinksCommandTest extends AbstractTestCase
         $link = (new ExternalLink())->setPattern('pattern')->setUrl('url');
 
         $this->linkRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findAll')
             ->willReturn([$link]);
 
@@ -49,7 +49,7 @@ class ListExternalLinksCommandTest extends AbstractTestCase
     public function testExecuteEmptyList(): void
     {
         $this->linkRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findAll')
             ->willReturn([]);
 

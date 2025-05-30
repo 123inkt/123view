@@ -36,7 +36,7 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn(null);
+        $this->differ->expects($this->once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn(null);
 
         static::assertNull($this->bundler->bundle($set, DiffComparePolicy::IGNORE));
     }
@@ -56,8 +56,8 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
             ]
         );
 
-        $set->expects(self::once())->method('getLineNumbers')->willReturn(new DiffLineNumberPair(10, 20));
-        $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
+        $set->expects($this->once())->method('getLineNumbers')->willReturn(new DiffLineNumberPair(10, 20));
+        $this->differ->expects($this->once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
 
         $lines = $this->bundler->bundle($set, DiffComparePolicy::IGNORE);
         static::assertNotNull($lines);

@@ -63,7 +63,7 @@ class BearerAuthenticatorTest extends AbstractTestCase
     {
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer 123view']);
 
-        $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn(null);
+        $this->tokenRepository->expects($this->once())->method('findOneBy')->with(['token' => '123view'])->willReturn(null);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Access denied');
@@ -78,7 +78,7 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $token = new UserAccessToken();
         $token->setUser($user);
 
-        $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
+        $this->tokenRepository->expects($this->once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Access denied');
@@ -96,8 +96,8 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $token->setUsages(5);
         $token->setUser($user);
 
-        $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
-        $this->tokenRepository->expects(self::once())->method('save')->with($token, true);
+        $this->tokenRepository->expects($this->once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
+        $this->tokenRepository->expects($this->once())->method('save')->with($token, true);
 
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);

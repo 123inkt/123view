@@ -39,13 +39,13 @@ class UsersTest extends AbstractTestCase
     public function testGetUserSuccess(): void
     {
         $response = $this->createMock(ResponseInterface::class);
-        $response->expects(self::once())->method('getStatusCode')->willReturn(Response::HTTP_OK);
-        $response->expects(self::once())->method('getContent')->willReturn('{"foo":"bar"}');
+        $response->expects($this->once())->method('getStatusCode')->willReturn(Response::HTTP_OK);
+        $response->expects($this->once())->method('getContent')->willReturn('{"foo":"bar"}');
 
         $user = new User();
 
-        $this->httpClient->expects(self::once())->method('request')->with('GET', 'users/123')->willReturn($response);
-        $this->serializer->expects(self::once())
+        $this->httpClient->expects($this->once())->method('request')->with('GET', 'users/123')->willReturn($response);
+        $this->serializer->expects($this->once())
             ->method('deserialize')
             ->with('{"foo":"bar"}', User::class, JsonEncoder::FORMAT, [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true])
             ->willReturn($user);
@@ -59,9 +59,9 @@ class UsersTest extends AbstractTestCase
     public function testGetUserFailure(): void
     {
         $response = $this->createMock(ResponseInterface::class);
-        $response->expects(self::once())->method('getStatusCode')->willReturn(Response::HTTP_BAD_REQUEST);
+        $response->expects($this->once())->method('getStatusCode')->willReturn(Response::HTTP_BAD_REQUEST);
 
-        $this->httpClient->expects(self::once())->method('request')->with('GET', 'users/123')->willReturn($response);
+        $this->httpClient->expects($this->once())->method('request')->with('GET', 'users/123')->willReturn($response);
         $this->serializer->expects(self::never())->method('deserialize');
 
         static::assertNull($this->users->getUser(123));

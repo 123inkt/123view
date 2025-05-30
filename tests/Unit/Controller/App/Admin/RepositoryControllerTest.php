@@ -72,8 +72,8 @@ class RepositoryControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->repositoryRepository->expects(self::once())->method('save')->with($repository, true);
-        $this->messageBus->expects(self::once())->method('dispatch')->with(new RepositoryUpdatedMessage(123))->willReturn($this->envelope);
+        $this->repositoryRepository->expects($this->once())->method('save')->with($repository, true);
+        $this->messageBus->expects($this->once())->method('dispatch')->with(new RepositoryUpdatedMessage(123))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'repository.successful.saved');
         $this->expectRedirectToRoute(RepositoriesController::class)->willReturn('url');
 

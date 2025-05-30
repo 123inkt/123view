@@ -46,9 +46,9 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->setState(CodeReviewStateType::OPEN);
 
-        $this->reviewerStateResolver->expects(self::once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
-        $this->bus->expects(self::exactly(4))
+        $this->bus->expects($this->exactly(4))
             ->method('dispatch')
             ->with(
                 ...consecutive(
@@ -72,7 +72,7 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->setState(CodeReviewStateType::OPEN);
 
-        $this->bus->expects(self::once())
+        $this->bus->expects($this->once())
             ->method('dispatch')
             ->with(new Envelope(new ReviewRevisionAdded(123, 456, null, 'title')))
             ->willReturn($this->envelope);
@@ -89,7 +89,7 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->setState(CodeReviewStateType::OPEN);
 
-        $this->bus->expects(self::exactly(2))
+        $this->bus->expects($this->exactly(2))
             ->method('dispatch')
             ->with(
                 ...consecutive(
@@ -111,7 +111,7 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->setState(CodeReviewStateType::OPEN);
 
-        $this->bus->expects(self::once())
+        $this->bus->expects($this->once())
             ->method('dispatch')
             ->with(new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title')))
             ->willReturn($this->envelope);

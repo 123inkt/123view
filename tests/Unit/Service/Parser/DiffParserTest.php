@@ -46,7 +46,7 @@ class DiffParserTest extends AbstractTestCase
         $file = new DiffFile();
 
         // setup mocks
-        $this->fileParser->expects(static::once())->method('parse')->with("foobar\n")->willReturn($file);
+        $this->fileParser->expects($this->once())->method('parse')->with("foobar\n")->willReturn($file);
 
         $diffs = $this->parser->parse($input);
         static::assertSame([$file], $diffs);
@@ -62,7 +62,7 @@ class DiffParserTest extends AbstractTestCase
         $input .= "foobar\n";
 
         // setup mocks
-        $this->fileParser->expects(static::once())->method('parse')->with("foobar\n")->willReturnArgument(1);
+        $this->fileParser->expects($this->once())->method('parse')->with("foobar\n")->willReturnArgument(1);
 
         $diffs = $this->parser->parse($input);
         static::assertCount(1, $diffs);
@@ -86,7 +86,7 @@ class DiffParserTest extends AbstractTestCase
         $fileB = new DiffFile();
 
         // setup mocks
-        $this->fileParser->expects(static::exactly(2))->method('parse')
+        $this->fileParser->expects($this->exactly(2))->method('parse')
             ->with(...consecutive(["foobar A"], ["foobar B\n"]))
             ->willReturn($fileA, $fileB);
 

@@ -32,7 +32,7 @@ class ReviewSearchQueryParserTest extends AbstractTestCase
     {
         $parser = some(digitChar());
 
-        $this->parserFactory->expects(self::once())->method('createParser')->willReturn($parser);
+        $this->parserFactory->expects($this->once())->method('createParser')->willReturn($parser);
 
         static::assertSame(['1', '2', '3'], $this->queryParser->parse('123')->output());
         static::assertSame(['4', '5', '6'], $this->queryParser->parse('456')->output());

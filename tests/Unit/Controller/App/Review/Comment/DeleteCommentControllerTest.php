@@ -62,9 +62,9 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
 
         $this->expectDenyAccessUnlessGranted(CommentVoter::DELETE, $comment);
-        $this->commentRepository->expects(self::once())->method('remove')->with($comment, true);
-        $this->messageFactory->expects(self::once())->method('createReplyRemoved')->willReturn($replyEvent);
-        $this->bus->expects(self::once())->method('dispatch')->with($replyEvent)->willReturn($this->envelope);
+        $this->commentRepository->expects($this->once())->method('remove')->with($comment, true);
+        $this->messageFactory->expects($this->once())->method('createReplyRemoved')->willReturn($replyEvent);
+        $this->bus->expects($this->once())->method('dispatch')->with($replyEvent)->willReturn($this->envelope);
 
         $response = ($this->controller)($comment);
         static::assertInstanceOf(JsonResponse::class, $response);

@@ -82,8 +82,8 @@ class GitlabApiProviderTest extends AbstractTestCase
         $user->setEmail('email');
         $user->getGitAccessTokens()->add($token);
 
-        $this->authenticator->expects(self::once())->method('getAuthorizationHeader')->with($token)->willReturn('Bearer token');
-        $this->httpClient->expects(self::once())->method('withOptions')
+        $this->authenticator->expects($this->once())->method('getAuthorizationHeader')->with($token)->willReturn('Bearer token');
+        $this->httpClient->expects($this->once())->method('withOptions')
             ->with(
                 [
                     'base_uri'      => 'https://example.com/api/v4/',

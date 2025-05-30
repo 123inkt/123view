@@ -38,8 +38,8 @@ class RevisionsControllerTest extends AbstractControllerTestCase
         $breadcrumb = new Breadcrumb('label', 'url');
         $viewModel  = $this->createMock(RevisionsViewModel::class);
 
-        $this->breadcrumbFactory->expects(self::once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
-        $this->viewModelProvider->expects(self::once())
+        $this->breadcrumbFactory->expects($this->once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
+        $this->viewModelProvider->expects($this->once())
             ->method('getRevisionsViewModel')
             ->with($repository, 10, 'search')
             ->willReturn($viewModel);

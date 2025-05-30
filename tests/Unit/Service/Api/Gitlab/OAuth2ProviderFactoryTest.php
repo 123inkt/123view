@@ -26,7 +26,7 @@ class OAuth2ProviderFactoryTest extends AbstractTestCase
 
     public function testCreate(): void
     {
-        $this->urlGenerator->expects(self::once())->method('generate')
+        $this->urlGenerator->expects($this->once())->method('generate')
             ->with(UserGitlabOAuth2FinishController::class, [], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('https://example.com/redirect');
 

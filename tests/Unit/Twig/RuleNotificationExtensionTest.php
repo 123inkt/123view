@@ -29,7 +29,7 @@ class RuleNotificationExtensionTest extends AbstractTestCase
      */
     public function testGetNotificationCount(): void
     {
-        $this->notificationRepository->expects(self::once())->method('getUnreadNotificationCountForUser')->willReturn(5);
+        $this->notificationRepository->expects($this->once())->method('getUnreadNotificationCountForUser')->willReturn(5);
         static::assertSame(5, $this->extension->getNotificationCount());
         static::assertSame(5, $this->extension->getNotificationCount());
     }

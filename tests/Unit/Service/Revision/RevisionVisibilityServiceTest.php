@@ -34,7 +34,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $revision = new Revision();
         $review   = new CodeReview();
 
-        $this->visibilityRepository->expects(self::once())->method('findBy')->willReturn([]);
+        $this->visibilityRepository->expects($this->once())->method('findBy')->willReturn([]);
 
         static::assertSame([$revision], $this->service->getVisibleRevisions($review, [$revision]));
     }
@@ -56,7 +56,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibilityB = new RevisionVisibility();
         $visibilityB->setRevision($revisionB)->setVisible(false);
 
-        $this->visibilityRepository->expects(self::once())
+        $this->visibilityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
             ->willReturn([$visibilityA, $visibilityB]);
@@ -79,7 +79,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibilityA = new RevisionVisibility();
         $visibilityA->setRevision($revisionA)->setVisible(false);
 
-        $this->visibilityRepository->expects(self::once())
+        $this->visibilityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
             ->willReturn([$visibilityA]);
@@ -102,8 +102,8 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibility->setRevision($revision);
         $visibility->setVisible(true);
 
-        $this->visibilityRepository->expects(self::once())->method('findBy')->with(['review' => 123, 'user' => 789])->willReturn([$visibility]);
-        $this->visibilityRepository->expects(self::once())->method('saveAll')->with([$visibility], true);
+        $this->visibilityRepository->expects($this->once())->method('findBy')->with(['review' => 123, 'user' => 789])->willReturn([$visibility]);
+        $this->visibilityRepository->expects($this->once())->method('saveAll')->with([$visibility], true);
 
         $this->service->setRevisionVisibility($review, [$revision], $this->user, false);
     }
