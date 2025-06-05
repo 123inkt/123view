@@ -5,11 +5,10 @@ export default class extends Controller {
     private readonly declare toggleTargets: HTMLInputElement[];
 
     public toggleAll(event: Event): void {
-        const target        = event.currentTarget as HTMLInputElement;
-        const role          = target.dataset.forRole;
-        const search        = this.element.querySelector<HTMLInputElement>('[data-role~="search"]')?.value.toLowerCase() ?? '';
+        const target    = event.currentTarget as HTMLInputElement;
+        const role      = target.dataset.forRole;
+        const search    = this.element.querySelector<HTMLInputElement>('[data-role~="search"]')?.value.toLowerCase() ?? '';
         const revisions = this.getRevisions();
-        console.log({role, search, revisions});;
 
         if (search === '' || search === undefined) {
             revisions.forEach(el => el.querySelector<HTMLInputElement>(`[data-role~="${role}"]`)!.checked = target.checked);
@@ -57,11 +56,10 @@ export default class extends Controller {
             return;
         }
         const searchMatchRevisions = revisions.filter(el => this.matchesSearch(el, search));
-        const allDetachChecked     = searchMatchRevisions
+        toggleCheckbox.checked     = searchMatchRevisions
             .map(el => el.querySelector<HTMLInputElement>(`[data-role~="${checkboxRole}"]`))
             .filter(el => el !== null)
             .every(el => el.checked);
-        toggleCheckbox.checked = !allDetachChecked;
     }
 
     private matchesSearch(el: HTMLElement | null, search: string | undefined): boolean {
