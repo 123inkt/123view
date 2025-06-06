@@ -26,15 +26,15 @@ use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
-use DR\Review\ViewModelProvider\ReviewViewModelProviderService;
+use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 
-#[CoversClass(ReviewViewModelProviderService::class)]
-class ReviewViewModelProviderServiceTest extends AbstractTestCase
+#[CoversClass(ReviewViewModelProvider::class)]
+class ReviewViewModelProviderTest extends AbstractTestCase
 {
     private FileDiffViewModelProvider&MockObject      $fileDiffProvider;
     private CodeReviewFileService&MockObject          $fileService;
@@ -44,8 +44,8 @@ class ReviewViewModelProviderServiceTest extends AbstractTestCase
     private CodeReviewTypeDecider&MockObject          $reviewTypeDecider;
     private ReviewSummaryViewModelProvider&MockObject $summaryViewModelProvider;
     private ReviewViewModelProvider&MockObject      $revisionService;
-    private RevisionVisibilityService&MockObject      $visibilityService;
-    private ReviewViewModelProviderService                   $modelProvider;
+    private RevisionVisibilityService&MockObject $visibilityService;
+    private ReviewViewModelProvider              $modelProvider;
 
     public function setUp(): void
     {
@@ -59,7 +59,7 @@ class ReviewViewModelProviderServiceTest extends AbstractTestCase
         $this->summaryViewModelProvider = $this->createMock(ReviewSummaryViewModelProvider::class);
         $this->revisionService          = $this->createMock(ReviewViewModelProvider::class);
         $this->visibilityService        = $this->createMock(RevisionVisibilityService::class);
-        $this->modelProvider            = new ReviewViewModelProviderService(
+        $this->modelProvider            = new ReviewViewModelProvider(
             $this->fileDiffProvider,
             $this->formFactory,
             $this->fileService,

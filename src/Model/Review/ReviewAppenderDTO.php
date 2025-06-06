@@ -6,18 +6,23 @@ namespace DR\Review\Model\Review;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Request\Review\ReviewRequest;
 
 readonly class ReviewAppenderDTO
 {
     /**
+     * @codeCoverageIgnore Simple DTO
      * @param Revision[]                  $revisions
+     * @param Revision[]                  $visibleRevisions
      * @param DirectoryTreeNode<DiffFile> $fileTree
      */
     public function __construct(
         public CodeReview $review,
         public array $revisions,
+        public array $visibleRevisions,
         public DirectoryTreeNode $fileTree,
-        public ?DiffFile $selectedFile
+        public ?DiffFile $selectedFile,
+        public ReviewRequest $request
     ) {
     }
 }

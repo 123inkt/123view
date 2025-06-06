@@ -17,7 +17,7 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
-use DR\Review\ViewModelProvider\ReviewViewModelProviderService;
+use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,13 +28,13 @@ use Symfony\Component\HttpFoundation\Request;
 #[CoversClass(ReviewController::class)]
 class ReviewControllerTest extends AbstractControllerTestCase
 {
-    private ReviewViewModelProviderService&MockObject $modelProvider;
+    private ReviewViewModelProvider&MockObject $modelProvider;
     private BreadcrumbFactory&MockObject       $breadcrumbFactory;
     private FileSeenStatusService&MockObject   $fileSeenService;
 
     public function setUp(): void
     {
-        $this->modelProvider     = $this->createMock(ReviewViewModelProviderService::class);
+        $this->modelProvider     = $this->createMock(ReviewViewModelProvider::class);
         $this->breadcrumbFactory = $this->createMock(BreadcrumbFactory::class);
         $this->fileSeenService   = $this->createMock(FileSeenStatusService::class);
         parent::setUp();
