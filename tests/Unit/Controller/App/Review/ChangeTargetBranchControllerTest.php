@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review;
 use DR\Review\Controller\App\Review\ChangeTargetBranchController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Form\Review\ChangeBranchReviewBranchFormType;
+use DR\Review\Form\Review\ChangeReviewTargetBranchFormType;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -34,7 +34,7 @@ class ChangeTargetBranchControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $review  = new CodeReview();
 
-        $this->expectCreateForm(ChangeBranchReviewBranchFormType::class, $review, ['review' => $review])
+        $this->expectCreateForm(ChangeReviewTargetBranchFormType::class, $review, ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
@@ -48,7 +48,7 @@ class ChangeTargetBranchControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $review  = new CodeReview();
 
-        $this->expectCreateForm(ChangeBranchReviewBranchFormType::class, $review, ['review' => $review])
+        $this->expectCreateForm(ChangeReviewTargetBranchFormType::class, $review, ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);

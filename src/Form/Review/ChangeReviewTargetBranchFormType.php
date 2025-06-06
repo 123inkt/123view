@@ -16,7 +16,7 @@ use Throwable;
 /**
  * @extends AbstractType<CodeReview>
  */
-class ChangeBranchReviewBranchFormType extends AbstractType
+class ChangeReviewTargetBranchFormType extends AbstractType
 {
     public function __construct(private UrlGeneratorInterface $urlGenerator, private CacheableGitBranchService $branchService)
     {

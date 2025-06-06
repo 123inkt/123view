@@ -5,7 +5,7 @@ namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Form\Review\ChangeBranchReviewBranchFormType;
+use DR\Review\Form\Review\ChangeReviewTargetBranchFormType;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -25,7 +25,7 @@ class ChangeTargetBranchController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request, #[MapEntity] CodeReview $review): Response
     {
-        $form = $this->createForm(ChangeBranchReviewBranchFormType::class, $review, ['review' => $review]);
+        $form = $this->createForm(ChangeReviewTargetBranchFormType::class, $review, ['review' => $review]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             throw new BadRequestHttpException('Invalid form submission');

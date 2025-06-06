@@ -7,7 +7,7 @@ use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Form\Review\ChangeBranchReviewBranchFormType;
+use DR\Review\Form\Review\ChangeReviewTargetBranchFormType;
 use DR\Review\Model\Review\CodeReviewDto;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Tests\AbstractTestCase;
@@ -50,7 +50,7 @@ class BranchReviewViewModelAppenderTest extends AbstractTestCase
         $formView  = $this->createMock(FormView::class);
 
         $this->formFactory->expects($this->once())->method('create')
-            ->with(ChangeBranchReviewBranchFormType::class, $dto->review, ['review' => $dto->review])
+            ->with(ChangeReviewTargetBranchFormType::class, $dto->review, ['review' => $dto->review])
             ->willReturn($form);
         $form->expects($this->once())->method('createView')->willReturn($formView);
         $viewModel->expects($this->once())->method('setBranchReviewViewModel')->with(new BranchReviewViewModel($formView));
