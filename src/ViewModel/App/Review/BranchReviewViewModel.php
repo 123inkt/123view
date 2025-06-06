@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Review;
 
+use Symfony\Component\Form\FormView;
+
 class BranchReviewViewModel
 {
-    /**
-     * @param string[] $targetBranches
-     */
-    public function __construct(public readonly array $targetBranches)
+    public function __construct(public readonly FormView $form)
     {
     }
 }
