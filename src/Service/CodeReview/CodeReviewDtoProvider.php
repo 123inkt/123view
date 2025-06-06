@@ -9,6 +9,7 @@ use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use Throwable;
 
 readonly class CodeReviewDtoProvider
 {
@@ -20,6 +21,9 @@ readonly class CodeReviewDtoProvider
     ) {
     }
 
+    /**
+     * @throws Throwable
+     */
     public function provide(CodeReview $review, ReviewRequest $request): CodeReviewDto
     {
         $revisions        = $this->revisionService->getRevisions($review);
