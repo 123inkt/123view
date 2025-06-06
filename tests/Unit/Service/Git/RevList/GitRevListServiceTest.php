@@ -52,6 +52,29 @@ class GitRevListServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
         $this->revListParser->expects($this->once())->method('parseOneLine')->with('output')->willReturn(['result']);
 
-        static::assertSame(['result'], $this->service->getCommitsAheadOfMaster($repository, 'branch_name'));
+        static::assertSame(['result'], $this->service->getCommitsAheadOf($repository, 'branch_name'));
+    }
+
+    /**
+     * @throws RepositoryException
+     */
+    public function testGetCommitsAheadOfTargetBranch(): void
+    {
+        $repository = new Repository();
+        $repository->setMainBranchName('master');
+
+        $builder       = $this->createMock(GitRevListCommandBuilder::class);
+        $gitRepository = $this->createMock(GitRepository::class);
+
+        $builder->expects($this->once())->method('commitRange')->with('origin/target', 'branch_name')->willReturnSelf();
+        $builder->expects($this->once())->method('leftRight')->willReturnSelf();
+        $builder->expects($this->once())->method('pretty')->with('oneline')->willReturnSelf();
+        $builder->expects($this->once())->method('rightOnly')->willReturnSelf();
+        $this->commandFactory->expects($this->once())->method('createRevList')->willReturn($builder);
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->revListParser->expects($this->once())->method('parseOneLine')->with('output')->willReturn(['result']);
+
+        static::assertSame(['result'], $this->service->getCommitsAheadOf($repository, 'branch_name', 'target'));
     }
 }

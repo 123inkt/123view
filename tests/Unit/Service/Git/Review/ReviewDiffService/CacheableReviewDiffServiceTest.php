@@ -78,7 +78,7 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('3d4712e0b02956b159aac6e5871b59d19a992cd0f2050af910dd2d8eba72f0c5')
+            ->with('0f8fce26dc2afa67e942ac7fc4b10a777a95b2788d07c639242a66230c4bc21d')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects($this->once())->method('getDiffForBranch')
             ->with($review, [$revision], 'branch', $options)
