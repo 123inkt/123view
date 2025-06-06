@@ -8,7 +8,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
-use DR\Review\Model\Review\ReviewDto;
+use DR\Review\Model\Review\CodeReviewDto;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -56,11 +56,11 @@ class FileDiffViewModelAppenderTest extends AbstractTestCase
         $this->appender->append($dto, $viewModel);
     }
 
-    private function createDto(): ReviewDto
+    private function createDto(): CodeReviewDto
     {
         $revision = new Revision();
 
-        return new ReviewDto(
+        return new CodeReviewDto(
             new CodeReview(),
             [$revision],
             [$revision],

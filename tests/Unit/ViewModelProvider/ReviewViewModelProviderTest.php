@@ -8,9 +8,9 @@ use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
-use DR\Review\Model\Review\ReviewDto;
+use DR\Review\Model\Review\CodeReviewDto;
 use DR\Review\Request\Review\ReviewRequest;
-use DR\Review\Service\CodeReview\ReviewDtoProvider;
+use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
@@ -23,14 +23,14 @@ use Throwable;
 #[CoversClass(ReviewViewModelProvider::class)]
 class ReviewViewModelProviderTest extends AbstractTestCase
 {
-    private ReviewDtoProvider&MockObject                $reviewDtoProvider;
+    private CodeReviewDtoProvider&MockObject            $reviewDtoProvider;
     private ReviewViewModelAppenderInterface&MockObject $viewModelAppender;
     private ReviewViewModelProvider                     $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->reviewDtoProvider = $this->createMock(ReviewDtoProvider::class);
+        $this->reviewDtoProvider = $this->createMock(CodeReviewDtoProvider::class);
         $this->viewModelAppender = $this->createMock(ReviewViewModelAppenderInterface::class);
         $this->provider          = new ReviewViewModelProvider($this->reviewDtoProvider, new ArrayIterator([$this->viewModelAppender]));
     }
@@ -54,11 +54,11 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         static::assertEquals($expected, $actual);
     }
 
-    private function createDto(): ReviewDto
+    private function createDto(): CodeReviewDto
     {
         $revision = new Revision();
 
-        return new ReviewDto(
+        return new CodeReviewDto(
             new CodeReview(),
             [$revision],
             [$revision],

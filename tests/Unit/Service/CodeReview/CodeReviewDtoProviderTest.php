@@ -9,11 +9,11 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
-use DR\Review\Model\Review\ReviewDto;
+use DR\Review\Model\Review\CodeReviewDto;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\CodeReview\ReviewDtoProvider;
+use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
@@ -22,14 +22,14 @@ use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
-#[CoversClass(ReviewDtoProvider::class)]
-class ReviewDtoProviderTest extends AbstractTestCase
+#[CoversClass(CodeReviewDtoProvider::class)]
+class CodeReviewDtoProviderTest extends AbstractTestCase
 {
     private CodeReviewRevisionService&MockObject $revisionService;
     private CodeReviewFileService&MockObject     $fileService;
     private CodeReviewTypeDecider&MockObject     $reviewTypeDecider;
     private RevisionVisibilityService&MockObject $visibilityService;
-    private ReviewDtoProvider                    $provider;
+    private CodeReviewDtoProvider                $provider;
 
     protected function setUp(): void
     {
@@ -38,7 +38,7 @@ class ReviewDtoProviderTest extends AbstractTestCase
         $this->fileService       = $this->createMock(CodeReviewFileService::class);
         $this->reviewTypeDecider = $this->createMock(CodeReviewTypeDecider::class);
         $this->visibilityService = $this->createMock(RevisionVisibilityService::class);
-        $this->provider          = new ReviewDtoProvider(
+        $this->provider          = new CodeReviewDtoProvider(
             $this->revisionService,
             $this->fileService,
             $this->reviewTypeDecider,
@@ -101,8 +101,8 @@ class ReviewDtoProviderTest extends AbstractTestCase
         array $visibleRevisions,
         DirectoryTreeNode $fileTree,
         DiffFile $selectedFile
-    ): ReviewDto {
-        return new ReviewDto(
+    ): CodeReviewDto {
+        return new CodeReviewDto(
             $review,
             $revisions,
             $visibleRevisions,

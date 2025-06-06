@@ -5,7 +5,7 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Request\Review\ReviewRequest;
-use DR\Review\Service\CodeReview\ReviewDtoProvider;
+use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\Appender\Review\ReviewViewModelAppenderInterface;
 use Throwable;
@@ -16,7 +16,7 @@ readonly class ReviewViewModelProvider
     /**
      * @param Traversable<ReviewViewModelAppenderInterface> $reviewViewModelAppenders
      */
-    public function __construct(private ReviewDtoProvider $reviewDtoProvider, private Traversable $reviewViewModelAppenders)
+    public function __construct(private CodeReviewDtoProvider $reviewDtoProvider, private Traversable $reviewViewModelAppenders)
     {
     }
 

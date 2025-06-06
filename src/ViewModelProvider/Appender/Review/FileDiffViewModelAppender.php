@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider\Appender\Review;
 
-use DR\Review\Model\Review\ReviewDto;
+use DR\Review\Model\Review\CodeReviewDto;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
@@ -19,7 +19,7 @@ readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInter
     /**
      * @inheritDoc
      */
-    public function accepts(ReviewDto $dto, ReviewViewModel $viewModel): bool
+    public function accepts(CodeReviewDto $dto, ReviewViewModel $viewModel): bool
     {
         return $dto->selectedFile !== null;
     }
@@ -27,7 +27,7 @@ readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInter
     /**
      * @throws Throwable
      */
-    public function append(ReviewDto $dto, ReviewViewModel $viewModel): void
+    public function append(CodeReviewDto $dto, ReviewViewModel $viewModel): void
     {
         $fileDiffViewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel(
             $dto->review,

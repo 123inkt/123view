@@ -10,7 +10,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 
-readonly class ReviewDto
+readonly class CodeReviewDto
 {
     /**
      * @codeCoverageIgnore Simple DTO
