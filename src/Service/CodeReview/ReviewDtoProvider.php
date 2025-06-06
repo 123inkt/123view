@@ -47,5 +47,4 @@ readonly class ReviewDtoProvider
             $request->getAction()
         );
     }
-
 }

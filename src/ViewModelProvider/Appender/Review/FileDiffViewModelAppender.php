@@ -7,6 +7,7 @@ use DR\Review\Model\Review\ReviewDto;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
+use DR\Utils\Assert;
 use Throwable;
 
 readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInterface
@@ -30,10 +31,10 @@ readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInter
     {
         $fileDiffViewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel(
             $dto->review,
-            $dto->selectedFile,
+            Assert::notNull($dto->selectedFile),
             $dto->action,
             $dto->comparePolicy,
-            $dto->selectedFile->isModified() ? $dto->diffMode : ReviewDiffModeEnum::INLINE
+            Assert::notNull($dto->selectedFile)->isModified() ? $dto->diffMode : ReviewDiffModeEnum::INLINE
         );
         $viewModel->setFileDiffViewModel($fileDiffViewModel->setRevisions($dto->visibleRevisions));
         $viewModel->setDescriptionVisible(false);

@@ -11,7 +11,6 @@ use DR\Review\Repository\Report\CodeInspectionIssueRepository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\ViewModel\App\Review\CodeInspectionReportViewModel;
 use DR\Review\ViewModel\App\Review\ReviewSummaryViewModel;
-use DR\Utils\Assert;
 
 class ReviewSummaryViewModelProvider
 {
