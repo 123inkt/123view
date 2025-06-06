@@ -13,6 +13,9 @@ readonly class RevisionViewModelAppender implements ReviewViewModelAppenderInter
     {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function accepts(ReviewDto $dto, ReviewViewModel $viewModel): bool
     {
         return $viewModel->getSidebarTabMode() === ReviewViewModel::SIDEBAR_TAB_REVISIONS;

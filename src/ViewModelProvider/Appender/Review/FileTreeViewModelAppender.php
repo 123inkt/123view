@@ -11,12 +11,13 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 readonly class FileTreeViewModelAppender implements ReviewViewModelAppenderInterface
 {
-    public function __construct(
-        private FormFactoryInterface $formFactory,
-        private FileTreeViewModelProvider $fileTreeModelProvider,
-    ) {
+    public function __construct(private FormFactoryInterface $formFactory, private FileTreeViewModelProvider $fileTreeModelProvider)
+    {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function accepts(ReviewDto $dto, ReviewViewModel $viewModel): bool
     {
         return $viewModel->getSidebarTabMode() === ReviewViewModel::SIDEBAR_TAB_OVERVIEW;

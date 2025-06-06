@@ -9,10 +9,13 @@ use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
 
 readonly class ReviewSummaryViewModelAppender implements ReviewViewModelAppenderInterface
 {
-    public function __construct(private readonly ReviewSummaryViewModelProvider $summaryViewModelProvider)
+    public function __construct(private ReviewSummaryViewModelProvider $summaryViewModelProvider)
     {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function accepts(ReviewDto $dto, ReviewViewModel $viewModel): bool
     {
         return $dto->selectedFile === null;

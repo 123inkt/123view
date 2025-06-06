@@ -11,8 +11,13 @@ use Throwable;
 
 readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInterface
 {
-    public function __construct(private FileDiffViewModelProvider $fileDiffViewModelProvider) { }
+    public function __construct(private FileDiffViewModelProvider $fileDiffViewModelProvider)
+    {
+    }
 
+    /**
+     * @inheritDoc
+     */
     public function accepts(ReviewDto $dto, ReviewViewModel $viewModel): bool
     {
         return $dto->selectedFile !== null;
@@ -26,9 +31,9 @@ readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInter
         $fileDiffViewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel(
             $dto->review,
             $dto->selectedFile,
-            $dto->request->getAction(),
-            $dto->request->getComparisonPolicy(),
-            $dto->selectedFile->isModified() ? $dto->request->getDiffMode() : ReviewDiffModeEnum::INLINE
+            $dto->action,
+            $dto->comparePolicy,
+            $dto->selectedFile->isModified() ? $dto->diffMode : ReviewDiffModeEnum::INLINE
         );
         $viewModel->setFileDiffViewModel($fileDiffViewModel->setRevisions($dto->visibleRevisions));
         $viewModel->setDescriptionVisible(false);

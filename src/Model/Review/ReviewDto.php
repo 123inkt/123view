@@ -28,7 +28,7 @@ readonly class ReviewDto
         public string $tab,
         public DiffComparePolicy $comparePolicy,
         public ReviewDiffModeEnum $diffMode,
-        public AbstractReviewAction $action
+        public ?AbstractReviewAction $action
     ) {
     }
 }
