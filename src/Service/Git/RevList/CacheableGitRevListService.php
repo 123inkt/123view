@@ -24,7 +24,7 @@ class CacheableGitRevListService
      */
     public function getCommitsAheadOf(Repository $repository, string $branchName, ?string $targetBranch = null): array
     {
-        $cacheKey = 'git-rev-list-' . hash('sha256', sprintf('%s-%s', $repository->getId(), $branchName));
+        $cacheKey = 'git-rev-list-' . hash('sha256', sprintf('%s-%s-%S', $repository->getId(), $branchName, $targetBranch));
 
         /** @var string[] $result */
         $result = $this->cache->get(
