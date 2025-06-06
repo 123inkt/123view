@@ -70,6 +70,9 @@ use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
+use DR\Review\ViewModelProvider\Appender\Review\FileTreeViewModelAppender;
+use DR\Review\ViewModelProvider\Appender\Review\RevisionViewModelAppender;
+use DR\Review\ViewModelProvider\ReviewViewModelProviderService;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use League\OAuth2\Client\Provider\GenericProvider;
@@ -240,4 +243,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DoctrineDbal::class)->tag('liip_monitor.check');
     $services->set(OpcacheInternedStrings::class)->tag('liip_monitor.check');
     $services->set(MercureHub::class)->tag('liip_monitor.check');
+
+    // view model appenders
+    $services->set(FileTreeViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(RevisionViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(ReviewViewModelProviderService::class)->arg('$reviewViewModelAppenders', tagged_iterator('review.view_model_appender'));
 };

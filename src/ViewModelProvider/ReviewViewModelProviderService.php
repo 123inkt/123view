@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Form\Review\AddReviewerFormType;
+use DR\Review\Model\Review\ReviewAppenderDTO;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
@@ -12,21 +12,23 @@ use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
-use Symfony\Component\Form\FormFactoryInterface;
+use DR\Review\ViewModelProvider\Appender\Review\ReviewViewModelAppenderInterface;
 use Throwable;
+use Traversable;
 
 class ReviewViewModelProviderService
 {
+    /**
+     * @param Traversable<ReviewViewModelAppenderInterface> $reviewViewModelAppenders
+     */
     public function __construct(
         private readonly FileDiffViewModelProvider $fileDiffViewModelProvider,
-        private readonly FormFactoryInterface $formFactory,
         private readonly CodeReviewFileService $fileService,
         private readonly CodeReviewTypeDecider $reviewTypeDecider,
-        private readonly FileTreeViewModelProvider $fileTreeModelProvider,
-        private readonly RevisionViewModelProvider $revisionModelProvider,
         private readonly ReviewSummaryViewModelProvider $summaryViewModelProvider,
         private readonly ReviewViewModelProvider $reviewViewModelProvider,
         private readonly RevisionVisibilityService $visibilityService,
+        private readonly Traversable $reviewViewModelAppenders,
     ) {
     }
 
@@ -36,7 +38,8 @@ class ReviewViewModelProviderService
     public function getViewModel(CodeReview $review, ReviewRequest $request): ReviewViewModel
     {
         $viewModel = $this->reviewViewModelProvider->getViewModel($review);
-        $revisions = $viewModel->revisions;
+        $viewModel->setSidebarTabMode($request->getTab());
+        $revisions = $viewModel->getRevisionViewModel()->revisions;
 
         // visible revisions
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
@@ -67,14 +70,12 @@ class ReviewViewModelProviderService
             $viewModel->setDescriptionVisible(false);
         }
 
-        // get sidebar view model
-        $viewModel->setSidebarTabMode($request->getTab());
-        if ($request->getTab() === ReviewViewModel::SIDEBAR_TAB_OVERVIEW) {
-            $viewModel->setAddReviewerForm($this->formFactory->create(AddReviewerFormType::class, null, ['review' => $review])->createView());
-            $viewModel->setFileTreeModel($this->fileTreeModelProvider->getFileTreeViewModel($review, $fileTree, $selectedFile));
-        }
-        if ($request->getTab() === ReviewViewModel::SIDEBAR_TAB_REVISIONS) {
-            $viewModel->setRevisionViewModel($this->revisionModelProvider->getRevisionViewModel($review, $revisions));
+        $dto = new ReviewAppenderDTO($review, $revisions, $fileTree, $selectedFile);
+        /** @var ReviewViewModelAppenderInterface $viewModelAppender */
+        foreach ($this->reviewViewModelAppenders as $viewModelAppender) {
+            if ($viewModelAppender->accepts($dto, $viewModel)) {
+                $viewModelAppender->append($dto, $viewModel);
+            }
         }
 
         return $viewModel;
