@@ -8,12 +8,12 @@ use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Model\Review\CodeReviewDto;
+use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Request\Review\ReviewRequest;
+use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
@@ -49,7 +49,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
     public function testProvide(): void
     {
         $request      = $this->createRequest();
-        $review       = $this->createStub(CodeReview::class);
+        $review       = static::createStub(CodeReview::class);
         $revision1    = new Revision();
         $revision2    = new Revision();
         $fileTree     = new DirectoryTreeNode('name');
@@ -92,8 +92,9 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
     }
 
     /**
-     * @param Revision[] $revisions
-     * @param Revision[] $visibleRevisions
+     * @param DirectoryTreeNode<DiffFile> $fileTree
+     * @param Revision[]                  $revisions
+     * @param Revision[]                  $visibleRevisions
      */
     private function createExpectation(
         CodeReview $review,

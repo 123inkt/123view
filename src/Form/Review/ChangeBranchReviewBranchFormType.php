@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Form\Review;
 
 use DR\Review\Controller\App\Review\ChangeTargetBranchController;
-use DR\Review\Controller\App\Review\Reviewer\AddReviewerController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\Git\Branch\CacheableGitBranchService;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
 
+/**
+ * @extends AbstractType<CodeReview>
+ */
 class ChangeBranchReviewBranchFormType extends AbstractType
 {
     public function __construct(private UrlGeneratorInterface $urlGenerator, private CacheableGitBranchService $branchService)
@@ -39,12 +41,12 @@ class ChangeBranchReviewBranchFormType extends AbstractType
         $builder->setMethod('POST');
 
         $builder->add('targetBranch', ChoiceType::class, [
-            'required'          => false,
-            'label'             => false,
-            'choices'           => $this->getBranches($review),
-            'multiple'          => false,
-            'expanded'          => false,
-            'attr'              => ['class' => 'form-select-sm', 'data-controller' => 'form-submitter']
+            'required' => false,
+            'label'    => false,
+            'choices'  => $this->getBranches($review),
+            'multiple' => false,
+            'expanded' => false,
+            'attr'     => ['class' => 'form-select-sm', 'data-controller' => 'form-submitter']
         ]);
     }
 
@@ -68,7 +70,7 @@ class ChangeBranchReviewBranchFormType extends AbstractType
         $branches = array_filter($branches, static fn(string $branch): bool => $branch !== 'HEAD');
 
         $result = [];
-        foreach($branches as $branch) {
+        foreach ($branches as $branch) {
             $result['→ ' . $branch] = $branch;
         }
 

@@ -15,6 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<ChangeTargetBranchController>
+ */
 #[CoversClass(ChangeTargetBranchController::class)]
 class ChangeTargetBranchControllerTest extends AbstractControllerTestCase
 {
