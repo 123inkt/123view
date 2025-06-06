@@ -4,7 +4,9 @@
     <h3 class="m-0 overflow-hidden review-heading">
         {% if review.type == 'branch' %}
             <button class="btn btn-primary btn-sm" title="{{ review.referenceId }}">{{ 'branch.review'|trans }}</button>
-            {{ form(reviewModel.branchReviewViewModel.form) }}
+            <div class="review-change-branch-form">
+                {{ form(reviewModel.branchReviewViewModel.form) }}
+            </div>
         {% endif %}
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
 

@@ -21,7 +21,7 @@ class ChangeBranchReviewBranchFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['review' => null]);
+        $resolver->setDefaults(['review' => null, 'data_class' => CodeReview::class]);
         $resolver->addAllowedTypes('review', CodeReview::class);
     }
 
@@ -37,14 +37,13 @@ class ChangeBranchReviewBranchFormType extends AbstractType
         $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => $review->getId()]));
         $builder->setMethod('POST');
 
-        $builder->add('branch', ChoiceType::class, [
+        $builder->add('targetBranch', ChoiceType::class, [
             'required'          => false,
             'label'             => false,
             'choices'           => $this->getBranches($review),
-            'preferred_choices' => [$review->getTargetBranch()],
             'multiple'          => false,
             'expanded'          => false,
-            'attr'              => ['class' => 'form-select-sm d-inline-block w-auto', 'data-controller' => 'form-submitter']
+            'attr'              => ['class' => 'form-select-sm', 'data-controller' => 'form-submitter']
         ]);
     }
 

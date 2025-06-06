@@ -32,7 +32,7 @@ readonly class BranchReviewViewModelAppender implements ReviewViewModelAppenderI
     {
         $form = $this->formFactory->create(
             ChangeBranchReviewBranchFormType::class,
-            ['branch' => $dto->review->getTargetBranch()],
+            $dto->review,
             ['review' => $dto->review]
         );
         $viewModel->setBranchReviewViewModel(new BranchReviewViewModel($form->createView()));
