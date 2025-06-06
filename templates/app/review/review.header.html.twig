@@ -4,6 +4,13 @@
     <h3 class="m-0 overflow-hidden review-heading">
         {% if review.type == 'branch' %}
             <button class="btn btn-primary btn-sm" title="{{ review.referenceId }}">{{ 'branch.review'|trans }}</button>
+            <select class="form-select form-select-sm d-inline-block w-auto" style="max-width: 200px;">
+                <option value="{{ review.targetBranch }}">{{ review.targetBranch }}</option>
+                <option disabled></option>
+                {% for branches in reviewModel.branchReviewViewModel.targetBranches %}
+                    <option value="{{ branches }}">{{ branches }}</option>
+                {% endfor %}
+            </select>
         {% endif %}
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
 

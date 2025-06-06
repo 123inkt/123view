@@ -70,6 +70,7 @@ use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
+use DR\Review\ViewModelProvider\Appender\Review\BranchReviewViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\FileDiffViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\FileTreeViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\ReviewSummaryViewModelAppender;
@@ -251,5 +252,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(RevisionViewModelAppender::class)->tag('review.view_model_appender');
     $services->set(ReviewSummaryViewModelAppender::class)->tag('review.view_model_appender');
     $services->set(FileDiffViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(BranchReviewViewModelAppender::class)->tag('review.view_model_appender');
     $services->set(ReviewViewModelProvider::class)->arg('$reviewViewModelAppenders', tagged_iterator('review.view_model_appender'));
 };

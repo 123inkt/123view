@@ -8,7 +8,7 @@ class BranchReviewViewModel
     /**
      * @param string[] $targetBranches
      */
-    public function __construct(public readonly string $targetBranch, public readonly array $targetBranches)
+    public function __construct(public readonly array $targetBranches)
     {
     }
 }
