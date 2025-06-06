@@ -67,7 +67,7 @@ class ChangeReviewTargetBranchFormTypeTest extends AbstractTestCase
             ->with(
                 'targetBranch',
                 ChoiceType::class,
-                static::callback(static function (array $options) {
+                static::callback(static function (array $options): bool {
                     static::assertFalse($options['required']);
                     static::assertFalse($options['label']);
                     static::assertSame(['→ branch' => 'branch'], $options['choices']);
