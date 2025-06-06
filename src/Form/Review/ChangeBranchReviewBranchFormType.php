@@ -66,6 +66,11 @@ class ChangeBranchReviewBranchFormType extends AbstractType
         // filter out HEAD
         $branches = array_filter($branches, static fn(string $branch): bool => $branch !== 'HEAD');
 
-        return array_combine($branches, $branches);
+        $result = [];
+        foreach($branches as $branch) {
+            $result['→ ' . $branch] = $branch;
+        }
+
+        return $result;
     }
 }
