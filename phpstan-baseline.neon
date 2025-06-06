@@ -1165,12 +1165,6 @@ parameters:
 			path: src/Service/Notification/RuleNotificationService.php
 
 		-
-			message: '#^PHPDoc tag @var with type array\<string\> is not subtype of native type list\<string\>\|false\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Service/Parser/DiffFileParser.php
-
-		-
 			message: '#^Method DR\\Review\\Service\\RemoteEvent\\Gitlab\\RemoteEventPayloadDenormalizer\:\:denormalize\(\) should return DR\\Review\\Model\\Webhook\\Gitlab\\MergeRequestEvent\|DR\\Review\\Model\\Webhook\\Gitlab\\PushEvent\|null but returns mixed\.$#'
 			identifier: return.type
 			count: 1
