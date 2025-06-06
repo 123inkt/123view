@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "450501085f52636a4bdf70c55abaa5a1",
+    "content-hash": "ef4d4056778a57f9c1fc873a07dabccd",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2089,20 +2089,19 @@
         },
         {
             "name": "fdekker/log-viewer-bundle",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/symfony-log-viewer-bundle.git",
-                "reference": "2eb6d017fa08a22b6a2e1526c06d398d13263012"
+                "reference": "9a6a311d829c281ea2ca90b96d02bc416a60e64b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/2eb6d017fa08a22b6a2e1526c06d398d13263012",
-                "reference": "2eb6d017fa08a22b6a2e1526c06d398d13263012",
+                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/9a6a311d829c281ea2ca90b96d02bc416a60e64b",
+                "reference": "9a6a311d829c281ea2ca90b96d02bc416a60e64b",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
                 "php": ">=8.1",
                 "psr/clock": "^1.0",
                 "symfony/config": "^6.0||^7.0",
@@ -2118,7 +2117,7 @@
             "require-dev": {
                 "digitalrevolution/accessorpair-constraint": "^2.1.18",
                 "digitalrevolution/phpunit-extensions": "^1.3",
-                "digitalrevolution/phpunit-file-coverage-inspection": "^v2.0",
+                "digitalrevolution/phpunit-file-coverage-inspection": "^v3.0.0",
                 "mikey179/vfsstream": "^1.6.11",
                 "phpmd/phpmd": "^2.14",
                 "phpstan/extension-installer": "^1.3",
@@ -2126,7 +2125,7 @@
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
                 "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^10.5 || ^11.0",
+                "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.6",
                 "symfony/browser-kit": "^6.0||^7.0",
@@ -2174,9 +2173,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frankdekker/symfony-log-viewer-bundle/issues",
-                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v2.0.0"
+                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v2.1.0"
             },
-            "time": "2024-12-26T10:38:14+00:00"
+            "time": "2025-05-17T21:33:37+00:00"
         },
         {
             "name": "firebase/php-jwt",
