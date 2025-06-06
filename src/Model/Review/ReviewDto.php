@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Model\Review;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Request\Review\ReviewRequest;
+use DR\Review\Model\Review\Action\AbstractReviewAction;
+use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 
-readonly class ReviewAppenderDTO
+readonly class ReviewDto
 {
     /**
      * @codeCoverageIgnore Simple DTO
@@ -22,7 +24,11 @@ readonly class ReviewAppenderDTO
         public array $visibleRevisions,
         public DirectoryTreeNode $fileTree,
         public ?DiffFile $selectedFile,
-        public ReviewRequest $request
+        public ?string $filePath,
+        public string $tab,
+        public DiffComparePolicy $comparePolicy,
+        public ReviewDiffModeEnum $diffMode,
+        public AbstractReviewAction $action
     ) {
     }
 }

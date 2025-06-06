@@ -28,7 +28,7 @@ class ReviewSummaryViewModelProvider
      */
     public function getSummaryViewModel(CodeReview $review, array $revisions, DirectoryTreeNode $fileTree): ReviewSummaryViewModel
     {
-        $repository = Assert::notNull($review->getRepository());
+        $repository = $review->getRepository();
         $branchIds  = $this->reportRepository->findBranchIds($repository, $revisions);
         $reports    = $this->reportRepository->findByRevisions($repository, $revisions, $branchIds);
         $issues     = [];

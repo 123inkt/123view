@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider\Appender\Review;
 
-use DR\Review\Model\Review\ReviewAppenderDTO;
+use DR\Review\Model\Review\ReviewDto;
 use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
 
@@ -13,12 +13,12 @@ readonly class ReviewSummaryViewModelAppender implements ReviewViewModelAppender
     {
     }
 
-    public function accepts(ReviewAppenderDTO $dto, ReviewViewModel $viewModel): bool
+    public function accepts(ReviewDto $dto, ReviewViewModel $viewModel): bool
     {
         return $dto->selectedFile === null;
     }
 
-    public function append(ReviewAppenderDTO $dto, ReviewViewModel $viewModel): void
+    public function append(ReviewDto $dto, ReviewViewModel $viewModel): void
     {
         $summaryViewModel = $this->summaryViewModelProvider->getSummaryViewModel($dto->review, $dto->revisions, $dto->fileTree);
 
