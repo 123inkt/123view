@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\Review;
 
+use DR\Review\Controller\App\Review\ChangeTargetBranchController;
 use DR\Review\Controller\App\Review\Reviewer\AddReviewerController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\Git\Branch\CacheableGitBranchService;
@@ -34,7 +35,7 @@ class ChangeBranchReviewBranchFormType extends AbstractType
         /** @var CodeReview $review */
         $review = $options['review'];
 
-        $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => $review->getId()]));
+        $builder->setAction($this->urlGenerator->generate(ChangeTargetBranchController::class, ['id' => $review->getId()]));
         $builder->setMethod('POST');
 
         $builder->add('targetBranch', ChoiceType::class, [
