@@ -36,7 +36,7 @@ class ReviewViewModelProviderService
     public function getViewModel(CodeReview $review, ReviewRequest $request): ReviewViewModel
     {
         $viewModel = $this->reviewViewModelProvider->getViewModel($review);
-        $revisions = $viewModel->getRevisionViewModel()->revisions;
+        $revisions = $viewModel->revisions;
 
         // visible revisions
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);

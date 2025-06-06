@@ -25,6 +25,7 @@ use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
+use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewViewModelProviderService;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -42,7 +43,7 @@ class ReviewViewModelProviderServiceTest extends AbstractTestCase
     private RevisionViewModelProvider&MockObject      $revisionModelProvider;
     private CodeReviewTypeDecider&MockObject          $reviewTypeDecider;
     private ReviewSummaryViewModelProvider&MockObject $summaryViewModelProvider;
-    private CodeReviewRevisionService&MockObject      $revisionService;
+    private ReviewViewModelProvider&MockObject      $revisionService;
     private RevisionVisibilityService&MockObject      $visibilityService;
     private ReviewViewModelProviderService                   $modelProvider;
 
@@ -56,7 +57,7 @@ class ReviewViewModelProviderServiceTest extends AbstractTestCase
         $this->revisionModelProvider    = $this->createMock(RevisionViewModelProvider::class);
         $this->reviewTypeDecider        = $this->createMock(CodeReviewTypeDecider::class);
         $this->summaryViewModelProvider = $this->createMock(ReviewSummaryViewModelProvider::class);
-        $this->revisionService          = $this->createMock(CodeReviewRevisionService::class);
+        $this->revisionService          = $this->createMock(ReviewViewModelProvider::class);
         $this->visibilityService        = $this->createMock(RevisionVisibilityService::class);
         $this->modelProvider            = new ReviewViewModelProviderService(
             $this->fileDiffProvider,
@@ -92,7 +93,7 @@ class ReviewViewModelProviderServiceTest extends AbstractTestCase
         $this->reviewTypeDecider->expects($this->once())->method('decide')
             ->with($review, [$revision], [$revision])
             ->willReturn(CodeReviewType::BRANCH);
-        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->revisionService->expects($this->once())->method('getViewModel')->with($review)->willReturn(new ReviewViewModel($review, [$revision]));
         $this->visibilityService->expects($this->once())
             ->method('getVisibleRevisions')
             ->with($review, [$revision])
