@@ -11,7 +11,6 @@ use DR\Review\Repository\Report\CodeInspectionIssueRepository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 use DR\Review\ViewModel\App\Review\CodeInspectionReportViewModel;
 use DR\Review\ViewModel\App\Review\ReviewSummaryViewModel;
-use DR\Utils\Assert;
 
 class ReviewSummaryViewModelProvider
 {
@@ -28,7 +27,7 @@ class ReviewSummaryViewModelProvider
      */
     public function getSummaryViewModel(CodeReview $review, array $revisions, DirectoryTreeNode $fileTree): ReviewSummaryViewModel
     {
-        $repository = Assert::notNull($review->getRepository());
+        $repository = $review->getRepository();
         $branchIds  = $this->reportRepository->findBranchIds($repository, $revisions);
         $reports    = $this->reportRepository->findByRevisions($repository, $revisions, $branchIds);
         $issues     = [];
