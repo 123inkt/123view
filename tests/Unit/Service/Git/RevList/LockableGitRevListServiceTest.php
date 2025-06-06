@@ -40,9 +40,9 @@ class LockableGitRevListServiceTest extends AbstractTestCase
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->revListService->expects($this->once())->method('getCommitsAheadOfMaster')->with($repository, 'branch')->willReturn([$file]);
+        $this->revListService->expects($this->once())->method('getCommitsAheadOf')->with($repository, 'branch', 'target')->willReturn([$file]);
 
-        $result = $this->service->getCommitsAheadOfMaster($repository, 'branch');
+        $result = $this->service->getCommitsAheadOf($repository, 'branch', 'target');
         static::assertSame([$file], $result);
     }
 }

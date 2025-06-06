@@ -22,16 +22,16 @@ class CacheableGitRevListService
      * @return string[]
      * @throws InvalidArgumentException|RepositoryException
      */
-    public function getCommitsAheadOfMaster(Repository $repository, string $branchName): array
+    public function getCommitsAheadOf(Repository $repository, string $branchName, ?string $targetBranch = null): array
     {
         $cacheKey = 'git-rev-list-' . hash('sha256', sprintf('%s-%s', $repository->getId(), $branchName));
 
         /** @var string[] $result */
         $result = $this->cache->get(
             $cacheKey,
-            function (CacheItemInterface $item) use ($repository, $branchName) {
+            function (CacheItemInterface $item) use ($repository, $branchName, $targetBranch) {
                 $startTime = microtime(true);
-                $branches  = $this->revListService->getCommitsAheadOfMaster($repository, $branchName);
+                $branches  = $this->revListService->getCommitsAheadOf($repository, $branchName, $targetBranch);
                 $duration  = (int)(microtime(true) - $startTime);
 
                 // set the cache duration 5 times the duration of git command with minimum of 60 seconds and maximum of 3 minutes
