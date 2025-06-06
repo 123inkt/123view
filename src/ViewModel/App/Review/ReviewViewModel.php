@@ -21,6 +21,7 @@ class ReviewViewModel
     private ?ReviewRevisionViewModel $revisionViewModel      = null;
     private ?ReviewSummaryViewModel  $reviewSummaryViewModel = null;
     private ?FileDiffViewModel       $fileDiffViewModel      = null;
+    private ?BranchReviewViewModel   $branchReviewViewModel  = null;
     private ?FormView                $addReviewerForm        = null;
     private bool                     $descriptionVisible     = true;
     private int                      $visibleRevisionCount   = 0;
@@ -108,12 +109,24 @@ class ReviewViewModel
         return $this;
     }
 
+    public function getBranchReviewViewModel(): ?BranchReviewViewModel
+    {
+        return $this->branchReviewViewModel;
+    }
+
+    public function setBranchReviewViewModel(?BranchReviewViewModel $branchReviewViewModel): self
+    {
+        $this->branchReviewViewModel = $branchReviewViewModel;
+
+        return $this;
+    }
+
     public function getVisibleRevisionCount(): int
     {
         return $this->visibleRevisionCount;
     }
 
-    public function setVisibleRevisionCount(int $visibleRevisionCount): ReviewViewModel
+    public function setVisibleRevisionCount(int $visibleRevisionCount): self
     {
         $this->visibleRevisionCount = $visibleRevisionCount;
 

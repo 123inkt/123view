@@ -25,15 +25,15 @@ use DR\Review\ViewModel\App\Review\ReviewViewModel;
 use DR\Review\ViewModelProvider\FileDiffViewModelProvider;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
 use DR\Review\ViewModelProvider\ReviewSummaryViewModelProvider;
-use DR\Review\ViewModelProvider\ReviewViewModelProvider;
+use DR\Review\ViewModelProvider\ReviewViewModelProviderService;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormFactoryInterface;
 use Throwable;
 
-#[CoversClass(ReviewViewModelProvider::class)]
-class ReviewViewModelProviderTest extends AbstractTestCase
+#[CoversClass(ReviewViewModelProviderService::class)]
+class ReviewViewModelProviderServiceTest extends AbstractTestCase
 {
     private FileDiffViewModelProvider&MockObject      $fileDiffProvider;
     private CodeReviewFileService&MockObject          $fileService;
@@ -44,7 +44,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
     private ReviewSummaryViewModelProvider&MockObject $summaryViewModelProvider;
     private CodeReviewRevisionService&MockObject      $revisionService;
     private RevisionVisibilityService&MockObject      $visibilityService;
-    private ReviewViewModelProvider                   $modelProvider;
+    private ReviewViewModelProviderService                   $modelProvider;
 
     public function setUp(): void
     {
@@ -58,7 +58,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->summaryViewModelProvider = $this->createMock(ReviewSummaryViewModelProvider::class);
         $this->revisionService          = $this->createMock(CodeReviewRevisionService::class);
         $this->visibilityService        = $this->createMock(RevisionVisibilityService::class);
-        $this->modelProvider            = new ReviewViewModelProvider(
+        $this->modelProvider            = new ReviewViewModelProviderService(
             $this->fileDiffProvider,
             $this->formFactory,
             $this->fileService,

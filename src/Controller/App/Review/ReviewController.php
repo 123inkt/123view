@@ -10,7 +10,7 @@ use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Page\BreadcrumbFactory;
-use DR\Review\ViewModelProvider\ReviewViewModelProvider;
+use DR\Review\ViewModelProvider\ReviewViewModelProviderService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +22,7 @@ use Throwable;
 class ReviewController extends AbstractController
 {
     public function __construct(
-        private readonly ReviewViewModelProvider $modelProvider,
+        private readonly ReviewViewModelProviderService $modelProvider,
         private readonly BreadcrumbFactory $breadcrumbFactory,
         private readonly FileSeenStatusService $fileSeenService
     ) {
