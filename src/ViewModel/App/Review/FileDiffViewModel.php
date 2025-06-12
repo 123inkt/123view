@@ -5,7 +5,6 @@ namespace DR\Review\ViewModel\App\Review;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Model\Review\Highlight\HighlightedFile;
 use DR\Review\ViewModel\App\Comment\CommentsViewModel;
 use DR\Review\ViewModel\App\Comment\ReplyCommentViewModel;
 use DR\Utils\Arrays;
@@ -13,11 +12,11 @@ use DR\Utils\Arrays;
 class FileDiffViewModel
 {
     /** @var DiffFile|null in side-by-side mode the file on the left side */
-    public ?DiffFile               $leftSideFile         = null;
-    private ?CommentsViewModel     $commentsViewModel    = null;
-    private ?ReplyCommentViewModel $replyCommentForm     = null;
-    private ?HighlightedFile       $highlightedFile      = null;
-    private ?CodeQualityViewModel  $codeQualityViewModel = null;
+    public ?DiffFile                $leftSideFile         = null;
+    private ?CommentsViewModel      $commentsViewModel    = null;
+    private ?ReplyCommentViewModel  $replyCommentForm     = null;
+    private ?HighlightFileViewModel $highlightedModel     = null;
+    private ?CodeQualityViewModel   $codeQualityViewModel = null;
     /** @var Revision[] */
     private array $revisions = [];
 
@@ -53,14 +52,14 @@ class FileDiffViewModel
         $this->replyCommentForm = $replyCommentForm;
     }
 
-    public function getHighlightedFile(): ?HighlightedFile
+    public function getHighlightedFileViewModel(): ?HighlightFileViewModel
     {
-        return $this->highlightedFile;
+        return $this->highlightedModel;
     }
 
-    public function setHighlightedFile(?HighlightedFile $highlightedFile): void
+    public function setHighlightedFileViewModel(?HighlightFileViewModel $viewModel): void
     {
-        $this->highlightedFile = $highlightedFile;
+        $this->highlightedModel = $viewModel;
     }
 
     public function getCodeQualityViewModel(): ?CodeQualityViewModel
