@@ -13,6 +13,7 @@ use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\ViewModel\App\Review\HighlightFileViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Utils\Assert;
 use Throwable;
@@ -45,7 +46,7 @@ class FileDiffViewModelProvider
         // create highlighted file
         if ($selectedFile->isDeleted() === false) {
             $highlightedFile = $this->hfService->fromDiffFile(Assert::notNull($review->getRepository()), $selectedFile);
-            $viewModel->setHighlightedFile($highlightedFile);
+            $viewModel->setHighlightedFileViewModel(new HighlightFileViewModel($highlightedFile));
         }
 
         // apply diff mode
