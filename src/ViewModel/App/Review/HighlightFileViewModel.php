@@ -18,7 +18,7 @@ readonly class HighlightFileViewModel
         $codeLine      = $diffLine->getLine();
 
         if ($highlightLine === null) {
-            return $codeLine;
+            return htmlspecialchars($codeLine);
         }
 
         // remove html and html entities from the highlighted line
