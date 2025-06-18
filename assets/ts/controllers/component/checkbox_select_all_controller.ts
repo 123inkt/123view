@@ -2,7 +2,6 @@ import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
     public static targets = ['toggle'];
-    private readonly declare toggleTargets: HTMLInputElement[];
 
     public toggleAll(event: Event): void {
         const target    = event.currentTarget as HTMLInputElement;
@@ -59,7 +58,7 @@ export default class extends Controller {
         toggleCheckbox.checked     = searchMatchRevisions
             .map(el => el.querySelector<HTMLInputElement>(`[data-role~="${checkboxRole}"]`))
             .filter(el => el !== null)
-            .every(el => el.checked);
+            .every(el => el.checked) === false;
     }
 
     private matchesSearch(el: HTMLElement | null, search: string | undefined): boolean {
