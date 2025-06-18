@@ -43,7 +43,7 @@ class CodeReviewRevisionService implements LoggerAwareInterface
 
         $repository = Assert::notNull($review->getRepository());
         try {
-            $hashes = $this->revListService->getCommitsAheadOfMaster($repository, Assert::notNull($review->getReferenceId()));
+            $hashes = $this->revListService->getCommitsAheadOf($repository, Assert::notNull($review->getReferenceId()), $review->getTargetBranch());
         } catch (RepositoryException|ProcessFailedException|InvalidArgumentException $e) {
             $this->logger?->info('Unable to get revisions for branch review: ' . $review->getId(), ['exception' => $e]);
 

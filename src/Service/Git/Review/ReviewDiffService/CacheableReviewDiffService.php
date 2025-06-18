@@ -41,7 +41,14 @@ class CacheableReviewDiffService implements ReviewDiffServiceInterface
 
         $key = hash(
             'sha256',
-            sprintf('diff-files-branch %s-%s-%s-%s', $review->getRepository()->getId(), implode('-', $hashes), $branchName, $options)
+            sprintf(
+                'diff-files-branch %s-%s-%s-%s-%s',
+                $review->getRepository()->getId(),
+                implode('-', $hashes),
+                $branchName,
+                $review->getTargetBranch(),
+                $options
+            )
         );
 
         return $this->revisionCache->get($key, fn() => $this->diffService->getDiffForBranch($review, $revisions, $branchName, $options));

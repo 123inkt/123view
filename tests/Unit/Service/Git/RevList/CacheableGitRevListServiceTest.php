@@ -42,11 +42,11 @@ class CacheableGitRevListServiceTest extends AbstractTestCase
         $cacheItem->expects($this->once())->method('expiresAfter')->with(60);
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('git-rev-list-87ba3628a1cd86426e6910a8398f78577c74cf44d34ec7f7c1210b4725cc9591')
+            ->with('git-rev-list-b14f7f843e816997c6153498d618565448b45f53829a1f79dc60a7a51acd3882')
             ->willReturnCallback(static fn($repository, $callback) => $callback($cacheItem));
-        $this->revListService->expects($this->once())->method('getCommitsAheadOfMaster')->with($repository, 'branch')->willReturn([$file]);
+        $this->revListService->expects($this->once())->method('getCommitsAheadOf')->with($repository, 'branch', 'target')->willReturn([$file]);
 
-        $result = $this->service->getCommitsAheadOfMaster($repository, 'branch');
+        $result = $this->service->getCommitsAheadOf($repository, 'branch', 'target');
         static::assertSame([$file], $result);
     }
 }

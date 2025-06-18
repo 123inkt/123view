@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a156293c0000b7d258e790269f000275",
+    "content-hash": "b93a5493f7e5ecaad12452add9bdf0b7",
     "packages": [
         {
             "name": "api-platform/core",
@@ -618,16 +618,16 @@
         },
         {
             "name": "digitalrevolution/symfony-trace-bundle",
-            "version": "v0.7.2",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/symfony-trace-bundle.git",
-                "reference": "a17d28390607f79731e9002809eb6c68ebbfe017"
+                "reference": "717da55f048973195987d3918201916adf0894c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/symfony-trace-bundle/zipball/a17d28390607f79731e9002809eb6c68ebbfe017",
-                "reference": "a17d28390607f79731e9002809eb6c68ebbfe017",
+                "url": "https://api.github.com/repos/123inkt/symfony-trace-bundle/zipball/717da55f048973195987d3918201916adf0894c9",
+                "reference": "717da55f048973195987d3918201916adf0894c9",
                 "shasum": ""
             },
             "require": {
@@ -641,7 +641,7 @@
             "require-dev": {
                 "digitalrevolution/accessorpair-constraint": "^2.1",
                 "digitalrevolution/phpunit-extensions": "^1.2",
-                "digitalrevolution/phpunit-file-coverage-inspection": "^v2.0.0",
+                "digitalrevolution/phpunit-file-coverage-inspection": "^v3.0.0",
                 "digitalrevolution/utils": "^1.9",
                 "phpmd/phpmd": "^2.14",
                 "phpstan/extension-installer": "^1.3",
@@ -649,7 +649,7 @@
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
                 "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^10.4 || ^11.0",
+                "phpunit/phpunit": "^10.4 || ^11.0 || ^12.0",
                 "ramsey/uuid": "^4.7",
                 "roave/security-advisories": "dev-latest",
                 "sentry/sentry": "^4.2",
@@ -687,9 +687,9 @@
             "description": "Add tracing to your Symfony application. ",
             "support": {
                 "issues": "https://github.com/123inkt/symfony-trace-bundle/issues",
-                "source": "https://github.com/123inkt/symfony-trace-bundle/tree/v0.7.2"
+                "source": "https://github.com/123inkt/symfony-trace-bundle/tree/v1.0.0"
             },
-            "time": "2025-02-03T15:07:00+00:00"
+            "time": "2025-06-03T15:25:36+00:00"
         },
         {
             "name": "digitalrevolution/symfony-validation-shorthand",
@@ -2089,20 +2089,19 @@
         },
         {
             "name": "fdekker/log-viewer-bundle",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/symfony-log-viewer-bundle.git",
-                "reference": "2eb6d017fa08a22b6a2e1526c06d398d13263012"
+                "reference": "9a6a311d829c281ea2ca90b96d02bc416a60e64b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/2eb6d017fa08a22b6a2e1526c06d398d13263012",
-                "reference": "2eb6d017fa08a22b6a2e1526c06d398d13263012",
+                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/9a6a311d829c281ea2ca90b96d02bc416a60e64b",
+                "reference": "9a6a311d829c281ea2ca90b96d02bc416a60e64b",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
                 "php": ">=8.1",
                 "psr/clock": "^1.0",
                 "symfony/config": "^6.0||^7.0",
@@ -2118,7 +2117,7 @@
             "require-dev": {
                 "digitalrevolution/accessorpair-constraint": "^2.1.18",
                 "digitalrevolution/phpunit-extensions": "^1.3",
-                "digitalrevolution/phpunit-file-coverage-inspection": "^v2.0",
+                "digitalrevolution/phpunit-file-coverage-inspection": "^v3.0.0",
                 "mikey179/vfsstream": "^1.6.11",
                 "phpmd/phpmd": "^2.14",
                 "phpstan/extension-installer": "^1.3",
@@ -2126,7 +2125,7 @@
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
                 "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^10.5 || ^11.0",
+                "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.6",
                 "symfony/browser-kit": "^6.0||^7.0",
@@ -2174,9 +2173,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frankdekker/symfony-log-viewer-bundle/issues",
-                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v2.0.0"
+                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v2.1.0"
             },
-            "time": "2024-12-26T10:38:14+00:00"
+            "time": "2025-05-17T21:33:37+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -10833,16 +10832,16 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "2b2e988554d58c8c51ada95ed009e77069d9a7e0"
+                "reference": "c21f1b65da157077db809bb4a9587d59a696bcd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/2b2e988554d58c8c51ada95ed009e77069d9a7e0",
-                "reference": "2b2e988554d58c8c51ada95ed009e77069d9a7e0",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/c21f1b65da157077db809bb4a9587d59a696bcd6",
+                "reference": "c21f1b65da157077db809bb4a9587d59a696bcd6",
                 "shasum": ""
             },
             "require": {
@@ -10914,9 +10913,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.3.0"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.4.0"
             },
-            "time": "2025-03-31T17:32:47+00:00"
+            "time": "2025-06-05T20:12:18+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -11469,16 +11468,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.15",
+            "version": "2.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "402d11c1aa40ae2e1c3a512e6a4edb957527b20b"
+                "reference": "89b5ef665716fa2a52ecd2633f21007a6a349053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/402d11c1aa40ae2e1c3a512e6a4edb957527b20b",
-                "reference": "402d11c1aa40ae2e1c3a512e6a4edb957527b20b",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/89b5ef665716fa2a52ecd2633f21007a6a349053",
+                "reference": "89b5ef665716fa2a52ecd2633f21007a6a349053",
                 "shasum": ""
             },
             "require": {
@@ -11523,7 +11522,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-14T11:16:08+00:00"
+            "time": "2025-05-21T20:55:28+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -11771,16 +11770,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "12.2.1",
+            "version": "12.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "448f2c504d86dbff3949dcd02c95aa85db2c7617"
+                "reference": "9075a8efc66e11bc55c319062e147bdb06777267"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/448f2c504d86dbff3949dcd02c95aa85db2c7617",
-                "reference": "448f2c504d86dbff3949dcd02c95aa85db2c7617",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/9075a8efc66e11bc55c319062e147bdb06777267",
+                "reference": "9075a8efc66e11bc55c319062e147bdb06777267",
                 "shasum": ""
             },
             "require": {
@@ -11807,7 +11806,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "12.2.x-dev"
+                    "dev-main": "12.3.x-dev"
                 }
             },
             "autoload": {
@@ -11836,7 +11835,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.2.1"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.3.0"
             },
             "funding": [
                 {
@@ -11856,7 +11855,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-04T05:25:05+00:00"
+            "time": "2025-05-23T15:49:03+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -12105,16 +12104,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.1.6",
+            "version": "12.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2fdf0056c673c8f0f1eed00030be5f8243c1e6e0"
+                "reference": "19e25c2da3f8071a683ee1e445b0e24bba25de61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2fdf0056c673c8f0f1eed00030be5f8243c1e6e0",
-                "reference": "2fdf0056c673c8f0f1eed00030be5f8243c1e6e0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/19e25c2da3f8071a683ee1e445b0e24bba25de61",
+                "reference": "19e25c2da3f8071a683ee1e445b0e24bba25de61",
                 "shasum": ""
             },
             "require": {
@@ -12128,7 +12127,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.3",
-                "phpunit/php-code-coverage": "^12.2.1",
+                "phpunit/php-code-coverage": "^12.3.0",
                 "phpunit/php-file-iterator": "^6.0.0",
                 "phpunit/php-invoker": "^6.0.0",
                 "phpunit/php-text-template": "^5.0.0",
@@ -12136,7 +12135,7 @@
                 "sebastian/cli-parser": "^4.0.0",
                 "sebastian/comparator": "^7.0.1",
                 "sebastian/diff": "^7.0.0",
-                "sebastian/environment": "^8.0.1",
+                "sebastian/environment": "^8.0.2",
                 "sebastian/exporter": "^7.0.0",
                 "sebastian/global-state": "^8.0.0",
                 "sebastian/object-enumerator": "^7.0.0",
@@ -12150,7 +12149,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "12.1-dev"
+                    "dev-main": "12.2-dev"
                 }
             },
             "autoload": {
@@ -12182,7 +12181,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.1.6"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.2.2"
             },
             "funding": [
                 {
@@ -12206,7 +12205,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-21T12:36:31+00:00"
+            "time": "2025-06-13T05:49:28+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -13915,16 +13914,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.18.1",
+            "version": "8.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "06b18b3f64979ab31d27c37021838439f3ed5919"
+                "reference": "458d665acd49009efebd7e0cb385d71ae9ac3220"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/06b18b3f64979ab31d27c37021838439f3ed5919",
-                "reference": "06b18b3f64979ab31d27c37021838439f3ed5919",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/458d665acd49009efebd7e0cb385d71ae9ac3220",
+                "reference": "458d665acd49009efebd7e0cb385d71ae9ac3220",
                 "shasum": ""
             },
             "require": {
@@ -13964,7 +13963,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.18.1"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.19.1"
             },
             "funding": [
                 {
@@ -13976,20 +13975,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-22T14:32:30+00:00"
+            "time": "2025-06-09T17:53:57+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.13.0",
+            "version": "3.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "65ff2489553b83b4597e89c3b8b721487011d186"
+                "reference": "5b5e3821314f947dd040c70f7992a64eac89025c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/65ff2489553b83b4597e89c3b8b721487011d186",
-                "reference": "65ff2489553b83b4597e89c3b8b721487011d186",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/5b5e3821314f947dd040c70f7992a64eac89025c",
+                "reference": "5b5e3821314f947dd040c70f7992a64eac89025c",
                 "shasum": ""
             },
             "require": {
@@ -14060,7 +14059,7 @@
                     "type": "thanks_dev"
                 }
             ],
-            "time": "2025-05-11T03:36:00+00:00"
+            "time": "2025-06-17T22:17:01+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
