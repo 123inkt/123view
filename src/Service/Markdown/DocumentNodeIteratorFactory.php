@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Markdown;
 
-use Generator;
 use League\CommonMark\Node\Node;
 
 class DocumentNodeIteratorFactory
 {
     /**
-     * @return Generator<Node>
+     * @return iterable<Node>
      */
-    public function iterate(Node $node): Generator
+    public function iterate(Node $node): iterable
     {
         yield $node;
 
