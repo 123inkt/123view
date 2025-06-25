@@ -55,18 +55,16 @@
                     {{- revision.commitHash|slice(0, 7) }}
                 </small>
                 <div class="text-end me-3">
-                    {%- apply spaceless -%}
-                        <a href="#" class="p-1 c-icon-checkbox"
-                                {{ stimulus_controller('component--icon-checkbox') }}
-                                {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
-                            {{- form_widget(
-                                revisionVisibilityForm.visibilities[loop.index0].visible,
-                                {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
-                            ) -}}
-                            <i class="bi bi-eye-fill icon-checked"></i>
-                            <i class="bi bi-eye-slash icon-unchecked"></i>
-                        </a>
-                    {%- endapply -%}
+                    <a href="#" class="p-1 c-icon-checkbox"
+                            {{ stimulus_controller('component--icon-checkbox') }}
+                            {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
+                        {{- form_widget(
+                            revisionVisibilityForm.visibilities[loop.index0].visible,
+                            {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
+                        ) -}}
+                        <i class="bi bi-eye-fill icon-checked"></i>
+                        <i class="bi bi-eye-slash icon-unchecked"></i>
+                    </a>
                 </div>
             </div>
         </div>
