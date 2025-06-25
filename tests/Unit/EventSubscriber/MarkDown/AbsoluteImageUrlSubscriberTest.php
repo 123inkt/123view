@@ -27,7 +27,7 @@ class AbsoluteImageUrlSubscriberTest extends AbstractTestCase
         $this->subscriber      = new AbsoluteImageUrlSubscriber($this->iteratorFactory, 'https://123view.com/');
     }
 
-    public function testHandleNonImageNode(): void
+    public function testHandleNonImageNodeShouldBeSkipped(): void
     {
         $document    = $this->createMock(Document::class);
         $defaultNode = $this->createMock(Node::class);
@@ -38,7 +38,7 @@ class AbsoluteImageUrlSubscriberTest extends AbstractTestCase
         $this->subscriber->handle(new DocumentParsedEvent($document));
     }
 
-    public function testHandleAbsoluteImageNode(): void
+    public function testHandleAbsoluteImageNodeShouldBeSkipped(): void
     {
         $document  = $this->createMock(Document::class);
         $imageNode = $this->createMock(Image::class);
@@ -51,7 +51,7 @@ class AbsoluteImageUrlSubscriberTest extends AbstractTestCase
         $this->subscriber->handle(new DocumentParsedEvent($document));
     }
 
-    public function testHandleImageNode(): void
+    public function testHandleImageUrlShouldBeAbsolute(): void
     {
         $document  = $this->createMock(Document::class);
         $imageNode = $this->createMock(Image::class);
