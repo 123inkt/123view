@@ -18,7 +18,7 @@ readonly class AbsoluteImageUrlSubscriber
     public function handle(DocumentParsedEvent $event): void
     {
         foreach ($this->iteratorFactory->iterate($event->getDocument()) as $node) {
-            if ($node instanceof Image === false || stripos($node->getUrl(), 'http') === 0) {
+            if ($node instanceof Image === false || preg_match('#^https?://#i', $node->getUrl()) === 1) {
                 continue;
             }
 
