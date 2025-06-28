@@ -88,6 +88,13 @@ services:
         volumes:
             - .:/app:rw
 
+    angular:
+        container_name: 123view-angular
+        build:
+            dockerfile: ./docker/angular/Dockerfile
+        volumes:
+            - .:/app:rw
+
     my_mercure:
         container_name: ${MERCURE_CONTAINER:-mercure}
         image: dunglas/mercure:${MERCURE_VERSION}

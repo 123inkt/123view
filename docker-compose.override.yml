@@ -34,8 +34,10 @@ services:
     nodejs:
         environment:
             APP_ENV: dev
-        ports:
-            - ${HIGHLIGHTJS_PORT}:${HIGHLIGHTJS_PORT}
+
+    angular:
+        environment:
+            APP_ENV: dev
 
     my_mercure:
         volumes:
