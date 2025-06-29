@@ -8,5 +8,5 @@ import {RouterLink, RouterOutlet} from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = 'frontend';
+  protected title = '123view';
 }
