@@ -5,9 +5,7 @@ cd frontend
 npm install --no-save
 
 if [ "${APP_ENV}" == "dev" ]; then
-    npm run watch -- --output-path=../public/angular --base-href /angular/browser/
+    npm run watch
 else
-    npm run build -- --output-path=../public/angular --base-href /angular/browser/
+    npm run build
 fi
-
-echo "done"
