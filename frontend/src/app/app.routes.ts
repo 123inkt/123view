@@ -3,6 +3,6 @@ import {Home} from './home/home';
 import {Login} from './login/login';
 
 export const routes: Routes = [
-  {path: '', component: Home},
-  {path: 'login', component: Login}
+  {path: 'login', component: Login, data:{requiresLogin: false}},
+  {path: '', component: Home, data:{requiresLogin: true}}
 ];
