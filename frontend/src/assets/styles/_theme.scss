@@ -1,0 +1,99 @@
+/**
+ * LIGHT MODE
+ */
+:root[data-bs-theme="light"] {
+  --comment-secondary-color: #999999;
+  --comment-background-color: #fffee0;
+  --comment-border-color: #e5e4c9;
+  --review-add-reviewer-placeholder-color: #999999;
+  --review-file-tree-directory-color: #999999;
+  --review-file-tree-file-color: #000000;
+  --review-file-tree-status-color: #008000;
+  --review-diff-directory-name-color: #999999;
+  --review-diff-file-name-color: #999999;
+  --review-diff-border-color: #e9e9e9;
+  --review-diff-spacer-bg-color: #f8f8f8;
+  --review-diff-spacer-fg-color: #aaaaaa;
+  --review-diff-spacer-hover-bg-color: #e8e8e8;
+  --review-diff-spacer-hover-fg-color: #666666;
+  --review-diff-line-fg-color: #0c0c0d;
+  --review-diff-gutter-border-color: #cccccc;
+  --review-diff-gutter-fg-color: rgba(0, 0, 0, 0.3);
+  --review-diff-gutter-emphasize-fg-color: rgba(0, 0, 0, 0.3);
+  --review-diff-add-comment-bg-color: #fffee0;
+  --review-diff-add-comment-fg-color: #ff008c;
+  --review-diff-line-added-bg-color: #eaffea;
+  --review-diff-line-removed-bg-color: #ffecec;
+  --review-diff-line-changed-bg-color: #eaf0fe;
+  --review-diff-line-gutter-added-bg-color: #eaffea;
+  --review-diff-line-gutter-removed-bg-color: #ffecec;
+  --review-diff-line-gutter-changed-bg-color: #eaf0fe;
+  --review-diff-line-empty-bg-color: #f8f8f8;
+  --review-diff-line-hover-bg-color: #fffee0;
+  --review-diff-change-added-bg-color: #a6f3a6;
+  --review-diff-change-removed-bg-color: #f8cbcb;
+}
+
+[data-bs-theme="light"] .bg-contrast {
+  --bs-navbar-color: rgba(255, 255, 255, 0.55);
+  --bs-navbar-hover-color: rgba(255, 255, 255, 0.75);
+  --bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
+  --bs-navbar-active-color: #ffffff;
+  --bs-navbar-brand-color: #ffffff;
+  --bs-navbar-brand-hover-color: #ffffff;
+  --bs-bg-opacity: 1;
+  --bs-secondary-color: rgba(255, 255, 255, 0.55);
+
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+
+  .form-control {
+    --bs-body-bg: #212529;
+  }
+}
+
+/**
+ * DARK MODE
+ */
+:root[data-bs-theme="dark"] {
+  --comment-secondary-color: #999999;
+  --comment-background-color: #191919;
+  --comment-border-color: #30363D;
+  --review-add-reviewer-placeholder-color: #999999;
+  --review-file-tree-directory-color: #999999;
+  --review-file-tree-file-color: #000000;
+  --review-file-tree-status-color: #008000;
+  --review-diff-directory-name-color: #999999;
+  --review-diff-file-name-color: #999999;
+  --review-diff-border-color: #30363D;
+  --review-diff-spacer-bg-color: #161B22;
+  --review-diff-spacer-fg-color: #787878;
+  --review-diff-spacer-hover-bg-color: #282719;
+  --review-diff-spacer-hover-fg-color: #787878;
+  --review-diff-line-fg-color: #E6EDF3;
+  --review-diff-gutter-border-color: #30363D;
+  --review-diff-gutter-fg-color: #6e7681;
+  --review-diff-gutter-emphasize-fg-color: #e6edf3;
+  --review-diff-add-comment-bg-color: #514E17;
+  --review-diff-add-comment-fg-color: #ff008c;
+  --review-diff-line-added-bg-color: #12261E;
+  --review-diff-line-removed-bg-color: #25181C;
+  --review-diff-line-changed-bg-color: #111D2E;
+  --review-diff-line-empty-bg-color: #1d1d1d;
+  --review-diff-line-gutter-added-bg-color: #1C4428;
+  --review-diff-line-gutter-removed-bg-color: #542426;
+  --review-diff-line-gutter-changed-bg-color: #1E4273;
+  --review-diff-line-hover-bg-color: #514E17;
+  --review-diff-change-added-bg-color: #1D572D;
+  --review-diff-change-removed-bg-color: #542426;
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-bg: #0D1117;
+  --bs-tertiary-bg-rgb: 22,27,34;
+
+  .bg-contrast {
+    --bs-bg-opacity: 1;
+
+    background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity));
+  }
+}
