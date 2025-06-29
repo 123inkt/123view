@@ -46,8 +46,8 @@ Commit message: B#789 my first bug
 ## Extra options
 
 - `NGINX_VERSION`: controls the version of nginx.
-- `NGINX_PORT`: controls the port nginx is started on. Default 8080 for dev, 80 for prod.
-- `NGINX_SSL_PORT`: controls the https port for nginx. Default 8443 for dev, 443 for prod.
+- `NGINX_ANGULAR_PORT`: controls the https port for nginx. Default 8443 for dev, 443 for prod.
+- `NGINX_SYMFONY_PORT`: controls the https port for symfony+nginx. Default 9443 for dev and prod.
 - `PHP_VERSION`: controls the php version. Defaults to 8.1
 - `MYSQL_VERSION`: controls the mysql versions. Default to 8.0
 - `MYSQL_PORT`: controls the mysql port. Default to 3306

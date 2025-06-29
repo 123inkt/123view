@@ -7,10 +7,11 @@ services:
             context: .
             dockerfile: ./docker/nginx/Dockerfile
         ports:
-            - ${NGINX_PORT:-8080}:80
-            - ${NGINX_SSL_PORT:-8443}:443
+            - ${NGINX_ANGULAR_PORT:-8443}:443
+            - ${NGINX_SYMFONY_PORT:-9443:9443
         volumes:
-            - ./public:/app/public
+            - ./frontend/dist/frontend/browser:/app/angular-public
+            - ./public:/app/symfony-public
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
             - ./docker/nginx/error/500.html:/usr/share/nginx/html/500.html:ro
             - ./docker/nginx/error/502.html:/usr/share/nginx/html/502.html:ro
@@ -109,7 +110,7 @@ services:
             MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET}
             MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET}
             MERCURE_EXTRA_DIRECTIVES: |
-                cors_origins  https://${APP_HOSTNAME}:${NGINX_SSL_PORT}  https://${APP_HOSTNAME}
+                cors_origins  https://${APP_HOSTNAME}:${NGINX_ANGULAR_PORT}  https://${APP_HOSTNAME}
         ports:
             - ${MERCURE_SSL_PORT:-6443}:6443
 
