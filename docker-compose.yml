@@ -7,7 +7,7 @@ services:
             context: .
             dockerfile: ./docker/nginx/Dockerfile
         ports:
-            #- ${NGINX_ANGULAR_PORT:-8443}:443
+            - ${NGINX_ANGULAR_PORT:-8443}:443
             - ${NGINX_SYMFONY_PORT:-9443}:9443
         volumes:
             - ./frontend/dist/frontend/browser:/app/angular-public
