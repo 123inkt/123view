@@ -1,9 +1,10 @@
 import {Component, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication-service';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
