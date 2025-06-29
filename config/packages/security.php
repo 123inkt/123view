@@ -31,6 +31,16 @@ return static function (SecurityConfig $security): void {
         ->stateless(true)
         ->security(false);
 
+    $security->firewall('login')
+        ->pattern('^/api/login')
+        ->stateless(true)
+        ->jsonLogin()
+            ->checkPath('/api/login')
+            ->usernamePath('email')
+            ->passwordPath('password')
+            ->successHandler('lexik_jwt_authentication.handler.authentication_success')
+            ->failureHandler('lexik_jwt_authentication.handler.authentication_failure');
+
     $security->firewall('api')
         ->pattern('^/api')
         ->stateless(true)

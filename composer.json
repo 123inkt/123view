@@ -51,6 +51,7 @@
         "league/commonmark": "^2.4",
         "league/oauth2-client": "^2.7",
         "league/uri": "^7.2",
+        "lexik/jwt-authentication-bundle": "^3.1",
         "liip/monitor-bundle": "^2.22",
         "nesbot/carbon": "^3.0",
         "nette/utils": "^4.0",
