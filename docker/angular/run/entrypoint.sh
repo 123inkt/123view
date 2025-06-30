@@ -5,7 +5,9 @@ cd frontend
 npm install --no-save
 
 if [ "${APP_ENV}" == "dev" ]; then
-    npm run watch
+    echo "export const environment = {appName: '${APP_NAME}', apiPort: ${API_PORT}};" > src/environments/environment.development.ts
+    npm run watch -- --configuration development
 else
-    npm run build
+    echo "export const environment = {appName: '${APP_NAME}', apiPort: ${API_PORT}};" > src/environments/environment.production.ts
+    npm run build -- --configuration production
 fi

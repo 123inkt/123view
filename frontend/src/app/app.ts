@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Header} from './component/header/header';
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,5 @@ import {Header} from './component/header/header';
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = '123view';
+  protected apiPort = environment.apiPort;
 }

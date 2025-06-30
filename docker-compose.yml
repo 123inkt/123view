@@ -94,6 +94,9 @@ services:
         container_name: 123view-angular
         build:
             dockerfile: ./docker/angular/Dockerfile
+        environment:
+            APP_NAME: ${APP_NAME}
+            API_PORT: ${NGINX_SYMFONY_PORT}
         volumes:
             - .:/app:rw
 
