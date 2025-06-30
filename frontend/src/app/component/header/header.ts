@@ -9,14 +9,6 @@ import {AuthenticationService} from '../../service/authentication-service';
   styleUrl: './header.scss'
 })
 export class Header {
-  constructor(@Inject(AuthenticationService) private readonly authenticationService: AuthenticationService) {
-  }
-
-  public isLoggedIn() {
-    return this.authenticationService.isAuthenticated();
-  }
-
-  public isAdmin() {
-    return this.authenticationService.isAdmin();
+  constructor(@Inject(AuthenticationService) public readonly authService: AuthenticationService) {
   }
 }

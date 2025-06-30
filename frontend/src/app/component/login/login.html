@@ -1,7 +1,7 @@
 <div class="login-registration-container">
   <h2 class="mb-4">Sign in</h2>
 
-  <form method="post">
+  <div>
     <div class="mb-3">
       <label for="_username" class="form-label required">Email</label>
       <input type="email" id="_username" name="_username" required="required" class="form-control">
@@ -12,8 +12,8 @@
 
     </div>
     <div class="mb-3">
-      <button type="submit" id="loginBtn" name="loginBtn" class="btn-primary btn">Login</button>
+      <button type="button" id="loginBtn" name="loginBtn" class="btn-primary btn" (click)="onLogin()">Login</button>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
-  </form>
+  </div>
 </div>

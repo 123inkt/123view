@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" [routerLink]="['/']">123view</a>
 
-      @if (isLoggedIn()) {
+      @if (authService.isLoggedIn) {
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -34,7 +34,7 @@
                   </div>
                 </form>
               </li>
-              @if (isAdmin()) {
+              @if (authService.isAdmin()) {
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#">
                     Admin

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import {AuthenticationService} from '../../service/authentication-service';
 
 @Component({
   selector: 'app-login',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './login.scss'
 })
 export class Login {
+  constructor(@Inject(AuthenticationService) private readonly authService: AuthenticationService) {
+  }
+
+  public onLogin(): void {
+    this.authService.login('foo', 'bar');
+  }
 }
