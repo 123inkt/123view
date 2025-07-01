@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {Header} from './component/header/header';
-import {environment} from '../environments/environment';
+import {Header} from '@component/header/header';
+import {environment} from '@environment/environment';
 
 @Component({
   selector: 'app-root',
