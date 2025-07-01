@@ -21,6 +21,10 @@ export class AuthenticationService {
     this.isLoggedInSubject.next(false);
   }
 
+  public isAuthenticated(): boolean {
+    return this.isLoggedInSubject.getValue();
+  }
+
   public isAdmin(): boolean {
     return false;
   }
