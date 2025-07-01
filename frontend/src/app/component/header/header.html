@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" [routerLink]="['/']">123view</a>
 
-      @if (authService.isLoggedIn) {
+      @if (authService.isLoggedIn$ | async) {
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -79,7 +79,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="javascript:" (click)="authService.logout()">
                   <i class="bi-box-arrow-right"></i>
                 </a>
               </li>
