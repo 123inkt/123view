@@ -34,7 +34,7 @@
                     {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
                 {% endif %}
             </div>
-            <div class=" overflow-hidden">
+            <div class="overflow-hidden">
                 <div class="text-secondary review-revision--author-time small" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
                     {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
                 </div>
