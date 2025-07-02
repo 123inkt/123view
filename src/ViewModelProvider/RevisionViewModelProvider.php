@@ -10,6 +10,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
+use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
@@ -22,6 +23,7 @@ class RevisionViewModelProvider
     public function __construct(
         private readonly RevisionRepository $revisionRepository,
         private readonly RevisionVisibilityService $visibilityService,
+        private readonly RevisionFileRepository $revisionFileRepository,
         private readonly FormFactoryInterface $formFactory,
         private readonly User $user,
     ) {
@@ -43,6 +45,7 @@ class RevisionViewModelProvider
     public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
     {
         $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->user);
+        $fileChanges  = $this->revisionFileRepository->getFileChanges($revisions);
 
         if ($review->getType() === CodeReviewType::COMMITS) {
             $detachRevisionForm = $this->formFactory
@@ -55,6 +58,6 @@ class RevisionViewModelProvider
             ->create(RevisionVisibilityFormType::class, ['visibilities' => $visibilities], ['reviewId' => $review->getId()])
             ->createView();
 
-        return new ReviewRevisionViewModel($revisions, $detachRevisionForm, $revisionVisibilityForm);
+        return new ReviewRevisionViewModel($revisions, $fileChanges, $detachRevisionForm, $revisionVisibilityForm);
     }
 }

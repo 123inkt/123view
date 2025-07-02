@@ -12,6 +12,8 @@ use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
+use DR\Review\Model\Review\RevisionFileChange;
+use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractTestCase;
@@ -27,6 +29,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
 {
     private RevisionRepository&MockObject        $revisionRepository;
     private RevisionVisibilityService&MockObject $visibilityService;
+    private RevisionFileRepository&MockObject    $revisionFileRepository;
     private FormFactoryInterface&MockObject      $formFactory;
     private RevisionViewModelProvider            $provider;
     private User                                 $user;
@@ -34,13 +37,15 @@ class RevisionViewModelProviderTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $this->visibilityService  = $this->createMock(RevisionVisibilityService::class);
-        $this->formFactory        = $this->createMock(FormFactoryInterface::class);
-        $this->user               = new User();
-        $this->provider           = new RevisionViewModelProvider(
+        $this->revisionRepository     = $this->createMock(RevisionRepository::class);
+        $this->visibilityService      = $this->createMock(RevisionVisibilityService::class);
+        $this->revisionFileRepository = $this->createMock(RevisionFileRepository::class);
+        $this->formFactory            = $this->createMock(FormFactoryInterface::class);
+        $this->user                   = new User();
+        $this->provider               = new RevisionViewModelProvider(
             $this->revisionRepository,
             $this->visibilityService,
+            $this->revisionFileRepository,
             $this->formFactory,
             $this->user
         );
@@ -67,6 +72,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
     {
         $revision   = new Revision();
         $visibility = new RevisionVisibility();
+        $fileChange = new RevisionFileChange(1, 2, 3, 4);
         $review     = new CodeReview();
         $review->setId(123);
 
@@ -74,6 +80,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $this->user)
             ->willReturn([$visibility]);
+        $this->revisionFileRepository->expects($this->once())->method('getFileChanges')->with([$revision])->willReturn([123 => $fileChange]);
         $this->formFactory->expects($this->exactly(2))
             ->method('create')
             ->with(
@@ -86,6 +93,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);
+        static::assertSame([123 => $fileChange], $viewModel->fileChanges);
     }
 
     public function testGetRevisionViewModelBranchReview(): void
