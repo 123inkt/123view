@@ -38,11 +38,12 @@ class RevisionFileRepository extends ServiceEntityRepository
             ->setParameter('revisions', $revisions);
 
         $result = [];
+        /** @var array{id: int, file_count: int, lines_added: string, lines_removed: string} $entry */
         foreach ($qb->getQuery()->getArrayResult() as $entry) {
-            $revisionId          = (int)$entry['id'];
+            $revisionId          = $entry['id'];
             $result[$revisionId] = new RevisionFileChange(
                 $revisionId,
-                (int)$entry['file_count'],
+                $entry['file_count'],
                 (int)$entry['lines_added'],
                 (int)$entry['lines_removed']
             );
