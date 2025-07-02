@@ -10,6 +10,8 @@ use League\Uri\Uri;
 
 class RepositoryFixtures extends Fixture
 {
+    public const string REFERENCE = 'repository';
+
     public function load(ObjectManager $manager): void
     {
         $repository = new Repository();
@@ -24,5 +26,7 @@ class RepositoryFixtures extends Fixture
 
         $manager->persist($repository);
         $manager->flush();
+
+        $this->addReference(self::REFERENCE, $repository);
     }
 }
