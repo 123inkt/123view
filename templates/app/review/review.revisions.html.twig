@@ -26,6 +26,7 @@
     </h6>
 
     {%- for revision in revisionViewModel.revisions -%}
+        {% set fileChange = revisionViewModel.fileChanges[revision.id] ?? null %}
 
         <div class="review-revision--grid">
             <div class="review-revision--selection">
@@ -45,6 +46,13 @@
                 <div class="fw-bold review-revision--title-author">
                     {{- revision.title -}}
                 </div>
+                {% if fileChange is not same as (null) %}
+                <div class="small">
+                    {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
+                    <span class="text-success">+{{ fileChange.linesAdded }}</span>,
+                    <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
+                </div>
+                {% endif %}
             </div>
 
             <div>
