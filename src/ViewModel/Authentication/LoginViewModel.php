@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\Authentication;
 
+use DR\Review\ViewModel\ViewModelInterface;
 use Symfony\Component\Form\FormView;
 
-class LoginViewModel
+class LoginViewModel implements ViewModelInterface
 {
     /**
      * @codeCoverageIgnore
