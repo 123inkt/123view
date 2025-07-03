@@ -8,10 +8,12 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
-use DR\Utils\Assert;
 
 class RevisionFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const string REFERENCE_A = 'revision_a';
+    public const string REFERENCE_B = 'revision_b';
+
     public const COMMIT_HASH_A = '4be1e7812887f74a872aee68d62c86d84cbf9f9e';
     public const COMMIT_HASH_B = 'd3482ab30e71616c5d85e4a7b58e53f3414b45c7';
 
@@ -25,7 +27,7 @@ class RevisionFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $repository = Assert::notNull($manager->getRepository(Repository::class)->findOneBy(['name' => 'repository']));
+        $repository = $this->getReference(RepositoryFixtures::REFERENCE, Repository::class);
 
         $revision = new Revision();
         $revision->setRepository($repository);
@@ -37,6 +39,7 @@ class RevisionFixtures extends Fixture implements DependentFixtureInterface
         $revision->setCreateTimestamp(12345678);
         $revision->setFirstBranch('first-branch');
         $manager->persist($revision);
+        $this->addReference(self::REFERENCE_A, $revision);
 
         $revision = new Revision();
         $revision->setRepository($repository);
@@ -47,6 +50,7 @@ class RevisionFixtures extends Fixture implements DependentFixtureInterface
         $revision->setCommitHash(self::COMMIT_HASH_B);
         $revision->setCreateTimestamp(12345679);
         $manager->persist($revision);
+        $this->addReference(self::REFERENCE_B, $revision);
 
         $manager->flush();
     }

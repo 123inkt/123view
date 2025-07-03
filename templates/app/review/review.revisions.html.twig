@@ -26,6 +26,7 @@
     </h6>
 
     {%- for revision in revisionViewModel.revisions -%}
+        {% set fileChange = revisionViewModel.fileChanges[revision.id] ?? null %}
 
         <div class="review-revision--grid">
             <div class="review-revision--selection">
@@ -33,19 +34,25 @@
                     {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
                 {% endif %}
             </div>
-            <div class="review-revision--title-author overflow-hidden">
-                <div class="text-primary">
-                    {{ revision.title }}
-
-                    {% if revision.firstBranch %}
-                        <span class="review-revision--branch badge bg-primary text-nowrap overflow-hidden"
-                              title="{{ revision.firstBranch }}">{{ revision.firstBranch }}</span>
-                    {% endif %}
-                </div>
-
-                <div class="text-secondary review-revision--author-time" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
+            <div class="overflow-hidden">
+                <div class="text-secondary review-revision--author-time small" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
                     {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
                 </div>
+                {% if revision.firstBranch %}
+                    <div class="review-revision--branch badge bg-primary text-nowrap overflow-hidden" title="{{ revision.firstBranch }}">
+                        {{- revision.firstBranch -}}
+                    </div>
+                {% endif %}
+                <div class="fw-bold review-revision--title-author">
+                    {{- revision.title -}}
+                </div>
+                {% if fileChange is not same as (null) %}
+                <div class="small">
+                    {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
+                    <span class="text-success">+{{ fileChange.linesAdded }}</span>,
+                    <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
+                </div>
+                {% endif %}
             </div>
 
             <div>
