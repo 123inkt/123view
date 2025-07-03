@@ -31,6 +31,7 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
+use DR\Review\Serializer\FormViewNormalizer;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
@@ -83,6 +84,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
@@ -246,6 +248,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DoctrineDbal::class)->tag('liip_monitor.check');
     $services->set(OpcacheInternedStrings::class)->tag('liip_monitor.check');
     $services->set(MercureHub::class)->tag('liip_monitor.check');
+
+    // custom serializer
+    $services->set(FormViewNormalizer::class)->tag('serializer.normalizer');
 
     // view model appenders
     $services->set(FileTreeViewModelAppender::class)->tag('review.view_model_appender');
