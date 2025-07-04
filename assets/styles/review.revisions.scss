@@ -1,6 +1,4 @@
 .review-revision--grid {
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
     display: grid;
     grid-column-gap: 5px;
     grid-template-columns: auto 1fr 50px;
@@ -50,14 +48,6 @@
     max-width: 600px;
 }
 
-.review-revision.search-active .search-match {
-    &.review-revision--grid {
-        border-left: 2px solid var(--bs-primary);
-        border-right: 2px solid var(--bs-primary);
-    }
-
-    .review-revision--title,
-    .review-revision--commit-hash {
-        font-weight: bold;
-    }
+.review-revision.search-active .review-revision--grid:not(.search-match) {
+    display: none;
 }
