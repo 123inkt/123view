@@ -49,6 +49,19 @@
 
         {# open in editor #}
         {{ ide_button(file.filePathAfter ?? file.filePathBefore) }}
+        {# copy path to clipboard #}
+        <button class="btn btn-outline-primary btn-sm border-0"
+                data-class-before-copy="btn btn-outline-primary btn-sm border-0"
+                data-class-after-copy="btn btn-success btn-sm border-0"
+                title="{{ 'copy.path.to.clipboard'|trans }}"
+                {{ stimulus_controller('component--copy-to-clipboard') }}
+                {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
+                data-content="{{ file.filePathAfter ?? file.filePathBefore }}">
+            <i class="bi bi-clipboard-check-fill"
+               data-class-before-copy="bi bi-clipboard-check-fill"
+               data-class-after-copy="bi bi-check-lg"
+               data-role="icon"></i>
+        </button>
 
         <div class="float-end pe-2">
             {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
