@@ -8,8 +8,6 @@ export default class extends Controller {
         const search    = target.value.toLowerCase();
         const revisions = this.getRevisions();
 
-        console.log({target, search, revisions, element: this.element});
-
         if (search === '') {
             target.closest('.review-revision')?.classList.remove('search-active');
 

@@ -19,7 +19,7 @@
                 <input type="checkbox"
                         {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
                         {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
-                           data-role="visibility-toggle" data-for-role="visibility" class="d-none icon-checkbox" checked>
+                       data-role="visibility-toggle" data-for-role="visibility" class="d-none icon-checkbox" checked>
                 <label></label>
                 <i class="bi bi-eye-fill icon-checked"></i>
                 <i class="bi bi-eye-slash icon-unchecked"></i>
@@ -54,11 +54,11 @@
                     {{- revision.title -}}
                 </div>
                 {% if fileChange is not same as (null) %}
-                <div class="small">
-                    {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
-                    <span class="text-success">+{{ fileChange.linesAdded }}</span>,
-                    <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
-                </div>
+                    <div class="small">
+                        {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
+                        <span class="text-success">+{{ fileChange.linesAdded }}</span>,
+                        <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
+                    </div>
                 {% endif %}
             </div>
 
