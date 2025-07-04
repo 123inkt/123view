@@ -13,19 +13,17 @@
         {{ 'revisions'|trans }}
 
         <div class="float-end me-3">
-            {%- apply spaceless -%}
-                <a href="#" class="p-1 c-icon-checkbox"
-                        {{ stimulus_controller('component--icon-checkbox') }}
-                        {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
-                    <input type="checkbox"
-                            {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
-                            {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
+            <a href="#" class="p-1 c-icon-checkbox"
+                    {{ stimulus_controller('component--icon-checkbox') }}
+                    {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
+                <input type="checkbox"
+                        {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
+                        {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
                            data-role="visibility-toggle" data-for-role="visibility" class="d-none icon-checkbox" checked>
-                    <label></label>
-                    <i class="bi bi-eye-fill icon-checked"></i>
-                    <i class="bi bi-eye-slash icon-unchecked"></i>
-                </a>
-            {%- endapply -%}
+                <label></label>
+                <i class="bi bi-eye-fill icon-checked"></i>
+                <i class="bi bi-eye-slash icon-unchecked"></i>
+            </a>
         </div>
         <input type="search" name="search" class="reviews-list__search-input form-control" data-role="search"
                 {{ stimulus_controller('search-field') }}
@@ -36,6 +34,7 @@
     </h6>
 
     {%- for revision in revisionViewModel.revisions -%}
+        {% set fileChange = revisionViewModel.fileChanges[revision.id] ?? null %}
 
         <div class="review-revision--grid" data-role="revision" data-revision="{{ revision.commitHash }}" data-title="{{ revision.title }}">
             <div class="review-revision--selection">
@@ -43,19 +42,25 @@
                     {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
                 {% endif %}
             </div>
-            <div class="review-revision--title-author overflow-hidden">
-                <div class="text-primary review-revision--title" title="{{ revision.title }}">
-                    {{ revision.title }}
-
-                    {% if revision.firstBranch %}
-                        <span class="review-revision--branch badge bg-primary text-nowrap overflow-hidden"
-                              title="{{ revision.firstBranch }}">{{ revision.firstBranch }}</span>
-                    {% endif %}
-                </div>
-
-                <div class="text-secondary review-revision--author-time" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
+            <div class="overflow-hidden">
+                <div class="text-secondary review-revision--author-time small" title="{{ revision.authorEmail ~ ' - ' ~ revision.authorName }}">
                     {{ revision.authorName }} - {{ revision.createTimestamp|format_datetime('short', 'short') }}
                 </div>
+                {% if revision.firstBranch %}
+                    <div class="review-revision--branch badge bg-primary text-nowrap overflow-hidden" title="{{ revision.firstBranch }}">
+                        {{- revision.firstBranch -}}
+                    </div>
+                {% endif %}
+                <div class="fw-bold review-revision--title-author" title="{{ revision.title }}">
+                    {{- revision.title -}}
+                </div>
+                {% if fileChange is not same as (null) %}
+                <div class="small">
+                    {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
+                    <span class="text-success">+{{ fileChange.linesAdded }}</span>,
+                    <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
+                </div>
+                {% endif %}
             </div>
 
             <div>
@@ -63,18 +68,16 @@
                     {{- revision.commitHash|slice(0, 7) }}
                 </small>
                 <div class="text-end me-3">
-                    {%- apply spaceless -%}
-                        <a href="#" class="p-1 c-icon-checkbox"
-                                {{ stimulus_controller('component--icon-checkbox') }}
-                                {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
-                            {{- form_widget(
-                                revisionVisibilityForm.visibilities[loop.index0].visible,
-                                {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
-                            ) -}}
-                            <i class="bi bi-eye-fill icon-checked"></i>
-                            <i class="bi bi-eye-slash icon-unchecked"></i>
-                        </a>
-                    {%- endapply -%}
+                    <a href="#" class="p-1 c-icon-checkbox"
+                            {{ stimulus_controller('component--icon-checkbox') }}
+                            {{ stimulus_action('component--icon-checkbox', 'onClick', 'click') }}>
+                        {{- form_widget(
+                            revisionVisibilityForm.visibilities[loop.index0].visible,
+                            {attr: {class: 'btn-check icon-checkbox', 'data-component--icon-checkbox-target': 'checkbox'}}
+                        ) -}}
+                        <i class="bi bi-eye-fill icon-checked"></i>
+                        <i class="bi bi-eye-slash icon-unchecked"></i>
+                    </a>
                 </div>
             </div>
         </div>

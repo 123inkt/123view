@@ -107,6 +107,7 @@ return [
     'file.mode.changed'                           => 'file mode changed from',
     'file.too.large'                              => 'File too large to view hidden lines',
     'files'                                       => 'Files',
+    'files.changed'                               => 'Files changed',
     'filter.explanation.author'                   => 'In- or exclude a commit from a specific author. The pattern should match the email of the author.',
     'filter.explanation.file'                     => 'In- or exclude a file from a commit by regex. The pattern will be matched against the relative path of the file in the project. For example <code>composer.json</code> or <code>src/Controller/ExampleController.php</code>. Example: <code>#^src/Controller/#</code>.',
     'filter.explanation.subject'                  => 'In- or exclude a commit with a specific commit message. The pattern will be matched against the first line of the message.',

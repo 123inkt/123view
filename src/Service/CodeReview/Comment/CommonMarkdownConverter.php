@@ -10,6 +10,7 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
 
 class CommonMarkdownConverter extends MarkdownConverter
@@ -33,7 +34,7 @@ class CommonMarkdownConverter extends MarkdownConverter
         "yaml",
     ];
 
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $environment = new Environment(
             [
@@ -46,6 +47,7 @@ class CommonMarkdownConverter extends MarkdownConverter
                 ]
             ]
         );
+        $environment->setEventDispatcher($eventDispatcher);
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
         $environment->addExtension(new EmojiExtension(EmojiDataProvider::full()));

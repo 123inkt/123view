@@ -1255,12 +1255,6 @@ parameters:
 			path: src/Service/Revision/RevisionValidationService.php
 
 		-
-			message: '#^Parameter \#1 \$responseHeaders of method DR\\Review\\Entity\\Webhook\\WebhookActivity\:\:setResponseHeaders\(\) expects array\<string, array\<string\>\|string\>, array\<array\<string\>\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Service/Webhook/WebhookExecutionService.php
-
-		-
 			message: '#^Parameter \#2 \$replace of function str_ireplace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
 			identifier: argument.type
 			count: 1

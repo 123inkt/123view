@@ -4,17 +4,20 @@ declare(strict_types=1);
 namespace DR\Review\ViewModel\App\Revision;
 
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Model\Review\RevisionFileChange;
 use Symfony\Component\Form\FormView;
 
-class ReviewRevisionViewModel
+readonly class ReviewRevisionViewModel
 {
     /**
-     * @param Revision[] $revisions
+     * @param Revision[]                     $revisions
+     * @param array<int, RevisionFileChange> $fileChanges
      */
     public function __construct(
-        public readonly array $revisions,
-        public readonly ?FormView $detachRevisionForm,
-        public readonly ?FormView $revisionVisibilityForm
+        public array $revisions,
+        public array $fileChanges,
+        public ?FormView $detachRevisionForm,
+        public ?FormView $revisionVisibilityForm
     ) {
     }
 
