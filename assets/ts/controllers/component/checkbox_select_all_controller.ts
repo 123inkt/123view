@@ -16,49 +16,8 @@ export default class extends Controller {
         }
     }
 
-    public search(event: Event): void {
-        const target    = event.currentTarget as HTMLInputElement;
-        const search    = target.value.toLowerCase();
-        const revisions = this.getRevisions();
-
-        if (search === '') {
-            target.closest('.review-revision')?.classList.remove('search-active');
-
-            this.updateToggleCheckboxes(revisions, search);
-
-            return;
-        }
-
-        target.closest('.review-revision')?.classList.add('search-active');
-        revisions.forEach(el => {
-            if (this.matchesSearch(el, search)) {
-                el.classList.add('search-match');
-            } else {
-                el.classList.remove('search-match');
-            }
-        });
-        this.updateToggleCheckboxes(revisions, search);
-    }
-
     private getRevisions(): HTMLElement[] {
         return Array.from(this.element.querySelectorAll<HTMLElement>(`[data-role~="revision"]`));
-    }
-
-    private updateToggleCheckboxes(revisions: HTMLElement[], search: string): void {
-        this.updateToggle(revisions, search, 'detach', 'detach-toggle');
-        this.updateToggle(revisions, search, 'visibility', 'visibility-toggle');
-    }
-
-    private updateToggle(revisions: HTMLElement[], search: string, checkboxRole: string, toggleRole: string): void {
-        const toggleCheckbox = this.element.querySelector<HTMLInputElement>(`[data-role~="${toggleRole}"]`);
-        if (toggleCheckbox === null) {
-            return;
-        }
-        const searchMatchRevisions = revisions.filter(el => this.matchesSearch(el, search));
-        toggleCheckbox.checked     = searchMatchRevisions
-            .map(el => el.querySelector<HTMLInputElement>(`[data-role~="${checkboxRole}"]`))
-            .filter(el => el !== null)
-            .every(el => el.checked) === false;
     }
 
     private matchesSearch(el: HTMLElement | null, search: string | undefined): boolean {

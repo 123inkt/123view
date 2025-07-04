@@ -25,13 +25,12 @@
                 <i class="bi bi-eye-slash icon-unchecked"></i>
             </a>
         </div>
-        <input type="search" name="search" class="reviews-list__search-input form-control" data-role="search"
-                {{ stimulus_controller('search-field') }}
-                {{ stimulus_action('component--checkbox-select-all', 'search', 'input') }}
-               data-toggle-role="revision"
-               placeholder="{{ 'search.revisions'|trans }}"/>
-
     </h6>
+
+    <input type="search" class="reviews-list__search-input form-control" data-role="search"
+            {{ stimulus_controller('component--revision-search') }}
+            {{ stimulus_action('component--revision-search', 'search', 'input') }}
+           placeholder="{{ 'search.revisions'|trans }}"/>
 
     {%- for revision in revisionViewModel.revisions -%}
         {% set fileChange = revisionViewModel.fileChanges[revision.id] ?? null %}
