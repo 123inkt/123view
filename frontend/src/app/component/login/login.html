@@ -16,6 +16,6 @@
       </button>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
-<!-- TODO Csrf -->
+    <form-widget [form]="loginViewModel.form.children._csrf_token"/>
   </form>
 </div>

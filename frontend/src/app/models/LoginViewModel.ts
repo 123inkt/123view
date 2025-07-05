@@ -6,7 +6,7 @@ export default class LoginViewModel {
       _username: FormView,
       _password: FormView,
       loginBtn: FormView,
-      _csrfToken: FormView
+      _csrf_token: FormView
     }
   >;
   public declare azureAdUrl: string;

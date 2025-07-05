@@ -1,6 +1,7 @@
 import {NgComponentOutlet} from '@angular/common';
 import {Component, input, Type} from '@angular/core';
 import {EmailFormWidget} from '@component/form/email-form-widget/email-form-widget';
+import {HiddenFormWidget} from '@component/form/hidden-form-widget/hidden-form-widget';
 import {PasswordFormWidget} from '@component/form/password-form-widget/password-form-widget';
 import FormView from '@model/FormView';
 
@@ -14,7 +15,8 @@ export class FormWidget {
 
   private componentMap: Record<string, Type<unknown>> = {
     email_widget: EmailFormWidget,
-    password_widget: PasswordFormWidget
+    password_widget: PasswordFormWidget,
+    hidden_widget: HiddenFormWidget
   };
 
   public getComponent(): Type<unknown> {
