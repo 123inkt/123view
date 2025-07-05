@@ -25,7 +25,6 @@ export class Login {
 
   public ngOnInit(): void {
     this.loginViewModel = this.route.snapshot.data['resolvedData'];
-    console.log(this.loginViewModel);
   }
 
   public handleSubmit(): void {

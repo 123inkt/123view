@@ -7,6 +7,7 @@ export default class FormView<T = {[key: string]: FormView}> {
   public declare help_attr: string[];
   public declare help_html: boolean;
   public declare id: string;
+  public declare label: string;
   public declare label_attr: string[];
   public declare label_html: boolean;
   public declare method: string;

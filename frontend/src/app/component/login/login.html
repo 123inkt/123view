@@ -3,17 +3,30 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
     <div class="mb-3">
-      <label for="_username" class="form-label required">Email</label>
-      <input type="email" id="_username" formControlName="username" name="_username" required="required" class="form-control" autofocus>
+      <label [for]="loginViewModel.form.children._username.id" class="form-label required">{{ loginViewModel.form.children._username.label }}</label>
+      <input type="email"
+             [id]="loginViewModel.form.children._username.id"
+             formControlName="username"
+             [name]="loginViewModel.form.children._username.full_name"
+             [required]="loginViewModel.form.children._username.required"
+             class="form-control"
+             autofocus>
     </div>
     <div class="mb-3">
-      <label for="_password" class="form-label required">Password</label>
-      <input type="password" id="_password" formControlName="password" name="_password" required="required" class="form-control">
+      <label [for]="loginViewModel.form.children._password.id" class="form-label required">{{ loginViewModel.form.children._password.label }}</label>
+      <input type="password"
+             [id]="loginViewModel.form.children._password.id"
+             formControlName="password"
+             [name]="loginViewModel.form.children._password.full_name"
+             [required]="loginViewModel.form.children._password.required"
+             class="form-control">
     </div>
     <div class="mb-3">
-      <button type="submit" [disabled]="loginForm.valid === false" class="btn-primary btn">Login</button>
+      <button type="submit" [name]="loginViewModel.form.children.loginBtn.full_name" [disabled]="loginForm.valid === false" class="btn-primary btn">
+        {{ loginViewModel.form.children.loginBtn.label }}
+      </button>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
-    <input type="hidden" name="{{ loginViewModel.form.children.csrfToken.name }}" value="{{ loginViewModel.form.children.csrfToken.value }}" />
+    <input type="hidden" [name]="loginViewModel.form.children.csrfToken.name" [value]="loginViewModel.form.children.csrfToken.value"/>
   </form>
 </div>
