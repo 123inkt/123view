@@ -3,6 +3,10 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
     <div class="mb-3">
+      <form-widget [form]="loginViewModel.form.children._username"></form-widget>
+    </div>
+
+    <div class="mb-3">
       <label [for]="loginViewModel.form.children._username.id" class="form-label required">{{ loginViewModel.form.children._username.label }}</label>
       <input type="email"
              [id]="loginViewModel.form.children._username.id"
@@ -27,6 +31,6 @@
       </button>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
-    <input type="hidden" [name]="loginViewModel.form.children.csrfToken.name" [value]="loginViewModel.form.children.csrfToken.value"/>
+<!-- TODO Csrf -->
   </form>
 </div>
