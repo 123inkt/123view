@@ -53,6 +53,7 @@
         "league/uri": "^7.2",
         "lexik/jwt-authentication-bundle": "^3.1",
         "liip/monitor-bundle": "^2.22",
+        "nelmio/cors-bundle": "^2.5",
         "nesbot/carbon": "^3.0",
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.1",
