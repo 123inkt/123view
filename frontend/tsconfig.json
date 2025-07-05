@@ -17,6 +17,7 @@
     "baseUrl": "./",
     "paths": {
       "@component/*": ["src/app/component/*"],
+      "@directive/*": ["src/app/directives/*"],
       "@environment/*": ["src/environments/*"],
       "@guard/*": ["src/app/guards/*"],
       "@interceptor/*": ["src/app/interceptors/*"],

@@ -1,6 +1,6 @@
 export default class FormView<T extends {[key: string]: FormView} = {[key: string]: FormView}> {
   public declare action: string;
-  public declare attr: string[];
+  public declare attr: {[key: string]: string };
   public declare block_prefixes: string[];
   public declare disabled: boolean;
   public declare full_name: string;
