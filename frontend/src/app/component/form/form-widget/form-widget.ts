@@ -7,7 +7,7 @@ import FormView from '@model/FormView';
 @Component({
   selector: 'form-widget',
   imports: [NgComponentOutlet],
-  template: '<ng-container *ngComponentOutlet="getComponent(); inputs: {form: form}" />'
+  template: '<ng-container *ngComponentOutlet="getComponent(); inputs: {form: form()}" />'
 })
 export class FormWidget {
   public form = input.required<FormView>();
@@ -21,6 +21,7 @@ export class FormWidget {
     for (const prefix of this.form().block_prefixes.reverse()) {
       const component = this.componentMap[prefix + '_widget'];
       if (component) {
+        console.log(`Using component for prefix "${prefix}":`, component);
         return component;
       }
     }

@@ -12,11 +12,7 @@ import {AuthenticationService} from '@service/authentication-service';
   styleUrl: './login.scss'
 })
 export class Login {
-  public loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required])
-  });
-  public loginViewModel!: LoginViewModel;
+  public declare loginViewModel: LoginViewModel;
 
   constructor(
     @Inject(AuthenticationService) private readonly authService: AuthenticationService,

@@ -1,7 +1,7 @@
 <div class="login-registration-container">
   <h2 class="mb-4">Sign in</h2>
 
-  <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
+  <form (ngSubmit)="handleSubmit()">
     <div class="mb-3">
       <label [for]="loginViewModel.form.children._username.id" class="form-label required">{{ loginViewModel.form.children._username.label }}</label>
       <form-widget [form]="loginViewModel.form.children._username"/>
@@ -11,7 +11,7 @@
       <form-widget [form]="loginViewModel.form.children._password"/>
     </div>
     <div class="mb-3">
-      <button type="submit" [name]="loginViewModel.form.children.loginBtn.full_name" [disabled]="loginForm.valid === false" class="btn-primary btn">
+      <button type="submit" [name]="loginViewModel.form.children.loginBtn.full_name" class="btn-primary btn">
         {{ loginViewModel.form.children.loginBtn.label }}
       </button>
       <a class="ms-2" href="/register">Create a new account</a>
