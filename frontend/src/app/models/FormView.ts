@@ -1,4 +1,4 @@
-export default class FormView<T = {[key: string]: FormView}> {
+export default class FormView<T extends {[key: string]: FormView} = {[key: string]: FormView}> {
   public declare action: string;
   public declare attr: string[];
   public declare block_prefixes: string[];
