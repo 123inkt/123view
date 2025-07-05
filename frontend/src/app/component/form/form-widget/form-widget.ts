@@ -3,6 +3,7 @@ import {Component, input, Type} from '@angular/core';
 import {EmailFormWidget} from '@component/form/email-form-widget/email-form-widget';
 import {HiddenFormWidget} from '@component/form/hidden-form-widget/hidden-form-widget';
 import {PasswordFormWidget} from '@component/form/password-form-widget/password-form-widget';
+import {SubmitButtonFormWidget} from '@component/form/submit-button-form-widget/submit-button-form-widget';
 import FormView from '@model/FormView';
 
 @Component({
@@ -16,7 +17,8 @@ export class FormWidget {
   private componentMap: Record<string, Type<unknown>> = {
     email_widget: EmailFormWidget,
     password_widget: PasswordFormWidget,
-    hidden_widget: HiddenFormWidget
+    hidden_widget: HiddenFormWidget,
+    submit_widget: SubmitButtonFormWidget
   };
 
   public getComponent(): Type<unknown> {

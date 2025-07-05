@@ -1,1 +1,7 @@
-<p>submit-button-form-widget works!</p>
+<button type="submit"
+        [id]="form().id"
+        [name]="form().full_name"
+        [disabled]="form().disabled"
+        class="btn-primary btn">
+  {{ form().label }}
+</button>

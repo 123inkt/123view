@@ -11,9 +11,7 @@
       <form-widget [form]="loginViewModel.form.children._password"/>
     </div>
     <div class="mb-3">
-      <button type="submit" [name]="loginViewModel.form.children.loginBtn.full_name" class="btn-primary btn">
-        {{ loginViewModel.form.children.loginBtn.label }}
-      </button>
+      <form-widget [form]="loginViewModel.form.children.loginBtn"/>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
     <form-widget [form]="loginViewModel.form.children._csrf_token"/>

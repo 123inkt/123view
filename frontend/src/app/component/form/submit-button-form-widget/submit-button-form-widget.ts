@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, input} from '@angular/core';
+import FormView from '@model/FormView';
 
 @Component({
-  selector: 'app-submit-button-form-widget',
+  selector: 'submit-button-form-widget',
   imports: [],
-  templateUrl: './submit-button-form-widget.html',
-  styleUrl: './submit-button-form-widget.scss'
+  templateUrl: './submit-button-form-widget.html'
 })
 export class SubmitButtonFormWidget {
-
+  public form = input.required<FormView>();
 }
