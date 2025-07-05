@@ -25,7 +25,6 @@ export class FormWidget {
     for (const prefix of this.form().vars.block_prefixes.reverse()) {
       const component = this.componentMap[prefix + '_widget'];
       if (component) {
-        console.log(`Using component for prefix "${prefix}":`, component);
         return component;
       }
     }
