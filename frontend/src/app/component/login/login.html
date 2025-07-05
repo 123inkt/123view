@@ -3,27 +3,12 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
     <div class="mb-3">
-      <form-widget [form]="loginViewModel.form.children._username"></form-widget>
-    </div>
-
-    <div class="mb-3">
       <label [for]="loginViewModel.form.children._username.id" class="form-label required">{{ loginViewModel.form.children._username.label }}</label>
-      <input type="email"
-             [id]="loginViewModel.form.children._username.id"
-             formControlName="username"
-             [name]="loginViewModel.form.children._username.full_name"
-             [required]="loginViewModel.form.children._username.required"
-             class="form-control"
-             autofocus>
+      <form-widget [form]="loginViewModel.form.children._username"/>
     </div>
     <div class="mb-3">
       <label [for]="loginViewModel.form.children._password.id" class="form-label required">{{ loginViewModel.form.children._password.label }}</label>
-      <input type="password"
-             [id]="loginViewModel.form.children._password.id"
-             formControlName="password"
-             [name]="loginViewModel.form.children._password.full_name"
-             [required]="loginViewModel.form.children._password.required"
-             class="form-control">
+      <form-widget [form]="loginViewModel.form.children._password"/>
     </div>
     <div class="mb-3">
       <button type="submit" [name]="loginViewModel.form.children.loginBtn.full_name" [disabled]="loginForm.valid === false" class="btn-primary btn">

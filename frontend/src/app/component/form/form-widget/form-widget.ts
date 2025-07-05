@@ -1,11 +1,29 @@
-import { Component, input } from '@angular/core';
+import {NgComponentOutlet} from '@angular/common';
+import {Component, input, Type} from '@angular/core';
+import {EmailFormWidget} from '@component/form/email-form-widget/email-form-widget';
+import {PasswordFormWidget} from '@component/form/password-form-widget/password-form-widget';
 import FormView from '@model/FormView';
 
 @Component({
   selector: 'form-widget',
-  imports: [],
-  templateUrl: './form-widget.html'
+  imports: [NgComponentOutlet],
+  template: '<ng-container *ngComponentOutlet="getComponent(); inputs: {form: form}" />'
 })
 export class FormWidget {
-   public form = input.required<FormView>();
+  public form = input.required<FormView>();
+
+  private componentMap: Record<string, Type<unknown>> = {
+    email_widget: EmailFormWidget,
+    password_widget: PasswordFormWidget
+  };
+
+  public getComponent(): Type<unknown> {
+    for (const prefix of this.form().block_prefixes.reverse()) {
+      const component = this.componentMap[prefix + '_widget'];
+      if (component) {
+        return component;
+      }
+    }
+    throw new Error(`No component found for input type "${this.form().full_name}"`);
+  }
 }
