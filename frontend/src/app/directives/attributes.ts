@@ -1,7 +1,7 @@
 import {Directive, ElementRef, input, OnChanges, Renderer2, SimpleChanges} from '@angular/core';
 
 /**
- * Converts an object of attributes into HTML attributes on the element.
+ * Adds [attrs] directive to an elements and converts an object of attributes into HTML attributes on the element.
  */
 @Directive({selector: '[attrs]', standalone: true})
 export class Attributes implements OnChanges {
