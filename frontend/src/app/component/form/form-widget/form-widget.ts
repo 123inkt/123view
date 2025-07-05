@@ -22,13 +22,13 @@ export class FormWidget {
   };
 
   public getComponent(): Type<unknown> {
-    for (const prefix of this.form().block_prefixes.reverse()) {
+    for (const prefix of this.form().vars.block_prefixes.reverse()) {
       const component = this.componentMap[prefix + '_widget'];
       if (component) {
         console.log(`Using component for prefix "${prefix}":`, component);
         return component;
       }
     }
-    throw new Error(`No component found for input type "${this.form().full_name}"`);
+    throw new Error(`No component found for input type "${this.form().vars.full_name}"`);
   }
 }

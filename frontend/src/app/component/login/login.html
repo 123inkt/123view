@@ -3,17 +3,17 @@
 
   <form (ngSubmit)="handleSubmit()">
     <div class="mb-3">
-      <form-label [form]="loginViewModel.form.children._username"/>
-      <form-widget [form]="loginViewModel.form.children._username"/>
+      <form-label [form]="loginViewModel.form._username"/>
+      <form-widget [form]="loginViewModel.form._username"/>
     </div>
     <div class="mb-3">
-      <form-label [form]="loginViewModel.form.children._password"/>
-      <form-widget [form]="loginViewModel.form.children._password"/>
+      <form-label [form]="loginViewModel.form._password"/>
+      <form-widget [form]="loginViewModel.form._password"/>
     </div>
     <div class="mb-3">
-      <form-widget [form]="loginViewModel.form.children.loginBtn"/>
+      <form-widget [form]="loginViewModel.form.loginBtn"/>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
-    <form-widget [form]="loginViewModel.form.children._csrf_token"/>
+    <form-widget [form]="loginViewModel.form._csrf_token"/>
   </form>
 </div>

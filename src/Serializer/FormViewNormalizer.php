@@ -57,16 +57,15 @@ class FormViewNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function normalize(mixed $data, ?string $format = null, array $context = []): array
     {
-        $normalizedData = [];
+        $normalizedData = ['vars' => []];
         foreach (self::FORM_PROPERTIES as $propertyKey) {
-            $value = $data->vars[$propertyKey] ?? null;
-            if ($value !== null) {
-                $normalizedData[$propertyKey] = $value;
+            if (isset($data->vars[$propertyKey])) {
+                $normalizedData['vars'][$propertyKey] = $data->vars[$propertyKey];
             }
         }
 
         if (count($data->children) > 0) {
-            $normalizedData['children'] = $this->normalizer->normalize($data->children, 'json', $context);
+            $normalizedData += $this->normalizer->normalize($data->children, 'json', $context);
         }
 
         return $normalizedData;

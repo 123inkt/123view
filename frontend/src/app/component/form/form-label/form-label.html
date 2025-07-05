@@ -1,1 +1,4 @@
-<label [for]="form().id" class="form-label" [class.required]="form().required" [attrs]="form().label_attr">{{ form().label }}</label>
+<label [for]="form().vars.id"
+       class="form-label"
+       [class.required]="form().vars.required"
+       [attrs]="form().vars.label_attr">{{ form().vars.label }}</label>

@@ -33,7 +33,7 @@ class LoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->setMethod('POST');
-        $builder->add('_username', EmailType::class, ['label' => 'email', 'data' => $options['username'] ?? '']);
+        $builder->add('_username', EmailType::class, ['label' => 'email', 'data' => $options['username'] ?? '', 'attr' => ['autofocus' => true]]);
         $builder->add('_password', PasswordType::class, ['label' => 'password']);
         if (isset($options['targetPath'])) {
             $builder->add('_target_path', HiddenType::class, ['data' => $options['targetPath']]);
