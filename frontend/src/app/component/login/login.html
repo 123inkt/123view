@@ -1,18 +1,19 @@
 <div class="login-registration-container">
   <h2 class="mb-4">Sign in</h2>
 
-  <div>
+  <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
     <div class="mb-3">
       <label for="_username" class="form-label required">Email</label>
-      <input type="email" id="_username" name="_username" required="required" class="form-control" autofocus>
+      <input type="email" id="_username" formControlName="username" name="_username" required="required" class="form-control" autofocus>
     </div>
     <div class="mb-3">
       <label for="_password" class="form-label required">Password</label>
-      <input type="password" id="_password" name="_password" required="required" class="form-control">
+      <input type="password" id="_password" formControlName="password" name="_password" required="required" class="form-control">
     </div>
     <div class="mb-3">
-      <button type="button" id="loginBtn" name="loginBtn" class="btn-primary btn" (click)="onLogin()">Login</button>
+      <button type="submit" [disabled]="loginForm.valid === false" class="btn-primary btn">Login</button>
       <a class="ms-2" href="/register">Create a new account</a>
     </div>
-  </div>
+    <input type="hidden" name="{{ loginViewModel.form.children.csrfToken.name }}" value="{{ loginViewModel.form.children.csrfToken.value }}" />
+  </form>
 </div>

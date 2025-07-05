@@ -17,9 +17,12 @@
     "baseUrl": "./",
     "paths": {
       "@component/*": ["src/app/component/*"],
-      "@service/*": ["src/app/services/*"],
-      "@guard/*": ["src/app/guards/*"],
       "@environment/*": ["src/environments/*"],
+      "@guard/*": ["src/app/guards/*"],
+      "@interceptor/*": ["src/app/interceptors/*"],
+      "@model/*": ["src/app/models/*"],
+      "@resolver/*": ["src/app/resolvers/*"],
+      "@service/*": ["src/app/services/*"]
     }
   },
   "angularCompilerOptions": {
