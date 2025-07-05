@@ -3,10 +3,10 @@ import {Attributes} from '@directive/attributes';
 import FormView from '@model/FormView';
 
 @Component({
-  selector: 'submit-button-form-widget',
+  selector: 'form-label',
   imports: [Attributes],
-  templateUrl: './submit-button-form-widget.html'
+  templateUrl: './form-label.html'
 })
-export class SubmitButtonFormWidget {
+export class FormLabel {
   public form = input.required<FormView>();
 }

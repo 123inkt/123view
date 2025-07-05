@@ -3,11 +3,11 @@
 
   <form (ngSubmit)="handleSubmit()">
     <div class="mb-3">
-      <label [for]="loginViewModel.form.children._username.id" class="form-label required">{{ loginViewModel.form.children._username.label }}</label>
+      <form-label [form]="loginViewModel.form.children._username"/>
       <form-widget [form]="loginViewModel.form.children._username"/>
     </div>
     <div class="mb-3">
-      <label [for]="loginViewModel.form.children._password.id" class="form-label required">{{ loginViewModel.form.children._password.label }}</label>
+      <form-label [form]="loginViewModel.form.children._password"/>
       <form-widget [form]="loginViewModel.form.children._password"/>
     </div>
     <div class="mb-3">

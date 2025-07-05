@@ -1,13 +1,14 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {FormLabel} from '@component/form/form-label/form-label';
 import {FormWidget} from '@component/form/form-widget/form-widget';
 import LoginViewModel from '@model/LoginViewModel';
 import {AuthenticationService} from '@service/authentication-service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, FormWidget],
+  imports: [ReactiveFormsModule, FormWidget, FormLabel],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
