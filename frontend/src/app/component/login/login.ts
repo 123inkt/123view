@@ -1,12 +1,13 @@
 import {Component, Inject} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {Params} from '@angular/router';
 import {FormLabel} from '@component/form/form-label/form-label';
 import {FormWidget} from '@component/form/form-widget/form-widget';
+import {environment} from '@environment/environment';
 import LoginViewModel from '@model/LoginViewModel';
 import {AuthenticationService} from '@service/authentication-service';
 import {FormGroupService} from '@service/form-group-service';
-import {environment} from '@environment/environment';
 
 @Component({
   selector: 'app-login',
@@ -17,15 +18,17 @@ import {environment} from '@environment/environment';
 export class Login {
   public declare loginViewModel: LoginViewModel;
   public declare loginForm: FormGroup;
-  public environment = environment;
+  public environment                 = environment;
   public processing: boolean         = false;
   public errorMessage: string | null = null;
+  private queryParams: Params        = {};
 
   constructor(
     @Inject(AuthenticationService) private readonly authService: AuthenticationService,
     @Inject(FormGroupService) private readonly formGroupService: FormGroupService,
     private readonly route: ActivatedRoute
   ) {
+    this.route.queryParams.subscribe(params => this.queryParams = params);
   }
 
   public ngOnInit(): void {
@@ -44,10 +47,14 @@ export class Login {
           this.loginForm.enable();
         },
         error: (error) => {
-          this.processing   = false;
+          this.processing = false;
           this.loginForm.enable();
           this.errorMessage = error.error?.message ?? null;
         }
       });
+  }
+
+  public loginWithAzureAd(): void {
+    this.authService.azureAdRedirect(this.queryParams);
   }
 }

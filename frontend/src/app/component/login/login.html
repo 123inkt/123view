@@ -20,7 +20,7 @@
     </form>
   }
   @if (environment.appAuthAzureAd) {
-    <a href="{{ loginViewModel.azureAdUrl }}" class="btn btn-outline-primary">
+    <a href="javascript:" class="btn btn-outline-primary" (click)="loginWithAzureAd()">
       <img src="/images/azure-ad-logo.svg"
            width="12"
            height="12"
