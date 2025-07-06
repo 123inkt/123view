@@ -7,12 +7,13 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormViewNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const FORM_PROPERTIES = [
+    private const array FORM_PROPERTIES = [
         'action',
         'attr',
         'block_prefixes',
@@ -31,6 +32,12 @@ class FormViewNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         'unique_block_prefix',
         'value',
     ];
+
+    private const array TRANSLATE_PROPERTIES = ['label' => true, 'help' => true];
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
 
     /**
      * @inheritDoc
@@ -59,11 +66,23 @@ class FormViewNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     {
         $normalizedData = ['vars' => []];
         foreach (self::FORM_PROPERTIES as $propertyKey) {
-            if (isset($data->vars[$propertyKey])) {
-                $normalizedData['vars'][$propertyKey] = $data->vars[$propertyKey];
+            if (isset($data->vars[$propertyKey]) === false) {
+                continue;
             }
+
+            // get property value
+            $value = $data->vars[$propertyKey];
+
+            // translate specific properties
+            if (isset(self::TRANSLATE_PROPERTIES[$propertyKey]) && is_string($value)) {
+                $value = $this->translator->trans($value);
+            }
+
+            // assign value to normalized data
+            $normalizedData['vars'][$propertyKey] = $value;
         }
 
+        // add children
         if (count($data->children) > 0) {
             $normalizedData += $this->normalizer->normalize($data->children, 'json', $context);
         }
