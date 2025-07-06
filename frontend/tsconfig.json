@@ -21,7 +21,7 @@
       "@environment/*": ["src/environments/*"],
       "@guard/*": ["src/app/guards/*"],
       "@interceptor/*": ["src/app/interceptors/*"],
-      "@lib/*": ["src/app/lib/*"],
+      "@lib/*": ["src/lib/*"],
       "@model/*": ["src/app/models/*"],
       "@resolver/*": ["src/app/resolvers/*"],
       "@service/*": ["src/app/services/*"]
