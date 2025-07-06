@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavigationEnd, NavigationStart, ResolveEnd, ResolveStart, Router, RouterOutlet} from '@angular/router';
+import {NavigationEnd, NavigationError, NavigationStart, ResolveEnd, ResolveStart, Router, RouterOutlet} from '@angular/router';
 import {Header} from '@component/header/header';
 import {Loader} from '@component/loader/loader';
 
@@ -17,7 +17,7 @@ export class App {
       if (event instanceof ResolveStart || event instanceof NavigationStart) {
         this.loading = true;
       }
-      if (event instanceof ResolveEnd || event instanceof NavigationEnd) {
+      if (event instanceof ResolveEnd || event instanceof NavigationEnd || event instanceof NavigationError) {
         this.loading = false;
       }
     });

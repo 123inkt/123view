@@ -17,5 +17,10 @@
           [disabled]="form().vars.disabled"
           [attrs]="form().vars.attr"
           class="btn-primary btn"
-  >{{ form().vars.label }}</button>
+  >
+    @if (loading() === true) {
+      <span class="spinner-border spinner-border-sm me-1"></span>
+    }
+    {{ form().vars.label }}
+  </button>
 }

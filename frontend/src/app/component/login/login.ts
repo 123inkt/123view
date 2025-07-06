@@ -16,6 +16,8 @@ import {FormGroupService} from '@service/form-group-service';
 export class Login {
   public declare loginViewModel: LoginViewModel;
   public declare loginForm: FormGroup;
+  public processing: boolean         = false;
+  public errorMessage: string | null = null;
 
   constructor(
     @Inject(AuthenticationService) private readonly authService: AuthenticationService,
@@ -30,7 +32,20 @@ export class Login {
   }
 
   public handleSubmit(): void {
-    console.log(this.loginForm.value, this.loginForm.valid);
-    //this.authService.login('foo', 'bar');
+    this.processing   = true;
+    this.errorMessage = null;
+    this.loginForm.disable();
+    this.authService.login(this.loginForm.value)
+      .subscribe({
+        next: () => {
+          this.processing = false;
+          this.loginForm.enable();
+        },
+        error: (error) => {
+          this.processing   = false;
+          this.loginForm.enable();
+          this.errorMessage = error.error?.message ?? null;
+        }
+      });
   }
 }

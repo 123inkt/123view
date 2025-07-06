@@ -20,6 +20,7 @@ import {FormService} from '@service/form-service';
 export class FormWidget implements OnInit, ControlValueAccessor {
   public form                            = input.required<FormView>();
   public disabled                        = input<boolean | null>(null);
+  public loading                         = input<boolean>(false);
   public formType: string                = 'text';
   public onInput: (event: Event) => void = EmptyFunction;
   public onBlur: () => void              = EmptyFunction;

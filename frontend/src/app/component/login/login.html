@@ -10,8 +10,9 @@
       <form-label [form]="loginViewModel.form._password"/>
       <form-widget [form]="loginViewModel.form._password" formControlName="_password"/>
     </div>
+    <div class="invalid-feedback mb-3" [class.d-block]="errorMessage !== null">{{ errorMessage }}</div>
     <div class="mb-3">
-      <form-widget [form]="loginViewModel.form.loginBtn" [disabled]="loginForm.valid === false"/>
+      <form-widget [form]="loginViewModel.form.loginBtn" [disabled]="loginForm.valid === false" [loading]="processing"/>
       <a class="ms-2" href="/register" i18n>Create a new account</a>
     </div>
     <form-widget [form]="loginViewModel.form._csrf_token" formControlName="_csrf_token"/>

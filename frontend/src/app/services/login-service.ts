@@ -11,6 +11,6 @@ export class LoginService {
   }
 
   public getLoginForm(): Observable<LoginViewModel> {
-    return this.httpClient.get<LoginViewModel>('');
+    return this.httpClient.get<LoginViewModel>('login');
   }
 }

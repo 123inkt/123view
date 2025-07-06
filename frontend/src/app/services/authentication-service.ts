@@ -1,5 +1,6 @@
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, pipe, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,14 @@ export class AuthenticationService {
   public readonly isLoggedIn$;
   private readonly isLoggedInSubject;
 
-  constructor() {
+  constructor(private readonly httpClient: HttpClient) {
     this.isLoggedInSubject = new BehaviorSubject<boolean>(false);
     this.isLoggedIn$       = this.isLoggedInSubject.asObservable();
   }
 
-  public login(username: string, password: string): void {
-    this.isLoggedInSubject.next(true);
+  public login(data: {[key: string]: unknown}): Observable<unknown> {
+    console.log('logging in with data:', data);
+    return this.httpClient.post('api/login', data);
   }
 
   public logout(): void {
