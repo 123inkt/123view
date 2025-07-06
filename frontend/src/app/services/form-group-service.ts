@@ -23,7 +23,8 @@ export class FormGroupService {
       if (Object.keys(value).length > 1) {
         formGroupValues[key] = this.createFormGroup(value);
       } else if (this.formService.createFromControl(value)) {
-        formGroupValues[key] = new FormControl(value.vars.value);
+        const validators     = this.formService.createValidators(value);
+        formGroupValues[key] = new FormControl(value.vars.value, validators);
       }
     }
 

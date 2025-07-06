@@ -1,7 +1,7 @@
 <div class="login-registration-container">
   <h2 class="mb-4" i18n>Sign in</h2>
 
-  <form (ngSubmit)="handleSubmit()" [formGroup]="profileForm">
+  <form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
     <div class="mb-3">
       <form-label [form]="loginViewModel.form._username"/>
       <form-widget [form]="loginViewModel.form._username" formControlName="_username"/>
@@ -11,7 +11,7 @@
       <form-widget [form]="loginViewModel.form._password" formControlName="_password"/>
     </div>
     <div class="mb-3">
-      <form-widget [form]="loginViewModel.form.loginBtn"/>
+      <form-widget [form]="loginViewModel.form.loginBtn" [disabled]="loginForm.valid === false"/>
       <a class="ms-2" href="/register" i18n>Create a new account</a>
     </div>
     <form-widget [form]="loginViewModel.form._csrf_token" formControlName="_csrf_token"/>

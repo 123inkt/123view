@@ -15,7 +15,7 @@ import {FormGroupService} from '@service/form-group-service';
 })
 export class Login {
   public declare loginViewModel: LoginViewModel;
-  public declare profileForm: FormGroup;
+  public declare loginForm: FormGroup;
 
   constructor(
     @Inject(AuthenticationService) private readonly authService: AuthenticationService,
@@ -26,11 +26,11 @@ export class Login {
 
   public ngOnInit(): void {
     this.loginViewModel = this.route.snapshot.data['resolvedData'];
-    this.profileForm = this.formGroupService.createFormGroup(this.loginViewModel.form);
+    this.loginForm      = this.formGroupService.createFormGroup(this.loginViewModel.form);
   }
 
   public handleSubmit(): void {
-    console.log(this.profileForm.value);
+    console.log(this.loginForm.value, this.loginForm.valid);
     //this.authService.login('foo', 'bar');
   }
 }

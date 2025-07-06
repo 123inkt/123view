@@ -6,7 +6,7 @@
          [disabled]="form().vars.disabled"
          [value]="form().vars.value"
          [attrs]="form().vars.attr"
-         (change)="onChange($event)"
+         (input)="onInput($event)"
          (blur)="onBlur()"
          class="form-control">
 }

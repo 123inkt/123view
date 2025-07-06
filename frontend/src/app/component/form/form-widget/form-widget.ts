@@ -1,9 +1,9 @@
-import {Component, forwardRef, Inject, input, OnInit} from '@angular/core';
+import {Component, effect, forwardRef, Inject, input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Attributes} from '@directive/attributes';
+import {EmptyFunction} from '@lib/Functions';
 import FormView from '@model/FormView';
 import {FormService} from '@service/form-service';
-import {EmptyFunction} from '../../../lib/Functions';
 
 @Component({
   selector: 'form-widget',
@@ -18,12 +18,17 @@ import {EmptyFunction} from '../../../lib/Functions';
   templateUrl: './form-widget.html'
 })
 export class FormWidget implements OnInit, ControlValueAccessor {
-  public form                             = input.required<FormView>();
-  public formType: string                 = 'text';
-  public onChange: (event: Event) => void = EmptyFunction;
-  public onBlur: () => void               = EmptyFunction;
+  public form                            = input.required<FormView>();
+  public disabled                        = input<boolean | null>(null);
+  public formType: string                = 'text';
+  public onInput: (event: Event) => void = EmptyFunction;
+  public onBlur: () => void              = EmptyFunction;
 
   constructor(@Inject(FormService) private readonly formService: FormService) {
+    effect(() => {
+      // when input changes, update FormView
+      this.form().vars.disabled = this.disabled() ?? this.form().vars.disabled;
+    });
   }
 
   public ngOnInit(): void {
@@ -35,7 +40,7 @@ export class FormWidget implements OnInit, ControlValueAccessor {
   }
 
   public registerOnChange(fn: any): void {
-    this.onChange = (event: Event) => fn((event.target as HTMLInputElement).value);
+    this.onInput = (event: Event) => fn((event.target as HTMLInputElement).value);
   }
 
   public registerOnTouched(fn: any): void {
