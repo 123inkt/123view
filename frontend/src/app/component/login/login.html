@@ -1,20 +1,33 @@
 <div class="login-registration-container">
   <h2 class="mb-4" i18n>Sign in</h2>
 
-  <form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
-    <div class="mb-3">
-      <form-label [form]="loginViewModel.form._username"/>
-      <form-widget [form]="loginViewModel.form._username" formControlName="_username"/>
-    </div>
-    <div class="mb-3">
-      <form-label [form]="loginViewModel.form._password"/>
-      <form-widget [form]="loginViewModel.form._password" formControlName="_password"/>
-    </div>
-    <div class="invalid-feedback mb-3" [class.d-block]="errorMessage !== null">{{ errorMessage }}</div>
-    <div class="mb-3">
-      <form-widget [form]="loginViewModel.form.loginBtn" [disabled]="loginForm.valid === false" [loading]="processing"/>
-      <a class="ms-2" href="/register" i18n>Create a new account</a>
-    </div>
-    <form-widget [form]="loginViewModel.form._csrf_token" formControlName="_csrf_token"/>
-  </form>
+  @if (environment.appAuthPassword) {
+    <form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
+      <div class="mb-3">
+        <form-label [form]="loginViewModel.form._username"/>
+        <form-widget [form]="loginViewModel.form._username" formControlName="_username"/>
+      </div>
+      <div class="mb-3">
+        <form-label [form]="loginViewModel.form._password"/>
+        <form-widget [form]="loginViewModel.form._password" formControlName="_password"/>
+      </div>
+      <div class="invalid-feedback mb-3" [class.d-block]="errorMessage !== null">{{ errorMessage }}</div>
+      <div class="mb-3">
+        <form-widget [form]="loginViewModel.form.loginBtn" [disabled]="loginForm.valid === false" [loading]="processing"/>
+        <a class="ms-2" href="/register" i18n>Create a new account</a>
+      </div>
+      <form-widget [form]="loginViewModel.form._csrf_token" formControlName="_csrf_token"/>
+    </form>
+  }
+  @if (environment.appAuthAzureAd) {
+    <a href="{{ loginViewModel.azureAdUrl }}" class="btn btn-outline-primary">
+      <img src="/images/azure-ad-logo.svg"
+           width="12"
+           height="12"
+           alt="microsoft"
+           class="single-sign-on-icon"
+      >
+      <span i18n>Log in with Active Directory</span>
+    </a>
+  }
 </div>

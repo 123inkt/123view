@@ -6,6 +6,7 @@ import {FormWidget} from '@component/form/form-widget/form-widget';
 import LoginViewModel from '@model/LoginViewModel';
 import {AuthenticationService} from '@service/authentication-service';
 import {FormGroupService} from '@service/form-group-service';
+import {environment} from '@environment/environment';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import {FormGroupService} from '@service/form-group-service';
 export class Login {
   public declare loginViewModel: LoginViewModel;
   public declare loginForm: FormGroup;
+  public environment = environment;
   public processing: boolean         = false;
   public errorMessage: string | null = null;
 

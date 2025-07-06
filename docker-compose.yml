@@ -96,6 +96,8 @@ services:
             dockerfile: ./docker/angular/Dockerfile
         environment:
             APP_NAME: ${APP_NAME}
+            APP_AUTH_PASSWORD: ${APP_AUTH_PASSWORD:-false}
+            APP_AUTH_AZURE_AD: ${APP_AUTH_AZURE_AD:-false}
             API_PORT: ${NGINX_SYMFONY_PORT}
         volumes:
             - .:/app:rw
