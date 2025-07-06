@@ -21,7 +21,7 @@ export class FormService {
   }
 
   public getFormType(formView: FormView): string {
-    for (const block of formView.vars.block_prefixes.reverse()) {
+    for (const block of Array.from(formView.vars.block_prefixes).reverse()) {
       if (FormService.Types.includes(block)) {
         return block;
       }
