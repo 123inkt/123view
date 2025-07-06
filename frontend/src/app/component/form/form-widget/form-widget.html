@@ -1,0 +1,21 @@
+@if (['email', 'password', 'text', 'hidden', 'number', 'search'].includes(formType)) {
+  <input [type]="formType"
+         [id]="form().vars.id"
+         [name]="form().vars.full_name"
+         [required]="form().vars.required"
+         [disabled]="form().vars.disabled"
+         [value]="form().vars.value"
+         [attrs]="form().vars.attr"
+         (change)="onChange($event)"
+         (blur)="onBlur()"
+         class="form-control">
+}
+@else if (formType === 'submit') {
+  <button type="submit"
+          [id]="form().vars.id"
+          [name]="form().vars.full_name"
+          [disabled]="form().vars.disabled"
+          [attrs]="form().vars.attr"
+          class="btn-primary btn"
+  >{{ form().vars.label }}</button>
+}

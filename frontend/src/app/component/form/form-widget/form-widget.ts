@@ -1,33 +1,48 @@
-import {NgComponentOutlet} from '@angular/common';
-import {Component, input, Type} from '@angular/core';
-import {EmailFormWidget} from '@component/form/email-form-widget/email-form-widget';
-import {HiddenFormWidget} from '@component/form/hidden-form-widget/hidden-form-widget';
-import {PasswordFormWidget} from '@component/form/password-form-widget/password-form-widget';
-import {SubmitButtonFormWidget} from '@component/form/submit-button-form-widget/submit-button-form-widget';
+import {Component, forwardRef, Inject, input, OnInit} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {Attributes} from '@directive/attributes';
 import FormView from '@model/FormView';
+import {FormService} from '@service/form-service';
+import {EmptyFunction} from '../../../lib/Functions';
 
 @Component({
   selector: 'form-widget',
-  imports: [NgComponentOutlet],
-  template: '<ng-container *ngComponentOutlet="getComponent(); inputs: {form: form()}" />'
-})
-export class FormWidget {
-  public form = input.required<FormView>();
-
-  private componentMap: Record<string, Type<unknown>> = {
-    email_widget: EmailFormWidget,
-    password_widget: PasswordFormWidget,
-    hidden_widget: HiddenFormWidget,
-    submit_widget: SubmitButtonFormWidget
-  };
-
-  public getComponent(): Type<unknown> {
-    for (const prefix of this.form().vars.block_prefixes.reverse()) {
-      const component = this.componentMap[prefix + '_widget'];
-      if (component) {
-        return component;
-      }
+  imports: [Attributes],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FormWidget),
+      multi: true
     }
-    throw new Error(`No component found for input type "${this.form().vars.full_name}"`);
+  ],
+  templateUrl: './form-widget.html'
+})
+export class FormWidget implements OnInit, ControlValueAccessor {
+  public form                             = input.required<FormView>();
+  public formType: string                 = 'text';
+  public onChange: (event: Event) => void = EmptyFunction;
+  public onBlur: () => void               = EmptyFunction;
+
+  constructor(@Inject(FormService) private readonly formService: FormService) {
+  }
+
+  public ngOnInit(): void {
+    this.formType = this.formService.getFormType(this.form());
+  }
+
+  public writeValue(obj: any): void {
+    this.form().vars.value = String(obj);
+  }
+
+  public registerOnChange(fn: any): void {
+    this.onChange = (event: Event) => fn((event.target as HTMLInputElement).value);
+  }
+
+  public registerOnTouched(fn: any): void {
+    this.onBlur = fn;
+  }
+
+  public setDisabledState?(isDisabled: boolean): void {
+    this.form().vars.disabled = isDisabled;
   }
 }
