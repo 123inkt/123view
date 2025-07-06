@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "extract:i18n": "ng extract-i18n --output-path src/i18n --format=json",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

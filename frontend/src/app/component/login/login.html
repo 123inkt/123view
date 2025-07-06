@@ -1,5 +1,5 @@
 <div class="login-registration-container">
-  <h2 class="mb-4">Sign in</h2>
+  <h2 class="mb-4" i18n>Sign in</h2>
 
   <form (ngSubmit)="handleSubmit()">
     <div class="mb-3">
@@ -12,7 +12,7 @@
     </div>
     <div class="mb-3">
       <form-widget [form]="loginViewModel.form.loginBtn"/>
-      <a class="ms-2" href="/register">Create a new account</a>
+      <a class="ms-2" href="/register" i18n>Create a new account</a>
     </div>
     <form-widget [form]="loginViewModel.form._csrf_token"/>
   </form>
