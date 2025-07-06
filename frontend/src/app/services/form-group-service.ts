@@ -21,8 +21,10 @@ export class FormGroupService {
 
       const value: T = <T>formView[key];
       if (Object.keys(value).length > 1) {
+        // recursively create FormGroups
         formGroupValues[key] = this.createFormGroup(value);
       } else if (this.formService.createFromControl(value)) {
+        // create FormControl with validators
         const validators     = this.formService.createValidators(value);
         formGroupValues[key] = new FormControl(value.vars.value, validators);
       }
