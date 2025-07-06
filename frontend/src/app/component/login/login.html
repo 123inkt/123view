@@ -2,7 +2,7 @@
   <h2 class="mb-4" i18n>Sign in</h2>
 
   @if (environment.appAuthPassword) {
-    <form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
       <div class="mb-3">
         <form-label [form]="loginViewModel.form._username"/>
         <form-widget [form]="loginViewModel.form._username" formControlName="_username"/>
