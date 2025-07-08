@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import AuthToken from '@model/AuthToken';
 import JwtToken from '@model/JwtToken';
 import {BehaviorSubject} from 'rxjs';
 
@@ -16,8 +15,8 @@ export class TokenStore {
     this.isLoggedIn$       = this.isLoggedInSubject.asObservable();
   }
 
-  public setToken(token: AuthToken | null): void {
-    this.jwtToken = token === null ? null : JwtToken.fromToken(token);
+  public setToken(token: JwtToken | null): void {
+    this.jwtToken = token;
     this.isLoggedInSubject.next(token !== null);
   }
 

@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import AuthToken from '@model/AuthToken';
+import JwtToken from '@model/JwtToken';
 import {TokenStore} from '@service/token-store';
 import {UrlService} from '@service/url-service';
 import {Observable, share, tap} from 'rxjs';
@@ -18,7 +19,7 @@ export class AuthenticationService {
   public login(data: { [key: string]: unknown }): Observable<AuthToken> {
     return this.httpClient.post<AuthToken>('api/login', data)
       .pipe(
-        tap((token) => this.tokenStore.setToken(token)),
+        tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token))),
         share()
       );
   }
