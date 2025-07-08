@@ -13,7 +13,9 @@ export class Attributes implements OnChanges {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['attrs'] && this.attrs) {
       for (const [key, value] of Object.entries(this.attrs())) {
-        if (value === true) {
+        if (key === 'autofocus') {
+          this.el.nativeElement.focus();
+        } else if (value === true) {
           this.renderer.setAttribute(this.el.nativeElement, key, '');
         } else if (value !== false) {
           this.renderer.setAttribute(this.el.nativeElement, key, String(value));

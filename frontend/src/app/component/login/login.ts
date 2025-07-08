@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Params} from '@angular/router';
 import {FormLabel} from '@component/form/form-label/form-label';
 import {FormWidget} from '@component/form/form-widget/form-widget';
@@ -26,6 +26,7 @@ export class Login {
   constructor(
     @Inject(AuthenticationService) private readonly authService: AuthenticationService,
     @Inject(FormGroupService) private readonly formGroupService: FormGroupService,
+    @Inject(Router) private readonly router: Router,
     private readonly route: ActivatedRoute
   ) {
     this.route.queryParams.subscribe(params => this.queryParams = params);
@@ -45,6 +46,7 @@ export class Login {
         next: () => {
           this.processing = false;
           this.loginForm.enable();
+          this.router.navigate([this.queryParams['returnUrl'] ?? '/']);
         },
         error: (error) => {
           this.processing = false;
