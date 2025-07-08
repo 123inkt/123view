@@ -5,9 +5,7 @@ import AuthToken from '@model/AuthToken';
 import {UrlService} from '@service/url-service';
 import {BehaviorSubject, Observable, share, tap} from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class AuthenticationService {
   public readonly isLoggedIn$;
   private readonly isLoggedInSubject;
@@ -18,7 +16,7 @@ export class AuthenticationService {
     this.isLoggedIn$       = this.isLoggedInSubject.asObservable();
   }
 
-  public login(data: { [key: string]: unknown }): Observable<unknown> {
+  public login(data: { [key: string]: unknown }): Observable<AuthToken> {
     return this.httpClient.post<AuthToken>('api/login', data)
       .pipe(
         tap((token) => {
