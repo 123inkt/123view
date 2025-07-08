@@ -1,8 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Params} from '@angular/router';
+import AuthToken from '@model/AuthToken';
 import {UrlService} from '@service/url-service';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, share, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 export class AuthenticationService {
   public readonly isLoggedIn$;
   private readonly isLoggedInSubject;
+  public authToken: AuthToken | null = null;
 
   constructor(private readonly httpClient: HttpClient, private readonly urlService: UrlService) {
     this.isLoggedInSubject = new BehaviorSubject<boolean>(false);
@@ -17,11 +19,18 @@ export class AuthenticationService {
   }
 
   public login(data: { [key: string]: unknown }): Observable<unknown> {
-    return this.httpClient.post('api/login', data);
+    return this.httpClient.post<AuthToken>('api/login', data)
+      .pipe(
+        tap((token) => {
+          this.authToken = token;
+          this.isLoggedInSubject.next(true);
+        }),
+        share()
+      );
   }
 
   public azureAdRedirect(searchParams: Params): void {
-    this.httpClient.get<{url: string}>(this.urlService.createUrl('/single-sign-on/azure-ad', searchParams))
+    this.httpClient.get<{ url: string }>(this.urlService.createUrl('/single-sign-on/azure-ad', searchParams))
       .subscribe((result) => {
         window.location.href = result.url;
       });
@@ -29,6 +38,7 @@ export class AuthenticationService {
 
   public logout(): void {
     this.isLoggedInSubject.next(false);
+    this.authToken = null;
   }
 
   public isAuthenticated(): boolean {

@@ -57,7 +57,7 @@ return static function (SecurityConfig $security): void {
         ->formLogin()
         ->loginPath(LoginController::class)
         ->checkPath(LoginController::class)
-        ->enableCsrf(true)
+        ->enableCsrf(false)
         ->defaultTargetPath(ProjectsController::class);
 
     // setup logout flow
