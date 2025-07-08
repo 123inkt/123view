@@ -1,7 +1,8 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {Component} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
 import {AuthenticationService} from '@service/authentication-service';
+import {TokenStore} from '@service/token-store';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,15 @@ import {AuthenticationService} from '@service/authentication-service';
   styleUrl: './header.scss'
 })
 export class Header {
-  constructor(@Inject(AuthenticationService) public readonly authService: AuthenticationService) {
+  constructor(
+    public readonly tokenStore: TokenStore,
+    public readonly authService: AuthenticationService,
+    public readonly router: Router
+  ) {
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 }

@@ -2,29 +2,29 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import AuthToken from '@model/AuthToken';
+import {TokenStore} from '@service/token-store';
 import {UrlService} from '@service/url-service';
-import {BehaviorSubject, Observable, share, tap} from 'rxjs';
+import {Observable, share, tap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
-  public readonly isLoggedIn$;
-  private readonly isLoggedInSubject;
-  public authToken: AuthToken | null = null;
-
-  constructor(private readonly httpClient: HttpClient, private readonly urlService: UrlService) {
-    this.isLoggedInSubject = new BehaviorSubject<boolean>(false);
-    this.isLoggedIn$       = this.isLoggedInSubject.asObservable();
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly urlService: UrlService,
+    private readonly tokenStore: TokenStore
+  ) {
   }
 
   public login(data: { [key: string]: unknown }): Observable<AuthToken> {
     return this.httpClient.post<AuthToken>('api/login', data)
       .pipe(
-        tap((token) => {
-          this.authToken = token;
-          this.isLoggedInSubject.next(true);
-        }),
+        tap((token) => this.tokenStore.setToken(token)),
         share()
       );
+  }
+
+  public logout(): void {
+    this.tokenStore.setToken(null);
   }
 
   public azureAdRedirect(searchParams: Params): void {
@@ -32,18 +32,5 @@ export class AuthenticationService {
       .subscribe((result) => {
         window.location.href = result.url;
       });
-  }
-
-  public logout(): void {
-    this.isLoggedInSubject.next(false);
-    this.authToken = null;
-  }
-
-  public isAuthenticated(): boolean {
-    return this.isLoggedInSubject.getValue();
-  }
-
-  public isAdmin(): boolean {
-    return false;
   }
 }
