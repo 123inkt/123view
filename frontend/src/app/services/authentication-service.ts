@@ -19,7 +19,7 @@ export class AuthenticationService {
   public login(data: { [key: string]: unknown }): Observable<AuthToken> {
     return this.httpClient.post<AuthToken>('api/login', data)
       .pipe(
-        tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token))),
+        tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token.token))),
         share()
       );
   }
