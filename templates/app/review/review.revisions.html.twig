@@ -3,7 +3,7 @@
 
 {% set detachRevisionForm     = revisionViewModel.detachRevisionForm %}
 {% set revisionVisibilityForm = revisionViewModel.revisionVisibilityForm %}
-<div class="review-revision mt-3" {{ stimulus_controller('component--checkbox-select-all') }}>
+<div class="review-revision mt-3" {{ stimulus_controller('component--checkbox-select-all') }} data-role="review-revision">
     <h6 class="border-bottom review-revision--header">
         {% if review.type != 'branch' %}
             <input type="checkbox" class="form-check-input mb-1"

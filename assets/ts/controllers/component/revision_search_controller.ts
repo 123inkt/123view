@@ -9,14 +9,13 @@ export default class extends Controller {
         const revisions = this.getRevisions();
 
         if (search === '') {
-            target.closest('.review-revision')?.classList.remove('search-active');
-
+            target.closest('[data-role~=review-revision]')?.classList.remove('search-active');
             this.updateToggleCheckboxes(revisions, search);
 
             return;
         }
 
-        target.closest('.review-revision')?.classList.add('search-active');
+        target.closest('[data-role~=review-revision]')?.classList.add('search-active');
         revisions.forEach(el => {
             if (this.matchesSearch(el, search)) {
                 el.classList.add('search-match');
