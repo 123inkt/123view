@@ -3,17 +3,15 @@
     <h1 i18n>Projects</h1>
     <h3 class="mt-2" i18n>News feed</h3>
     <div>
-      <form method="get" class="mb-3">
-        <div class="input-group">
-          <input type="search" name="search" [value]="projectsViewModel.searchQuery" class="form-control" placeholder="Search"/>
-          @if (projectsViewModel.searchQuery !== '') {
-            <a href="?search=" class="btn btn-secondary">&times;</a>
-          }
-        </div>
-      </form>
+      <div class="input-group mb-2">
+        <input type="search" [(ngModel)]="searchQuery" class="form-control" placeholder="Search"/>
+        @if (searchQuery !== '') {
+          <a href="javascript:" class="btn btn-secondary" (click)="searchQuery = ''">&times;</a>
+        }
+      </div>
 
-      <app-projects-section [repositories]="getFavoriteRepositories()" [revisionCount]="projectsViewModel.revisionCount"/>
-      <app-projects-section [repositories]="getRepositories()" [revisionCount]="projectsViewModel.revisionCount"/>
+      <app-projects-section [repositories]="getFavoriteRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
+      <app-projects-section [repositories]="getRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
     </div>
     <div>
       ...

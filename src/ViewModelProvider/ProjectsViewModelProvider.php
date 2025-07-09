@@ -45,6 +45,7 @@ class ProjectsViewModelProvider
         $revisionCount     = $this->revisionRepository->getRepositoryRevisionCount();
         $timelineViewModel = $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->user, self::FEED_EVENTS);
 
+        // TODO ANGULAR OBSOLETE: remove this when angular is removed
         if ($searchQuery !== '') {
             $parts        = Arrays::explode(' ', $searchQuery);
             $repositories = array_filter($repositories, static fn($repository) => Strings::contains($repository->getDisplayName(), $parts));

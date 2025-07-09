@@ -21,7 +21,7 @@ class ProjectsViewModel implements ViewModelInterface
         public readonly array $revisionCount,
         #[Groups('app:projects')]
         public readonly TimelineViewModel $timeline,
-        #[Groups('app:projects')]
+        // TODO ANGULAR OBSOLETE: remove this when angular is removed
         public readonly string $searchQuery
     ) {
     }

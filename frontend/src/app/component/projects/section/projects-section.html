@@ -2,7 +2,7 @@
   @for (batch of getBatches(); track $index) {
     <div class="list-group">
       @for (repository of batch; track repository.id) {
-        <a class="list-group-item list-group-item-action" href="#">
+        <a class="list-group-item list-group-item-action" [class.d-none]="!(repository.displayName | contains:searchQuery())" href="#">
           {{ repository.displayName }}
 
           @if (revisionCount()[repository.id]) {
