@@ -65,6 +65,7 @@ return [
     'confirm.delete.comment'                      => 'Are you sure you want to delete this comment thread?',
     'confirm.delete.reply'                        => 'Are you sure you want to delete this comment?',
     'copy.link.to.clipboard'                      => 'Copy link of the review to clipboard',
+    'copy.path.to.clipboard'                      => 'Copy file path to clipboard',
     'copy.title.to.clipboard'                     => 'Copy title to clipboard',
     'create.branch.review'                        => 'Create branch review',
     'create.new.account'                          => 'Create a new account',
