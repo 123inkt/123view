@@ -1,10 +1,14 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {ProjectsSection} from '@component/projects/section/projects-section';
+import Repository from '@model/entities/Repository';
 import ProjectsViewModel from '@model/viewmodels/ProjectsViewModel';
 
 @Component({
   selector: 'app-projects',
-  imports: [],
+  imports: [
+    ProjectsSection
+  ],
   templateUrl: './projects.html',
   styleUrl: './projects.scss'
 })
@@ -16,6 +20,15 @@ export class Projects {
 
   public ngOnInit(): void {
     this.projectsViewModel = this.route.snapshot.data['resolvedData'];
-    console.log(this.projectsViewModel);
   }
+
+
+  public getFavoriteRepositories(): Repository[] {
+    return this.projectsViewModel.repositories.filter(repo => repo.favorite);
+  }
+
+  public getRepositories(): Repository[] {
+    return this.projectsViewModel.repositories.filter(repo => repo.favorite !== true);
+  }
+
 }

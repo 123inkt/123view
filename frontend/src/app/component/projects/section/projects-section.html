@@ -1,0 +1,17 @@
+<div class="projects-repository-grid mb-5">
+  @for (batch of getBatches(); track $index) {
+    <div class="list-group">
+      @for (repository of batch; track repository.id) {
+        <a class="list-group-item list-group-item-action" href="#">
+          {{ repository.displayName }}
+
+          @if (revisionCount()[repository.id]) {
+            <small class="d-block text-secondary">
+              {{ revisionCount()[repository.id]|number }} revisions
+            </small>
+          }
+        </a>
+      }
+    </div>
+  }
+</div>
