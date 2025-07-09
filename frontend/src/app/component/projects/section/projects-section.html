@@ -1,8 +1,8 @@
-<div class="projects-repository-grid mb-5">
-  @for (batch of getBatches(); track $index) {
+<div class="projects-repository-grid mb-5" [class.d-none]="repositoryColumns.length === 0">
+  @for (batch of repositoryColumns; track $index) {
     <div class="list-group">
       @for (repository of batch; track repository.id) {
-        <a class="list-group-item list-group-item-action" [class.d-none]="!(repository.displayName | contains:searchQuery())" href="#">
+        <a class="list-group-item list-group-item-action" href="#">
           {{ repository.displayName }}
 
           @if (revisionCount()[repository.id]) {
