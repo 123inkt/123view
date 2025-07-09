@@ -27,7 +27,7 @@
         </div>
     </h6>
 
-    <input type="search" class="reviews-list__search-input form-control" data-role="search"
+    <input type="search" class="reviews-list__search-input form-control form-control-sm mb-2" data-role="search"
             {{ stimulus_controller('component--revision-search') }}
             {{ stimulus_action('component--revision-search', 'search', 'input') }}
            placeholder="{{ 'search.revisions'|trans }}"/>
