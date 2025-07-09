@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentReplyRepository;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]
 class CommentReply
@@ -15,21 +16,26 @@ class CommentReply
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('comment-reply:read')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups('comment-reply:read')]
     private string $message;
 
     #[ORM\Column(type: CommentTagType::TYPE, nullable: true, enumType: CommentTagEnum::class)]
+    #[Groups('comment-reply:read')]
     private ?CommentTagEnum $tag;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
 
     #[ORM\Column]
+    #[Groups('comment-reply:read')]
     private int $createTimestamp;
 
     #[ORM\Column]
+    #[Groups('comment-reply:read')]
     private int $updateTimestamp;
 
     #[ORM\Column(type: 'type_notification_status', nullable: true)]

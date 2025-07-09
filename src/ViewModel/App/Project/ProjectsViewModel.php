@@ -5,17 +5,23 @@ namespace DR\Review\ViewModel\App\Project;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
+use DR\Review\ViewModel\ViewModelInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-class ProjectsViewModel
+class ProjectsViewModel implements ViewModelInterface
 {
     /**
      * @param Repository[]    $repositories
      * @param array<int, int> $revisionCount
      */
     public function __construct(
+        #[Groups('app:projects')]
         public readonly array $repositories,
+        #[Groups('app:projects')]
         public readonly array $revisionCount,
+        #[Groups('app:projects')]
         public readonly TimelineViewModel $timeline,
+        #[Groups('app:projects')]
         public readonly string $searchQuery
     ) {
     }

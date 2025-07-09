@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Revision\Revision;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class TimelineEntryViewModel
 {
@@ -17,15 +18,23 @@ class TimelineEntryViewModel
     /**
      * @param non-empty-array<CodeReviewActivity> $activities
      */
-    public function __construct(public readonly array $activities, public readonly string $message, public readonly ?string $url)
+    public function __construct(
+        #[Groups('app:timeline')]
+        public readonly array $activities,
+        #[Groups('app:timeline')]
+        public readonly string $message,
+        #[Groups('app:timeline')]
+        public readonly ?string $url)
     {
     }
 
+    #[Groups('app:timeline')]
     public function getComment(): ?Comment
     {
         return $this->comment;
     }
 
+    #[Groups('app:timeline')]
     public function getReply(): ?CommentReply
     {
         return $this->reply;
@@ -42,6 +51,7 @@ class TimelineEntryViewModel
         return $this;
     }
 
+    #[Groups('app:timeline')]
     public function getRevision(): ?Revision
     {
         return $this->revision;

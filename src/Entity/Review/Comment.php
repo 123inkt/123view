@@ -11,6 +11,7 @@ use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
@@ -19,31 +20,39 @@ class Comment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('comment:read')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 500)]
+    #[Groups('comment:read')]
     private string $filePath;
 
     #[ORM\Column(type: 'string', length: 2000)]
+    #[Groups('comment:read')]
     private string $lineReference;
 
     // todo change to CommentStateType.
     #[ORM\Column(type: 'string', length: 20, options: ['default' => CommentStateType::OPEN])]
+    #[Groups('comment:read')]
     private string $state = CommentStateType::OPEN;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups('comment:read')]
     private string $message;
 
     #[ORM\Column(type: CommentTagType::TYPE, nullable: true, enumType: CommentTagEnum::class)]
+    #[Groups('comment:read')]
     private ?CommentTagEnum $tag;
 
     #[ORM\Column]
+    #[Groups('comment:read')]
     private int $createTimestamp;
 
     #[ORM\Column]
+    #[Groups('comment:read')]
     private int $updateTimestamp;
 
     #[ORM\Column(type: 'type_notification_status', nullable: true)]

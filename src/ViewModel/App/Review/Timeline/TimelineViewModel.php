@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Review\Timeline;
 
+use Symfony\Component\Serializer\Attribute\Groups;
+
 class TimelineViewModel
 {
     /**
@@ -10,7 +12,7 @@ class TimelineViewModel
      *
      * @param TimelineEntryViewModel[] $entries
      */
-    public function __construct(public array $entries)
+    public function __construct(#[Groups('app:timeline')] public array $entries)
     {
     }
 }
