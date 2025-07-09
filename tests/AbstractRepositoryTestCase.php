@@ -72,7 +72,7 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
     }
 
     /**
-     * @return class-string[]
+     * @return list<class-string>
      */
     abstract protected function getFixtures(): array;
 }

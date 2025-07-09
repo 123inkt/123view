@@ -3,11 +3,13 @@
 
 {% set detachRevisionForm     = revisionViewModel.detachRevisionForm %}
 {% set revisionVisibilityForm = revisionViewModel.revisionVisibilityForm %}
-<div class="review-revision mt-3" {{ stimulus_controller('component--checkbox-select-all') }}>
+<div class="review-revision mt-3" {{ stimulus_controller('component--checkbox-select-all') }} data-role="review-revision">
     <h6 class="border-bottom review-revision--header">
-        <input type="checkbox" class="form-check-input mb-1"
-                {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
-               data-role="detach">
+        {% if review.type != 'branch' %}
+            <input type="checkbox" class="form-check-input mb-1"
+                    {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
+                   data-role="detach-toggle" data-for-role="detach">
+        {% endif %}
         {{ 'revisions'|trans }}
 
         <div class="float-end me-3">
@@ -17,7 +19,7 @@
                 <input type="checkbox"
                         {{ stimulus_action('component--checkbox-select-all', 'toggleAll', 'change') }}
                         {{ stimulus_target('component--icon-checkbox', 'checkbox') }}
-                       data-role="visibility" class="d-none icon-checkbox" checked>
+                       data-role="visibility-toggle" data-for-role="visibility" class="d-none icon-checkbox" checked>
                 <label></label>
                 <i class="bi bi-eye-fill icon-checked"></i>
                 <i class="bi bi-eye-slash icon-unchecked"></i>
@@ -25,10 +27,15 @@
         </div>
     </h6>
 
+    <input type="search" class="reviews-list__search-input form-control form-control-sm mb-2" data-role="search"
+            {{ stimulus_controller('component--revision-search') }}
+            {{ stimulus_action('component--revision-search', 'search', 'input') }}
+           placeholder="{{ 'search.revisions'|trans }}"/>
+
     {%- for revision in revisionViewModel.revisions -%}
         {% set fileChange = revisionViewModel.fileChanges[revision.id] ?? null %}
 
-        <div class="review-revision--grid">
+        <div class="review-revision--grid" data-role="revision" data-revision="{{ revision.commitHash }}" data-title="{{ revision.title }}">
             <div class="review-revision--selection">
                 {% if review.type != 'branch' %}
                     {{ form_widget(detachRevisionForm['rev' ~ revision.id]) }}
@@ -43,15 +50,15 @@
                         {{- revision.firstBranch -}}
                     </div>
                 {% endif %}
-                <div class="fw-bold review-revision--title-author">
+                <div class="fw-bold review-revision--title-author" title="{{ revision.title }}">
                     {{- revision.title -}}
                 </div>
                 {% if fileChange is not same as (null) %}
-                <div class="small">
-                    {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
-                    <span class="text-success">+{{ fileChange.linesAdded }}</span>,
-                    <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
-                </div>
+                    <div class="small">
+                        {{ 'files.changed'|trans }}: <span class="text-primary">{{ fileChange.fileCount }}</span>,
+                        <span class="text-success">+{{ fileChange.linesAdded }}</span>,
+                        <span class="text-danger">-{{ fileChange.linesRemoved }}</span>
+                    </div>
                 {% endif %}
             </div>
 

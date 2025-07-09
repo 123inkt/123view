@@ -47,3 +47,7 @@
 .revision-entities-title {
     max-width: 600px;
 }
+
+.review-revision.search-active .review-revision--grid:not(.search-match) {
+    display: none;
+}

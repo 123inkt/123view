@@ -11095,16 +11095,16 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "3.4.1",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "3ebebefffac05ae349e42364daf80e7ce5fd7a38"
+                "reference": "f385458e47026b7bf5e73efe2a96c6b74805edc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/3ebebefffac05ae349e42364daf80e7ce5fd7a38",
-                "reference": "3ebebefffac05ae349e42364daf80e7ce5fd7a38",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/f385458e47026b7bf5e73efe2a96c6b74805edc5",
+                "reference": "f385458e47026b7bf5e73efe2a96c6b74805edc5",
                 "shasum": ""
             },
             "require": {
@@ -11130,7 +11130,7 @@
                 "doctrine/mongodb-odm-bundle": "^4.4 || ^5.0",
                 "doctrine/orm": "^2.14 || ^3.1.0",
                 "monolog/monolog": "^1.25.1 || ^2.0 || ^3.0",
-                "phpunit/phpunit": "^10.5.11 || ^11.0.4",
+                "phpunit/phpunit": "^10.5.11 || ^11.0.4 || ^12.0.0",
                 "symfony/doctrine-bridge": "^5.4 || ^6.3 || ^7.0",
                 "symfony/monolog-bridge": "^5.4 || ^6.3 || ^7.0",
                 "symfony/monolog-bundle": "^3.2",
@@ -11176,9 +11176,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.4.1"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.5.0"
             },
-            "time": "2025-06-26T15:09:22+00:00"
+            "time": "2025-07-06T19:52:28+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -14661,16 +14661,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.63.0",
+            "version": "v1.64.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "69478ab39bc303abfbe3293006a78b09a8512425"
+                "reference": "c86da84640b0586e92aee2b276ee3638ef2f425a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/69478ab39bc303abfbe3293006a78b09a8512425",
-                "reference": "69478ab39bc303abfbe3293006a78b09a8512425",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/c86da84640b0586e92aee2b276ee3638ef2f425a",
+                "reference": "c86da84640b0586e92aee2b276ee3638ef2f425a",
                 "shasum": ""
             },
             "require": {
@@ -14698,6 +14698,7 @@
                 "symfony/http-client": "^6.4|^7.0",
                 "symfony/phpunit-bridge": "^6.4.1|^7.0",
                 "symfony/security-core": "^6.4|^7.0",
+                "symfony/security-http": "^6.4|^7.0",
                 "symfony/yaml": "^6.4|^7.0",
                 "twig/twig": "^3.0|^4.x-dev"
             },
@@ -14733,7 +14734,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.63.0"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.64.0"
             },
             "funding": [
                 {
@@ -14749,7 +14750,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-04-26T01:41:37+00:00"
+            "time": "2025-06-23T16:12:08+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
