@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {Resolve} from '@angular/router';
-import LoginViewModel from '@model/LoginViewModel';
+import LoginViewModel from '@model/viewmodels/LoginViewModel';
 import {LoginService} from '@service/login-service';
 import {Observable} from 'rxjs';
 

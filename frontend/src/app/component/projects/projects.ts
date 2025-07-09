@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import ProjectsViewModel from '@model/ProjectsViewModel';
+import ProjectsViewModel from '@model/viewmodels/ProjectsViewModel';
 
 @Component({
   selector: 'app-projects',

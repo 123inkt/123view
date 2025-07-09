@@ -1,4 +1,4 @@
-import FormView from './FormView';
+import FormView from '@model/FormView';
 
 export default class LoginViewModel {
   public declare form: FormView<

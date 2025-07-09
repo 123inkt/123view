@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
-import ProjectsViewModel from '@model/ProjectsViewModel';
+import ProjectsViewModel from '@model/viewmodels/ProjectsViewModel';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})

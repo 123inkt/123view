@@ -73,6 +73,7 @@ class Repository implements EquatableInterface
     private ?string $gitType = null;
 
     #[ORM\Column]
+    #[Groups(['repository:read'])]
     private bool $favorite = false;
 
     #[ORM\Column(type: 'integer', options: ['default' => 900])]

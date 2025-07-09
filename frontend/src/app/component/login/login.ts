@@ -5,7 +5,7 @@ import {Params} from '@angular/router';
 import {FormLabel} from '@component/form/form-label/form-label';
 import {FormWidget} from '@component/form/form-widget/form-widget';
 import {environment} from '@environment/environment';
-import LoginViewModel from '@model/LoginViewModel';
+import LoginViewModel from '@model/viewmodels/LoginViewModel';
 import {AuthenticationService} from '@service/authentication-service';
 import {FormGroupService} from '@service/form-group-service';
 
