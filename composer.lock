@@ -10555,16 +10555,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
-            "version": "v1.7.2",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-extensions.git",
-                "reference": "aa3a01035111783975039bc5bd81febd3548f810"
+                "reference": "404ffffca51f1925b26b510dbd209f07b7b3f986"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/aa3a01035111783975039bc5bd81febd3548f810",
-                "reference": "aa3a01035111783975039bc5bd81febd3548f810",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/404ffffca51f1925b26b510dbd209f07b7b3f986",
+                "reference": "404ffffca51f1925b26b510dbd209f07b7b3f986",
                 "shasum": ""
             },
             "require": {
@@ -10578,7 +10578,7 @@
                 "symfony/twig-bundle": "<6.0"
             },
             "require-dev": {
-                "digitalrevolution/phpunit-file-coverage-inspection": "^2.0",
+                "digitalrevolution/phpunit-file-coverage-inspection": "^3.0",
                 "phpmd/phpmd": "^2.12",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan": "^2.0",
@@ -10624,9 +10624,9 @@
             "description": "A library for phpunit utility and support classes",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-extensions/issues",
-                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.7.2"
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.8.0"
             },
-            "time": "2025-04-01T10:34:07+00:00"
+            "time": "2025-07-10T14:55:18+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
