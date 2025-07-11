@@ -1,7 +1,7 @@
 {# timelineViewModel: TimelineViewModel #}
 
 <div>
-    <div class="review-timeline" {{ stimulus_controller('review-timeline') }} >
+    <div class="review-timeline" {{ stimulus_controller('review-timeline') }}>
         {%- for entry in timelineViewModel.entries -%}
             {%- set activity = entry.activities|first -%}
 

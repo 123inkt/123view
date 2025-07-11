@@ -2,13 +2,14 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {ProjectsSection} from '@component/projects/section/projects-section';
+import {Timeline} from '@component/timeline/timeline';
 import Repository from '@model/entities/Repository';
 import ProjectsViewModel from '@model/viewmodels/ProjectsViewModel';
 import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
 
 @Component({
   selector: 'app-projects',
-  imports: [ProjectsSection, FormsModule],
+  imports: [ProjectsSection, Timeline, FormsModule],
   templateUrl: './projects.html',
   styleUrl: './projects.scss'
 })

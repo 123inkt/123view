@@ -47,10 +47,10 @@ return static function (SecurityConfig $security): void {
         ->stateless(true)
         ->customAuthenticators([JWTAuthenticator::class]);
 
-    $security->firewall('api')
-        ->pattern('^/api')
-        ->stateless(true)
-        ->customAuthenticators([BearerAuthenticator::class]);
+    //$security->firewall('api')
+    //    ->pattern('^/api')
+    //    ->stateless(true)
+    //    ->customAuthenticators([BearerAuthenticator::class]);
 
     $security->firewall('main')
         ->lazy(true)
