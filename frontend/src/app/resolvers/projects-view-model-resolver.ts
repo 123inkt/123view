@@ -10,7 +10,6 @@ export class ProjectsViewModelResolver implements Resolve<ProjectsViewModel> {
     }
 
     public resolve(): Observable<ProjectsViewModel> {
-        console.log('get projects');
         return this.projectsService.getProjects();
     }
 }

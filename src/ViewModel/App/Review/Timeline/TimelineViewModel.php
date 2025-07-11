@@ -9,7 +9,7 @@ use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[Get(
-    '/view-model/projects/news-feed',
+    '/view-model/projects/timeline',
     openapi             : new OpenApiOperation(tags: ['ViewModel']),
     normalizationContext: ['app:timeline', 'repository:read', 'comment:read', 'comment-reply:read'],
     security            : 'is_granted(ROLE_USER)',

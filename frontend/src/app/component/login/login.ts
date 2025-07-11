@@ -33,7 +33,7 @@ export class Login {
   }
 
   public ngOnInit(): void {
-    this.loginViewModel = this.route.snapshot.data['resolvedData'];
+    this.loginViewModel = this.route.snapshot.data['loginViewModel'];
     this.loginForm      = this.formGroupService.createFormGroup(this.loginViewModel.form);
   }
 

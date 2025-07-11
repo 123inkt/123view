@@ -4,6 +4,7 @@ import {Projects} from '@component/projects/projects';
 import {environment} from '@environment/environment';
 import {authenticationGuard} from '@guard/authentication-guard';
 import {LoginViewModelResolver} from '@resolver/login-view-model-resolver';
+import {ProjectsTimelineViewModelResolver} from '@resolver/projects-timeline-view-model-resolver';
 import {ProjectsViewModelResolver} from '@resolver/projects-view-model-resolver';
 
 export const routes: Routes = [
@@ -12,7 +13,7 @@ export const routes: Routes = [
     component: Login,
     data: {requiresLogin: false},
     title: environment.appName + ' - ' + $localize`Login`,
-    resolve: {resolvedData: LoginViewModelResolver},
+    resolve: {loginViewModel: LoginViewModelResolver},
     canActivate: [authenticationGuard]
   },
   {
@@ -20,7 +21,7 @@ export const routes: Routes = [
     component: Projects,
     data: {requiresLogin: true},
     title: environment.appName + ' - ' + $localize`Projects`,
-    resolve: {resolvedData: ProjectsViewModelResolver},
+    resolve: {projectsViewModel: ProjectsViewModelResolver, timelineViewModel: ProjectsTimelineViewModelResolver},
     canActivate: [authenticationGuard]
   }
 ];

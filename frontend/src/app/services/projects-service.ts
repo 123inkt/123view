@@ -9,6 +9,6 @@ export class ProjectsService {
   }
 
   public getProjects(): Observable<ProjectsViewModel> {
-    return this.httpClient.get<ProjectsViewModel>('/app/projects.json');
+    return this.httpClient.get<ProjectsViewModel>('api/view-model/projects');
   }
 }
