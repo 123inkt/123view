@@ -10,7 +10,7 @@ return static function (ApiPlatformConfig $config): void {
         ->showWebby(true)
         ->pathSegmentNameGenerator('api_platform.metadata.path_segment_name_generator.dash');
 
-    $config->mapping()->paths(['%kernel.project_dir%/src/Entity']);
+    $config->mapping()->paths(['%kernel.project_dir%/src/Entity', '%kernel.project_dir%/src/ViewModel']);
 
     $config->swagger()->versions([3])->apiKeys('Bearer')->name('Authorization')->type('header');
 

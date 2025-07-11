@@ -3,12 +3,18 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider;
 
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Review\ReviewAccepted;
+use DR\Review\Message\Review\ReviewOpened;
+use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
@@ -17,14 +23,23 @@ use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
-class ReviewTimelineViewModelProvider
+readonly class ReviewTimelineViewModelProvider implements ProviderInterface
 {
+    private const FEED_EVENTS = [
+        ReviewAccepted::NAME,
+        ReviewRejected::NAME,
+        ReviewOpened::NAME,
+        CommentAdded::NAME,
+        CommentResolved::NAME,
+        CommentReplyAdded::NAME
+    ];
+
     public function __construct(
-        private readonly CodeReviewActivityRepository $activityRepository,
-        private readonly CodeReviewActivityFormatter $activityFormatter,
-        private readonly ActivityCommentProvider $commentProvider,
-        private readonly CodeReviewActivityUrlGenerator $urlGenerator,
-        private readonly User $user
+        private CodeReviewActivityRepository $activityRepository,
+        private CodeReviewActivityFormatter $activityFormatter,
+        private ActivityCommentProvider $commentProvider,
+        private CodeReviewActivityUrlGenerator $urlGenerator,
+        private User $user
     ) {
     }
 
@@ -55,6 +70,7 @@ class ReviewTimelineViewModelProvider
     }
 
     /**
+     * @TODO ANGULAR REMOVE
      * @param string[] $events
      */
     public function getTimelineViewModelForFeed(User $user, array $events, ?Repository $repository = null): TimelineViewModel
@@ -65,6 +81,30 @@ class ReviewTimelineViewModelProvider
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
             $message = $this->activityFormatter->format($activity, $user);
+            if ($message === null) {
+                continue;
+            }
+
+            $url   = $this->urlGenerator->generate($activity);
+            $entry = new TimelineEntryViewModel([$activity], $message, $url);
+            $entry->setCommentOrReply($this->commentProvider->getCommentFor($activity));
+            $timelineEntries[] = $entry;
+        }
+
+        return new TimelineViewModel($timelineEntries);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
+        $activities      = $this->activityRepository->findForUser($this->user->getId(), self::FEED_EVENTS);
+        $timelineEntries = [];
+
+        // create TimelineEntryViewModel entries
+        foreach ($activities as $activity) {
+            $message = $this->activityFormatter->format($activity, $this->user);
             if ($message === null) {
                 continue;
             }

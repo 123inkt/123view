@@ -3,11 +3,20 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Project;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModel\ViewModelInterface;
+use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+#[Get(
+    '/view-model/projects',
+    openapi             : new OpenApiOperation(tags: ['ViewModel']),
+    normalizationContext: ['groups' => ['app:projects', 'repository:read']],
+    security            : 'is_granted(ROLE_USER)',
+    provider: ProjectsViewModelProvider::class
+)]
 class ProjectsViewModel implements ViewModelInterface
 {
     /**
@@ -15,44 +24,8 @@ class ProjectsViewModel implements ViewModelInterface
      * @param array<int, int> $revisionCount
      */
     public function __construct(
-        #[Groups('app:projects')]
-        public readonly array $repositories,
-        #[Groups('app:projects')]
-        public readonly array $revisionCount,
-        #[Groups('app:projects')]
-        public readonly TimelineViewModel $timeline,
-        // TODO ANGULAR OBSOLETE: remove this when angular is removed
-        public readonly string $searchQuery
+        #[Groups('app:projects')] public readonly array $repositories,
+        #[Groups('app:projects')] public readonly array $revisionCount,
     ) {
-    }
-
-    /**
-     * @return Repository[]
-     */
-    public function getFavoriteRepositories(): array
-    {
-        $repositories = [];
-        foreach ($this->repositories as $repository) {
-            if ($repository->isFavorite()) {
-                $repositories[] = $repository;
-            }
-        }
-
-        return $repositories;
-    }
-
-    /**
-     * @return Repository[]
-     */
-    public function getRegularRepositories(): array
-    {
-        $repositories = [];
-        foreach ($this->repositories as $repository) {
-            if ($repository->isFavorite() === false) {
-                $repositories[] = $repository;
-            }
-        }
-
-        return $repositories;
     }
 }
