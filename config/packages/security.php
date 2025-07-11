@@ -47,6 +47,7 @@ return static function (SecurityConfig $security): void {
         ->stateless(true)
         ->customAuthenticators([JWTAuthenticator::class]);
 
+    // TODO ANGULAR Fix
     //$security->firewall('api')
     //    ->pattern('^/api')
     //    ->stateless(true)
