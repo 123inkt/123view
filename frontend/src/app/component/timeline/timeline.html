@@ -1,3 +1,7 @@
 <div class="review-timeline">
-  timeline
+  @for (entry of viewModel().entries; track $index) {
+    <div class="review-timeline__entry  pb-3">
+      <div [innerHTML]="entry.message"></div>
+    </div>
+  }
 </div>

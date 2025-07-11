@@ -3,7 +3,6 @@ import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
 
 @Component({
   selector: 'app-timeline',
-  imports: [],
   templateUrl: './timeline.html',
   styleUrl: './timeline.scss'
 })
