@@ -14,8 +14,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
     '/view-model/projects',
     openapi             : new OpenApiOperation(tags: ['ViewModel']),
     normalizationContext: ['groups' => ['app:projects', 'repository:read']],
-    security            : 'is_granted(ROLE_USER)',
-    provider: ProjectsViewModelProvider::class
+    security            : 'is_granted("ROLE_USER")',
+    provider            : ProjectsViewModelProvider::class
 )]
 class ProjectsViewModel implements ViewModelInterface
 {

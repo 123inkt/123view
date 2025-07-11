@@ -16,8 +16,8 @@ export class AuthenticationService {
   ) {
   }
 
-  public login(data: { [key: string]: unknown }): Observable<AuthToken> {
-    return this.httpClient.post<AuthToken>('api/login', data)
+  public login(data: {username: string, password: string}): Observable<AuthToken> {
+    return this.httpClient.post<AuthToken>('api/login', {_username: data.username, _password: data.password})
       .pipe(
         tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token.token))),
         share()

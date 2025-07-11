@@ -11,8 +11,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[Get(
     '/view-model/projects/timeline',
     openapi             : new OpenApiOperation(tags: ['ViewModel']),
-    normalizationContext: ['app:timeline', 'repository:read', 'comment:read', 'comment-reply:read'],
-    security            : 'is_granted(ROLE_USER)',
+    normalizationContext: ['groups' => ['app:timeline', 'repository:read', 'comment:read', 'comment-reply:read']],
+    security            : 'is_granted("ROLE_USER")',
     provider            : ReviewTimelineViewModelProvider::class
 )]
 class TimelineViewModel

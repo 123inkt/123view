@@ -41,7 +41,7 @@ export class Login {
     this.processing   = true;
     this.errorMessage = null;
     this.loginForm.disable();
-    this.authService.login(this.loginForm.value)
+    this.authService.login(<{username: string, password: string}>this.loginForm.value)
       .subscribe({
         next: () => {
           this.processing = false;

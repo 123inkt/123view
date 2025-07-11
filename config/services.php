@@ -80,6 +80,8 @@ use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use League\OAuth2\Client\Provider\GenericProvider;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator;
+use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\CookieTokenExtractor;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
@@ -143,6 +145,10 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$hostname', '%env(APP_HOSTNAME)%')
         ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%');
     $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
+
+    // configure security
+    $services->set(CookieTokenExtractor::class)->arg('$name', 'jwtToken');
+    $services->set(JWTAuthenticator::class)->arg('$tokenExtractor', service(CookieTokenExtractor::class));
 
     // Configure Api
     $services->set(OperationParameterDocumentor::class);

@@ -6,10 +6,10 @@ use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
-use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\UserChecker;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
@@ -42,9 +42,14 @@ return static function (SecurityConfig $security): void {
             ->failureHandler('lexik_jwt_authentication.handler.authentication_failure');
 
     $security->firewall('api')
-        ->pattern('^/api')
+        ->pattern('^/api/view-model')
         ->stateless(true)
-        ->customAuthenticators([BearerAuthenticator::class]);
+        ->customAuthenticators([JWTAuthenticator::class]);
+
+    //$security->firewall('api')
+    //    ->pattern('^/api')
+    //    ->stateless(true)
+    //    ->customAuthenticators([BearerAuthenticator::class]);
 
     $security->firewall('main')
         ->lazy(true)
