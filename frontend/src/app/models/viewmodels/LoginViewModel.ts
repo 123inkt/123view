@@ -3,8 +3,8 @@ import FormView from '@model/FormView';
 export default class LoginViewModel {
   public declare form: FormView<
     {
-      _username: FormView,
-      _password: FormView,
+      username: FormView,
+      password: FormView,
       loginBtn: FormView
     }
   >;

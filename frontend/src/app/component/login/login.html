@@ -4,12 +4,12 @@
   @if (environment.appAuthPassword) {
     <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
       <div class="mb-3">
-        <form-label [form]="loginViewModel.form._username"/>
-        <form-widget [form]="loginViewModel.form._username" formControlName="_username"/>
+        <form-label [form]="loginViewModel.form.username"/>
+        <form-widget [form]="loginViewModel.form.username" formControlName="username"/>
       </div>
       <div class="mb-3">
-        <form-label [form]="loginViewModel.form._password"/>
-        <form-widget [form]="loginViewModel.form._password" formControlName="_password"/>
+        <form-label [form]="loginViewModel.form.password"/>
+        <form-widget [form]="loginViewModel.form.password" formControlName="password"/>
       </div>
       <div class="invalid-feedback mb-3" [class.d-block]="errorMessage !== null">{{ errorMessage }}</div>
       <div class="mb-3">
