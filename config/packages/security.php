@@ -6,6 +6,7 @@ use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Entity\User\User;
+use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\UserChecker;
@@ -36,8 +37,8 @@ return static function (SecurityConfig $security): void {
         ->stateless(true)
         ->jsonLogin()
             ->checkPath('/api/login')
-            ->usernamePath('_username')
-            ->passwordPath('_password')
+            ->usernamePath('username')
+            ->passwordPath('password')
             ->successHandler('lexik_jwt_authentication.handler.authentication_success')
             ->failureHandler('lexik_jwt_authentication.handler.authentication_failure');
 
@@ -46,10 +47,10 @@ return static function (SecurityConfig $security): void {
         ->stateless(true)
         ->customAuthenticators([JWTAuthenticator::class]);
 
-    //$security->firewall('api')
-    //    ->pattern('^/api')
-    //    ->stateless(true)
-    //    ->customAuthenticators([BearerAuthenticator::class]);
+    $security->firewall('api')
+        ->pattern('^/api')
+        ->stateless(true)
+        ->customAuthenticators([BearerAuthenticator::class]);
 
     $security->firewall('main')
         ->lazy(true)
