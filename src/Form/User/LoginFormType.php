@@ -17,14 +17,10 @@ class LoginFormType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'username'        => null,
                 'csrf_field_name' => '_csrf_token',
                 'csrf_token_id'   => 'authenticate',
-                'targetPath'      => null,
             ]
         );
-        $resolver->addAllowedTypes('username', 'string');
-        $resolver->addAllowedTypes('targetPath', ['string', 'null']);
     }
 
     /**

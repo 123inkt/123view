@@ -67,7 +67,7 @@ return static function (SecurityConfig $security): void {
         ->target(LoginController::class);
 
     $security->accessControl()->path('^/app')->roles(['IS_AUTHENTICATED_FULLY']);
-    $security->accessControl()->path('^/api/login')->roles(['PUBLIC_ACCESS']);
+    $security->accessControl()->path('^/api/view-model/login')->roles(['PUBLIC_ACCESS']);
     $security->accessControl()->path('^/api')->roles(['IS_AUTHENTICATED_FULLY']);
     $security->accessControl()->path('^/log-viewer')->roles([Roles::ROLE_ADMIN]);
 };
