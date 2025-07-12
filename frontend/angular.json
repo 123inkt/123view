@@ -10,9 +10,6 @@
           "style": "scss"
         }
       },
-      "i18n": {
-        "sourceLocale": "en-US"
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -89,9 +86,6 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
         },
         "test": {
           "builder": "@angular/build:karma",
