@@ -1,7 +1,7 @@
 <div class="container-xl">
   <div class="projects-grid mt-2">
-    <h1 i18n>Projects</h1>
-    <h3 class="mt-2" i18n>News feed</h3>
+    <h1>{{ 'projects' | translate }}</h1>
+    <h3 class="mt-2">{{ 'news.feed' | translate }}</h3>
     <div>
       <div class="input-group mb-2">
         <input type="search" [(ngModel)]="searchQuery" class="form-control" placeholder="Search" autofocus/>
@@ -17,5 +17,4 @@
       <app-timeline [viewModel]="timelineViewModel"/>
     </div>
   </div>
-
 </div>

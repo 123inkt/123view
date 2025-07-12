@@ -6,10 +6,11 @@ import {Timeline} from '@component/timeline/timeline';
 import Repository from '@model/entities/Repository';
 import ProjectsViewModel from '@model/viewmodels/ProjectsViewModel';
 import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects',
-  imports: [ProjectsSection, Timeline, FormsModule],
+  imports: [ProjectsSection, Timeline, FormsModule, TranslatePipe],
   templateUrl: './projects.html',
   styleUrl: './projects.scss'
 })
