@@ -6,12 +6,13 @@ import {FormLabel} from '@component/form/form-label/form-label';
 import {FormWidget} from '@component/form/form-widget/form-widget';
 import {environment} from '@environment/environment';
 import LoginViewModel from '@model/viewmodels/LoginViewModel';
+import {TranslatePipe} from '@ngx-translate/core';
 import {AuthenticationService} from '@service/authentication-service';
 import {FormGroupService} from '@service/form-group-service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, FormWidget, FormLabel],
+  imports: [ReactiveFormsModule, FormWidget, FormLabel, TranslatePipe],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })

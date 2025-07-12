@@ -1,5 +1,5 @@
 <div class="login-registration-container">
-  <h2 class="mb-4" i18n>Sign in</h2>
+  <h2 class="mb-4">{{ 'sign.in' | translate }}</h2>
 
   @if (environment.appAuthPassword) {
     <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
@@ -14,7 +14,7 @@
       <div class="invalid-feedback mb-3" [class.d-block]="errorMessage !== null">{{ errorMessage }}</div>
       <div class="mb-3">
         <form-widget [form]="loginViewModel.form.loginBtn" [disabled]="loginForm.valid === false" [loading]="processing"/>
-        <a class="ms-2" href="/register" i18n>Create a new account</a>
+        <a class="ms-2" href="/register">{{ 'create.new.account' | translate }}</a>
       </div>
     </form>
   }
@@ -26,7 +26,7 @@
            alt="microsoft"
            class="single-sign-on-icon"
       >
-      <span i18n>Log in with Active Directory</span>
+      <span>{{ 'log.in.with.active.directory' | translate }}</span>
     </a>
   }
 </div>
