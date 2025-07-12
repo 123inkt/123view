@@ -4,77 +4,77 @@
 @use 'assets/styles/theme';
 
 :root {
-  --review-sidebar-gap: 10px;
-  --review-sidebar-width: 400px;
+    --review-sidebar-gap: 10px;
+    --review-sidebar-width: 400px;
 }
 
 .header-nav-brand {
-  border: 1px solid #ffffff;
-  border-radius: 5px;
-  height: 30px;
-  line-height: 28px;
-  margin-left: 20px;
-  margin-right: 3px;
-  padding: 0;
-  text-align: center;
-  width: 30px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    height: 30px;
+    line-height: 28px;
+    margin-left: 20px;
+    margin-right: 3px;
+    padding: 0;
+    text-align: center;
+    width: 30px;
 }
 
 blockquote {
-  border-left: 2px solid #cccccc;
-  margin: 0;
-  padding-left: 5px;
+    border-left: 2px solid #cccccc;
+    margin: 0;
+    padding-left: 5px;
 }
 
 p {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 ul {
-  margin-bottom: 0;
-  padding-left: 15px;
+    margin-bottom: 0;
+    padding-left: 15px;
 }
 
 .content-layout-center {
-  margin: 20px auto;
-  max-width: 1000px;
+    margin: 20px auto;
+    max-width: 1000px;
 }
 
 .form-text {
-  display: none;
+    display: none;
 }
 
 .form-text-visible {
-  display: block;
+    display: block;
 }
 
 .dr-btn-orange {
-  --bs-btn-color: #e24329;
-  --bs-btn-border-color: #e24329;
-  --bs-btn-hover-bg: #e24329;
-  --bs-btn-hover-border-color: #e24329;
-  --bs-btn-active-bg: #e24329;
-  --bs-btn-active-border-color: #e24329;
+    --bs-btn-color: #e24329;
+    --bs-btn-border-color: #e24329;
+    --bs-btn-hover-bg: #e24329;
+    --bs-btn-hover-border-color: #e24329;
+    --bs-btn-active-bg: #e24329;
+    --bs-btn-active-border-color: #e24329;
 }
 
 .max-width-fit-content {
-  max-width: fit-content;
+    max-width: fit-content;
 }
 
 .form-control:required,
 .form-select {
-  border-left: 4px solid #dc3545;
+    border-left: 4px solid #dc3545;
 }
 
 .rule-table .rule-table-options {
-  width: 110px;
+    width: 110px;
 }
 
 .error-page {
-  max-width: 800px;
-  margin: 10px auto;
+    max-width: 800px;
+    margin: 10px auto;
 }
 
 .repository-columns > * {
-  column-count: 6;
+    column-count: 6;
 }

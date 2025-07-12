@@ -4,13 +4,13 @@ import LoginViewModel from '@model/viewmodels/LoginViewModel';
 import {Observable} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LoginService {
-  constructor(@Inject(HttpClient) private httpClient: HttpClient) {
-  }
+    constructor(@Inject(HttpClient) private httpClient: HttpClient) {
+    }
 
-  public getLoginForm(): Observable<LoginViewModel> {
-    return this.httpClient.get<LoginViewModel>('api/view-model/login');
-  }
+    public getLoginForm(): Observable<LoginViewModel> {
+        return this.httpClient.get<LoginViewModel>('api/view-model/login');
+    }
 }

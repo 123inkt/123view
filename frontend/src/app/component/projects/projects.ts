@@ -9,29 +9,29 @@ import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-projects',
-  imports: [ProjectsSection, Timeline, FormsModule, TranslatePipe],
-  templateUrl: './projects.html',
-  styleUrl: './projects.scss'
+    selector: 'app-projects',
+    imports: [ProjectsSection, Timeline, FormsModule, TranslatePipe],
+    templateUrl: './projects.html',
+    styleUrl: './projects.scss'
 })
 export class Projects {
-  public declare projectsViewModel: ProjectsViewModel;
-  public declare timelineViewModel: TimelineViewModel;
-  public searchQuery = '';
+    public declare projectsViewModel: ProjectsViewModel;
+    public declare timelineViewModel: TimelineViewModel;
+    public searchQuery = '';
 
-  constructor(private readonly route: ActivatedRoute) {
-  }
+    constructor(private readonly route: ActivatedRoute) {
+    }
 
-  public ngOnInit(): void {
-    this.projectsViewModel = this.route.snapshot.data['projectsViewModel'];
-    this.timelineViewModel = this.route.snapshot.data['timelineViewModel'];
-  }
+    public ngOnInit(): void {
+        this.projectsViewModel = this.route.snapshot.data['projectsViewModel'];
+        this.timelineViewModel = this.route.snapshot.data['timelineViewModel'];
+    }
 
-  public getFavoriteRepositories(): Repository[] {
-    return this.projectsViewModel.repositories.filter(repo => repo.favorite);
-  }
+    public getFavoriteRepositories(): Repository[] {
+        return this.projectsViewModel.repositories.filter(repo => repo.favorite);
+    }
 
-  public getRepositories(): Repository[] {
-    return this.projectsViewModel.repositories.filter(repo => repo.favorite !== true);
-  }
+    public getRepositories(): Repository[] {
+        return this.projectsViewModel.repositories.filter(repo => repo.favorite !== true);
+    }
 }

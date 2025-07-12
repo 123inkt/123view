@@ -8,20 +8,20 @@ import {CookieService} from 'ngx-cookie-service';
 import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({eventCoalescing: true}),
-    provideRouter(routes),
-    // http client
-    provideHttpClient(withInterceptors([httpclientUrlInterceptor])),
-    CookieService,
-    // translations
-    importProvidersFrom([TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './i18n/', '.json'),
-        deps: [HttpClient]
-      }
-    })])
-  ]
+    providers: [
+        provideBrowserGlobalErrorListeners(),
+        provideZoneChangeDetection({eventCoalescing: true}),
+        provideRouter(routes),
+        // http client
+        provideHttpClient(withInterceptors([httpclientUrlInterceptor])),
+        CookieService,
+        // translations
+        importProvidersFrom([TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './i18n/', '.json'),
+                deps: [HttpClient]
+            }
+        })])
+    ]
 };

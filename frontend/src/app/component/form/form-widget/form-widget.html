@@ -9,15 +9,13 @@
          (input)="onInput($event)"
          (blur)="onBlur()"
          class="form-control">
-}
-@else if (formType === 'submit') {
+} @else if (formType === 'submit') {
   <button type="submit"
           [id]="form().vars.id"
           [name]="form().vars.full_name"
           [disabled]="form().vars.disabled"
           [attrs]="form().vars.attr"
-          class="btn-primary btn"
-  >
+          class="btn-primary btn">
     @if (loading() === true) {
       <span class="spinner-border spinner-border-sm me-1"></span>
     }

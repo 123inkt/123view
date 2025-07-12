@@ -9,29 +9,29 @@ import {Observable, share, tap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
-  constructor(
-    private readonly httpClient: HttpClient,
-    private readonly urlService: UrlService,
-    private readonly tokenStore: TokenStore
-  ) {
-  }
+    constructor(
+        private readonly httpClient: HttpClient,
+        private readonly urlService: UrlService,
+        private readonly tokenStore: TokenStore
+    ) {
+    }
 
-  public login(data: {username: string, password: string}): Observable<AuthToken> {
-    return this.httpClient.post<AuthToken>('api/login', data)
-      .pipe(
-        tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token.token))),
-        share()
-      );
-  }
+    public login(data: {username: string, password: string}): Observable<AuthToken> {
+        return this.httpClient.post<AuthToken>('api/login', data)
+            .pipe(
+                tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token.token))),
+                share()
+            );
+    }
 
-  public logout(): void {
-    this.tokenStore.setToken(null);
-  }
+    public logout(): void {
+        this.tokenStore.setToken(null);
+    }
 
-  public azureAdRedirect(searchParams: Params): void {
-    this.httpClient.get<{ url: string }>(this.urlService.createUrl('/single-sign-on/azure-ad', searchParams))
-      .subscribe((result) => {
-        window.location.href = result.url;
-      });
-  }
+    public azureAdRedirect(searchParams: Params): void {
+        this.httpClient.get<{url: string}>(this.urlService.createUrl('/single-sign-on/azure-ad', searchParams))
+            .subscribe((result) => {
+                window.location.href = result.url;
+            });
+    }
 }

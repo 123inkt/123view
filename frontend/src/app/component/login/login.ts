@@ -11,53 +11,53 @@ import {AuthenticationService} from '@service/authentication-service';
 import {FormGroupService} from '@service/form-group-service';
 
 @Component({
-  selector: 'app-login',
-  imports: [ReactiveFormsModule, FormWidget, FormLabel, TranslatePipe],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+    selector: 'app-login',
+    imports: [ReactiveFormsModule, FormWidget, FormLabel, TranslatePipe],
+    templateUrl: './login.html',
+    styleUrl: './login.scss'
 })
 export class Login {
-  public declare loginViewModel: LoginViewModel;
-  public declare loginForm: FormGroup;
-  public environment                 = environment;
-  public processing: boolean         = false;
-  public errorMessage: string | null = null;
-  private queryParams: Params        = {};
+    public declare loginViewModel: LoginViewModel;
+    public declare loginForm: FormGroup;
+    public environment                 = environment;
+    public processing: boolean         = false;
+    public errorMessage: string | null = null;
+    private queryParams: Params        = {};
 
-  constructor(
-    @Inject(AuthenticationService) private readonly authService: AuthenticationService,
-    @Inject(FormGroupService) private readonly formGroupService: FormGroupService,
-    @Inject(Router) private readonly router: Router,
-    private readonly route: ActivatedRoute
-  ) {
-    this.route.queryParams.subscribe(params => this.queryParams = params);
-  }
+    constructor(
+        @Inject(AuthenticationService) private readonly authService: AuthenticationService,
+        @Inject(FormGroupService) private readonly formGroupService: FormGroupService,
+        @Inject(Router) private readonly router: Router,
+        private readonly route: ActivatedRoute
+    ) {
+        this.route.queryParams.subscribe(params => this.queryParams = params);
+    }
 
-  public ngOnInit(): void {
-    this.loginViewModel = this.route.snapshot.data['loginViewModel'];
-    this.loginForm      = this.formGroupService.createFormGroup(this.loginViewModel.form);
-  }
+    public ngOnInit(): void {
+        this.loginViewModel = this.route.snapshot.data['loginViewModel'];
+        this.loginForm      = this.formGroupService.createFormGroup(this.loginViewModel.form);
+    }
 
-  public handleSubmit(): void {
-    this.processing   = true;
-    this.errorMessage = null;
-    this.loginForm.disable();
-    this.authService.login(<{username: string, password: string}>this.loginForm.value)
-      .subscribe({
-        next: () => {
-          this.processing = false;
-          this.loginForm.enable();
-          this.router.navigate([this.queryParams['returnUrl'] ?? '/']);
-        },
-        error: (error) => {
-          this.processing = false;
-          this.loginForm.enable();
-          this.errorMessage = error.error?.message ?? null;
-        }
-      });
-  }
+    public handleSubmit(): void {
+        this.processing   = true;
+        this.errorMessage = null;
+        this.loginForm.disable();
+        this.authService.login(<{username: string, password: string}>this.loginForm.value)
+            .subscribe({
+                next: () => {
+                    this.processing = false;
+                    this.loginForm.enable();
+                    this.router.navigate([this.queryParams['returnUrl'] ?? '/']);
+                },
+                error: (error) => {
+                    this.processing = false;
+                    this.loginForm.enable();
+                    this.errorMessage = error.error?.message ?? null;
+                }
+            });
+    }
 
-  public loginWithAzureAd(): void {
-    this.authService.azureAdRedirect(this.queryParams);
-  }
+    public loginWithAzureAd(): void {
+        this.authService.azureAdRedirect(this.queryParams);
+    }
 }

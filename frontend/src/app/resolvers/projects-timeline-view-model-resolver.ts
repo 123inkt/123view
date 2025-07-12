@@ -6,10 +6,10 @@ import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ProjectsTimelineViewModelResolver implements Resolve<TimelineViewModel> {
-  constructor(@Inject(ProjectsTimelineService) private readonly timelineService: ProjectsTimelineService) {
-  }
+    constructor(@Inject(ProjectsTimelineService) private readonly timelineService: ProjectsTimelineService) {
+    }
 
-  public resolve(): Observable<TimelineViewModel> {
-    return this.timelineService.getTimeline();
-  }
+    public resolve(): Observable<TimelineViewModel> {
+        return this.timelineService.getTimeline();
+    }
 }

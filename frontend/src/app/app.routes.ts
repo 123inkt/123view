@@ -8,20 +8,20 @@ import {ProjectsTimelineViewModelResolver} from '@resolver/projects-timeline-vie
 import {ProjectsViewModelResolver} from '@resolver/projects-view-model-resolver';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    component: Login,
-    data: {requiresLogin: false},
-    title: environment.appName + ' - ' + $localize`Login`,
-    resolve: {loginViewModel: LoginViewModelResolver},
-    canActivate: [authenticationGuard]
-  },
-  {
-    path: '',
-    component: Projects,
-    data: {requiresLogin: true},
-    title: environment.appName + ' - ' + $localize`Projects`,
-    resolve: {projectsViewModel: ProjectsViewModelResolver, timelineViewModel: ProjectsTimelineViewModelResolver},
-    canActivate: [authenticationGuard]
-  }
+    {
+        path: 'login',
+        component: Login,
+        data: {requiresLogin: false},
+        title: environment.appName + ' - ' + $localize`Login`,
+        resolve: {loginViewModel: LoginViewModelResolver},
+        canActivate: [authenticationGuard]
+    },
+    {
+        path: '',
+        component: Projects,
+        data: {requiresLogin: true},
+        title: environment.appName + ' - ' + $localize`Projects`,
+        resolve: {projectsViewModel: ProjectsViewModelResolver, timelineViewModel: ProjectsTimelineViewModelResolver},
+        canActivate: [authenticationGuard]
+    }
 ];

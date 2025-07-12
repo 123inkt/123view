@@ -1,46 +1,46 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "preserve",
-    "baseUrl": "./",
-    "paths": {
-      "@component/*": ["src/app/component/*"],
-      "@directive/*": ["src/app/directives/*"],
-      "@environment/*": ["src/environments/*"],
-      "@guard/*": ["src/app/guards/*"],
-      "@interceptor/*": ["src/app/interceptors/*"],
-      "@lib/*": ["src/lib/*"],
-      "@model/*": ["src/app/models/*"],
-      "@resolver/*": ["src/app/resolvers/*"],
-      "@service/*": ["src/app/services/*"]
-    }
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "typeCheckHostBindings": true,
-    "strictTemplates": true
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
+    "compileOnSave": false,
+    "compilerOptions": {
+        "strict": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "ES2022",
+        "module": "preserve",
+        "baseUrl": "./",
+        "paths": {
+            "@component/*": ["src/app/component/*"],
+            "@directive/*": ["src/app/directives/*"],
+            "@environment/*": ["src/environments/*"],
+            "@guard/*": ["src/app/guards/*"],
+            "@interceptor/*": ["src/app/interceptors/*"],
+            "@lib/*": ["src/lib/*"],
+            "@model/*": ["src/app/models/*"],
+            "@resolver/*": ["src/app/resolvers/*"],
+            "@service/*": ["src/app/services/*"]
+        }
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "typeCheckHostBindings": true,
+        "strictTemplates": true
+    },
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.spec.json"
+        }
+    ]
 }

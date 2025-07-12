@@ -5,10 +5,10 @@ import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ProjectsTimelineService {
-  constructor(@Inject(HttpClient) private httpClient: HttpClient) {
-  }
+    constructor(@Inject(HttpClient) private httpClient: HttpClient) {
+    }
 
-  public getTimeline(): Observable<TimelineViewModel> {
-    return this.httpClient.get<TimelineViewModel>('api/view-model/projects/timeline');
-  }
+    public getTimeline(): Observable<TimelineViewModel> {
+        return this.httpClient.get<TimelineViewModel>('api/view-model/projects/timeline');
+    }
 }
