@@ -15,6 +15,7 @@ use DR\Review\ApiPlatform\Provider\CodeReviewActivityProvider;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Security\Role\Roles;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [new GetCollection(security: 'is_granted("' . Roles::ROLE_USER . '")')],
@@ -56,24 +57,30 @@ class CodeReviewActivity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['review-activity:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['review-activity:read'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: CodeReview::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['code-review:read'])]
     private CodeReview $review;
 
     #[ORM\Column]
+    #[Groups(['review-activity:read'])]
     private string $eventName;
 
     /** @var array<string, int|float|bool|string|null> */
     #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['review-activity:read'])]
     private array $data = [];
 
     #[ORM\Column]
+    #[Groups(['review-activity:read'])]
     private int $createTimestamp;
 
     public function getId(): ?int

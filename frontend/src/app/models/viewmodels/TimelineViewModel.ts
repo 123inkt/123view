@@ -1,5 +1,5 @@
-import TimelineEntryViewModel from '@model/viewmodels/TimelineEntryViewModel';
+import CodeReviewActivity from '@model/entities/CodeReviewActivity';
 
 export default class TimelineViewModel {
-    public declare entries: TimelineEntryViewModel[];
+    public declare activities: CodeReviewActivity[];
 }

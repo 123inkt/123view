@@ -81,16 +81,19 @@ class CodeReview
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['code-review:read'])]
     private ?int $id = null;
 
     /** Unique key per project to have a incremental sequence per repository instead of a global sequence */
     #[ORM\Column]
+    #[Groups(['code-review:read'])]
     private int $projectId;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $referenceId = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['code-review:read'])]
     private string $title;
 
     #[ORM\Column(length: 255)]
@@ -122,6 +125,7 @@ class CodeReview
 
     #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['repository:read'])]
     private Repository $repository;
 
     /** @phpstan-var Collection<int, Revision> */

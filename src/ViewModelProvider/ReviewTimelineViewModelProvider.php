@@ -66,7 +66,7 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
             }
         }
 
-        return new TimelineViewModel($timelineEntries);
+        return new TimelineViewModel([], $timelineEntries);
     }
 
     /**
@@ -91,7 +91,7 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
             $timelineEntries[] = $entry;
         }
 
-        return new TimelineViewModel($timelineEntries);
+        return new TimelineViewModel([], $timelineEntries);
     }
 
     /**
@@ -100,21 +100,21 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         $activities      = $this->activityRepository->findForUser($this->user->getId(), self::FEED_EVENTS);
-        $timelineEntries = [];
 
+        //$timelineEntries = [];
         // create TimelineEntryViewModel entries
-        foreach ($activities as $activity) {
-            $message = $this->activityFormatter->format($activity, $this->user);
-            if ($message === null) {
-                continue;
-            }
+        //foreach ($activities as $activity) {
+        //    $message = $this->activityFormatter->format($activity, $this->user);
+        //    if ($message === null) {
+        //        continue;
+        //    }
+        //
+        //    $url   = $this->urlGenerator->generate($activity);
+        //    $entry = new TimelineEntryViewModel([$activity], $message, $url);
+        //    $entry->setCommentOrReply($this->commentProvider->getCommentFor($activity));
+        //    $timelineEntries[] = $entry;
+        //}
 
-            $url   = $this->urlGenerator->generate($activity);
-            $entry = new TimelineEntryViewModel([$activity], $message, $url);
-            $entry->setCommentOrReply($this->commentProvider->getCommentFor($activity));
-            $timelineEntries[] = $entry;
-        }
-
-        return new TimelineViewModel($timelineEntries);
+        return new TimelineViewModel($activities, []);
     }
 }

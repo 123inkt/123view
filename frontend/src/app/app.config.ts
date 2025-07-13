@@ -1,3 +1,4 @@
+import {DATE_PIPE_DEFAULT_OPTIONS} from '@angular/common';
 import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
@@ -9,6 +10,8 @@ import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        // configure date
+        {provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: {dateFormat: 'dd-MM-yyyy HH:mm'}},
         provideBrowserGlobalErrorListeners(),
         provideZoneChangeDetection({eventCoalescing: true}),
         provideRouter(routes),

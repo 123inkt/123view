@@ -31,6 +31,10 @@ export class TokenStore {
         }
     }
 
+    public getUserIdentifier(): string | null {
+        return this.jwtToken?.username ?? null;
+    }
+
     public isFullyAuthenticated(): boolean {
         return this.isLoggedInSubject.getValue();
     }
