@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {basename} from '@lib/Path';
 import CodeReviewActivity from '@model/entities/CodeReviewActivity';
 import {TranslateService} from '@ngx-translate/core';
 import {TokenStore} from '@service/token-store';
@@ -28,17 +29,17 @@ export class ReviewActivityFormatter {
         'comment-unresolved': 'timeline.comment.unresolved'
     };
 
-    constructor(
-        private readonly tokenStore: TokenStore,
-        private readonly translator: TranslateService) {
+    constructor(private readonly tokenStore: TokenStore, private readonly translator: TranslateService) {
     }
 
     public formatActivity(activity: CodeReviewActivity): Observable<string> {
         const translationKey: string = ReviewActivityFormatter.TranslationMap[activity.eventName];
+        const filepath: string       = String(activity.data['file'] ?? 'unknown file');
+        const filename: string       = basename(filepath);
 
         return this.formatUsername(activity)
             .pipe(
-                switchMap((username) => this.translator.get(translationKey, {username: username, data: activity.data}))
+                switchMap((username) => this.translator.get(translationKey, {username: username, file: filename}))
             );
     }
 

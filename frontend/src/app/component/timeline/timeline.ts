@@ -11,6 +11,7 @@ import {Observable} from 'rxjs';
     templateUrl: './timeline.html',
     styleUrl: './timeline.scss'
 })
+// TODO add comment and comment reply
 export class Timeline {
     public viewModel = input.required<TimelineViewModel>();
 

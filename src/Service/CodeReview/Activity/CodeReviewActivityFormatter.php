@@ -27,6 +27,9 @@ use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Repository\User\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @TODO ANGULAR REMOVE
+ */
 class CodeReviewActivityFormatter
 {
     private const TRANSLATION_MAP = [
