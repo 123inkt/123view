@@ -1,24 +1,54 @@
 import {AsyncPipe, DatePipe} from '@angular/common';
-import {Component, input} from '@angular/core';
+import {AfterContentInit, Component, ElementRef, HostListener, input} from '@angular/core';
 import CodeReviewActivity from '@model/entities/CodeReviewActivity';
 import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
 import {ReviewActivityFormatter} from '@service/review/review-activity-formatter';
 import {Observable} from 'rxjs';
 
 @Component({
+    host: {
+        '[style.position]': 'hostWidth',
+        '[style.width]': 'hostWidth',
+        '[style.height]': 'hostHeight'
+    },
     selector: 'app-timeline',
     imports: [AsyncPipe, DatePipe],
     templateUrl: './timeline.html',
     styleUrl: './timeline.scss'
 })
 // TODO add comment and comment reply
-export class Timeline {
-    public viewModel = input.required<TimelineViewModel>();
+export class Timeline implements AfterContentInit {
+    public viewModel            = input.required<TimelineViewModel>();
+    public hostPosition: string = '';
+    public hostWidth: string    = '';
+    public hostHeight: string   = '';
+    private offsetTop: number   = 0;
+    private width: number       = 0;
 
-    constructor(private readonly activityFormatter: ReviewActivityFormatter) {
+    constructor(private elRef: ElementRef, private readonly activityFormatter: ReviewActivityFormatter) {
+    }
+
+    public ngAfterContentInit() {
+        this.offsetTop = this.elRef.nativeElement.offsetTop;
+        this.width     = this.elRef.nativeElement.clientWidth;
+        this.layout();
     }
 
     public formatMessage(activity: CodeReviewActivity): Observable<string> {
         return this.activityFormatter.formatActivity(activity);
+    }
+
+    @HostListener('window:resize')
+    @HostListener('window:scroll')
+    public layout(): void {
+        if (window.scrollY <= this.offsetTop) {
+            this.hostPosition = '';
+            this.hostWidth    = '';
+            this.hostHeight   = String(window.innerHeight - this.offsetTop + window.scrollY) + 'px';
+        } else {
+            this.hostPosition = 'fixed';
+            this.hostWidth    = String(this.width) + 'px';
+            this.hostHeight   = String(window.innerHeight) + 'px';
+        }
     }
 }

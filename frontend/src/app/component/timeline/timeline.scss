@@ -1,9 +1,11 @@
-.review-timeline {
+:host {
+    display: block;
     overflow: hidden auto;
     padding-bottom: 20px;
     top: 0;
-}
 
-.review-timeline__entry-revision {
-    padding-left: 148px;
+    // TODO check if this class is used or not
+    .review-timeline__entry-revision {
+        padding-left: 148px;
+    }
 }

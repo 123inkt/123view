@@ -1,19 +1,17 @@
-<div class="review-timeline">
-  @for (activity of viewModel().activities; track activity.id) {
-    <div class="review-timeline__entry pb-3">
-      <div [innerHTML]="formatMessage(activity) | async"></div>
-      <div class="text-secondary small clearfix">
-        <span class="pe-1 small">
-          {{ activity.review.repository.displayName }}:
-        </span>
-        <a class="small" href="#">
-          CR-{{ activity.review.projectId }}
-        </a>
+@for (activity of viewModel().activities; track activity.id) {
+  <div class="pb-3">
+    <div [innerHTML]="formatMessage(activity) | async"></div>
+    <div class="text-secondary small clearfix">
+      <span class="pe-1 small">
+        {{ activity.review.repository.displayName }}:
+      </span>
+      <a class="small" href="#">
+        CR-{{ activity.review.projectId }}
+      </a>
 
-        <span class="small float-end">
-          {{ activity.createTimestamp * 1000 | date }}
-        </span>
-      </div>
+      <span class="small float-end">
+        {{ activity.createTimestamp * 1000 | date }}
+      </span>
     </div>
-  }
-</div>
+  </div>
+}
