@@ -1,8 +1,10 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpContext, HttpContextToken} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import AuthToken from '@model/AuthToken';
 import JwtToken from '@model/JwtToken';
+import RefreshToken from '@model/RefreshToken';
+import HttpClientContext from '@service/http-client-context';
 import {TokenStore} from '@service/token-store';
 import {UrlService} from '@service/url-service';
 import {Observable, share, tap} from 'rxjs';
@@ -17,15 +19,17 @@ export class AuthenticationService {
     }
 
     public login(data: {username: string, password: string}): Observable<AuthToken> {
-        return this.httpClient.post<AuthToken>('api/login', data)
+        const context = new HttpContext().set(HttpClientContext.PublicUrl, true);
+
+        return this.httpClient.post<AuthToken>('api/login', data, {context: context})
             .pipe(
-                tap((token) => this.tokenStore.setToken(JwtToken.fromToken(token.token))),
+                tap((token) => this.tokenStore.setToken(JwtToken.fromAuthToken(token), RefreshToken.fromAuthToken(token))),
                 share()
             );
     }
 
     public logout(): void {
-        this.tokenStore.setToken(null);
+        this.tokenStore.clearToken();
     }
 
     public azureAdRedirect(searchParams: Params): void {

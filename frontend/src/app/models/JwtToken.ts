@@ -10,6 +10,10 @@ export default class JwtToken {
     ) {
     }
 
+    public static fromAuthToken(token: AuthToken): JwtToken {
+        return JwtToken.fromToken(token.token);
+    }
+
     public static fromToken(token: string): JwtToken {
         const data = atob(token.split('.')[1]);
         const json = <{username: string, exp: number, iat: number, roles: string[]}>JSON.parse(data);

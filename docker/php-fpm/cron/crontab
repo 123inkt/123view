@@ -14,3 +14,4 @@ HOME=/app
 45 4 * * *      www-data     php bin/console webhook:cleanup                            2>&1
 0  5 * * *      www-data     php bin/console review:close-branch-reviews                2>&1
 10 5 * * *      www-data     php -dmax_execution_time=0 bin/console git:garbage-collect 2>&1
+50 5 * * *      www-data     php bin/console gesdinet:jwt:clear --batch-size=2500       2>&1
