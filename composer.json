@@ -48,6 +48,7 @@
         "doctrine/orm": "^3.1",
         "fdekker/commonmark-ext-emoji": "^1.1",
         "fdekker/log-viewer-bundle": "^2.0",
+        "gesdinet/jwt-refresh-token-bundle": "^1.5",
         "league/commonmark": "^2.4",
         "league/oauth2-client": "^2.7",
         "league/uri": "^7.2",
