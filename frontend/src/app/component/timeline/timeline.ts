@@ -25,7 +25,7 @@ export class Timeline implements AfterContentInit {
     private offsetTop: number   = 0;
     private width: number       = 0;
 
-    constructor(private elRef: ElementRef, private readonly activityFormatter: ReviewActivityFormatter) {
+    constructor(private readonly elRef: ElementRef, private readonly activityFormatter: ReviewActivityFormatter) {
     }
 
     public ngAfterContentInit() {

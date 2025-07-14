@@ -38,9 +38,7 @@ export class ReviewActivityFormatter {
         const filename: string       = basename(filepath);
 
         return this.formatUsername(activity)
-            .pipe(
-                switchMap((username) => this.translator.get(translationKey, {username: username, file: filename}))
-            );
+            .pipe(switchMap((username) => this.translator.get(translationKey, {username: username, file: filename})));
     }
 
     private formatUsername(activity: CodeReviewActivity): Observable<string> {
