@@ -27,9 +27,10 @@ export const httpclientUrlInterceptor: HttpInterceptorFn = (req, next) => {
     if (req.context.get(HttpClientContext.PublicUrl).valueOf() === false && inject(TokenStore).willExpire()) {
         return inject(AuthenticationService).refresh()
             .pipe(
+                // chain api request after refresh token request
                 switchMap(() => next(apiReq)),
+                // on error, redirect to login page
                 catchError((error) => {
-                    // on refresh token error, redirect to login page
                     inject(Router).navigate(['login']);
                     return throwError(() => error);
                 })
