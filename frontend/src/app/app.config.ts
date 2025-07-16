@@ -1,7 +1,7 @@
 import {DATE_PIPE_DEFAULT_OPTIONS} from '@angular/common';
 import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection} from '@angular/core';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withComponentInputBinding} from '@angular/router';
 import {httpclientUrlInterceptor} from '@interceptor/httpclient-url-interceptor';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
         {provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: {dateFormat: 'dd-MM-yyyy HH:mm'}},
         provideBrowserGlobalErrorListeners(),
         provideZoneChangeDetection({eventCoalescing: true}),
-        provideRouter(routes),
+        provideRouter(routes, withComponentInputBinding()),
         // http client
         provideHttpClient(withInterceptors([httpclientUrlInterceptor])),
         CookieService,

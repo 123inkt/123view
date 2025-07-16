@@ -1,11 +1,12 @@
 import {DecimalPipe} from '@angular/common';
 import {Component, input, OnChanges, SimpleChanges} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {contains} from '@lib/Strings';
 import Repository from '@model/entities/Repository';
 
 @Component({
     selector: 'app-projects-section',
-    imports: [DecimalPipe],
+    imports: [DecimalPipe, RouterLink],
     templateUrl: './projects-section.html',
     styleUrl: './projects-section.scss'
 })

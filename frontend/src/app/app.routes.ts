@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import {Login} from '@component/login/login';
+import {ProjectReviews} from '@component/project-reviews/project-reviews';
 import {Projects} from '@component/projects/projects';
 import {environment} from '@environment/environment';
 import {authenticationGuard} from '@guard/authentication-guard';
@@ -23,5 +24,12 @@ export const routes: Routes = [
         title: environment.appName + ' - ' + $localize`Projects`,
         resolve: {projectsViewModel: ProjectsViewModelResolver, timelineViewModel: ProjectsTimelineViewModelResolver},
         canActivate: [authenticationGuard]
-    }
+    },
+    {
+        path: 'app/projects/:id/reviews',
+        component: ProjectReviews,
+        data: {requiresLogin: true},
+        title: environment.appName + ' - ' + $localize`Projects`,
+        canActivate: [authenticationGuard]
+    },
 ];

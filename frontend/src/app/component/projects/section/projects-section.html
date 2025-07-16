@@ -2,7 +2,7 @@
   @for (batch of repositoryColumns; track $index) {
     <div class="list-group">
       @for (repository of batch; track repository.id) {
-        <a class="list-group-item list-group-item-action" href="#">
+        <a class="list-group-item list-group-item-action" [routerLink]="['app', 'projects', repository.id, 'reviews']">
           {{ repository.displayName }}
 
           @if (revisionCount()[repository.id]) {
