@@ -1,13 +1,13 @@
-import {HttpClient, HttpContext, HttpContextToken} from '@angular/common/http';
+import {HttpClient, HttpContext} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import AuthToken from '@model/AuthToken';
 import JwtToken from '@model/JwtToken';
 import RefreshToken from '@model/RefreshToken';
+import {TokenStore} from '@service/auth/token-store';
 import HttpClientContext from '@service/http-client-context';
-import {TokenStore} from '@service/token-store';
 import {UrlService} from '@service/url-service';
-import {Observable, share, tap} from 'rxjs';
+import {Observable, share, tap, throwError} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
@@ -19,9 +19,25 @@ export class AuthenticationService {
     }
 
     public login(data: {username: string, password: string}): Observable<AuthToken> {
-        const context = new HttpContext().set(HttpClientContext.PublicUrl, true);
+        const context = new HttpContext()
+            .set(HttpClientContext.PublicUrl, true)
+            .set(HttpClientContext.BackendApi, true);
 
-        return this.httpClient.post<AuthToken>('api/login', data, {context: context})
+        return this.httpClient.post<AuthToken>('api/token/acquire', data, {context})
+            .pipe(
+                tap((token) => this.tokenStore.setToken(JwtToken.fromAuthToken(token), RefreshToken.fromAuthToken(token))),
+                share()
+            );
+    }
+
+    public refresh(): Observable<AuthToken> {
+        const refreshToken = this.tokenStore.getRefreshToken();
+        if (refreshToken === null) {
+            return throwError(() => new Error('Unable to refresh access token, no refresh token available'));
+        }
+
+        const context = new HttpContext().set(HttpClientContext.PublicUrl, true).set(HttpClientContext.BackendApi, true);
+        return this.httpClient.post<AuthToken>('api/token/refresh', {refreshToken: refreshToken.token}, {context})
             .pipe(
                 tap((token) => this.tokenStore.setToken(JwtToken.fromAuthToken(token), RefreshToken.fromAuthToken(token))),
                 share()

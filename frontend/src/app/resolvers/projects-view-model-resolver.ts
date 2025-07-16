@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Resolve} from '@angular/router';
 import ProjectsViewModel from '@model/viewmodels/ProjectsViewModel';
-import {ProjectsService} from '@service/projects-service';
+import {ProjectsService} from '@service/api/projects-service';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})

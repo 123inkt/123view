@@ -8,9 +8,7 @@ use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Controller\App\User\UserApprovalPendingController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\User\UserEntityProvider;
-use DR\Review\ViewModel\Authentication\LoginViewModel;
 use DR\Review\ViewModelProvider\LoginViewModelProvider;
-use LogicException;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,17 +48,5 @@ class LoginController extends AbstractController
             'page_title' => $this->translator->trans('page.title.single.sign.on'),
             'loginModel' => $this->viewModelProvider->getLoginViewModel($request)
         ];
-    }
-
-    #[Route('/login', name: self::class . 'api')]
-    public function api(Request $request): LoginViewModel
-    {
-        return $this->viewModelProvider->getLoginViewModel($request);
-    }
-
-    #[Route('/api/login', name: self::class . 'login')]
-    public function login(): LoginViewModel
-    {
-        throw new LogicException('This method should never be called, it is only used to match the route for the JSON login authenticator.');
     }
 }

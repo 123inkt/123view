@@ -1,16 +1,20 @@
-import {HttpClient, HttpInterceptorFn} from '@angular/common/http';
+import {HttpInterceptorFn} from '@angular/common/http';
 import {inject} from '@angular/core';
+import {Router} from '@angular/router';
 import {environment} from '@environment/environment';
 import {ltrim} from '@lib/Strings';
+import {AuthenticationService} from '@service/auth/authentication-service';
+import {TokenStore} from '@service/auth/token-store';
 import HttpClientContext from '@service/http-client-context';
-import {TokenStore} from '@service/token-store';
+import {catchError, switchMap, throwError} from 'rxjs';
 
 export const httpclientUrlInterceptor: HttpInterceptorFn = (req, next) => {
-    // TODO find better way to handle. Maybe separate HttpClient for API requests?
-    if (/\/i18n\/en\.json/.test(req.url)) {
+    // regular http request, ignore
+    if (req.context.get(HttpClientContext.BackendApi).valueOf() === false) {
         return next(req);
     }
 
+    // prepend backend url and port to request url
     const apiReq = req.clone(
         {
             url: `//${window.location.hostname}:${environment.apiPort}/${ltrim(req.url, '/')}`,
@@ -19,28 +23,18 @@ export const httpclientUrlInterceptor: HttpInterceptorFn = (req, next) => {
         }
     );
 
-    // jwt token about expire within 5 minutes
-    if (req.context.get(HttpClientContext.PublicUrl).valueOf() && inject(TokenStore).willExpire()) {
-        //inject(HttpClient).get('api/token/refresh');
+    // jwt token about expire within 5 minutes, refresh it
+    if (req.context.get(HttpClientContext.PublicUrl).valueOf() === false && inject(TokenStore).willExpire()) {
+        return inject(AuthenticationService).refresh()
+            .pipe(
+                switchMap(() => next(apiReq)),
+                catchError((error) => {
+                    // on refresh token error, redirect to login page
+                    inject(Router).navigate(['login']);
+                    return throwError(() => error);
+                })
+            );
     }
 
-    // .pipe(switchMap((username) => this.translator.get(translationKey, {username: username, file: filename})));
-
     return next(apiReq);
-
-    // return of(1)
-    //     .pipe(
-    //         switchMap((val) => {
-    //             console.log(val);
-    //             return next(apiReq);
-    //         })
-    //     );
-
-    // return next(apiReq)
-    //     .pipe(
-    //         tap((val) => {
-    //             console.log('value', val);
-    //         }),
-    //         share()
-    //     );
 };

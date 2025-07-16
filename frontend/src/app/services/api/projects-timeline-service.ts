@@ -1,6 +1,7 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpContext} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
+import HttpClientContext from '@service/http-client-context';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
@@ -9,6 +10,8 @@ export class ProjectsTimelineService {
     }
 
     public getTimeline(): Observable<TimelineViewModel> {
-        return this.httpClient.get<TimelineViewModel>('api/view-model/projects/timeline');
+        const context = new HttpContext().set(HttpClientContext.BackendApi, true);
+
+        return this.httpClient.get<TimelineViewModel>('api/view-model/projects/timeline', {context});
     }
 }

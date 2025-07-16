@@ -32,22 +32,24 @@ return static function (SecurityConfig $security): void {
         ->stateless(true)
         ->security(false);
 
-    $security->firewall('login')
-        ->pattern('^/api/login')
-        ->stateless(true)
-        ->jsonLogin()
-            ->checkPath('/api/login')
+    $loginFirewall = $security->firewall('login')
+        ->pattern('^/api/token')
+        ->stateless(true);
+    $loginFirewall->jsonLogin()
+            ->checkPath('/api/token/acquire')
             ->usernamePath('username')
             ->passwordPath('password')
             ->successHandler('lexik_jwt_authentication.handler.authentication_success')
             ->failureHandler('lexik_jwt_authentication.handler.authentication_failure');
+    $loginFirewall->refreshJwt()
+            ->checkPath('/api/token/refresh');
 
     $security->firewall('api')
         ->pattern('^/api/view-model')
         ->stateless(true)
         ->customAuthenticators([JWTAuthenticator::class]);
 
-    // TODO ANGULAR Fix
+    // TODO ANGULAR fix double authenticator mechanism on same endpoints
     //$security->firewall('api')
     //    ->pattern('^/api')
     //    ->stateless(true)

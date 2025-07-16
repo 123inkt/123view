@@ -7,7 +7,7 @@ import {FormWidget} from '@component/form/form-widget/form-widget';
 import {environment} from '@environment/environment';
 import LoginViewModel from '@model/viewmodels/LoginViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
-import {AuthenticationService} from '@service/authentication-service';
+import {AuthenticationService} from '@service/auth/authentication-service';
 import {FormGroupService} from '@service/form-group-service';
 
 @Component({
@@ -44,11 +44,7 @@ export class Login {
         this.loginForm.disable();
         this.authService.login(<{username: string, password: string}>this.loginForm.value)
             .subscribe({
-                next: () => {
-                    this.processing = false;
-                    this.loginForm.enable();
-                    this.router.navigate([this.queryParams['returnUrl'] ?? '/']);
-                },
+                next: () => this.router.navigate([this.queryParams['returnUrl'] ?? '/']),
                 error: (error) => {
                     this.processing = false;
                     this.loginForm.enable();

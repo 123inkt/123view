@@ -1,8 +1,8 @@
 import {AsyncPipe} from '@angular/common';
 import {Component} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {AuthenticationService} from '@service/authentication-service';
-import {TokenStore} from '@service/token-store';
+import {AuthenticationService} from '@service/auth/authentication-service';
+import {TokenStore} from '@service/auth/token-store';
 
 @Component({
     selector: 'app-header',

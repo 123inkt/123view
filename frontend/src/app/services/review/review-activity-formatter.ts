@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {basename} from '@lib/Path';
 import CodeReviewActivity from '@model/entities/CodeReviewActivity';
 import {TranslateService} from '@ngx-translate/core';
-import {TokenStore} from '@service/token-store';
+import {TokenStore} from '@service/auth/token-store';
 import {Observable, of, switchMap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
