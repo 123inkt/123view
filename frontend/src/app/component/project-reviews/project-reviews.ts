@@ -1,4 +1,5 @@
-import {Component, input} from '@angular/core';
+import {Component, input, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-project-reviews',
@@ -6,6 +7,14 @@ import {Component, input} from '@angular/core';
     templateUrl: './project-reviews.html',
     styleUrl: './project-reviews.scss'
 })
-export class ProjectReviews {
+export class ProjectReviews implements OnInit {
     public id = input.required<number>();
+    public reviewsViewModel: unknown;
+
+    constructor(private readonly route: ActivatedRoute) {
+    }
+
+    public ngOnInit(): void {
+        this.reviewsViewModel = this.route.snapshot.data['projectsViewModel'];
+    }
 }

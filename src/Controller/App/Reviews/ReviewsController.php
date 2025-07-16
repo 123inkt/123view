@@ -16,6 +16,8 @@ use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -50,5 +52,34 @@ class ReviewsController extends AbstractController
             'breadcrumbs'  => $this->breadcrumbFactory->createForReviews($repository),
             'reviewsModel' => $this->viewModelProvider->getReviewsViewModel($request, $terms, $repository)
         ];
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('api/view-model/reviews/{id<\d+>}', name: self::class, methods: 'GET')]
+    #[IsGranted(Roles::ROLE_USER)]
+    public function api(SearchReviewsRequest $request, #[MapEntity] Repository $repository): Response
+    {
+        try {
+            $terms = $this->termFactory->getSearchTerms($request->getSearchQuery());
+        } catch (InvalidQueryException $error) {
+            throw new BadRequestHttpException($this->parseFailFormatter->format($error));
+        }
+
+        $context = [
+            'groups' => [
+                'app:project-reviews',
+                'app:paginator',
+                'review-activity:read',
+                'user:read',
+                'code-review:read',
+                'repository:read',
+                'comment:read',
+                'comment-reply:read'
+            ]
+        ];
+
+        return $this->json($this->viewModelProvider->getReviewsViewModel($request, $terms, $repository), context: $context);
     }
 }
