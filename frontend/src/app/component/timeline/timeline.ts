@@ -18,12 +18,12 @@ import {Observable} from 'rxjs';
 })
 // TODO add comment and comment reply
 export class Timeline implements AfterContentInit {
-    public viewModel            = input.required<TimelineViewModel>();
-    public hostPosition: string = '';
-    public hostWidth: string    = '';
-    public hostHeight: string   = '';
-    private offsetTop: number   = 0;
-    private width: number       = 0;
+    public viewModel    = input.required<TimelineViewModel>();
+    public hostPosition = '';
+    public hostWidth    = '';
+    public hostHeight   = '';
+    private offsetTop   = 0;
+    private width       = 0;
 
     constructor(private readonly elRef: ElementRef, private readonly activityFormatter: ReviewActivityFormatter) {
     }

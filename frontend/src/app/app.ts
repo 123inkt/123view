@@ -11,7 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
     styleUrl: './app.scss'
 })
 export class App {
-    public loading: boolean = false;
+    public loading = false;
 
     constructor(private readonly translate: TranslateService, private readonly router: Router) {
         // setup translations

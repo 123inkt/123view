@@ -7,7 +7,7 @@ import {Observable, of, switchMap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ReviewActivityFormatter {
-    private static readonly TranslationMap: {[key: string]: string} = {
+    private static readonly TranslationMap: Record<string, string> = {
         'reviewer-added-by': 'timeline.reviewer.added.by',
         'reviewer-added': 'timeline.reviewer.added',
         'reviewer-removed-by': 'timeline.reviewer.removed.by',
@@ -34,8 +34,8 @@ export class ReviewActivityFormatter {
 
     public formatActivity(activity: CodeReviewActivity): Observable<string> {
         const translationKey: string = ReviewActivityFormatter.TranslationMap[activity.eventName];
-        const filepath: string       = String(activity.data['file'] ?? 'unknown file');
-        const filename: string       = basename(filepath);
+        const filepath               = String(activity.data['file'] ?? 'unknown file');
+        const filename               = basename(filepath);
 
         return this.formatUsername(activity)
             .pipe(switchMap((username) => this.translator.get(translationKey, {username: username, file: filename})));

@@ -1,7 +1,6 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FormLabel} from '@component/form/form-label/form-label';
 import {FormWidget} from '@component/form/form-widget/form-widget';
 import {environment} from '@environment/environment';
@@ -16,11 +15,11 @@ import {FormGroupService} from '@service/form-group-service';
     templateUrl: './login.html',
     styleUrl: './login.scss'
 })
-export class Login {
+export class Login implements OnInit {
     public declare loginViewModel: LoginViewModel;
     public declare loginForm: FormGroup;
     public environment                 = environment;
-    public processing: boolean         = false;
+    public processing                  = false;
     public errorMessage: string | null = null;
     private queryParams: Params        = {};
 
@@ -42,7 +41,7 @@ export class Login {
         this.processing   = true;
         this.errorMessage = null;
         this.loginForm.disable();
-        this.authService.login(<{username: string, password: string}>this.loginForm.value)
+        this.authService.login(this.loginForm.value as {username: string, password: string})
             .subscribe({
                 next: () => this.router.navigate([this.queryParams['returnUrl'] ?? '/']),
                 error: (error) => {

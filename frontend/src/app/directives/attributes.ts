@@ -3,9 +3,10 @@ import {Directive, ElementRef, input, OnChanges, Renderer2, SimpleChanges} from 
 /**
  * Adds [attrs] directive to an elements and converts an object of attributes into HTML attributes on the element.
  */
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({selector: '[attrs]', standalone: true})
 export class Attributes implements OnChanges {
-    public attrs = input.required<{[key: string]: boolean | number | string}>();
+    public attrs = input.required<Record<string, boolean | number | string>>();
 
     constructor(private readonly el: ElementRef, private readonly renderer: Renderer2) {
     }

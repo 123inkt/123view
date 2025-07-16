@@ -12,14 +12,14 @@ export class FormGroupService {
     }
 
     public createFormGroup<T extends FormView>(formView: T): FormGroup {
-        const formGroupValues: {[key: string]: FormGroup | FormControl} = {};
+        const formGroupValues: Record<string, FormGroup | FormControl> = {};
 
         for (const key in formView) {
-            if (formView.hasOwnProperty(key) === false || key === 'vars') {
+            if (Object.prototype.hasOwnProperty.call(formView, key) === false || key === 'vars') {
                 continue;
             }
 
-            const value: T = <T>formView[key];
+            const value: T = formView[key] as T;
             if (Object.keys(value).length > 1) {
                 // recursively create FormGroups
                 formGroupValues[key] = this.createFormGroup(value);

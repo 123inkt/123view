@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {ProjectsSection} from '@component/projects/section/projects-section';
@@ -14,7 +14,7 @@ import {TranslatePipe} from '@ngx-translate/core';
     templateUrl: './projects.html',
     styleUrl: './projects.scss'
 })
-export class Projects {
+export class Projects implements OnInit {
     public declare projectsViewModel: ProjectsViewModel;
     public declare timelineViewModel: TimelineViewModel;
     public searchQuery = '';

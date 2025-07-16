@@ -1,5 +1,5 @@
 import {DecimalPipe} from '@angular/common';
-import {Component, input, SimpleChanges} from '@angular/core';
+import {Component, input, OnChanges, SimpleChanges} from '@angular/core';
 import {contains} from '@lib/Strings';
 import Repository from '@model/entities/Repository';
 
@@ -9,9 +9,9 @@ import Repository from '@model/entities/Repository';
     templateUrl: './projects-section.html',
     styleUrl: './projects-section.scss'
 })
-export class ProjectsSection {
+export class ProjectsSection implements OnChanges {
     public repositories                      = input.required<Repository[]>();
-    public revisionCount                     = input.required<{[key: number]: number}>();
+    public revisionCount                     = input.required<Record<number, number>>();
     public searchQuery                       = input.required<string>();
     public repositoryColumns: Repository[][] = [];
 

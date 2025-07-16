@@ -29,7 +29,7 @@ export class FormService {
         throw new Error(`Unknown form type for FormView: ${formView.vars.full_name}`);
     }
 
-    public createValidators(formView: FormView): ((control: AbstractControl<any, any>) => ValidationErrors | null)[] {
+    public createValidators(formView: FormView): ((control: AbstractControl<unknown, unknown>) => ValidationErrors | null)[] {
         const validators = [];
         // add required validator
         if (formView.vars.required === true) {

@@ -6,7 +6,7 @@ import FormView from '@model/FormView';
 import {FormService} from '@service/form-service';
 
 @Component({
-    selector: 'form-widget',
+    selector: 'app-form-widget',
     imports: [Attributes],
     providers: [
         {
@@ -21,7 +21,7 @@ export class FormWidget implements OnInit, ControlValueAccessor {
     public form                            = input.required<FormView>();
     public disabled                        = input<boolean | null>(null);
     public loading                         = input<boolean>(false);
-    public formType: string                = 'text';
+    public formType                        = 'text';
     public onInput: (event: Event) => void = EmptyFunction;
     public onBlur: () => void              = EmptyFunction;
 
@@ -36,15 +36,15 @@ export class FormWidget implements OnInit, ControlValueAccessor {
         this.formType = this.formService.getFormType(this.form());
     }
 
-    public writeValue(obj: any): void {
+    public writeValue(obj: unknown): void {
         this.form().vars.value = String(obj);
     }
 
-    public registerOnChange(fn: any): void {
+    public registerOnChange(fn: (x: string) => void): void {
         this.onInput = (event: Event) => fn((event.target as HTMLInputElement).value);
     }
 
-    public registerOnTouched(fn: any): void {
+    public registerOnTouched(fn: () => void): void {
         this.onBlur = fn;
     }
 
