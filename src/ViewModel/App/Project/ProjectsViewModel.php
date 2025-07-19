@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[Get(
     '/view-model/projects',
     openapi             : new OpenApiOperation(tags: ['ViewModel']),
-    normalizationContext: ['groups' => ['app:projects', 'repository:read']],
+    normalizationContext: ['groups' => ['app:projects', 'repository:read', 'code-review:repository:read']],
     security            : 'is_granted("ROLE_USER")',
     provider            : ProjectsViewModelProvider::class
 )]

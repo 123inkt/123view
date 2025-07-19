@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             'review-activity:read',
             'user:read',
             'code-review:read',
+            'code-review:repository:read',
             'repository:read',
             'comment:read',
             'comment-reply:read'

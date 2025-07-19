@@ -125,7 +125,7 @@ class CodeReview
 
     #[ORM\ManyToOne(targetEntity: Repository::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['repository:read'])]
+    #[Groups(['code-review:repository:read'])]
     private Repository $repository;
 
     /** @phpstan-var Collection<int, Revision> */
