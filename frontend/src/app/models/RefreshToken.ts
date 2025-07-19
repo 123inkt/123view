@@ -5,9 +5,7 @@ export default class RefreshToken {
     }
 
     public static fromAuthToken(token: AuthToken): RefreshToken {
-        const refreshToken = new RefreshToken(token.refreshToken, new Date(token.refreshTokenExpiresAt * 1000));
-        console.log('refresh', refreshToken);
-        return refreshToken;
+        return new RefreshToken(token.refreshToken, new Date(token.refreshTokenExpiresAt * 1000));
     }
 
     public static fromCookie(cookie: string): RefreshToken {
