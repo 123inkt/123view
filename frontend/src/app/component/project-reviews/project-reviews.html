@@ -1,1 +1,23 @@
-<p>project-reviews works! Project: {{ id() }}</p>
+<div class="container-xxl reviews-list--grid">
+  <div>
+    <div class="mt-2 pb-2 clearfix">
+      <h2 class="float-start pe-3 mb-0">{{ reviewsViewModel.repository.displayName }}</h2>
+
+      <ul class="nav nav-pills float-start">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">{{ 'reviews' | translate }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            {{ 'revisions' | translate }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            {{ 'branches' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

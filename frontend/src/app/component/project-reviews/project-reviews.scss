@@ -1,0 +1,13 @@
+.reviews-list--grid {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: auto 325px;
+    max-width: 1600px;
+}
+
+.reviews-list__search-input {
+    /* very difficult to override bootstrap behaviour. */
+    /* stylelint-disable */
+    flex-grow: 10 !important;
+    /* stylelint-enable */
+}
