@@ -1,6 +1,6 @@
 .reviews-list__search-input {
-    /* very difficult to override bootstrap behaviour. */
+    /* very difficult to override bootstrap behaviour to grow the search input to the needed width */
     /* stylelint-disable */
-    //flex-grow: 10 !important;
+    flex-grow: 10 !important;
     /* stylelint-enable */
 }
