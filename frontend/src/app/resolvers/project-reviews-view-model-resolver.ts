@@ -1,6 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {toNumber} from '@lib/Numbers';
+import {filter} from '@lib/Objects';
 import {ProjectReviewsService} from '@service/api/project-reviews-service';
 import {Observable} from 'rxjs';
 
@@ -10,6 +11,15 @@ export class ProjectReviewsViewModelResolver implements Resolve<unknown> {
     }
 
     public resolve(route: ActivatedRouteSnapshot): Observable<unknown> {
-        return this.reviewsService.getReviews(toNumber(route.paramMap.get('id')));
+        return this.reviewsService.getReviews(
+            toNumber(route.paramMap.get('id')),
+            filter(
+                {
+                    search: route.queryParamMap.get('search') ?? undefined,
+                    orderBy: route.queryParamMap.get('orderBy') ?? undefined,
+                    page: route.queryParamMap.get('page') ?? undefined
+                }
+            )
+        );
     }
 }

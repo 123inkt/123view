@@ -8,9 +8,9 @@ export class ProjectReviewsService {
     constructor(@Inject(HttpClient) private httpClient: HttpClient) {
     }
 
-    public getReviews(repositoryId: number): Observable<unknown> {
+    public getReviews(repositoryId: number, filter: {search?: string, orderBy?: string, page?: number | string}): Observable<unknown> {
         const context = new HttpContext().set(HttpClientContext.BackendApi, true);
 
-        return this.httpClient.get<unknown>('api/view-model/reviews/' + String(repositoryId), {context});
+        return this.httpClient.get<unknown>('api/view-model/reviews/' + String(repositoryId), {context, params: filter});
     }
 }
