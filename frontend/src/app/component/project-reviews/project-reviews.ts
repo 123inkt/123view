@@ -14,14 +14,14 @@ import {TranslatePipe} from '@ngx-translate/core';
     styleUrl: './project-reviews.scss'
 })
 export class ProjectReviews implements OnInit {
-    public id = input.required<number>();
+    private static readonly DefaultSearch: ReviewsSearchModel = {search: 'state:open ', orderBy: 'update-timestamp'};
+
+    public id                 = input.required<number>();
     public declare reviewsViewModel: ProjectReviewsViewModel;
-    public declare reviewsSearchModel: ReviewsSearchModel;
+    public reviewsSearchModel = ProjectReviews.DefaultSearch;
 
     constructor(private readonly title: Title, private readonly route: ActivatedRoute, private readonly router: Router) {
-        this.route.queryParams.subscribe((params) => {
-            this.reviewsSearchModel = {...{search: 'state:open ', orderBy: 'update-timestamp'}, ...params};
-        });
+        this.route.queryParams.subscribe((params) => this.reviewsSearchModel = {...ProjectReviews.DefaultSearch, ...params});
     }
 
     public ngOnInit(): void {
