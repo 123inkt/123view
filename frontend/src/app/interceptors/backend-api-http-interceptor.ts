@@ -31,7 +31,7 @@ export default class BackendApiHttpInterceptor implements HttpInterceptor {
             }
         );
 
-        // jwt token about expire within 5 minutes, refresh it
+        // jwt token is about expire within 5 minutes, refresh it
         if (req.context.get(HttpClientContext.PublicUrl).valueOf() === false && this.tokenStore.willExpire()) {
             return this.authenticationService.refresh()
                 .pipe(
