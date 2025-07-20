@@ -22,6 +22,40 @@
 
     <app-code-reviews-search [searchModel]="reviewsSearchModel" (searchAction)="onSearch()"/>
 
+    <div class="list-group">
+      @for (review of reviewsViewModel.reviews; track review.id) {
+        <a class="list-group-item list-group-item-action" href="javascript:">
+          <b>CR-{{ review.projectId }}</b>  {{ review.title }}
+
+          @if (review.type === 'branch') {
+            <span class="badge rounded-pill text-bg-primary">{{ 'branch.review' | translate }}</span>
+          }
+          <div>
+            <!-- authors -->
+            @if (reviewsViewModel.authors[review.id].length > 0) {
+              <span class="text-secondary me-3">
+                <small>{{ 'author' | translate }}:
+                  @for (author of reviewsViewModel.authors[review.id]; track author) {
+                    {{ author }}@if ($last === false) {, }
+                  }
+                </small>
+              </span>
+            }
+            <!-- reviewers -->
+            @if (reviewsViewModel.reviewers[review.id].length > 0) {
+              <span class="text-secondary">
+                <small>{{ 'reviewer' | translate }}:
+                  @for (reviewer of reviewsViewModel.reviewers[review.id]; track reviewer) {
+                    {{ reviewer }}@if ($last === false) {, }
+                  }
+                </small>
+              </span>
+            }
+          </div>
+        </a>
+      }
+    </div>
+
     <app-paginator [paginator]="reviewsViewModel.paginator" (pageSelected)="onPaginate($event)"></app-paginator>
   </div>
 </div>

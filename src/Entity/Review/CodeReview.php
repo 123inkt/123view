@@ -97,10 +97,12 @@ class CodeReview
     private string $title;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['code-review:read'])]
     private string $description;
 
     /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH  */
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
+    #[Groups(['code-review:read'])]
     private string $type = CodeReviewType::COMMITS;
 
     #[ORM\Column(length: 255, nullable: true)]

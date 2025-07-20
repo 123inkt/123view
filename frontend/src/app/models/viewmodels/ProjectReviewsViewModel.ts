@@ -5,5 +5,7 @@ import PaginatorViewModel from '@model/viewmodels/PaginatorViewModel';
 export default interface ProjectReviewsViewModel {
     repository: Repository;
     reviews: CodeReview[];
+    authors: Record<number, string[]>; // key: review id, value: author names
+    reviewers: Record<number, string[]>; // key: review id, value: reviewer names
     paginator: PaginatorViewModel;
 }

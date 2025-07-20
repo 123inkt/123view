@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Review;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Revision\Revision;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use Symfony\Component\Serializer\Attribute\Groups;
+use function array_unique;
 
 class ReviewsViewModel
 {
@@ -39,18 +38,39 @@ class ReviewsViewModel
     }
 
     /**
-     * @param Collection<int, Revision> $revisions
-     *
-     * @return string[]
+     * @return array<int, string[]>
      */
     #[Groups('app:project-reviews')]
-    public function getAuthors(Collection $revisions): array
+    public function getAuthors(): array
     {
         $authors = [];
-        foreach ($revisions as $revision) {
-            $authors[] = (string)$revision->getAuthorName();
+        foreach ($this->reviews as $review) {
+            $reviewId = (int)$review->getId();
+
+            foreach ($review->getRevisions() as $revision) {
+                $authors[$reviewId][] = (string)$revision->getAuthorName();
+            }
+            $authors[$reviewId] = array_unique($authors[$reviewId]);
         }
 
-        return array_unique($authors);
+        return $authors;
+    }
+
+    /**
+     * @return array<int, string[]>
+     */
+    #[Groups('app:project-reviews')]
+    public function getReviewers(): array
+    {
+        $reviewers = [];
+        foreach ($this->reviews as $review) {
+            $reviewId = (int)$review->getId();
+
+            foreach ($review->getReviewers() as $reviewer) {
+                $reviewers[$reviewId][] = $reviewer->getUser()->getName();
+            }
+        }
+
+        return $reviewers;
     }
 }
