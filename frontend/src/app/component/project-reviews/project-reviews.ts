@@ -1,13 +1,14 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
+import {CodeReviewsSearch} from '@component/code-reviews-search/code-reviews-search';
 import {environment} from '@environment/environment';
 import ProjectReviewsViewModel from '@model/viewmodels/ProjectReviewsViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-project-reviews',
-    imports: [TranslatePipe],
+    imports: [TranslatePipe, CodeReviewsSearch],
     templateUrl: './project-reviews.html',
     styleUrl: './project-reviews.scss'
 })

@@ -30,8 +30,7 @@ module.exports = tseslint.config(
                         style: "kebab-case",
                     },
                 ],
-                "@angular-eslint/prefer-inject": ["off"],
-                "@angular-eslint/template/no-autofocus": ["off"]
+                "@angular-eslint/prefer-inject": ["off"]
             },
         },
         {
@@ -40,6 +39,8 @@ module.exports = tseslint.config(
                 ...angular.configs.templateRecommended,
                 ...angular.configs.templateAccessibility,
             ],
-            rules: {},
+            rules: {
+                "@angular-eslint/template/no-autofocus": ["off"]
+            },
         }
 );

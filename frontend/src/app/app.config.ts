@@ -1,8 +1,8 @@
 import {DATE_PIPE_DEFAULT_OPTIONS} from '@angular/common';
-import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
-import {httpclientUrlInterceptor} from '@interceptor/httpclient-url-interceptor';
+import BackendApiHttpInterceptor from '@interceptor/backend-api-http-interceptor';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {CookieService} from 'ngx-cookie-service';
@@ -16,7 +16,8 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({eventCoalescing: true}),
         provideRouter(routes, withComponentInputBinding()),
         // http client
-        provideHttpClient(withInterceptors([httpclientUrlInterceptor])),
+        provideHttpClient(withInterceptorsFromDi()),
+        {provide: HTTP_INTERCEPTORS, useClass: BackendApiHttpInterceptor, multi: true},
         CookieService,
         // translations
         importProvidersFrom([TranslateModule.forRoot({
