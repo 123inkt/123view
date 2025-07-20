@@ -20,11 +20,9 @@ export class App {
         // setup page load indicator
         router.events.subscribe(event => {
             if (event instanceof ResolveStart || event instanceof NavigationStart) {
-                console.log('Navigation start');
                 progress.setLoading(true);
             }
             if (event instanceof ResolveEnd || event instanceof NavigationEnd || event instanceof NavigationError) {
-                console.log('Navigation end');
                 progress.setLoading(false);
             }
         });
