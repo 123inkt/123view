@@ -3,6 +3,7 @@ import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi
 import {ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
 import BackendApiHttpInterceptor from '@interceptor/backend-api-http-interceptor';
+import ProgressIndicatorHttpInterceptor from '@interceptor/progress-indicator-http-interceptor';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {CookieService} from 'ngx-cookie-service';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
         // http client
         provideHttpClient(withInterceptorsFromDi()),
         {provide: HTTP_INTERCEPTORS, useClass: BackendApiHttpInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: ProgressIndicatorHttpInterceptor, multi: true},
         CookieService,
         // translations
         importProvidersFrom([TranslateModule.forRoot({

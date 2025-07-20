@@ -3,6 +3,7 @@ import {NavigationEnd, NavigationError, NavigationStart, ResolveEnd, ResolveStar
 import {Header} from '@component/header/header';
 import {Loader} from '@component/loader/loader';
 import {TranslateService} from '@ngx-translate/core';
+import {Progress} from '@service/progress';
 
 @Component({
     selector: 'app-root',
@@ -11,20 +12,20 @@ import {TranslateService} from '@ngx-translate/core';
     styleUrl: './app.scss'
 })
 export class App {
-    public loading = false;
-
-    constructor(private readonly translate: TranslateService, private readonly router: Router) {
+    constructor(translate: TranslateService, router: Router, progress: Progress) {
         // setup translations
-        this.translate.addLangs(['en']);
-        this.translate.setDefaultLang('en');
-        this.translate.use('en');
+        translate.addLangs(['en']);
+        translate.setDefaultLang('en');
+        translate.use('en');
         // setup page load indicator
-        this.router.events.subscribe(event => {
+        router.events.subscribe(event => {
             if (event instanceof ResolveStart || event instanceof NavigationStart) {
-                this.loading = true;
+                console.log('Navigation start');
+                progress.setLoading(true);
             }
             if (event instanceof ResolveEnd || event instanceof NavigationEnd || event instanceof NavigationError) {
-                this.loading = false;
+                console.log('Navigation end');
+                progress.setLoading(false);
             }
         });
     }
