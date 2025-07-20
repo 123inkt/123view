@@ -21,5 +21,7 @@
     </div>
 
     <app-code-reviews-search [searchModel]="reviewsSearchModel" (searchAction)="onSearch()"/>
+
+    <app-paginator [paginator]="reviewsViewModel.paginator" (pageSelected)="onPaginate($event)"></app-paginator>
   </div>
 </div>

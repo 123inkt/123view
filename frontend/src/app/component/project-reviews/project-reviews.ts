@@ -2,6 +2,7 @@ import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CodeReviewsSearch} from '@component/code-reviews-search/code-reviews-search';
+import {Paginator} from '@component/paginator/paginator';
 import {environment} from '@environment/environment';
 import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
 import ProjectReviewsViewModel from '@model/viewmodels/ProjectReviewsViewModel';
@@ -9,7 +10,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-project-reviews',
-    imports: [TranslatePipe, CodeReviewsSearch],
+    imports: [TranslatePipe, CodeReviewsSearch, Paginator],
     templateUrl: './project-reviews.html',
     styleUrl: './project-reviews.scss'
 })
@@ -30,6 +31,10 @@ export class ProjectReviews implements OnInit {
     }
 
     public onSearch(): void {
-        this.router.navigate([], {relativeTo: this.route, queryParams: this.reviewsSearchModel});
+        this.router.navigate([], {relativeTo: this.route, queryParams: {...this.reviewsSearchModel, ...{page: 1}}});
+    }
+
+    public onPaginate(page: number): void {
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page}, queryParamsHandling: 'merge'});
     }
 }

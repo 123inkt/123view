@@ -1,0 +1,22 @@
+@if (paginator().lastPage > 1) {
+  <nav class="mt-3 mb-3">
+    <ul class="pagination">
+      <li class="page-item">
+        <button class="page-link" (click)="selectPage(1)">
+          <span>&laquo;</span>
+        </button>
+      </li>
+
+      @for (page of pages(); track page) {
+        <li class="page-item" [class.active]="page === paginator().page">
+          <button class="page-link" (click)="selectPage(page)">{{ page }}</button>
+        </li>
+      }
+      <li class="page-item">
+        <button class="page-link" (click)="selectPage(paginator().lastPage)">
+          <span>&raquo;</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+}
