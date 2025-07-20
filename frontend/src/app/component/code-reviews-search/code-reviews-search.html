@@ -1,30 +1,34 @@
-<form method="get">
-  <div class="input-group">
-    <input type="search"
-           name="search"
-           value=""
-           class="reviews-list__search-input form-control"
-           [placeholder]="'search.review' | translate" autofocus/>
+<div class="input-group">
+  <input type="search"
+         [(ngModel)]="searchModel().search"
+         class="reviews-list__search-input form-control"
+         [placeholder]="'search.review' | translate"
+         autofocus/>
 
-    <select name="order-by" class="form-control">
-      <option value="create-timestamp">
-        {{ 'creation.date' | translate }}
-      </option>
-      <option value="update-timestamp">
-        {{ 'last.updated' | translate }}
-      </option>
-    </select>
+  <select class="form-control" [(ngModel)]="searchModel().orderBy">
+    <option value="create-timestamp">
+      {{ 'creation.date' | translate }}
+    </option>
+    <option value="update-timestamp">
+      {{ 'last.updated' | translate }}
+    </option>
+  </select>
 
-    <a href="?search=" class="btn btn-secondary">&times;</a>
-  </div>
-</form>
+  @if (searchModel().search !== '') {
+    <button class="btn btn-secondary" (click)="searchModel().search = ''">&times;</button>
+  }
+</div>
 
 <div class="quick-links form-text d-block mb-3 clearfix">
   <span [innerHTML]="'review.search.hint' | translate"></span>
   <a href="https://github.com/123inkt/123view/tree/master/docs/search-reviews.md" target="_blank" rel="noopener" class="small">
     {{ 'read.more' | translate }}
   </a>
-  <a href="?search=state%3Aclosed" class="ms-1 form-text d-inline-block float-end">{{ 'closed.reviews' | translate }}</a>
-  <a href="?search=state%3Aopen" class="ms-1 form-text d-inline-block float-end">{{ 'open.reviews' | translate }}</a>
-  <a href="?search=" class="ms-1 form-text d-inline-block float-end">{{ 'all.reviews' | translate }}</a>
+  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='state:closed'">
+    {{ 'closed.reviews' | translate }}
+  </a>
+  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='state:open'">
+    {{ 'open.reviews' | translate }}
+  </a>
+  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search=''">{{ 'all.reviews' | translate }}</a>
 </div>

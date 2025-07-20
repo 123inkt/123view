@@ -3,6 +3,7 @@ import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {CodeReviewsSearch} from '@component/code-reviews-search/code-reviews-search';
 import {environment} from '@environment/environment';
+import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
 import ProjectReviewsViewModel from '@model/viewmodels/ProjectReviewsViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -13,8 +14,9 @@ import {TranslatePipe} from '@ngx-translate/core';
     styleUrl: './project-reviews.scss'
 })
 export class ProjectReviews implements OnInit {
-    public id = input.required<number>();
+    public id                                    = input.required<number>();
     public declare reviewsViewModel: ProjectReviewsViewModel;
+    public reviewsSearchModel: ReviewsSearchModel = {search: 'state:open ', orderBy: 'update-timestamp'};
 
     constructor(private readonly title: Title, private readonly route: ActivatedRoute) {
     }
