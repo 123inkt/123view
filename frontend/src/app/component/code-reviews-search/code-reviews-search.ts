@@ -1,4 +1,4 @@
-import {Component, model} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -10,5 +10,10 @@ import {TranslatePipe} from '@ngx-translate/core';
     styleUrl: './code-reviews-search.scss'
 })
 export class CodeReviewsSearch {
-    public searchModel = model.required<ReviewsSearchModel>({alias: 'search'});
+    public searchModel  = input.required<ReviewsSearchModel>();
+    public searchAction = output<void>();
+
+    public onSearch(): void {
+        this.searchAction.emit();
+    }
 }

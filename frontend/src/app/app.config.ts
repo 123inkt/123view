@@ -14,6 +14,7 @@ export const appConfig: ApplicationConfig = {
         {provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: {dateFormat: 'dd-MM-yyyy HH:mm'}},
         provideBrowserGlobalErrorListeners(),
         provideZoneChangeDetection({eventCoalescing: true}),
+        // routing
         provideRouter(routes, withComponentInputBinding()),
         // http client
         provideHttpClient(withInterceptorsFromDi()),

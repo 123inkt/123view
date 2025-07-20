@@ -1,6 +1,6 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CodeReviewsSearch} from '@component/code-reviews-search/code-reviews-search';
 import {environment} from '@environment/environment';
 import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
@@ -14,15 +14,22 @@ import {TranslatePipe} from '@ngx-translate/core';
     styleUrl: './project-reviews.scss'
 })
 export class ProjectReviews implements OnInit {
-    public id                                    = input.required<number>();
+    public id = input.required<number>();
     public declare reviewsViewModel: ProjectReviewsViewModel;
-    public reviewsSearchModel: ReviewsSearchModel = {search: 'state:open ', orderBy: 'update-timestamp'};
+    public declare reviewsSearchModel: ReviewsSearchModel;
 
-    constructor(private readonly title: Title, private readonly route: ActivatedRoute) {
+    constructor(private readonly title: Title, private readonly route: ActivatedRoute, private readonly router: Router) {
+        this.route.queryParams.subscribe((params) => {
+            this.reviewsSearchModel = {...{search: 'state:open ', orderBy: 'update-timestamp'}, ...params};
+        });
     }
 
     public ngOnInit(): void {
         this.reviewsViewModel = this.route.snapshot.data['reviewsViewModel'];
         this.title.setTitle(this.reviewsViewModel.repository.displayName + ' - ' + environment.appName);
+    }
+
+    public onSearch(): void {
+        this.router.navigate([], {relativeTo: this.route, queryParams: this.reviewsSearchModel});
     }
 }

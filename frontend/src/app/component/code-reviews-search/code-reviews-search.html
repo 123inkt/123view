@@ -2,10 +2,11 @@
   <input type="search"
          [(ngModel)]="searchModel().search"
          class="reviews-list__search-input form-control"
+         (change)="onSearch()"
          [placeholder]="'search.review' | translate"
          autofocus/>
 
-  <select class="form-control" [(ngModel)]="searchModel().orderBy">
+  <select class="form-control" [(ngModel)]="searchModel().orderBy" (change)="onSearch()">
     <option value="create-timestamp">
       {{ 'creation.date' | translate }}
     </option>
@@ -15,7 +16,7 @@
   </select>
 
   @if (searchModel().search !== '') {
-    <button class="btn btn-secondary" (click)="searchModel().search = ''">&times;</button>
+    <button class="btn btn-secondary" (click)="searchModel().search = '';onSearch()">&times;</button>
   }
 </div>
 
@@ -24,11 +25,11 @@
   <a href="https://github.com/123inkt/123view/tree/master/docs/search-reviews.md" target="_blank" rel="noopener" class="small">
     {{ 'read.more' | translate }}
   </a>
-  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='state:closed'">
+  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='state:closed';onSearch()">
     {{ 'closed.reviews' | translate }}
   </a>
-  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='state:open'">
+  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='state:open';onSearch()">
     {{ 'open.reviews' | translate }}
   </a>
-  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search=''">{{ 'all.reviews' | translate }}</a>
+  <a href="javascript:" class="ms-1 form-text d-inline-block float-end" (click)="searchModel().search='';onSearch()">{{ 'all.reviews' | translate }}</a>
 </div>

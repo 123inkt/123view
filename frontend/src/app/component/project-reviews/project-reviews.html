@@ -20,6 +20,6 @@
       </ul>
     </div>
 
-    <app-code-reviews-search [(search)]="reviewsSearchModel"/>
+    <app-code-reviews-search [searchModel]="reviewsSearchModel" (searchAction)="onSearch()"/>
   </div>
 </div>
