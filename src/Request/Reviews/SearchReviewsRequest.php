@@ -16,7 +16,7 @@ class SearchReviewsRequest extends AbstractValidatedRequest
 
     public function getOrderBy(): string
     {
-        return $this->request->query->get('order-by', CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP);
+        return $this->request->query->get('orderBy', CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP);
     }
 
     public function getPage(): int
@@ -31,9 +31,9 @@ class SearchReviewsRequest extends AbstractValidatedRequest
         return new ValidationRules(
             [
                 'query' => [
-                    'search'   => 'string',
-                    'order-by' => 'string|in:' . implode(',', $orderBys),
-                    'page'     => 'integer|min:1'
+                    'search'  => 'string',
+                    'orderBy' => 'string|in:' . implode(',', $orderBys),
+                    'page'    => 'integer|min:1'
                 ],
             ],
             true
