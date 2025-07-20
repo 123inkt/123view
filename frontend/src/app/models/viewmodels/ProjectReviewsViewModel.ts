@@ -1,6 +1,9 @@
+import CodeReview from '@model/entities/CodeReview';
 import Repository from '@model/entities/Repository';
+import PaginatorViewModel from '@model/viewmodels/PaginatorViewModel';
 
-export default class ProjectReviewsViewModel {
-    public declare repository: Repository;
-
+export default interface ProjectReviewsViewModel {
+    repository: Repository;
+    reviews: CodeReview[];
+    paginator: PaginatorViewModel;
 }

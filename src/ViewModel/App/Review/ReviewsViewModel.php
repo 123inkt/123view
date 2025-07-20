@@ -25,7 +25,6 @@ class ReviewsViewModel
         public readonly ?PaginatorViewModel $paginator,
         public readonly string $searchQuery,
         public readonly string $searchOrderBy,
-        #[Groups('app:project-reviews')]
         public readonly ?TimelineViewModel $timeline
     ) {
     }
