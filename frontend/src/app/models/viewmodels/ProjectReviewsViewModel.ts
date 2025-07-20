@@ -7,5 +7,6 @@ export default interface ProjectReviewsViewModel {
     reviews: CodeReview[];
     authors: Record<number, string[]>; // key: review id, value: author names
     reviewers: Record<number, string[]>; // key: review id, value: reviewer names
+    reviewStates: Record<number, 'open' | 'in-review' | 'accepted' | 'rejected' | 'closed'>; // key: review id
     paginator: PaginatorViewModel;
 }

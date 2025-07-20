@@ -73,4 +73,26 @@ class ReviewsViewModel
 
         return $reviewers;
     }
+
+    /**
+     * @return array<int, 'open'|'in-review'|'accepted'|'rejected'|'closed'>
+     */
+    #[Groups('app:project-reviews')]
+    public function getReviewStates(): array
+    {
+        $reviewStates = [];
+        foreach ($this->reviews as $review) {
+            $state = $review->getReviewersState();
+
+            if ($review->getReviewers()->count() === 0) {
+                $reviewStates[$review->getId()] = $review->getState() ?? 'open';
+            } elseif ($state === 'open') {
+                $reviewStates[(int)$review->getId()] = 'in-review';
+            } else {
+                $reviewStates[(int)$review->getId()] = $state;
+            }
+        }
+
+        return $reviewStates;
+    }
 }

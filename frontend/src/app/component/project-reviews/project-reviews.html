@@ -25,6 +25,28 @@
     <div class="list-group">
       @for (review of reviewsViewModel.reviews; track review.id) {
         <a class="list-group-item list-group-item-action" href="javascript:">
+          @if (reviewsViewModel.reviewStates[review.id] === 'in-review') {
+            <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+              {{ 'in.review' | translate }}
+            </span>
+          } @else if (reviewsViewModel.reviewStates[review.id] === 'accepted') {
+            <span class="d-inline-flex px-1 text-success bg-success bg-opacity-10 border border-success border-opacity-100 rounded-2 float-end">
+              {{ 'accepted' | translate }}
+            </span>
+          } @else if (reviewsViewModel.reviewStates[review.id] === 'rejected') {
+            <span class="d-inline-flex px-1 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-100 rounded-2 float-end">
+              {{ 'rejected' | translate }}
+            </span>
+          } @else if (reviewsViewModel.reviewStates[review.id] === 'closed') {
+            <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+              {{ 'closed' | translate }}
+            </span>
+          } @else {
+            <span class="d-inline-flex px-1 text-primary bg-primary bg-opacity-10 border border-primary border-opacity-100 rounded-2 float-end">
+              {{ 'open' | translate }}
+            </span>
+          }
+
           <b>CR-{{ review.projectId }}</b>  {{ review.title }}
 
           @if (review.type === 'branch') {
@@ -32,7 +54,7 @@
           }
           <div>
             <!-- authors -->
-            @if (reviewsViewModel.authors[review.id].length > 0) {
+            @if ((reviewsViewModel.authors[review.id] ?? []).length > 0) {
               <span class="text-secondary me-3">
                 <small>{{ 'author' | translate }}:
                   @for (author of reviewsViewModel.authors[review.id]; track author) {
@@ -42,7 +64,7 @@
               </span>
             }
             <!-- reviewers -->
-            @if (reviewsViewModel.reviewers[review.id].length > 0) {
+            @if ((reviewsViewModel.reviewers[review.id] ?? []).length > 0) {
               <span class="text-secondary">
                 <small>{{ 'reviewer' | translate }}:
                   @for (reviewer of reviewsViewModel.reviewers[review.id]; track reviewer) {
