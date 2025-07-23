@@ -10555,16 +10555,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-extensions.git",
-                "reference": "404ffffca51f1925b26b510dbd209f07b7b3f986"
+                "reference": "0c70a12e59bf06525694410104b8c67ceeed07cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/404ffffca51f1925b26b510dbd209f07b7b3f986",
-                "reference": "404ffffca51f1925b26b510dbd209f07b7b3f986",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/0c70a12e59bf06525694410104b8c67ceeed07cc",
+                "reference": "0c70a12e59bf06525694410104b8c67ceeed07cc",
                 "shasum": ""
             },
             "require": {
@@ -10579,6 +10579,7 @@
             },
             "require-dev": {
                 "digitalrevolution/phpunit-file-coverage-inspection": "^3.0",
+                "mikey179/vfsstream": "^1.6.12",
                 "phpmd/phpmd": "^2.12",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan": "^2.0",
@@ -10592,14 +10593,17 @@
                 "symfony/framework-bundle": "^6.0||^7.0",
                 "symfony/security-core": "^6.0||^7.0",
                 "symfony/twig-bundle": "^6.0||^7.0",
-                "symfony/validator": "^6.0||^7.0"
+                "symfony/validator": "^6.0||^7.0",
+                "tecnickcom/tcpdf": "^6.0"
             },
             "suggest": {
+                "ext-imagick": "Imagick is required for IsSameImageConstraint",
                 "symfony/clock": "Symfony clock component is required when using the ClockTestTrait",
                 "symfony/form": "Symfony form component is required for testing the controller createForm methods",
                 "symfony/framework-bundle": "Symfony framework bundle is required for the AbstractControllerTestCase",
                 "symfony/security-core": "Symfony security component is required for testing authentication/authorization related methods",
-                "symfony/twig-bundle": "Symfony twig bundle is required to test rendering templates/forms"
+                "symfony/twig-bundle": "Symfony twig bundle is required to test rendering templates/forms",
+                "tecnickcom/tcpdf": "TCPDF is required for PdfTestTrait"
             },
             "type": "library",
             "extra": {
@@ -10624,9 +10628,9 @@
             "description": "A library for phpunit utility and support classes",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-extensions/issues",
-                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.8.0"
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.9.0"
             },
-            "time": "2025-07-10T14:55:18+00:00"
+            "time": "2025-07-22T14:31:26+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
