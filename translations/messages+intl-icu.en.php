@@ -129,7 +129,7 @@ return [
     'git.sync.disable'                            => 'Disable sync',
     'git.sync.disabled'                           => 'Sync comments is disabled',
     'git.sync.enable'                             => 'Enable sync',
-    'git.sync.explanation'                        => 'Sync comment creation, updates, delete and resolves to Gitlab.',
+    'git.sync.explanation'                        => 'Sync comment creation, updates, delete and resolves, as well as reviewer approval and unapprovals to Gitlab.',
     'git.type'                                    => 'Git repository type',
     'git.type.github'                             => 'Github',
     'git.type.gitlab'                             => 'Gitlab',
