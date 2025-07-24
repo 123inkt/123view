@@ -8,6 +8,7 @@ use DR\Review\Service\Api\Gitlab\MergeRequests;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -83,5 +84,37 @@ class MergeRequestsTest extends AbstractTestCase
             ->willReturn([$version]);
 
         static::assertSame([$version], $this->mergeRequests->versions(111, 222));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testApprove(): void
+    {
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn(Response::HTTP_CREATED);
+
+        $this->client->expects($this->once())
+            ->method('request')
+            ->with('POST', 'projects/111/merge_requests/222/approve')
+            ->willReturn($response);
+
+        static::assertTrue($this->mergeRequests->approve(111, 222));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testUnapprove(): void
+    {
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn(Response::HTTP_CREATED);
+
+        $this->client->expects($this->once())
+            ->method('request')
+            ->with('POST', 'projects/111/merge_requests/222/unapprove')
+            ->willReturn($response);
+
+        static::assertTrue($this->mergeRequests->unapprove(111, 222));
     }
 }
