@@ -13,10 +13,8 @@ class ReviewApprovalService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private readonly GitlabApiProvider $apiProvider,
-        private readonly ReviewMergeRequestService $mergeRequestService
-    ) {
+    public function __construct(private readonly GitlabApiProvider $apiProvider, private readonly ReviewMergeRequestService $mergeRequestService)
+    {
     }
 
     /**
