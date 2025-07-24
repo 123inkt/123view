@@ -8,6 +8,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Api\Gitlab\ReviewApprovalService;
+use DR\Review\Service\Publisher\UserMessagePublisher;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -21,7 +22,8 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
         private readonly bool $gitlabReviewerSyncEnabled,
         private readonly string $branchPattern,
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly ReviewApprovalService $reviewApprovalService
+        private readonly ReviewApprovalService $reviewApprovalService,
+        private readonly UserMessagePublisher $messagePublisher
     ) {
     }
 
@@ -59,10 +61,15 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
             return;
         }
 
+        $result = null;
         if ($event->newState === CodeReviewerStateType::ACCEPTED) {
-            $this->reviewApprovalService->approve($review, $reviewer, true);
+            $result = $this->reviewApprovalService->approve($review, $reviewer, true);
         } elseif ($event->oldState === CodeReviewerStateType::ACCEPTED) {
-            $this->reviewApprovalService->approve($review, $reviewer, false);
+            $result = $this->reviewApprovalService->approve($review, $reviewer, false);
+        }
+
+        if ($result === false) {
+            $this->messagePublisher->publishTo('gitlab.approval.sync.failure', $event->getUserId());
         }
     }
 }
