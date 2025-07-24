@@ -14,6 +14,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\Form\User\UserSettingType;
+use DR\Review\MessageHandler\Gitlab\ReviewerStateChangeMessageHandler;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -101,7 +102,6 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
         ->bind('$gitlabReviewerSyncEnabled', '%env(bool:GITLAB_REVIEWER_SYNC)%')
-        ->bind('$gitlabReviewerSyncBranchPattern', '%env(bool:GITLAB_REVIEWER_SYNC_BRANCH_PATTERN)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
@@ -227,6 +227,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
     $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
+
+    $services->set(ReviewerStateChangeMessageHandler::class)->arg('$branchPattern', '%env(bool:GITLAB_REVIEWER_SYNC_BRANCH_PATTERN)%');
 
     // Webhook handlers
     $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler', ['key' => MergeRequestEvent::class]);

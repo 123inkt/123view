@@ -6,7 +6,6 @@ namespace DR\Review\MessageHandler\Gitlab;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
-use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApiProvider;
 use DR\Review\Service\Api\Gitlab\ReviewMergeRequestService;
@@ -21,9 +20,8 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly bool $gitlabReviewerSyncEnabled,
-        private readonly string $gitlabReviewerSyncBranchPattern,
+        private readonly string $branchPattern,
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly CodeReviewerRepository $reviewerRepository,
         private readonly GitlabApiProvider $apiProvider,
         private readonly ReviewMergeRequestService $mergeRequestService
     ) {
@@ -36,7 +34,7 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
     public function __invoke(ReviewerStateChanged $event): void
     {
         if ($this->gitlabReviewerSyncEnabled === false) {
-            $this->logger?->info('Gitlab reviewer sync disabled. Reviewer id: {id}', ['id' => $event->reviewId]);
+            $this->logger?->info('ReviewerStateChange: Gitlab reviewer sync disabled. Reviewer id: {id}', ['id' => $event->reviewId]);
 
             return;
         }
@@ -46,7 +44,7 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
         $projectId = $review?->getRepository()->getRepositoryProperty('gitlab-project-id');
         if ($review === null || $reviewer === null || $projectId === null) {
             $this->logger?->info(
-                'Gitlab reviewer sync skipped as review, reviewer or projectId not found',
+                'ReviewerStateChange: Gitlab reviewer sync skipped as review, reviewer or projectId not found',
                 ['reviewId' => $event->reviewId, 'reviewerId' => $event->reviewerId, 'projectId' => $projectId,]
             );
 
@@ -54,10 +52,10 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
         }
 
         $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
-        if (preg_match($this->gitlabReviewerSyncBranchPattern, $remoteRef) !== 1) {
+        if ($remoteRef === null || preg_match($this->branchPattern, $remoteRef) !== 1) {
             $this->logger?->info(
-                'Remote ref for review {id} is {ref}, but doesn\'t match pattern {pattern}',
-                ['id' => $review->getId(), 'ref' => $remoteRef, 'pattern' => $this->gitlabReviewerSyncBranchPattern]
+                'ReviewerStateChange: Remote ref for review {id} is {ref}, but doesn\'t match pattern {pattern}',
+                ['id' => $review->getId(), 'ref' => $remoteRef, 'pattern' => $this->branchPattern]
             );
 
             return;
@@ -65,21 +63,23 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
 
         $api = $this->apiProvider->create($review->getRepository(), $reviewer->getUser());
         if ($api === null) {
-            $this->logger?->info('No api configuration found for reviewer {id}', ['id' => $reviewer->getId()]);
+            $this->logger?->info('ReviewerStateChange: No api configuration found for reviewer {id}', ['id' => $reviewer->getId()]);
 
             return;
         }
 
         $mergeRequestIId = $this->mergeRequestService->retrieveMergeRequestIID($api, $review);
         if ($mergeRequestIId === null) {
-            $this->logger?->info('No mergeRequestIdd found for review {id}', ['id' => $review->getId()]);
+            $this->logger?->info('ReviewerStateChange: No mergeRequestIdd found for review {id}', ['id' => $review->getId()]);
 
             return;
         }
 
         if ($event->newState === CodeReviewerStateType::ACCEPTED) {
+            $this->logger?->info('ReviewerStateChange: Approving merge request {id}', ['id' => $mergeRequestIId]);
             $api->mergeRequests()->approve((int)$projectId, $mergeRequestIId);
         } elseif ($event->oldState === CodeReviewerStateType::ACCEPTED) {
+            $this->logger?->info('ReviewerStateChange: Unapproving merge request {id}', ['id' => $mergeRequestIId]);
             $api->mergeRequests()->unapprove((int)$projectId, $mergeRequestIId);
         }
     }
