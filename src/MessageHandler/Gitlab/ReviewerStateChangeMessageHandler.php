@@ -32,7 +32,7 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
     public function __invoke(ReviewerStateChanged $event): void
     {
         if ($this->gitlabReviewerSyncEnabled === false) {
-            $this->logger?->info('ReviewerStateChange: Gitlab reviewer sync disabled. Reviewer id: {id}', ['id' => $event->reviewId]);
+            $this->logger?->info('ReviewerStateChange: Gitlab reviewer sync disabled. Review id: {id}', ['id' => $event->reviewId]);
 
             return;
         }
