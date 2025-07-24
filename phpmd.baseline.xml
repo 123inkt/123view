@@ -8,6 +8,7 @@
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Review/CodeReview.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/MessageHandler/Gitlab/ReviewerStateChangeMessageHandler.php"/>
   <violation rule="PHPMD\Rule\Design\LongParameterList" file="src/Model/Review/CodeReviewDto.php" method="__construct"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/GitlabApiProvider.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewMergeRequestService.php"/>
