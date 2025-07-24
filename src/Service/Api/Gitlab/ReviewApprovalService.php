@@ -20,29 +20,30 @@ class ReviewApprovalService implements LoggerAwareInterface
     /**
      * @throws Throwable
      */
-    public function approve(CodeReview $review, CodeReviewer $reviewer, bool $approve): void
+    public function approve(CodeReview $review, CodeReviewer $reviewer, bool $approve): ?bool
     {
         $projectId = (int)$review->getRepository()->getRepositoryProperty('gitlab-project-id');
         $api       = $this->apiProvider->create($review->getRepository(), $reviewer->getUser());
         if ($api === null || $projectId === 0) {
             $this->logger?->info('ReviewApprovalService: No api configuration found for reviewer {id}', ['id' => $reviewer->getId()]);
 
-            return;
+            return null;
         }
 
         $mergeRequestIId = $this->mergeRequestService->retrieveMergeRequestIID($api, $review);
         if ($mergeRequestIId === null) {
             $this->logger?->info('ReviewApprovalService: No mergeRequestIdd found for review {id}', ['id' => $review->getId()]);
 
-            return;
+            return null;
         }
 
         if ($approve) {
             $this->logger?->info('ReviewApprovalService: Approving merge request {id}', ['id' => $mergeRequestIId]);
-            $api->mergeRequests()->approve($projectId, $mergeRequestIId);
-        } else {
-            $this->logger?->info('ReviewApprovalService: Unapproving merge request {id}', ['id' => $mergeRequestIId]);
-            $api->mergeRequests()->unapprove($projectId, $mergeRequestIId);
+
+            return $api->mergeRequests()->approve($projectId, $mergeRequestIId);
         }
+        $this->logger?->info('ReviewApprovalService: Unapproving merge request {id}', ['id' => $mergeRequestIId]);
+
+        return $api->mergeRequests()->unapprove($projectId, $mergeRequestIId);
     }
 }
