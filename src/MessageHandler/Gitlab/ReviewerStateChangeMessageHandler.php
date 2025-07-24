@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\MessageHandler\Gitlab;
 
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -20,6 +21,7 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly bool $gitlabReviewerSyncEnabled,
+        private readonly string $gitlabReviewerSyncBranchPattern,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly CodeReviewerRepository $reviewerRepository,
         private readonly GitlabApiProvider $apiProvider,
@@ -45,11 +47,17 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
         if ($review === null || $reviewer === null || $projectId === null) {
             $this->logger?->info(
                 'Gitlab reviewer sync skipped as review, reviewer or projectId not found',
-                [
-                    'reviewId'   => $event->reviewId,
-                    'reviewerId' => $event->reviewerId,
-                    'projectId'  => $projectId,
-                ]
+                ['reviewId' => $event->reviewId, 'reviewerId' => $event->reviewerId, 'projectId' => $projectId,]
+            );
+
+            return;
+        }
+
+        $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
+        if (preg_match($this->gitlabReviewerSyncBranchPattern, $remoteRef) !== 1) {
+            $this->logger?->info(
+                'Remote ref for review {id} is {ref}, but doesn\'t match pattern {pattern}',
+                ['id' => $review->getId(), 'ref' => $remoteRef, 'pattern' => $this->gitlabReviewerSyncBranchPattern]
             );
 
             return;
