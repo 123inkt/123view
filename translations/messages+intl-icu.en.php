@@ -369,5 +369,4 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
-    'gitlab.approval.sync.failure'                => 'Failed to synchronize review (un)approval state to Gitlab. Check sync status.'
 ];
