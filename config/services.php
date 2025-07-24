@@ -100,6 +100,7 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
+        ->bind('$gitlabReviewerSyncEnabled', '%env(bool:GITLAB_REVIEWER_SYNC)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
