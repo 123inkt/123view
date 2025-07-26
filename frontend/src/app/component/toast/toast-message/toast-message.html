@@ -1,1 +1,1 @@
-<div class="bg-dark text-light small rounded-2 p-2 shadow-sm mt-2 toast-{{ toast().type }}">{{ toast().message }}</div>
+<div class="bg-dark text-light small rounded-2 p-2 shadow-sm mt-2 toast-{{ toast().type }}" [innerHTML]="toast().message"></div>
