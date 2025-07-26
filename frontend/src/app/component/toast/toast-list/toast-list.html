@@ -1,0 +1,3 @@
+@for (toast of toastService.toasts$ | async; track $index) {
+  <app-toast-message [toast]="toast"/>
+}

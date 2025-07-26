@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    animation: toast-animation 0s ease-in 20s forwards;
+    animation-fill-mode: forwards;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+@keyframes toast-animation {
+    to {
+        height: 0;
+    }
+}
