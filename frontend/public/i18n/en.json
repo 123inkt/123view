@@ -17,6 +17,11 @@
     "projects": "Projects",
     "read.more": "Read more",
     "rejected": "Rejected",
+    "request.error.bad.request": "The request was malformed or invalid.",
+    "request.error.forbidden": "You are not allowed to access this resource.",
+    "request.error.internal.server.error": "An internal server error occurred.",
+    "request.error.not.found": "The requested resource was not found.",
+    "request.error.unauthorized": "You are not authorized to access this resource.",
     "review.search.hint": "Search for id: <code>id:12345</code>, for state: <code>state:open|closed</code>, for author: <code>author:&hellip;</code>, for reviewer: <code>reviewer:&hellip;</code>.",
     "reviewer": "Reviewer",
     "reviews": "Reviews",
@@ -43,10 +48,5 @@
     "timeline.reviewer.rejected": "<span class=\"text-primary\">{{username}}</span> <span class=\"text-danger\">raised concern</span> about the changes.",
     "timeline.reviewer.removed": "<span class=\"text-primary\">{{username}}</span> left as reviewer.",
     "timeline.reviewer.removed.by": "<span class=\"text-primary\">{{username}}</span> removed <span class=\"text-primary\">{{reviewerName}}</span> as reviewer.",
-    "request.error.not.found": "The requested resource was not found.",
-    "request.error.unauthorized": "You are not authorized to access this resource.",
-    "request.error.forbidden": "You are not allowed to access this resource.",
-    "request.error.internal.server.error": "An internal server error occurred.",
-    "request.error.bad.request": "The request was malformed or invalid.",
     "you": "You"
 }
