@@ -19,11 +19,20 @@ export class App {
         translate.use('en');
         // setup page load indicator
         router.events.subscribe(event => {
-            if (event instanceof ResolveStart || event instanceof NavigationStart) {
+            if (event instanceof ResolveStart) {
                 progress.setLoading(true);
             }
-            if (event instanceof ResolveEnd || event instanceof NavigationEnd || event instanceof NavigationError) {
+            if (event instanceof NavigationStart) {
+                progress.setLoading(true);
+            }
+            if (event instanceof ResolveEnd) {
                 progress.setLoading(false);
+            }
+            if (event instanceof NavigationEnd) {
+                progress.setLoading(false);
+            }
+            if (event instanceof NavigationError) {
+                progress.stopLoading();
             }
         });
     }
