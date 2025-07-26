@@ -33,7 +33,7 @@ export class ProjectReviews implements OnInit {
             .pipe(
                 tap((params) => this.reviewsSearchModel = {...ProjectReviews.DefaultSearch, ...params}),
                 skip(1), // Ignore the initial queryParams emission,
-                switchMap((params) => this.reviewsService.getReviews(this.id(), params, true))
+                switchMap((params) => this.reviewsService.getReviews(this.id(), params))
             )
             .subscribe((viewModel) => this.reviewsViewModel = viewModel);
     }
