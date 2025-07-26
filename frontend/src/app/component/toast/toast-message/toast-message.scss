@@ -6,6 +6,18 @@
     overflow: hidden;
 }
 
+.toast-info {
+    border-left: 5px solid var(--bs-primary);
+}
+
+.toast-error {
+    border-left: 5px solid var(--bs-danger);
+}
+
+.toast-success {
+    border-left: 5px solid var(--bs-success);
+}
+
 @keyframes toast-animation {
     to {
         height: 0;

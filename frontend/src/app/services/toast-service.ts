@@ -4,6 +4,8 @@ import {BehaviorSubject} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ToastService {
+    private static readonly MaxToasts = 10;
+
     public readonly toasts$;
     private readonly toastsSubject;
     private toasts: Toast[] = [];
@@ -11,9 +13,6 @@ export class ToastService {
     constructor() {
         this.toastsSubject = new BehaviorSubject<Toast[]>([]);
         this.toasts$       = this.toastsSubject.asObservable();
-        this.showSuccess('success');
-        this.showError('error');
-        this.showInfo('info');
     }
 
     public showSuccess(message: string): void {
@@ -38,6 +37,10 @@ export class ToastService {
             }
         );
         this.toasts.push(toast);
+        // Limit the number of toasts to a maximum
+        if (this.toasts.length > ToastService.MaxToasts) {
+            this.toasts = this.toasts.slice(-ToastService.MaxToasts);
+        }
         this.toastsSubject.next(this.toasts);
     }
 }
