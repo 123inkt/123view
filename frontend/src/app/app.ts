@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavigationEnd, NavigationError, NavigationStart, ResolveEnd, ResolveStart, Router, RouterOutlet} from '@angular/router';
+import {NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet} from '@angular/router';
 import {Header} from '@component/header/header';
 import {Loader} from '@component/loader/loader';
 import {TranslateService} from '@ngx-translate/core';
@@ -19,20 +19,14 @@ export class App {
         translate.use('en');
         // setup page load indicator
         router.events.subscribe(event => {
-            if (event instanceof ResolveStart) {
-                progress.setLoading(true);
-            }
             if (event instanceof NavigationStart) {
                 progress.setLoading(true);
-            }
-            if (event instanceof ResolveEnd) {
-                progress.setLoading(false);
             }
             if (event instanceof NavigationEnd) {
                 progress.setLoading(false);
             }
             if (event instanceof NavigationError) {
-                progress.stopLoading();
+                progress.setLoading(false);
             }
         });
     }

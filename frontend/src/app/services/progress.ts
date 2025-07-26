@@ -12,11 +12,6 @@ export class Progress {
         this.isLoading$       = this.isLoadingSubject.asObservable();
     }
 
-    public stopLoading(): void {
-        this.active = 0;
-        this.isLoadingSubject.next(false);
-    }
-
     public setLoading(loading: boolean): void {
         if (loading) {
             ++this.active;
