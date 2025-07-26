@@ -6,6 +6,11 @@ set -e
 #
 sed -i "s/memory_limit=2G/memory_limit=${PHP_MEMORY_LIMIT}/g" /usr/local/etc/php/conf.d/default.ini
 
+##
+# Purge build directory
+#
+rm -rf /app/var/build
+
 if [ "${APP_ENV}" == "dev" ]; then
     composer install --no-interaction --optimize-autoloader --no-scripts
     mkdir -p /app/var/cache/dev
@@ -14,7 +19,10 @@ else
     mkdir -p /app/var/cache/prod
 fi
 
+mkdir -p /app/var/build
+chmod -R a+rwx /app/var/build
 chmod -R a+rwx /app/var/cache
+chown www-data:www-data -R /app/var/build
 chown www-data:www-data -R /app/var/cache
 
 ##
