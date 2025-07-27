@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+// TODO angular refactor to api platform endpoint
 class ReviewsController extends AbstractController
 {
     public function __construct(

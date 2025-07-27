@@ -10,7 +10,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-repositories-page',
-    imports: [RepositoriesSection, ActivityList, FormsModule, TranslatePipe],
+    imports: [ActivityList, FormsModule, TranslatePipe, RepositoriesSection],
     templateUrl: './repositories-page.html',
     styleUrl: './repositories-page.scss'
 })

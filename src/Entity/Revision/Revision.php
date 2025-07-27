@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Revision\RevisionRepository;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]
 #[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
@@ -19,27 +20,35 @@ class Revision
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('revision:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('revision:read')]
     private string $commitHash;
 
     #[ORM\Column(length: 255)]
+    #[Groups('revision:read')]
     private string $title;
 
     #[ORM\Column(length: 255)]
+    #[Groups('revision:read')]
     private string $description;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('revision:read')]
     private ?string $firstBranch;
 
     #[ORM\Column(length: 255)]
+    #[Groups('revision:read')]
     private string $authorEmail;
 
     #[ORM\Column(length: 255)]
+    #[Groups('revision:read')]
     private string $authorName;
 
     #[ORM\Column]
+    #[Groups('revision:read')]
     private int $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'revisions')]

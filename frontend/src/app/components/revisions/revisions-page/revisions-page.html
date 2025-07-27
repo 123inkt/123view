@@ -1,15 +1,17 @@
-<div class="mt-2 pb-3">
-  <h2 class="float-start pe-3">{{ revisionsModel.repository.displayName }}</h2>
+<div class="container-xl">
+  <div class="mt-2 pb-3">
+    <h2 class="float-start pe-3">{{ revisionListViewModel.repository.displayName }}</h2>
 
-  <ul class="nav nav-pills float-start">
-    <li class="nav-item">
-      <a class="nav-link" href="#">{{ 'reviews'|trans }}</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="#">{{ 'revisions'|trans }}</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">{{ 'branches'|trans }} </a>
-    </li>
-  </ul>
+    <ul class="nav nav-pills float-start">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/app', 'projects', revisionListViewModel.repository.id, 'reviews']">{{ 'reviews' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="javascript:">{{ 'revisions' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">{{ 'branches' | translate }} </a>
+      </li>
+    </ul>
+  </div>
 </div>

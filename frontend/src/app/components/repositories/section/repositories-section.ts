@@ -7,8 +7,8 @@ import Repository from '@model/entities/Repository';
 @Component({
     selector: 'app-repositories-section',
     imports: [DecimalPipe, RouterLink],
-    templateUrl: './projects-section.html',
-    styleUrl: './projects-section.scss'
+    templateUrl: './repositories-section.html',
+    styleUrl: './repositories-section.scss'
 })
 export class RepositoriesSection implements OnChanges {
     public repositories                      = input.required<Repository[]>();

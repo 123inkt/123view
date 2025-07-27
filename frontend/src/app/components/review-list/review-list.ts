@@ -1,6 +1,6 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {ActivityList} from '@component/activity-list/activity-list';
 import {Paginator} from '@component/paginator/paginator';
 import {ReviewListSearch} from '@component/review-list-search/review-list-search';
@@ -14,7 +14,7 @@ import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
     selector: 'app-review-list',
-    imports: [TranslatePipe, ReviewListSearch, Paginator, ActivityList],
+    imports: [TranslatePipe, ReviewListSearch, Paginator, ActivityList, RouterLink],
     templateUrl: './review-list.html',
     styleUrl: './review-list.scss'
 })
@@ -42,7 +42,7 @@ export class ReviewList implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.reviewListViewModel       = this.route.snapshot.data['reviewsViewModel'];
+        this.reviewListViewModel       = this.route.snapshot.data['reviewListViewModel'];
         this.reviewActivitiesViewModel = this.route.snapshot.data['reviewActivitiesViewModel'];
         this.title.setTitle(this.reviewListViewModel.repository.displayName + ' - ' + environment.appName);
     }
