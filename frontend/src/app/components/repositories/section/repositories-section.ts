@@ -5,12 +5,12 @@ import {contains} from '@lib/Strings';
 import Repository from '@model/entities/Repository';
 
 @Component({
-    selector: 'app-projects-section',
+    selector: 'app-repositories-section',
     imports: [DecimalPipe, RouterLink],
     templateUrl: './projects-section.html',
     styleUrl: './projects-section.scss'
 })
-export class ProjectsSection implements OnChanges {
+export class RepositoriesSection implements OnChanges {
     public repositories                      = input.required<Repository[]>();
     public revisionCount                     = input.required<Record<number, number>>();
     public searchQuery                       = input.required<string>();

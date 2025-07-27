@@ -20,7 +20,7 @@
       </ul>
     </div>
 
-    <app-code-reviews-search [searchModel]="reviewsSearchModel" (searchAction)="onSearch()"/>
+    <app-review-list-search [searchModel]="reviewsSearchModel" (searchAction)="onSearch()"/>
 
     <div class="list-group">
       @for (review of reviewsViewModel.reviews; track review.id) {
@@ -82,6 +82,6 @@
   </div>
   <div>
     <h3 class="mt-2">{{ 'news.feed' | translate }}</h3>
-    <app-timeline [viewModel]="timelineViewModel"/>
+    <app-activity-list [viewModel]="timelineViewModel"/>
   </div>
 </div>

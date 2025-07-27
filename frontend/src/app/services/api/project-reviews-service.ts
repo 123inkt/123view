@@ -1,6 +1,6 @@
 import {HttpClient, HttpContext} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import ProjectReviewsViewModel from '@model/viewmodels/ProjectReviewsViewModel';
+import ReviewListViewModel from '@model/viewmodels/ReviewListViewModel';
 import HttpClientContext from '@service/http-client-context';
 import {Observable} from 'rxjs';
 
@@ -12,9 +12,9 @@ export class ProjectReviewsService {
     constructor(private readonly httpClient: HttpClient) {
     }
 
-    public getReviews(repositoryId: number, filter: Filter): Observable<ProjectReviewsViewModel> {
+    public getReviews(repositoryId: number, filter: Filter): Observable<ReviewListViewModel> {
         const context = new HttpContext().set(HttpClientContext.BackendApi, true);
 
-        return this.httpClient.get<ProjectReviewsViewModel>('api/view-model/reviews/' + String(repositoryId), {context, params: filter});
+        return this.httpClient.get<ReviewListViewModel>('api/view-model/reviews/' + String(repositoryId), {context, params: filter});
     }
 }

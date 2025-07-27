@@ -1,30 +1,30 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CodeReviewsSearch} from '@component/code-reviews-search/code-reviews-search';
+import {ActivityList} from '@component/activity-list/activity-list';
 import {Paginator} from '@component/paginator/paginator';
-import {Timeline} from '@component/timeline/timeline';
+import {ReviewListSearch} from '@component/review-list-search/review-list-search';
 import {environment} from '@environment/environment';
 import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
-import ProjectReviewsViewModel from '@model/viewmodels/ProjectReviewsViewModel';
-import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
+import ActivitiesViewModel from '@model/viewmodels/ActivitiesViewModel';
+import ReviewListViewModel from '@model/viewmodels/ReviewListViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ProjectReviewsService} from '@service/api/project-reviews-service';
 import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
-    selector: 'app-project-reviews',
-    imports: [TranslatePipe, CodeReviewsSearch, Paginator, Timeline],
-    templateUrl: './project-reviews.html',
-    styleUrl: './project-reviews.scss'
+    selector: 'app-review-list',
+    imports: [TranslatePipe, ReviewListSearch, Paginator, ActivityList],
+    templateUrl: './review-list.html',
+    styleUrl: './review-list.scss'
 })
-export class ProjectReviews implements OnInit {
+export class ReviewList implements OnInit {
     private static readonly DefaultSearch: ReviewsSearchModel = {search: 'state:open ', orderBy: 'update-timestamp'};
 
     public id                 = input.required<number>();
-    public declare reviewsViewModel: ProjectReviewsViewModel;
-    public declare timelineViewModel: TimelineViewModel;
-    public reviewsSearchModel = ProjectReviews.DefaultSearch;
+    public declare reviewsViewModel: ReviewListViewModel;
+    public declare timelineViewModel: ActivitiesViewModel;
+    public reviewsSearchModel = ReviewList.DefaultSearch;
 
     constructor(
         private readonly title: Title,
@@ -34,7 +34,7 @@ export class ProjectReviews implements OnInit {
     ) {
         this.route.queryParams
             .pipe(
-                tap((params) => this.reviewsSearchModel = {...ProjectReviews.DefaultSearch, ...params}),
+                tap((params) => this.reviewsSearchModel = {...ReviewList.DefaultSearch, ...params}),
                 skip(1), // Ignore the initial queryParams emission,
                 switchMap((params) => this.reviewsService.getReviews(this.id(), params))
             )

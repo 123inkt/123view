@@ -1,14 +1,14 @@
 import {Routes} from '@angular/router';
 import {Login} from '@component/login/login';
-import {ProjectReviews} from '@component/project-reviews/project-reviews';
-import {Projects} from '@component/projects/projects';
+import {RepositoriesPage} from '@component/repositories/repositories-page';
+import {ReviewList} from '@component/review-list/review-list';
 import {environment} from '@environment/environment';
 import {authenticationGuard} from '@guard/authentication-guard';
 import {LoginViewModelResolver} from '@resolver/login-view-model-resolver';
-import {ProjectReviewsTimelineViewModelResolver} from '@resolver/project-reviews-timeline-view-model-resolver';
-import {ProjectReviewsViewModelResolver} from '@resolver/project-reviews-view-model-resolver';
-import {ProjectsTimelineViewModelResolver} from '@resolver/projects-timeline-view-model-resolver';
-import {ProjectsViewModelResolver} from '@resolver/projects-view-model-resolver';
+import {ReviewListActivitiesViewModelResolver} from '@resolver/review-list-activities-view-model-resolver.service';
+import {ReviewListViewModelResolver} from '@resolver/review-list-view-model-resolver.service';
+import {ActivitiesViewModelResolver} from '@resolver/activities-view-model-resolver.service';
+import {RepositoriesViewModelResolver} from '@resolver/repositories-view-model-resolver.service';
 
 export const routes: Routes = [
     {
@@ -21,18 +21,18 @@ export const routes: Routes = [
     },
     {
         path: '',
-        component: Projects,
+        component: RepositoriesPage,
         data: {requiresLogin: true},
         title: environment.appName + ' - ' + $localize`Projects`,
-        resolve: {projectsViewModel: ProjectsViewModelResolver, timelineViewModel: ProjectsTimelineViewModelResolver},
+        resolve: {projectsViewModel: RepositoriesViewModelResolver, timelineViewModel: ActivitiesViewModelResolver},
         canActivate: [authenticationGuard]
     },
     {
         path: 'app/projects/:id/reviews',
-        component: ProjectReviews,
+        component: ReviewList,
         data: {requiresLogin: true},
         title: environment.appName + ' - ' + $localize`Reviews`,
-        resolve: {reviewsViewModel: ProjectReviewsViewModelResolver, timelineViewModel: ProjectReviewsTimelineViewModelResolver},
+        resolve: {reviewsViewModel: ReviewListViewModelResolver, timelineViewModel: ReviewListActivitiesViewModelResolver},
         canActivate: [authenticationGuard]
     }
 ];

@@ -4,12 +4,12 @@ import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-code-reviews-search',
+    selector: 'app-review-list-search',
     imports: [TranslatePipe, FormsModule],
-    templateUrl: './code-reviews-search.html',
-    styleUrl: './code-reviews-search.scss'
+    templateUrl: './review-list-search.html',
+    styleUrl: './review-list-search.scss'
 })
-export class CodeReviewsSearch {
+export class ReviewListSearch {
     public searchModel  = input.required<ReviewsSearchModel>();
     public searchAction = output<void>();
 

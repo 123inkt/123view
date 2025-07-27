@@ -1,7 +1,7 @@
 import {AsyncPipe, DatePipe} from '@angular/common';
 import {AfterContentInit, Component, ElementRef, HostListener, input} from '@angular/core';
 import CodeReviewActivity from '@model/entities/CodeReviewActivity';
-import TimelineViewModel from '@model/viewmodels/TimelineViewModel';
+import ActivitiesViewModel from '@model/viewmodels/ActivitiesViewModel';
 import {ReviewActivityFormatter} from '@service/review/review-activity-formatter';
 import {Observable} from 'rxjs';
 
@@ -11,14 +11,14 @@ import {Observable} from 'rxjs';
         '[style.width]': 'hostWidth',
         '[style.height]': 'hostHeight'
     },
-    selector: 'app-timeline',
+    selector: 'app-activity-list',
     imports: [AsyncPipe, DatePipe],
-    templateUrl: './timeline.html',
-    styleUrl: './timeline.scss'
+    templateUrl: './activity-list.html',
+    styleUrl: './activity-list.scss'
 })
 // TODO add comment and comment reply
-export class Timeline implements AfterContentInit {
-    public viewModel    = input.required<TimelineViewModel>();
+export class ActivityList implements AfterContentInit {
+    public viewModel    = input.required<ActivitiesViewModel>();
     public hostPosition = '';
     public hostWidth    = '';
     public hostHeight   = '';

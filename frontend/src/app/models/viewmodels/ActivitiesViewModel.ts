@@ -1,5 +1,5 @@
 import CodeReviewActivity from '@model/entities/CodeReviewActivity';
 
-export default class TimelineViewModel {
+export default class ActivitiesViewModel {
     public declare activities: CodeReviewActivity[];
 }

@@ -1,5 +1,5 @@
 <div class="container-xl">
-  <div class="projects-grid mt-2">
+  <div class="repositories-grid mt-2">
     <h1>{{ 'projects' | translate }}</h1>
     <h3 class="mt-2">{{ 'news.feed' | translate }}</h3>
     <div>
@@ -10,11 +10,11 @@
         }
       </div>
 
-      <app-projects-section [repositories]="getFavoriteRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
-      <app-projects-section [repositories]="getRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
+      <app-repositories-section [repositories]="getFavoriteRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
+      <app-repositories-section [repositories]="getRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
     </div>
     <div>
-      <app-timeline [viewModel]="timelineViewModel"/>
+      <app-activity-list [viewModel]="timelineViewModel"/>
     </div>
   </div>
 </div>
