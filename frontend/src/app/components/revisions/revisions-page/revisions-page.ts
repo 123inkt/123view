@@ -13,13 +13,7 @@ import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
     selector: 'app-revisions-page',
-    imports: [
-        TranslatePipe,
-        RouterLink,
-        RevisionList,
-        Paginator,
-        SearchBar
-    ],
+    imports: [TranslatePipe, RouterLink, RevisionList, Paginator, SearchBar],
     templateUrl: './revisions-page.html'
 })
 export class RevisionsPage implements OnInit {
@@ -43,7 +37,7 @@ export class RevisionsPage implements OnInit {
 
     public ngOnInit(): void {
         this.revisionListViewModel = this.route.snapshot.data['revisionListViewModel'];
-        this.title.setTitle(this.revisionListViewModel.repository.displayName + ' revisions - ' + environment.appName);
+        this.title.setTitle(this.revisionListViewModel.repository.displayName + ' - revisions - ' + environment.appName);
     }
 
     public onSearch(): void {
