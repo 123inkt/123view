@@ -1,13 +1,16 @@
 {
     "accepted": "Accepted",
     "all.reviews": "All reviews",
+    "at": "At",
     "author": "Author",
     "branch.review": "Branch review",
     "branches": "Branches",
     "closed": "Closed",
     "closed.reviews": "Closed reviews",
     "create.new.account": "Create a new account",
+    "create.review.from.revision": "Create review from revision",
     "creation.date": "Creation date",
+    "hash": "Hash",
     "in.review": "In review",
     "last.updated": "Last updated",
     "log.in.with.active.directory": "Log in with Active Directory",
@@ -22,11 +25,13 @@
     "request.error.internal.server.error": "An internal server error occurred.",
     "request.error.not.found": "The requested resource was not found.",
     "request.error.unauthorized": "You are not authorized to access this resource.",
+    "review": "Review",
     "review.search.hint": "Search for id: <code>id:12345</code>, for state: <code>state:open|closed</code>, for author: <code>author:&hellip;</code>, for reviewer: <code>reviewer:&hellip;</code>.",
     "reviewer": "Reviewer",
     "reviews": "Reviews",
     "revisions": "Revisions",
     "search.review": "Search code review",
+    "search.revisions": "Search revisions",
     "sign.in": "Sign in",
     "timeline.comment.added": "<span class=\"text-primary\">{{username}}</span> added a comment to <code>{{file}}</code>.",
     "timeline.comment.removed": "<span class=\"text-primary\">{{username}}</span> removed a comment on <code>{{file}}</code>.",
@@ -48,10 +53,6 @@
     "timeline.reviewer.rejected": "<span class=\"text-primary\">{{username}}</span> <span class=\"text-danger\">raised concern</span> about the changes.",
     "timeline.reviewer.removed": "<span class=\"text-primary\">{{username}}</span> left as reviewer.",
     "timeline.reviewer.removed.by": "<span class=\"text-primary\">{{username}}</span> removed <span class=\"text-primary\">{{reviewerName}}</span> as reviewer.",
-    "you": "You",
-    "create.review.from.revision": "Create review from revision"
-    "hash": "Hash",
     "title": "Title",
-    "at": "At",
-    "review": "Review"
+    "you": "You"
 }

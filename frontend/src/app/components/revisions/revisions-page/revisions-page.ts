@@ -3,7 +3,9 @@ import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Paginator} from '@component/paginator/paginator';
 import {RevisionList} from '@component/revisions/revision-list/revision-list';
+import {SearchBar} from '@component/search-bar/search-bar';
 import {environment} from '@environment/environment';
+import SearchModel from '@model/forms/SearchModel';
 import RepositoryRevisionListViewModel from '@model/viewmodels/RepositoryRevisionListViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -13,13 +15,14 @@ import {TranslatePipe} from '@ngx-translate/core';
         TranslatePipe,
         RouterLink,
         RevisionList,
-        Paginator
+        Paginator,
+        SearchBar
     ],
-    templateUrl: './revisions-page.html',
-    styleUrl: './revisions-page.scss'
+    templateUrl: './revisions-page.html'
 })
 export class RevisionsPage implements OnInit {
     public declare revisionListViewModel: RepositoryRevisionListViewModel;
+    public searchModel: SearchModel = {search: ''};
 
     constructor(
         private readonly title: Title,

@@ -1,5 +1,5 @@
 <div class="container-xl">
-  <div class="mt-2 pb-3">
+  <div class="mt-2 pb-3 clearfix">
     <h2 class="float-start pe-3">{{ revisionListViewModel.repository.displayName }}</h2>
 
     <ul class="nav nav-pills float-start">
@@ -14,6 +14,8 @@
       </li>
     </ul>
   </div>
+
+  <app-search-bar class="mb-3" [searchModel]="searchModel" placeholder="{{ 'search.revisions' | translate }}" />
 
   <app-revision-list [repository]="revisionListViewModel.repository"
                      [revisions]="revisionListViewModel.revisions"

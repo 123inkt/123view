@@ -7,14 +7,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-revision-list',
-    imports: [
-        DatePipe,
-        TranslatePipe,
-        SlicePipe,
-        RouterLink
-    ],
-    templateUrl: './revision-list.html',
-    styleUrl: './revision-list.scss'
+    imports: [DatePipe, TranslatePipe, SlicePipe, RouterLink],
+    templateUrl: './revision-list.html'
 })
 export class RevisionList {
     public repository = input.required<Repository>();
