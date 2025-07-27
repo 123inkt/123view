@@ -1,4 +1,4 @@
-<input type="search" [(ngModel)]="searchModel().search" class="form-control" [attr.placeholder]="placeholder()" (change)="onSearch()"/>
+<input type="search" [(ngModel)]="searchModel().search" class="form-control" [attr.placeholder]="placeholder()" (change)="onSearch()" autofocus/>
 @if (searchModel().search !== '') {
   <button class="btn btn-secondary" (click)="searchModel().search = '';onSearch()">&times;</button>
 }

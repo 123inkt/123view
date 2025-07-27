@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Paginator} from '@component/paginator/paginator';
@@ -18,6 +18,7 @@ import {skip, switchMap, tap} from 'rxjs';
     templateUrl: './revisions-page.html'
 })
 export class RevisionsPage implements OnInit {
+    public id                       = input.required<number>();
     public declare revisionListViewModel: RepositoryRevisionListViewModel;
     public searchModel: SearchModel = {search: ''};
 
@@ -31,7 +32,7 @@ export class RevisionsPage implements OnInit {
             .pipe(
                 tap((params) => this.searchModel = {...{search: ''}, ...params}),
                 skip(1), // Ignore the initial queryParams emission,
-                switchMap((params) => this.revisionsService.getRevisions(this.revisionListViewModel.repository.id, params))
+                switchMap((params) => this.revisionsService.getRevisions(this.id(), params))
             )
             .subscribe((viewModel) => this.revisionListViewModel = viewModel);
     }
