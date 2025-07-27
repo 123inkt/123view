@@ -1,8 +1,9 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {ActivityList} from '@component/activity-list/activity-list';
 import {Paginator} from '@component/paginator/paginator';
+import {RepositoryMenuBar} from '@component/repository/repository-menu-bar/repository-menu-bar';
 import {ReviewListSearch} from '@component/review-list-search/review-list-search';
 import {environment} from '@environment/environment';
 import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
@@ -15,7 +16,7 @@ import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
     selector: 'app-review-list',
-    imports: [TranslatePipe, ReviewListSearch, Paginator, ActivityList, RouterLink],
+    imports: [TranslatePipe, ReviewListSearch, Paginator, ActivityList, RepositoryMenuBar],
     templateUrl: './review-list.html',
     styleUrl: './review-list.scss'
 })

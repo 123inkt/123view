@@ -1,19 +1,5 @@
 <div class="container-xl">
-  <div class="mt-2 pb-3 clearfix">
-    <h2 class="float-start pe-3">{{ revisionListViewModel.repository.displayName }}</h2>
-
-    <ul class="nav nav-pills float-start">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/app', 'projects', revisionListViewModel.repository.id, 'reviews']">{{ 'reviews' | translate }}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="javascript:">{{ 'revisions' | translate }}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/app', 'projects', revisionListViewModel.repository.id, 'branches']">{{ 'branches' | translate }} </a>
-      </li>
-    </ul>
-  </div>
+  <app-repository-menu-bar [repository]="revisionListViewModel.repository" active="revisions"/>
   <app-search-bar class="mb-3" [searchModel]="searchModel" placeholder="{{ 'search.revisions' | translate }}" (searchAction)="onSearch()"/>
   <app-revision-list [repository]="revisionListViewModel.repository"
                      [revisions]="revisionListViewModel.revisions"

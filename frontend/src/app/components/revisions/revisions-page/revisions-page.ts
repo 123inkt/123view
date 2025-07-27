@@ -1,7 +1,8 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Paginator} from '@component/paginator/paginator';
+import {RepositoryMenuBar} from '@component/repository/repository-menu-bar/repository-menu-bar';
 import {RevisionList} from '@component/revisions/revision-list/revision-list';
 import {SearchBar} from '@component/search-bar/search-bar';
 import {environment} from '@environment/environment';
@@ -14,7 +15,7 @@ import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
     selector: 'app-revisions-page',
-    imports: [TranslatePipe, RouterLink, RevisionList, Paginator, SearchBar],
+    imports: [TranslatePipe, RevisionList, Paginator, SearchBar, RepositoryMenuBar],
     templateUrl: './revisions-page.html'
 })
 export class RevisionsPage implements OnInit {

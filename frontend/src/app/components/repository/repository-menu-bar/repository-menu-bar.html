@@ -1,0 +1,27 @@
+<div class="mt-2 pb-2 clearfix">
+  <h2 class="float-start pe-3 mb-0">{{ repository().displayName }}</h2>
+
+  <ul class="nav nav-pills float-start">
+    <li class="nav-item">
+      @if (active() === 'reviews') {
+        <button class="nav-link active">{{ 'reviews' | translate }}</button>
+      } @else {
+        <a class="nav-link" [routerLink]="['/app', 'projects', repository().id, 'reviews']">{{ 'reviews' | translate }}</a>
+      }
+    </li>
+    <li class="nav-item">
+      @if (active() === 'revisions') {
+        <button class="nav-link active">{{ 'revisions' | translate }}</button>
+      } @else {
+        <a class="nav-link" [routerLink]="['/app', 'projects', repository().id, 'revisions']">{{ 'revisions' | translate }}</a>
+      }
+    </li>
+    <li class="nav-item">
+      @if (active() === 'branches') {
+        <button class="nav-link active">{{ 'branches' | translate }}</button>
+      } @else {
+        <a class="nav-link" [routerLink]="['/app', 'projects', repository().id, 'branches']">{{ 'branches' | translate }}</a>
+      }
+    </li>
+  </ul>
+</div>

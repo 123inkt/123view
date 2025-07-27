@@ -1,14 +1,14 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
+import {RepositoryMenuBar} from '@component/repository/repository-menu-bar/repository-menu-bar';
 import {environment} from '@environment/environment';
 import SearchModel from '@model/forms/SearchModel';
 import RepositoryBranchListViewModel from '@model/viewmodels/RepositoryBranchListViewModel';
-import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-branches-page',
-    imports: [TranslatePipe, RouterLink],
+    imports: [RepositoryMenuBar],
     templateUrl: './branches-page.html'
 })
 export class BranchesPage implements OnInit {

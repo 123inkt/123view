@@ -1,21 +1,6 @@
 <div class="container-xxl reviews-list--grid">
   <div>
-    <div class="mt-2 pb-2 clearfix">
-      <h2 class="float-start pe-3 mb-0">{{ reviewListViewModel.repository.displayName }}</h2>
-
-      <ul class="nav nav-pills float-start">
-        <li class="nav-item">
-          <a class="nav-link active" href="javascript:">{{ 'reviews' | translate }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/app', 'projects', reviewListViewModel.repository.id, 'revisions']">{{ 'revisions' | translate }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/app', 'projects', reviewListViewModel.repository.id, 'branches']">{{ 'branches' | translate }}</a>
-        </li>
-      </ul>
-    </div>
-
+    <app-repository-menu-bar [repository]="reviewListViewModel.repository" active="reviews"/>
     <app-review-list-search [searchModel]="reviewsSearchModel" (searchAction)="onSearch()"/>
 
     <div class="list-group">
