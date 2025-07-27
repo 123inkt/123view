@@ -1,6 +1,7 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
+import {BranchList} from '@component/branches/branch-list/branch-list';
 import {RepositoryMenuBar} from '@component/repository/repository-menu-bar/repository-menu-bar';
 import {environment} from '@environment/environment';
 import SearchModel from '@model/forms/SearchModel';
@@ -8,7 +9,7 @@ import RepositoryBranchListViewModel from '@model/viewmodels/RepositoryBranchLis
 
 @Component({
     selector: 'app-branches-page',
-    imports: [RepositoryMenuBar],
+    imports: [RepositoryMenuBar, BranchList],
     templateUrl: './branches-page.html'
 })
 export class BranchesPage implements OnInit {

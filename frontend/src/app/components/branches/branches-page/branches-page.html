@@ -1,3 +1,7 @@
 <div class="container-xl">
   <app-repository-menu-bar [repository]="branchListViewModel.repository" active="branches"/>
+  <app-branch-list [branches]="branchListViewModel.branches"
+                   [mergedBranches]="branchListViewModel.mergedBranches"
+                   [repository]="branchListViewModel.repository"
+                   [reviews]="branchListViewModel.reviews"/>
 </div>

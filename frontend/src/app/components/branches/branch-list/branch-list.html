@@ -1,1 +1,39 @@
-<p>branch-list works!</p>
+<table class="table table-bordered table-hover table-sm mt-3">
+  <thead>
+  <tr>
+    <th scope="col">{{ 'branch' | translate }}</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (branch of branches(); track branch) {
+      @if (branch.endsWith('HEAD') === false) {
+        @let mainBranch = branch === 'origin/' + repository().mainBranchName;
+        @let review = reviews()[branch] ?? null;
+
+        <tr>
+          <td>
+            {{ branch }}
+            @if (mergedBranches().includes(branch) && mainBranch === false) {
+              <span class="badge rounded-pill text-bg-primary">{{ 'merged' | translate }}</span>
+            }
+          </td>
+          <td class="col-create-branch text-center">
+            @if (mainBranch === false) {
+              @if (review === null) {
+                <!-- TODO create branch review action -->
+                <button type="submit" class="btn btn-success btn-sm">
+                  {{ 'create.branch.review' | translate }}
+                </button>
+              } @else {
+                <a [routerLink]="['/app', repository().name, 'review', 'cr-' + review.projectId]">
+                  CR-{{ review.projectId }}
+                </a>
+              }
+            }
+          </td>
+        </tr>
+      }
+    }
+  </tbody>
+</table>
