@@ -5,9 +5,7 @@ namespace DR\Review\ViewModel\App\Revision;
 
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
@@ -18,7 +16,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     uriVariables        : 'repositoryId',
     requirements        : ['repositoryId' => '\d+'],
     openapi             : new OpenApiOperation(tags: ['ViewModel']),
-    normalizationContext: ['groups' => ['app:revisions', 'app:paginator', 'repository:read', 'revision:read', 'code-review:read']],
+    normalizationContext: ['groups' => ['app:revisions', 'app:paginator', 'repository:read', 'revision:read']],
     security            : 'is_granted("ROLE_USER")',
     provider            : RevisionViewModelProvider::class
 )]
