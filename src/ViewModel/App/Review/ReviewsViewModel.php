@@ -47,10 +47,11 @@ class ReviewsViewModel
         foreach ($this->reviews as $review) {
             $reviewId = (int)$review->getId();
 
+            $names = [];
             foreach ($review->getRevisions() as $revision) {
-                $authors[$reviewId][] = (string)$revision->getAuthorName();
+                $names[] = $revision->getAuthorName();
             }
-            $authors[$reviewId] = array_unique($authors[$reviewId]);
+            $authors[$reviewId] = array_unique($names);
         }
 
         return $authors;

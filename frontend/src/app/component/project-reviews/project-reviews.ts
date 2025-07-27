@@ -49,6 +49,7 @@ export class ProjectReviews implements OnInit {
     }
 
     public onPaginate(page: number): void {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page}, queryParamsHandling: 'merge'})
+            .then(() => window.scrollTo(0, 0));
     }
 }
