@@ -59,6 +59,7 @@ class Repository implements EquatableInterface
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'master'])]
     #[Constraint\Length(max: 255)]
+    #[Groups(['repository:read'])]
     private string $mainBranchName = 'master';
 
     #[ORM\Column(type: UriType::TYPE, length: 255)]
