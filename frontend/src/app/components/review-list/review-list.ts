@@ -1,6 +1,6 @@
 import {Component, input, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {ActivityList} from '@component/activity-list/activity-list';
 import {Paginator} from '@component/paginator/paginator';
 import {ReviewListSearch} from '@component/review-list-search/review-list-search';
@@ -10,6 +10,7 @@ import ReviewActivitiesViewModel from '@model/viewmodels/ReviewActivitiesViewMod
 import ReviewListViewModel from '@model/viewmodels/ReviewListViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ReviewListService} from '@service/api/review-list.service';
+import NavigatorService from '@service/navigator-service';
 import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
@@ -29,7 +30,7 @@ export class ReviewList implements OnInit {
     constructor(
         private readonly title: Title,
         private readonly route: ActivatedRoute,
-        private readonly router: Router,
+        private readonly navigator: NavigatorService,
         private readonly reviewsService: ReviewListService
     ) {
         this.route.queryParams
@@ -48,11 +49,11 @@ export class ReviewList implements OnInit {
     }
 
     public onSearch(): void {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {...this.reviewsSearchModel, ...{page: 1}}});
+        this.navigator.navigateToQuery({...this.reviewsSearchModel, ...{page: 1}});
     }
 
     public onPaginate(page: number): void {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page}, queryParamsHandling: 'merge'})
-            .then(() => window.scrollTo(0, 0));
+        this.navigator.combineWithQuery({page});
+        window.scrollTo(0, 0);
     }
 }
