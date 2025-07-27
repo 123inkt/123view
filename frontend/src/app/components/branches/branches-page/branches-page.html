@@ -1,5 +1,6 @@
 <div class="container-xl">
   <app-repository-menu-bar [repository]="branchListViewModel.repository" active="branches"/>
+  <app-search-bar [searchModel]="searchModel" (searchAction)="searchModel.search = $event"/>
   <app-branch-list [branches]="branchListViewModel.branches"
                    [mergedBranches]="branchListViewModel.mergedBranches"
                    [repository]="branchListViewModel.repository"
