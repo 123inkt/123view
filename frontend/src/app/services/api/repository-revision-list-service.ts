@@ -4,15 +4,17 @@ import RepositoryRevisionListViewModel from '@model/viewmodels/RepositoryRevisio
 import HttpClientContext from '@service/http-client-context';
 import {Observable} from 'rxjs';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type Filter = {search?: string, page?: number | string};
+
 @Injectable({providedIn: 'root'})
 export class RepositoryRevisionListService {
     constructor(@Inject(HttpClient) private httpClient: HttpClient) {
     }
 
-
-    public getRevision(repositoryId: number): Observable<RepositoryRevisionListViewModel> {
+    public getRevisions(repositoryId: number, filter: Filter = {}): Observable<RepositoryRevisionListViewModel> {
         const context = new HttpContext().set(HttpClientContext.BackendApi, true);
 
-        return this.httpClient.get<RepositoryRevisionListViewModel>('api/view-model/revisions/' + repositoryId, {context});
+        return this.httpClient.get<RepositoryRevisionListViewModel>('api/view-model/revisions/' + String(repositoryId), {context, params: filter});
     }
 }

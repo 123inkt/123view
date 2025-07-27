@@ -14,11 +14,9 @@
       </li>
     </ul>
   </div>
-
-  <app-search-bar class="mb-3" [searchModel]="searchModel" placeholder="{{ 'search.revisions' | translate }}" />
-
+  <app-search-bar class="mb-3" [searchModel]="searchModel" placeholder="{{ 'search.revisions' | translate }}" (searchAction)="onSearch()"/>
   <app-revision-list [repository]="revisionListViewModel.repository"
                      [revisions]="revisionListViewModel.revisions"
                      [reviewIds]="revisionListViewModel.reviewIds"/>
-  <app-paginator [paginator]="revisionListViewModel.paginator"/>
+  <app-paginator [paginator]="revisionListViewModel.paginator" (pageSelected)="onPaginate($event)"/>
 </div>

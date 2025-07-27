@@ -11,6 +11,6 @@ export class RepositoryRevisionListViewModelResolver implements Resolve<Reposito
     }
 
     public resolve(route: ActivatedRouteSnapshot): Observable<RepositoryRevisionListViewModel> {
-        return this.revisionListService.getRevision(toNumber(route.paramMap.get('id')));
+        return this.revisionListService.getRevisions(toNumber(route.paramMap.get('id')));
     }
 }

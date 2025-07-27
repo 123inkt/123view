@@ -23,11 +23,13 @@ use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @implements ProviderInterface<RevisionsViewModel>
  */
 // TODO remove non angular methods and implement only the provide method
+// TODO rename to RevisionsViewModelProvider
 class RevisionViewModelProvider implements ProviderInterface
 {
     public function __construct(
@@ -56,8 +58,9 @@ class RevisionViewModelProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): RevisionsViewModel
     {
-        $page         = 1;
-        $searchQuery  = '';
+        $request      = Assert::isInstanceOf($context['request'], Request::class);
+        $page         = $request->query->getInt('page', 1);
+        $searchQuery  = trim($request->query->getString('search'));
         $attached     = null;
         $repositoryId = (int)Assert::numeric($uriVariables['repositoryId']);
 
