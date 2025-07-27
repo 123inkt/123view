@@ -31,6 +31,7 @@ export class BranchesPage implements OnInit {
     }
 
     public getBranches(): string[] {
+        // TODO split words and match on all words
         return this.branchListViewModel.branches
             .filter((branch) => branch.toLowerCase().includes(this.searchModel.search.toLowerCase()));
     }
