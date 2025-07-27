@@ -4,8 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {ActivityList} from '@component/activity-list/activity-list';
 import {RepositoriesSection} from '@component/repositories/section/repositories-section';
 import Repository from '@model/entities/Repository';
-import ActivitiesViewModel from '@model/viewmodels/ActivitiesViewModel';
 import RepositoriesViewModel from '@model/viewmodels/RepositoriesViewModel';
+import ReviewActivitiesViewModel from '@model/viewmodels/ReviewActivitiesViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
@@ -15,23 +15,23 @@ import {TranslatePipe} from '@ngx-translate/core';
     styleUrl: './repositories-page.scss'
 })
 export class RepositoriesPage implements OnInit {
-    public declare projectsViewModel: RepositoriesViewModel;
-    public declare timelineViewModel: ActivitiesViewModel;
+    public declare repositoriesViewModel: RepositoriesViewModel;
+    public declare reviewActivitiesViewModel: ReviewActivitiesViewModel;
     public searchQuery = '';
 
     constructor(private readonly route: ActivatedRoute) {
     }
 
     public ngOnInit(): void {
-        this.projectsViewModel = this.route.snapshot.data['projectsViewModel'];
-        this.timelineViewModel = this.route.snapshot.data['timelineViewModel'];
+        this.repositoriesViewModel     = this.route.snapshot.data['repositoriesViewModel'];
+        this.reviewActivitiesViewModel = this.route.snapshot.data['reviewActivitiesViewModel'];
     }
 
     public getFavoriteRepositories(): Repository[] {
-        return this.projectsViewModel.repositories.filter(repo => repo.favorite);
+        return this.repositoriesViewModel.repositories.filter(repo => repo.favorite);
     }
 
     public getRepositories(): Repository[] {
-        return this.projectsViewModel.repositories.filter(repo => repo.favorite !== true);
+        return this.repositoriesViewModel.repositories.filter(repo => repo.favorite !== true);
     }
 }

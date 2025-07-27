@@ -7,7 +7,7 @@ import {authenticationGuard} from '@guard/authentication-guard';
 import {LoginViewModelResolver} from '@resolver/login-view-model-resolver';
 import {ReviewListActivitiesViewModelResolver} from '@resolver/review-list-activities-view-model-resolver.service';
 import {ReviewListViewModelResolver} from '@resolver/review-list-view-model-resolver.service';
-import {ActivitiesViewModelResolver} from '@resolver/activities-view-model-resolver.service';
+import {ReviewActivitiesViewModelResolver} from '@resolver/review-activities-view-model-resolver.service';
 import {RepositoriesViewModelResolver} from '@resolver/repositories-view-model-resolver.service';
 
 export const routes: Routes = [
@@ -24,7 +24,7 @@ export const routes: Routes = [
         component: RepositoriesPage,
         data: {requiresLogin: true},
         title: environment.appName + ' - ' + $localize`Projects`,
-        resolve: {projectsViewModel: RepositoriesViewModelResolver, timelineViewModel: ActivitiesViewModelResolver},
+        resolve: {repositoriesViewModel: RepositoriesViewModelResolver, reviewActivitiesViewModel: ReviewActivitiesViewModelResolver},
         canActivate: [authenticationGuard]
     },
     {
@@ -32,7 +32,7 @@ export const routes: Routes = [
         component: ReviewList,
         data: {requiresLogin: true},
         title: environment.appName + ' - ' + $localize`Reviews`,
-        resolve: {reviewsViewModel: ReviewListViewModelResolver, timelineViewModel: ReviewListActivitiesViewModelResolver},
+        resolve: {reviewListViewModel: ReviewListViewModelResolver, reviewActivitiesViewModel: ReviewListActivitiesViewModelResolver},
         canActivate: [authenticationGuard]
     }
 ];

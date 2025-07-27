@@ -3,12 +3,12 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {toNumber} from '@lib/Numbers';
 import {filter} from '@lib/Objects';
 import ReviewListViewModel from '@model/viewmodels/ReviewListViewModel';
-import {ProjectReviewsService} from '@service/api/project-reviews-service';
+import {ReviewListService} from '@service/api/review-list.service';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ReviewListViewModelResolver implements Resolve<ReviewListViewModel> {
-    constructor(@Inject(ProjectReviewsService) private readonly reviewsService: ProjectReviewsService) {
+    constructor(@Inject(ReviewListService) private readonly reviewsService: ReviewListService) {
     }
 
     public resolve(route: ActivatedRouteSnapshot): Observable<ReviewListViewModel> {

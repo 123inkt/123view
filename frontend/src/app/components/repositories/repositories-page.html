@@ -10,11 +10,11 @@
         }
       </div>
 
-      <app-repositories-section [repositories]="getFavoriteRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
-      <app-repositories-section [repositories]="getRepositories()" [revisionCount]="projectsViewModel.revisionCount" [searchQuery]="searchQuery"/>
+      <app-repositories-section [repositories]="getFavoriteRepositories()" [revisionCount]="repositoriesViewModel.revisionCount" [searchQuery]="searchQuery"/>
+      <app-repositories-section [repositories]="getRepositories()" [revisionCount]="repositoriesViewModel.revisionCount" [searchQuery]="searchQuery"/>
     </div>
     <div>
-      <app-activity-list [viewModel]="timelineViewModel"/>
+      <app-activity-list [viewModel]="reviewActivitiesViewModel"/>
     </div>
   </div>
 </div>

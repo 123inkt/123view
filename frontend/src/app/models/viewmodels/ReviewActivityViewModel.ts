@@ -1,6 +1,6 @@
 import Comment from '@model/entities/Comment';
 
-export default class TimelineViewModel {
+export default class ReviewActivityViewModel {
     public declare comment: Comment | null;
     public declare reply: Comment | null;
     public declare revision: null;

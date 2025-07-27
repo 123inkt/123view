@@ -1,18 +1,18 @@
 import {HttpClient, HttpContext} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
-import ActivitiesViewModel from '@model/viewmodels/ActivitiesViewModel';
+import ReviewActivitiesViewModel from '@model/viewmodels/ReviewActivitiesViewModel';
 import HttpClientContext from '@service/http-client-context';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class ProjectsTimelineService {
+export class ReviewActivitiesService {
     constructor(@Inject(HttpClient) private httpClient: HttpClient) {
     }
 
-    public getTimeline(repositoryId?: number): Observable<ActivitiesViewModel> {
+    public getReviewActivities(repositoryId?: number): Observable<ReviewActivitiesViewModel> {
         const context = new HttpContext().set(HttpClientContext.BackendApi, true);
         const params  = repositoryId !== undefined ? {repositoryId} : undefined;
 
-        return this.httpClient.get<ActivitiesViewModel>('api/view-model/projects/timeline', {context, params});
+        return this.httpClient.get<ReviewActivitiesViewModel>('api/view-model/projects/timeline', {context, params});
     }
 }

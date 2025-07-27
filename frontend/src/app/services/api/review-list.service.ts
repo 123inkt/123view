@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 type Filter = {search?: string, 'order-by'?: string, page?: number | string};
 
 @Injectable({providedIn: 'root'})
-export class ProjectReviewsService {
+export class ReviewListService {
     constructor(private readonly httpClient: HttpClient) {
     }
 

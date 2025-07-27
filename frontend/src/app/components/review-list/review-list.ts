@@ -6,10 +6,10 @@ import {Paginator} from '@component/paginator/paginator';
 import {ReviewListSearch} from '@component/review-list-search/review-list-search';
 import {environment} from '@environment/environment';
 import ReviewsSearchModel from '@model/forms/ReviewsSearchModel';
-import ActivitiesViewModel from '@model/viewmodels/ActivitiesViewModel';
+import ReviewActivitiesViewModel from '@model/viewmodels/ReviewActivitiesViewModel';
 import ReviewListViewModel from '@model/viewmodels/ReviewListViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
-import {ProjectReviewsService} from '@service/api/project-reviews-service';
+import {ReviewListService} from '@service/api/review-list.service';
 import {skip, switchMap, tap} from 'rxjs';
 
 @Component({
@@ -22,15 +22,15 @@ export class ReviewList implements OnInit {
     private static readonly DefaultSearch: ReviewsSearchModel = {search: 'state:open ', orderBy: 'update-timestamp'};
 
     public id                 = input.required<number>();
-    public declare reviewsViewModel: ReviewListViewModel;
-    public declare timelineViewModel: ActivitiesViewModel;
+    public declare reviewListViewModel: ReviewListViewModel;
+    public declare reviewActivitiesViewModel: ReviewActivitiesViewModel;
     public reviewsSearchModel = ReviewList.DefaultSearch;
 
     constructor(
         private readonly title: Title,
         private readonly route: ActivatedRoute,
         private readonly router: Router,
-        private readonly reviewsService: ProjectReviewsService
+        private readonly reviewsService: ReviewListService
     ) {
         this.route.queryParams
             .pipe(
@@ -38,13 +38,13 @@ export class ReviewList implements OnInit {
                 skip(1), // Ignore the initial queryParams emission,
                 switchMap((params) => this.reviewsService.getReviews(this.id(), params))
             )
-            .subscribe((viewModel) => this.reviewsViewModel = viewModel);
+            .subscribe((viewModel) => this.reviewListViewModel = viewModel);
     }
 
     public ngOnInit(): void {
-        this.reviewsViewModel  = this.route.snapshot.data['reviewsViewModel'];
-        this.timelineViewModel = this.route.snapshot.data['timelineViewModel'];
-        this.title.setTitle(this.reviewsViewModel.repository.displayName + ' - ' + environment.appName);
+        this.reviewListViewModel       = this.route.snapshot.data['reviewsViewModel'];
+        this.reviewActivitiesViewModel = this.route.snapshot.data['reviewActivitiesViewModel'];
+        this.title.setTitle(this.reviewListViewModel.repository.displayName + ' - ' + environment.appName);
     }
 
     public onSearch(): void {

@@ -1,16 +1,15 @@
 import {Inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
-import {toNumber} from '@lib/Numbers';
+import {Resolve} from '@angular/router';
 import ReviewActivitiesViewModel from '@model/viewmodels/ReviewActivitiesViewModel';
 import {ReviewActivitiesService} from '@service/api/review-activities.service';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class ReviewListActivitiesViewModelResolver implements Resolve<ReviewActivitiesViewModel> {
+export class ReviewActivitiesViewModelResolver implements Resolve<ReviewActivitiesViewModel> {
     constructor(@Inject(ReviewActivitiesService) private readonly timelineService: ReviewActivitiesService) {
     }
 
-    public resolve(route: ActivatedRouteSnapshot): Observable<ReviewActivitiesViewModel> {
-        return this.timelineService.getReviewActivities(toNumber(route.paramMap.get('id')));
+    public resolve(): Observable<ReviewActivitiesViewModel> {
+        return this.timelineService.getReviewActivities();
     }
 }

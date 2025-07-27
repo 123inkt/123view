@@ -1,7 +1,7 @@
 import {AsyncPipe, DatePipe} from '@angular/common';
 import {AfterContentInit, Component, ElementRef, HostListener, input} from '@angular/core';
 import CodeReviewActivity from '@model/entities/CodeReviewActivity';
-import ActivitiesViewModel from '@model/viewmodels/ActivitiesViewModel';
+import ReviewActivitiesViewModel from '@model/viewmodels/ReviewActivitiesViewModel';
 import {ReviewActivityFormatter} from '@service/review/review-activity-formatter';
 import {Observable} from 'rxjs';
 
@@ -18,7 +18,7 @@ import {Observable} from 'rxjs';
 })
 // TODO add comment and comment reply
 export class ActivityList implements AfterContentInit {
-    public viewModel    = input.required<ActivitiesViewModel>();
+    public viewModel    = input.required<ReviewActivitiesViewModel>();
     public hostPosition = '';
     public hostWidth    = '';
     public hostHeight   = '';
