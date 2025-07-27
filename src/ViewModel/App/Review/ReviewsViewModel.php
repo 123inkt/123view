@@ -10,6 +10,7 @@ use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use Symfony\Component\Serializer\Attribute\Groups;
 use function array_unique;
 
+// TODO cleanup non angular values
 class ReviewsViewModel
 {
     /**
