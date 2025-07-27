@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 
 @Component({
     host: {
-        '[style.position]': 'hostWidth',
+        '[style.position]': 'hostPosition',
         '[style.width]': 'hostWidth',
         '[style.height]': 'hostHeight'
     },

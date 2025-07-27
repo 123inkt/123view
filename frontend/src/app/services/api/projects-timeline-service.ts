@@ -9,9 +9,10 @@ export class ProjectsTimelineService {
     constructor(@Inject(HttpClient) private httpClient: HttpClient) {
     }
 
-    public getTimeline(): Observable<TimelineViewModel> {
+    public getTimeline(repositoryId?: number): Observable<TimelineViewModel> {
         const context = new HttpContext().set(HttpClientContext.BackendApi, true);
+        const params  = repositoryId !== undefined ? {repositoryId} : undefined;
 
-        return this.httpClient.get<TimelineViewModel>('api/view-model/projects/timeline', {context});
+        return this.httpClient.get<TimelineViewModel>('api/view-model/projects/timeline', {context, params});
     }
 }

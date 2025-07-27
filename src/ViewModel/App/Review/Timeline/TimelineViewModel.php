@@ -27,6 +27,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     security            : 'is_granted("ROLE_USER")',
     provider            : ReviewTimelineViewModelProvider::class
 )]
+// TODO cleanup non angular values
 class TimelineViewModel
 {
     /**

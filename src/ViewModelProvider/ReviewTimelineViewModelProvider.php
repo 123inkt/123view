@@ -16,13 +16,19 @@ use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
+use DR\Utils\Assert;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @implements ProviderInterface<TimelineViewModel>
+ */
 readonly class ReviewTimelineViewModelProvider implements ProviderInterface
 {
     private const FEED_EVENTS = [
@@ -35,6 +41,7 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
     ];
 
     public function __construct(
+        private RepositoryRepository $repositoryRepository,
         private CodeReviewActivityRepository $activityRepository,
         private CodeReviewActivityFormatter $activityFormatter,
         private ActivityCommentProvider $commentProvider,
@@ -71,6 +78,7 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
 
     /**
      * @TODO ANGULAR REMOVE
+     *
      * @param string[] $events
      */
     public function getTimelineViewModelForFeed(User $user, array $events, ?Repository $repository = null): TimelineViewModel
@@ -97,24 +105,15 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): TimelineViewModel
     {
-        $activities      = $this->activityRepository->findForUser($this->user->getId(), self::FEED_EVENTS);
+        $repositoryId = Assert::isInstanceOf($context['request'], Request::class)->query->get('repositoryId');
+        $repository   = null;
+        if ($repositoryId !== null) {
+            $repository = $this->repositoryRepository->find((int)Assert::numeric($repositoryId));
+            Assert::notNull($repository, 'Repository not found: ' . $repositoryId);
+        }
 
-        //$timelineEntries = [];
-        // create TimelineEntryViewModel entries
-        //foreach ($activities as $activity) {
-        //    $message = $this->activityFormatter->format($activity, $this->user);
-        //    if ($message === null) {
-        //        continue;
-        //    }
-        //
-        //    $url   = $this->urlGenerator->generate($activity);
-        //    $entry = new TimelineEntryViewModel([$activity], $message, $url);
-        //    $entry->setCommentOrReply($this->commentProvider->getCommentFor($activity));
-        //    $timelineEntries[] = $entry;
-        //}
-
-        return new TimelineViewModel($activities, []);
+        return new TimelineViewModel($this->activityRepository->findForUser($this->user->getId(), self::FEED_EVENTS, $repository), []);
     }
 }

@@ -58,7 +58,7 @@
               <span class="text-secondary me-3">
                 <small>{{ 'author' | translate }}:
                   @for (author of reviewsViewModel.authors[review.id]; track author) {
-                    {{ author }}@if ($last === false) {, }
+                    {{ author }}{{ $last === false ? ',' : '' }}
                   }
                 </small>
               </span>
@@ -68,7 +68,7 @@
               <span class="text-secondary">
                 <small>{{ 'reviewer' | translate }}:
                   @for (reviewer of reviewsViewModel.reviewers[review.id]; track reviewer) {
-                    {{ reviewer }}@if ($last === false) {, }
+                    {{ reviewer }}{{ $last === false ? ',' : '' }}
                   }
                 </small>
               </span>
@@ -79,5 +79,9 @@
     </div>
 
     <app-paginator [paginator]="reviewsViewModel.paginator" (pageSelected)="onPaginate($event)"></app-paginator>
+  </div>
+  <div>
+    <h3 class="mt-2">{{ 'news.feed' | translate }}</h3>
+    <app-timeline [viewModel]="timelineViewModel"/>
   </div>
 </div>

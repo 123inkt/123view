@@ -5,6 +5,7 @@ import {Projects} from '@component/projects/projects';
 import {environment} from '@environment/environment';
 import {authenticationGuard} from '@guard/authentication-guard';
 import {LoginViewModelResolver} from '@resolver/login-view-model-resolver';
+import {ProjectReviewsTimelineViewModelResolver} from '@resolver/project-reviews-timeline-view-model-resolver';
 import {ProjectReviewsViewModelResolver} from '@resolver/project-reviews-view-model-resolver';
 import {ProjectsTimelineViewModelResolver} from '@resolver/projects-timeline-view-model-resolver';
 import {ProjectsViewModelResolver} from '@resolver/projects-view-model-resolver';
@@ -31,7 +32,7 @@ export const routes: Routes = [
         component: ProjectReviews,
         data: {requiresLogin: true},
         title: environment.appName + ' - ' + $localize`Reviews`,
-        resolve: {reviewsViewModel: ProjectReviewsViewModelResolver},
+        resolve: {reviewsViewModel: ProjectReviewsViewModelResolver, timelineViewModel: ProjectReviewsTimelineViewModelResolver},
         canActivate: [authenticationGuard]
-    },
+    }
 ];
