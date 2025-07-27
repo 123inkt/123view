@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, RouterLink} from '@angular/router';
+import {Paginator} from '@component/paginator/paginator';
+import {RevisionList} from '@component/revisions/revision-list/revision-list';
 import {environment} from '@environment/environment';
 import RepositoryRevisionListViewModel from '@model/viewmodels/RepositoryRevisionListViewModel';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -9,7 +11,9 @@ import {TranslatePipe} from '@ngx-translate/core';
     selector: 'app-revisions-page',
     imports: [
         TranslatePipe,
-        RouterLink
+        RouterLink,
+        RevisionList,
+        Paginator
     ],
     templateUrl: './revisions-page.html',
     styleUrl: './revisions-page.scss'

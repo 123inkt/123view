@@ -14,4 +14,9 @@
       </li>
     </ul>
   </div>
+
+  <app-revision-list [repository]="revisionListViewModel.repository"
+                     [revisions]="revisionListViewModel.revisions"
+                     [reviewIds]="revisionListViewModel.reviewIds"/>
+  <app-paginator [paginator]="revisionListViewModel.paginator"/>
 </div>

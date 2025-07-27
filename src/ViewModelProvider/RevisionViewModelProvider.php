@@ -13,12 +13,14 @@ use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
+use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -30,6 +32,7 @@ class RevisionViewModelProvider implements ProviderInterface
 {
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
+        private readonly CodeReviewRepository $reviewRepository,
         private readonly RevisionRepository $revisionRepository,
         private readonly RevisionVisibilityService $visibilityService,
         private readonly RevisionFileRepository $revisionFileRepository,
@@ -45,7 +48,7 @@ class RevisionViewModelProvider implements ProviderInterface
         /** @var PaginatorViewModel<Revision> $paginatorViewModel */
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
-        return new RevisionsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery);
+        return new RevisionsViewModel($repository, iterator_to_array($paginator), [], $paginatorViewModel, $searchQuery);
     }
 
     /**
@@ -60,11 +63,24 @@ class RevisionViewModelProvider implements ProviderInterface
 
         $repository = Assert::notNull($this->repositoryRepository->find($repositoryId), 'Repository not found ' . $repositoryId);
         $paginator  = $this->revisionRepository->getPaginatorForSearchQuery($repositoryId, $page, $searchQuery, $attached);
+        $revisions  = iterator_to_array($paginator);
+
+        // gather review ids
+        $reviewIds = Arrays::removeNull(Arrays::map($revisions, static fn(Revision $rev) => $rev->getReview()?->getId()));
+        $reviews   = Arrays::reindex($this->reviewRepository->findBy(['id' => $reviewIds]), static fn(CodeReview $review) => $review->getId());
+
+        $reviewsByRevisionId = [];
+        foreach ($revisions as $revision) {
+            $reviewId = $revision->getReview()?->getId();
+            if ($reviewId !== null && isset($reviews[$reviewId])) {
+                $reviewsByRevisionId[$revision->getId()] = $reviews[$reviewId]->getProjectId();
+            }
+        }
 
         /** @var PaginatorViewModel<Revision> $paginatorViewModel */
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
-        return new RevisionsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery);
+        return new RevisionsViewModel($repository, $revisions, $reviewsByRevisionId, $paginatorViewModel);
     }
 
     /**

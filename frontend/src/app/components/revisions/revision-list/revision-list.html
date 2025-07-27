@@ -1,1 +1,35 @@
-<p>revision-list works!</p>
+<table class="table table-bordered table-hover">
+  <thead>
+  <tr>
+    <th scope="col">{{ 'hash' | translate }}</th>
+    <th scope="col">{{ 'title' | translate }}</th>
+    <th scope="col">{{ 'author' | translate }}</th>
+    <th scope="col">{{ 'at' | translate }}</th>
+    <th scope="col">{{ 'review' | translate }}</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (revision of revisions(); track revision.id) {
+      <tr>
+        <td><code>{{ revision.commitHash | slice:0:7 }}</code></td>
+        <td class="revision-entities-title fw-bold text-nowrap overflow-hidden">{{ revision.title }}</td>
+        <td title="{{ revision.authorEmail }}">{{ revision.authorName }}</td>
+        <td>{{ revision.createTimestamp * 1000 | date }}</td>
+        <td>
+          @let reviewProjectId = getReviewProjectId(revision);
+          @if (reviewProjectId !== null) {
+            <a [routerLink]="['/app', repository().name, 'review', 'cr-' + reviewProjectId]">
+              CR-{{ reviewProjectId }}
+            </a>
+          } @else {
+            <!-- TODO attach create review action -->
+            <button type="button" class="btn btn-outline-success btn-sm" title="{{ 'create.review.from.revision' | translate }}">
+              <i class="bi bi-plus"></i>
+            </button>
+          }
+        </td>
+      </tr>
+    }
+  <tbody>
+</table>
