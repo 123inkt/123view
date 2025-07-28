@@ -46,7 +46,7 @@ class ReviewViewModelTest extends AbstractTestCase
 
         $review = new CodeReview();
 
-        $model = new ReviewViewModel($review,[$revision],  [], 'tab', 1);
+        $model = new ReviewViewModel($review, [$revision], [], 'tab', 1);
 
         static::assertSame(['holmes@example.com' => 'Sherlock Holmes'], $model->getAuthors());
     }

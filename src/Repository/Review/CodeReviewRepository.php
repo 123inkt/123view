@@ -144,7 +144,7 @@ class CodeReviewRepository extends ServiceEntityRepository
     /**
      * Find all CodeReviews with the same title as the given CodeReview.
      * The Repository entity is eagerly fetched to minimize database queries.
-     * 
+     *
      * @return CodeReview[]
      */
     public function findByTitle(CodeReview $codeReview): array
