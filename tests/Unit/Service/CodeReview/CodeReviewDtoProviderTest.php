@@ -10,6 +10,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\CodeReviewDto;
 use DR\Review\Model\Review\DirectoryTreeNode;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
@@ -29,37 +30,45 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
     private CodeReviewFileService&MockObject     $fileService;
     private CodeReviewTypeDecider&MockObject     $reviewTypeDecider;
     private RevisionVisibilityService&MockObject $visibilityService;
+    private CodeReviewRepository&MockObject      $codeReviewRepository;
     private CodeReviewDtoProvider                $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->revisionService   = $this->createMock(CodeReviewRevisionService::class);
-        $this->fileService       = $this->createMock(CodeReviewFileService::class);
-        $this->reviewTypeDecider = $this->createMock(CodeReviewTypeDecider::class);
-        $this->visibilityService = $this->createMock(RevisionVisibilityService::class);
-        $this->provider          = new CodeReviewDtoProvider(
+        $this->revisionService      = $this->createMock(CodeReviewRevisionService::class);
+        $this->fileService          = $this->createMock(CodeReviewFileService::class);
+        $this->reviewTypeDecider    = $this->createMock(CodeReviewTypeDecider::class);
+        $this->visibilityService    = $this->createMock(RevisionVisibilityService::class);
+        $this->codeReviewRepository = $this->createMock(CodeReviewRepository::class);
+        $this->provider             = new CodeReviewDtoProvider(
             $this->revisionService,
             $this->fileService,
             $this->reviewTypeDecider,
-            $this->visibilityService
+            $this->visibilityService,
+            $this->codeReviewRepository
         );
     }
 
     public function testProvide(): void
     {
-        $request      = $this->createRequest();
-        $review       = static::createStub(CodeReview::class);
-        $revision1    = new Revision();
-        $revision2    = new Revision();
-        $fileTree     = new DirectoryTreeNode('name');
-        $selectedFile = new DiffFile();
+        $request        = $this->createRequest();
+        $review         = static::createStub(CodeReview::class);
+        $revision1      = new Revision();
+        $revision2      = new Revision();
+        $fileTree       = new DirectoryTreeNode('name');
+        $selectedFile   = new DiffFile();
+        $similarReviews = [new CodeReview(), new CodeReview()];
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision1]);
         $this->visibilityService->expects($this->once())
             ->method('getVisibleRevisions')
             ->with($review, [$revision1])
             ->willReturn([$revision2]);
+        $this->codeReviewRepository->expects($this->once())
+            ->method('findByTitle')
+            ->with($review)
+            ->willReturn($similarReviews);
         $this->reviewTypeDecider->expects($this->once())
             ->method('decide')
             ->with($review, [$revision1], [$revision2])
@@ -74,7 +83,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
             )
             ->willReturn([$fileTree, $selectedFile]);
 
-        $expected = $this->createExpectation($review, [$revision1], [$revision2], $fileTree, $selectedFile);
+        $expected = $this->createExpectation($review, $similarReviews, [$revision1], [$revision2], $fileTree, $selectedFile);
         $actual   = $this->provider->provide($review, $request);
         static::assertEquals($expected, $actual);
     }
@@ -93,11 +102,13 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
 
     /**
      * @param DirectoryTreeNode<DiffFile> $fileTree
+     * @param CodeReview[]                $similarReviews
      * @param Revision[]                  $revisions
      * @param Revision[]                  $visibleRevisions
      */
     private function createExpectation(
         CodeReview $review,
+        array $similarReviews,
         array $revisions,
         array $visibleRevisions,
         DirectoryTreeNode $fileTree,
@@ -105,6 +116,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
     ): CodeReviewDto {
         return new CodeReviewDto(
             $review,
+            $similarReviews,
             $revisions,
             $visibleRevisions,
             $fileTree,

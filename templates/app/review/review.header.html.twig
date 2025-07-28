@@ -1,13 +1,29 @@
 {# reviewModel: ReviewViewModel #}
 {# review:      CodeReview #}
 <div class="review-grid-header">
-    <h3 class="m-0 overflow-hidden review-heading">
+    <h3 class="m-0 review-heading">
         {% if review.type == 'branch' %}
             <button class="btn btn-primary btn-sm" title="{{ review.referenceId }}">{{ 'branch.review'|trans }}</button>
             <div class="review-change-branch-form">
                 {{ form(reviewModel.branchReviewViewModel.form) }}
             </div>
         {% endif %}
+
+        {% if reviewModel.similarReviews|length > 1 %}
+            <div class="dropdown float-start me-2" {{ stimulus_controller('component--dropdown-menu') }}>
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                        {{ stimulus_target('component--dropdown-menu', 'button') }}
+                        {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
+                    {{ review.repository.displayName }}
+                </button>
+                <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
+                    {% for similarReview in reviewModel.similarReviews %}
+                        <li><a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: similarReview}) }}">{{ similarReview.repository.displayName }} - CR-{{ similarReview.projectId }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
 
         <span title="{{ review.title }}">

@@ -5,6 +5,7 @@ namespace DR\Review\Service\CodeReview;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Review\CodeReviewDto;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
@@ -18,6 +19,7 @@ readonly class CodeReviewDtoProvider
         private CodeReviewFileService $fileService,
         private CodeReviewTypeDecider $reviewTypeDecider,
         private RevisionVisibilityService $visibilityService,
+        private CodeReviewRepository $codeReviewRepository,
     ) {
     }
 
@@ -28,6 +30,7 @@ readonly class CodeReviewDtoProvider
     {
         $revisions        = $this->revisionService->getRevisions($review);
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
+        $similarReviews   = $this->codeReviewRepository->findByTitle($review);
 
         // get diff files for review
         $reviewType = $this->reviewTypeDecider->decide($review, $revisions, $visibleRevisions);
@@ -40,6 +43,7 @@ readonly class CodeReviewDtoProvider
 
         return new CodeReviewDto(
             $review,
+            $similarReviews,
             $revisions,
             $visibleRevisions,
             $fileTree,

@@ -64,6 +64,7 @@ class BranchReviewViewModelAppenderTest extends AbstractTestCase
 
         return new CodeReviewDto(
             (new CodeReview())->setType(CodeReviewType::BRANCH),
+            [],
             [$revision],
             [$revision],
             new DirectoryTreeNode('name'),

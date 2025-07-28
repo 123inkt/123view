@@ -66,6 +66,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     arguments : ['orderParameterName' => 'order']
 )]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
+#[ORM\Index(name: 'IDX_TITLE', columns: ['title'])]
 #[ORM\Index(name: 'IDX_REPOSITORY_TITLE', columns: ['repository_id', 'title'])]
 #[ORM\Index(name: 'IDX_REPOSITORY_STATE', columns: ['repository_id', 'state'])]
 #[ORM\Index(name: 'IDX_CREATE_TIMESTAMP_REPOSITORY', columns: ['create_timestamp', 'repository_id'])]
