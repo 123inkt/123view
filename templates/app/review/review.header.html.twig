@@ -9,7 +9,7 @@
             </div>
         {% endif %}
 
-        {% if review.type != 'branch' and reviewModel.similarReviews|length >= 0 %}
+        {% if review.type != 'branch' and reviewModel.similarReviews|length > 1 %}
             <div class="dropdown me-2" {{ stimulus_controller('component--dropdown-menu') }}>
                 <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
                         {{ stimulus_target('component--dropdown-menu', 'button') }}
