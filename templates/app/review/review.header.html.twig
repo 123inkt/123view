@@ -18,7 +18,11 @@
                 </button>
                 <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
                     {% for similarReview in reviewModel.similarReviews %}
-                        <li><a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: similarReview}) }}">{{ similarReview.repository.displayName }} - CR-{{ similarReview.projectId }}</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: similarReview}) }}">
+                                {{ similarReview.repository.displayName }} - CR-{{ similarReview.projectId }}
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
