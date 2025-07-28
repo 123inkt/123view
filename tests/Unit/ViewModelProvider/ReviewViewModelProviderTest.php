@@ -49,7 +49,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $this->viewModelAppender->expects(self::once())->method('accepts')->with($dto)->willReturn(true);
         $this->viewModelAppender->expects(self::once())->method('append')->with($dto);
 
-        $expected = new ReviewViewModel($review, $dto->revisions, 'tab', 1);
+        $expected = new ReviewViewModel($review, $dto->revisions, $dto->similarReviews, 'tab', 1);
         $actual   = $this->provider->getViewModel($review, $request);
         static::assertEquals($expected, $actual);
     }
@@ -60,6 +60,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
 
         return new CodeReviewDto(
             new CodeReview(),
+            [new CodeReview()],
             [$revision],
             [$revision],
             new DirectoryTreeNode('name'),
