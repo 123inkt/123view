@@ -34,7 +34,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review->getComments()->add($commentB);
         $review->getComments()->add($commentC);
 
-        $model = new ReviewViewModel($review, [], 'tab', 1);
+        $model = new ReviewViewModel($review, [], [], 'tab', 1);
         static::assertSame(2, $model->getOpenComments());
     }
 
@@ -46,7 +46,7 @@ class ReviewViewModelTest extends AbstractTestCase
 
         $review = new CodeReview();
 
-        $model = new ReviewViewModel($review, [$revision], 'tab', 1);
+        $model = new ReviewViewModel($review,[$revision],  [], 'tab', 1);
 
         static::assertSame(['holmes@example.com' => 'Sherlock Holmes'], $model->getAuthors());
     }
@@ -62,7 +62,7 @@ class ReviewViewModelTest extends AbstractTestCase
         $review = new CodeReview();
         $review->getReviewers()->add($reviewer);
 
-        $model = new ReviewViewModel($review, [], 'tab', 1);
+        $model = new ReviewViewModel($review, [], [], 'tab', 1);
 
         static::assertNotNull($model->getReviewer($userA));
         static::assertNull($model->getReviewer($userB));

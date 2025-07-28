@@ -60,6 +60,7 @@ class ReviewSummaryViewModelAppenderTest extends AbstractTestCase
 
         return new CodeReviewDto(
             new CodeReview(),
+            [],
             [$revision],
             [$revision],
             new DirectoryTreeNode('name'),
