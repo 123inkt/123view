@@ -26,10 +26,12 @@ class ReviewViewModel
 
     /**
      * @param Revision[] $revisions
+     * @param CodeReview[] $similarReviews
      */
     public function __construct(
         public readonly CodeReview $review,
         public readonly array $revisions,
+        public readonly array $similarReviews,
         private readonly string $sidebarTabMode,
         private readonly int $visibleRevisionCount
     ) {
