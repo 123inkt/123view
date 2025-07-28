@@ -1,16 +1,16 @@
 {# reviewModel: ReviewViewModel #}
 {# review:      CodeReview #}
 <div class="review-grid-header">
-    <h3 class="m-0 review-heading">
+    <div class="d-flex align-items-center m-0 review-heading flex-nowrap">
         {% if review.type == 'branch' %}
-            <button class="btn btn-primary btn-sm" title="{{ review.referenceId }}">{{ 'branch.review'|trans }}</button>
-            <div class="review-change-branch-form">
+            <button class="btn btn-primary btn-sm me-2" title="{{ review.referenceId }}">{{ 'branch.review'|trans }}</button>
+            <div class="review-change-branch-form me-2">
                 {{ form(reviewModel.branchReviewViewModel.form) }}
             </div>
         {% endif %}
 
-        {% if reviewModel.similarReviews|length > 1 %}
-            <div class="dropdown float-start me-2" {{ stimulus_controller('component--dropdown-menu') }}>
+        {% if review.type != 'branch' and reviewModel.similarReviews|length > 1 %}
+            <div class="dropdown me-2" {{ stimulus_controller('component--dropdown-menu') }}>
                 <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
                         {{ stimulus_target('component--dropdown-menu', 'button') }}
                         {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
@@ -18,17 +18,21 @@
                 </button>
                 <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
                     {% for similarReview in reviewModel.similarReviews %}
-                        <li><a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: similarReview}) }}">{{ similarReview.repository.displayName }} - CR-{{ similarReview.projectId }}</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: similarReview}) }}">
+                                {{ similarReview.repository.displayName }} - CR-{{ similarReview.projectId }}
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
         {% endif %}
 
-        <button class="btn btn-primary btn-sm">{{ review.state|trans }}</button>
+        <button class="btn btn-primary btn-sm me-2">{{ review.state|trans }}</button>
 
-        <span title="{{ review.title }}">
+        <h3 class="m-0 overflow-hidden text-truncate" title="{{ review.title }}">
             {{- 'CR-' ~ review.projectId ~ ' ' }}{{ review.title|external_links -}}
-        </span>
+        </h3>
 
         <button class="btn btn-outline-primary btn-sm border-0"
                 data-class-before-copy="btn btn-outline-primary btn-sm border-0"
@@ -61,7 +65,7 @@
             {{ stimulus_controller('merge-request', {id: review.id}) }}
         ><i class="bi" {{ stimulus_target('merge-request', 'icon') }}></i>
         </a>
-    </h3>
+    </div>
 
     {% include 'app/flash/flashes.html.twig' %}
 
