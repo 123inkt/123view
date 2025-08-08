@@ -8,6 +8,7 @@ use DR\Review\Entity\Git\Diff\DiffChange;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Service\CodeHighlight\FilenameToLanguageTranslator;
+use DR\Review\Service\CodeHighlight\HighlightedFilePreprocessor;
 use DR\Review\Service\CodeHighlight\HighlightedFileService;
 use DR\Review\Service\CodeHighlight\HighlightHtmlLineSplitter;
 use DR\Review\Tests\AbstractTestCase;
@@ -25,15 +26,17 @@ class HighlightedFileServiceTest extends AbstractTestCase
     private FilenameToLanguageTranslator&MockObject $translator;
     private HttpClientInterface&MockObject          $httpClient;
     private HighlightHtmlLineSplitter&MockObject    $splitter;
+    private HighlightedFilePreprocessor&MockObject  $preprocessor;
     private HighlightedFileService                  $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->translator = $this->createMock(FilenameToLanguageTranslator::class);
-        $this->httpClient = $this->createMock(HttpClientInterface::class);
-        $this->splitter   = $this->createMock(HighlightHtmlLineSplitter::class);
-        $this->service    = new HighlightedFileService($this->translator, $this->httpClient, $this->splitter);
+        $this->translator   = $this->createMock(FilenameToLanguageTranslator::class);
+        $this->httpClient   = $this->createMock(HttpClientInterface::class);
+        $this->splitter     = $this->createMock(HighlightHtmlLineSplitter::class);
+        $this->preprocessor = $this->createMock(HighlightedFilePreprocessor::class);
+        $this->service      = new HighlightedFileService($this->translator, $this->httpClient, $this->splitter, $this->preprocessor);
     }
 
     /**
@@ -73,6 +76,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
             ->with('POST', '', ['query' => ['language' => 'xml'], 'body' => 'file-data'])
             ->willReturn($response);
         $this->splitter->expects($this->once())->method('split')->with('highlighted-data')->willReturn(['highlighted', 'data']);
+        $this->preprocessor->expects($this->once())->method('process')->with('xml', 'file-data')->willReturnArgument(1);
 
         $actual = $this->service->fromDiffFile($file);
         static::assertNotNull($actual);
@@ -92,6 +96,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $file->addBlock($block);
 
         $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
+        $this->preprocessor->expects($this->once())->method('process')->with('xml', 'file-data')->willReturnArgument(1);
         $this->httpClient->expects($this->once())->method('request')->willThrowException(new RuntimeException('error'));
 
         static::assertNull($this->service->fromDiffFile($file));
