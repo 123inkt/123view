@@ -19,7 +19,7 @@ class FilenameToLanguageTranslator
             "env", "ini"    => "ini",
             "js"            => "javascript",
             "json", "json5" => "json",
-            "htaccess"      => "apache",
+            "htaccess"      => "apacheconf",
             "less"          => "less",
             "md"            => "markdown",
             "php"           => "php",

@@ -1,14 +1,9 @@
 const http = require('http');
 const url  = require('url');
-// load common languages
-const hljs = require('highlight.js/lib/common');
-// supplement with custom languages
-hljs.registerLanguage('apache', require('highlight.js/lib/languages/apache'));
-hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
-hljs.registerLanguage('ini', require('highlight.js/lib/languages/ini'));
-hljs.registerLanguage('twig', require('highlight.js/lib/languages/twig'));
-hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
 
+const Prism = require('prismjs');
+const loadLanguages = require('prismjs/components/');
+loadLanguages(['ini', 'json', 'apacheconf', 'less', 'markdown', 'php', 'python', 'scss', 'bash', 'sql', 'typescript', 'twig', 'yaml'])
 
 const hostname = process.env.NODEJS_HOST;
 const port     = process.env.NODEJS_PORT;
@@ -31,7 +26,7 @@ const server = http.createServer((request, response) => {
         return;
     }
 
-    if (hljs.listLanguages().includes(queryData.language) === false) {
+    if (Object.keys(Prism.languages).includes(queryData.language) === false) {
         response.statusCode = 400;
         response.setHeader('Content-Type', 'text/plain');
         response.end('Unsupported language: ' + queryData.language);
@@ -42,14 +37,17 @@ const server = http.createServer((request, response) => {
     request.on('data', chunk => body += chunk);
     request.on('end', () => {
         try {
+            const html = Prism.highlight(body, Prism.languages[queryData.language], queryData.language);
+
             response.statusCode = 200;
             response.setHeader('Content-Type', 'text/html; charset=utf-8');
             response.setHeader('Cache-control', 'public,max-age=30');
-            response.end(hljs.highlight(body, {language: String(queryData.language), ignoreIllegals: true}).value);
+            response.end(html);
         } catch (e) {
+            console.info(`Error processing request: ${e.message}`);
             response.statusCode = 400;
             response.setHeader('Content-Type', 'text/plain');
-            response.end('highlightjs error: ' + e.message);
+            response.end('prism error: ' + e.message);
         }
     });
 });

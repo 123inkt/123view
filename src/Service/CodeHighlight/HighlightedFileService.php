@@ -8,10 +8,7 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Throwable;
 
 class HighlightedFileService implements LoggerAwareInterface
 {
@@ -22,7 +19,7 @@ class HighlightedFileService implements LoggerAwareInterface
 
     public function __construct(
         private readonly FilenameToLanguageTranslator $translator,
-        private readonly HttpClientInterface $highlightjsClient,
+        private readonly HighlightService $highlightService,
         private readonly HighlightHtmlLineSplitter $splitter,
         private readonly HighlightedFilePreprocessor $preprocessor
     ) {
@@ -43,23 +40,9 @@ class HighlightedFileService implements LoggerAwareInterface
         // preprocess certain contents that breaks the highlightjs formatter
         $content = $this->preprocessor->process($languageName, $content);
 
-        try {
-            $response = $this->highlightjsClient->request('POST', '', ['query' => ['language' => $languageName], 'body' => $content]);
-        } catch (Throwable $exception) {
-            $this->logger?->info('Failed to get code highlighting: ' . $exception->getMessage());
+        // highlight the content
+        $result = $this->highlightService->highlight($languageName, $content);
 
-            return null;
-        }
-
-        if ($response->getStatusCode() !== Response::HTTP_OK) {
-            $this->logger?->info('Failed to get code highlighting: ' . $response->getContent(false));
-
-            return null;
-        }
-
-        return new HighlightedFile(
-            $diffFile->getPathname(),
-            fn() => $this->splitter->split($response->getContent(false))
-        );
+        return $result === null ? null : new HighlightedFile($diffFile->getPathname(), fn() => $this->splitter->split($result));
     }
 }
