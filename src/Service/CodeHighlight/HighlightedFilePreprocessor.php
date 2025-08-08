@@ -9,7 +9,7 @@ class HighlightedFilePreprocessor
     {
         if ($language === "typescript") {
             // currently 2025-08-21 highlightjs does not support typescript generics completely.
-            $content = preg_replace('#<\w+\\[]>#', '', $content);
+            $content = preg_replace('#<\w+\[]>#', '', $content);
         }
         return $content;
     }
