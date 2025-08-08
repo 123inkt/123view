@@ -30,6 +30,7 @@ const server = http.createServer((request, response) => {
         response.statusCode = 400;
         response.setHeader('Content-Type', 'text/plain');
         response.end('Unsupported language: ' + queryData.language);
+        console.info('Unsupported language: ' + queryData.language);
         return;
     }
 
