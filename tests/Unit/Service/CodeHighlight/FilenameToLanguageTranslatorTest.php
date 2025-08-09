@@ -48,6 +48,7 @@ class FilenameToLanguageTranslatorTest extends AbstractTestCase
             "xml.dist"    => ["/path/to/file.xml.dist", "xml"],
             "xml.local"   => ["/path/to/file.xml.local", "xml"],
             "xml.example" => ["/path/to/file.xml.example", "xml"],
+            "xlf"         => ["/path/to/file.xlf", "xml"],
             "yaml"        => ["/path/to/file.yaml", "yaml"],
             "yml"         => ["/path/to/file.yml", "yaml"],
             "foobar"      => ["/path/to/file.foobar", null]
