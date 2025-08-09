@@ -20,8 +20,7 @@ class HighlightedFileService implements LoggerAwareInterface
     public function __construct(
         private readonly FilenameToLanguageTranslator $translator,
         private readonly HighlightService $highlightService,
-        private readonly HighlightHtmlLineSplitter $splitter,
-        private readonly HighlightedFilePreprocessor $preprocessor
+        private readonly HighlightHtmlLineSplitter $splitter
     ) {
     }
 
@@ -36,9 +35,6 @@ class HighlightedFileService implements LoggerAwareInterface
         }
 
         $content = implode("\n", $diffFile->getLines());
-
-        // preprocess certain contents that breaks the highlightjs formatter
-        $content = $this->preprocessor->process($languageName, $content);
 
         // highlight the content
         $result = $this->highlightService->highlight($languageName, $content);
