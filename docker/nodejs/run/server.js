@@ -1,9 +1,18 @@
 const http = require('http');
 const url  = require('url');
+// load common languages
+const hljs = require('highlight.js/lib/common');
+// supplement with custom languages
+hljs.registerLanguage('apache', require('highlight.js/lib/languages/apache'));
+hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
+hljs.registerLanguage('ini', require('highlight.js/lib/languages/ini'));
+hljs.registerLanguage('twig', require('highlight.js/lib/languages/twig'));
+hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
 
-const Prism = require('prismjs');
+const Prism         = require('prismjs');
+Prism.plugins.customClass.prefix('prism--')
 const loadLanguages = require('prismjs/components/');
-loadLanguages(['ini', 'json', 'apacheconf', 'less', 'markdown', 'php', 'python', 'scss', 'bash', 'sql', 'typescript', 'twig', 'yaml'])
+loadLanguages(['typescript'])
 
 const hostname = process.env.NODEJS_HOST;
 const port     = process.env.NODEJS_PORT;
@@ -26,7 +35,7 @@ const server = http.createServer((request, response) => {
         return;
     }
 
-    if (Object.keys(Prism.languages).includes(queryData.language) === false) {
+    if (queryData.language !== 'typescript' && hljs.listLanguages().includes(queryData.language) === false) {
         response.statusCode = 400;
         response.setHeader('Content-Type', 'text/plain');
         response.end('Unsupported language: ' + queryData.language);
@@ -38,7 +47,12 @@ const server = http.createServer((request, response) => {
     request.on('data', chunk => body += chunk);
     request.on('end', () => {
         try {
-            const html = Prism.highlight(body, Prism.languages[queryData.language], queryData.language);
+            let html = '';
+            if (queryData.language === 'typescript') {
+                html = Prism.highlight(body, Prism.languages[queryData.language], queryData.language);
+            } else {
+                html = hljs.highlight(body, {language: String(queryData.language), ignoreIllegals: true}).value;
+            }
 
             response.statusCode = 200;
             response.setHeader('Content-Type', 'text/html; charset=utf-8');
