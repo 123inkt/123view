@@ -51,6 +51,31 @@
     padding-left: 32px;
 }
 
+// Comment deep linking styles
+.comment-highlighted {
+    background: var(--bs-warning-bg-subtle) !important;
+    border-left: 4px solid var(--bs-warning) !important;
+    transition: background-color 0.3s ease, border-left 0.3s ease;
+
+    &.comment__state_resolved {
+        background: var(--bs-success-bg-subtle) !important;
+        border-left: 4px solid var(--bs-success) !important;
+    }
+}
+
+.comment__id {
+    font-size: 0.75rem;
+
+    a {
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
 .comment__comment .comment__author,
 .comment__reply .comment__author {
     font-size: 0.8rem;

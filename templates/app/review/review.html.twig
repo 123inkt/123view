@@ -12,7 +12,7 @@
     </div>
 
     <div class="review-grid-layout"
-         {{ stimulus_controller('review review-comment-visibility review-navigation') }}
+         {{ stimulus_controller('review review-comment-visibility review-navigation comment-deep-link') }}
          data-review-id="{{ review.id }}"
          data-review-add-comment-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetAddCommentFormController', {id: review.id}) }}">
 

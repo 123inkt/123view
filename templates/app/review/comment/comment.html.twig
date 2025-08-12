@@ -7,6 +7,7 @@
 <div class="comment__comment-thread
     {%- if comment.state == 'resolved' %} comment__state_resolved{% endif -%}
     {%- if visible is same as(false) %} d-none{% endif -%}"
+     id="comment-{{ comment.id }}"
      data-comment-id="{{ comment.id }}"
      data-comment-unresolved="{{ comment.state == 'open' ? 1 : 0 }}"
      data-comment-thread-id-value="{{ comment.id }}"
@@ -29,6 +30,16 @@
             <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
                 {{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
             </span>
+
+            {# Comment ID link for deep linking #}
+            <span class="comment__id">
+                <a href="#comment-{{ comment.id }}" class="text-decoration-none text-muted ms-2"
+                   title="{{ 'copy.comment.link'|trans }}"
+                   onclick="navigator.clipboard.writeText(window.location.origin + window.location.pathname + '#comment-{{ comment.id }}')">
+                    <i class="bi bi-link-45deg"></i>#{{ comment.id }}
+                </a>
+            </span>
+
             {%- if comment.tag -%}
                 {%- if comment.tag.value == 'suggestion' -%}
                     <span class="badge rounded-pill text-bg-info">{{ 'tag.suggestion'|trans }}</span>
