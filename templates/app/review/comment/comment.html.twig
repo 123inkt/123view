@@ -27,16 +27,15 @@
 
         <div class="comment__author_and_time">
             <span class="comment__author">{{ comment.user.name }}</span>
-            <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
-                {{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
-            </span>
-
-            {# Comment ID link for deep linking #}
-            <span class="comment__id">
-                <a href="#comment-{{ comment.id }}" class="text-decoration-none text-muted ms-2"
+            <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}"
+                    {{ stimulus_controller('comment-clipboard') }}>
+                <a href="#comment-{{ comment.id }}"
+                   class="text-decoration-none text-muted comment__deeplink"
                    title="{{ 'copy.comment.link'|trans }}"
-                   onclick="navigator.clipboard.writeText(window.location.origin + window.location.pathname + '#comment-{{ comment.id }}')">
-                    <i class="bi bi-link-45deg"></i>#{{ comment.id }}
+                   data-comment-id="{{ comment.id }}"
+                   data-action="click->comment-clipboard#copyLink"
+                   style="cursor: pointer;">
+                    <i class="bi bi-link-45deg"></i>{{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
                 </a>
             </span>
 

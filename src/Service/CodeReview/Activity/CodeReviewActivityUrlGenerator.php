@@ -32,14 +32,14 @@ class CodeReviewActivityUrlGenerator implements LoggerAwareInterface
         switch ($activity->getEventName()) {
             case CommentAdded::NAME:
             case CommentUpdated::NAME:
-                $anchor             = '#focus:comment:' . $activity->getDataValue('commentId');
+            $anchor = '#comment-' . $activity->getDataValue('commentId');
                 $params['filePath'] = (string)$activity->getDataValue('file');
                 break;
             case CommentReplyAdded::NAME:
             case CommentReplyUpdated::NAME:
                 $comment = $this->replyRepository->find($activity->getDataValue('commentId'))?->getComment();
                 if ($comment !== null) {
-                    $anchor             = '#focus:reply:' . $activity->getDataValue('commentId');
+                    $anchor = '#reply-' . $activity->getDataValue('commentId');
                     $params['filePath'] = $comment->getFilePath();
                 }
                 break;

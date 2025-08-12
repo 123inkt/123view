@@ -11,15 +11,15 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 #[CoversNothing]
 class ReviewTemplateIntegrationTest extends AbstractTestCase
 {
-    public function testReviewTemplateIncludesCommentDeepLinkController(): void
+    public function testReviewTemplateIncludesScrollPositionerController(): void
     {
         $templateContent = file_get_contents(__DIR__ . '/../../../templates/app/review/review.html.twig');
 
-        // Test that the comment-deep-link controller is added to the review template
-        static::assertStringContainsString('comment-deep-link', $templateContent);
+        // Test that the scroll-positioner controller is added to the review template
+        static::assertStringContainsString('scroll-positioner', $templateContent);
 
-        // Test that it's properly integrated with other controllers
-        static::assertStringContainsString('review review-comment-visibility review-navigation comment-deep-link', $templateContent);
+        // Test that it's properly integrated with other controllers (now includes scroll-positioner instead of comment-deep-link)
+        static::assertStringContainsString('review review-comment-visibility review-navigation scroll-positioner', $templateContent);
 
         // Test that the stimulus_controller function is used correctly
         static::assertStringContainsString('{{ stimulus_controller(', $templateContent);
@@ -62,18 +62,19 @@ class ReviewTemplateIntegrationTest extends AbstractTestCase
 
     public function testJavaScriptControllerFileExists(): void
     {
-        $controllerPath = __DIR__ . '/../../../assets/ts/controllers/comment_deep_link_controller.ts';
+        $controllerPath = __DIR__ . '/../../../assets/ts/controllers/scroll_positioner_controller.ts';
 
-        // Test that the JavaScript controller file exists
+        // Test that the enhanced scroll positioner controller file exists
         static::assertFileExists($controllerPath);
 
         $controllerContent = file_get_contents($controllerPath);
 
-        // Test key functionality is present
-        static::assertStringContainsString('handleCommentDeepLink', $controllerContent);
+        // Test key functionality is present in the consolidated controller
+        static::assertStringContainsString('handleHash', $controllerContent);
         static::assertStringContainsString('scrollIntoView', $controllerContent);
         static::assertStringContainsString('comment-highlighted', $controllerContent);
-        static::assertStringContainsString('#comment-', $controllerContent);
+        static::assertStringContainsString('#comment-', $controllerContent); // New email-friendly format
+        static::assertStringContainsString('#reply-', $controllerContent); // New reply format
     }
 
     public function testCSSStylesExist(): void
