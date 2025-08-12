@@ -35,7 +35,7 @@
                    data-comment-id="{{ comment.id }}"
                    data-action="click->comment-clipboard#copyLink"
                    style="cursor: pointer;">
-                    <i class="bi bi-link-45deg"></i>{{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
+                    {{ 'on'|trans }} <i class="bi bi-link-45deg"></i>{{ comment.updateTimestamp|format_datetime('short', 'short') }}
                 </a>
             </span>
 
