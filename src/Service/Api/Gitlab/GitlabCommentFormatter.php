@@ -29,6 +29,6 @@ class GitlabCommentFormatter implements LoggerAwareInterface
         // normalize @user annotation
         $message = preg_replace('/@user:\d+\[([^]]+)]/', '[$1]', $comment->getMessage());
 
-        return sprintf("%s<br>\n<br>\n*[123view: CR-%d](%s#focus:comment:%d)*", $message, $review->getProjectId(), $url, $comment->getId());
+        return sprintf("%s<br>\n<br>\n*[123view: CR-%d](%s#comment-%d)*", $message, $review->getProjectId(), $url, $comment->getId());
     }
 }

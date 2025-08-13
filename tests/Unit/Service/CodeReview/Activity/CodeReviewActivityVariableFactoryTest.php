@@ -44,7 +44,7 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
         $activity = $this->service->createFromComment($comment);
         static::assertTrue($activity->htmlSafe);
         static::assertSame('file', $activity->key);
-        static::assertSame('<a href="https://url/#focus:comment:123">filepath</a>', $activity->value);
+        static::assertSame('<a href="https://url/#comment-123">filepath</a>', $activity->value);
     }
 
     public function testCreateParams(): void
