@@ -170,7 +170,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
 
         $this->translator->expects($this->once())
             ->method('trans')
-            ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#focus:comment:789">filepath</a>'])
+            ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#comment-789">filepath</a>'])
             ->willReturnArgument(0);
 
         $this->formatter->format($activity, $user);

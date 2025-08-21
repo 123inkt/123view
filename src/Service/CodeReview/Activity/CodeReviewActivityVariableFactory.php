@@ -21,7 +21,7 @@ class CodeReviewActivityVariableFactory
         $filePath = $comment->getFilePath();
         $url      = $this->urlGenerator->generate(ReviewController::class, ['review' => $review, 'filePath' => $filePath]);
         $link     = sprintf(
-            '<a href="%s#focus:comment:%d">%s</a>',
+            '<a href="%s#comment-%d">%s</a>',
             htmlspecialchars($url, ENT_QUOTES),
             (int)$comment->getId(),
             htmlspecialchars(basename($filePath), ENT_QUOTES)
