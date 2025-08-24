@@ -45,7 +45,7 @@ class SearchCodeController extends AbstractController
             $this->stopwatch?->start('file-search');
 
             $repositories = $this->repositoryRepository->findBy(['active' => true]);
-            $results      = $this->fileSearcher->find($searchQuery, $extensions, $repositories);
+            $results      = $this->fileSearcher->find($searchQuery, $extensions, $repositories, $request->isShowAll() ? null : 100);
 
             $this->stopwatch?->stop('file-search');
         }

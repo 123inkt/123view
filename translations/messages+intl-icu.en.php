@@ -369,4 +369,5 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'show.all'                                    => 'Show all',
 ];
