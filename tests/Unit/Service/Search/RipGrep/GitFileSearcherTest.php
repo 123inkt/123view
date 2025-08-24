@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Model\Search\SearchResult;
+use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilder;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilderFactory;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
@@ -35,10 +35,9 @@ class GitFileSearcherTest extends AbstractTestCase
 
     public function testFindWithExtensions(): void
     {
-        $repository = new Repository();
-
-        $result   = static::createStub(SearchResult::class);
-        $iterator = $this->getIterator();
+        $repository       = new Repository();
+        $resultCollection = static::createStub(SearchResultCollection::class);
+        $iterator         = $this->getIterator();
 
         $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
         $commandBuilder->expects($this->once())->method('search')->with('searchQuery')->willReturnSelf();
@@ -46,17 +45,18 @@ class GitFileSearcherTest extends AbstractTestCase
 
         $this->commandBuilderFactory->expects($this->once())->method('default')->willReturn($commandBuilder);
         $this->executor->expects($this->once())->method('execute')->with($commandBuilder, '/cache/')->willReturn($iterator);
-        $this->parser->expects($this->once())->method('parse')->with(new JsonDecodeIterator($iterator), [$repository])->willReturn([$result]);
+        $this->parser->expects($this->once())->method('parse')
+            ->with(new JsonDecodeIterator($iterator), [$repository], 100)
+            ->willReturn($resultCollection);
 
-        static::assertSame([$result], $this->searcher->find('searchQuery', ['json', 'yaml'], [$repository]));
+        static::assertSame($resultCollection, $this->searcher->find('searchQuery', ['json', 'yaml'], [$repository], 100));
     }
 
     public function testFindWithoutExtensions(): void
     {
-        $repository = new Repository();
-
-        $result   = static::createStub(SearchResult::class);
-        $iterator = $this->getIterator();
+        $repository       = new Repository();
+        $resultCollection = static::createStub(SearchResultCollection::class);
+        $iterator         = $this->getIterator();
 
         $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
         $commandBuilder->expects($this->once())->method('search')->with('searchQuery')->willReturnSelf();
@@ -64,9 +64,11 @@ class GitFileSearcherTest extends AbstractTestCase
 
         $this->commandBuilderFactory->expects($this->once())->method('default')->willReturn($commandBuilder);
         $this->executor->expects($this->once())->method('execute')->with($commandBuilder, '/cache/')->willReturn($iterator);
-        $this->parser->expects($this->once())->method('parse')->with(new JsonDecodeIterator($iterator), [$repository])->willReturn([$result]);
+        $this->parser->expects($this->once())->method('parse')
+            ->with(new JsonDecodeIterator($iterator), [$repository], null)
+            ->willReturn($resultCollection);
 
-        static::assertSame([$result], $this->searcher->find('searchQuery', null, [$repository]));
+        static::assertSame($resultCollection, $this->searcher->find('searchQuery', null, [$repository]));
     }
 
     /**

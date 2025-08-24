@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Model\Search\SearchResult;
+use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilderFactory;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
 use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
@@ -22,10 +22,8 @@ class GitFileSearcher
     /**
      * @param non-empty-array<string> $extensions
      * @param Repository[]            $repositories
-     *
-     * @return SearchResult[]
      */
-    public function find(string $searchQuery, ?array $extensions, array $repositories, ?int $limit = null): array
+    public function find(string $searchQuery, ?array $extensions, array $repositories, ?int $limit = null): SearchResultCollection
     {
         $command = $this->commandBuilderFactory->default();
         $command->search($searchQuery);
