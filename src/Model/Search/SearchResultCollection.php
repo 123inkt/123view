@@ -21,7 +21,7 @@ readonly class SearchResultCollection
     {
         $grouped = [];
         foreach ($this->results as $result) {
-            $repoId             = $result->repository->getId();
+            $repoId             = (int)$result->repository->getId();
             $grouped[$repoId]   ??= [];
             $grouped[$repoId][] = $result;
         }
