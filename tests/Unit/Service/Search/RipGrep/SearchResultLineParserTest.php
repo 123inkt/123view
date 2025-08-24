@@ -57,6 +57,38 @@ class SearchResultLineParserTest extends AbstractTestCase
         $this->resultLineFactory->expects($this->once())->method('createContextFromEntry')->with(['type' => 'context'])->willReturn($contextLine);
         $this->resultLineFactory->expects($this->once())->method('createMatchFromEntry')->with(['type' => 'match'])->willReturn($matchLine);
 
-        $this->parser->parse($iterator, [$repository]);
+        $resultCollection = $this->parser->parse($iterator, [$repository]);
+        static::assertCount(1, $resultCollection->results);
+        static::assertFalse($resultCollection->moreResultsAvailable);
+    }
+
+    public function testParseWithLimit(): void
+    {
+        $repository = new Repository();
+        /** @var iterable<int, SearchResultEntry> $iterator */
+        $iterator = new ArrayIterator(
+            [
+                ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath']]],
+                ['type' => 'context'],
+                ['type' => 'match'],
+                ['type' => 'end'],
+                ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath']]],
+                ['type' => 'context'],
+                ['type' => 'match'],
+                ['type' => 'end'],
+            ]
+        );
+
+        $searchResult = new SearchResult($repository, new SplFileInfo('filepath', '', ''));
+        $contextLine  = new SearchResultLine('context', 123, SearchResultLineTypeEnum::Context);
+        $matchLine    = new SearchResultLine('match', 456, SearchResultLineTypeEnum::Match);
+
+        $this->resultFactory->expects($this->once())->method('create')->with('filepath', '/cache/', [$repository])->willReturn($searchResult);
+        $this->resultLineFactory->expects($this->once())->method('createContextFromEntry')->with(['type' => 'context'])->willReturn($contextLine);
+        $this->resultLineFactory->expects($this->once())->method('createMatchFromEntry')->with(['type' => 'match'])->willReturn($matchLine);
+
+        $resultCollection = $this->parser->parse($iterator, [$repository], 1);
+        static::assertCount(1, $resultCollection->results);
+        static::assertTrue($resultCollection->moreResultsAvailable);
     }
 }

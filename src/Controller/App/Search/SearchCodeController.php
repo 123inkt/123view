@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Search;
 
 use DR\Review\Controller\AbstractController;
+use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Request\Search\SearchCodeRequest;
 use DR\Review\Security\Role\Roles;
@@ -39,19 +40,19 @@ class SearchCodeController extends AbstractController
         $extensions  = $request->getExtensions();
         if (strlen($searchQuery) < 5) {
             $this->addFlash('error', $this->translator->trans('search.much.be.minimum.5.characters'));
-            $files = [];
+            $results = new SearchResultCollection([], false);
         } else {
             $this->stopwatch?->start('file-search');
 
             $repositories = $this->repositoryRepository->findBy(['active' => true]);
-            $files        = $this->fileSearcher->find($searchQuery, $extensions, $repositories);
+            $results      = $this->fileSearcher->find($searchQuery, $extensions, $repositories, $request->isShowAll() ? null : 100);
 
             $this->stopwatch?->stop('file-search');
         }
 
         return [
-            'page_title'    => $this->translator->trans('code.search'),
-            'viewModel' => new SearchCodeViewModel($files, $searchQuery, $extensions === null ? null : implode(',', $extensions))
+            'page_title' => $this->translator->trans('code.search'),
+            'viewModel'  => new SearchCodeViewModel($results, $searchQuery, $extensions === null ? null : implode(',', $extensions))
         ];
     }
 }

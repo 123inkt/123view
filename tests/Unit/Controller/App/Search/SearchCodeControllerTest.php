@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Search;
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase;
 use DR\Review\Controller\App\Search\SearchCodeController;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Model\Search\SearchResult;
+use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Request\Search\SearchCodeRequest;
 use DR\Review\Service\Search\RipGrep\GitFileSearcher;
@@ -14,7 +14,6 @@ use DR\Review\ViewModel\App\Search\SearchCodeViewModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
@@ -41,6 +40,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(SearchCodeRequest::class);
         $request->method('getSearchQuery')->willReturn('fail');
         $request->method('getExtensions')->willReturn(null);
+        $request->method('isShowAll')->willReturn(false);
 
         $this->translator->expects($this->exactly(2))->method('trans')
             ->with(...consecutive(['search.much.be.minimum.5.characters'], ['code.search']))
@@ -51,7 +51,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel([], 'fail', null)],
+            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), 'fail', null)],
             $result
         );
     }
@@ -61,13 +61,16 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $request = $this->createMock(SearchCodeRequest::class);
         $request->method('getSearchQuery')->willReturn('success');
         $request->method('getExtensions')->willReturn(['json', 'yaml']);
+        $request->method('isShowAll')->willReturn(false);
 
         $repository    = new Repository();
-        $searchResults = [new SearchResult($repository, new SplFileInfo('file', '', ''))];
+        $searchResults = static::createStub(SearchResultCollection::class);
 
         $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
-        $this->fileSearcher->expects($this->once())->method('find')->with('success', ['json', 'yaml'], [$repository])->willReturn($searchResults);
+        $this->fileSearcher->expects($this->once())->method('find')
+            ->with('success', ['json', 'yaml'], [$repository], 100)
+            ->willReturn($searchResults);
 
         $result = ($this->controller)($request);
 

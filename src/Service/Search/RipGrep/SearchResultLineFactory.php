@@ -14,7 +14,7 @@ class SearchResultLineFactory
     public function createContextFromEntry(array $entry): SearchResultLine
     {
         return new SearchResultLine(
-            $entry['data']['lines']['text'],
+            $entry['data']['lines']['text'] ?? '',
             $entry['data']['line_number'],
             SearchResultLineTypeEnum::Context
         );
@@ -26,7 +26,7 @@ class SearchResultLineFactory
     public function createMatchFromEntry(array $entry): SearchResultLine
     {
         return new SearchResultLine(
-            $entry['data']['lines']['text'],
+            $entry['data']['lines']['text'] ?? '',
             $entry['data']['line_number'],
             SearchResultLineTypeEnum::Match
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Model\Search\SearchResult;
+use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 
 /**
@@ -22,13 +22,12 @@ class SearchResultLineParser
     /**
      * @param iterable<int, SearchResultEntry> $iterator
      * @param Repository[]                     $repositories
-     *
-     * @return SearchResult[]
      */
-    public function parse(iterable $iterator, array $repositories): array
+    public function parse(iterable $iterator, array $repositories, ?int $limit = null): SearchResultCollection
     {
-        $results = [];
-        $current = null;
+        $results              = [];
+        $current              = null;
+        $moreResultsAvailable = false;
         foreach ($iterator as $entry) {
             if ($entry['type'] === 'begin') {
                 $current = $this->resultFactory->create($entry['data']['path']['text'], $this->gitCacheDirectory, $repositories);
@@ -48,13 +47,12 @@ class SearchResultLineParser
                 $current->addLine($this->resultLineFactory->createMatchFromEntry($entry));
             }
 
-            // @codeCoverageIgnoreStart
-            if (count($results) >= 100) {
+            if ($limit !== null && count($results) >= $limit) {
+                $moreResultsAvailable = true;
                 break;
             }
-            // @codeCoverageIgnoreEnd
         }
 
-        return $results;
+        return new SearchResultCollection($results, $moreResultsAvailable);
     }
 }
