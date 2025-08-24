@@ -35,7 +35,7 @@
 
     {% if viewModel.searchResults.results|length > 0 %}
         {% for results in viewModel.searchResults.iteratePerRepository %}
-            <div>
+            <div class="mb-3">
                 <div class="mt-2 mb-1">
                     <span class="badge rounded-pill text-bg-primary me-2">
                         {{ results[0].repository.displayName }}
@@ -46,7 +46,6 @@
                         <div class="accordion-item" data-role="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>
-
                                     {{ resultFile.file.relativePathname }}
                                 </button>
                             </h2>
