@@ -33,35 +33,43 @@
         </form>
     </div>
 
-    {% if viewModel.files %}
-    <div class="accordion" {{ stimulus_controller('accordion') }}>
-        {% for resultFile in viewModel.files %}
-            <div class="accordion-item" data-role="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>
-                        <span class="badge rounded-pill text-bg-primary me-2">
-                            {{ resultFile.repository.displayName }}
-                        </span>
-                        {{ resultFile.file.relativePathname }}
-                    </button>
-                </h2>
-                <div class="accordion-collapse collapse" data-role="accordion-collapse">
-                    <div class="accordion-body">
-                        <pre class="d-block">
-                            {%- for line in resultFile.lines -%}
-                                <div {% if line.type.value == 'match' %}class="bg-success-subtle"{% endif %}>
-                                    {#- show code line -#}
-                                    <span class="text-danger bg-light-gray d-inline-block code-search-line-number">
-                                        {{- line.lineNumber -}}
-                                    </span> {{ line.line -}}
+    {% if viewModel.searchResults.results|length > 0 %}
+        {% for results in viewModel.searchResults.iteratePerRepository %}
+            <div>
+                <div class="mt-2 mb-1">
+                    <span class="badge rounded-pill text-bg-primary me-2">
+                        {{ results[0].repository.displayName }}
+                    </span>
+                </div>
+                <div class="accordion" {{ stimulus_controller('accordion') }}>
+                    {% for resultFile in results %}
+                        <div class="accordion-item" data-role="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>
+
+                                    {{ resultFile.file.relativePathname }}
+                                </button>
+                            </h2>
+                            <div class="accordion-collapse collapse" data-role="accordion-collapse">
+                                <div class="accordion-body">
+                                <pre class="d-block">
+                                    {%- for line in resultFile.lines -%}
+                                        <div {% if line.type.value == 'match' %}class="bg-success-subtle"{% endif %}>
+                                            {#- show code line -#}
+                                            <span class="text-danger bg-light-gray d-inline-block code-search-line-number">
+                                                {{- line.lineNumber -}}
+                                            </span> {{ line.line -}}
+                                        </div>
+                                    {%- endfor -%}
+                                </pre>
                                 </div>
-                            {%- endfor -%}
-                        </pre>
-                    </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         {% endfor %}
-    </div>
+        </div>
     {% else %}
         <div class="alert alert-warning">
             {{ 'no.matches.found'|trans }}
