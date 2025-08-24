@@ -25,7 +25,7 @@ class GitFileSearcher
      *
      * @return SearchResult[]
      */
-    public function find(string $searchQuery, ?array $extensions, array $repositories): array
+    public function find(string $searchQuery, ?array $extensions, array $repositories, ?int $limit = null): array
     {
         $command = $this->commandBuilderFactory->default();
         $command->search($searchQuery);
@@ -35,6 +35,6 @@ class GitFileSearcher
 
         $jsonIterator = new JsonDecodeIterator($this->executor->execute($command, $this->gitCacheDirectory));
 
-        return $this->parser->parse($jsonIterator, $repositories);
+        return $this->parser->parse($jsonIterator, $repositories, $limit);
     }
 }
