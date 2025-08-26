@@ -27,15 +27,20 @@
 
         <div class="comment__author_and_time">
             <span class="comment__author">{{ comment.user.name }}</span>
-            <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}"
-                    {{ stimulus_controller('comment-clipboard') }}>
+            <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
                 <a href="#comment-{{ comment.id }}"
                    class="text-decoration-none text-muted comment__deeplink"
                    title="{{ 'copy.comment.link'|trans }}"
-                   data-comment-id="{{ comment.id }}"
-                   data-action="click->comment-clipboard#copyLink"
+                   data-content="{{ app.request.uri ~ '#comment-' ~ comment.id }}"
+                   data-class-before-copy="text-decoration-none text-muted comment__deeplink"
+                   data-class-after-copy="text-decoration-none text-success comment__deeplink"
+                        {{ stimulus_controller('component--copy-to-clipboard') }}
+                        {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
                    style="cursor: pointer;">
-                    {{ 'on'|trans }} <i class="bi bi-link-45deg"></i>{{ comment.updateTimestamp|format_datetime('short', 'short') }}
+                    {{ 'on'|trans }} <i class="bi bi-link-45deg"
+                                        data-role="icon"
+                                        data-class-before-copy="bi bi-link-45deg"
+                                        data-class-after-copy="bi bi-clipboard-check-fill"></i>{{ comment.updateTimestamp|format_datetime('short', 'short') }}
                 </a>
             </span>
 
