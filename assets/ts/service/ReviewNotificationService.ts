@@ -7,7 +7,7 @@ interface Subscription {
 type Subscriptions = Record<string, Subscription[]>;
 
 export default class ReviewNotificationService {
-    private subscriptions: Subscriptions = {};
+    private readonly subscriptions: Subscriptions = {};
 
     constructor() {
         this.onEvent = this.onEvent.bind(this);
@@ -21,10 +21,8 @@ export default class ReviewNotificationService {
         }
 
         for (const eventName of events) {
-            if (this.subscriptions[eventName] === undefined) {
-                this.subscriptions[eventName] = [];
-            }
-            this.subscriptions[eventName]?.push({reviewId, userId, callback});
+            this.subscriptions[eventName] ??= [];
+            this.subscriptions[eventName].push({reviewId, userId, callback});
         }
     }
 
