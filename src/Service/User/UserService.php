@@ -6,18 +6,11 @@ namespace DR\Review\Service\User;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
-use DR\Utils\Assert;
-use Symfony\Bundle\SecurityBundle\Security;
 
 readonly class UserService
 {
-    public function __construct(private UserRepository $userRepository, private Security $security)
+    public function __construct(private UserRepository $userRepository)
     {
-    }
-
-    public function getCurrentUser(): User
-    {
-        return Assert::isInstanceOf($this->security->getUser(), User::class);
     }
 
     /**

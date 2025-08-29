@@ -12,7 +12,7 @@ use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
-use DR\Review\Service\User\UserService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Utility\Strings;
 use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Utils\Arrays;
@@ -32,7 +32,7 @@ class ProjectsViewModelProvider
         private readonly RepositoryRepository $repositoryRepository,
         private readonly RevisionRepository $revisionRepository,
         private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider,
-        private readonly UserService $userService,
+        private readonly UserEntityProvider $userProvider,
     ) {
     }
 
@@ -43,7 +43,7 @@ class ProjectsViewModelProvider
     {
         $repositories      = $this->repositoryRepository->findBy(['active' => 1], ['displayName' => 'ASC']);
         $revisionCount     = $this->revisionRepository->getRepositoryRevisionCount();
-        $timelineViewModel = $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->userService->getCurrentUser(), self::FEED_EVENTS);
+        $timelineViewModel = $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->userProvider->getCurrentUser(), self::FEED_EVENTS);
 
         if ($searchQuery !== '') {
             $parts        = Arrays::explode(' ', $searchQuery);

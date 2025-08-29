@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\User\UserService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Utils\Assert;
 
@@ -19,7 +19,7 @@ class CodeReviewProcessor implements ProcessorInterface
     public function __construct(
         private readonly CodeReviewRepository $reviewRepository,
         private readonly ReviewEventService $eventService,
-        private readonly UserService $userService,
+        private readonly UserEntityProvider $userProvider,
     ) {
     }
 
@@ -36,7 +36,7 @@ class CodeReviewProcessor implements ProcessorInterface
 
         // dispatch events if state was changed
         if ($data->isPropertyChanged(CodeReview::PROP_STATE)) {
-            $user          = $this->userService->getCurrentUser();
+            $user          = $this->userProvider->getCurrentUser();
             $originalState = Assert::string($data->getOriginalValue(CodeReview::PROP_STATE));
             $this->eventService->reviewStateChanged($data, $originalState, $user->getId());
         }

@@ -14,7 +14,7 @@ use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
-use DR\Review\Service\User\UserService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 
@@ -30,7 +30,7 @@ class ReviewsViewModelProvider
     ];
 
     public function __construct(
-        private readonly UserService $userService,
+        private readonly UserEntityProvider $userProvider,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider
     ) {
@@ -77,7 +77,7 @@ class ReviewsViewModelProvider
             $paginatorViewModel,
             $request->getSearchQuery(),
             $request->getOrderBy(),
-            $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->userService->getCurrentUser(), self::FEED_EVENTS, $repository)
+            $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->userProvider->getCurrentUser(), self::FEED_EVENTS, $repository)
         );
     }
 }

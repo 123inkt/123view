@@ -7,16 +7,16 @@ use Doctrine\DBAL\Exception;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Repository\Config\RuleRepository;
-use DR\Review\Service\User\UserService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Notification\RuleNotificationViewModel;
 use DR\Utils\Arrays;
 
-class RuleNotificationViewModelProvider
+readonly class RuleNotificationViewModelProvider
 {
     public function __construct(
-        private readonly UserService $userService,
-        private readonly RuleRepository $ruleRepository,
-        private readonly RuleNotificationRepository $notificationRepository
+        private UserEntityProvider $userProvider,
+        private RuleRepository $ruleRepository,
+        private RuleNotificationRepository $notificationRepository
     ) {
     }
 
@@ -25,7 +25,7 @@ class RuleNotificationViewModelProvider
      */
     public function getNotificationsViewModel(?int $ruleId, bool $unread): RuleNotificationViewModel
     {
-        $user              = $this->userService->getCurrentUser();
+        $user              = $this->userProvider->getCurrentUser();
         $notificationCount = $this->notificationRepository->getUnreadNotificationPerRuleCount($user);
 ;
         $rules = $this->ruleRepository->findBy(['user' => $user, 'active' => true], ['name' => 'ASC'], 100);
