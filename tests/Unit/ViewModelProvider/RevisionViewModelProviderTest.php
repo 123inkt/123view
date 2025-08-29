@@ -16,6 +16,7 @@ use DR\Review\Model\Review\RevisionFileChange;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -31,6 +32,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
     private RevisionVisibilityService&MockObject $visibilityService;
     private RevisionFileRepository&MockObject    $revisionFileRepository;
     private FormFactoryInterface&MockObject      $formFactory;
+    private UserEntityProvider&MockObject       $userProvider;
     private RevisionViewModelProvider            $provider;
     private User                                 $user;
 
@@ -41,13 +43,14 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $this->visibilityService      = $this->createMock(RevisionVisibilityService::class);
         $this->revisionFileRepository = $this->createMock(RevisionFileRepository::class);
         $this->formFactory            = $this->createMock(FormFactoryInterface::class);
+        $this->userProvider           = $this->createMock(UserEntityProvider::class);
         $this->user                   = new User();
         $this->provider               = new RevisionViewModelProvider(
             $this->revisionRepository,
             $this->visibilityService,
             $this->revisionFileRepository,
             $this->formFactory,
-            $this->user
+            $this->userProvider
         );
     }
 
@@ -76,6 +79,9 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setId(123);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $this->user)
@@ -104,6 +110,9 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $review->setId(123);
         $review->setType(CodeReviewType::BRANCH);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $this->user)

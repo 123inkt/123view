@@ -8,6 +8,7 @@ use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -15,13 +16,23 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class UserEntityProviderTest extends AbstractTestCase
 {
     private TokenStorageInterface&MockObject $tokenStore;
+    private Security&MockObject              $security;
     private UserEntityProvider               $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->tokenStore = $this->createMock(TokenStorageInterface::class);
-        $this->provider   = new UserEntityProvider($this->tokenStore);
+        $this->security   = $this->createMock(Security::class);
+        $this->provider   = new UserEntityProvider($this->tokenStore, $this->security);
+    }
+
+    public function testGetCurrentUser(): void
+    {
+        $user = new User();
+        $this->security->expects($this->once())->method('getUser')->willReturn($user);
+
+        static::assertSame($user, $this->provider->getCurrentUser());
     }
 
     public function testGetUserExisting(): void
@@ -41,6 +52,13 @@ class UserEntityProviderTest extends AbstractTestCase
         $token->expects($this->once())->method('getUser')->willReturn(null);
 
         $this->tokenStore->expects($this->once())->method('getToken')->willReturn($token);
+
+        static::assertNull($this->provider->getUser());
+    }
+
+    public function testGetUserNoToken(): void
+    {
+        $this->tokenStore->expects($this->once())->method('getToken')->willReturn(null);
 
         static::assertNull($this->provider->getUser());
     }

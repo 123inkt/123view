@@ -14,6 +14,7 @@ use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -27,6 +28,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     private CodeReviewActivityFormatter&MockObject    $activityFormatter;
     private ActivityCommentProvider&MockObject        $commentProvider;
     private CodeReviewActivityUrlGenerator&MockObject $urlGenerator;
+    private UserEntityProvider&MockObject             $userProvider;
     private ReviewTimelineViewModelProvider           $provider;
     private User                                      $user;
 
@@ -34,6 +36,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->user               = new User();
+        $this->userProvider       = $this->createMock(UserEntityProvider::class);
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
         $this->activityFormatter  = $this->createMock(CodeReviewActivityFormatter::class);
         $this->commentProvider    = $this->createMock(ActivityCommentProvider::class);
@@ -43,7 +46,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             $this->activityFormatter,
             $this->commentProvider,
             $this->urlGenerator,
-            $this->user
+            $this->userProvider
         );
     }
 
@@ -56,13 +59,16 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
+        $this->userProvider->expects($this->exactly(2))
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->activityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123], ['createTimestamp' => 'ASC'])
             ->willReturn([$activityA, $activityB]);
         $this->activityFormatter->expects($this->exactly(2))
             ->method('format')
-            ->with(...consecutive([$activityA, $this->user], [$activityA, $this->user]))
+            ->with(...consecutive([$activityA, $this->user], [$activityB, $this->user]))
             ->willReturn('message', null);
 
         $viewModel = $this->provider->getTimelineViewModel($review, []);
@@ -84,6 +90,9 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $review->setId(123);
         $review->getComments()->set(456, $comment);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->activityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123], ['createTimestamp' => 'ASC'])
@@ -110,6 +119,9 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->activityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123], ['createTimestamp' => 'ASC'])

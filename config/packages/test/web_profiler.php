@@ -5,6 +5,7 @@ use Symfony\Config\FrameworkConfig;
 use Symfony\Config\WebProfilerConfig;
 
 return static function (WebProfilerConfig $profiler, FrameworkConfig $framework): void {
-    $profiler->toolbar(false)->interceptRedirects(false);
+    $profiler->toolbar()->enabled(false);
+    $profiler->interceptRedirects(false);
     $framework->profiler()->collect(false);
 };
