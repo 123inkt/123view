@@ -1,8 +1,10 @@
-{# comment:          Comment #}
-{# detached:         bool|null #}
-{# visible:          bool #}
-{# editCommentForm:  FormView|null #}
-{# replyCommentform: FormView|null #}
+{% types
+    comment: Comment
+    detached: bool|null
+    visible: bool
+    editCommentForm: FormView|null
+    replyCommentForm: FormView|null
+%}
 
 <div class="comment__comment-thread
     {%- if comment.state == 'resolved' %} comment__state_resolved{% endif -%}
