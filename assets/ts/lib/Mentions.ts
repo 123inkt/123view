@@ -4,7 +4,7 @@ import type MentionsDropdown from './MentionsDropdown';
 import type User from './User';
 
 export default class Mentions {
-    public visible: boolean = false;
+    public visible = false;
 
     constructor(
         private readonly textarea: HTMLTextAreaElement,
@@ -75,7 +75,7 @@ export default class Mentions {
         const params = new URLSearchParams({search: searchQuery ?? '', preferredUserIds: this.preferredUserIds.join(',')});
         axios
             .get('/app/user/mentions?' + params.toString())
-            .then(response => callback(response.data))
+            .then(response => callback(response.data as User[]))
             .catch(Function.empty);
     }
 

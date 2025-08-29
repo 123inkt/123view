@@ -44,7 +44,7 @@ export default class Elements {
 
     public static create(html: string): HTMLElement {
         html = html.trim();
-        if (html.charAt(0) !== '<') {
+        if (html.startsWith('<') === false) {
             return document.createElement(html);
         }
 

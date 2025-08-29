@@ -14,6 +14,7 @@ use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
@@ -24,7 +25,7 @@ class ReviewTimelineViewModelProvider
         private readonly CodeReviewActivityFormatter $activityFormatter,
         private readonly ActivityCommentProvider $commentProvider,
         private readonly CodeReviewActivityUrlGenerator $urlGenerator,
-        private readonly User $user
+        private readonly UserEntityProvider $userProvider
     ) {
     }
 
@@ -38,7 +39,7 @@ class ReviewTimelineViewModelProvider
 
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
-            $message = $this->activityFormatter->format($activity, $this->user);
+            $message = $this->activityFormatter->format($activity, $this->userProvider->getCurrentUser());
             if ($message === null || $activity->getEventName() === CommentReplyAdded::NAME) {
                 continue;
             }

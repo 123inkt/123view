@@ -10,6 +10,7 @@ use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class ReviewsViewModelProviderTest extends AbstractTestCase
 {
     private User                                       $user;
+    private UserEntityProvider&MockObject             $userProvider;
     private CodeReviewRepository&MockObject            $reviewRepository;
     private ReviewTimelineViewModelProvider&MockObject $timelineViewModelProvider;
     private ReviewsViewModelProvider                   $provider;
@@ -29,9 +31,14 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->user                      = new User();
+        $this->userProvider              = $this->createMock(UserEntityProvider::class);
         $this->reviewRepository          = $this->createMock(CodeReviewRepository::class);
         $this->timelineViewModelProvider = $this->createMock(ReviewTimelineViewModelProvider::class);
-        $this->provider                  = new ReviewsViewModelProvider($this->user, $this->reviewRepository, $this->timelineViewModelProvider);
+        $this->provider                  = new ReviewsViewModelProvider(
+            $this->userProvider,
+            $this->reviewRepository,
+            $this->timelineViewModelProvider
+        );
     }
 
     public function testGetSearchReviewsViewModel(): void
@@ -70,6 +77,9 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
 
         $terms = $this->createMock(TermInterface::class);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->reviewRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(123, 5, $terms, CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)

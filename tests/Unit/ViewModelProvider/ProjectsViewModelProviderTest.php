@@ -8,6 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
@@ -21,6 +22,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     private RepositoryRepository&MockObject            $repositoryRepository;
     private RevisionRepository&MockObject              $revisionRepository;
     private ReviewTimelineViewModelProvider&MockObject $viewModelProvider;
+    private UserEntityProvider&MockObject              $userProvider;
     private ProjectsViewModelProvider                  $provider;
     private User                                       $user;
 
@@ -28,6 +30,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->user                 = new User();
+        $this->userProvider         = $this->createMock(UserEntityProvider::class);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         $this->revisionRepository   = $this->createMock(RevisionRepository::class);
         $this->viewModelProvider    = $this->createMock(ReviewTimelineViewModelProvider::class);
@@ -35,7 +38,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
             $this->repositoryRepository,
             $this->revisionRepository,
             $this->viewModelProvider,
-            $this->user
+            $this->userProvider
         );
     }
 
@@ -48,6 +51,9 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
         $repository->setDisplayName('repository');
         $timeline   = $this->createMock(TimelineViewModel::class);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->repositoryRepository->expects($this->once())
             ->method('findBy')
             ->with(['active' => 1], ['displayName' => 'ASC'])

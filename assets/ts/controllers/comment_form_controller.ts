@@ -17,7 +17,7 @@ export default class extends Controller<HTMLElement> {
     private readonly declare mentionSuggestionsTarget: HTMLElement;
     private readonly declare markdownPreviewTarget: HTMLElement;
     private readonly declare actorsValue: string;
-    private submitting: boolean     = false;
+    private submitting              = false;
 
     public connect(): void {
         useDebounce(this, {wait: 150});

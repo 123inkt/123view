@@ -16,17 +16,17 @@ export default class extends Controller {
     }
 
     private findTarget(hash: string): Element | null {
-        let matches = hash.match(/^#focus:comment:(\d+)$/);
+        let matches = /^#focus:comment:(\d+)$/.exec(hash);
         if (matches !== null) {
             return this.element.querySelector(`[data-comment-id="${matches[1]}"]`);
         }
 
-        matches = hash.match(/^#focus:reply:(\d+)$/);
+        matches = /^#focus:reply:(\d+)$/.exec(hash);
         if (matches !== null) {
             return this.element.querySelector(`[data-reply-id="${matches[1]}"]`);
         }
 
-        matches = hash.match(/^#focus:line:(\d+)$/);
+        matches = /^#focus:line:(\d+)$/.exec(hash);
         if (matches !== null) {
             return this.element.querySelector(`[data-line="${matches[1]}"]`);
         }

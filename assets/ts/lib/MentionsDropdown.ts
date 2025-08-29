@@ -1,9 +1,9 @@
 import type User from './User';
 
 export default class MentionsDropdown {
-    private visible: boolean = false;
-    private users: User[]    = [];
-    private selected: number = 0;
+    private visible       = false;
+    private users: User[] = [];
+    private selected      = 0;
 
     constructor(private readonly dropdown: HTMLElement) {
     }

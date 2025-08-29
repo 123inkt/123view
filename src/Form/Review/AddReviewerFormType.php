@@ -7,6 +7,7 @@ use DR\Review\Controller\App\Review\Reviewer\AddReviewerController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,8 +16,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AddReviewerFormType extends AbstractType
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator, private UserRepository $userRepository, private User $user)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private UserRepository $userRepository,
+        private UserEntityProvider $userProvider
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -47,7 +51,7 @@ class AddReviewerFormType extends AbstractType
                 'choice_value'              => static fn(?User $user) => (string)$user?->getId(),
                 'choice_attr'               => static fn() => ['class' => 'user'],
                 'choices'                   => $choices,
-                'preferred_choices'         => [$this->user],
+                'preferred_choices'         => [$this->userProvider->getCurrentUser()],
                 'multiple'                  => false,
                 'expanded'                  => false,
                 'attr'                      => ['class' => 'form-select-sm add-reviewer-form-user', 'data-controller' => 'form-submitter']

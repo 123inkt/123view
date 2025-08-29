@@ -13,7 +13,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
     private readonly fileTreeService     = new ReviewFileTreeService();
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
-    private reviewId: number             = 0;
+    private reviewId                     = 0;
 
     public connect(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');

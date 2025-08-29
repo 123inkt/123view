@@ -8,7 +8,7 @@ export default class CommentService {
     public getMarkdownPreview(comment: string): Promise<string> {
         return this.client
             .get('/app/reviews/comment/markdown', {params: {message: comment}})
-            .then((response) => response.data);
+            .then((response) => response.data as string);
     }
 
     public getAddCommentForm(url: string, oldPath: string, newPath: string, line: number, offset: number, lineAfter: number, headSha: string, state: string): Promise<HTMLElement> {
@@ -19,11 +19,11 @@ export default class CommentService {
     }
 
     public submitAddCommentForm(form: HTMLFormElement): Promise<string> {
-        return this.client.form(form).then(response => response.data.commentUrl);
+        return this.client.form(form).then(response => (response.data as {commentUrl: string}).commentUrl);
     }
 
     public submitCommentForm(form: HTMLFormElement): Promise<number> {
-        return this.client.form(form).then(response => response.data.commentId);
+        return this.client.form(form).then(response => (response.data as {commentId: number}).commentId);
     }
 
     public getCommentThread(url: string, action?: string): Promise<HTMLElement> {

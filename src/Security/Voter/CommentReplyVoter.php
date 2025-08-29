@@ -6,6 +6,7 @@ namespace DR\Review\Security\Voter;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class CommentReplyVoter extends Voter
@@ -27,7 +28,7 @@ class CommentReplyVoter extends Voter
     /**
      * @inheritDoc
      */
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
         if ($user === null || $user instanceof User === false) {

@@ -9,6 +9,7 @@ use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Notification\RuleNotificationViewModel;
 use DR\Review\ViewModelProvider\RuleNotificationViewModelProvider;
@@ -18,7 +19,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(RuleNotificationViewModelProvider::class)]
 class RuleNotificationViewModelProviderTest extends AbstractTestCase
 {
-    private User&MockObject                       $user;
+    private User                                  $user;
+    private UserEntityProvider&MockObject        $userProvider;
     private RuleRepository&MockObject             $ruleRepository;
     private RuleNotificationRepository&MockObject $notificationRepository;
     private RuleNotificationViewModelProvider     $viewModelProvider;
@@ -26,10 +28,15 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user                   = $this->createMock(User::class);
+        $this->user                   = new User();
+        $this->userProvider           = $this->createMock(UserEntityProvider::class);
         $this->ruleRepository         = $this->createMock(RuleRepository::class);
         $this->notificationRepository = $this->createMock(RuleNotificationRepository::class);
-        $this->viewModelProvider      = new RuleNotificationViewModelProvider($this->user, $this->ruleRepository, $this->notificationRepository);
+        $this->viewModelProvider      = new RuleNotificationViewModelProvider(
+            $this->userProvider,
+            $this->ruleRepository,
+            $this->notificationRepository
+        );
     }
 
     /**
@@ -37,6 +44,9 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
      */
     public function testGetNotificationsViewModelDefault(): void
     {
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->notificationRepository->expects($this->once())->method('getUnreadNotificationPerRuleCount')->with($this->user)->willReturn([]);
         $this->ruleRepository->expects($this->once())
             ->method('findBy')
@@ -56,6 +66,9 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
         $rule         = (new Rule())->setId(123);
         $notification = new RuleNotification();
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->notificationRepository->expects($this->once())
             ->method('getUnreadNotificationPerRuleCount')
             ->with($this->user)

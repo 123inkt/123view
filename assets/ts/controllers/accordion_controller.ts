@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import Assert from '../lib/Assert';
 import Elements from '../lib/Elements';
 
 export default class extends Controller<HTMLElement> {
@@ -7,7 +8,7 @@ export default class extends Controller<HTMLElement> {
 
         const target    = event.currentTarget as HTMLElement;
         const accordion = Elements.closestRole(target, 'accordion-item');
-        const collapse  = accordion.querySelector('[data-role~=accordion-collapse]') as HTMLElement;
+        const collapse  = Assert.notNull(accordion.querySelector<HTMLElement>('[data-role~=accordion-collapse]'));
 
         if (target.classList.contains('collapsed')) {
             target.classList.remove('collapsed');

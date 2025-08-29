@@ -211,8 +211,14 @@ parameters:
 			path: src/QueryParser/InvalidQueryException.php
 
 		-
-			message: '#^PHPDoc tag @var with type Parsica\\Parsica\\Parser\<T\> is not subtype of type Parsica\\Parsica\\Parser\<null\>\.$#'
-			identifier: varTag.type
+			message: '#^Parameter \#2 \$transform of function Parsica\\Parsica\\Expression\\binaryOperator expects pure\-callable\(DR\\Review\\QueryParser\\Term\\Operator\\AndOperator, DR\\Review\\QueryParser\\Term\\Operator\\AndOperator\)\: DR\\Review\\QueryParser\\Term\\Operator\\AndOperator, Closure\(DR\\Review\\QueryParser\\Term\\TermInterface, DR\\Review\\QueryParser\\Term\\TermInterface\)\: DR\\Review\\QueryParser\\Term\\Operator\\AndOperator given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/QueryParser/ParserFactory.php
+
+		-
+			message: '#^Parameter \#2 \$transform of function Parsica\\Parsica\\Expression\\binaryOperator expects pure\-callable\(DR\\Review\\QueryParser\\Term\\Operator\\OrOperator, DR\\Review\\QueryParser\\Term\\Operator\\OrOperator\)\: DR\\Review\\QueryParser\\Term\\Operator\\OrOperator, Closure\(DR\\Review\\QueryParser\\Term\\TermInterface, DR\\Review\\QueryParser\\Term\\TermInterface\)\: DR\\Review\\QueryParser\\Term\\Operator\\OrOperator given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/QueryParser/ParserFactory.php
 
@@ -949,8 +955,8 @@ parameters:
 			path: src/Repository/Webhook/WebhookRepository.php
 
 		-
-			message: '#^Parameter \#1 \$data of class DR\\Review\\Response\\ProblemJsonResponse constructor expects array\<string, array\<string\>\|int\|string\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
+			message: '#^Strict comparison using \!\=\= between int\|list\<string\>\|string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Response/ProblemJsonResponseFactory.php
 
@@ -1095,6 +1101,36 @@ parameters:
 		-
 			message: '#^PHPDoc tag @var with type Parsica\\Parsica\\Parser\<DR\\Review\\QueryParser\\Term\\TermInterface\> is not subtype of type Parsica\\Parsica\\Parser\<array\{DR\\Review\\QueryParser\\Term\\TermInterface\}\|DR\\Review\\QueryParser\\Term\\TermInterface\>\.$#'
 			identifier: varTag.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<int, DR\\Review\\QueryParser\\Term\\TermInterface\>\>\:\:map\(\) expects pure\-callable\(array\{DR\\Review\\QueryParser\\Term\\TermInterface\}\)\: array\{DR\\Review\\QueryParser\\Term\\TermInterface\}, Closure\(mixed\)\: array\{DR\\Review\\QueryParser\\Term\\TermInterface\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<string\>\|string\>\:\:map\(\) expects pure\-callable\(array\<string\>\|string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<string\>\|string\>\:\:map\(\) expects pure\-callable\(array\<string\>\|string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<mixed\>\:\:map\(\) expects pure\-callable\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<string\>\:\:map\(\) expects pure\-callable\(string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter, Closure\(string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
 
@@ -1433,6 +1469,12 @@ parameters:
 			identifier: callable.nonCallable
 			count: 2
 			path: tests/Unit/MessageHandler/RevisionFilesMessageHandlerTest.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<string\>\|string\>\:\:map\(\) expects pure\-callable\(array\<string\>\|string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/QueryParser/ParserFactoryTest.php
 
 		-
 			message: '#^Call to method DR\\Review\\Entity\\Review\\FolderCollapseStatus\:\:getId\(\) on a separate line has no effect\.$#'
