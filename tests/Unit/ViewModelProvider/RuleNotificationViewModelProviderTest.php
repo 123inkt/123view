@@ -32,7 +32,11 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
         $this->userProvider           = $this->createMock(UserEntityProvider::class);
         $this->ruleRepository         = $this->createMock(RuleRepository::class);
         $this->notificationRepository = $this->createMock(RuleNotificationRepository::class);
-        $this->viewModelProvider      = new RuleNotificationViewModelProvider($this->userProvider, $this->ruleRepository, $this->notificationRepository);
+        $this->viewModelProvider      = new RuleNotificationViewModelProvider(
+            $this->userProvider,
+            $this->ruleRepository,
+            $this->notificationRepository
+        );
     }
 
     /**

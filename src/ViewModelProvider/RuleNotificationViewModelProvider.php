@@ -27,7 +27,6 @@ readonly class RuleNotificationViewModelProvider
     {
         $user              = $this->userProvider->getCurrentUser();
         $notificationCount = $this->notificationRepository->getUnreadNotificationPerRuleCount($user);
-;
         $rules = $this->ruleRepository->findBy(['user' => $user, 'active' => true], ['name' => 'ASC'], 100);
         $rules = Arrays::reindex($rules, static fn(Rule $rule) => $rule->getId());
 

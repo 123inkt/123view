@@ -8,7 +8,6 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\User\UserEntityProvider;
-use DR\Review\Service\User\UserService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

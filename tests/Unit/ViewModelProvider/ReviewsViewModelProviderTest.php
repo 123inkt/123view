@@ -34,7 +34,11 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
         $this->userProvider              = $this->createMock(UserEntityProvider::class);
         $this->reviewRepository          = $this->createMock(CodeReviewRepository::class);
         $this->timelineViewModelProvider = $this->createMock(ReviewTimelineViewModelProvider::class);
-        $this->provider                  = new ReviewsViewModelProvider($this->userProvider, $this->reviewRepository, $this->timelineViewModelProvider);
+        $this->provider                  = new ReviewsViewModelProvider(
+            $this->userProvider,
+            $this->reviewRepository,
+            $this->timelineViewModelProvider
+        );
     }
 
     public function testGetSearchReviewsViewModel(): void
