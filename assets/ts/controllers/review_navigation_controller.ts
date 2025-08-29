@@ -3,13 +3,13 @@ import axios from 'axios';
 import DataSet from '../lib/DataSet';
 import Elements from '../lib/Elements';
 import Events from '../lib/Events';
-import ReviewFileTreeController from './review_file_tree_controller';
+import type ReviewFileTreeController from './review_file_tree_controller';
 
 export default class extends Controller<HTMLElement> {
     public static values                     = {reviewId: Number};
     public static targets                    = ['reviewFileTree'];
-    private isNavigating: boolean            = false;
-    private reviewId: number                 = 0;
+    private isNavigating                     = false;
+    private reviewId                         = 0;
     declare private readonly reviewFileTreeTarget: HTMLElement;
     private navigationAbort: AbortController = new AbortController;
 
@@ -30,7 +30,7 @@ export default class extends Controller<HTMLElement> {
         Events.stop(event);
 
         const controller = this.getFileTreeController();
-        const file = controller.findNextFile(next, unseen);
+        const file       = controller.findNextFile(next, unseen);
         if (file === null) {
             return;
         }
@@ -49,7 +49,7 @@ export default class extends Controller<HTMLElement> {
             .then((response) => {
                 controller.selectFile(file);
                 history.pushState({reviewId: this.reviewId, filePath: file.dataset.reviewFilePath}, '', String(file.getAttribute('href')))
-                document.querySelector('[data-role~="file-diff-review"]')?.replaceWith(Elements.create(response.data));
+                document.querySelector('[data-role~="file-diff-review"]')?.replaceWith(Elements.create(response.data as string));
             })
             .finally(() => {
                 this.isNavigating = false;
@@ -57,13 +57,13 @@ export default class extends Controller<HTMLElement> {
     }
 
     public onBackTrack(event: PopStateEvent): void {
-        const state = <{reviewId: number, filePath: string} | null>event.state;
+        const state = event.state as {reviewId: number, filePath: string} | null;
         if (state === null) {
             return;
         }
 
         const controller = this.getFileTreeController();
-        const file = controller.findFile(state.filePath);
+        const file       = controller.findFile(state.filePath);
         if (file === null) {
             console.info('Unable to find file for filepath', state);
             return;
@@ -77,14 +77,14 @@ export default class extends Controller<HTMLElement> {
         })
             .then((response) => {
                 controller.selectFile(file);
-                document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data));
+                document.querySelector('[data-role="file-diff-review"]')?.replaceWith(Elements.create(response.data as string));
             });
     }
 
     private getFileTreeController(): ReviewFileTreeController {
-        return <ReviewFileTreeController>this.application.getControllerForElementAndIdentifier(
+        return this.application.getControllerForElementAndIdentifier(
             this.reviewFileTreeTarget,
             'review-file-tree'
-        );
+        ) as ReviewFileTreeController;
     }
 }

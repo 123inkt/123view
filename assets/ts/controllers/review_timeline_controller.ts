@@ -1,8 +1,8 @@
 import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller<HTMLElement> {
-    private offsetTop: number = 0;
-    private width: number     = 0;
+    private offsetTop = 0;
+    private width     = 0;
 
     public connect(): void {
         this.offsetTop = this.element.offsetTop;

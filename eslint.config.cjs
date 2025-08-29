@@ -7,6 +7,7 @@ module.exports = [
         rules: {
             ...love.rules,
             "no-alert": ["off"],
+            "no-console": ["off"],
             "no-multi-spaces": ["off"],
             "no-return-assign": ["off"],
             "@typescript-eslint/no-confusing-void-expression": ["error", {"ignoreArrowShorthand": true}],
@@ -25,6 +26,8 @@ module.exports = [
             "@typescript-eslint/prefer-destructuring": ["off"],
             "@typescript-eslint/no-empty-function": ["off"],
             "@typescript-eslint/no-unnecessary-condition": ["off"],
+            "@typescript-eslint/no-floating-promises": ["off"],
+            "@typescript-eslint/use-unknown-in-catch-callback-variable": ["off"],
         },
     },
 ]
