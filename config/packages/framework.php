@@ -10,4 +10,5 @@ return static function (FrameworkConfig $framework): void {
     $framework->phpErrors()->log()->throw(true);
     $framework->handleAllThrowables(true);
     $framework->annotations()->enabled(false);
+    $framework->propertyInfo()->withConstructorExtractor(true);
 };

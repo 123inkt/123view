@@ -7,5 +7,5 @@ use Symfony\Config\WebProfilerConfig;
 return static function (WebProfilerConfig $profiler, FrameworkConfig $framework): void {
     $profiler->toolbar()->enabled(true);
     $profiler->interceptRedirects(false);
-    $framework->profiler()->onlyExceptions(false);
+    $framework->profiler()->collectSerializerData(true)->onlyExceptions(false);
 };
