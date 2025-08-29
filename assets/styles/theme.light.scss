@@ -15,8 +15,8 @@
     --review-diff-spacer-hover-fg-color: #666666;
     --review-diff-line-fg-color: #0c0c0d;
     --review-diff-gutter-border-color: #cccccc;
-    --review-diff-gutter-fg-color: rgba(0, 0, 0, 0.3);
-    --review-diff-gutter-emphasize-fg-color: rgba(0, 0, 0, 0.3);
+    --review-diff-gutter-fg-color: rgb(0, 0, 0, 0.3);
+    --review-diff-gutter-emphasize-fg-color: rgb(0, 0, 0, 0.3);
     --review-diff-add-comment-bg-color: #fffee0;
     --review-diff-add-comment-fg-color: #ff008c;
     --review-diff-line-added-bg-color: #eaffea;
@@ -32,16 +32,16 @@
 }
 
 [data-bs-theme="light"] .bg-contrast {
-    --bs-navbar-color: rgba(255, 255, 255, 0.55);
-    --bs-navbar-hover-color: rgba(255, 255, 255, 0.75);
-    --bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
+    --bs-navbar-color: rgb(255, 255, 255, 0.55);
+    --bs-navbar-hover-color: rgb(255, 255, 255, 0.75);
+    --bs-navbar-disabled-color: rgb(255, 255, 255, 0.25);
     --bs-navbar-active-color: #ffffff;
     --bs-navbar-brand-color: #ffffff;
     --bs-navbar-brand-hover-color: #ffffff;
     --bs-bg-opacity: 1;
-    --bs-secondary-color: rgba(255, 255, 255, 0.55);
+    --bs-secondary-color: rgb(255, 255, 255, 0.55);
 
-    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+    background-color: rgb(var(--bs-dark-rgb), var(--bs-bg-opacity));
 
     .form-control {
         --bs-body-bg: #212529;
