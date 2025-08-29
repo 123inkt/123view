@@ -86,7 +86,7 @@
         "symfony/twig-bundle": "^7.2",
         "symfony/validator": "^7.2",
         "symfony/webhook": "^7.2",
-        "symfony/webpack-encore-bundle": "^2.2",
+        "symfony/webpack-encore-bundle": "^2.3",
         "symfony/yaml": "^7.2",
         "thenetworg/oauth2-azure": "^2.2",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
@@ -174,7 +174,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "7.2.*"
+            "require": "7.3.*"
         }
     }
 }

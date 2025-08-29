@@ -7,12 +7,12 @@ use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use DR\Review\Service\User\UserService;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
@@ -25,7 +25,7 @@ class RevisionViewModelProvider
         private readonly RevisionVisibilityService $visibilityService,
         private readonly RevisionFileRepository $revisionFileRepository,
         private readonly FormFactoryInterface $formFactory,
-        private readonly User $user,
+        private readonly UserService $userService,
     ) {
     }
 
@@ -44,7 +44,7 @@ class RevisionViewModelProvider
      */
     public function getRevisionViewModel(CodeReview $review, array $revisions): ReviewRevisionViewModel
     {
-        $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->user);
+        $visibilities = $this->visibilityService->getRevisionVisibilities($review, $revisions, $this->userService->getCurrentUser());
         $fileChanges  = $this->revisionFileRepository->getFileChanges($revisions);
 
         if ($review->getType() === CodeReviewType::COMMITS) {

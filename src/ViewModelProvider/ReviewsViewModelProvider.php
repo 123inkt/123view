@@ -5,7 +5,6 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
@@ -15,6 +14,7 @@ use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
+use DR\Review\Service\User\UserService;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 
@@ -30,7 +30,7 @@ class ReviewsViewModelProvider
     ];
 
     public function __construct(
-        private readonly User $user,
+        private readonly UserService $userService,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider
     ) {
@@ -77,7 +77,7 @@ class ReviewsViewModelProvider
             $paginatorViewModel,
             $request->getSearchQuery(),
             $request->getOrderBy(),
-            $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->user, self::FEED_EVENTS, $repository)
+            $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->userService->getCurrentUser(), self::FEED_EVENTS, $repository)
         );
     }
 }
