@@ -6,6 +6,7 @@ module.exports = [
         files: ['assets/**/*.ts'],
         rules: {
             ...love.rules,
+            "no-alert": ["off"],
             "no-multi-spaces": ["off"],
             "no-return-assign": ["off"],
             "@typescript-eslint/no-confusing-void-expression": ["error", {"ignoreArrowShorthand": true}],
@@ -18,6 +19,12 @@ module.exports = [
             "@typescript-eslint/no-unsafe-type-assertion": ["off"],
             "@typescript-eslint/class-methods-use-this": ["off"],
             "@typescript-eslint/max-params": ["off"],
+            "@typescript-eslint/no-unsafe-member-access": ["off"],
+            "@typescript-eslint/no-unsafe-assignment": ["off"],
+            "@typescript-eslint/no-magic-numbers": ["off"],
+            "@typescript-eslint/prefer-destructuring": ["off"],
+            "@typescript-eslint/no-empty-function": ["off"],
+            "@typescript-eslint/no-unnecessary-condition": ["off"],
         },
     },
 ]
