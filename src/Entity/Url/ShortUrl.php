@@ -8,7 +8,7 @@ use DR\Review\Repository\Url\ShortUrlRepository;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Validator\Constraints as Constraint;
 
-#[ORM\Entity(repositoryClass: ShortUrlRepository::class)]
+#[ORM\Entity(ShortUrlRepository::class)]
 #[ORM\UniqueConstraint('UK_SHORT_KEY', ['shortKey'])]
 class ShortUrl
 {
@@ -17,20 +17,19 @@ class ShortUrl
     #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 50, unique: true)]
+    #[ORM\Column(length: 50, unique: true)]
     #[Constraint\NotBlank]
     #[Constraint\Length(min: 1, max: 50)]
     #[Constraint\Regex('/^[A-Za-z0-9_.\+\-]+$/', message: 'short_url.short_key.invalid_characters')]
     private string $shortKey;
 
-    #[ORM\Column(type: 'string', length: 2000)]
+    #[ORM\Column(length: 2000)]
     #[Constraint\NotBlank]
     #[Constraint\Length(max: 2000)]
     private UriInterface $originalUrl;
 
     #[ORM\Column]
     private int $createTimestamp;
-
 
     public function setId(int $id): self
     {
