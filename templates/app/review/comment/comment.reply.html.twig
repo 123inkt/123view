@@ -16,27 +16,41 @@
                 <span class="badge rounded-pill text-bg-success">{{ ('tag.' ~ reply.tag.value)|trans }}</span>
             {%- endif -%}
         {%- endif -%}
-        {% if reply.user == app.user %}
-            <span class="comment__edit">
-                {# edit reply #}
-                <a href="#"
-                   class="ms-1 text-decoration-none"
-                   {{ stimulus_action('comment-thread', 'editReplyComment', 'click') }}
-                   data-reply-id="{{ reply.id }}"
-                   title="{{ 'edit.comment'|trans }}">
-                    <i class="bi bi-pencil-fill"></i>
-                </a>
-                {# delete reply  #}
-                <a href="#"
-                   class="ms-1 text-decoration-none"
-                   {{ stimulus_action('comment-thread', 'deleteReplyComment', 'click') }}
-                   data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\DeleteCommentReplyController', {id: reply.id}) }}"
-                   data-confirm-message="{{ 'confirm.delete.reply'|trans }}"
-                   title="{{ 'delete.comment'|trans }}">
-                    <i class="bi bi-trash-fill text-danger"></i>
-                </a>
-            </span>
-        {% endif %}
+        <span>
+            {# copy link to clipboard #}
+            <a href="#"
+               class="ms-1 text-decoration-none comment__action-button"
+               data-class-after-copy="ms-1 text-decoration-none comment__action-button active"
+               data-content="{{ comment_reply_url(reply, true) }}#focus:reply:{{ reply.id }}"
+               title="{{ 'share.comment.link'|trans }}"
+                    {{ stimulus_controller('component--copy-to-clipboard') }}
+                    {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
+            >
+                <i class="bi bi-link-45deg"
+                   data-class-after-copy="bi bi-check-lg"
+                   data-role="icon"
+                ></i>
+            </a>
+            {% if reply.user == app.user %}
+                <span class="comment__edit">
+                    {# edit reply #}
+                    <a href="#" class="ms-1 text-decoration-none"
+                            {{ stimulus_action('comment-thread', 'editReplyComment', 'click') }}
+                       data-reply-id="{{ reply.id }}" title="{{ 'edit.comment'|trans }}">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    {# delete reply  #}
+                    <a href="#"
+                       class="ms-1 text-decoration-none"
+                            {{ stimulus_action('comment-thread', 'deleteReplyComment', 'click') }}
+                       data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\DeleteCommentReplyController', {id: reply.id}) }}"
+                       data-confirm-message="{{ 'confirm.delete.reply'|trans }}"
+                       title="{{ 'delete.comment'|trans }}">
+                        <i class="bi bi-trash-fill text-danger"></i>
+                    </a>
+                </span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="comment__message comment__markdown">
