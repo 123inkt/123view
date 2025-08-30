@@ -1,9 +1,9 @@
 {% types
-    comment: Comment
-    detached: bool|null
-    visible: bool
-    editCommentForm: FormView|null
-    replyCommentForm: FormView|null
+    comment: 'Comment',
+    detached: 'bool|null',
+    visible: 'bool',
+    editCommentForm: 'FormView|null',
+    replyCommentForm: 'FormView|null',
 %}
 
 <div class="comment__comment-thread
@@ -41,23 +41,36 @@
                 {%- endif -%}
             {%- endif -%}
 
-            {% if comment.user == app.user %}
-                <span class="comment__edit">
-                    {# edit comment #}
-                    <a href="#" class="ms-1 text-decoration-none comment__action-button"
-                            {{ stimulus_action('comment-thread', 'editComment', 'click') }}
-                       title="{{ 'edit.comment'|trans }}">
-                        <i class="bi bi-pencil-fill"></i>
-                    </a>
+            <span>
+                <a href="#" class="ms-1 text-decoration-none comment__action-button"
+                   title="Share link to comment"
+                        {{ stimulus_controller('component--copy-to-clipboard') }}
+                        {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
+                   data-class-before-copy="ms-1 text-decoration-none comment__action-button"
+                   data-class-after-copy="ms-1 text-decoration-none comment__action-button"
+                   data-content="{{ review.title }}"
+                >
+                    <i class="bi bi-link-45deg"></i>
+                </a>
 
-                    {# delete comment #}
-                    <a href="#" class="text-decoration-none comment__action-button"
-                            {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
-                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
-                        <i class="bi bi-trash-fill text-danger"></i>
-                    </a>
-                </span>
-            {% endif %}
+                {% if comment.user == app.user %}
+                    <span class="comment__edit">
+                        {# edit comment #}
+                        <a href="#" class="text-decoration-none comment__action-button"
+                                {{ stimulus_action('comment-thread', 'editComment', 'click') }}
+                           title="{{ 'edit.comment'|trans }}">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+
+                        {# delete comment #}
+                        <a href="#" class="text-decoration-none comment__action-button"
+                                {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
+                           data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
+                            <i class="bi bi-trash-fill text-danger"></i>
+                        </a>
+                    </span>
+                {% endif %}
+            </span>
 
             <span class="comment__state float-end">
                 {% if comment.state == 'open' %}
@@ -71,7 +84,7 @@
                 {% endif %}
 
                 <a href="#"
-                   {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
+                        {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
                    data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
                    data-state="{{ state }}"
                    title="{{ title }}">{{ label }}</a>
