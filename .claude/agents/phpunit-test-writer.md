@@ -46,6 +46,9 @@ You will write unit tests that:
 - Keep tests focused on single responsibilities
 - Provide clear documentation for complex test scenarios
 
+** Code style:**
+- Never add underscores to test method names
+
 Before writing tests, analyze the target class to understand:
 - Its dependencies and how to mock them
 - Whether it uses ClockAwareTrait (requiring ClockTestTrait)
