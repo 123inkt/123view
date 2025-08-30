@@ -16,7 +16,7 @@
         <div class="revisions">
             {%- if commit.review != null -%}
                 <a class="subjectLine"
-                   href="{{ app_absolute_url ~ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: commit.review}) }}"
+                   href="{{ url('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: commit.review}) }}"
                    target="review.{{ commit.review.id }}"
                 >CR-{{ commit.review.projectId }}</a>
             {%- endif %}
