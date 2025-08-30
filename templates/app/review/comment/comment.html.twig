@@ -17,7 +17,7 @@
         {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
         {{ stimulus_controller('comment-thread') }}
 >
-    <div class="comment__comment">
+    <div class="comment__comment" data-comment-focus="{{ comment.id }}">
         {# detached comments #}
         {% if detached is defined and detached %}
             <div class="comment__detached-comment">

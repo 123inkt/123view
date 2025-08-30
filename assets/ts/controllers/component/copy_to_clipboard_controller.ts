@@ -24,7 +24,9 @@ import DataSet from '../../lib/DataSet';
  * </code>
  */
 export default class extends Controller<HTMLButtonElement> {
-    public onClick(): void {
+    public onClick(event: Event): void {
+        event.preventDefault();
+
         const elementClassBefore = this.element.getAttribute('class') ?? '';
         this.element.className = DataSet.string(this.element, 'classAfterCopy');
 

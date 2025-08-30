@@ -9,28 +9,32 @@ export default class extends Controller {
     }
 
     private handleHash(hash: string): void {
-        const target = this.findTarget(hash);
-        if (target !== null) {
-            target.scrollIntoView({behavior: 'smooth', block: 'center'});
+        const {target, highlight} = this.findTarget(hash);
+        if (target === null) {
+            return;
+        }
+        target.scrollIntoView({behavior: 'smooth', block: 'center'});
+        if (highlight) {
+            target.classList.add('highlighted');
         }
     }
 
-    private findTarget(hash: string): Element | null {
+    private findTarget(hash: string): {target: Element | null, highlight: boolean} {
         let matches = /^#focus:comment:(\d+)$/.exec(hash);
         if (matches !== null) {
-            return this.element.querySelector(`[data-comment-id="${matches[1]}"]`);
+            return {target: this.element.querySelector(`[data-comment-focus="${matches[1]}"]`), highlight: true};
         }
 
         matches = /^#focus:reply:(\d+)$/.exec(hash);
         if (matches !== null) {
-            return this.element.querySelector(`[data-reply-id="${matches[1]}"]`);
+            return {target: this.element.querySelector(`[data-reply-id="${matches[1]}"]`), highlight: true};
         }
 
         matches = /^#focus:line:(\d+)$/.exec(hash);
         if (matches !== null) {
-            return this.element.querySelector(`[data-line="${matches[1]}"]`);
+            return {target: this.element.querySelector(`[data-line="${matches[1]}"]`), highlight: false};
         }
 
-        return null;
+        return {target: null, highlight: false};
     }
 }
