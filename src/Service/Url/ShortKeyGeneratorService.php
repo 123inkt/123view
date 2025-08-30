@@ -7,20 +7,17 @@ use DR\Review\Repository\Url\ShortUrlRepository;
 use RuntimeException;
 use Throwable;
 
-class ShortKeyGeneratorService
+readonly class ShortKeyGeneratorService
 {
     private const CHARACTERS     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.+-';
     private const MIN_KEY_LENGTH = 4;
 
-    public function __construct(
-        private readonly ShortUrlRepository $repository,
-        private readonly int $maxAttempts = 50
-    ) {
+    public function __construct(private ShortUrlRepository $repository, private int $maxAttempts = 50)
+    {
     }
 
     /**
      * Generate a unique short key by progressively increasing length until unique key is found
-     * 
      * @throws Throwable
      */
     public function generateUniqueShortKey(): string
@@ -41,7 +38,6 @@ class ShortKeyGeneratorService
 
     /**
      * Generate a random key of specified length using allowed characters
-     * 
      * @throws Throwable
      */
     public function generateRandomKey(int $length): string
