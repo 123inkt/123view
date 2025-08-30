@@ -5,7 +5,7 @@ namespace DR\Review\Service\Url;
 
 use DR\Review\Entity\Url\ShortUrl;
 use DR\Review\Repository\Url\ShortUrlRepository;
-use Psr\Http\Message\UriInterface;
+use League\Uri\Contracts\UriInterface;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Throwable;
 

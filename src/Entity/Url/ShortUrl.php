@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace DR\Review\Entity\Url;
 
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\Doctrine\Type\UriType;
 use DR\Review\Repository\Url\ShortUrlRepository;
-use Psr\Http\Message\UriInterface;
+use League\Uri\Contracts\UriInterface;
 use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ORM\Entity(ShortUrlRepository::class)]
@@ -23,7 +24,7 @@ class ShortUrl
     #[Constraint\Regex('/^[A-Za-z0-9_.\+\-]+$/', message: 'short_url.short_key.invalid_characters')]
     private string $shortKey;
 
-    #[ORM\Column(length: 2000)]
+    #[ORM\Column(type: UriType::TYPE, length: 2000)]
     #[Constraint\NotBlank]
     #[Constraint\Length(max: 2000)]
     private UriInterface $originalUrl;

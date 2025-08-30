@@ -5,7 +5,9 @@ namespace DR\Review\Controller\App\Project;
 
 use Doctrine\DBAL\Exception;
 use DR\Review\Controller\AbstractController;
+use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\Mail\CommentMailService;
 use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -16,7 +18,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectsController extends AbstractController
 {
-    public function __construct(private readonly ProjectsViewModelProvider $viewModelProvider, private readonly TranslatorInterface $translator)
+    public function __construct(
+        private readonly ProjectsViewModelProvider $viewModelProvider,
+        private readonly TranslatorInterface $translator,
+        private readonly CommentRepository $commentRepository,
+        private readonly CommentMailService $mailService
+    )
     {
     }
 
@@ -29,6 +36,9 @@ class ProjectsController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(Request $request): array
     {
+        $comment = $this->commentRepository->find(2605);
+        $this->mailService->sendNewCommentMail($comment->getReview(), $comment);
+
         return [
             'page_title'    => $this->translator->trans('projects'),
             'projectsModel' => $this->viewModelProvider->getProjectsViewModel(trim($request->query->get('search', '')))

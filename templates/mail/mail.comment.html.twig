@@ -11,7 +11,7 @@
     {# mail title #}
     {{- commentModel.headingTitle ~ ' ' -}}
     <a class="subjectLine" href="{{ short_url('DR\\Review\\Controller\\App\\Review\\ReviewController',
-        {review, filePath: comment.lineReference.filePath}
+        {review, filePath: comment.filePath}
     )}}"
     >CR-{{ review.projectId }} - {{ review.title }}</a>
     <br><br>

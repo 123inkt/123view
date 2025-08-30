@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Url;
 
 use DR\Review\Controller\App\Url\ShortUrlController;
-use League\Uri\Http;
+use League\Uri\Uri;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
 
@@ -29,7 +29,7 @@ readonly class ShortUrlGenerator
         $originalUrl = $this->urlGenerator->generate($name, $parameters, $referenceType);
 
         // Create shortened URL entity
-        $shortUrl = $this->shortUrlCreationService->createShortUrl(Http::new($originalUrl));
+        $shortUrl = $this->shortUrlCreationService->createShortUrl(Uri::new($originalUrl));
 
         // Generate and return the short URL pointing to the ShortUrlController
         return $this->urlGenerator->generate(ShortUrlController::class, ['shortKey' => $shortUrl->getShortKey()], $referenceType);

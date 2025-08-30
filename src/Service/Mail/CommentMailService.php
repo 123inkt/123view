@@ -41,7 +41,7 @@ class CommentMailService implements LoggerAwareInterface
             $recipients = $this->recipientService->getUsersForReview($review);
             $recipients = array_merge($recipients, $this->recipientService->getUserForComment($comment));
         }
-        $recipients = Arrays::remove(Arrays::unique($recipients), Assert::notNull($comment->getUser()));
+        $recipients = Arrays::unique($recipients);
 
         $subject = $this->translator->trans(
             'mail.new.comment.subject',
@@ -57,9 +57,9 @@ class CommentMailService implements LoggerAwareInterface
 
         /** @var User $recipient */
         foreach ($recipients as $recipient) {
-            if ($recipient->getSetting()->isMailCommentAdded() === false) {
-                continue;
-            }
+            //if ($recipient->getSetting()->isMailCommentAdded() === false) {
+            //    continue;
+            //}
 
             $email->addBcc(new Address($recipient->getEmail(), $recipient->getName()));
             $this->logger?->info(sprintf('Sending mail to %s for comment %d.', $recipient->getEmail(), $comment->getId()));

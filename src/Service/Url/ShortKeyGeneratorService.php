@@ -9,7 +9,7 @@ use Throwable;
 
 readonly class ShortKeyGeneratorService
 {
-    private const CHARACTERS     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.+-';
+    private const CHARACTERS     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-';
     private const MIN_KEY_LENGTH = 4;
 
     public function __construct(private ShortUrlRepository $repository, private int $maxAttempts = 50)
