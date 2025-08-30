@@ -43,6 +43,18 @@
     }
 }
 
+.comment__comment.highlighted,
+.comment__reply.highlighted {
+    background: var(--bs-warning-bg-subtle);
+    border-left: 4px solid var(--bs-warning);
+    transition: background-color 0.3s ease, border-left 0.3s ease;
+
+    &.comment__state_resolved {
+        background: var(--bs-success-bg-subtle);
+        border-left: 4px solid var(--bs-success);
+    }
+}
+
 .diff-side-by-side .comment__reply {
     max-width: calc((100vw - var(--review-sidebar-width) - var(--review-sidebar-gap)) / 2 - 35px);
 }
@@ -100,6 +112,12 @@
     line-height: 20px;
     text-align: center;
     width: 20px;
+
+    &.active {
+        color: #ffffff;
+        background: var(--bs-success);
+        border-radius: 5px;
+    }
 }
 
 .comment__reaction-button {

@@ -1,8 +1,10 @@
-{# comment:          Comment #}
-{# detached:         bool|null #}
-{# visible:          bool #}
-{# editCommentForm:  FormView|null #}
-{# replyCommentform: FormView|null #}
+{% types
+    comment: 'Comment',
+    detached: 'bool|null',
+    visible: 'bool',
+    editCommentForm: 'FormView|null',
+    replyCommentForm: 'FormView|null',
+%}
 
 <div class="comment__comment-thread
     {%- if comment.state == 'resolved' %} comment__state_resolved{% endif -%}
@@ -15,7 +17,7 @@
         {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
         {{ stimulus_controller('comment-thread') }}
 >
-    <div class="comment__comment">
+    <div class="comment__comment" data-comment-focus="{{ comment.id }}">
         {# detached comments #}
         {% if detached is defined and detached %}
             <div class="comment__detached-comment">
@@ -39,23 +41,40 @@
                 {%- endif -%}
             {%- endif -%}
 
-            {% if comment.user == app.user %}
-                <span class="comment__edit">
-                    {# edit comment #}
-                    <a href="#" class="ms-1 text-decoration-none comment__action-button"
-                            {{ stimulus_action('comment-thread', 'editComment', 'click') }}
-                       title="{{ 'edit.comment'|trans }}">
-                        <i class="bi bi-pencil-fill"></i>
-                    </a>
+            <span>
+                {# copy link to clipboard #}
+                <a href="#"
+                   class="ms-1 text-decoration-none comment__action-button"
+                   data-class-after-copy="ms-1 text-decoration-none comment__action-button active"
+                   data-content="{{ comment_url(comment, true) }}#focus:comment:{{ comment.id }}"
+                   title="{{ 'share.comment.link'|trans }}"
+                        {{ stimulus_controller('component--copy-to-clipboard') }}
+                        {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
+                >
+                    <i class="bi bi-link-45deg"
+                       data-class-after-copy="bi bi-check-lg"
+                       data-role="icon"
+                    ></i>
+                </a>
 
-                    {# delete comment #}
-                    <a href="#" class="text-decoration-none comment__action-button"
-                            {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
-                       data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
-                        <i class="bi bi-trash-fill text-danger"></i>
-                    </a>
-                </span>
-            {% endif %}
+                {% if comment.user == app.user %}
+                    <span class="comment__edit">
+                        {# edit comment #}
+                        <a href="#" class="text-decoration-none comment__action-button"
+                                {{ stimulus_action('comment-thread', 'editComment', 'click') }}
+                           title="{{ 'edit.comment'|trans }}">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+
+                        {# delete comment #}
+                        <a href="#" class="text-decoration-none comment__action-button"
+                                {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
+                           data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
+                            <i class="bi bi-trash-fill text-danger"></i>
+                        </a>
+                    </span>
+                {% endif %}
+            </span>
 
             <span class="comment__state float-end">
                 {% if comment.state == 'open' %}
@@ -69,7 +88,7 @@
                 {% endif %}
 
                 <a href="#"
-                   {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
+                        {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
                    data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
                    data-state="{{ state }}"
                    title="{{ title }}">{{ label }}</a>

@@ -1,6 +1,6 @@
 {# reviewSummaryViewModel: ReviewSummaryViewModel #}
 
-<div class="review-summary__overview">
+<div class="review-summary__overview" {{ stimulus_controller('scroll-positioner') }}>
     {%- include 'app/review/review.summary.code-issues.html.twig' with {inspectionIssueViewModel: reviewSummaryViewModel.reportViewModel} -%}
     {%- include 'app/review/review.summary.timeline.html.twig' with {timelineViewModel: reviewSummaryViewModel.timelineViewModel} -%}
     <div class="mt-4"></div>
