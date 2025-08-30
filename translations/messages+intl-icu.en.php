@@ -296,6 +296,7 @@ return [
     'send.type.mail'                              => 'Mail only',
     'settings'                                    => 'Settings',
     'settings.save.successfully'                  => 'Settings successfully saved',
+    'share.comment.link'                          => 'Copy the link to the comment to clipboard',
     'show'                                        => 'show',
     'show.all.revisions'                          => 'Show all revisions',
     'sign.in'                                     => 'Sign in',

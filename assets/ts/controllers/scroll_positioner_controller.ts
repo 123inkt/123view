@@ -11,7 +11,7 @@ export default class extends Controller {
     private handleHash(hash: string): void {
         const target = this.findTarget(hash);
         if (target !== null) {
-            target.scrollIntoView({block: 'center'});
+            target.scrollIntoView({behavior: 'smooth', block: 'center'});
         }
     }
 

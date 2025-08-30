@@ -42,15 +42,18 @@
             {%- endif -%}
 
             <span>
-                <a href="#" class="ms-1 text-decoration-none comment__action-button"
-                   title="Share link to comment"
+                <a href="#"
+                   class="ms-1 text-decoration-none comment__action-button"
+                   data-class-after-copy="ms-1 text-decoration-none comment__action-button active"
+                   data-content="{{ comment_url(comment, true) }}#focus:comment:{{ comment.id }}"
+                   title="{{ 'share.comment.link'|trans }}"
                         {{ stimulus_controller('component--copy-to-clipboard') }}
                         {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
-                   data-class-before-copy="ms-1 text-decoration-none comment__action-button"
-                   data-class-after-copy="ms-1 text-decoration-none comment__action-button"
-                   data-content="{{ review.title }}"
                 >
-                    <i class="bi bi-link-45deg"></i>
+                    <i class="bi bi-link-45deg"
+                       data-class-after-copy="bi bi-check-lg"
+                       data-role="icon"
+                    ></i>
                 </a>
 
                 {% if comment.user == app.user %}

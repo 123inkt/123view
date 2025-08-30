@@ -100,6 +100,12 @@
     line-height: 20px;
     text-align: center;
     width: 20px;
+
+    &.active {
+        color: #ffffff;
+        background: var(--bs-success);
+        border-radius: 5px;
+    }
 }
 
 .comment__reaction-button {
