@@ -23,6 +23,11 @@ readonly class ShortUrlCreationService
      */
     public function createShortUrl(UriInterface $uri): ShortUrl
     {
+        $shortUrl = $this->repository->findOneBy(['originalUrl' => (string)$uri]);
+        if ($shortUrl !== null) {
+            return $shortUrl;
+        }
+
         $shortKey = $this->keyGenerator->generateUniqueShortKey();
 
         $shortUrl = new ShortUrl();
