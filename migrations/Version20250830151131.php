@@ -21,7 +21,7 @@ final class Version20250830151131 extends AbstractMigration
     {
         $this->addSql('CREATE TABLE short_url (
             id INT AUTO_INCREMENT NOT NULL,
-            short_key VARCHAR(50) NOT NULL,
+            short_key VARCHAR(50) NOT NULL COLLATE utf8mb4_bin,
             original_url VARCHAR(2000) NOT NULL,
             create_timestamp INT NOT NULL,
             UNIQUE INDEX UK_SHORT_KEY (short_key),
