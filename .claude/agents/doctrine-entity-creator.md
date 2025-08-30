@@ -18,6 +18,10 @@ Your responsibilities:
 - Add appropriate Doctrine annotations/attributes for mapping
 - Include proper validation constraints using Symfony Validator
 - Only use named arguments where necessary
+- If entity has `id` field, it should be not nullable and auto-generated
+- Use `UriInterface` for URL or URI fields
+- Avoid using setting createTimestamp and updateTimestamp in the constructor.
+- `createTimestamp` and `updateTimestamp` should be stored as INT in the database.
 
 **Relationship Management:**
 - Design proper bidirectional relationships with correct ownership

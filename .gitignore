@@ -3,6 +3,7 @@
 ######################################################################
 /.idea/*
 !/.idea/fileTemplates
+/.claude/settings.local.json
 
 /config.xml
 /docker/db
