@@ -1,0 +1,41 @@
+<li class="nav-item dropdown" {{ stimulus_controller('component--dropdown-menu') }}>
+    <a class="nav-link dropdown-toggle" href="#"
+            {{ stimulus_target('component--dropdown-menu', 'button') }}
+            {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
+        Admin
+        {% set new_user_count = new_user_count() %}
+        {% if new_user_count > 0 %}
+            <span class="ms-1 badge rounded-pill bg-success"
+                  title="{{ 'users.new.user.waiting.for.approval'|trans({count: new_user_count}) }}">+{{ new_user_count }}</span>
+        {% endif %}
+    </a>
+    <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
+        <li>
+            <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\UsersController') }}">
+                {{- 'users'|trans -}}
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}">
+                {{- 'git.repositories'|trans -}}
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item"
+               href="{{ path('DR\\Review\\Controller\\App\\Admin\\Credentials\\CredentialsController') }}">
+                {{- 'repository.credentials'|trans -}}
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item"
+               href="{{ path('DR\\Review\\Controller\\App\\Admin\\Webhook\\WebhooksController') }}">
+                {{- 'webhooks'|trans -}}
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="/log-viewer/">
+                {{- 'logs'|trans -}}
+            </a>
+        </li>
+    </ul>
+</li>

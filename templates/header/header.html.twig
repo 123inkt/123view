@@ -1,0 +1,68 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-contrast">
+        <div class="container-fluid">
+            {# logo #}
+            <a class="navbar-brand" href="/">{{ app_name }}</a>
+
+            {% if is_granted('ROLE_USER') %}
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {#  projects #}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               aria-label="{{ 'projects'|trans }}"
+                               title="{{ 'projects'|trans }}"
+                               href="{{ path('DR\\Review\\Controller\\App\\Project\\ProjectsController') }}">
+                                {{- 'projects'|trans -}}
+                            </a>
+                        </li>
+                        {# breadcrumbs #}
+                        {%- if breadcrumbs is defined -%}
+                            {%- for breadcrumb in breadcrumbs -%}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a>
+                                </li>
+                            {%- endfor -%}
+                        {%- endif -%}
+                    </ul>
+
+                    <div class="navbar-nav d-flex">
+                        <ul class="navbar-nav">
+                            {# search #}
+                            {% include 'header/header-search.html.twig' %}
+                            {# admin #}
+                            {%- if is_granted('ROLE_ADMIN') -%}
+                                {%- include 'header/header-admin.html.twig' -%}
+                            {%- endif -%}
+                            {# user menu #}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserSettingController') }}">
+                                    {{- 'user.account'|trans -}}
+                                </a>
+                            </li>
+                            {# notifications #}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Notification\\RulesController') }}">
+                                    {{- 'notifications'|trans -}}
+
+                                    {%- set notification_count = rule_notification_count() -%}
+                                    {%- if notification_count > 0 -%}
+                                        <span class="ms-1 badge rounded-pill bg-primary">
+                                            {{ notification_count > 99 ? '99+' : notification_count }}
+                                        </span>
+                                    {%- endif -%}
+                                </a>
+                            </li>
+                            {# logout #}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('DR\\Review\\Controller\\Auth\\LogoutController') }}">
+                                    <i class="bi-box-arrow-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+</header>
