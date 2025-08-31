@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Twig;
 
 use Doctrine\ORM\Exception\ORMException;
-use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleNotificationRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -13,8 +13,10 @@ class RuleNotificationExtension extends AbstractExtension
 {
     private ?int $notificationCount = null;
 
-    public function __construct(private readonly ?User $user, private readonly RuleNotificationRepository $notificationRepository)
-    {
+    public function __construct(
+        private readonly UserEntityProvider $userProvider,
+        private readonly RuleNotificationRepository $notificationRepository
+    ) {
     }
 
     /**
@@ -34,10 +36,11 @@ class RuleNotificationExtension extends AbstractExtension
             return $this->notificationCount;
         }
 
-        if ($this->user === null) {
+        $user = $this->userProvider->getUser();
+        if ($user === null) {
             return $this->notificationCount = 0;
         }
 
-        return $this->notificationCount = $this->notificationRepository->getUnreadNotificationCountForUser($this->user);
+        return $this->notificationCount = $this->notificationRepository->getUnreadNotificationCountForUser($user);
     }
 }

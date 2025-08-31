@@ -11,6 +11,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\FileSeenStatusRepository;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
+use DR\Review\Service\User\UserEntityProvider;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Throwable;
@@ -22,7 +23,7 @@ class FileSeenStatusService implements LoggerAwareInterface
     public function __construct(
         private readonly LockableGitDiffTreeService $treeService,
         private readonly FileSeenStatusRepository $statusRepository,
-        private readonly ?User $user
+        private readonly UserEntityProvider $userProvider
     ) {
     }
 
@@ -76,7 +77,7 @@ class FileSeenStatusService implements LoggerAwareInterface
 
     public function getFileSeenStatus(CodeReview $review): FileSeenStatusCollection
     {
-        $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => (int)$this->user?->getId()]);
+        $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => $this->userProvider->getCurrentUser()->getId()]);
 
         return new FileSeenStatusCollection($files);
     }

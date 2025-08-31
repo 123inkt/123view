@@ -9,10 +9,11 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
+use DR\Review\Service\User\UserEntityProvider;
 
-class RevisionVisibilityService
+readonly class RevisionVisibilityService
 {
-    public function __construct(private readonly ?User $user, private readonly RevisionVisibilityRepository $visibilityRepository)
+    public function __construct(private UserEntityProvider $userProvider, private RevisionVisibilityRepository $visibilityRepository)
     {
     }
 
@@ -23,7 +24,7 @@ class RevisionVisibilityService
      */
     public function getVisibleRevisions(CodeReview $review, array $revisions): array
     {
-        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->user?->getId()]);
+        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->userProvider->getUser()?->getId()]);
         if (count($visibilities) === 0) {
             return $revisions;
         }
