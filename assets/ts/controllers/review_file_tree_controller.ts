@@ -34,7 +34,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
 
     public updateReviewFileTree(): void {
         const url      = DataSet.string(this.element, 'url');
-        const filePath = DataSet.stringOrNull(this.element, 'selectedFile');
+        const filePath = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]')?.dataset.reviewFilePath ?? null;
         this.fileTreeService.getReviewFileTree(url, filePath)
             .then(element => this.element.replaceWith(element))
             .catch(Function.empty);
