@@ -10,6 +10,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\FileSeenStatusRepository;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,17 +21,16 @@ class FileSeenStatusServiceTest extends AbstractTestCase
 {
     private LockableGitDiffTreeService&MockObject $treeService;
     private FileSeenStatusRepository&MockObject   $statusRepository;
-
-    private User                  $user;
-    private FileSeenStatusService $service;
+    private UserEntityProvider&MockObject         $userProvider;
+    private FileSeenStatusService                 $service;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->treeService      = $this->createMock(LockableGitDiffTreeService::class);
         $this->statusRepository = $this->createMock(FileSeenStatusRepository::class);
-        $this->user             = new User();
-        $this->service          = new FileSeenStatusService($this->treeService, $this->statusRepository, $this->user);
+        $this->userProvider     = $this->createMock(UserEntityProvider::class);
+        $this->service          = new FileSeenStatusService($this->treeService, $this->statusRepository, $this->userProvider);
     }
 
     public function testMarkAsSeenWithFileIsNull(): void
@@ -124,12 +124,11 @@ class FileSeenStatusServiceTest extends AbstractTestCase
 
     public function testGetFileSeenStatus(): void
     {
-        $review = new CodeReview();
-        $review->setId(123);
-        $this->user->setId(456);
-
+        $review = (new CodeReview())->setId(123);
+        $user   = (new User())->setId(456);
         $status = new FileSeenStatus();
 
+        $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn($user);
         $this->statusRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 456])

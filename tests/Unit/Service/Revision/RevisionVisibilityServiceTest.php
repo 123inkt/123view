@@ -9,6 +9,7 @@ use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class RevisionVisibilityServiceTest extends AbstractTestCase
 {
     private RevisionVisibilityRepository&MockObject $visibilityRepository;
+    private UserEntityProvider&MockObject           $userProvider;
     private RevisionVisibilityService               $service;
     private User                                    $user;
 
@@ -26,7 +28,8 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $this->user = new User();
         $this->user->setId(789);
         $this->visibilityRepository = $this->createMock(RevisionVisibilityRepository::class);
-        $this->service              = new RevisionVisibilityService($this->user, $this->visibilityRepository);
+        $this->userProvider         = $this->createMock(UserEntityProvider::class);
+        $this->service              = new RevisionVisibilityService($this->userProvider, $this->visibilityRepository);
     }
 
     public function testGetVisibleRevisionsWithoutVisibility(): void
@@ -34,7 +37,14 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $revision = new Revision();
         $review   = new CodeReview();
 
-        $this->visibilityRepository->expects($this->once())->method('findBy')->willReturn([]);
+        $this->userProvider->expects($this->once())
+            ->method('getUser')
+            ->willReturn($this->user);
+
+        $this->visibilityRepository->expects($this->once())
+            ->method('findBy')
+            ->with(['review' => null, 'user' => 789])
+            ->willReturn([]);
 
         static::assertSame([$revision], $this->service->getVisibleRevisions($review, [$revision]));
     }
@@ -56,6 +66,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibilityB = new RevisionVisibility();
         $visibilityB->setRevision($revisionB)->setVisible(false);
 
+        $this->userProvider->expects($this->once())->method('getUser')->willReturn($this->user);
         $this->visibilityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])

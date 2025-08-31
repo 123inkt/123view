@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Twig;
 
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleNotificationRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Twig\RuleNotificationExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,13 +16,15 @@ use Throwable;
 class RuleNotificationExtensionTest extends AbstractTestCase
 {
     private RuleNotificationRepository&MockObject $notificationRepository;
+    private UserEntityProvider&MockObject         $userProvider;
     private RuleNotificationExtension             $extension;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->notificationRepository = $this->createMock(RuleNotificationRepository::class);
-        $this->extension              = new RuleNotificationExtension(new User(), $this->notificationRepository);
+        $this->userProvider           = $this->createMock(UserEntityProvider::class);
+        $this->extension              = new RuleNotificationExtension($this->userProvider, $this->notificationRepository);
     }
 
     /**
@@ -29,7 +32,11 @@ class RuleNotificationExtensionTest extends AbstractTestCase
      */
     public function testGetNotificationCount(): void
     {
-        $this->notificationRepository->expects($this->once())->method('getUnreadNotificationCountForUser')->willReturn(5);
+        $user = new User();
+
+        $this->userProvider->expects($this->once())->method('getUser')->willReturn($user);
+        $this->notificationRepository->expects($this->once())->method('getUnreadNotificationCountForUser')->with($user)->willReturn(5);
+
         static::assertSame(5, $this->extension->getNotificationCount());
         static::assertSame(5, $this->extension->getNotificationCount());
     }
@@ -39,10 +46,12 @@ class RuleNotificationExtensionTest extends AbstractTestCase
      */
     public function testGetNotificationCountWithoutUser(): void
     {
-        $extension = new RuleNotificationExtension(null, $this->notificationRepository);
+        $this->userProvider->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
 
         $this->notificationRepository->expects(self::never())->method('getUnreadNotificationCountForUser');
-        static::assertSame(0, $extension->getNotificationCount());
+        static::assertSame(0, $this->extension->getNotificationCount());
     }
 
     public function testGetFunctions(): void
