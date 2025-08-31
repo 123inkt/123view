@@ -244,7 +244,7 @@ return [
     'repository.credentials.help'                 => '<a href="{url}">Manage credentials</a>',
     'repository.id'                               => 'Id',
     'repository.name.help'                        => 'Name used in urls, Allowed characters: <code>a-z, 0-9, -</code>',
-    'repository.new'                              => 'New repository',
+    'repository.add'                              => 'Add repository',
     'repository.schedule.validate_revisions'      => 'Revision validation successfully scheduled',
     'repository.successful.saved'                 => 'Repository successfully saved',
     'repository.update.interval.help'             => 'The frequency in seconds in which new revisions are automatically pulled from the remote.',
