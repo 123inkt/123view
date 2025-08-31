@@ -9,6 +9,7 @@ use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\FolderCollapseStatusRepository;
 use DR\Review\Service\CodeReview\FolderCollapseStatusService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,26 +18,25 @@ use PHPUnit\Framework\MockObject\MockObject;
 class FolderCollapseStatusServiceTest extends AbstractTestCase
 {
     private FolderCollapseStatusRepository&MockObject $statusRepository;
-    private User                                      $user;
+    private UserEntityProvider&MockObject             $userProvider;
     private FolderCollapseStatusService               $service;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->statusRepository = $this->createMock(FolderCollapseStatusRepository::class);
-        $this->user             = (new User())->setId(456);
-        $this->service          = new FolderCollapseStatusService($this->statusRepository, $this->user);
+        $this->userProvider     = $this->createMock(UserEntityProvider::class);
+        $this->service          = new FolderCollapseStatusService($this->statusRepository, $this->userProvider);
     }
 
     public function testGetFolderCollapseStatus(): void
     {
         $status = new FolderCollapseStatus();
-
+        $user   = (new User())->setId(456);
         $review = (new CodeReview())->setId(123);
-        $this->statusRepository->expects($this->once())
-            ->method('findBy')
-            ->with(['review' => 123, 'user' => 456])
-            ->willReturn([$status]);
+
+        $this->userProvider->expects($this->once())->method('getUser')->willReturn($user);
+        $this->statusRepository->expects($this->once())->method('findBy')->with(['review' => 123, 'user' => 456])->willReturn([$status]);
 
         static::assertEquals(new FolderCollapseStatusCollection([$status]), $this->service->getFolderCollapseStatus($review));
     }
