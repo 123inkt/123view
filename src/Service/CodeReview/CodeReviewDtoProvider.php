@@ -38,7 +38,12 @@ readonly class CodeReviewDtoProvider
             $review,
             $visibleRevisions,
             $request->getFilePath(),
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType)
+            new FileDiffOptions(
+                FileDiffOptions::DEFAULT_LINE_DIFF,
+                $request->getComparisonPolicy(),
+                $reviewType,
+                $request->getVisibleLines()
+            )
         );
 
         return new CodeReviewDto(
@@ -52,7 +57,8 @@ readonly class CodeReviewDtoProvider
             $request->getTab(),
             $request->getComparisonPolicy(),
             $request->getDiffMode(),
-            $request->getAction()
+            $request->getAction(),
+            $request->getVisibleLines()
         );
     }
 }

@@ -371,4 +371,5 @@ return [
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
     'show.all'                                    => 'Show all',
+    'show.context.lines'                          => 'The amount of context lines shown around changes'
 ];

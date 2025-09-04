@@ -31,7 +31,8 @@ readonly class CodeReviewDto
         public string $tab,
         public DiffComparePolicy $comparePolicy,
         public ReviewDiffModeEnum $diffMode,
-        public ?AbstractReviewAction $action
+        public ?AbstractReviewAction $action,
+        public int $visibleLines,
     ) {
     }
 }

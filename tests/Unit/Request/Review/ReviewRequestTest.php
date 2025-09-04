@@ -51,6 +51,33 @@ class ReviewRequestTest extends AbstractRequestTestCase
         static::assertSame($action, $this->validatedRequest->getAction());
     }
 
+    public function testGetVisibleLines(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        static::assertSame(6, $this->validatedRequest->getVisibleLines());
+
+        $this->request->query->set('visibleLines', '123');
+        static::assertSame(123, $this->validatedRequest->getVisibleLines());
+    }
+
+    public function testGetVisibleLinesFromSession(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        $session->expects($this->once())
+            ->method('get')
+            ->with(SessionKeys::DIFF_VISIBLE_LINES->value)
+            ->willReturn(123);
+        $session->expects($this->once())
+            ->method('set')
+            ->with(SessionKeys::DIFF_VISIBLE_LINES->value, 123);
+
+        static::assertSame(123, $this->validatedRequest->getVisibleLines());
+    }
+
     public function testGetComparePolicy(): void
     {
         $session = $this->createMock(Session::class);
@@ -116,6 +143,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
                     'filePath'         => 'string|filled',
                     'tab'              => 'string|in:revisions,overview',
                     'diff'             => 'string|in:side-by-side,unified,inline',
+                    'visibleLines'     => 'int|min:0|max:20',
                     'action'           => 'string',
                     'comparisonPolicy' => 'string|in:all,trim,ignore,ignore_empty_lines'
                 ]

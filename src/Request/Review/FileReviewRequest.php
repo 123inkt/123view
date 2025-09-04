@@ -17,6 +17,13 @@ class FileReviewRequest extends AbstractValidatedRequest
         return $this->request->query->get('filePath', '');
     }
 
+    public function getVisibleLines(): int
+    {
+        $visibleLines = $this->request->hasSession() ? $this->request->getSession()->get(SessionKeys::DIFF_VISIBLE_LINES->value) : null;
+
+        return is_numeric($visibleLines) ? (int)$visibleLines : 6;
+    }
+
     public function getComparisonPolicy(): DiffComparePolicy
     {
         $policy = $this->request->hasSession() ? $this->request->getSession()->get(SessionKeys::DIFF_COMPARISON_POLICY->value) : null;

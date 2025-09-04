@@ -71,7 +71,8 @@ class FileDiffViewModelAppenderTest extends AbstractTestCase
             'tab',
             DiffComparePolicy::ALL,
             ReviewDiffModeEnum::INLINE,
-            null
+            null,
+            6
         );
     }
 }

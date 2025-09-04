@@ -40,11 +40,12 @@ class GetFileReviewControllerTest extends AbstractControllerTestCase
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $request->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
+        $request->method('getVisibleLines')->willReturn(6);
 
         $user      = new User();
         $review    = new CodeReview();
         $file      = new DiffFile();
-        $viewModel = new FileDiffViewModel($file, ReviewDiffModeEnum::INLINE);
+        $viewModel = new FileDiffViewModel($file, ReviewDiffModeEnum::INLINE, 6);
 
         $this->expectGetUser($user);
         $this->modelProvider->expects($this->once())->method('getViewModel')
@@ -62,17 +63,18 @@ class GetFileReviewControllerTest extends AbstractControllerTestCase
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $request->method('getDiffMode')->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE);
+        $request->method('getVisibleLines')->willReturn(6);
 
         $user                 = new User();
         $review               = new CodeReview();
         $file                 = new DiffFile();
         $file->filePathBefore = 'before';
         $file->filePathAfter  = 'after';
-        $viewModel            = new FileDiffViewModel($file, ReviewDiffModeEnum::SIDE_BY_SIDE);
+        $viewModel            = new FileDiffViewModel($file, ReviewDiffModeEnum::SIDE_BY_SIDE, 6);
 
         $this->expectGetUser($user);
         $this->modelProvider->expects($this->once())->method('getViewModel')
-            ->with($review, 'filepath', DiffComparePolicy::IGNORE, ReviewDiffModeEnum::SIDE_BY_SIDE)
+            ->with($review, 'filepath', DiffComparePolicy::IGNORE, ReviewDiffModeEnum::SIDE_BY_SIDE, 6)
             ->willReturn($viewModel);
         $this->fileSeenService->expects($this->once())->method('markAsSeen')->with($review, $user, $file);
         $this->expectRender('app/review/commit/side-by-side/commit.file.html.twig', ['fileDiffViewModel' => $viewModel]);

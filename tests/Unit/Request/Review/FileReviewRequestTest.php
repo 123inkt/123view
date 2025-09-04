@@ -25,6 +25,27 @@ class FileReviewRequestTest extends AbstractRequestTestCase
         static::assertSame('foobar', $this->validatedRequest->getFilePath());
     }
 
+    public function testGetVisibleLines(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        static::assertSame(6, $this->validatedRequest->getVisibleLines());
+    }
+
+    public function testGetVisibleLinesFromSession(): void
+    {
+        $session = $this->createMock(Session::class);
+        $this->request->setSession($session);
+
+        $session->expects($this->once())
+            ->method('get')
+            ->with(SessionKeys::DIFF_VISIBLE_LINES->value)
+            ->willReturn(123);
+
+        static::assertSame(123, $this->validatedRequest->getVisibleLines());
+    }
+
     public function testGetComparePolicy(): void
     {
         $session = $this->createMock(Session::class);

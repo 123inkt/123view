@@ -79,7 +79,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
                 $review,
                 [$revision2],
                 'filepath',
-                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, CodeReviewType::COMMITS)
+                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, CodeReviewType::COMMITS, 6)
             )
             ->willReturn([$fileTree, $selectedFile]);
 
@@ -95,6 +95,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
         $request->method('getTab')->willReturn('tab');
         $request->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
         $request->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
+        $request->method('getVisibleLines')->willReturn(6);
         $request->method('getAction')->willReturn(null);
 
         return $request;
@@ -125,7 +126,8 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
             'tab',
             DiffComparePolicy::IGNORE,
             ReviewDiffModeEnum::INLINE,
-            null
+            null,
+            6
         );
     }
 }

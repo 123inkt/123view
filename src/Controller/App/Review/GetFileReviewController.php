@@ -29,7 +29,13 @@ class GetFileReviewController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(FileReviewRequest $request, #[MapEntity] CodeReview $review): Response
     {
-        $viewModel = $this->modelProvider->getViewModel($review, $request->getFilePath(), $request->getComparisonPolicy(), $request->getDiffMode());
+        $viewModel = $this->modelProvider->getViewModel(
+            $review,
+            $request->getFilePath(),
+            $request->getComparisonPolicy(),
+            $request->getDiffMode(),
+            $request->getVisibleLines()
+        );
 
         $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->selectedFile);
 

@@ -69,14 +69,14 @@ class FileReviewViewModelProviderTest extends AbstractTestCase
                 $review,
                 [$revision],
                 'filepath',
-                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, CodeReviewType::COMMITS)
+                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, CodeReviewType::COMMITS, 6)
             )
             ->willReturn([[], $file]);
         $this->fileDiffViewModelProvider->expects($this->once())->method('getFileDiffViewModel')
             ->with($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE)
             ->willReturn($viewModel);
 
-        $result = $this->provider->getViewModel($review, 'filepath', DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE);
+        $result = $this->provider->getViewModel($review, 'filepath', DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE, 6);
         static::assertSame($viewModel, $result);
     }
 }
