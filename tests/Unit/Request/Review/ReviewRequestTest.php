@@ -116,6 +116,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
                     'filePath'         => 'string|filled',
                     'tab'              => 'string|in:revisions,overview',
                     'diff'             => 'string|in:side-by-side,unified,inline',
+                    'visibleLines'     => 'int|min:0|max:20',
                     'action'           => 'string',
                     'comparisonPolicy' => 'string|in:all,trim,ignore,ignore_empty_lines'
                 ]

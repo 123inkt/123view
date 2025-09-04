@@ -52,11 +52,11 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM, visibleLines: 123);
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('diff-files-revision-123-hash-fdo-20-trim-commits')
+            ->with('diff-files-revision-123-hash-fdo-20-trim-commits-123')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
 
@@ -74,11 +74,11 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM, visibleLines: 123);
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('0f8fce26dc2afa67e942ac7fc4b10a777a95b2788d07c639242a66230c4bc21d')
+            ->with('9450af3cf2575eabc1e18a546e18dc481483b352edc02f14d7aa0e3fdd513d10')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects($this->once())->method('getDiffForBranch')
             ->with($review, [$revision], 'branch', $options)
