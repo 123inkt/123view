@@ -46,9 +46,11 @@ class ReviewRequest extends AbstractValidatedRequest
         if (is_numeric($visibleLines)) {
             $visibleLines = (int)$visibleLines;
             $this->request->getSession()->set(SessionKeys::DIFF_VISIBLE_LINES->value, $visibleLines);
+        } else {
+            $visibleLines = 6;
         }
 
-        return $visibleLines ?? 6;
+        return $visibleLines;
     }
 
     public function getComparisonPolicy(): DiffComparePolicy

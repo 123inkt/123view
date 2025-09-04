@@ -17,7 +17,7 @@ class FileReviewRequest extends AbstractValidatedRequest
         return $this->request->query->get('filePath', '');
     }
 
-    public function getVisibleLines(): ?int
+    public function getVisibleLines(): int
     {
         $visibleLines = $this->request->hasSession() ? $this->request->getSession()->get(SessionKeys::DIFF_VISIBLE_LINES->value) : null;
 
