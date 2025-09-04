@@ -34,7 +34,8 @@ readonly class FileDiffViewModelAppender implements ReviewViewModelAppenderInter
             Assert::notNull($dto->selectedFile),
             $dto->action,
             $dto->comparePolicy,
-            Assert::notNull($dto->selectedFile)->isModified() ? $dto->diffMode : ReviewDiffModeEnum::INLINE
+            Assert::notNull($dto->selectedFile)->isModified() ? $dto->diffMode : ReviewDiffModeEnum::INLINE,
+            $dto->visibleLines
         );
         $viewModel->setFileDiffViewModel($fileDiffViewModel->setRevisions($dto->visibleRevisions));
         $viewModel->setDescriptionVisible(false);

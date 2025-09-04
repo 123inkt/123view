@@ -34,9 +34,9 @@ class FileReviewViewModelProvider
         string $filepath,
         DiffComparePolicy $comparePolicy,
         ReviewDiffModeEnum $diffMode,
-        ?int $visibleLines
+        int $visibleLines
     ): FileDiffViewModel {
-        $revisions        = $this->revisionService->getRevisions($review);
+        $revisions = $this->revisionService->getRevisions($review);
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
 
         // get diff files for review
@@ -48,7 +48,14 @@ class FileReviewViewModelProvider
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $comparePolicy, $reviewType, $visibleLines)
         );
 
-        $viewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel($review, Assert::notNull($selectedFile), null, $comparePolicy, $diffMode);
+        $viewModel = $this->fileDiffViewModelProvider->getFileDiffViewModel(
+            $review,
+            Assert::notNull($selectedFile),
+            null,
+            $comparePolicy,
+            $diffMode,
+            $visibleLines
+        );
         $viewModel->setRevisions($visibleRevisions);
 
         return $viewModel;

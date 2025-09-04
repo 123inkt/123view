@@ -56,18 +56,39 @@
                 {{ stimulus_controller('component--copy-to-clipboard') }}
                 {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
                 data-content="{{ file.filePathAfter ?? file.filePathBefore }}">
-            <i class="bi bi-clipboard-check-fill"
-               data-class-after-copy="bi bi-check-lg"
-               data-role="icon"></i>
+            <i class="bi bi-clipboard-check-fill" data-class-after-copy="bi bi-check-lg" data-role="icon"></i>
         </button>
 
         <div class="float-end pe-2">
-            {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
-            {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
-            {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
+            {% set commentVisibility   = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+            {% set comparisonPolicy    = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
+            {% set currentDiffMode     = fileDiffViewModel.diffMode.value %}
+            {% set visibleContextLines = fileDiffViewModel.visibleLines %}
 
             {# whitespace management #}
             {% if file.modified %}
+                <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}
+                        title="{{ 'show.context.lines'|trans }}"
+                >
+                    <button class="btn btn-outline-primary btn-sm dropdown-toggle"
+                            {{ stimulus_target('component--dropdown-menu', 'button') }}
+                            {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}
+                    >
+                        <i class="bi bi-menu-button-fill"></i>
+                    </button>
+
+                    <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
+                        {% for i in range(0, 20) %}
+                            <li>
+                                <a class="dropdown-item {{ i == visibleContextLines ? 'active' : '' }}"
+                                   href="{{ url_query_params({visibleLines: i}) }}">
+                                     {{ i }} lines
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
                 <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
                     <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                             {{ stimulus_target('component--dropdown-menu', 'button') }}

@@ -37,7 +37,7 @@ class ReviewRequest extends AbstractValidatedRequest
         return $this->request->query->get('tab', ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
     }
 
-    public function getVisibleLines(): ?int
+    public function getVisibleLines(): int
     {
         $visibleLines = $this->request->query->get('visibleLines');
         if ($visibleLines === null && $this->request->hasSession()) {
@@ -48,7 +48,7 @@ class ReviewRequest extends AbstractValidatedRequest
             $this->request->getSession()->set(SessionKeys::DIFF_VISIBLE_LINES->value, $visibleLines);
         }
 
-        return $visibleLines;
+        return $visibleLines ?? 6;
     }
 
     public function getComparisonPolicy(): DiffComparePolicy
@@ -95,7 +95,7 @@ class ReviewRequest extends AbstractValidatedRequest
                     'tab'              => 'string|in:' . ReviewViewModel::SIDEBAR_TAB_REVISIONS . ',' . ReviewViewModel::SIDEBAR_TAB_OVERVIEW,
                     'comparisonPolicy' => 'string|in:' . implode(',', DiffComparePolicy::values()),
                     'diff'             => 'string|in:' . implode(',', ReviewDiffModeEnum::values()),
-                    'visibleLines'     => 'int|min:0',
+                    'visibleLines'     => 'int|min:0|max:20',
                     'action'           => 'string'
                 ]
             ]

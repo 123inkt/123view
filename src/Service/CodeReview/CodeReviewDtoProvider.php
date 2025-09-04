@@ -57,7 +57,8 @@ readonly class CodeReviewDtoProvider
             $request->getTab(),
             $request->getComparisonPolicy(),
             $request->getDiffMode(),
-            $request->getAction()
+            $request->getAction(),
+            $request->getVisibleLines()
         );
     }
 }
