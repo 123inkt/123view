@@ -10776,16 +10776,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-file-coverage-inspection.git",
-                "reference": "b0cc64fdfec2e361f39ee370bc23f02fb23031a9"
+                "reference": "7b45a0f22e1ae3cd1aab02fda8bd64e2b48ecca4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/b0cc64fdfec2e361f39ee370bc23f02fb23031a9",
-                "reference": "b0cc64fdfec2e361f39ee370bc23f02fb23031a9",
+                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/7b45a0f22e1ae3cd1aab02fda8bd64e2b48ecca4",
+                "reference": "7b45a0f22e1ae3cd1aab02fda8bd64e2b48ecca4",
                 "shasum": ""
             },
             "require": {
@@ -10824,9 +10824,9 @@
             "description": "Configurable phpunit file coverage inspection",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-file-coverage-inspection/issues",
-                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v3.0.1"
+                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v3.0.2"
             },
-            "time": "2025-02-21T19:49:58+00:00"
+            "time": "2025-09-10T15:19:00+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
