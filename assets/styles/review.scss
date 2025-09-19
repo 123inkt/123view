@@ -4,7 +4,7 @@
 
 .review-grid-layout {
     display: grid;
-    grid-gap: 10px var(--review-sidebar-gap);
+    gap: 10px var(--review-sidebar-gap);
     grid-template-columns: var(--review-sidebar-width) auto;
     grid-template-rows: auto 1fr;
     height: calc(100vh - 56px);

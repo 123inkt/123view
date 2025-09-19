@@ -1,12 +1,12 @@
 .review-revision--grid {
     display: grid;
-    grid-column-gap: 5px;
+    column-gap: 5px;
     grid-template-columns: auto 1fr 50px;
 }
 
 .review-revision-branch--grid {
     display: grid;
-    grid-column-gap: 5px;
+    column-gap: 5px;
     grid-template-columns: 1fr 50px;
 }
 

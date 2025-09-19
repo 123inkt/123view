@@ -1,6 +1,6 @@
 .reviews-list--grid {
     display: grid;
-    grid-column-gap: 10px;
+    column-gap: 10px;
     grid-template-columns: auto 325px;
     max-width: 1600px;
 }
