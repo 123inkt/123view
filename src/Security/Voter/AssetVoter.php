@@ -38,6 +38,10 @@ class AssetVoter extends Voter
         $hash  = Assert::notNull($this->requestStack->getCurrentRequest())->query->getString('hash');
         $asset = Assert::isInstanceOf($subject, Asset::class);
 
+        // Validate that the hash parameter is not empty before comparison
+        if ($hash === '' || $hash === null) {
+            return false;
+        }
         return hash_equals($asset->getHash(), $hash);
     }
 }
