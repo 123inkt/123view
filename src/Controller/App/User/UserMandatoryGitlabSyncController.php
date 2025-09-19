@@ -14,8 +14,7 @@ class UserMandatoryGitlabSyncController extends AbstractController
     #[Route('/app/user-gitlab-sync-mandatory', self::class, methods: ['GET'])]
     #[Template('app/user/user.gitlab.sync.mandatory.html.twig')]
     #[IsGranted(Roles::ROLE_USER)]
-    public function __invoke(): array
+    public function __invoke(): void
     {
-        return [];
     }
 }
