@@ -81,6 +81,20 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         static::assertNull($event->getResponse());
     }
 
+    public function testInvokeSkipsSyncIsNotMandatory(): void
+    {
+        $subscriber = $this->createSubscriber(true, true, false);
+        $event      = $this->createRequestEvent();
+        $user       = new User();
+
+        $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->urlGenerator->expects($this->never())->method('generate');
+
+        ($subscriber)($event);
+
+        static::assertNull($event->getResponse());
+    }
+
     public function testInvokeSkipsWhenUserHasGitlabToken(): void
     {
         $subscriber  = $this->createSubscriber();
