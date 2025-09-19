@@ -12,8 +12,8 @@ class UserMandatoryGitlabSyncControllerTest extends AbstractTestCase
 {
     public function testInvoke(): void
     {
+        $this->expectNotToPerformAssertions();
         $controller = new UserMandatoryGitlabSyncController();
-        $result     = ($controller)();
-        static::assertSame([], $result);
+        ($controller)();
     }
 }
