@@ -16,5 +16,6 @@ class UserMandatoryGitlabSyncController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(): void
     {
+        // no special logic required, template only
     }
 }
