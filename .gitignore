@@ -7,6 +7,7 @@
 /config.xml
 /docker/db
 /.eslintcache
+/.claude/settings.local.json
 
 ###> symfony/framework-bundle ###
 /.env.local
