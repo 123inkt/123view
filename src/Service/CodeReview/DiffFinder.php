@@ -32,6 +32,7 @@ class DiffFinder
 
         // filepath matched, but not the hash
         $partiallyMatchedFile = null;
+        $renameMatchedFile    = null;
 
         foreach ($files as $file) {
             if ($file->getPathname() === $filePath) {
@@ -41,9 +42,12 @@ class DiffFinder
                     return $file;
                 }
             }
+            if ($file->isRename() && $file->filePathBefore === $filePath) {
+                $renameMatchedFile = $file;
+            }
         }
 
-        return $partiallyMatchedFile;
+        return $partiallyMatchedFile ?? $renameMatchedFile;
     }
 
     /**
