@@ -43,7 +43,7 @@ readonly class MandatoryGitlabSyncSubscriber
             return;
         }
 
-        // skip if already controller is whitelisted
+        // skip if the controller is whitelisted
         $attributes = $event->getRequest()->attributes->all();
         if (in_array($attributes['_controller'] ?? '', self::ALLOWED_CONTROLLERS, true)) {
             return;
