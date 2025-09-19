@@ -28,6 +28,6 @@ class AddAssetController extends AbstractController
         // save entity
         $this->assetRepository->save($asset, true);
 
-        return new JsonResponse(['url' => $this->generateUrl(GetAssetController::class, ['id' => $asset->getId()])]);
+        return new JsonResponse(['url' => $this->generateUrl(GetAssetController::class, ['id' => $asset->getId(), 'hash' => $asset->getHash()])]);
     }
 }
