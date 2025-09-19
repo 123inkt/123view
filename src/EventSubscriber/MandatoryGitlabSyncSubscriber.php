@@ -49,6 +49,11 @@ readonly class MandatoryGitlabSyncSubscriber
             return;
         }
 
+        // skip api urls
+        if (str_starts_with($event->getRequest()->getRequestUri(), '/api')) {
+            return;
+        }
+
         // skip if sync is not configured
         if ($this->gitlabCommentSyncEnabled === false && $this->gitlabReviewerSyncEnabled === false) {
             return;

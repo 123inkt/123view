@@ -98,6 +98,20 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         static::assertNull($event->getResponse());
     }
 
+    public function testInvokeSkipsWhenInvokingApiUrl(): void
+    {
+        $subscriber = $this->createSubscriber();
+        $event      = $this->createRequestEvent(requestUri: '/api/some-endpoint');
+        $user       = new User();
+
+        $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->urlGenerator->expects($this->never())->method('generate');
+
+        ($subscriber)($event);
+
+        static::assertNull($event->getResponse());
+    }
+
     public function testInvokeRedirectsToMandatorySyncPage(): void
     {
         $subscriber  = $this->createSubscriber();
@@ -132,9 +146,9 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         );
     }
 
-    private function createRequestEvent(string $controller = 'some.controller'): RequestEvent
+    private function createRequestEvent(string $controller = 'some.controller', string $requestUri = '/app/test'): RequestEvent
     {
-        $request             = new Request();
+        $request             = new Request(server: ['REQUEST_URI' => $requestUri]);
         $request->attributes = new ParameterBag(['_controller' => $controller]);
 
         return new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
