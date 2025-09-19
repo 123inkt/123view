@@ -1,7 +1,5 @@
 # Agents.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
 123view is a Symfony-based code review and commit notification application built with PHP 8.3+ and Symfony 7.2. It provides features for creating code reviews, managing commit notifications, and integrating with version control systems.
