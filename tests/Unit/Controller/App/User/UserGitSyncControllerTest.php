@@ -43,6 +43,6 @@ class UserGitSyncControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UserGitSyncController(true);
+        return new UserGitSyncController(true, true);
     }
 }
