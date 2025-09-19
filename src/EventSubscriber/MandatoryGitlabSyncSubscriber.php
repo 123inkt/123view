@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\EventSubscriber;
 
+use DR\Review\Controller\App\User\Gitlab\UserGitlabOAuth2FinishController;
+use DR\Review\Controller\App\User\Gitlab\UserGitlabOAuth2StartController;
 use DR\Review\Controller\App\User\UserMandatoryGitlabSyncController;
+use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\User;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -16,6 +19,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[AsEventListener(KernelEvents::REQUEST)]
 readonly class MandatoryGitlabSyncSubscriber
 {
+    private const array ALLOWED_CONTROLLERS = [
+        UserGitlabOAuth2StartController::class,
+        UserGitlabOAuth2FinishController::class,
+        UserMandatoryGitlabSyncController::class,
+        LogoutController::class
+    ];
+
     public function __construct(
         private bool $gitlabCommentSyncEnabled,
         private bool $gitlabReviewerSyncEnabled,
@@ -33,9 +43,9 @@ readonly class MandatoryGitlabSyncSubscriber
             return;
         }
 
-        // skip if already on the mandatory sync page
+        // skip if already controller is whitelisted
         $attributes = $event->getRequest()->attributes->all();
-        if (isset($attributes['_controller']) && $attributes['_controller'] === UserMandatoryGitlabSyncController::class) {
+        if (in_array($attributes['_controller'] ?? '', self::ALLOWED_CONTROLLERS, true)) {
             return;
         }
 

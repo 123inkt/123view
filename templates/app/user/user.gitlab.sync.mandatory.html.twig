@@ -2,6 +2,18 @@
 
 {% block page_content %}
     <div class="mt-5 text-center">
-        {{ 'user.gitlab.sync.mandatory.text'|trans({app_name: app_name}) }}
+        <div class="alert alert-danger">
+            {{ 'user.gitlab.sync.mandatory.text'|trans({app_name: app_name}) }}
+        </div>
+
+        <div class="mt-3">
+            {{ 'git.sync.explanation'|trans }}
+        </div>
+
+        <div class="mt-3">
+            <a class="btn btn-primary" href="{{ path('DR\\Review\\Controller\\App\\User\\Gitlab\\UserGitlabOAuth2StartController') }}">
+                {{ 'git.sync.enable'|trans }}
+            </a>
+        </div>
     </div>
 {% endblock %}
