@@ -10,6 +10,7 @@ use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Security\UserChecker;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
@@ -56,6 +57,7 @@ return static function (SecurityConfig $security): void {
         ->path(LogoutController::class)
         ->target(LoginController::class);
 
-    $security->accessControl()->path('^/app')->roles(['IS_AUTHENTICATED_FULLY']);
+    $security->accessControl()->path('^/app/assets/')->roles(AuthenticatedVoter::PUBLIC_ACCESS);
+    $security->accessControl()->path('^/app')->roles(AuthenticatedVoter::IS_AUTHENTICATED_FULLY);
     $security->accessControl()->path('^/log-viewer')->roles([Roles::ROLE_ADMIN]);
 };

@@ -35,6 +35,7 @@ class AddAssetControllerTest extends AbstractControllerTestCase
     {
         $asset = new Asset();
         $asset->setId(123);
+        $asset->setData('foobar');
         $user = new User();
 
         $request = $this->createMock(AddAssetRequest::class);
@@ -44,7 +45,7 @@ class AddAssetControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->assetFactory->expects($this->once())->method('create')->with($user, 'mime-type', 'data')->willReturn($asset);
         $this->assetRepository->expects($this->once())->method('save')->with($asset, true);
-        $this->expectGenerateUrl(GetAssetController::class, ['id' => 123]);
+        $this->expectGenerateUrl(GetAssetController::class, ['id' => 123, 'hash' => 'c3ab8ff1']);
 
         ($this->controller)($request);
     }

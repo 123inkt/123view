@@ -17,4 +17,10 @@ class AssetTest extends AbstractTestCase
     {
         static::assertAccessorPairs(Asset::class);
     }
+
+    public function testGetHash(): void
+    {
+        $asset = (new Asset())->setData('foobar');
+        static::assertSame('c3ab8ff1', $asset->getHash());
+    }
 }
