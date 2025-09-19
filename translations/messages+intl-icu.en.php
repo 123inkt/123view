@@ -371,5 +371,6 @@ return [
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
     'show.all'                                    => 'Show all',
-    'show.context.lines'                          => 'The amount of context lines shown around changes'
+    'show.context.lines'                          => 'The amount of context lines shown around changes',
+    'user.gitlab.sync.mandatory.text'             => 'To continue using {app_name} you need to sync your account with Gitlab. This is required by the administrators.'
 ];
