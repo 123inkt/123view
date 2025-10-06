@@ -60,7 +60,7 @@ services:
 
     rabbitmq:
         container_name: ${RABBITMQ_CONTAINER:-rabbitmq}
-        image: bitnami/rabbitmq:latest
+        image: bitnamilegacy/rabbitmq:latest
         environment:
             RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS: yes
             RABBITMQ_USERNAME: ${RABBITMQ_USERNAME}

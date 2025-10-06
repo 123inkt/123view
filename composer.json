@@ -9,8 +9,9 @@
         "sort-packages": true,
         "process-timeout": 0,
         "allow-plugins": {
-            "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         }
@@ -52,6 +53,7 @@
         "league/oauth2-client": "^2.7",
         "league/uri": "^7.2",
         "liip/monitor-bundle": "^2.22",
+        "mozex/anthropic-php": "^1.1",
         "nesbot/carbon": "^3.0",
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.1",

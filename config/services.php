@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Anthropic\Client;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
 use CzProject\GitPhp\Git;
@@ -32,6 +33,7 @@ use DR\Review\Security\AzureAd\AzureAdAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdUserBadgeFactory;
 use DR\Review\Security\AzureAd\LoginService;
 use DR\Review\Security\UserChecker;
+use DR\Review\Service\Api\Anthropic\AnthropicClientFactory;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
@@ -247,6 +249,10 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$gitlabApplicationSecret', '%env(GITLAB_APPLICATION_SECRET)%');
     $services->set(GenericProvider::class . ' $gitlabOAuth2Provider', GenericProvider::class)
         ->factory([service(OAuth2ProviderFactory::class), 'create']);
+
+    // Claude integration
+    $services->set(AnthropicClientFactory::class);
+    $services->set(Client::class)->factory([service(AnthropicClientFactory::class), 'create']);
 
     $services->set(DoctrineDbal::class)->tag('liip_monitor.check');
     $services->set(OpcacheInternedStrings::class)->tag('liip_monitor.check');

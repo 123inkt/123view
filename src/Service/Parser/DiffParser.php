@@ -5,19 +5,17 @@ namespace DR\Review\Service\Parser;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Exception\ParseException;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class DiffParser
+class DiffParser implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private const PATTERN = '#(?:^|\n)diff --git a/(.*?) b/(.*?)(?:\n|$)#';
 
-    private LoggerInterface $log;
-    private DiffFileParser  $fileParser;
-
-    public function __construct(LoggerInterface $log, DiffFileParser $fileParser)
+    public function __construct(private readonly DiffFileParser $fileParser)
     {
-        $this->log        = $log;
-        $this->fileParser = $fileParser;
     }
 
     /**
@@ -43,10 +41,11 @@ class DiffParser
             }
 
             $diffFile                 = new DiffFile();
+            $diffFile->raw            = $patchFile;
             $diffFile->filePathBefore = $matches[1][$index - 1] ?? null;
             $diffFile->filePathAfter  = $matches[2][$index - 1] ?? null;
 
-            $this->log->debug(sprintf('DiffParser: parsing: %s - %s', $diffFile->filePathBefore, $diffFile->filePathAfter));
+            $this->logger?->debug(sprintf('DiffParser: parsing: %s - %s', $diffFile->filePathBefore, $diffFile->filePathAfter));
 
             $diffFile = $this->fileParser->parse($patchFile, $diffFile);
 
