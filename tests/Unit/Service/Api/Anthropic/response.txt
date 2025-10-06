@@ -1,0 +1,117 @@
+## FILE: src/App/Product/ProductFamily/ProductFamilyPersistence.php:47
+
+## COMMENT:
+
+**Critical SQL Injection Vulnerability**
+
+There's a SQL injection vulnerability on line 49. When `PRODUCT_ID` filter exists, the code uses `=` operator but still uses `implode()`, which will create invalid SQL when there are multiple product IDs.
+
+```php
+sprintf(
+    'pfp.`%s` = %s',
+    ProductFamilyProduct::PRODUCT_ID,
+    implode(',', Database::toDB($productIds))
+)
+```
+
+Should be changed to use `IN` operator like the other conditions:
+
+```php
+sprintf(
+    'pfp.`%s` IN (%s)',
+    ProductFamilyProduct::PRODUCT_ID,
+    implode(',', Database::toDB($productIds))
+)
+```
+
+---
+
+## FILE: src/App/Product/ProductFamily/ProductFamilyPersistence.php:65
+
+## COMMENT:
+
+**Inconsistent behavior change**
+
+The change from equality (`=`) to `IN` operator for `PRODUCT_FAMILY_NAME` changes the API semantics. This could be a breaking change if calling code expects exact single name matching.
+
+**Recommendation:**
+- Add a separate filter parameter for multi-name filtering, or
+- Document this breaking change clearly, or
+- Maintain backward compatibility by checking if the value is an array
+
+---
+
+## FILE: src/App/Product/ProductFamily/ProductFamilyProductCollection.php:40
+
+## COMMENT:
+
+**Potential infinite recursion issue**
+
+The overridden `removeItem()` method calls `parent::removeItem($item)`, but if the parent's implementation internally calls the child's `compareItems()` method in a way that leads back to `removeItem()`, this could cause issues.
+
+**Better approach:** Check if the parent class already handles comparison properly, or consider if this override is necessary at all. The parent `AbstractChangeCollection` likely already has logic to find and remove items.
+
+---
+
+## FILE: src/App/Product/ProductFamily/ProductFamilyService.php:63
+
+## COMMENT:
+
+**Potential null pointer exception**
+
+The code accesses `$productFamily->getProductFamilyId()` without null checks when `PRODUCT_FAMILY_ID` doesn't exist in the filter bag:
+
+```php
+$productFamiliesIds = array_map(static fn(ProductFamily $family) => $family->getProductFamilyId(), $productFamilies);
+```
+
+If any ProductFamily instance has a null ID, this will include null in the array which could cause issues in subsequent queries.
+
+**Recommendation:** Add null filtering:
+```php
+$productFamiliesIds = array_filter(
+    array_map(static fn(ProductFamily $family) => $family->getProductFamilyId(), $productFamilies),
+    static fn($id) => $id !== null
+);
+```
+
+---
+
+## FILE: src/App/Product/ProductFamily/ProductFamilyService.php:62
+
+## COMMENT:
+
+**Missing empty array check**
+
+If `$productFamilies` is empty and `PRODUCT_FAMILY_ID` doesn't exist in the filter bag, `$productFamiliesIds` will be an empty array. This could lead to invalid SQL queries like `WHERE id IN ()`.
+
+**Recommendation:** Add an early return if the array is empty:
+```php
+if (empty($productFamilies)) {
+    return $productFamilies;
+}
+```
+
+---
+
+## FILE: src/Lib/IO/DataReader/Transformer/ColumnValueMappingTransformer.php:36
+
+## COMMENT:
+
+**Logic error in changeCollectionColumn handling**
+
+The code on line 40 checks `in_array($lookupValue[0], ['+', '-'], true)` but doesn't verify that `$lookupValue` is not empty first. This will cause a warning on empty strings.
+
+**Fix:**
+```php
+if ($this->changeCollectionColumn && strlen($lookupValue) > 0) {
+    if (in_array($lookupValue[0], ['+', '-'], true)) {
+        $prefix = $lookupValue[0];
+    }
+    // ...
+}
+```
+
+---
+
+## FILE: src/Lib/IO/DataReader/Transformer/ColumnValueMappingTransformer.php:47
