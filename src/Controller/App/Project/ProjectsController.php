@@ -75,11 +75,8 @@ class ProjectsController extends AbstractController
         $diffs = array_map(fn(DiffFile $file) => $file->raw, $files);
 
         $result = $this->promptService->prompt(
-            "Review the follow code changes for potential issues and improvements.\n" .
-            "Format the response as sections divided by `\n---\n`\n" .
-            "First mention the full path of the file with line number as ## FILE: <filepath>:<linenumber>\n" .
-            "Use ## COMMENT:` with the issue or problem with the fix or suggestion formatted as markdown.\n\n" .
-            implode("\n\n", $diffs)
+            "Review the follow code.\n" . implode("\n", $diffs),
+            sprintf('code-review-%d', $review->getId())
         );
 
         $test = true;
@@ -101,7 +98,6 @@ class ProjectsController extends AbstractController
             $review->getComments()->add($comment);
             $this->commentRepository->save($comment, true);
         }
-
 
         return [
             'page_title'    => $this->translator->trans('projects'),

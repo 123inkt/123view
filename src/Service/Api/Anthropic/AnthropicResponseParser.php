@@ -33,7 +33,7 @@ readonly class AnthropicResponseParser
                 continue;
             }
             $message = trim($matches[1]);
-            $message = str_replace(":**", ": **", $message);
+            $message = str_replace(":**", "**", $message);
 
             $result[] = new CodeReviewResponse($filepath, $lineNumber, $message);
         }
