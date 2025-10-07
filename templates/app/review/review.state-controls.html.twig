@@ -50,7 +50,9 @@
     </form>
 {% endif %}
 {% if not review.aiReviewRequested %}
-    <a href="#" class="btn btn-primary btn-sm border-0 dr-btn-purple" title="Request a one time code review by claude sonnet 4.5 (experimental)">
+    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\AnthropicCodeReviewController', {id: review.id}) }}"
+       class="btn btn-primary btn-sm border-0 dr-btn-purple"
+       title="Request a one time code review by claude sonnet 4.5 (experimental)">
         <i class="bi bi-claude"></i>
     </a>
 {% endif %}
