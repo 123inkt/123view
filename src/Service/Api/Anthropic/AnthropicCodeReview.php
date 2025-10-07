@@ -36,7 +36,7 @@ class AnthropicCodeReview
     /**
      * @throws Throwable
      */
-    public function requestCodeReview(CodeReview $review)
+    public function requestCodeReview(CodeReview $review): void
     {
         // gather revisions
         $revisions = $this->revisionService->getRevisions($review);
