@@ -34,6 +34,6 @@ class AiReviewRequested implements UserAwareInterface, CodeReviewAwareInterface
      */
     public function getPayload(): array
     {
-        return [];
+        return ['reviewId' => $this->reviewId, 'userId' => $this->userId];
     }
 }

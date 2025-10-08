@@ -43,6 +43,8 @@ class AnthropicCodeReviewController extends AbstractController
         // request code review
         $this->bus->dispatch(new AiReviewRequested($review->getId(), $this->getUser()->getId()));
 
+        $this->addFlash('success', 'Claude code review requested, it may take a few seconds to appear in the review');
+
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
 }
