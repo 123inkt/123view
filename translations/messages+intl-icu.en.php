@@ -329,6 +329,7 @@ return [
     'timeline.reviewer.rejected'                  => '<span class="text-primary">{username}</span> <span class="text-danger">raised concern</span> about the changes.',
     'timeline.reviewer.removed'                   => '<span class="text-primary">{username}</span> left as reviewer.',
     'timeline.reviewer.removed.by'                => '<span class="text-primary">{username}</span> removed <span class="text-primary">{reviewerName}</span> as reviewer.',
+    'timeline.review.ai_requested'                => '<span class="text-primary">{username}</span> requested an AI code review.',
     'title'                                       => 'Title',
     'token'                                       => 'Token',
     'trim.whitespaces'                            => 'Trim whitespaces',
