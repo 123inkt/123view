@@ -10,6 +10,7 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
@@ -31,6 +32,7 @@ class AnthropicCodeReview
         private readonly CodeReviewRevisionService $revisionService,
         private readonly UserRepository $userRepository,
         private readonly CommentRepository $commentRepository,
+        private readonly GitRepositoryLocationService $repositoryLocationService,
         private readonly AnthropicResponseParser $responseParser,
     ) {
     }
@@ -72,8 +74,12 @@ class AnthropicCodeReview
         // get the diffs
         $diffs = array_map(fn(DiffFile $file) => $file->raw, $files);
 
+        // try to get agents file from repository
+        $agentsMdPath = $this->repositoryLocationService->getLocation($review->getRepository()) . '/AGENTS.md';
+        $agentsMd     = file_exists($agentsMdPath) ? file_get_contents($agentsMdPath) : null;
+
         // execute the prompts
-        $result = $this->promptService->prompt("Review the follow code.\n" . implode("\n", $diffs));
+        $result = $this->promptService->prompt("Review the follow code.\n" . implode("\n", $diffs), $agentsMd);
 
         $this->claudeLogger->info('Code review response {response}', ['response' => $result, 'reviewId' => $review->getId()]);
 
