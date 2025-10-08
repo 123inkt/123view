@@ -5,11 +5,12 @@ namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\Api\Anthropic\AnthropicCodeReview;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
@@ -17,8 +18,8 @@ use Throwable;
 class AnthropicCodeReviewController extends AbstractController
 {
     public function __construct(
-        private readonly AnthropicCodeReview $codeReview,
         private readonly CodeReviewRepository $reviewRepository,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -40,7 +41,7 @@ class AnthropicCodeReviewController extends AbstractController
         $this->reviewRepository->save($review, true);
 
         // request code review
-        $this->codeReview->requestCodeReview($review);
+        $this->bus->dispatch(new AiReviewRequested($review->getId(), $this->getUser()->getId()));
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
