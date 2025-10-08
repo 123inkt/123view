@@ -63,6 +63,12 @@ class AnthropicCodeReview
 
             return true;
         });
+        if (count($files) === 0) {
+            $this->claudeLogger->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
+
+            return;
+        }
+
         // get the diffs
         $diffs = array_map(fn(DiffFile $file) => $file->raw, $files);
 
