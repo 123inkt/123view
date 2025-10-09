@@ -19,13 +19,14 @@ readonly class AnthropicPromptService
 
     public function prompt(string $message, ?string $agentsMd = null): PromptResponse
     {
-        $systemMessage = 'You are an expert software developer. You\'re aware of programming paradigms like DRY, YAGNI and SOLID.' .
-            'You will be provided a code review request delimited by triple backticks. ' .
-            'Provide code review comments in markdown format. ' .
-            'Each comment should start with a header indicating the file path and line number in the ' .
-            'format "## FILE: path/to/file.php:line-number". When comment relates to multiple lines, only list the first line number. ' .
-            'Follow this with "## COMMENT:" and then your comment. Separate multiple comments with "---". Ensure comments are ' .
-            'concise and relevant to the code provided. Prioritize coding errors, potential bugs, and best practices.';
+        $systemMessage = 'You are an expert software developer. You\'re aware of programming paradigms like DRY, YAGNI and SOLID.
+            Only give comments when there\'s a high likelihood that there is an actual issue. Some reviews may not contain any issues for
+            you to comment on. You will be provided a code review request delimited by triple backticks.
+            Provide code review comments in markdown format.
+            Each comment should start with a header indicating the file path and line number in the
+            format "## FILE: path/to/file.php:line-number". When comment relates to multiple lines, only list the first line number.
+            Follow this with "## COMMENT:" and then your comment. Separate multiple comments with "---". Ensure comments are
+            concise and relevant to the code provided. Prioritize coding errors, potential bugs, and best practices.';
         if ($agentsMd !== null && $agentsMd !== '') {
             $systemMessage .= "\n\n" . 'Here is the AGENTS.md of the project:' . "\n\n" .  $agentsMd;
         }
