@@ -100,7 +100,12 @@ class AnthropicCodeReview
             $comment = new Comment();
             $comment->setFilePath($response->filepath);
             $comment->setTag(null);
-            $comment->setLineReference(new LineReference(newPath: $response->filepath, lineAfter: $response->lineNumber));
+            $comment->setLineReference(
+                new LineReference(
+                    oldPath: $response->filepath, newPath: $response->filepath,
+                    line   : $response->lineNumber, lineAfter: $response->lineNumber
+                )
+            );
             $comment->setReview($review);
             $comment->setMessage($response->message);
             $comment->setUser($user);
