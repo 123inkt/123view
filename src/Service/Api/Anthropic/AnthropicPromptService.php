@@ -19,16 +19,30 @@ readonly class AnthropicPromptService
 
     public function prompt(string $message, ?string $agentsMd = null): PromptResponse
     {
-        $systemMessage = 'You are an expert software developer. You\'re aware of programming paradigms like DRY, YAGNI and SOLID.
-            Only give comments when there\'s a high likelihood that there is an actual issue. Some reviews may not contain any issues for
-            you to comment on. You will be provided a code review request delimited by triple backticks.
-            Provide code review comments in markdown format.
-            Each comment should start with a header indicating the file path and line number in the
-            format "## FILE: path/to/file.php:line-number". When comment relates to multiple lines, only list the first line number.
-            Follow this with "## COMMENT:" and then your comment. Separate multiple comments with "---". Ensure comments are
-            concise and relevant to the code provided. Prioritize coding errors, potential bugs, and best practices.';
+        $system = [
+            [
+                'text' =>
+                    'You are an expert software developer. You\'re aware of programming paradigms like DRY, YAGNI and SOLID.
+Only give comments when there\'s a high likelihood that there is an actual issue.
+Ensure comments are concise and relevant to the code provided.
+Prioritize coding errors, potential bugs, and best practices.
+Some reviews may not contain any issues for you to comment on.
+Provide code review comments in markdown format.
+Only code review code that has been added or modified.
+Each comment should start with a header indicating the file path and line number in the format "## FILE: path/to/file.php:line-number".
+When comment relates to multiple lines, only list the first line number.
+Follow this with "## COMMENT:" and then your comment.
+Add "## CONFIDENCE:" with a confidence level (HIGH, MEDIUM, LOW) based on how certain you are about the correctness of the issue.
+Separate multiple comments with "---".',
+                'type' => 'text',
+            ]
+        ];
+
         if ($agentsMd !== null && $agentsMd !== '') {
-            $systemMessage .= "\n\n" . 'Here is the AGENTS.md of the project:' . "\n\n" .  $agentsMd;
+            $system[] = [
+                'text' => 'The project uses the following agents:',
+                'type' => 'text',
+            ];
         }
 
         $response = $this->client->messages()->create(
@@ -36,7 +50,7 @@ readonly class AnthropicPromptService
                 'model'       => $this->model,
                 'max_tokens'  => $this->maxTokens,
                 'messages'    => [['role' => 'user', 'content' => $message]],
-                'system'      => $systemMessage,
+                'system'      => $system,
                 'temperature' => $this->temperature,
             ]
         );

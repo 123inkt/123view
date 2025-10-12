@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Api\Anthropic;
 
+use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -11,6 +12,7 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\GitRepositoryLocationService;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
@@ -46,7 +48,15 @@ class AnthropicCodeReview
         $revisions = $this->revisionService->getRevisions($review);
 
         // get diff files for review
-        $files = $this->diffService->getDiffForRevisions($review->getRepository(), $revisions);
+        $files = $this->diffService->getDiffForRevisions(
+            $review->getRepository(),
+            $revisions,
+            new FileDiffOptions(
+                FileDiffOptions::DEFAULT_LINE_DIFF,
+                DiffComparePolicy::IGNORE_EMPTY_LINES,
+                includeRaw: true
+            )
+        );
 
         // filter out large and non-essential files
         $files = array_filter($files, static function (DiffFile $file) {
