@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Api\Anthropic;
 
-use Anthropic\Client;
 use DR\Review\Model\Api\Anthropic\CodeReviewResponse;
-use DR\Review\Model\Api\Anthropic\PromptResponse;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 readonly class AnthropicResponseParser
 {
@@ -15,7 +12,7 @@ readonly class AnthropicResponseParser
      */
     public function parse(string $message): array
     {
-        $result = [];
+        $result   = [];
         $comments = explode("\n---\n", $message);
 
         foreach ($comments as $comment) {
@@ -33,6 +30,7 @@ readonly class AnthropicResponseParser
                 continue;
             }
             $message = trim($matches[1]);
+            $message = preg_replace('/## CONFIDENCE:\s*(HIGH|MEDIUM|LOW)/', '*Confidence: $1*', $message);
             $message = str_replace(":**", "**", $message);
 
             $result[] = new CodeReviewResponse($filepath, $lineNumber, $message);
