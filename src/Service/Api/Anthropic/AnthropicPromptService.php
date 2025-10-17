@@ -26,6 +26,8 @@ readonly class AnthropicPromptService
 Only give comments when there\'s a high likelihood that there is an actual issue.
 Ensure comments are concise and relevant to the code provided.
 Prioritize coding errors, potential bugs, and best practices.
+Skip code review comments with low confidence.
+Skip code review comments with code errors that could be picked up by a linter, static analysis tool, or unit test.
 Some reviews may not contain any issues for you to comment on.
 Provide code review comments in markdown format.
 Only code review code that has been added or modified.
