@@ -24,7 +24,7 @@ class AnthropicCodeReview
 {
     use ClockAwareTrait;
 
-    private const array ALLOWED_EXTENSIONS = ['php', 'twig', 'scss', 'ts'];
+    private const array DISALLOWED_EXTENSIONS = ['lock', 'json'];
 
     public function __construct(
         #[Autowire(env: 'ANTHROPIC_COMMENT_USER_ID')] private readonly int $userId,
@@ -63,7 +63,7 @@ class AnthropicCodeReview
             if (str_contains($file->getPathname(), 'baseline')) {
                 return false;
             }
-            if (in_array(strtolower((string)$file->getFile()?->getExtension()), self::ALLOWED_EXTENSIONS, true) === false) {
+            if (in_array(strtolower((string)$file->getFile()?->getExtension()), self::DISALLOWED_EXTENSIONS, true)) {
                 return false;
             }
             if ($file->isDeleted()) {
