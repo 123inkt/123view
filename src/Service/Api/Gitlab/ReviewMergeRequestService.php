@@ -29,7 +29,7 @@ class ReviewMergeRequestService implements LoggerAwareInterface
         }
 
         if ($review->getType() === CodeReviewType::BRANCH) {
-            $remoteRef = str_replace("origin/", "", $review->getReferenceId());
+            $remoteRef = str_replace("origin/", "", (string)$review->getReferenceId());
         } else {
             $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
         }
