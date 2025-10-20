@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Api\Gitlab;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -27,7 +28,11 @@ class ReviewMergeRequestService implements LoggerAwareInterface
             return (int)$review->getExtReferenceId();
         }
 
-        $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            $remoteRef = $review->getTargetBranch();
+        } else {
+            $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
+        }
         if ($remoteRef === null) {
             $this->logger?->info('No branch name found for review {id}', ['id' => $review->getId()]);
 

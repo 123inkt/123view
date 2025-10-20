@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Entity\Review\CodeReview;
@@ -98,7 +99,28 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
 
         $review = new CodeReview();
         $review->setExtReferenceId(null);
+        $review->setType(CodeReviewType::COMMITS);
         $review->getRevisions()->add($revision);
+        $review->setRepository($repository);
+
+        $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(['iid' => 1111]);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+
+        static::assertSame(1111, $this->service->retrieveMergeRequestIID($this->api, $review));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testRetrieveMergeRequestIIDForBranchReview(): void
+    {
+        $repository = new Repository();
+        $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1234'));
+
+        $review = new CodeReview();
+        $review->setType(CodeReviewType::BRANCH);
+        $review->setTargetBranch('remote-branch');
+        $review->setExtReferenceId(null);
         $review->setRepository($repository);
 
         $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(['iid' => 1111]);
