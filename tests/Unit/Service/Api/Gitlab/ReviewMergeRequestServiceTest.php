@@ -119,7 +119,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
 
         $review = new CodeReview();
         $review->setType(CodeReviewType::BRANCH);
-        $review->setTargetBranch('remote-branch');
+        $review->setReferenceId('origin/remote-branch');
         $review->setExtReferenceId(null);
         $review->setRepository($repository);
 
