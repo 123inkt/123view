@@ -14502,16 +14502,16 @@
         },
         {
             "name": "symfony/debug-bundle",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug-bundle.git",
-                "reference": "30f922edd53dd85238f1f26dbb68a044109f8f0e"
+                "reference": "0aee008fb501677fa5b62ea5f65cabcf041629ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/30f922edd53dd85238f1f26dbb68a044109f8f0e",
-                "reference": "30f922edd53dd85238f1f26dbb68a044109f8f0e",
+                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/0aee008fb501677fa5b62ea5f65cabcf041629ef",
+                "reference": "0aee008fb501677fa5b62ea5f65cabcf041629ef",
                 "shasum": ""
             },
             "require": {
@@ -14553,7 +14553,7 @@
             "description": "Provides a tight integration of the Symfony VarDumper component and the ServerLogCommand from MonologBridge into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/debug-bundle/tree/v7.3.4"
+                "source": "https://github.com/symfony/debug-bundle/tree/v7.3.5"
             },
             "funding": [
                 {
@@ -14573,7 +14573,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-10T12:00:31+00:00"
+            "time": "2025-10-13T11:49:56+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -14830,16 +14830,16 @@
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "f305fa4add690bb7d6b14ab61f37c3bd061a3dd7"
+                "reference": "c2ed11cc0e9093fe0425ad52498d26a458842e0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/f305fa4add690bb7d6b14ab61f37c3bd061a3dd7",
-                "reference": "f305fa4add690bb7d6b14ab61f37c3bd061a3dd7",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/c2ed11cc0e9093fe0425ad52498d26a458842e0c",
+                "reference": "c2ed11cc0e9093fe0425ad52498d26a458842e0c",
                 "shasum": ""
             },
             "require": {
@@ -14895,7 +14895,7 @@
                 "dev"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v7.3.4"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v7.3.5"
             },
             "funding": [
                 {
@@ -14915,7 +14915,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-25T08:03:55+00:00"
+            "time": "2025-10-06T13:36:11+00:00"
         },
         {
             "name": "theseer/tokenizer",
