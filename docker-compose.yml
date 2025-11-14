@@ -83,20 +83,12 @@ services:
             context: .
             dockerfile: ./docker/nodejs/Dockerfile
         environment:
+            ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+            ANTHROPIC_PORT: ${ANTHROPIC_PORT}
             NODEJS_HOST: ${HIGHLIGHTJS_HOST}
             NODEJS_PORT: ${HIGHLIGHTJS_PORT}
-        volumes:
-            - .:/app:rw
-
-    anthropic:
-        container_name: anthropic
-        build:
-            context: .
-            dockerfile: ./docker/anthropic/Dockerfile
-        environment:
-            ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-            ANTHROPIC_HOST: ${ANTHROPIC_HOST}
-            ANTHROPIC_PORT: ${ANTHROPIC_PORT}
+        ports:
+            - 3010:3010
         volumes:
             - .:/app:rw
 
