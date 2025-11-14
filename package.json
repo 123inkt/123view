@@ -4,6 +4,7 @@
         "bootstrap": "^5.3.7",
         "bootstrap-icons": "^1.13.1",
         "highlight.js": "^11.11.1",
+        "@anthropic-ai/claude-agent-sdk": "^0.1.25",
         "stimulus-use": "^0.52.3"
     },
     "devDependencies": {
