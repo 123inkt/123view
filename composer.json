@@ -108,7 +108,7 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "12.4.2",
+        "phpunit/phpunit": "12.4.3",
         "roave/security-advisories": "dev-latest",
         "slevomat/coding-standard": "^8.15",
         "squizlabs/php_codesniffer": "^4.0",
