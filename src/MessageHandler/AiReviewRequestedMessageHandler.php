@@ -48,6 +48,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
             default                              => "The AI code review completed successfully",
         };
 
+        // send mercure message
         $url           = $this->urlGenerator->generate(
             ReviewController::class,
             ['review' => $review],
@@ -55,7 +56,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
         );
         $updateMessage = new UpdateMessage(
             1,
-            (int)$message->getUserId(),
+            0,
             (int)$review->getId(),
             'ai-review-completed',
             'Claude Sonnet 4.5',
