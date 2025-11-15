@@ -114,6 +114,9 @@ class CodeReview
     #[ORM\Column]
     private bool $aiReviewRequested = false;
 
+    #[ORM\Column(length: 65535, nullable: true)]
+    private ?string $aiReview = null;
+
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
     private array $actors = [];
@@ -273,6 +276,18 @@ class CodeReview
     public function setAiReviewRequested(bool $aiReviewRequested): self
     {
         $this->aiReviewRequested = $aiReviewRequested;
+
+        return $this;
+    }
+
+    public function getAiReview(): ?string
+    {
+        return $this->aiReview;
+    }
+
+    public function setAiReview(?string $aiReview): CodeReview
+    {
+        $this->aiReview = $aiReview;
 
         return $this;
     }
