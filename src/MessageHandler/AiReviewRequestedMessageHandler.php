@@ -45,14 +45,15 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
 
         $success = $this->codeReview->requestCodeReview($review);
 
+        // send mercure message
         $url     = $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGeneratorInterface::ABSOLUTE_URL);
         $message = new UpdateMessage(
             1,
-            (int)$message->getUserId(),
+            0,
             (int)$review->getId(),
             'ai-review-completed',
             'Claude Sonnet 4.5',
-            $success ? 'Code review completed' : 'Code review completed without any suggestions',
+            $success ? 'Claude sonnet - code review completed' : 'Claude sonnet - Code review completed without any suggestions',
             Http::new($url)
         );
         $this->messagePublisher->publishToReview($message, $review);
