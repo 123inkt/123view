@@ -17,6 +17,7 @@ const systemPrompt = "You are an expert software developer.\n" +
 
 const server = http.createServer(async (request, response) => {
     console.info(`Received request: ${request.method} ${request.url}`);
+    console.info('Model:', model);
 
     if (request.method !== 'POST' || request.url !== '/query') {
         response.statusCode = 400;
