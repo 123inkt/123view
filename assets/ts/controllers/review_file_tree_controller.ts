@@ -22,7 +22,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
         }
         this.notificationService.subscribe(
             '/review/' + String(this.reviewId),
-            ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
+            ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved', 'ai-review-completed'],
             this.updateReviewFileTree.bind(this),
             this.reviewId
         );

@@ -50,7 +50,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
 
         $url           = $this->urlGenerator->generate(
             ReviewController::class,
-            ['reviewId' => $review->getId()],
+            ['review' => $review],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
         $updateMessage = new UpdateMessage(
