@@ -1,4 +1,4 @@
-const http = require('http');
+const http = require('node:http');
 const sdk  = require("@anthropic-ai/claude-agent-sdk");
 
 const hostname     = process.env.NODEJS_HOST ?? '127.0.0.1';
@@ -26,41 +26,50 @@ const server = http.createServer(async (request, response) => {
         return;
     }
 
-    let body = '';
-    request.on('data', chunk => body += chunk);
+    const chunks = [];
+    request.on('data', chunk => chunks.push(chunk));
     request.on('end', async () => {
-        const data = JSON.parse(body);
-        console.log('Received review request:', data);
+        try {
+            const body = Buffer.concat(chunks).toString();
+            const data = JSON.parse(body);
+            console.log('Received review request:', data);
 
-        const resultQuery = sdk.query({
-            prompt: data.review,
-            options: {
-                model: model,
-                allowedTools: ['ls', 'find', 'grep'],
-                cwd: data.projectDir,
-                systemPrompt: systemPrompt,
+            const resultQuery = sdk.query({
+                prompt: data.review,
+                options: {
+                    model: model,
+                    allowedTools: ['ls', 'find', 'grep'],
+                    cwd: data.projectDir,
+                    systemPrompt: systemPrompt,
+                }
+            });
+
+            let result = null;
+            for await (const message of resultQuery) {
+                if (message.type === 'result') {
+                    result = message.result;
+                } else {
+                    console.log("\n----------------- message -----------------");
+                    console.log(message);
+                }
             }
-        });
 
-        let result = null;
-        for await (const message of resultQuery) {
-            if (message.type === 'result') {
-                result = message.result;
-            } else {
-                console.log("\n----------------- message -----------------");
-                console.log(message);
+            if (result === null) {
+                response.statusCode = 404;
+                response.setHeader('Content-Type', 'text/plain');
+                response.end('');
+                return;
             }
-        }
 
-        if (result === null) {
-            response.statusCode = 404;
+            response.statusCode = 200;
+            response.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+            response.end(result);
+        } catch (error) {
+            console.error('Error processing request:', error);
+            response.statusCode = 500;
             response.setHeader('Content-Type', 'text/plain');
-            response.end('');
+            response.end('Internal server error');
         }
-
-        response.statusCode = 200;
-        response.setHeader('Content-Type', 'text/markdown; charset=utf-8');
-        response.end(result);
     });
 });
 
