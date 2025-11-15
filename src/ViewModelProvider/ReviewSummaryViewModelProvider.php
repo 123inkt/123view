@@ -37,6 +37,7 @@ class ReviewSummaryViewModelProvider
         }
 
         return new ReviewSummaryViewModel(
+            $review->getAiReview(),
             $this->timelineViewModelProvider->getTimelineViewModel($review, $revisions),
             new CodeInspectionReportViewModel($issues)
         );

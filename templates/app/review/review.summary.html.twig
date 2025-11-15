@@ -1,6 +1,14 @@
-{# reviewSummaryViewModel: ReviewSummaryViewModel #}
+{% types {
+    reviewSummaryViewModel: 'DR\\Review\\ViewModel\\App\\Review\\Timeline\\TimelineViewModel\\ReviewSummaryViewModel'
+} %}
 
 <div class="review-summary__overview" {{ stimulus_controller('scroll-positioner') }}>
+    {% if reviewSummaryViewModel.aiReview %}
+        <div class="mb-4 comment__markdown">
+            {{ reviewSummaryViewModel.aiReview|markdown }}
+        </div>
+    {% endif %}
+
     {%- include 'app/review/review.summary.code-issues.html.twig' with {inspectionIssueViewModel: reviewSummaryViewModel.reportViewModel} -%}
     {%- include 'app/review/review.summary.timeline.html.twig' with {timelineViewModel: reviewSummaryViewModel.timelineViewModel} -%}
     <div class="mt-4"></div>

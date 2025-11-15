@@ -20,6 +20,6 @@ class MarkdownConverterService
         $result = $this->converter->convert($string)->getContent();
 
         // strip <br> after <ul> and <li>
-        return (string)preg_replace('/(<ul>|<\\/li>)\s*<br>/i', '$1', $result);
+        return (string)preg_replace('/(<ul>|<ol>|<\\/li>)\s*<br>/i', '$1', $result);
     }
 }

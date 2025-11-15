@@ -10,7 +10,10 @@ class ReviewSummaryViewModel
     /**
      * @codeCoverageIgnore
      */
-    public function __construct(public readonly TimelineViewModel $timelineViewModel, public readonly CodeInspectionReportViewModel $reportViewModel)
-    {
+    public function __construct(
+        public readonly ?string $aiReview,
+        public readonly TimelineViewModel $timelineViewModel,
+        public readonly CodeInspectionReportViewModel $reportViewModel
+    ) {
     }
 }
