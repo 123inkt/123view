@@ -45,7 +45,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
 
         $success = $this->codeReview->requestCodeReview($review);
 
-        $url     = $this->urlGenerator->generate(ReviewController::class, ['reviewId' => $review->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url     = $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGeneratorInterface::ABSOLUTE_URL);
         $message = new UpdateMessage(
             1,
             (int)$message->getUserId(),
