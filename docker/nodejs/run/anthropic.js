@@ -3,6 +3,7 @@ const sdk  = require("@anthropic-ai/claude-agent-sdk");
 
 const hostname     = process.env.NODEJS_HOST ?? '127.0.0.1';
 const port         = process.env.ANTHROPIC_PORT ?? 3010;
+const model        = process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5';
 const systemPrompt = "You are an expert software developer.\n" +
         "You're aware of programming paradigms like DRY, YAGNI and SOLID.\n" +
         "Only give comments when there's a high likelihood that there is an actual issue.\n" +
@@ -33,7 +34,7 @@ const server = http.createServer(async (request, response) => {
         const resultQuery = sdk.query({
             prompt: data.review,
             options: {
-                model: 'claude-sonnet-4-5',
+                model: model,
                 allowedTools: ['ls', 'find', 'grep'],
                 cwd: data.projectDir,
                 systemPrompt: systemPrompt,

@@ -84,6 +84,7 @@ services:
             dockerfile: ./docker/nodejs/Dockerfile
         environment:
             ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+            ANTHROPIC_MODEL: ${ANTHROPIC_MODEL}
             ANTHROPIC_PORT: ${ANTHROPIC_PORT}
             NODEJS_HOST: ${HIGHLIGHTJS_HOST}
             NODEJS_PORT: ${HIGHLIGHTJS_PORT}
