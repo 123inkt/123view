@@ -7,7 +7,7 @@ const port     = process.env.ANTHROPIC_PORT;
 const server = http.createServer(async (request, response) => {
     console.info(`Received request: ${request.method} ${request.url}`);
 
-    if (request.method !== 'GET') {
+    if (request.method !== 'GET' || request.url !== '/') {
         response.statusCode = 400;
         response.setHeader('Content-Type', 'text/plain');
         response.end('Only GET requests are supported');
@@ -15,7 +15,7 @@ const server = http.createServer(async (request, response) => {
     }
     console.log('----------------starting-----------------');
 
-    const result = sdk.query({
+    const resultQuery = sdk.query({
         prompt: 'Review the following code for potential issues and suggest improvements:\n\n```javascript\nfunction add(a, b) {\n  return a + b;\n}\n\nconsole.log(add(2, 3));\n```',
         options: {
             model: 'claude-sonnet-4-20250514',
@@ -24,17 +24,27 @@ const server = http.createServer(async (request, response) => {
         }
     });
 
-    let msg = '';
-    for await (const message of result) {
-        msg += result.result;
-        console.log(result.result ?? null);
+    let result = null;
+    for await (const message of resultQuery) {
+        if (message.type === 'result') {
+            console.log('response', message.result);
+            result = message.result;
+        } else {
+            console.log('other type', message.type);
+        }
     }
+
+    console.log('----------------finished-----------------');
+
 
     response.statusCode = 200;
     response.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    response.end(msg);
+    response.end(result);
 });
 
+server.timeout = 120000;
+server.headersTimeout = 120000;
+server.requestTimeout = 120000;
 server.listen(port, hostname, () => {
     console.info(`Server running at http://${hostname}:${port}/`);
 });
