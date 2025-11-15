@@ -6,15 +6,10 @@ namespace DR\Review\Service\Api\Anthropic;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
-use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Repository\User\UserRepository;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -32,10 +27,7 @@ class AnthropicCodeReview
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly AnthropicPromptService $promptService,
         private readonly CodeReviewRevisionService $revisionService,
-        private readonly UserRepository $userRepository,
-        private readonly CommentRepository $commentRepository,
-        private readonly GitRepositoryLocationService $repositoryLocationService,
-        private readonly AnthropicResponseParser $responseParser,
+        private readonly CodeReviewRepository $reviewRepository,
     ) {
     }
 
@@ -52,7 +44,7 @@ class AnthropicCodeReview
             $review->getRepository(),
             $revisions,
             new FileDiffOptions(
-                FileDiffOptions::DEFAULT_LINE_DIFF,
+                10,
                 DiffComparePolicy::IGNORE_EMPTY_LINES,
                 includeRaw: true
             )
@@ -84,36 +76,12 @@ class AnthropicCodeReview
         // get the diffs
         $diffs = array_map(fn(DiffFile $file) => $file->raw, $files);
 
-        // try to get agents file from repository
-        $agentsMdPath = $this->repositoryLocationService->getLocation($review->getRepository()) . '/AGENTS.md';
-        $agentsMd     = file_exists($agentsMdPath) ? file_get_contents($agentsMdPath) : null;
-
         // execute the prompts
-        $result = $this->promptService->prompt("Review the follow code.\n" . implode("\n", $diffs), $agentsMd);
+        $result = $this->promptService->prompt($review->getRepository(), implode("\n", $diffs));
 
         $this->claudeLogger->info('Code review response {response}', ['response' => $result, 'reviewId' => $review->getId()]);
 
-        $responses = $this->responseParser->parse($result->message);
-        $user      = Assert::notNull($this->userRepository->find($this->userId));
-
-        foreach ($responses as $response) {
-            $comment = new Comment();
-            $comment->setFilePath($response->filepath);
-            $comment->setTag(null);
-            $comment->setLineReference(
-                new LineReference(
-                    oldPath: $response->filepath, newPath: $response->filepath,
-                    line   : $response->lineNumber, lineAfter: $response->lineNumber
-                )
-            );
-            $comment->setReview($review);
-            $comment->setMessage($response->message);
-            $comment->setUser($user);
-            $comment->setCreateTimestamp($this->now()->getTimestamp());
-            $comment->setUpdateTimestamp($this->now()->getTimestamp());
-
-            $review->getComments()->add($comment);
-            $this->commentRepository->save($comment, true);
-        }
+        $review->setAiReview($result);
+        $this->reviewRepository->save($review, true);
     }
 }
