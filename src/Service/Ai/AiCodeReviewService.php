@@ -21,6 +21,10 @@ class AiCodeReviewService
 {
     use ClockAwareTrait;
 
+    public const int RESULT_NO_FILES = 1;
+    public const int RESULT_SUCCESS  = 2;
+    public const int RESULT_FAILURE  = 3;
+
     private const array DISALLOWED_EXTENSIONS = ['lock', 'json'];
 
     public function __construct(
@@ -34,7 +38,7 @@ class AiCodeReviewService
     /**
      * @throws Throwable
      */
-    public function startCodeReview(CodeReview $review): void
+    public function startCodeReview(CodeReview $review): int
     {
         // gather revisions
         $revisions = $this->revisionService->getRevisions($review);
@@ -57,12 +61,13 @@ class AiCodeReviewService
             if ($file->binary || $file->isDeleted()) {
                 return false;
             }
+
             return count($file->getLines()) <= 500;
         });
         if (count($files) === 0) {
             $this->logger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
 
-            return;
+            return self::RESULT_NO_FILES;
         }
 
         // get the diffs
@@ -78,7 +83,11 @@ class AiCodeReviewService
         try {
             $this->agent->call(new MessageBag(Message::ofUser($message . $diff)));
         } catch (Throwable $exception) {
-            $test = true;
+            $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
+
+            return self::RESULT_FAILURE;
         }
+
+        return self::RESULT_SUCCESS;
     }
 }
