@@ -28,13 +28,14 @@ class AnthropicCodeReview
         private readonly AnthropicPromptService $promptService,
         private readonly CodeReviewRevisionService $revisionService,
         private readonly CodeReviewRepository $reviewRepository,
+
     ) {
     }
 
     /**
      * @throws Throwable
      */
-    public function requestCodeReview(CodeReview $review): void
+    public function requestCodeReview(CodeReview $review): bool
     {
         // gather revisions
         $revisions = $this->revisionService->getRevisions($review);
@@ -70,7 +71,7 @@ class AnthropicCodeReview
         if (count($files) === 0) {
             $this->claudeLogger->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
 
-            return;
+            return false;
         }
 
         // get the diffs
@@ -83,5 +84,7 @@ class AnthropicCodeReview
 
         $review->setAiReview($result);
         $this->reviewRepository->save($review, true);
+
+        return $result !== null;
     }
 }
