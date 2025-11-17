@@ -45,14 +45,13 @@ class HighlightedFileService implements LoggerAwareInterface
 
         try {
             $response = $this->highlightjsClient->request('POST', '', ['query' => ['language' => $languageName], 'body' => $content]);
+            if ($response->getStatusCode() !== Response::HTTP_OK) {
+                $this->logger?->info('Failed to get code highlighting: ' . $response->getContent(false));
+
+                return null;
+            }
         } catch (Throwable $exception) {
             $this->logger?->info('Failed to get code highlighting: ' . $exception->getMessage());
-
-            return null;
-        }
-
-        if ($response->getStatusCode() !== Response::HTTP_OK) {
-            $this->logger?->info('Failed to get code highlighting: ' . $response->getContent(false));
 
             return null;
         }
