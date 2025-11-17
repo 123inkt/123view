@@ -89,7 +89,8 @@ services:
             NODEJS_HOST: ${HIGHLIGHTJS_HOST}
             NODEJS_PORT: ${HIGHLIGHTJS_PORT}
         ports:
-            - 3010:3010
+            - ${HIGHLIGHTJS_PORT:-3000}:3000
+            - ${ANTHROPIC_PORT:-3010}:3010
         volumes:
             - .:/app:rw
 
