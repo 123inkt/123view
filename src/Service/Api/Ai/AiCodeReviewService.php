@@ -16,6 +16,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\AI\Platform\Message\MessageBag;
+use Symfony\AI\Platform\Result\ObjectResult;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
@@ -27,7 +28,7 @@ class AiCodeReviewService
     private const array DISALLOWED_EXTENSIONS = ['lock', 'json'];
 
     public function __construct(
-        #[Autowire(env: 'ANTHROPIC_COMMENT_USER_ID')] private readonly int $userId,
+        #[Autowire(env: 'AI_COMMENT_USER_ID')] private readonly int $userId,
         private readonly LoggerInterface $claudeLogger,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly CodeReviewRevisionService $revisionService,
@@ -41,7 +42,7 @@ class AiCodeReviewService
     /**
      * @throws Throwable
      */
-    public function requestCodeReview(CodeReview $review): void
+    public function requestCodeReview(CodeReview $review): string
     {
         // gather revisions
         $revisions = $this->revisionService->getRevisions($review);
@@ -77,24 +78,32 @@ class AiCodeReviewService
         if (count($files) === 0) {
             $this->claudeLogger->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
 
-            return;
+            return '';
         }
 
         // get the diffs
         $diff = implode("\n", array_map(fn(DiffFile $file) => $file->raw, $files));
+        $message = "CODE_REVIEW_ID: " . $review->getId() . "\n";
 
         $response = $this->agent->call(
-            new MessageBag(Message::ofUser($diff)),
-            ['request_format' => AiCodeReview::class]
+            new MessageBag(Message::ofUser($message . $diff)),
+            ['response_format' => AiCodeReview::class]
         );
 
-        $result = $response->getContent();
-        if ($result instanceof AiCodeReview === false) {
-            $this->claudeLogger->info(
-                'Code review response is not of expected type {type}',
-                ['type' => is_object($result) ? $result::class : gettype($result), 'reviewId' => $review->getId()]
-            );
+        if ($response instanceof ObjectResult === false) {
+            return '';
         }
+
+        $result = $response->getContent();
+
+        return '';
+
+        //if ($result instanceof AiCodeReview === false) {
+        //    $this->claudeLogger->info(
+        //        'Code review response is not of expected type {type}',
+        //        ['type' => is_object($result) ? $result::class : gettype($result), 'reviewId' => $review->getId()]
+        //    );
+        //}
 
         $this->claudeLogger->info('Code review response {response}', ['response' => $result, 'reviewId' => $review->getId()]);
 
