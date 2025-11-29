@@ -20,7 +20,8 @@ class LsTreeService
      */
     public function listFiles(Revision $revision, string $filepath): array
     {
-        $glob = str_contains('*', $filepath);
+        $filepath = ltrim($filepath, '/');
+        $glob     = str_contains($filepath, '*');
 
         $commandBuilder = $this->builderFactory->createLsTree()
             ->nameOnly()
@@ -42,8 +43,8 @@ class LsTreeService
 
         if ($glob) {
             // convert glob pattern to regex
-            $regex = str_replace('\*', '.*', preg_quote($filepath, '/'));
-            $files = array_filter($files, static fn(string $line): bool => preg_match('/^' . $regex . '$/', $line) === 1);
+            $regex = str_replace(['\*\*', '\*'], ['.*', '[^\\\\]*'], preg_quote($filepath, '#'));
+            $files = array_filter($files, static fn(string $line): bool => preg_match('#^' . $regex . '$#', $line) === 1);
         }
 
         return $files;
