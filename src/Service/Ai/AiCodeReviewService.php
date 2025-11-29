@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Api\Ai;
+namespace DR\Review\Service\Ai;
 
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Model\Ai\AiCodeReview;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;

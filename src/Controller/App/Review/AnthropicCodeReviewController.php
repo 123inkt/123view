@@ -5,12 +5,10 @@ namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
-use DR\Review\Service\Api\Ai\AiCodeReviewService;
+use DR\Review\Service\Ai\AiCodeReviewService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,12 +43,10 @@ class AnthropicCodeReviewController extends AbstractController
 
         // request code review
         // TODO $this->bus->dispatch(new AiReviewRequested($review->getId(), $this->getUser()->getId()));
-        $result = $this->reviewService->requestCodeReview($review);
+        $this->reviewService->requestCodeReview($review);
 
-        return new Response($result, headers: ['Content-type' => 'text/plain']);
+        $this->addFlash('success', 'Claude code review requested, it may take a few seconds to appear in the review');
 
-        //$this->addFlash('success', 'Claude code review requested, it may take a few seconds to appear in the review');
-        //
-        //return $this->refererRedirect(ReviewController::class, ['review' => $review]);
+        return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }
 }

@@ -5,7 +5,7 @@ namespace DR\Review\MessageHandler;
 
 use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Api\Ai\AiCodeReviewService;
+use DR\Review\Service\Ai\AiCodeReviewService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

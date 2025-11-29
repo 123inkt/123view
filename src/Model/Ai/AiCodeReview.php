@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Api\Ai;
+namespace DR\Review\Model\Ai;
 
 class AiCodeReview
 {
