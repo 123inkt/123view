@@ -6,9 +6,11 @@ namespace DR\Review\Controller\App\Review;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Ai\AiCodeReviewService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +20,9 @@ use Throwable;
 class AnthropicCodeReviewController extends AbstractController
 {
     public function __construct(
+        #[Autowire(env: 'AI_COMMENT_USER_ID')] private readonly int $userId,
         private readonly CodeReviewRepository $reviewRepository,
+        private readonly CommentRepository $commentRepository,
         private readonly MessageBusInterface $bus,
         private readonly AiCodeReviewService $reviewService
     ) {
@@ -35,6 +39,14 @@ class AnthropicCodeReviewController extends AbstractController
             $this->addFlash('warning', 'Claude code review already requested, can only be requested once per review (for now)');
 
             return $this->refererRedirect(ReviewController::class, ['review' => $review]);
+        }
+
+        // remove existing ai comments
+        foreach ($review->getComments() as $comment) {
+            if ($comment->getUser()->getId() === $this->userId) {
+                $review->getComments()->removeElement($comment);
+                $this->commentRepository->remove($comment);
+            }
         }
 
         // set flag
