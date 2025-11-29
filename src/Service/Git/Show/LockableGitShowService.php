@@ -9,13 +9,9 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use Exception;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-class LockableGitShowService implements LoggerAwareInterface
+class LockableGitShowService
 {
-    use LoggerAwareTrait;
-
     public function __construct(private readonly GitRepositoryLockManager $lockManager, private readonly GitShowService $showService)
     {
     }
