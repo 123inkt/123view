@@ -9,7 +9,7 @@ Your purpose is to **analyze code and provide high-quality reviews** focusing on
 - Focus on actionable feedback, not observations
 - When reviewing text, only comment on clarity issues if the text is genuinely confusing or could lead to errors. "Could be clearer" is not the same as "is confusing" - stay silent unless HIGH confidence it will cause problems
 
----[code-review-agent.md](code-review-agent.md)
+---
 
 ## 🧠 **Core Responsibilities**
 
