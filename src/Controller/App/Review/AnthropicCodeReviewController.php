@@ -8,8 +8,6 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\Ai\AiCodeReviewService;
-use DR\Review\Service\Git\LsTree\LockableLsTreeService;
-use DR\Utils\Arrays;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,8 +20,7 @@ class AnthropicCodeReviewController extends AbstractController
     public function __construct(
         private readonly CodeReviewRepository $reviewRepository,
         private readonly MessageBusInterface $bus,
-        private readonly AiCodeReviewService $reviewService,
-        private readonly LockableLsTreeService $treeService,
+        private readonly AiCodeReviewService $reviewService
     ) {
     }
 
@@ -43,9 +40,6 @@ class AnthropicCodeReviewController extends AbstractController
         // set flag
         // TODO $review->setAiReviewRequested(true);
         $this->reviewRepository->save($review, true);
-
-        $revision = Arrays::last($review->getRevisions());
-        $result = $this->treeService->listFiles($revision, '/drs-next/**/*Controller.php');
 
         // request code review
         // TODO $this->bus->dispatch(new AiReviewRequested($review->getId(), $this->getUser()->getId()));

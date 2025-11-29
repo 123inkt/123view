@@ -13,6 +13,7 @@ use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\GarbageCollect\GitGarbageCollectCommandBuilder;
+use DR\Review\Service\Git\Grep\GitGrepCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
 use DR\Review\Service\Git\LsTree\GitLsTreeCommandBuilder;
 use DR\Review\Service\Git\Remote\GitRemoteCommandBuilder;
@@ -95,6 +96,11 @@ class GitCommandBuilderFactory
     public function createLsTree(): GitLsTreeCommandBuilder
     {
         return new GitLsTreeCommandBuilder($this->git);
+    }
+
+    public function createGrep(): GitGrepCommandBuilder
+    {
+        return new GitGrepCommandBuilder($this->git);
     }
 
     public function createRevList(): GitRevListCommandBuilder
