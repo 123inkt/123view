@@ -51,11 +51,7 @@ class AiCodeReviewService
         $files = $this->diffService->getDiffForRevisions(
             $review->getRepository(),
             $revisions,
-            new FileDiffOptions(
-                5,
-                DiffComparePolicy::IGNORE_EMPTY_LINES,
-                includeRaw: true
-            )
+            new FileDiffOptions(5, DiffComparePolicy::IGNORE_EMPTY_LINES, includeRaw: true)
         );
 
         // filter out large and non-essential files
