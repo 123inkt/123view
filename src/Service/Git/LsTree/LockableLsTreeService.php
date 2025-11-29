@@ -14,6 +14,7 @@ class LockableLsTreeService
     }
 
     /**
+     * @return string[]
      * @throws Exception
      */
     public function listFiles(Revision $revision, string $filepath): array
