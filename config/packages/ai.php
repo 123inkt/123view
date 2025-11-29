@@ -13,6 +13,6 @@ return static function (AiConfig $config): void {
     $config->agent('default')
         ->platform('ai.platform.anthropic')
         ->model(env('ANTHROPIC_MODEL'))
-        ->prompt()->file('%kernel.project_dir%/resources/ai-prompt/code-review-agent.md');
+        ->prompt()->file('%kernel.project_dir%/resources/ai-prompt/code-review-agent-2.md');
 
 };
