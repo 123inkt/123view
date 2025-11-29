@@ -18,7 +18,7 @@ use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
 
-#[AsTool('list_files', 'List the files in the given directory path for the specified code review.')]
+#[AsTool('add_comment', 'Add a comment to a code review at a specific file and line number. Optionally include a code suggestion.')]
 class CodeReviewAddCommentTool
 {
     use ClockAwareTrait;
@@ -46,7 +46,7 @@ class CodeReviewAddCommentTool
         #[With(minimum: 1)] int $lineNumber,
         string $message,
         ?string $codeSuggestion
-    ): void {
+    ): string {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {
             throw new CodeReviewNotFoundException($codeReviewId);
@@ -73,5 +73,7 @@ class CodeReviewAddCommentTool
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);
+
+        return 'Comment added successfully.';
     }
 }
