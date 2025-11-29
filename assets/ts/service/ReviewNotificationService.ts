@@ -17,6 +17,7 @@ export default class ReviewNotificationService {
         document.addEventListener(channel, this.onEvent);
 
         if (typeof events === 'string') {
+            // eslint-disable-next-line no-param-reassign -- type "cast" events to array
             events = [events];
         }
 

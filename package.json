@@ -14,7 +14,7 @@
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
         "@symfony/webpack-encore": "^5.0.0",
         "core-js": "^3.37.1",
-        "eslint-config-love": "^125.0.0",
+        "eslint-config-love": "^134.0.0",
         "regenerator-runtime": "^0.14.1",
         "sass": "^1.77.8",
         "sass-loader": "^16.0.0",

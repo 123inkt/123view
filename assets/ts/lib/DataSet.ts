@@ -32,7 +32,7 @@ export default class DataSet {
             return defaultValue;
         }
 
-        const intValue = parseInt(value);
+        const intValue = parseInt(value, 10);
         if (isNaN(intValue)) {
             return defaultValue;
         }

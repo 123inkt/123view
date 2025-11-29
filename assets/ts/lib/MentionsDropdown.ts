@@ -44,7 +44,7 @@ export default class MentionsDropdown {
             return this.users[this.selected];
         }
 
-        const userId = parseInt(element.dataset.userId ?? '0');
+        const userId = parseInt(element.dataset.userId ?? '0', 10);
         for (const user of this.users) {
             if (user.id === userId) {
                 return user;
