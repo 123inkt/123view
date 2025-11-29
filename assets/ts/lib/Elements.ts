@@ -43,13 +43,13 @@ export default class Elements {
     }
 
     public static create(html: string): HTMLElement {
-        html = html.trim();
-        if (html.startsWith('<') === false) {
-            return document.createElement(html);
+        const trimmedHtml = html.trim();
+        if (trimmedHtml.startsWith('<') === false) {
+            return document.createElement(trimmedHtml);
         }
 
         const container     = document.createElement('div');
-        container.innerHTML = html;
+        container.innerHTML = trimmedHtml;
 
         return container.firstElementChild as HTMLElement;
     }

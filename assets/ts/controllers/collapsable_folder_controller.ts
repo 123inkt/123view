@@ -14,7 +14,7 @@ export default class extends Controller<HTMLFormElement> {
         axios
             .post(
                 `/app/reviews/${this.reviewIdValue}/folder-collapse-status`,
-                {path: this.pathValue, state: !collapsed ? 'collapsed' : 'expanded'},
+                {path: this.pathValue, state: collapsed ? 'expanded': 'collapsed'},
                 {headers: {'Content-Type': 'multipart/form-data'}}
             )
             .catch(Function.empty);
