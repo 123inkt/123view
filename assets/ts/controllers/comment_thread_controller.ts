@@ -14,7 +14,7 @@ export default class extends Controller<HTMLElement> {
 
     public commentUpdated(event: CustomEvent<string>): void {
         Events.stop(event);
-        if (parseInt(event.detail) !== this.idValue) {
+        if (parseInt(event.detail, 10) !== this.idValue) {
             return;
         }
         this.updateCommentThread();
