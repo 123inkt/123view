@@ -5,7 +5,7 @@ namespace DR\Review\MessageHandler;
 
 use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Repository\Review\CodeReviewRepository;
-use DR\Review\Service\Api\Anthropic\AnthropicCodeReview;
+use DR\Review\Service\Api\Ai\AiCodeReviewService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -17,7 +17,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
 
     public function __construct(
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly AnthropicCodeReview $codeReview
+        private readonly AiCodeReviewService $codeReview
     ) {
     }
 

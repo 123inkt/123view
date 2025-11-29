@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Api\Anthropic;
+namespace DR\Review\Service\Api\Ai;
 
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
+use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Platform\Message\Message;
+use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
 
-class AnthropicCodeReview
+class AiCodeReviewService
 {
     use ClockAwareTrait;
 
@@ -30,12 +30,11 @@ class AnthropicCodeReview
         #[Autowire(env: 'ANTHROPIC_COMMENT_USER_ID')] private readonly int $userId,
         private readonly LoggerInterface $claudeLogger,
         private readonly ReviewDiffServiceInterface $diffService,
-        private readonly AnthropicPromptService $promptService,
         private readonly CodeReviewRevisionService $revisionService,
         private readonly UserRepository $userRepository,
         private readonly CommentRepository $commentRepository,
         private readonly GitRepositoryLocationService $repositoryLocationService,
-        private readonly AnthropicResponseParser $responseParser,
+        private readonly AgentInterface $agent,
     ) {
     }
 
@@ -52,7 +51,7 @@ class AnthropicCodeReview
             $review->getRepository(),
             $revisions,
             new FileDiffOptions(
-                FileDiffOptions::DEFAULT_LINE_DIFF,
+                5,
                 DiffComparePolicy::IGNORE_EMPTY_LINES,
                 includeRaw: true
             )
@@ -66,7 +65,7 @@ class AnthropicCodeReview
             if (in_array(strtolower((string)$file->getFile()?->getExtension()), self::DISALLOWED_EXTENSIONS, true)) {
                 return false;
             }
-            if ($file->isDeleted()) {
+            if ($file->isImage() || $file->isDeleted()) {
                 return false;
             }
             if (count($file->getLines()) > 500) {
@@ -82,38 +81,43 @@ class AnthropicCodeReview
         }
 
         // get the diffs
-        $diffs = array_map(fn(DiffFile $file) => $file->raw, $files);
+        $diff = implode("\n", array_map(fn(DiffFile $file) => $file->raw, $files));
 
-        // try to get agents file from repository
-        $agentsMdPath = $this->repositoryLocationService->getLocation($review->getRepository()) . '/AGENTS.md';
-        $agentsMd     = file_exists($agentsMdPath) ? file_get_contents($agentsMdPath) : null;
+        $response = $this->agent->call(
+            new MessageBag(Message::ofUser($diff)),
+            ['request_format' => AiCodeReview::class]
+        );
 
-        // execute the prompts
-        $result = $this->promptService->prompt("Review the follow code.\n" . implode("\n", $diffs), $agentsMd);
+        $result = $response->getContent();
+        if ($result instanceof AiCodeReview === false) {
+            $this->claudeLogger->info(
+                'Code review response is not of expected type {type}',
+                ['type' => is_object($result) ? $result::class : gettype($result), 'reviewId' => $review->getId()]
+            );
+        }
 
         $this->claudeLogger->info('Code review response {response}', ['response' => $result, 'reviewId' => $review->getId()]);
 
-        $responses = $this->responseParser->parse($result->message);
-        $user      = Assert::notNull($this->userRepository->find($this->userId));
+        //$user = Assert::notNull($this->userRepository->find($this->userId));
 
-        foreach ($responses as $response) {
-            $comment = new Comment();
-            $comment->setFilePath($response->filepath);
-            $comment->setTag(null);
-            $comment->setLineReference(
-                new LineReference(
-                    oldPath: $response->filepath, newPath: $response->filepath,
-                    line   : $response->lineNumber, lineAfter: $response->lineNumber
-                )
-            );
-            $comment->setReview($review);
-            $comment->setMessage($response->message);
-            $comment->setUser($user);
-            $comment->setCreateTimestamp($this->now()->getTimestamp());
-            $comment->setUpdateTimestamp($this->now()->getTimestamp());
-
-            $review->getComments()->add($comment);
-            $this->commentRepository->save($comment, true);
-        }
+        //foreach ($responses as $response) {
+        //    $comment = new Comment();
+        //    $comment->setFilePath($response->filepath);
+        //    $comment->setTag(null);
+        //    $comment->setLineReference(
+        //        new LineReference(
+        //            oldPath: $response->filepath, newPath: $response->filepath,
+        //            line   : $response->lineNumber, lineAfter: $response->lineNumber
+        //        )
+        //    );
+        //    $comment->setReview($review);
+        //    $comment->setMessage($response->message);
+        //    $comment->setUser($user);
+        //    $comment->setCreateTimestamp($this->now()->getTimestamp());
+        //    $comment->setUpdateTimestamp($this->now()->getTimestamp());
+        //
+        //    $review->getComments()->add($comment);
+        //    $this->commentRepository->save($comment, true);
+        //}
     }
 }

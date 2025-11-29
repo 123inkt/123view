@@ -37,7 +37,7 @@ class AnthropicCodeReviewController extends AbstractController
         }
 
         // set flag
-        $review->setAiReviewRequested(true);
+        // TODO $review->setAiReviewRequested(true);
         $this->reviewRepository->save($review, true);
 
         // request code review
