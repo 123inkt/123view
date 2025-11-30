@@ -10,7 +10,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Throwable;
 
 /**
  * @codeCoverageIgnore
@@ -42,12 +41,6 @@ class GitRepository
             $process->setTimeout(300);
             $process->setWorkingDirectory($this->repositoryPath);
             $process->run();
-        } catch (Throwable $exception) {
-            $this->gitLogger?->error(
-                'Exception during git {action} for repository {name}',
-                ['action' => $action, 'name' => $this->repository->getName(), 'exception' => $exception]
-            );
-            throw $exception;
         } finally {
             $this->stopWatch?->stop('git.' . $action);
         }
@@ -76,11 +69,17 @@ class GitRepository
         $output = trim(str_replace("\r", "", $process->getOutput()));
         $error  = trim(str_replace("\r", "", $process->getErrorOutput()));
 
-        if ($error !== '') {
-            $this->gitLogger->log($level, 'Process {status}: error: {error}', ['status' => $status, 'error' => $error]);
-        }
-        if ($output !== '') {
-            $this->gitLogger->log($level, 'Process {status}: output: {output}', ['status' => $status, 'output' => $output]);
-        }
+        // limit size
+        $output = substr($output, 0, 1000);
+        $error  = substr($error, 0, 1000);
+
+        // format
+        $message = <<<MSG
+Process status: {status}
+Output: {output}
+=========================
+Error: {error}
+MSG;
+        $this->gitLogger->log($level, $message, ['status' => $status, 'output' => $output, 'error' => $error]);
     }
 }
