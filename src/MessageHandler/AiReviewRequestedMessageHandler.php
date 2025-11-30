@@ -49,11 +49,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
         };
 
         // send mercure message
-        $url           = $this->urlGenerator->generate(
-            ReviewController::class,
-            ['review' => $review],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        $url           = $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGeneratorInterface::ABSOLUTE_URL);
         $updateMessage = new UpdateMessage(
             1,
             0,
