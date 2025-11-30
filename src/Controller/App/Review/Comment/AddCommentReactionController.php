@@ -39,7 +39,7 @@ class AddCommentReactionController extends AbstractController
         $this->replyRepository->save($reply, true);
 
         $this->bus->dispatch(
-            new CommentReplyAdded((int)$comment->getReview()->getId(), (int)$reply->getId(), $user->getId(), $message, $comment->getFilePath())
+            new CommentReplyAdded($comment->getReview()->getId(), (int)$reply->getId(), $user->getId(), $message, $comment->getFilePath())
         );
 
         return $this->json(['success' => true]);

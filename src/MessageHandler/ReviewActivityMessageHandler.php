@@ -44,7 +44,7 @@ class ReviewActivityMessageHandler implements LoggerAwareInterface
         $this->activityRepository->save($activity, true);
 
         $review       = $activity->getReview();
-        $actorUserIds = array_map(static fn($user) => $user->getId(), $this->userRepository->getActors((int)$review->getId()));
+        $actorUserIds = array_map(static fn($user) => $user->getId(), $this->userRepository->getActors($review->getId()));
         $review->setActors($actorUserIds);
         $review->setUpdateTimestamp(time());
         $this->reviewRepository->save($review, true);

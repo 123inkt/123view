@@ -71,7 +71,7 @@ class CodeReviewFileService
     {
         $hashes = array_map(static fn($rev) => $rev->getCommitHash(), $revisions);
 
-        return hash('sha512', sprintf('review-file-%s-%s-%s', $review->getId(), implode('', $hashes), $options));
+        return hash('sha512', sprintf('review-file-%d-%s-%s', $review->getId(), implode('', $hashes), $options));
     }
 
     private function getDiffFileCacheKey(string $cacheKeyPrefix, DiffFile $diffFile, FileDiffOptions $options): string

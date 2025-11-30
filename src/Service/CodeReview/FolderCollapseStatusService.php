@@ -16,7 +16,7 @@ class FolderCollapseStatusService
 
     public function getFolderCollapseStatus(CodeReview $review): FolderCollapseStatusCollection
     {
-        $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => (int)$this->userProvider->getUser()?->getId()]);
+        $files = $this->statusRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->userProvider->getUser()?->getId()]);
 
         return new FolderCollapseStatusCollection($files);
     }

@@ -82,7 +82,7 @@ class CodeReview
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     /** Unique key per project to have a incremental sequence per repository instead of a global sequence */
     #[ORM\Column]
@@ -97,7 +97,7 @@ class CodeReview
     #[ORM\Column(length: 255)]
     private string $description;
 
-    /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH  */
+    /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH */
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
     private string $type = CodeReviewType::COMMITS;
 
@@ -155,7 +155,12 @@ class CodeReview
         return $this;
     }
 
-    public function getId(): ?int
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
