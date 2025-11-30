@@ -9,10 +9,11 @@ use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Message\Revision\RepositoryUpdatedMessage;
 use DR\Review\Message\Revision\ValidateRevisionsMessage;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage;
 use Symfony\Config\FrameworkConfig;
 
-return static function (FrameworkConfig $framework): void {
+return static function (FrameworkConfig $framework, ContainerConfigurator $container): void {
     $messenger = $framework->messenger();
     $messenger->failureTransport('failed');
 
@@ -33,7 +34,8 @@ return static function (FrameworkConfig $framework): void {
     $messenger->routing(CommitRemovedMessage::class)->senders(['async_revisions']);
     $messenger->routing(ValidateRevisionsMessage::class)->senders(['async_revisions']);
     $messenger->routing(RepositoryUpdatedMessage::class)->senders(['async_revisions']);
-    $messenger->routing(AiReviewRequested::class)->senders(['async_ai_review', 'async_messages']);
+    // use sync transport for dev (debugging purposes)
+    $messenger->routing(AiReviewRequested::class)->senders([$container->env() === 'dev' ? 'sync' : 'async_ai_review', 'async_messages']);
     $messenger->routing(DelayableMessage::class)->senders(['async_delay_mail']);
     $messenger->routing(AsyncMessageInterface::class)->senders(['async_messages']);
 };
