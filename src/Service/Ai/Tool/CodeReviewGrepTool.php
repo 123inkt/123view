@@ -13,7 +13,11 @@ use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
 use Throwable;
 
-#[AsTool('search', 'Searches for a pattern in the codebase and returns a snippet of the matching lines.')]
+#[AsTool(
+    'search',
+    'Searches for a pattern in the codebase of the project and returns a snippet of the matching lines. Only searches in the git repository of the ' .
+    'specified code review and will not find any dependencies.'
+)]
 class CodeReviewGrepTool
 {
     public function __construct(
