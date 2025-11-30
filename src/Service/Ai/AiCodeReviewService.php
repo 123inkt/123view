@@ -53,7 +53,7 @@ class AiCodeReviewService
             if (in_array(strtolower((string)$file->getFile()?->getExtension()), self::DISALLOWED_EXTENSIONS, true)) {
                 return false;
             }
-            if ($file->isImage() || $file->isDeleted()) {
+            if ($file->binary || $file->isDeleted()) {
                 return false;
             }
             if (count($file->getLines()) > 500) {
