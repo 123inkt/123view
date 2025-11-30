@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage;
 use Symfony\Config\FrameworkConfig;
 
-return static function (FrameworkConfig $framework, ContainerConfigurator $container): void {
+return static function (FrameworkConfig $framework): void {
     $messenger = $framework->messenger();
     $messenger->failureTransport('failed');
 
@@ -35,7 +35,7 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
     $messenger->routing(ValidateRevisionsMessage::class)->senders(['async_revisions']);
     $messenger->routing(RepositoryUpdatedMessage::class)->senders(['async_revisions']);
     // use sync transport for dev (debugging purposes)
-    $messenger->routing(AiReviewRequested::class)->senders([$container->env() === 'dev' ? 'sync' : 'async_ai_review', 'async_messages']);
+    $messenger->routing(AiReviewRequested::class)->senders(['async_ai_review', 'async_messages']);
     $messenger->routing(DelayableMessage::class)->senders(['async_delay_mail']);
     $messenger->routing(AsyncMessageInterface::class)->senders(['async_messages']);
 };
