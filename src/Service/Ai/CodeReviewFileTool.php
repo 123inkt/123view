@@ -5,6 +5,7 @@ namespace DR\Review\Service\Ai;
 
 use DR\Review\Exception\Ai\CodeReviewFileNotFoundException;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
+use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Utils\Arrays;
@@ -23,6 +24,8 @@ class CodeReviewFileTool
     /**
      * @param int    $codeReviewId The CODE_REVIEW_ID of the review
      * @param string $filepath     The path to the file to read
+     *
+     * @throws RepositoryException
      */
     public function __invoke(#[With(minimum: 1)] int $codeReviewId, string $filepath): string
     {
