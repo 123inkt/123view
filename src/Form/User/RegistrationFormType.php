@@ -35,7 +35,7 @@ class RegistrationFormType extends AbstractType
                 'attr'        => ['autocomplete' => 'new-password'],
                 'label'       => 'password',
                 'constraints' => [
-                    new NotBlank(['message' => 'password.is.required']),
+                    new NotBlank(message: 'password.is.required'),
                     new Length(
                         [
                             'min'        => 10,
