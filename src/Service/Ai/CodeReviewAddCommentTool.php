@@ -5,6 +5,7 @@ namespace DR\Review\Service\Ai;
 
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -68,6 +69,7 @@ class CodeReviewAddCommentTool
         $comment->setReview($review);
         $comment->setMessage($message);
         $comment->setUser($user);
+        $comment->setNotificationStatus(NotificationStatus::all());
         $comment->setCreateTimestamp($this->now()->getTimestamp());
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
 
