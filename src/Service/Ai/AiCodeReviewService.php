@@ -57,11 +57,7 @@ class AiCodeReviewService
             if ($file->binary || $file->isDeleted()) {
                 return false;
             }
-            if (count($file->getLines()) > 500) {
-                return false;
-            }
-
-            return true;
+            return count($file->getLines()) <= 500;
         });
         if (count($files) === 0) {
             $this->logger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
@@ -70,7 +66,7 @@ class AiCodeReviewService
         }
 
         // get the diffs
-        $diff = implode("\n", array_map(fn(DiffFile $file) => $file->raw, $files));
+        $diff = implode("\n", array_map(static fn(DiffFile $file) => $file->raw, $files));
         $message = "CODE_REVIEW_ID: " . $review->getId() . "\n";
 
         $this->logger?->info(

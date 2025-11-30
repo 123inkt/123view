@@ -19,14 +19,14 @@ class CodeReviewGrepTool
     public function __construct(
         #[Target('ai')] private ?LoggerInterface $logger,
         private readonly CodeReviewRepository $repository,
-        private readonly LockableGitGrepService $grepService)
-    {
+        private readonly LockableGitGrepService $grepService
+    ) {
     }
 
     /**
-     * @param int    $codeReviewId The CODE_REVIEW_ID of the review
-     * @param string $pattern      The pattern to search code for. Uses `git grep` internally.
-     * @param int    $context      Show <num> leading and trailing lines, and place a line containing -- between contiguous groups of matches.
+     * @param int $codeReviewId The CODE_REVIEW_ID of the review
+     * @param string $pattern   The pattern to search code for. Uses `git grep` internally.
+     * @param int $context      Show <num> leading and trailing lines, and place a line containing -- between contiguous groups of matches.
      *
      * @return string The as-is output of the git grep command
      * @throws Throwable

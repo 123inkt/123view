@@ -15,10 +15,8 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private readonly CodeReviewRepository $reviewRepository,
-        private readonly AiCodeReviewService $codeReview
-    ) {
+    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly AiCodeReviewService $codeReview)
+    {
     }
 
     /**

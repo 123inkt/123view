@@ -84,5 +84,4 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     {
         return implode(" ", $this->build());
     }
-
 }
