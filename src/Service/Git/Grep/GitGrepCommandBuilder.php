@@ -54,6 +54,9 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
+    /**
+     * Must be properly regex escaped by the caller
+     */
     public function pattern(string $pattern): self
     {
         $this->pattern = $pattern;
@@ -73,7 +76,7 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     {
         $values = array_values($this->arguments);
         if ($this->pattern !== null) {
-            $values[] = $this->pattern;
+            $values[] = escapeshellarg($this->pattern);
         }
         if ($this->hash !== null) {
             $values[] = $this->hash;

@@ -14,7 +14,6 @@ use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\Component\Clock\ClockAwareTrait;
-use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 class AiCodeReviewService
@@ -28,7 +27,7 @@ class AiCodeReviewService
     private const array DISALLOWED_EXTENSIONS = ['lock', 'json'];
 
     public function __construct(
-        #[Target('ai')] private ?LoggerInterface $logger,
+        private ?LoggerInterface $aiLogger,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly CodeReviewRevisionService $revisionService,
         private readonly AgentInterface $agent,
@@ -65,7 +64,7 @@ class AiCodeReviewService
             return count($file->getLines()) <= 500;
         });
         if (count($files) === 0) {
-            $this->logger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
+            $this->aiLogger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
 
             return self::RESULT_NO_FILES;
         }
@@ -74,7 +73,7 @@ class AiCodeReviewService
         $diff = implode("\n", array_map(static fn(DiffFile $file) => $file->raw, $files));
         $message = "CODE_REVIEW_ID: " . $review->getId() . "\n";
 
-        $this->logger?->info(
+        $this->aiLogger?->info(
             'AiCodeReviewService: Starting code review for review {id} with {fileCount} files',
             ['id' => $review->getId(), 'fileCount' => count($files),]
         );
@@ -83,7 +82,7 @@ class AiCodeReviewService
         try {
             $this->agent->call(new MessageBag(Message::ofUser($message . $diff)));
         } catch (Throwable $exception) {
-            $this->logger?->error($exception->getMessage(), ['exception' => $exception]);
+            $this->aiLogger?->error($exception->getMessage(), ['exception' => $exception]);
 
             return self::RESULT_FAILURE;
         }

@@ -11,14 +11,13 @@ use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
-use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 #[AsTool('list_files', 'List the files in the given directory path for the specified code review.')]
 class CodeReviewListFilesTool
 {
     public function __construct(
-        #[Target('ai')] private ?LoggerInterface $logger,
+        private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly LockableLsTreeService $lsTreeService
     ) {
@@ -43,7 +42,7 @@ class CodeReviewListFilesTool
             throw new CodeReviewFileNotFoundException($filepath, $codeReviewId);
         }
 
-        $this->logger?->info(
+        $this->aiLogger?->info(
             'CodeReviewListFilesTool: Listing files in "{filepath}" in review {id}',
             ['id' => $codeReviewId, 'filepath' => $filepath]
         );

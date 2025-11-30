@@ -18,7 +18,6 @@ use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 #[AsTool('add_comment', 'Add a comment to a code review at a specific file and line number. Optionally include a code suggestion.')]
@@ -28,7 +27,7 @@ class CodeReviewAddCommentTool
 
     public function __construct(
         #[Autowire(env: 'AI_COMMENT_USER_ID')] private readonly int $userId,
-        #[Target('ai')] private ?LoggerInterface $logger,
+        private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly UserRepository $userRepository,
         private readonly CommentRepository $commentRepository,
@@ -60,7 +59,7 @@ class CodeReviewAddCommentTool
             $message .= "\n\n```\n" . $codeSuggestion . "\n```";
         }
 
-        $this->logger?->info(
+        $this->aiLogger?->info(
             'CodeReviewAddCommentTool: Adding comment to file "{filepath}" at line {line} in review {id}',
             ['id' => $codeReviewId, 'filepath' => $filepath, 'line' => $lineNumber]
         );

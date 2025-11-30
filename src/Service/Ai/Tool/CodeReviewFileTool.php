@@ -12,13 +12,12 @@ use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
-use Symfony\Component\DependencyInjection\Attribute\Target;
 
 #[AsTool('read_file', 'Reads the contents of a file for the given path and review. Returns the file contents as a string.')]
 class CodeReviewFileTool
 {
     public function __construct(
-        #[Target('ai')] private ?LoggerInterface $logger,
+        private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly LockableGitShowService $gitShowService,
     ) {
@@ -42,7 +41,7 @@ class CodeReviewFileTool
             throw new CodeReviewFileNotFoundException($filepath, $codeReviewId);
         }
 
-        $this->logger?->info('CodeReviewFileTool: Reading file "{filepath}" in review {id}', ['id' => $codeReviewId, 'filepath' => $filepath]);
+        $this->aiLogger?->info('CodeReviewFileTool: Reading file "{filepath}" in review {id}', ['id' => $codeReviewId, 'filepath' => $filepath]);
 
         return $this->gitShowService->getFileContents($revision, $filepath);
     }

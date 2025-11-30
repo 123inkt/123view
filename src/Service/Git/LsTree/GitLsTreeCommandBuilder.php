@@ -61,7 +61,7 @@ class GitLsTreeCommandBuilder implements GitCommandBuilderInterface
 
         if (count($this->files) > 0) {
             $values[] = '--';
-            $values   = array_merge($values, $this->files);
+            $values   = array_merge($values, array_map('escapeshellarg', $this->files));
         }
 
         return $values;
