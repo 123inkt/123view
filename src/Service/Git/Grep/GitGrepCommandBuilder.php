@@ -11,7 +11,6 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     private array $arguments = [];
 
     private ?string $pattern = null;
-    private ?string $hash    = null;
 
     public function __construct(private readonly string $git)
     {
@@ -40,23 +39,23 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
-    public function pattern(string $pattern): self
+    public function context(int $context): self
     {
-        $this->pattern = $pattern;
+        $this->arguments['context'] = '--context ' . $context;
 
         return $this;
     }
 
     public function hash(string $hash): self
     {
-        $this->hash = $hash;
+        $this->arguments['hash'] = $hash;
 
         return $this;
     }
 
-    public function context(int $context): self
+    public function pattern(string $pattern): self
     {
-        $this->arguments['context'] = '--context ' . $context;
+        $this->pattern = $pattern;
 
         return $this;
     }
@@ -73,14 +72,9 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     {
         $values = array_values($this->arguments);
 
-        if ($this->pattern !== null || $this->hash !== null) {
-            $values[] = '--';
-        }
         if ($this->pattern !== null) {
+            $values[] = '--';
             $values[] = $this->pattern;
-        }
-        if ($this->hash !== null) {
-            $values[] = $this->hash;
         }
 
         return $values;
