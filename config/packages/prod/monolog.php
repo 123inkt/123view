@@ -20,12 +20,12 @@ return static function (MonologConfig $monolog) {
         ->maxFiles(10)
         ->channels()->elements(["!event", "!console", "!deprecation"]);
 
-    $monolog->handler('claude')
+    $monolog->handler('ai')
         ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.claude.log')
+        ->path('%kernel.logs_dir%/%kernel.environment%.ai.log')
         ->level('info')
         ->maxFiles(10)
-        ->channels()->elements(["claude"]);
+        ->channels()->elements(["ai"]);
 
     $monolog->handler('error_fingers_crossed')
         ->type('fingers_crossed')

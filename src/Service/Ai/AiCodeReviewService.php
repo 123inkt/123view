@@ -14,6 +14,7 @@ use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\Component\Clock\ClockAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 class AiCodeReviewService
@@ -23,7 +24,7 @@ class AiCodeReviewService
     private const array DISALLOWED_EXTENSIONS = ['lock', 'json'];
 
     public function __construct(
-        private readonly LoggerInterface $claudeLogger,
+        #[Target('ai')] private ?LoggerInterface $logger,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly CodeReviewRevisionService $revisionService,
         private readonly AgentInterface $agent,
@@ -63,7 +64,7 @@ class AiCodeReviewService
             return true;
         });
         if (count($files) === 0) {
-            $this->claudeLogger->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
+            $this->logger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
 
             return;
         }
@@ -72,7 +73,16 @@ class AiCodeReviewService
         $diff = implode("\n", array_map(fn(DiffFile $file) => $file->raw, $files));
         $message = "CODE_REVIEW_ID: " . $review->getId() . "\n";
 
+        $this->logger?->info(
+            'AiCodeReviewService: Starting code review for review {id} with {fileCount} files',
+            ['id' => $review->getId(), 'fileCount' => count($files),]
+        );
+
         // invoke the agent
-        $this->agent->call(new MessageBag(Message::ofUser($message . $diff)));
+        try {
+            $this->agent->call(new MessageBag(Message::ofUser($message . $diff)));
+        } catch (Throwable $exception) {
+            $test = true;
+        }
     }
 }

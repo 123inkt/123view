@@ -8,24 +8,25 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\LsTree\LockableLsTreeService;
 use DR\Utils\Arrays;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 #[AsTool('list_files', 'List the files in the given directory path for the specified code review.')]
-class CodeReviewListFilesTool implements LoggerAwareInterface
+class CodeReviewListFilesTool
 {
-    use LoggerAwareTrait;
-
-    public function __construct(private readonly CodeReviewRepository $repository, private readonly LockableLsTreeService $lsTreeService)
-    {
+    public function __construct(
+        #[Target('ai')] private ?LoggerInterface $logger,
+        private readonly CodeReviewRepository $repository,
+        private readonly LockableLsTreeService $lsTreeService
+    ) {
     }
 
     /**
-     * @param int    $codeReviewId The CODE_REVIEW_ID of the review
-     * @param string $filepath     The path to the file to read. Glob patterns are allowed (e.g. src\/Service\/**\/*.php)
+     * @param int $codeReviewId The CODE_REVIEW_ID of the review
+     * @param string $filepath  The path to the file to read. Glob patterns are allowed (e.g. src\/Service\/**\/*.php)
      *
      * @return string[] List of file paths
      * @throws Throwable
