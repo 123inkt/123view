@@ -56,6 +56,14 @@ class CodeReviewGrepTool
             ['id' => $codeReviewId, 'pattern' => $pattern, 'context' => $context,]
         );
 
-        return $this->grepService->grep($revision, $pattern, $context === 0 ? null : $context);
+        $result = $this->grepService->grep($revision, $pattern, $context === 0 ? null : $context);
+        if ($result === null) {
+            $this->aiLogger?->info(
+                'CodeReviewGrepTool: No results found for pattern "{pattern}" in review {id}',
+                ['pattern' => $pattern, 'id' => $codeReviewId]
+            );
+            return 'No results found';
+        }
+        return $result;
     }
 }

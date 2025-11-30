@@ -7,6 +7,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
 use Exception;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class GitGrepService
 {
@@ -17,7 +18,7 @@ class GitGrepService
     /**
      * @throws Exception
      */
-    public function grep(Revision $revision, string $pattern, ?int $context = null): string
+    public function grep(Revision $revision, string $pattern, ?int $context = null): ?string
     {
         $commandBuilder = $this->builderFactory->createGrep()
             ->pattern($pattern)
@@ -30,6 +31,15 @@ class GitGrepService
             $commandBuilder->context($context);
         }
 
-        return $this->repositoryService->getRepository($revision->getRepository())->execute($commandBuilder);
+        try {
+            return $this->repositoryService->getRepository($revision->getRepository())->execute($commandBuilder);
+        } catch (ProcessFailedException $exception) {
+            // if git grep has no match, will exit with error code
+            $process = $exception->getProcess();
+            if (trim($process->getErrorOutput()) === '' && trim($process->getOutput()) === '') {
+                return null;
+            }
+            throw $exception;
+        }
     }
 }

@@ -16,7 +16,7 @@ class LockableGitGrepService
     /**
      * @throws Exception
      */
-    public function grep(Revision $revision, string $pattern, ?int $context = null): string
+    public function grep(Revision $revision, string $pattern, ?int $context = null): ?string
     {
         return $this->lockManager->start($revision->getRepository(), fn() => $this->grepService->grep($revision, $pattern, $context));
     }
