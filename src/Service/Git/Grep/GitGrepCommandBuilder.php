@@ -10,6 +10,7 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     /** @var array<string, string> */
     private array $arguments = [];
 
+    private ?string $hash    = null;
     private ?string $pattern = null;
 
     public function __construct(private readonly string $git)
@@ -48,7 +49,7 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
 
     public function hash(string $hash): self
     {
-        $this->arguments['hash'] = $hash;
+        $this->hash = $hash;
 
         return $this;
     }
@@ -71,10 +72,11 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     public function build(): array
     {
         $values = array_values($this->arguments);
-
         if ($this->pattern !== null) {
-            $values[] = '--';
             $values[] = $this->pattern;
+        }
+        if ($this->hash !== null) {
+            $values[] = $this->hash;
         }
 
         return $values;
