@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\Ai;
+namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
