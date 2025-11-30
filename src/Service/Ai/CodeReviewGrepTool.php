@@ -7,13 +7,17 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Grep\LockableGitGrepService;
 use DR\Utils\Arrays;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
 use Throwable;
 
 #[AsTool('search', 'Searches for a pattern in the codebase and returns a snippet of the matching lines.')]
-class CodeReviewGrepTool
+class CodeReviewGrepTool implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(private readonly CodeReviewRepository $repository, private readonly LockableGitGrepService $grepService)
     {
     }
@@ -37,6 +41,11 @@ class CodeReviewGrepTool
         if ($revision === null) {
             throw new CodeReviewNotFoundException($codeReviewId);
         }
+
+        $this->logger?->info(
+            'CodeReviewGrepTool: Searching in review {id} for pattern "{pattern}" with context {context}',
+            ['id' => $codeReviewId, 'pattern' => $pattern, 'context' => $context,]
+        );
 
         return $this->grepService->grep($revision, $pattern, $context === 0 ? null : $context);
     }

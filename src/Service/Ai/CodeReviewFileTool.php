@@ -9,12 +9,16 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Utils\Arrays;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
 
 #[AsTool('read_file', 'Reads the contents of a file for the given path and review. Returns the file contents as a string.')]
-class CodeReviewFileTool
+class CodeReviewFileTool implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly CodeReviewRepository $repository,
         private readonly LockableGitShowService $gitShowService,
@@ -38,6 +42,8 @@ class CodeReviewFileTool
         if ($revision === null) {
             throw new CodeReviewFileNotFoundException($filepath, $codeReviewId);
         }
+
+        $this->logger?->info('CodeReviewFileTool: Reading file "{filepath}" in review {id}', ['id' => $codeReviewId, 'filepath' => $filepath]);
 
         return $this->gitShowService->getFileContents($revision, $filepath);
     }
