@@ -2041,16 +2041,16 @@
         },
         {
             "name": "fdekker/log-viewer-bundle",
-            "version": "v2.2.0",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/symfony-log-viewer-bundle.git",
-                "reference": "8062dd6671c4e03f4d33759599caba5b62ca135c"
+                "reference": "e10b1d2d47c9470eb747fdc3443d23a66403a533"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/8062dd6671c4e03f4d33759599caba5b62ca135c",
-                "reference": "8062dd6671c4e03f4d33759599caba5b62ca135c",
+                "url": "https://api.github.com/repos/frankdekker/symfony-log-viewer-bundle/zipball/e10b1d2d47c9470eb747fdc3443d23a66403a533",
+                "reference": "e10b1d2d47c9470eb747fdc3443d23a66403a533",
                 "shasum": ""
             },
             "require": {
@@ -2079,7 +2079,7 @@
                 "phpstan/phpstan-symfony": "^2.0",
                 "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0",
                 "roave/security-advisories": "dev-latest",
-                "squizlabs/php_codesniffer": "^3.6",
+                "squizlabs/php_codesniffer": "^4.0",
                 "symfony/browser-kit": "^6.0||^7.0",
                 "symfony/console": "^6.0||^7.0",
                 "symfony/css-selector": "^6.0||^7.0",
@@ -2125,9 +2125,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frankdekker/symfony-log-viewer-bundle/issues",
-                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v2.2.0"
+                "source": "https://github.com/frankdekker/symfony-log-viewer-bundle/tree/v2.4.0"
             },
-            "time": "2025-06-19T18:43:13+00:00"
+            "time": "2025-11-16T21:16:00+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -15793,5 +15793,5 @@
         "ext-zlib": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
