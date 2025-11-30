@@ -33,7 +33,7 @@ class AiCodeReviewService
     /**
      * @throws Throwable
      */
-    public function requestCodeReview(CodeReview $review): void
+    public function startCodeReview(CodeReview $review): void
     {
         // gather revisions
         $revisions = $this->revisionService->getRevisions($review);

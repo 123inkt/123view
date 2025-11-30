@@ -34,6 +34,6 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $this->codeReview->requestCodeReview($review);
+        $this->codeReview->startCodeReview($review);
     }
 }
