@@ -36,7 +36,6 @@ class GitFetchService implements LoggerAwareInterface
         $fetchCommand = $this->commandFactory->createFetch()->prune()->verbose()->noTags()->all();
 
         $output = $gitRepository->execute($fetchCommand, true);
-        $this->logger?->info('GitFetchService: git fetch command output `{output}`', ['output' => $output]);
 
         // parse branch updates
         $changes = $this->parser->parse($output);

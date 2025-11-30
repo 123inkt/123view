@@ -8,14 +8,10 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class GitCheckoutService implements LoggerAwareInterface
+class GitCheckoutService
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
@@ -30,9 +26,7 @@ class GitCheckoutService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createCheckout()->startPoint($ref);
 
         // create branch
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 
     /**
@@ -50,11 +44,7 @@ class GitCheckoutService implements LoggerAwareInterface
             ->startPoint($revision->getCommitHash() . '~');
 
         // checkout revisions
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        if ($output !== '') {
-            $this->logger?->info($output);
-        }
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         return $branchName;
     }
