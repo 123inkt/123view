@@ -6,6 +6,7 @@ namespace DR\Review\Service\Git\LsTree;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
+use DR\Utils\Assert;
 use Exception;
 
 class LsTreeService
@@ -29,7 +30,7 @@ class LsTreeService
 
         if ($glob) {
             // scan all files up to the glob pattern
-            $commandBuilder->file(substr($filepath, 0, strpos($filepath, '*')));
+            $commandBuilder->file(substr($filepath, 0, Assert::notFalse(strpos($filepath, '*'))));
             $commandBuilder->recursive();
         } else {
             $commandBuilder->file($filepath);

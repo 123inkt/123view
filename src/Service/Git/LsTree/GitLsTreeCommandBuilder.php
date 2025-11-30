@@ -42,7 +42,7 @@ class GitLsTreeCommandBuilder implements GitCommandBuilderInterface
 
     public function file(string ...$filepaths): self
     {
-        $this->files = array_filter($filepaths, fn(string $filepath) => trim($filepath) !== '');
+        $this->files = array_values(array_filter($filepaths, fn(string $filepath) => trim($filepath) !== ''));
 
         return $this;
     }

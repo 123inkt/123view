@@ -33,7 +33,7 @@ class CodeReviewFileService
         $cacheKey = $this->getReviewCacheKey($review, $revisions, $diffOptions);
 
         $cacheItem = $this->revisionCache->getItem($cacheKey);
-        if (false && $cacheItem->isHit()) {
+        if ($cacheItem->isHit()) {
             /** @var DirectoryTreeNode<DiffFile> $fileTree */
             $fileTree = $cacheItem->get();
             $files    = $fileTree->getFilesRecursive();
