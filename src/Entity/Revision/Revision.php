@@ -14,6 +14,7 @@ use DR\Review\Repository\Revision\RevisionRepository;
 #[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
 #[ORM\Index(name: 'create_timestamp_idx', columns: ['create_timestamp'])]
 #[ORM\Index(name: 'first_branch_repository_idx', columns: ['first_branch', 'repository_id'])]
+#[ORM\Index(name: 'parent_hash', columns: ['parent_hash'])]
 class Revision
 {
     #[ORM\Id]
