@@ -7,6 +7,9 @@ use DR\Review\Message\AsyncMessageInterface;
 
 class SortRevisionMessage implements AsyncMessageInterface
 {
+    /**
+     * @codeCoverageIgnore Simple DTO
+     */
     public function __construct(public readonly int $revisionId)
     {
     }
