@@ -14,6 +14,11 @@ final class Version20251202213700 extends AbstractMigration
         return 'Add parent hash column with index';
     }
 
+    public function isTransactional(): bool
+    {
+        return true;
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE revision ADD parent_hash VARCHAR(50) DEFAULT NULL after commit_hash');
