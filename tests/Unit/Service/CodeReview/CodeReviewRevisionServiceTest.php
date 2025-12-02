@@ -11,6 +11,7 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\RevList\CacheableGitRevListService;
+use DR\Review\Service\Revision\RevisionSorter;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,6 +21,7 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
 {
     private CacheableGitRevListService&MockObject $revListService;
     private RevisionRepository&MockObject         $revisionRepository;
+    private RevisionSorter&MockObject             $revisionSorter;
     private CodeReviewRevisionService             $service;
 
     protected function setUp(): void
@@ -27,7 +29,8 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
         parent::setUp();
         $this->revListService     = $this->createMock(CacheableGitRevListService::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $this->service            = new CodeReviewRevisionService($this->revListService, $this->revisionRepository);
+        $this->revisionSorter     = $this->createMock(RevisionSorter::class);
+        $this->service            = new CodeReviewRevisionService($this->revListService, $this->revisionRepository, $this->revisionSorter);
     }
 
     public function testGetRevisionsCommitsReview(): void
@@ -36,6 +39,8 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
         $review   = new CodeReview();
         $review->setType(CodeReviewType::COMMITS);
         $review->getRevisions()->add($revision);
+
+        $this->revisionSorter->expects($this->once())->method('sort')->willReturnArgument(0);
 
         static::assertSame([$revision], $this->service->getRevisions($review));
     }
@@ -57,6 +62,7 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
             ->method('findBy')
             ->with(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'ASC'])
             ->willReturn([$revision]);
+        $this->revisionSorter->expects($this->once())->method('sort')->willReturnArgument(0);
 
         // invoke twice, second call _should_ be the internally stored hit
         static::assertSame([456 => $revision], $this->service->getRevisions($review));
