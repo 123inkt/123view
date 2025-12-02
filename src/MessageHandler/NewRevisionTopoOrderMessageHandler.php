@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler;
 
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Revision\RevisionRepository;
 use Psr\Log\LoggerAwareInterface;
@@ -32,7 +33,24 @@ class NewRevisionTopoOrderMessageHandler implements LoggerAwareInterface
         }
 
         // find revisions in topo order
-        $this->revisionRepository->findBy(['commitHash' => $revision->]);
+        if ($revision->getParentHash() !== null) {
+            $parents = $this->revisionRepository->findBy(['repository' => $revision->getRepository(), 'commitHash' => $revision->getParentHash()]);
+        }
+
+        $children = $this->revisionRepository->findBy(['repository' => $revision->getRepository(), 'parentHash' => $revision->getCommitHash()]);
+
+
+    }
+
+    private function updateRevisionOrder(Revision $parentRev, Revision $childRev): void
+    {
+        if ($parentRev->getCreateTimestamp() > $childRev->getCreateTimestamp()) {
+            $childTimestamp = $parentRev->getCreateTimestamp() + 1;
+            $parentTimestamp = $childRev->getCreateTimestamp() - 1;
+        } else {
+            $childTimestamp = $childRev->getCreateTimestamp();
+            $parentTimestamp = $parentRev->getCreateTimestamp();
+        }
 
     }
 }
