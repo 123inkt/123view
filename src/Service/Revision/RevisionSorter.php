@@ -25,7 +25,7 @@ class RevisionSorter
                     return $left->getCreateTimestamp() <=> $right->getCreateTimestamp();
                 }
 
-                return strcmp($left->getSort(), $right->getSort());
+                return strcmp($left->getSort() ?? '', $right->getSort() ?? '');
             }
         );
 

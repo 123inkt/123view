@@ -19,10 +19,8 @@ class RevisionTopoOrderMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private readonly RevisionRepository $revisionRepository,
-        private readonly EntityManagerInterface $doctrine
-    ) {
+    public function __construct(private readonly RevisionRepository $revisionRepository, private readonly EntityManagerInterface $doctrine)
+    {
     }
 
     /**
@@ -71,9 +69,11 @@ class RevisionTopoOrderMessageHandler implements LoggerAwareInterface
             $parentRev->setSort(UuidV7::generate((new DateTimeImmutable())->setTimestamp($parentRev->getCreateTimestamp())));
             $this->revisionRepository->save($parentRev);
         }
-        if ($childRev->getSort() === null) {
-            $childRev->setSort(UuidV7::generate((new DateTimeImmutable())->setTimestamp($childTimestamp)));
-            $this->revisionRepository->save($childRev);
+        if ($childRev->getSort() !== null) {
+            return;
         }
+
+        $childRev->setSort(UuidV7::generate((new DateTimeImmutable())->setTimestamp($childTimestamp)));
+        $this->revisionRepository->save($childRev);
     }
 }
