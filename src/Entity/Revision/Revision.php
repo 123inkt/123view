@@ -24,6 +24,9 @@ class Revision
     #[ORM\Column(length: 50)]
     private string $commitHash;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $parentHash = null;
+
     #[ORM\Column(length: 255)]
     private string $title;
 
@@ -78,6 +81,18 @@ class Revision
     public function setCommitHash(string $commitHash): self
     {
         $this->commitHash = $commitHash;
+
+        return $this;
+    }
+
+    public function getParentHash(): ?string
+    {
+        return $this->parentHash;
+    }
+
+    public function setParentHash(?string $parentHash): self
+    {
+        $this->parentHash = $parentHash;
 
         return $this;
     }
