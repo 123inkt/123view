@@ -9,11 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Utils\Assert;
 
 #[ORM\Entity(repositoryClass: RevisionRepository::class)]
 #[ORM\UniqueConstraint(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
 #[ORM\Index(name: 'create_timestamp_idx', columns: ['create_timestamp'])]
 #[ORM\Index(name: 'first_branch_repository_idx', columns: ['first_branch', 'repository_id'])]
+#[ORM\Index(name: 'repository_parent_hash', columns: ['repository_id', 'parent_hash'])]
+#[ORM\Index(name: 'sort_timestamp', columns: ['sort', 'create_timestamp'])]
 class Revision
 {
     #[ORM\Id]
@@ -23,6 +26,9 @@ class Revision
 
     #[ORM\Column(length: 50)]
     private string $commitHash;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $parentHash = null;
 
     #[ORM\Column(length: 255)]
     private string $title;
@@ -41,6 +47,9 @@ class Revision
 
     #[ORM\Column]
     private int $createTimestamp;
+
+    #[ORM\Column(type: 'binary', length: 16, nullable: true)]
+    private ?string $sort = null;
 
     #[ORM\ManyToOne(targetEntity: Repository::class, cascade: ['persist'], inversedBy: 'revisions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -78,6 +87,18 @@ class Revision
     public function setCommitHash(string $commitHash): self
     {
         $this->commitHash = $commitHash;
+
+        return $this;
+    }
+
+    public function getParentHash(): ?string
+    {
+        return $this->parentHash;
+    }
+
+    public function setParentHash(?string $parentHash): self
+    {
+        $this->parentHash = $parentHash;
 
         return $this;
     }
@@ -150,6 +171,24 @@ class Revision
     public function setCreateTimestamp(int $createTimestamp): self
     {
         $this->createTimestamp = $createTimestamp;
+
+        return $this;
+    }
+
+    public function getSort(): ?string
+    {
+        if ($this->sort === null) {
+            return null;
+        }
+
+        $hex = Assert::string(Assert::notFalse(unpack("H*", $this->sort))[1]);
+
+        return preg_replace('/([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})/', '$1-$2-$3-$4-$5', $hex);
+    }
+
+    public function setSort(?string $sort): Revision
+    {
+        $this->sort = $sort === null ? null : pack("H*", str_replace('-', '', $sort));
 
         return $this;
     }
