@@ -152,7 +152,7 @@ class RevisionTopoOrderMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository->expects($this->exactly(4))->method('save');
         $this->revisionRepository->expects($this->exactly(2))
             ->method('findBy')
-            ->willReturnCallback(fn(array $criteria) => match ($criteria) {
+            ->willReturnCallback(static fn(array $criteria) => match ($criteria) {
                 ['repository' => $repository, 'commitHash' => 'parent123'] => [$parentRevision],
                 ['repository' => $repository, 'parentHash' => 'abc123']    => [$childRevision],
                 default                                                    => []
