@@ -11,6 +11,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(RevisionSorter::class)]
 class RevisionSorterTest extends AbstractTestCase
 {
+    public function testSortEmptyArray(): void
+    {
+        $sorter = new RevisionSorter();
+        $result = $sorter->sort([]);
+        static::assertSame([], $result);
+    }
+
     public function testSortByTimestamp(): void
     {
         $revisionA = (new Revision())->setCreateTimestamp(300);
