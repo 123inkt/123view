@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Revision\NewRevisionMessage;
+use DR\Review\Message\Revision\SortRevisionMessage;
 use DR\Review\Repository\Revision\RevisionRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -14,7 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\UuidV7;
 use Throwable;
 
-class NewRevisionTopoOrderMessageHandler implements LoggerAwareInterface
+class RevisionTopoOrderMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -28,9 +29,9 @@ class NewRevisionTopoOrderMessageHandler implements LoggerAwareInterface
      * @throws Throwable
      */
     #[AsMessageHandler(fromTransport: 'async_messages')]
-    public function __invoke(NewRevisionMessage $message): void
+    public function __invoke(NewRevisionMessage|SortRevisionMessage $message): void
     {
-        $this->logger?->info("NewRevisionTopoOrderMessageHandler: revision: " . $message->revisionId);
+        $this->logger?->info("RevisionTopoOrderMessageHandler: revision: " . $message->revisionId);
         $revision = $this->revisionRepository->find($message->revisionId);
         if ($revision === null) {
             return;
