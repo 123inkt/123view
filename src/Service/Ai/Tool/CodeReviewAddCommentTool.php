@@ -11,6 +11,7 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
@@ -31,6 +32,7 @@ class CodeReviewAddCommentTool
         private readonly CodeReviewRepository $repository,
         private readonly UserRepository $userRepository,
         private readonly CommentRepository $commentRepository,
+        private readonly CodeReviewRevisionService $reviewRevisionService
     ) {
     }
 
@@ -59,13 +61,16 @@ class CodeReviewAddCommentTool
             $message .= "\n\n```\n" . $codeSuggestion . "\n```";
         }
 
+        // replace kiss icon with regular bold emphasize
+        $message = str_replace(':**', '**', $message);
+
         $this->aiLogger?->info(
             'CodeReviewAddCommentTool: Adding comment to file "{filepath}" at line {line} in review {id}',
             ['id' => $codeReviewId, 'filepath' => $filepath, 'line' => $lineNumber]
         );
 
         /** @var Revision $revision */
-        $revision = Arrays::last($review->getRevisions());
+        $revision = Arrays::last($this->reviewRevisionService->getRevisions($review));
 
         $user = Assert::notNull($this->userRepository->find($this->userId));
 
