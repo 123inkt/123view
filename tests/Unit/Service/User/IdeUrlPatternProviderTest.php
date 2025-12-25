@@ -27,7 +27,7 @@ class IdeUrlPatternProviderTest extends AbstractTestCase
     public function testGetUrlWithoutUser(): void
     {
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(null);
-        self::assertSame('url-pattern', $this->provider->getUrl());
+        static::assertSame('url-pattern', $this->provider->getUrl());
     }
 
     public function testGetUrlWithUser(): void
@@ -36,6 +36,6 @@ class IdeUrlPatternProviderTest extends AbstractTestCase
         $user    = (new User())->setSetting($setting);
 
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn($user);
-        self::assertSame('user-ide-url', $this->provider->getUrl());
+        static::assertSame('user-ide-url', $this->provider->getUrl());
     }
 }

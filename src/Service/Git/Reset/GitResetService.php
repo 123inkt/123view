@@ -31,9 +31,7 @@ class GitResetService implements LoggerAwareInterface
         }
 
         // hard reset repository
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 
     /**
@@ -47,8 +45,6 @@ class GitResetService implements LoggerAwareInterface
         }
 
         // soft reset repository
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 }

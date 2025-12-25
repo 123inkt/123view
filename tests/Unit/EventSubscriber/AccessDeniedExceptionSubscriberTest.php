@@ -42,7 +42,7 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 
     public function testOnKernelExceptionOnlyAcceptAccessDeniedException(): void
     {
-        $this->urlGenerator->expects(self::never())->method('generate');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $event = new ExceptionEvent(
             $this->createMock(HttpKernelInterface::class),
@@ -55,7 +55,7 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 
     public function testOnKernelExceptionShouldSkipApiCalls(): void
     {
-        $this->urlGenerator->expects(self::never())->method('generate');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $event = new ExceptionEvent(
             $this->createMock(HttpKernelInterface::class),

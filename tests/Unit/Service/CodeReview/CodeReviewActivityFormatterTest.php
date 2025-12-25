@@ -62,8 +62,8 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with(...consecutive(['you'], ['timeline.review.accepted']))
             ->willReturnArgument(0);
-        $this->userRepository->expects(self::never())->method('find');
-        $this->revisionRepository->expects(self::never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         $this->formatter->format($activity, $user);
     }
@@ -83,7 +83,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->with('timeline.reviewer.added.by')
             ->willReturnArgument(0);
         $this->userRepository->expects($this->once())->method('find')->with(789)->willReturn($reviewerUser);
-        $this->revisionRepository->expects(self::never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         $this->formatter->format($activity, $user);
     }
@@ -101,8 +101,8 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.reviewer.accepted', ['username' => 'user'])
             ->willReturnArgument(0);
-        $this->userRepository->expects(self::never())->method('find');
-        $this->revisionRepository->expects(self::never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         $this->formatter->format($activity, $user);
     }
@@ -124,7 +124,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.review.revision.added', ['username' => 'app', 'revision' => 'hash - title'])
             ->willReturnArgument(0);
-        $this->userRepository->expects(self::never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
         $this->revisionRepository->expects($this->once())->method('find')->with(789)->willReturn($revision);
 
         $this->formatter->format($activity, $user);
@@ -143,7 +143,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.review.revision.added', ['username' => 'app', 'revision' => 'title'])
             ->willReturnArgument(0);
-        $this->userRepository->expects(self::never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
         $this->revisionRepository->expects($this->once())->method('find')->with(789)->willReturn(null);
 
         $this->formatter->format($activity, $user);
@@ -219,9 +219,9 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity = new CodeReviewActivity();
         $activity->setEventName('foobar');
 
-        $this->translator->expects(self::never())->method('trans');
-        $this->userRepository->expects(self::never())->method('find');
-        $this->revisionRepository->expects(self::never())->method('find');
+        $this->translator->expects($this->never())->method('trans');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         static::assertNull($this->formatter->format($activity, $user));
     }

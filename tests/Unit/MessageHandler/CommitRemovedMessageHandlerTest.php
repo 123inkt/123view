@@ -57,7 +57,7 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
 
         $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
         $this->revisionRepository->expects($this->once())->method('findOneBy')->with(['commitHash' => 'hash', 'repository' => 123])->willReturn(null);
-        $this->revisionRepository->expects(self::never())->method('remove');
+        $this->revisionRepository->expects($this->never())->method('remove');
 
         ($this->messageHandler)(new CommitRemovedMessage(123, 'hash'));
     }
@@ -110,8 +110,8 @@ class CommitRemovedMessageHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['commitHash' => 'hash', 'repository' => 123])
             ->willReturn($revision);
-        $this->reviewRepository->expects(self::never())->method('save');
-        $this->eventService->expects(self::never())->method('revisionRemovedFromReview');
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->eventService->expects($this->never())->method('revisionRemovedFromReview');
         $this->visibilityRepository->expects($this->once())->method('findBy')->willReturn([]);
         $this->visibilityRepository->expects($this->once())->method('removeAll')->with([]);
         $this->revisionRepository->expects($this->once())->method('remove')->with($revision, true);

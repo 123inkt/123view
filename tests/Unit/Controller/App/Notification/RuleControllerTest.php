@@ -88,7 +88,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->createViewWillReturn($formView);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::never())->method('save');
+        $this->ruleRepository->expects($this->never())->method('save');
 
         $response = ($this->controller)($request, $rule);
         static::assertIsArray($response);

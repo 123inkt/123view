@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview\Activity;
 
 use DR\Review\Entity\Review\CodeReviewActivity;
+use DR\Review\Model\Mercure\UpdateMessage;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\Mercure\MessagePublisher;
 use DR\Utils\Assert;
-use Nette\Utils\Json;
+use League\Uri\Http;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 use Throwable;
 
 class CodeReviewActivityPublisher implements LoggerAwareInterface
@@ -21,7 +21,7 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
         private readonly CodeReviewActivityFormatter $activityFormatter,
         private readonly UserRepository $userRepository,
         private readonly CodeReviewActivityUrlGenerator $urlGenerator,
-        private readonly HubInterface $mercureHub
+        private readonly MessagePublisher $messagePublisher
     ) {
     }
 
@@ -40,36 +40,32 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
         $userId     = (int)$activity->getUser()?->getId();
 
         // create the payload
-        $payload = [
-            'eventId'   => $activity->getId(),
-            'userId'    => $userId,
-            'reviewId'  => $review->getId(),
-            'eventName' => $activity->getEventName(),
-            'title'     => sprintf(
+        $updateMessage = new UpdateMessage(
+            (int)$activity->getId(),
+            $userId,
+            (int)$review->getId(),
+            $activity->getEventName(),
+            sprintf(
                 'CR-%s - %s - %s',
                 $review->getProjectId(),
                 $repository->getDisplayName(),
                 mb_substr((string)$review->getTitle(), 0, 100)
             ),
-            'message'   => $message,
-            'url'       => $this->urlGenerator->generate($activity)
-        ];
+            $message,
+            Http::new($this->urlGenerator->generate($activity))
+        );
 
-        // gather topics
-        $topics = [sprintf('/review/%d', $review->getId())];
+        $this->messagePublisher->publishToReview($updateMessage, $review);
+
+        $users = [];
         if (count($review->getActors()) > 0) {
             foreach ($this->userRepository->findBy(['id' => $review->getActors()]) as $actor) {
                 if ($actor->getId() !== $userId && $actor->getSetting()->hasBrowserNotificationEvent($activity->getEventName())) {
-                    $topics[] = sprintf('/user/%d', (int)$actor->getId());
+                    $users[] = $actor;
                 }
             }
         }
 
-        foreach ($topics as $topic) {
-            $this->logger?->info('Mercure publish: `' . $topic . '` with message: ' . $message);
-
-            // publish to mercure
-            $this->mercureHub->publish(new Update($topic, Json::encode(['topic' => $topic] + $payload), true));
-        }
+        $this->messagePublisher->publishToUsers($updateMessage, $users);
     }
 }

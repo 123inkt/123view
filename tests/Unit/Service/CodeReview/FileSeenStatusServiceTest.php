@@ -38,7 +38,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $user   = new User();
 
-        $this->statusRepository->expects(self::never())->method('save');
+        $this->statusRepository->expects($this->never())->method('save');
         $this->service->markAsSeen($review, $user, null);
     }
 
@@ -69,18 +69,18 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $user   = new User();
 
-        $this->statusRepository->expects(self::never())->method('remove');
+        $this->statusRepository->expects($this->never())->method('remove');
         $this->service->markAsUnseen($review, $user, null);
     }
 
     public function testMarkAsUnseenNonExistingFile(): void
     {
-        $review   = new CodeReview();
+        $review   = (new CodeReview())->setId(123);
         $user     = (new User())->setId(789);
         $filepath = 'filepath';
 
         $this->statusRepository->expects($this->once())->method('findOneBy')->willReturn(null);
-        $this->statusRepository->expects(self::never())->method('remove');
+        $this->statusRepository->expects($this->never())->method('remove');
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 

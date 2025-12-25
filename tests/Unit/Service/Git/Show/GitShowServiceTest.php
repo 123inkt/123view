@@ -100,7 +100,7 @@ class GitShowServiceTest extends AbstractTestCase
         $gitRepository  = $this->createMock(GitRepository::class);
 
         $commandBuilder->expects($this->once())->method('file')->with('hash', 'file')->willReturnSelf();
-        $commandBuilder->expects(self::never())->method('base64encode');
+        $commandBuilder->expects($this->never())->method('base64encode');
         $this->builderFactory->expects($this->once())->method('createShow')->willReturn($commandBuilder);
 
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);

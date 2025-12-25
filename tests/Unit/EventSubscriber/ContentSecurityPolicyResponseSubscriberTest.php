@@ -37,7 +37,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
         $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, $this->ideUrlPatternProvider);
 
-        $this->ideUrlPatternProvider->expects(self::never())->method('getUrl');
+        $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');
 
         $subscriber->onResponse($event);
 
@@ -67,7 +67,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
         $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
         $subscriber = new ContentSecurityPolicyResponseSubscriber('host', false, $this->ideUrlPatternProvider);
 
-        $this->ideUrlPatternProvider->expects(self::never())->method('getUrl');
+        $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');
 
         $subscriber->onResponse($event);
 

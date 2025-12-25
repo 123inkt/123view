@@ -115,7 +115,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     {
         $request = new Request(['state' => '{"next":"https://foo/bar/"}']);
         $url     = 'https://foo/bar/';
-        $this->urlGenerator->expects(self::never())->method('generate');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $result = $this->authenticator->onAuthenticationSuccess($request, new TestBrowserToken([Roles::ROLE_USER]), 'main');
         $expect = new RedirectResponse($url);

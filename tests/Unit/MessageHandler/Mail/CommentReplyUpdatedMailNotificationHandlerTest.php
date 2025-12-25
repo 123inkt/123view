@@ -80,7 +80,7 @@ class CommentReplyUpdatedMailNotificationHandlerTest extends AbstractTestCase
             ->method('getMentionedUsers')
             ->with(...consecutive(['comment2'], ['comment1']))
             ->willReturn([$user], [$user]);
-        $this->mailService->expects(self::never())->method('sendNewCommentReplyMail');
+        $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
 
         $this->handler->handle(new CommentReplyUpdated(5, 123, 456, 'comment1'));
     }

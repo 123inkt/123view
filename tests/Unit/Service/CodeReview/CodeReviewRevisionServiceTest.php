@@ -83,7 +83,7 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
         $this->revListService->expects($this->once())->method('getCommitsAheadOf')
             ->with($repository, 'branch_name')
             ->willThrowException(new RepositoryException());
-        $this->revisionRepository->expects(self::never())->method('findBy');
+        $this->revisionRepository->expects($this->never())->method('findBy');
 
         static::assertSame([], $this->service->getRevisions($review));
     }

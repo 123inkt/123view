@@ -42,7 +42,7 @@ class GitBranchServiceTest extends AbstractTestCase
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
         $builder->expects($this->once())->method('remote')->willReturnSelf();
-        $builder->expects(self::never())->method('merged');
+        $builder->expects($this->never())->method('merged');
         $this->builderFactory->expects($this->once())->method('createBranch')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);

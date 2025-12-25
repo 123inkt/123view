@@ -74,7 +74,7 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
 
     public function file(string $hash, string $filePath): self
     {
-        $this->arguments['file'] = sprintf('%s:%s', $hash, $filePath);
+        $this->arguments['file'] = escapeshellarg(sprintf('%s:%s', $hash, $filePath));
 
         return $this;
     }

@@ -50,7 +50,7 @@ class GitlabRemoteEventConsumerTest extends AbstractTestCase
         $event = new GitlabRemoteEvent('name', 'id', ['payload']);
 
         $this->denormalizer->expects($this->once())->method('denormalize')->with('name', ['payload'])->willReturn(null);
-        $this->eventHandler->expects(self::never())->method('handle');
+        $this->eventHandler->expects($this->never())->method('handle');
 
         $this->eventConsumer->consume($event);
     }

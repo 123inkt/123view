@@ -53,7 +53,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
     {
         $event = $this->createMock(CodeReviewAwareInterface::class);
 
-        $this->activityRepository->expects(self::never())->method('save');
+        $this->activityRepository->expects($this->never())->method('save');
         ($this->messageHandler)($event);
     }
 

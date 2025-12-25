@@ -52,7 +52,7 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
             ->method('findBy')
             ->with(['user' => $this->user, 'active' => true], ['name' => 'ASC'], 100)
             ->willReturn([]);
-        $this->notificationRepository->expects(self::never())->method('findBy');
+        $this->notificationRepository->expects($this->never())->method('findBy');
 
         $expected = new RuleNotificationViewModel(null, [], [], [], false);
         static::assertEquals($expected, $this->viewModelProvider->getNotificationsViewModel(null, false));

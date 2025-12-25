@@ -68,7 +68,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
 
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(false);
-        $this->reviewRevisionMatcher->expects(self::never())->method('match');
+        $this->reviewRevisionMatcher->expects($this->never())->method('match');
 
         ($this->messageHandler)($message);
     }

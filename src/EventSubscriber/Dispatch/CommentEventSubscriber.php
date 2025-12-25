@@ -46,7 +46,7 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentAdded(Comment $comment): void
     {
-        $this->events[] = $this->messageFactory->createAdded($comment, $this->getUser($comment));
+        $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
     }
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void

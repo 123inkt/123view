@@ -145,8 +145,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 
         $this->activityRepository->expects($this->once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
         $this->activityFormatter->expects($this->once())->method('format')->with($activity, $user)->willReturn(null);
-        $this->commentProvider->expects(self::never())->method('getCommentFor');
-        $this->urlGenerator->expects(self::never())->method('generate');
+        $this->commentProvider->expects($this->never())->method('getCommentFor');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(0, $viewModel->entries);

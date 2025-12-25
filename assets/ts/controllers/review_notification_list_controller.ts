@@ -16,7 +16,9 @@ export default class extends Controller {
         'comment-resolved',
         'comment-added',
         'comment-removed',
-        'comment-reply-added'
+        'comment-reply-added',
+        'request-ai-review',
+        'ai-review-completed',
     ];
 
     public connect(): void {

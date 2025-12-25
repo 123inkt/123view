@@ -80,7 +80,7 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output, $options?->comparePolicy);
+        return $this->parser->parse($output, $options?->comparePolicy, $options->includeRaw ?? false);
     }
 
     /**
@@ -106,7 +106,7 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output, $options?->comparePolicy);
+        return $this->parser->parse($output, $options?->comparePolicy, $options->includeRaw ?? false);
     }
 
     /**
@@ -136,7 +136,7 @@ class GitDiffService implements LoggerAwareInterface
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
 
         // parse files
-        return $this->parser->parse($output, $options?->comparePolicy);
+        return $this->parser->parse($output, $options?->comparePolicy, $options->includeRaw ?? false);
     }
 
     /**

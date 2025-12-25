@@ -326,6 +326,18 @@
             "./phpcs.xml.dist"
         ]
     },
+    "symfony/ai-bundle": {
+        "version": "0.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "39bb71a39860be3a261f5b527ed57e952366943d"
+        },
+        "files": [
+            "./config/packages/ai.yaml"
+        ]
+    },
     "symfony/browser-kit": {
         "version": "v6.0.3"
     },

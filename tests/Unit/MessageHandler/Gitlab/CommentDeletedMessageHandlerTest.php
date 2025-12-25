@@ -49,7 +49,7 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeSkipIfDisabled(): void
     {
-        $this->reviewRepository->expects(self::never())->method('find');
+        $this->reviewRepository->expects($this->never())->method('find');
 
         $handler = new CommentDeletedMessageHandler(
             false,

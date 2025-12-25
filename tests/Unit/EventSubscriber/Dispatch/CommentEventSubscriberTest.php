@@ -40,10 +40,10 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentAdded(): void
     {
         $user    = (new User())->setId(345);
-        $comment = (new Comment())->setId(123);
+        $comment = (new Comment())->setId(123)->setUser($user);
         $event   = $this->createMock(CommentAdded::class);
 
-        $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn($user);
+        $this->userEntityProvider->expects($this->never())->method('getUser');
         $this->messageFactory->expects($this->once())->method('createAdded')->with($comment, $user)->willReturn($event);
         $this->bus->expects($this->once())->method('dispatch')->with($event)->willReturn($this->envelope);
 
@@ -56,9 +56,9 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentUpdatedNoChanges(): void
     {
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(new User());
-        $this->messageFactory->expects(self::never())->method('createUpdated');
-        $this->messageFactory->expects(self::never())->method('createResolved');
-        $this->messageFactory->expects(self::never())->method('createUnresolved');
+        $this->messageFactory->expects($this->never())->method('createUpdated');
+        $this->messageFactory->expects($this->never())->method('createResolved');
+        $this->messageFactory->expects($this->never())->method('createUnresolved');
 
         $this->eventSubscriber->commentUpdated((new Comment())->setId(123));
     }
@@ -70,9 +70,9 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $comment = (new Comment())->setId(123);
 
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(new User());
-        $this->messageFactory->expects(self::never())->method('createUpdated');
-        $this->messageFactory->expects(self::never())->method('createResolved');
-        $this->messageFactory->expects(self::never())->method('createUnresolved');
+        $this->messageFactory->expects($this->never())->method('createUpdated');
+        $this->messageFactory->expects($this->never())->method('createResolved');
+        $this->messageFactory->expects($this->never())->method('createUnresolved');
 
         $this->eventSubscriber->preCommentUpdated($comment, $event);
         $this->eventSubscriber->commentUpdated($comment);
@@ -101,7 +101,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $event->method('getEntityChangeSet')->willReturn(['state' => ['before', 'after']]);
 
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn($user);
-        $this->messageFactory->expects(self::never())->method('createUpdated');
+        $this->messageFactory->expects($this->never())->method('createUpdated');
         $this->messageFactory->expects($this->once())->method('createUnresolved')->with($comment, $user);
 
         $this->eventSubscriber->preCommentUpdated($comment, $event);
@@ -123,7 +123,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
     {
         $comment = (new Comment())->setId(123)->setUser(new User());
 
-        $this->messageFactory->expects(self::never())->method('createRemoved');
+        $this->messageFactory->expects($this->never())->method('createRemoved');
 
         $this->eventSubscriber->commentRemoved($comment);
     }

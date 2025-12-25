@@ -50,7 +50,7 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeSkipIfDisabled(): void
     {
-        $this->commentRepository->expects(self::never())->method('find');
+        $this->commentRepository->expects($this->never())->method('find');
 
         $handler = new CommentAddedMessageHandler(
             false,
@@ -128,7 +128,7 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
         $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(12345);
         $this->commentService->expects($this->once())->method('create')->with($api, $comment, 12345);
-        $this->commentService->expects(self::never())->method('updateExtReferenceId');
+        $this->commentService->expects($this->never())->method('updateExtReferenceId');
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
