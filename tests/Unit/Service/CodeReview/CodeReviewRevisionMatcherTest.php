@@ -126,7 +126,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
             ->method('findOneByReferenceId')
             ->with(5, 'T#890', CodeReviewType::COMMITS)
             ->willReturn($review);
-        $this->reviewCreationService->expects(self::never())->method('createFromRevision');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
 
         static::assertSame($review, $this->matcher->match($revision));
     }

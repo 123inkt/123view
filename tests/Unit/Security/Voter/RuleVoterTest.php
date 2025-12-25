@@ -34,7 +34,7 @@ class RuleVoterTest extends AbstractTestCase
         $rule->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::never())->method('getUser');
+        $token->expects($this->never())->method('getUser');
 
         $voter = new RuleVoter();
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $rule, ['foobar']));
@@ -43,7 +43,7 @@ class RuleVoterTest extends AbstractTestCase
     public function testSupportsInvalidSubject(): void
     {
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::never())->method('getUser');
+        $token->expects($this->never())->method('getUser');
 
         $voter = new RuleVoter();
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, false, [RuleVoter::EDIT]));

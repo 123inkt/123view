@@ -43,7 +43,7 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
     public function testInvokeNoRevision(): void
     {
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
-        $this->lockManager->expects(self::never())->method('start');
+        $this->lockManager->expects($this->never())->method('start');
 
         ($this->handler)(new NewRevisionMessage(123));
     }
@@ -57,7 +57,7 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
         $this->lockManager->expects($this->once())->method('start')->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->gitDiffService->expects($this->once())->method('getRevisionFiles')->with($revision)->willReturn([]);
-        $this->revisionFileRepository->expects(self::never())->method('save');
+        $this->revisionFileRepository->expects($this->never())->method('save');
 
         ($this->handler)(new NewRevisionMessage(123));
     }

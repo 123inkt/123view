@@ -60,7 +60,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
     public function testCreateWithExistingReferenceId(): void
     {
         $this->comment->setExtReferenceId('external-reference-id');
-        $this->mergeRequests->expects(self::never())->method('versions');
+        $this->mergeRequests->expects($this->never())->method('versions');
         $this->service->create($this->api, $this->comment, 456);
     }
 
@@ -74,7 +74,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
         $this->mergeRequests->expects($this->once())->method('versions')->with(123, 456)->willReturn([]);
-        $this->positionFactory->expects(self::never())->method('create');
+        $this->positionFactory->expects($this->never())->method('create');
 
         $this->service->create($this->api, $this->comment, 456);
     }
@@ -133,7 +133,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
     public function testUpdateAbsentReferenceId(): void
     {
         $this->comment->setExtReferenceId(null);
-        $this->discussions->expects(self::never())->method('updateNote');
+        $this->discussions->expects($this->never())->method('updateNote');
 
         $this->service->update($this->api, $this->comment);
     }
@@ -161,7 +161,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
     public function testResolveAbsentReferenceId(): void
     {
         $this->comment->setExtReferenceId(null);
-        $this->discussions->expects(self::never())->method('resolve');
+        $this->discussions->expects($this->never())->method('resolve');
 
         $this->service->resolve($this->api, $this->comment, true);
     }

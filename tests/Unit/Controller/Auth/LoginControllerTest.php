@@ -67,7 +67,7 @@ class LoginControllerTest extends AbstractControllerTestCase
 
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('redirect-url');
         $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
-        $this->translator->expects(self::never())->method('trans');
+        $this->translator->expects($this->never())->method('trans');
 
         $result = ($this->controller)($request);
         static::assertInstanceOf(RedirectResponse::class, $result);
@@ -80,7 +80,7 @@ class LoginControllerTest extends AbstractControllerTestCase
 
         $this->expectRedirectToRoute(UserApprovalPendingController::class)->willReturn('redirect-url');
         $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
-        $this->translator->expects(self::never())->method('trans');
+        $this->translator->expects($this->never())->method('trans');
 
         $result = ($this->controller)($request);
         static::assertInstanceOf(RedirectResponse::class, $result);

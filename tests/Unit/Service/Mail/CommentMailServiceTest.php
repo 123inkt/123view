@@ -57,7 +57,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $this->recipientService->expects($this->once())->method('getUsersForReview')->with($review)->willReturn([$user]);
         $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
         $this->translator->expects($this->once())->method('trans');
-        $this->mailer->expects(self::never())->method('send');
+        $this->mailer->expects($this->never())->method('send');
 
         $this->service->sendNewCommentMail($review, $comment);
     }
@@ -128,7 +128,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
         $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment, $reply)->willReturn([$user]);
         $this->translator->expects($this->once())->method('trans');
-        $this->mailer->expects(self::never())->method('send');
+        $this->mailer->expects($this->never())->method('send');
 
         $this->service->sendNewCommentReplyMail($review, $comment, $reply);
     }
@@ -187,7 +187,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
         $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment)->willReturn([$user]);
         $this->translator->expects($this->once())->method('trans');
-        $this->mailer->expects(self::never())->method('send');
+        $this->mailer->expects($this->never())->method('send');
 
         $this->service->sendCommentResolvedMail($review, $comment, (new User())->setId(5));
     }

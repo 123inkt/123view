@@ -27,7 +27,7 @@ class CodeReviewAddCommentTool
     use ClockAwareTrait;
 
     public function __construct(
-        #[Autowire(env: 'AI_COMMENT_USER_ID')] private readonly int $userId,
+        #[Autowire(env: 'AI_COMMENT_USER_ID')] private readonly ?int $userId,
         private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly UserRepository $userRepository,
@@ -61,7 +61,7 @@ class CodeReviewAddCommentTool
             $message .= "\n\n```\n" . $codeSuggestion . "\n```";
         }
 
-        // replace kiss icon with regular bold emphasize
+        // markdown bold + : turn in to kiss emoticon. Replace it to bold only.
         $message = str_replace(':**', '**', $message);
 
         $this->aiLogger?->info(
@@ -72,7 +72,7 @@ class CodeReviewAddCommentTool
         /** @var Revision $revision */
         $revision = Arrays::last($this->reviewRevisionService->getRevisions($review));
 
-        $user = Assert::notNull($this->userRepository->find($this->userId));
+        $user = Assert::notNull($this->userRepository->find(Assert::notNull($this->userId)));
 
         $comment = new Comment();
         $comment->setFilePath($filepath);

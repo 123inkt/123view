@@ -50,7 +50,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
      */
     public function testCreateSkipMissingReferenceId(): void
     {
-        $this->discussions->expects(self::never())->method('createNote');
+        $this->discussions->expects($this->never())->method('createNote');
         $this->service->create($this->api, $this->reply);
     }
 
@@ -75,7 +75,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
      */
     public function testUpdateSkipIfMissingReferenceId(): void
     {
-        $this->discussions->expects(self::never())->method('updateNote');
+        $this->discussions->expects($this->never())->method('updateNote');
         $this->service->update($this->api, $this->reply);
     }
 

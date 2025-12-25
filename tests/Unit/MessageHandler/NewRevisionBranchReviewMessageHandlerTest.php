@@ -58,7 +58,7 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
     public function testInvokeUnknownRevision(): void
     {
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
-        $this->reviewRepository->expects(self::never())->method('findOneBy');
+        $this->reviewRepository->expects($this->never())->method('findOneBy');
         ($this->messageHandler)(new NewRevisionMessage(123));
     }
 
@@ -81,7 +81,7 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
             )
             ->willReturn(null);
 
-        $this->reviewerStateResolver->expects(self::never())->method('getReviewersState');
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         ($this->messageHandler)(new NewRevisionMessage(123));
     }

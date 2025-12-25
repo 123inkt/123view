@@ -9,12 +9,8 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\Mercure\MessagePublisher;
 use DR\Utils\Assert;
 use League\Uri\Http;
-use League\Uri\Uri;
-use Nette\Utils\Json;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 use Throwable;
 
 class CodeReviewActivityPublisher implements LoggerAwareInterface

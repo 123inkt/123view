@@ -49,8 +49,8 @@ class HighlightedFileServiceTest extends AbstractTestCase
 
         $this->translator->expects($this->once())->method('translate')->with('')->willReturn(null);
 
-        $this->httpClient->expects(self::never())->method('request');
-        $this->splitter->expects(self::never())->method('split');
+        $this->httpClient->expects($this->never())->method('request');
+        $this->splitter->expects($this->never())->method('split');
 
         static::assertNull($this->service->fromDiffFile($file));
     }

@@ -14,6 +14,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 class AiReviewRequestedMessageHandler implements LoggerAwareInterface
@@ -25,6 +26,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
         private readonly AiCodeReviewService $codeReview,
         private readonly MessagePublisher $messagePublisher,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -43,9 +45,9 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
 
         $success       = $this->codeReview->startCodeReview($review);
         $resultMessage = match ($success) {
-            AiCodeReviewService::RESULT_FAILURE  => "The AI code review completed unsuccessfully",
-            AiCodeReviewService::RESULT_NO_FILES => "No suitable files found for AI code review",
-            default                              => "The AI code review completed successfully",
+            AiCodeReviewService::RESULT_FAILURE  => $this->translator->trans('ai.review.completed.failure'),
+            AiCodeReviewService::RESULT_NO_FILES => $this->translator->trans('ai.review.completed.no.files'),
+            default                              => $this->translator->trans('ai.review.completed.success'),
         };
 
         // send mercure message

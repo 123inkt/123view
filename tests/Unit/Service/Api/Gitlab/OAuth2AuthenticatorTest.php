@@ -39,7 +39,7 @@ class OAuth2AuthenticatorTest extends AbstractTestCase
         $gitToken = new GitAccessToken();
         $gitToken->setToken(Json::encode(['access_token' => 'access', 'refresh_token' => 'refresh', 'expires_in' => 1234]));
 
-        $this->tokenRepository->expects(self::never())->method('save');
+        $this->tokenRepository->expects($this->never())->method('save');
 
         static::assertSame('Bearer access', $this->authenticator->getAuthorizationHeader($gitToken));
     }

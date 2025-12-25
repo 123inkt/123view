@@ -18,7 +18,9 @@ class MessagePublisher implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly HubInterface $mercureHub) { }
+    public function __construct(private readonly HubInterface $mercureHub)
+    {
+    }
 
     /**
      * @throws Throwable

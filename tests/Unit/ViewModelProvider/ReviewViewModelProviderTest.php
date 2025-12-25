@@ -45,9 +45,9 @@ class ReviewViewModelProviderTest extends AbstractTestCase
         $request->method('getTab')->willReturn('tab');
         $dto = $this->createDto();
 
-        $this->reviewDtoProvider->expects(self::once())->method('provide')->with($review, $request)->willReturn($dto);
-        $this->viewModelAppender->expects(self::once())->method('accepts')->with($dto)->willReturn(true);
-        $this->viewModelAppender->expects(self::once())->method('append')->with($dto);
+        $this->reviewDtoProvider->expects($this->once())->method('provide')->with($review, $request)->willReturn($dto);
+        $this->viewModelAppender->expects($this->once())->method('accepts')->with($dto)->willReturn(true);
+        $this->viewModelAppender->expects($this->once())->method('append')->with($dto);
 
         $expected = new ReviewViewModel($review, $dto->revisions, $dto->similarReviews, 'tab', 1);
         $actual   = $this->provider->getViewModel($review, $request);

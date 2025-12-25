@@ -38,7 +38,7 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
             new Exception()
         );
 
-        $this->responseFactory->expects(self::never())->method('createFromThrowable');
+        $this->responseFactory->expects($this->never())->method('createFromThrowable');
 
         $this->subscriber->onKernelException($event);
     }

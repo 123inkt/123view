@@ -53,7 +53,7 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
         $this->messageBus->expects($this->once())->method('dispatch')->with(new AiReviewRequested(123, 300))->willReturn($this->envelope);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-        $this->expectAddFlash('success', 'AI code review requested, it may take a few seconds to appear in the review');
+        $this->expectAddFlash('success', 'ai.review.requested');
 
         ($this->controller)($review);
 
@@ -74,9 +74,9 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
         $this->messageBus->expects($this->once())->method('dispatch')->with(new AiReviewRequested(123, 300))->willReturn($this->envelope);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-        $this->expectAddFlash('success', 'AI code review requested, it may take a few seconds to appear in the review');
+        $this->expectAddFlash('success', 'ai.review.requested');
 
-        ($this->getControllerWithDebug(true))($review);
+        ($this->getControllerWithDebug())($review);
 
         static::assertFalse($review->isAiReviewRequested());
     }
@@ -89,7 +89,7 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
         $this->doctrine->expects($this->never())->method('persist');
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
-        $this->expectAddFlash('warning', 'AI review already requested, can only be requested once per review (for now)');
+        $this->expectAddFlash('warning', 'ai.review.already.requested');
 
         ($this->controller)($review);
     }
@@ -99,9 +99,9 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
         return new AiCodeReviewController(false, 100, $this->doctrine, $this->messageBus);
     }
 
-    private function getControllerWithDebug(bool $debug): AiCodeReviewController
+    private function getControllerWithDebug(): AiCodeReviewController
     {
-        $controller = new AiCodeReviewController($debug, 100, $this->doctrine, $this->messageBus);
+        $controller = new AiCodeReviewController(true, 100, $this->doctrine, $this->messageBus);
         $controller->setContainer($this->container);
 
         return $controller;

@@ -44,7 +44,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->diffService->expects(self::never())->method('getDiffFromRevision');
+        $this->diffService->expects($this->never())->method('getDiffFromRevision');
         static::assertSame([], $this->service->getDiffForRevisions($repository, []));
     }
 
@@ -74,7 +74,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $revisionB = new Revision();
         $diffFile  = new DiffFile();
 
-        $this->diffService->expects(self::never())->method('getDiffFromRevision');
+        $this->diffService->expects($this->never())->method('getDiffFromRevision');
         $this->strategyA->expects($this->once())->method('getDiffFiles')->with($repository, [$revisionA, $revisionB])->willReturn([$diffFile]);
 
         static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revisionA, $revisionB]));
@@ -91,7 +91,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $revisionB = new Revision();
         $diffFile  = new DiffFile();
 
-        $this->diffService->expects(self::never())->method('getDiffFromRevision');
+        $this->diffService->expects($this->never())->method('getDiffFromRevision');
         $this->strategyA->expects($this->once())->method('getDiffFiles')->willThrowException(new RuntimeException());
         $this->strategyB->expects($this->once())->method('getDiffFiles')->with($repository, [$revisionA, $revisionB])->willReturn([$diffFile]);
 
@@ -107,7 +107,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $revisionA  = new Revision();
         $revisionB  = new Revision();
 
-        $this->diffService->expects(self::never())->method('getDiffFromRevision');
+        $this->diffService->expects($this->never())->method('getDiffFromRevision');
         $this->strategyA->expects($this->once())->method('getDiffFiles')->willThrowException(new RuntimeException());
         $this->strategyB->expects($this->once())->method('getDiffFiles')->willThrowException(new RuntimeException());
 

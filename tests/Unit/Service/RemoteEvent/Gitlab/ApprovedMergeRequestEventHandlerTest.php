@@ -53,7 +53,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event         = new MergeRequestEvent();
         $event->action = 'open';
 
-        $this->repositoryRepository->expects(self::never())->method('findByProperty');
+        $this->repositoryRepository->expects($this->never())->method('findByProperty');
         $this->handler->handle($event);
     }
 
@@ -69,7 +69,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->action  = 'approved';
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn(null);
-        $this->userService->expects(self::never())->method('getUser');
+        $this->userService->expects($this->never())->method('getUser');
 
         $this->handler->handle($event);
     }
@@ -88,7 +88,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $repository = (new Repository())->setActive(false);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
-        $this->userService->expects(self::never())->method('getUser');
+        $this->userService->expects($this->never())->method('getUser');
 
         $this->handler->handle($event);
     }
@@ -139,7 +139,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);
         $this->reviewRepository->expects($this->once())->method('findByBranchName')->with(456, 'branch')->willReturn([$review]);
-        $this->changeReviewerStateService->expects(self::never())->method('changeState');
+        $this->changeReviewerStateService->expects($this->never())->method('changeState');
 
         $this->handler->handle($event);
     }

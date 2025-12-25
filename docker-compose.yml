@@ -68,7 +68,7 @@ services:
         healthcheck:
             test: rabbitmq-diagnostics check_port_connectivity
             interval: 1s
-            timeout: 5s
+            timeout: 30s
             retries: 30
 
     mail:

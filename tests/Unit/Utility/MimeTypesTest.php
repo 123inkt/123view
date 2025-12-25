@@ -21,7 +21,7 @@ class MimeTypesTest extends AbstractTestCase
     #[TestWith(['test.foo', null])]
     public function testGetMimeType(string $filePath, ?string $expectedMimeType): void
     {
-        self::assertSame($expectedMimeType, MimeTypes::getMimeType($filePath));
+        static::assertSame($expectedMimeType, MimeTypes::getMimeType($filePath));
     }
 
     #[TestWith(['image/png', true])]
@@ -32,6 +32,6 @@ class MimeTypesTest extends AbstractTestCase
     #[TestWith(['text/markdown', false])]
     public function testIsImage(string $mimeType, bool $expected): void
     {
-        self::assertSame($expected, MimeTypes::isImage($mimeType));
+        static::assertSame($expected, MimeTypes::isImage($mimeType));
     }
 }

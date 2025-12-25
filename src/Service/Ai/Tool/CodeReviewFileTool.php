@@ -13,8 +13,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
 
-#[AsTool('read_file', 'Reads the contents of a file for the given path and review. Returns the file contents as a string. Only searches in the git ' .
-    'repository of the specified code review and will not find any dependencies.')]
+#[AsTool(
+    'read_file',
+    'Reads the contents of a file for the given path and review. Returns the file contents as a string. Only searches in the git ' .
+    'repository of the specified code review and will not find any dependencies.'
+)]
 class CodeReviewFileTool
 {
     public function __construct(

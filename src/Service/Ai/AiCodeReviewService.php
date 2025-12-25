@@ -24,13 +24,12 @@ class AiCodeReviewService
     public const int RESULT_SUCCESS  = 2;
     public const int RESULT_FAILURE  = 3;
 
-    private const array DISALLOWED_EXTENSIONS = ['lock', 'json'];
-
     public function __construct(
         private ?LoggerInterface $aiLogger,
         private readonly ReviewDiffServiceInterface $diffService,
         private readonly CodeReviewRevisionService $revisionService,
         private readonly AgentInterface $agent,
+        private readonly AiCodeReviewFileFilter $fileFilter,
     ) {
     }
 
@@ -50,19 +49,7 @@ class AiCodeReviewService
         );
 
         // filter out large and non-essential files
-        $files = array_filter($files, static function (DiffFile $file) {
-            if (str_contains($file->getPathname(), 'baseline')) {
-                return false;
-            }
-            if (in_array(strtolower((string)$file->getFile()?->getExtension()), self::DISALLOWED_EXTENSIONS, true)) {
-                return false;
-            }
-            if ($file->binary || $file->isDeleted()) {
-                return false;
-            }
-
-            return count($file->getLines()) <= 500;
-        });
+        $files = array_filter($files, $this->fileFilter);
         if (count($files) === 0) {
             $this->aiLogger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
 

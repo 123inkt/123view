@@ -34,7 +34,7 @@ class CommentVoterTest extends AbstractTestCase
         $comment->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::never())->method('getUser');
+        $token->expects($this->never())->method('getUser');
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $comment, ['foobar']));
@@ -43,7 +43,7 @@ class CommentVoterTest extends AbstractTestCase
     public function testSupportsInvalidSubject(): void
     {
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::never())->method('getUser');
+        $token->expects($this->never())->method('getUser');
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, false, [CommentVoter::EDIT]));

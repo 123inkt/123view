@@ -34,7 +34,7 @@ class AiCodeReviewController extends AbstractController
     public function __invoke(#[MapEntity] CodeReview $review): Response
     {
         if ($review->isAiReviewRequested()) {
-            $this->addFlash('warning', 'AI review already requested, can only be requested once per review (for now)');
+            $this->addFlash('warning', 'ai.review.already.requested');
 
             return $this->refererRedirect(ReviewController::class, ['review' => $review]);
         }
@@ -57,7 +57,7 @@ class AiCodeReviewController extends AbstractController
         // request code review
         $this->bus->dispatch(new AiReviewRequested($review->getId(), $this->getUser()->getId()));
 
-        $this->addFlash('success', 'AI code review requested, it may take a few seconds to appear in the review');
+        $this->addFlash('success', 'ai.review.requested');
 
         return $this->refererRedirect(ReviewController::class, ['review' => $review]);
     }

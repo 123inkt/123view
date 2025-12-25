@@ -39,7 +39,7 @@ class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
 
     public function testInvokeOnlyAllowUnattachedReview(): void
     {
-        $review   = new CodeReview();
+        $review   = (new CodeReview())->setId(123);
         $revision = new Revision();
         $revision->setReview($review);
 
