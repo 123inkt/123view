@@ -37,7 +37,7 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
      */
     public function testOnCommitEventShouldSkipReviewWithoutRepository(): void
     {
-        $this->reviewRepository->expects(self::never())->method('findOneByCommitHash');
+        $this->reviewRepository->expects($this->never())->method('findOneByCommitHash');
         $event = new CommitEvent($this->createCommit());
 
         $this->subscriber->onCommitEvent($event);

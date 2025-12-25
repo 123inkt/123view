@@ -47,7 +47,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(false);
         $this->provider->expects($this->once())->method('getUserSettingViewModel')->willReturn($viewModel);
 
-        $this->userRepository->expects(self::never())->method('save');
+        $this->userRepository->expects($this->never())->method('save');
 
         $result = ($this->controller)($request);
         static::assertEquals(['settingViewModel' => $viewModel], $result);

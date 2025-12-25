@@ -47,7 +47,7 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
     public function testExecuteFailure(): void
     {
         $this->linkRepository->expects($this->once())->method('find')->with('id')->willReturn(null);
-        $this->linkRepository->expects(self::never())->method('remove');
+        $this->linkRepository->expects($this->never())->method('remove');
 
         $tester = new CommandTester($this->command);
         $result = $tester->execute(['id' => 'id']);

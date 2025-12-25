@@ -46,7 +46,7 @@ class RuleNotificationReadControllerTest extends AbstractControllerTestCase
         $notification->setRead(true);
 
         $this->tokenGenerator->expects($this->once())->method('generate')->with($notification)->willReturn('token');
-        $this->notificationRepository->expects(self::never())->method('save');
+        $this->notificationRepository->expects($this->never())->method('save');
 
         ($this->controller)($notification, 'token');
     }
@@ -56,7 +56,7 @@ class RuleNotificationReadControllerTest extends AbstractControllerTestCase
         $notification = new RuleNotification();
 
         $this->tokenGenerator->expects($this->once())->method('generate')->with($notification)->willReturn('token');
-        $this->notificationRepository->expects(self::never())->method('save');
+        $this->notificationRepository->expects($this->never())->method('save');
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Invalid token');

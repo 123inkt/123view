@@ -34,4 +34,12 @@ class NotificationStatusTest extends AbstractTestCase
 
         static::assertSame(1, $status->getStatus());
     }
+
+    public function testAll(): void
+    {
+        $status = NotificationStatus::all();
+        static::assertTrue($status->hasStatus(NotificationStatus::STATUS_CREATED));
+        static::assertTrue($status->hasStatus(NotificationStatus::STATUS_UPDATED));
+        static::assertTrue($status->hasStatus(NotificationStatus::STATUS_RESOLVED));
+    }
 }

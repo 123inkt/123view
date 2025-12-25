@@ -36,16 +36,16 @@ class ReviewRevisionEventService
 
         // create events
         if ($reviewCreated) {
-            $events[] = new ReviewCreated((int)$review->getId(), (int)$revision->getId(), $userId);
+            $events[] = new ReviewCreated($review->getId(), (int)$revision->getId(), $userId);
         }
         if ($reviewState === CodeReviewStateType::CLOSED && $review->getState() === CodeReviewStateType::OPEN) {
-            $events[] = new ReviewOpened((int)$review->getId(), $userId);
+            $events[] = new ReviewOpened($review->getId(), $userId);
         }
         if ($reviewersState !== CodeReviewerStateType::OPEN
             && $this->reviewerStateResolver->getReviewersState($review) === CodeReviewerStateType::OPEN) {
-            $events[] = new ReviewResumed((int)$review->getId(), $userId);
+            $events[] = new ReviewResumed($review->getId(), $userId);
         }
-        $events[] = new ReviewRevisionAdded((int)$review->getId(), (int)$revision->getId(), $userId, $revision->getTitle());
+        $events[] = new ReviewRevisionAdded($review->getId(), (int)$revision->getId(), $userId, $revision->getTitle());
 
         // dispatch $events
         foreach ($events as $event) {
@@ -56,11 +56,11 @@ class ReviewRevisionEventService
     public function revisionRemovedFromReview(CodeReview $review, Revision $revision, ?string $reviewState): void
     {
         $events   = [];
-        $events[] = new ReviewRevisionRemoved((int)$review->getId(), (int)$revision->getId(), null, $revision->getTitle());
+        $events[] = new ReviewRevisionRemoved($review->getId(), (int)$revision->getId(), null, $revision->getTitle());
 
         // close review event
         if ($reviewState !== $review->getState()) {
-            $events[] = new ReviewClosed((int)$review->getId(), null);
+            $events[] = new ReviewClosed($review->getId(), null);
         }
 
         // dispatch $events

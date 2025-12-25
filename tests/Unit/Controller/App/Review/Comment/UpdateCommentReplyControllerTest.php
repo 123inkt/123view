@@ -86,7 +86,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true);
 
         $this->replyRepository->expects($this->once())->method('save')->with($reply, true);
-        $this->bus->expects(self::never())->method('dispatch');
+        $this->bus->expects($this->never())->method('dispatch');
 
         $response = ($this->controller)($request, $reply);
         static::assertInstanceOf(JsonResponse::class, $response);

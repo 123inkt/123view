@@ -15,6 +15,6 @@ class FileDiffOptionsTest extends AbstractTestCase
     public function testToString(): void
     {
         $options = new FileDiffOptions(5, DiffComparePolicy::TRIM, CodeReviewType::BRANCH, 123);
-        static::assertSame('fdo-5-trim-branch-123', (string)$options);
+        static::assertSame('fdo-5-trim-branch-123-no-raw', (string)$options);
     }
 }

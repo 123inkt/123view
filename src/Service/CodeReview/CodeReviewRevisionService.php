@@ -40,7 +40,7 @@ class CodeReviewRevisionService implements LoggerAwareInterface
             return $this->revisionSorter->sort($review->getRevisions()->toArray());
         }
 
-        $reviewId = (int)$review->getId();
+        $reviewId = $review->hasId() ? $review->getId() : 0;
         if (isset($this->revisions[$reviewId])) {
             return $this->revisions[$reviewId];
         }

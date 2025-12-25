@@ -31,7 +31,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
-        $comment->setReview(new CodeReview());
+        $comment->setReview((new CodeReview())->setId(789));
 
         $event = $this->factory->createAdded($comment, $user);
         static::assertSame(456, $event->getCommentId());
@@ -49,7 +49,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
-        $comment->setReview(new CodeReview());
+        $comment->setReview((new CodeReview())->setId(789));
 
         $event = $this->factory->createUpdated($comment, $user, 'original');
         static::assertSame(456, $event->getCommentId());
@@ -67,7 +67,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
-        $comment->setReview(new CodeReview());
+        $comment->setReview((new CodeReview())->setId(789));
 
         $event = $this->factory->createResolved($comment, $user);
         static::assertSame(456, $event->getCommentId());
@@ -84,7 +84,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
-        $comment->setReview(new CodeReview());
+        $comment->setReview((new CodeReview())->setId(789));
 
         $event = $this->factory->createUnresolved($comment, $user);
         static::assertSame(456, $event->getCommentId());
@@ -101,7 +101,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
-        $comment->setReview(new CodeReview());
+        $comment->setReview((new CodeReview())->setId(789));
 
         $event = $this->factory->createRemoved($comment, $user);
         static::assertSame(456, $event->getCommentId());

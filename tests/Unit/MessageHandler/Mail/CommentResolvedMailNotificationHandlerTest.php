@@ -61,7 +61,7 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
 
         $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
-        $this->mailService->expects(self::never())->method('sendCommentResolvedMail');
+        $this->mailService->expects($this->never())->method('sendCommentResolvedMail');
         $this->handler->handle(new CommentResolved(5, 123, 6, 'file'));
     }
 

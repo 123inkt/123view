@@ -7,13 +7,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-class GitStatusService implements LoggerAwareInterface
+class GitStatusService
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
@@ -29,7 +25,6 @@ class GitStatusService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createStatus()->porcelain();
 
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-        $this->logger?->info($output);
 
         $results = preg_match_all('/^\w{2}\s+(.*?)\s*$/m', $output, $matches);
 

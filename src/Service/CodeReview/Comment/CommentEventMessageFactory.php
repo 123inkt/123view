@@ -18,7 +18,7 @@ class CommentEventMessageFactory
     public function createAdded(Comment $comment, User $user): CommentAdded
     {
         return new CommentAdded(
-            (int)$comment->getReview()->getId(),
+            $comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
@@ -29,7 +29,7 @@ class CommentEventMessageFactory
     public function createUpdated(Comment $comment, User $user, string $originalComment): CommentUpdated
     {
         return new CommentUpdated(
-            (int)$comment->getReview()->getId(),
+            $comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
@@ -41,7 +41,7 @@ class CommentEventMessageFactory
     public function createResolved(Comment $comment, User $user): CommentResolved
     {
         return new CommentResolved(
-            (int)$comment->getReview()->getId(),
+            $comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
@@ -51,7 +51,7 @@ class CommentEventMessageFactory
     public function createUnresolved(Comment $comment, User $user): CommentUnresolved
     {
         return new CommentUnresolved(
-            (int)$comment->getReview()->getId(),
+            $comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
@@ -61,7 +61,7 @@ class CommentEventMessageFactory
     public function createRemoved(Comment $comment, User $user): CommentRemoved
     {
         return new CommentRemoved(
-            (int)$comment->getReview()->getId(),
+            $comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
@@ -73,7 +73,7 @@ class CommentEventMessageFactory
     public function createReplyRemoved(CommentReply $reply, User $user): CommentReplyRemoved
     {
         return new CommentReplyRemoved(
-            (int)$reply->getComment()->getReview()->getId(),
+            $reply->getComment()->getReview()->getId(),
             (int)$reply->getComment()->getId(),
             (int)$reply->getId(),
             $reply->getUser()->getId(),

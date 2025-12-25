@@ -113,7 +113,7 @@ class LoginServiceTest extends AbstractTestCase
     {
         $request = new Request(['code' => '123abc']);
 
-        $this->translator->expects(self::never())->method('trans');
+        $this->translator->expects($this->never())->method('trans');
 
         $token = $this->createMock(AccessToken::class);
         $token->method('getIdTokenClaims')->willReturn(['name' => 'sherlock', 'preferred_username' => 'holmes@example.com']);

@@ -4,13 +4,15 @@
     "keywords": ["git", "commit", "summary", "bundle", "filter", "mail", "notification"],
     "type": "project",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
         "sort-packages": true,
         "process-timeout": 0,
         "allow-plugins": {
-            "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         }
@@ -58,6 +60,9 @@
         "phpdocumentor/reflection-docblock": "^5.3",
         "scienta/doctrine-json-functions": "^6.0",
         "spatie/commonmark-highlighter": "^3.0",
+        "symfony/ai-agent": "^0.1.0",
+        "symfony/ai-anthropic-platform": "^0.1.0",
+        "symfony/ai-bundle": "^0.1.0",
         "symfony/amqp-messenger": "^7.2",
         "symfony/asset": "^7.2",
         "symfony/config": "^7.2",

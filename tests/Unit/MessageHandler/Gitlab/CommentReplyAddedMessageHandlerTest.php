@@ -47,7 +47,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeSkipIfDisabled(): void
     {
-        $this->replyRepository->expects(self::never())->method('find');
+        $this->replyRepository->expects($this->never())->method('find');
 
         $handler = new CommentReplyAddedMessageHandler(
             false,

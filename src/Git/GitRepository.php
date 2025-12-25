@@ -5,6 +5,7 @@ namespace DR\Review\Git;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderInterface;
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -16,7 +17,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class GitRepository
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $gitLogger,
         private readonly Repository $repository,
         private readonly ?StopWatch $stopWatch,
         private readonly string $repositoryPath
@@ -30,7 +31,7 @@ class GitRepository
      */
     public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
     {
-        $this->logger->info('Executing `{command}` for `{name}`', ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]);
+        $this->gitLogger->info('Executing `{command}` for `{name}`', ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]);
 
         $action = $commandBuilder->command();
 
@@ -64,14 +65,21 @@ class GitRepository
     private function logProcessOutput(Process $process, bool $success): void
     {
         $status = $success ? 'succeeded' : 'failed';
+        $level  = $success ? Level::Info : Level::Notice;
         $output = trim(str_replace("\r", "", $process->getOutput()));
         $error  = trim(str_replace("\r", "", $process->getErrorOutput()));
 
-        if ($error !== '') {
-            $this->logger->debug('Process {status}: error: {error}', ['status' => $status, 'error' => $error]);
-        }
-        if ($output !== '') {
-            $this->logger->debug('Process {status}: output: {output}', ['status' => $status, 'output' => $output]);
-        }
+        // limit size
+        $output = substr($output, 0, 1000);
+        $error  = substr($error, 0, 1000);
+
+        // format
+        $message = <<<MSG
+Process status: {status}
+Output: {output}
+=========================
+Error: {error}
+MSG;
+        $this->gitLogger->log($level, $message, ['status' => $status, 'output' => $output, 'error' => $error]);
     }
 }

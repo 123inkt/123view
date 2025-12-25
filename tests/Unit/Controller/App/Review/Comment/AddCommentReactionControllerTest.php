@@ -40,7 +40,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
 
         $user    = (new User())->setId(123);
         $comment = (new Comment())->setFilePath('file');
-        $comment->setReview(new CodeReview());
+        $comment->setReview((new CodeReview())->setId(123));
 
         $this->expectGetUser($user);
         $this->commentRepository
