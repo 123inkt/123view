@@ -11,6 +11,7 @@ use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
+use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
 use DR\Review\Message\Review\ReviewCreated;
@@ -44,6 +45,7 @@ class CodeReviewActivityFormatter
         ReviewResumed::NAME                      => 'timeline.review.resumed',
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
+        AiReviewRequested::NAME                  => 'timeline.review.ai_requested',
         CommentAdded::NAME                       => 'timeline.comment.added',
         CommentReplyAdded::NAME                  => 'timeline.comment.reply.added',
         CommentRemoved::NAME                     => 'timeline.comment.removed',

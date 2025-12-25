@@ -53,7 +53,7 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $reviewCreated  = $review->getId() === null;
+        $reviewCreated  = $review->hasId() === false;
         $reviewersState = $this->reviewerStateResolver->getReviewersState($review);
         $reviewState    = $review->getState();
 

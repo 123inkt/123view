@@ -77,7 +77,7 @@ class FileSeenStatusService implements LoggerAwareInterface
 
     public function getFileSeenStatus(CodeReview $review): FileSeenStatusCollection
     {
-        $files = $this->statusRepository->findBy(['review' => (int)$review->getId(), 'user' => $this->userProvider->getCurrentUser()->getId()]);
+        $files = $this->statusRepository->findBy(['review' => $review->getId(), 'user' => $this->userProvider->getCurrentUser()->getId()]);
 
         return new FileSeenStatusCollection($files);
     }

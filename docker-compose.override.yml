@@ -25,8 +25,8 @@ services:
 
     rabbitmq:
         environment:
-            RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
-            RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-rabbitmq}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-rabbitmq}
         ports:
             - ${RABBITMQ_CLIENT_PORT:-5672}:5672
             - ${RABBITMQ_API_PORT:-15672}:15672

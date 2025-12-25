@@ -18,9 +18,9 @@ class PrunableDiffParser
      * @return DiffFile[]
      * @throws ParseException
      */
-    public function parse(string $patch, ?DiffComparePolicy $diffComparePolicy): array
+    public function parse(string $patch, ?DiffComparePolicy $diffComparePolicy, bool $includeRaw = false): array
     {
-        $files = $this->diffParser->parse($patch);
+        $files = $this->diffParser->parse($patch, $includeRaw);
 
         if ($diffComparePolicy === DiffComparePolicy::IGNORE_EMPTY_LINES) {
             foreach ($files as $file) {

@@ -35,7 +35,6 @@ class GitBranchService implements LoggerAwareInterface
 
         // list remote branches
         $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-        $this->logger?->info($output);
 
         return $this->branchParser->parse($output);
     }
@@ -61,8 +60,6 @@ class GitBranchService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createBranch()->delete($ref);
 
         // delete branch
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 }

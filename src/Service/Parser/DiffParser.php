@@ -22,7 +22,7 @@ class DiffParser implements LoggerAwareInterface
      * @return DiffFile[]
      * @throws ParseException
      */
-    public function parse(string $patch): array
+    public function parse(string $patch, bool $includeRaw): array
     {
         $files = [];
 
@@ -41,7 +41,7 @@ class DiffParser implements LoggerAwareInterface
             }
 
             $diffFile                 = new DiffFile();
-            $diffFile->raw            = $patchFile;
+            $diffFile->raw            = $includeRaw ? $patchFile : null;
             $diffFile->filePathBefore = $matches[1][$index - 1] ?? null;
             $diffFile->filePathAfter  = $matches[2][$index - 1] ?? null;
 

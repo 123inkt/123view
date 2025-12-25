@@ -37,12 +37,6 @@ parameters:
 			path: src/Doctrine/Type/AbstractEnumType.php
 
 		-
-			message: '#^Property DR\\Review\\Entity\\Asset\\Asset\:\:\$data type mapping mismatch\: database can contain resource but property expects string\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/Entity/Asset/Asset.php
-
-		-
 			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc tag @return does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
 			identifier: generics.lessTypes
 			count: 1
@@ -1385,18 +1379,6 @@ parameters:
 			identifier: generics.notSubtype
 			count: 1
 			path: tests/Unit/Controller/AbstractControllerTest.php
-
-		-
-			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToDatabaseValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: tests/Unit/Doctrine/Type/LineCoverageTypeTest.php
-
-		-
-			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToPHPValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: tests/Unit/Doctrine/Type/LineCoverageTypeTest.php
 
 		-
 			message: '#^Parameter \#1 \$string1 of function strcmp expects string, mixed given\.$#'

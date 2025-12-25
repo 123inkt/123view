@@ -31,8 +31,6 @@ class GitRemoteService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createRemote()->setUrl('origin', (string)$uri);
 
         // set new remote url
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 }

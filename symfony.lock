@@ -183,18 +183,6 @@
     "phar-io/version": {
         "version": "3.1.0"
     },
-    "php-http/discovery": {
-        "version": "1.20",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.18",
-            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
-        },
-        "files": [
-            "./config/packages/http_discovery.yaml"
-        ]
-    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -336,6 +324,18 @@
         },
         "files": [
             "./phpcs.xml.dist"
+        ]
+    },
+    "symfony/ai-bundle": {
+        "version": "0.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "39bb71a39860be3a261f5b527ed57e952366943d"
+        },
+        "files": [
+            "./config/packages/ai.yaml"
         ]
     },
     "symfony/browser-kit": {
@@ -643,6 +643,15 @@
             "./config/packages/twig.yaml",
             "./templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "7.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
     },
     "symfony/validator": {
         "version": "6.0",
