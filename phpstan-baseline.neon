@@ -1156,12 +1156,6 @@ parameters:
 			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 1
-			path: src/Service/Git/Review/Strategy/BasicCherryPickStrategy.php
-
-		-
-			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
 			path: src/Service/Git/Review/Strategy/HesitantCherryPickStrategy.php
 
 		-
