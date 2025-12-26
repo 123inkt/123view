@@ -5,24 +5,17 @@ ARG VERSION=8.4
 ###################################################################################
 
 # Base image
-FROM php:${VERSION}-fpm-bookworm AS base
+FROM php:${VERSION}-fpm-trixie AS base
 
 # Install packages and remove libldap due to a known vulnerability and upgrade openssl
 RUN apt-get update \
     && apt-get install -y \
     cron \
     curl \
-    gettext \
+    netcat \
     libcurl4 \
-    libcurl4-gnutls-dev \
-    libexpat1-dev \
-    libghc-zlib-dev \
     libicu-dev \
-    libpng-dev \
     librabbitmq-dev \
-    libssl-dev \
-    make \
-    netcat-openbsd \
     openssl \
     ripgrep \
     supervisor \
@@ -37,16 +30,6 @@ RUN pecl channel-update pecl.php.net && \
     docker-php-ext-enable amqp && \
     docker-php-source delete && \
     docker-php-ext-install opcache pdo_mysql intl
-
-## install git 2.47.1
-RUN curl -sLO https://github.com/git/git/archive/refs/tags/v2.47.1.tar.gz && \
-    tar -xzf v2.47.1.tar.gz && \
-    cd git-2.47.1 && \
-    make prefix=/usr/local all && \
-    make prefix=/usr/local install && \
-    cd .. && \
-    rm -rf git-2.47.1 && \
-    rm v2.47.1.tar.gz
 
 ## Copy php default configuration
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini
