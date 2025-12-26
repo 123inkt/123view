@@ -46,7 +46,7 @@
         "digitalrevolution/symfony-trace-bundle": "^1.0",
         "digitalrevolution/utils": "^1.13",
         "doctrine/doctrine-bundle": "^2.11 || ^3.0",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^3.3 || ^4.0",
         "doctrine/orm": "^3.1",
         "fdekker/commonmark-ext-emoji": "^1.1",
         "fdekker/log-viewer-bundle": "^2.0",
