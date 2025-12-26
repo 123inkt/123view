@@ -49,13 +49,10 @@ return static function (DoctrineConfig $config): void {
     $dbal->type(SpaceSeparatedStringValueType::TYPE)->class(SpaceSeparatedStringValueType::class);
     $dbal->type(UriType::TYPE)->class(UriType::class);
 
-    $orm->enableLazyGhostObjects(true);
-    $orm->autoGenerateProxyClasses(true);
     $orm->defaultEntityManager('default');
     $orm->controllerResolver()->autoMapping(false);
 
     $em = $orm->entityManager('default');
-    $em->reportFieldsWhereDeclared(true);
     $em->autoMapping(true);
     $em->connection('default');
     $em->namingStrategy('doctrine.orm.naming_strategy.underscore_number_aware');
