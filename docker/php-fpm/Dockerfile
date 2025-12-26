@@ -7,15 +7,16 @@ ARG VERSION=8.4
 # Base image
 FROM php:${VERSION}-fpm-trixie AS base
 
-# Install packages and remove libldap due to a known vulnerability and upgrade openssl
+# Install packages
 RUN apt-get update \
     && apt-get install -y \
     cron \
     curl \
-    netcat \
+    git \
     libcurl4 \
     libicu-dev \
     librabbitmq-dev \
+    netcat-openbsd \
     openssl \
     ripgrep \
     supervisor \
