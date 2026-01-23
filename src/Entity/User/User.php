@@ -67,6 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToOne(targetEntity: UserSetting::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private ?UserSetting $setting = null;
 
+    #[ORM\OneToOne(targetEntity: UserReviewSetting::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private ?UserReviewSetting $reviewSetting = null;
+
     /** @phpstan-var Collection<int, Rule> */
     #[ORM\OneToMany(targetEntity: Rule::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $rules;
@@ -175,6 +178,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function setSetting(?UserSetting $setting): self
     {
         $this->setting = $setting;
+
+        return $this;
+    }
+
+    public function getReviewSetting(): UserReviewSetting
+    {
+        return $this->reviewSetting ??= new UserReviewSetting()->setUser($this);
+    }
+
+    public function setReviewSetting(?UserReviewSetting $reviewSetting): self
+    {
+        $this->reviewSetting = $reviewSetting;
 
         return $this;
     }

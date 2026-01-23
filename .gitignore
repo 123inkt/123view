@@ -8,6 +8,7 @@
 /docker/db
 /.eslintcache
 /.claude/settings.local.json
+/*_PLAN.md
 
 ###> symfony/framework-bundle ###
 /.env.local
