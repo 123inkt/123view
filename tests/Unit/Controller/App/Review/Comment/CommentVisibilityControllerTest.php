@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\CommentVisibilityController;
-use DR\Review\Entity\Review\CommentVisibility;
+use DR\Review\Entity\Review\CommentVisibilityEnum;
 use DR\Review\Request\Comment\CommentVisibilityRequest;
 use DR\Review\Security\SessionKeys;
 use DR\Review\Tests\AbstractControllerTestCase;
@@ -28,8 +28,8 @@ class CommentVisibilityControllerTest extends AbstractControllerTestCase
         $request->setSession($session);
 
         $validatedRequest->expects($this->once())->method('getRequest')->willReturn($request);
-        $validatedRequest->expects($this->once())->method('getVisibility')->willReturn(CommentVisibility::NONE);
-        $session->expects($this->once())->method('set')->with(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, CommentVisibility::NONE->value);
+        $validatedRequest->expects($this->once())->method('getVisibility')->willReturn(CommentVisibilityEnum::NONE);
+        $session->expects($this->once())->method('set')->with(SessionKeys::REVIEW_COMMENT_VISIBILITY->value, CommentVisibilityEnum::NONE->value);
 
         /** @var JsonResponse $response */
         $response = ($this->controller)($validatedRequest);

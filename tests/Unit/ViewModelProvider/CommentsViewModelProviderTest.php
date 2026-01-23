@@ -8,7 +8,7 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\CommentVisibility;
+use DR\Review\Entity\Review\CommentVisibilityEnum;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
@@ -69,12 +69,12 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->with(...consecutive([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))
             ->willReturn($line, null);
         $this->comparePolicyProvider->expects($this->once())->method('getComparePolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $this->visibilityProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
+        $this->visibilityProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibilityEnum::NONE);
 
         $viewModel = $this->provider->getCommentsViewModel($review, $fileBefore, $file);
         static::assertSame([$commentA], $viewModel->getComments($line));
         static::assertSame([$commentB], $viewModel->detachedComments);
         static::assertSame(DiffComparePolicy::IGNORE, $viewModel->comparisonPolicy);
-        static::assertSame(CommentVisibility::NONE, $viewModel->commentVisibility);
+        static::assertSame(CommentVisibilityEnum::NONE, $viewModel->commentVisibility);
     }
 }
