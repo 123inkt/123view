@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Request\Review\FileReviewRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModelProvider\FileReviewViewModelProvider;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -18,8 +19,11 @@ use Throwable;
 
 class GetFileReviewController extends AbstractController
 {
-    public function __construct(private readonly FileReviewViewModelProvider $modelProvider, private readonly FileSeenStatusService $fileSeenService)
-    {
+    public function __construct(
+        private readonly FileReviewViewModelProvider $modelProvider,
+        private readonly FileSeenStatusService $fileSeenService,
+        private readonly UserReviewSettingsProvider $settingsProvider
+    ) {
     }
 
     /**
@@ -32,15 +36,15 @@ class GetFileReviewController extends AbstractController
         $viewModel = $this->modelProvider->getViewModel(
             $review,
             $request->getFilePath(),
-            $request->getComparisonPolicy(),
-            $request->getDiffMode(),
-            $request->getVisibleLines()
+            $this->settingsProvider->getComparisonPolicy(),
+            $this->settingsProvider->getReviewDiffMode(),
+            $this->settingsProvider->getVisibleLines()
         );
 
         $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->selectedFile);
 
         $template = 'app/review/commit/commit.file.html.twig';
-        if ($viewModel->selectedFile->isModified() && $request->getDiffMode() === ReviewDiffModeEnum::SIDE_BY_SIDE) {
+        if ($viewModel->selectedFile->isModified() && $this->settingsProvider->getReviewDiffMode() === ReviewDiffModeEnum::SIDE_BY_SIDE) {
             $template = 'app/review/commit/side-by-side/commit.file.html.twig';
         }
 

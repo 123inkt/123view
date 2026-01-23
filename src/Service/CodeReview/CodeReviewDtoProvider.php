@@ -20,6 +20,7 @@ readonly class CodeReviewDtoProvider
         private CodeReviewTypeDecider $reviewTypeDecider,
         private RevisionVisibilityService $visibilityService,
         private CodeReviewRepository $codeReviewRepository,
+        private UserReviewSettingsProvider $settingsProvider,
     ) {
     }
 
@@ -40,9 +41,9 @@ readonly class CodeReviewDtoProvider
             $request->getFilePath(),
             new FileDiffOptions(
                 FileDiffOptions::DEFAULT_LINE_DIFF,
-                $request->getComparisonPolicy(),
+                $this->settingsProvider->getComparisonPolicy(),
                 $reviewType,
-                $request->getVisibleLines()
+                $this->settingsProvider->getVisibleLines()
             )
         );
 
@@ -55,10 +56,10 @@ readonly class CodeReviewDtoProvider
             $selectedFile,
             $request->getFilePath(),
             $request->getTab(),
-            $request->getComparisonPolicy(),
-            $request->getDiffMode(),
+            $this->settingsProvider->getComparisonPolicy(),
+            $this->settingsProvider->getReviewDiffMode(),
             $request->getAction(),
-            $request->getVisibleLines()
+            $this->settingsProvider->getVisibleLines()
         );
     }
 }
