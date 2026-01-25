@@ -10,6 +10,7 @@ use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
@@ -23,7 +24,7 @@ class AuthenticationTest extends AbstractFunctionalTestCase
         $user  = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
         $token = Assert::notNull(self::getService(UserAccessTokenRepository::class)->findOneBy(['user' => $user]));
 
-        $this->client->request('GET', '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $token->getToken()]);
+        $this->client->request(Request::METHOD_GET, '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $token->getToken()]);
         self::assertResponseIsSuccessful();
 
         $data = $this->getResponseArray();
@@ -35,7 +36,11 @@ class AuthenticationTest extends AbstractFunctionalTestCase
      */
     public function testAuthenticatedFailure(): void
     {
-        $this->client->request('GET', '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer foobar']);
+        $this->client->request(
+            Request::METHOD_GET,
+            '/api/users/me',
+            server: ['HTTP_AUTHORIZATION' => 'Bearer foobar']
+        );
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 

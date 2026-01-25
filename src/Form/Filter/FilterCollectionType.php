@@ -25,7 +25,7 @@ class FilterCollectionType extends AbstractType
                 'allow_delete'  => true,
                 'prototype'     => true,
                 'delete_empty'  => static fn(?Filter $filter) => $filter?->getPattern() === null,
-                'constraints'   => [new Assert\Count(['max' => 20, 'maxMessage' => 'At most {{ limit }} filters can be set'])]
+                'constraints'   => [new Assert\Count(max: 20, maxMessage: 'At most {{ limit }} filters can be set')]
             ]
         );
     }

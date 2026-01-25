@@ -52,9 +52,6 @@ class UrlQueryExtensionTest extends AbstractTestCase
 
     private function createRequestStack(?Request $request = null): RequestStack
     {
-        $stack = new RequestStack();
-        $stack->push($request ?? new Request());
-
-        return $stack;
+        return new RequestStack([$request ?? new Request()]);
     }
 }

@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CommentReply;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -32,7 +33,7 @@ class EditCommentReplyFormType extends AbstractType
         $reply = $options['reply'];
 
         $builder->setAction($this->urlGenerator->generate(UpdateCommentReplyController::class, ['id' => $reply->getId()]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('message', CommentType::class);
         $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'save']);

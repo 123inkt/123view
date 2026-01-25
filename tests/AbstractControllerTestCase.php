@@ -38,7 +38,7 @@ abstract class AbstractControllerTestCase extends ExtensionsAbstractControllerTe
             $this->container->set('request_stack', $requestStack);
         } else {
             /** @var RequestStack $requestStack */
-            $requestStack = $this->container->get('request_stack');
+            $requestStack = $this->container->get(RequestStack::class);
         }
 
         if ($requestStack->getCurrentRequest() === null) {

@@ -38,8 +38,7 @@ class AbstractControllerTest extends AbstractControllerTestCase
     public function testRefererRedirect(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => 'referer']);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->container->set('request_stack', $requestStack);
 
         $response = $this->controller->refererRedirect('route');
@@ -49,8 +48,7 @@ class AbstractControllerTest extends AbstractControllerTestCase
     public function testRefererRedirectInvalidRefererShouldBeSkipped(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => false]);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->container->set('request_stack', $requestStack);
 
         $this->expectGenerateUrl('route', [])->willReturn('url');
@@ -62,8 +60,7 @@ class AbstractControllerTest extends AbstractControllerTestCase
     public function testRefererRedirectShouldFilterQueryParam(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => 'https://referer?foo=bar&action=great']);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->container->set('request_stack', $requestStack);
 
         $response = $this->controller->refererRedirect('route', [], ['action']);

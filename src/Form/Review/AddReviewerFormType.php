@@ -11,6 +11,7 @@ use DR\Review\Service\User\UserEntityProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -38,7 +39,7 @@ class AddReviewerFormType extends AbstractType
         $review = $options['review'];
 
         $builder->setAction($this->urlGenerator->generate(AddReviewerController::class, ['id' => $review->getId()]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
 
         $choices = $this->getUserChoices($review);
         if (count($choices) > 0) {
