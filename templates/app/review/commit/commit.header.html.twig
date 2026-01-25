@@ -73,8 +73,7 @@
                       title="{{ 'show.context.lines'|trans }}"
                         {{ stimulus_controller('component--dropdown-menu review-diff-visible-lines') }}
                 >
-                    <a class="btn btn-outline-primary btn-sm dropdown-toggle"
-                       href="#"
+                    <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                             {{ stimulus_target('component--dropdown-menu', 'button') }}
                             {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}
                     >
@@ -197,16 +196,22 @@
             </div>
 
             {% if file.modified %}
-                <div class="btn-group btn-group-sm">
+                <form class="btn-group btn-group-sm"
+                      method="post"
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\ReviewDiffModeController') }}"
+                        {{ stimulus_controller('review-comparison-policy') }}
+                >
                     {% for diffMode in fileDiffViewModel.diffModes %}
-                        <a href="{{ url_query_params({diff: diffMode}) }}"
-                           class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
-                                {{ stimulus_controller('button') }}
-                        >
+                        <input type="radio"
+                               name="diffMode"
+                               value="{{ diffMode }}"
+                               class="btn-check"
+                               id="diff-mode-{{ diffMode }}" {{ diffMode == currentDiffMode ? 'checked' : '' }}>
+                        <label class="btn btn-outline-primary" for="diff-mode-{{ diffMode }}">
                             {{ ('diff.' ~ diffMode)|trans }}
-                        </a>
+                        </label>
                     {% endfor %}
-                </div>
+                </form>
             {% endif %}
         </div>
     </div>
