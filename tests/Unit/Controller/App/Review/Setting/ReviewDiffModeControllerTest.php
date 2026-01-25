@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Setting;
 
-use Doctrine\ORM\EntityManagerInterface;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Setting\ReviewDiffModeController;
 use DR\Review\Entity\User\User;
 use DR\Review\Entity\User\UserReviewSetting;
+use DR\Review\Repository\User\UserReviewSettingRepository;
 use DR\Review\Request\Review\Setting\ReviewDiffModeRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 #[CoversClass(ReviewDiffModeController::class)]
 class ReviewDiffModeControllerTest extends AbstractControllerTestCase
 {
-    private EntityManagerInterface&MockObject $entityManager;
+    private UserReviewSettingRepository&MockObject $repository;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->repository = $this->createMock(UserReviewSettingRepository::class);
         parent::setUp();
     }
 
@@ -38,16 +38,16 @@ class ReviewDiffModeControllerTest extends AbstractControllerTestCase
         $user->setReviewSetting($reviewSetting);
 
         $validatedRequest->expects(static::once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE);
-        $this->entityManager->expects(static::once())->method('flush');
+        $this->repository->expects(static::once())->method('save')->with($reviewSetting, true);
         $this->expectRefererRedirect('/');
         $this->expectGetUser($user);
 
-        $response = ($this->controller)($validatedRequest);
+        ($this->controller)($validatedRequest);
         static::assertSame(ReviewDiffModeEnum::SIDE_BY_SIDE, $reviewSetting->getReviewDiffMode());
     }
 
     public function getController(): AbstractController
     {
-        return new ReviewDiffModeController($this->entityManager);
+        return new ReviewDiffModeController($this->repository);
     }
 }

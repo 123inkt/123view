@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Controller\App\Review\Setting;
 
-use Doctrine\ORM\EntityManagerInterface;
 use DR\Review\Controller\AbstractController;
+use DR\Review\Repository\User\UserReviewSettingRepository;
 use DR\Review\Request\Review\Setting\ReviewDiffModeRequest;
 use DR\Review\Security\Role\Roles;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ReviewDiffModeController extends AbstractController
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly UserReviewSettingRepository $repository)
     {
     }
 
@@ -21,8 +21,10 @@ class ReviewDiffModeController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(ReviewDiffModeRequest $request): RedirectResponse
     {
-        $this->getUser()->getReviewSetting()->setReviewDiffMode($request->getDiffMode());
-        $this->entityManager->flush();
+        $reviewSetting = $this->getUser()->getReviewSetting();
+
+        $reviewSetting->setReviewDiffMode($request->getDiffMode());
+        $this->repository->save($reviewSetting, true);
 
         return $this->refererRedirect('/');
     }

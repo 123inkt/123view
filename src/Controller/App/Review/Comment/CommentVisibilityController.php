@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
+use DR\Review\Repository\User\UserReviewSettingRepository;
 use DR\Review\Request\Comment\CommentVisibilityRequest;
 use DR\Review\Security\Role\Roles;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommentVisibilityController extends AbstractController
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly UserReviewSettingRepository $repository)
     {
     }
 
@@ -21,11 +21,10 @@ class CommentVisibilityController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(CommentVisibilityRequest $request): JsonResponse
     {
-        $visibility = $request->getVisibility();
-        $user       = $this->getUser();
+        $reviewSetting = $this->getUser()->getReviewSetting();
 
-        $user->getReviewSetting()->setReviewCommentVisibility($visibility);
-        $this->entityManager->flush();
+        $reviewSetting->setReviewCommentVisibility($request->getVisibility());
+        $this->repository->save($reviewSetting, true);
 
         return new JsonResponse('ok');
     }

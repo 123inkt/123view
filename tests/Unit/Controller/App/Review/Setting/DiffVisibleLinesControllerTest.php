@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Setting;
 
-use Doctrine\ORM\EntityManagerInterface;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Setting\DiffVisibleLinesController;
 use DR\Review\Entity\User\User;
 use DR\Review\Entity\User\UserReviewSetting;
+use DR\Review\Repository\User\UserReviewSettingRepository;
 use DR\Review\Request\Review\Setting\DiffVisibleLinesRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,11 +19,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(DiffVisibleLinesController::class)]
 class DiffVisibleLinesControllerTest extends AbstractControllerTestCase
 {
-    private EntityManagerInterface&MockObject $entityManager;
+    private UserReviewSettingRepository&MockObject $repository;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->repository = $this->createMock(UserReviewSettingRepository::class);
         parent::setUp();
     }
 
@@ -36,7 +36,7 @@ class DiffVisibleLinesControllerTest extends AbstractControllerTestCase
         $user->setReviewSetting($reviewSetting);
 
         $validatedRequest->expects(static::once())->method('getVisibleLines')->willReturn(10);
-        $this->entityManager->expects(static::once())->method('flush');
+        $this->repository->expects(static::once())->method('save')->with($reviewSetting, true);
         $this->expectRefererRedirect('/');
         $this->expectGetUser($user);
 
@@ -46,6 +46,6 @@ class DiffVisibleLinesControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new DiffVisibleLinesController($this->entityManager);
+        return new DiffVisibleLinesController($this->repository);
     }
 }
