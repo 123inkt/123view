@@ -12,7 +12,7 @@ use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserAccessTokenController extends AbstractController

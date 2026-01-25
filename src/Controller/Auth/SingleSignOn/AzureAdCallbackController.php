@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Controller\Auth\SingleSignOn;
 
 use RuntimeException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AzureAdCallbackController
 {

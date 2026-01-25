@@ -10,7 +10,7 @@ use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

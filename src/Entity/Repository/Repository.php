@@ -21,7 +21,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Utils\Assert;
 use DR\Utils\EquatableInterface;
 use League\Uri\Contracts\UriInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ApiResource(
