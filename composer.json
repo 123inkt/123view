@@ -60,9 +60,9 @@
         "phpdocumentor/reflection-docblock": "^5.3",
         "scienta/doctrine-json-functions": "^6.0",
         "spatie/commonmark-highlighter": "^3.0",
-        "symfony/ai-agent": "^0.1.0 || ^0.3.0",
-        "symfony/ai-anthropic-platform": "^0.1.0 || ^0.3.0",
-        "symfony/ai-bundle": "^0.1.0 || ^0.3.0",
+        "symfony/ai-agent": "^0.3.0",
+        "symfony/ai-anthropic-platform": "^0.3.0",
+        "symfony/ai-bundle": "^0.3.0",
         "symfony/amqp-messenger": "^7.4",
         "symfony/asset": "^7.4",
         "symfony/config": "^7.4",
@@ -96,9 +96,9 @@
         "symfony/yaml": "^7.4",
         "thenetworg/oauth2-azure": "^2.2",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
-        "twig/extra-bundle": "^3.17",
-        "twig/intl-extra": "^3.17",
-        "twig/twig": "^3.19"
+        "twig/extra-bundle": "^3.21",
+        "twig/intl-extra": "^3.21",
+        "twig/twig": "^3.21"
     },
     "require-dev": {
         "digitalrevolution/accessorpair-constraint": "^2.2",
@@ -143,7 +143,8 @@
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*",
-        "symfony/polyfill-php83": "*"
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*"
     },
     "scripts": {
         "auto-scripts": {
