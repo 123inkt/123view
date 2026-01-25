@@ -8,6 +8,6 @@ export default class extends Controller<HTMLTextAreaElement> {
 
     private commentResizeListener(target: HTMLTextAreaElement): void {
         target.style.height = '5px';
-        target.style.height = String(Math.max(84, (target.scrollHeight))) + 'px';
+        target.style.height = `${String(Math.max(84, (target.scrollHeight)))  }px`;
     }
 }

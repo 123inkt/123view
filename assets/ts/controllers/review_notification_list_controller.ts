@@ -22,7 +22,7 @@ export default class extends Controller {
     ];
 
     public connect(): void {
-        document.addEventListener('/review/' + String(this.reviewIdValue), this.handleNotification.bind(this));
+        document.addEventListener(`/review/${String(this.reviewIdValue)}`, this.handleNotification.bind(this));
     }
 
     private handleNotification(event: Event): void {
