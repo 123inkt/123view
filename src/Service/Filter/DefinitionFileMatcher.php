@@ -21,7 +21,7 @@ class DefinitionFileMatcher
         }
 
         foreach ($filters as $filter) {
-            $result = @preg_match((string)$filter->getPattern(), $filepath);
+            $result = @preg_match($filter->getPattern(), $filepath);
             if ($result === false) {
                 throw new RuntimeException('Invalid regex pattern in file pattern: ' . $filter->getPattern());
             }

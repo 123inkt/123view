@@ -7,18 +7,6 @@ parameters:
 			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
 
 		-
-			message: '#^Cannot call method getDescription\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
-
-		-
-			message: '#^Generator expects value type array\{ApiPlatform\\OpenApi\\Model\\Operation, ApiPlatform\\OpenApi\\Model\\Parameter\}, array\{ApiPlatform\\OpenApi\\Model\\Operation, mixed\} given\.$#'
-			identifier: generator.valueType
-			count: 1
-			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
-
-		-
 			message: '#^Parameter \#1 \$string of function strtolower expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
