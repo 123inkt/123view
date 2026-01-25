@@ -70,7 +70,7 @@ class UserTest extends AbstractTestCase
     public function testGetReviewSetting(): void
     {
         $setting = new UserReviewSetting();
-        $user = new User()->setReviewSetting($setting);
+        $user = (new User())->setReviewSetting($setting);
 
         static::assertSame($setting, $user->getReviewSetting());
     }

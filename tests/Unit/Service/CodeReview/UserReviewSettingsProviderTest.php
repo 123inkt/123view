@@ -37,7 +37,7 @@ class UserReviewSettingsProviderTest extends AbstractTestCase
     public function testGetVisibleLinesWithUser(): void
     {
         $user    = new User();
-        $setting = new UserReviewSetting()->setUser($user)->setDiffVisibleLines(10);
+        $setting = (new UserReviewSetting())->setUser($user)->setDiffVisibleLines(10);
         $user->setReviewSetting($setting);
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
 
