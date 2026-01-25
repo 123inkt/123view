@@ -6,7 +6,7 @@ namespace DR\Review\Controller\App\User;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserMandatoryGitlabSyncController extends AbstractController

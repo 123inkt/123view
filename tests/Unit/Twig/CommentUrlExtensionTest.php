@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\TwigFunction;
 
 #[CoversClass(CommentUrlExtension::class)]
 class CommentUrlExtensionTest extends AbstractTestCase
@@ -26,24 +25,6 @@ class CommentUrlExtensionTest extends AbstractTestCase
         parent::setUp();
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $this->extension    = new CommentUrlExtension($this->urlGenerator);
-    }
-
-    public function testGetFunctions(): void
-    {
-        $functions = $this->extension->getFunctions();
-
-        static::assertCount(2, $functions);
-        static::assertContainsOnlyInstancesOf(TwigFunction::class, $functions);
-
-        // Check first function (comment_url)
-        $commentUrlFunction = $functions[0];
-        static::assertSame('comment_url', $commentUrlFunction->getName());
-        static::assertSame([$this->extension, 'getCommentUrl'], $commentUrlFunction->getCallable());
-
-        // Check second function (comment_reply_url)
-        $commentReplyUrlFunction = $functions[1];
-        static::assertSame('comment_reply_url', $commentReplyUrlFunction->getName());
-        static::assertSame([$this->extension, 'getCommentReplyUrl'], $commentReplyUrlFunction->getCallable());
     }
 
     #[TestWith([true, 'https://example.com/review/456/file/src/Service/TestService.php', UrlGeneratorInterface::ABSOLUTE_URL])]

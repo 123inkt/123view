@@ -12,6 +12,7 @@ module.exports = (async () => {
                 "no-multi-spaces": ["off"],
                 "no-return-assign": ["off"],
                 "no-plusplus": ["off"],
+                "require-unicode-regexp": ["off"],
                 "prefer-named-capture-group": ["off"],
                 "no-param-reassign": ["error", {"props": false}],
                 "@typescript-eslint/no-confusing-void-expression": ["error", {"ignoreArrowShorthand": true}],

@@ -21,7 +21,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
         this.notificationService.subscribe(
-            '/review/' + String(this.reviewId),
+            `/review/${String(this.reviewId)}`,
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
             this.updateReviewFileTree.bind(this),
             this.reviewId
@@ -29,7 +29,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
     }
 
     public disconnect(): void {
-        this.notificationService.unsubscribe('/review/' + String(this.reviewId));
+        this.notificationService.unsubscribe(`/review/${String(this.reviewId)}`);
     }
 
     public updateReviewFileTree(): void {

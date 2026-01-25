@@ -16,11 +16,11 @@ export default class extends Controller<HTMLElement> {
         if (window.scrollY < this.offsetTop) {
             this.element.style.position = '';
             this.element.style.width    = '';
-            this.element.style.height   = String(window.innerHeight - this.offsetTop + window.scrollY) + 'px';
+            this.element.style.height   = `${String(window.innerHeight - this.offsetTop + window.scrollY)  }px`;
         } else {
             this.element.style.position = 'fixed';
-            this.element.style.width    = String(this.width) + 'px';
-            this.element.style.height   = String(window.innerHeight) + 'px';
+            this.element.style.width    = `${String(this.width)  }px`;
+            this.element.style.height   = `${String(window.innerHeight)  }px`;
         }
     }
 }

@@ -2,7 +2,7 @@ export default class DataSet {
     public static string(element: HTMLElement, key: string, defaultValue: string | null = null): string {
         const value = DataSet.stringOrNull(element, key, defaultValue);
         if (value === null) {
-            throw new Error('Missing value for key: ' + key);
+            throw new Error(`Missing value for key: ${key}`);
         }
 
         return value;
@@ -20,7 +20,7 @@ export default class DataSet {
     public static int(element: HTMLElement, key: string, defaultValue: number | null = null): number {
         const value = DataSet.intOrNull(element, key, defaultValue);
         if (value === null) {
-            throw new Error('Missing value for key: ' + key);
+            throw new Error(`Missing value for key: ${key}`);
         }
 
         return value;

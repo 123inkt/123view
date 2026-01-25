@@ -9,6 +9,7 @@ use DR\Review\Service\Git\Branch\CacheableGitBranchService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
@@ -38,7 +39,7 @@ class ChangeReviewTargetBranchFormType extends AbstractType
         $review = $options['review'];
 
         $builder->setAction($this->urlGenerator->generate(ChangeTargetBranchController::class, ['id' => $review->getId()]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
 
         $builder->add('targetBranch', ChoiceType::class, [
             'required' => false,

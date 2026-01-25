@@ -8,7 +8,7 @@ use DR\Review\Request\Comment\CommentVisibilityRequest;
 use DR\Review\Security\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommentVisibilityController extends AbstractController
