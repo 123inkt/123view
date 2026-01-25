@@ -172,10 +172,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function getSetting(): UserSetting
     {
-        return $this->setting ??= (new UserSetting())->setUser($this);
+        return $this->setting ??= new UserSetting()->setUser($this);
     }
 
-    public function setSetting(?UserSetting $setting): self
+    public function setSetting(UserSetting $setting): self
     {
         $this->setting = $setting;
 
@@ -187,7 +187,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->reviewSetting ??= new UserReviewSetting()->setUser($this);
     }
 
-    public function setReviewSetting(?UserReviewSetting $reviewSetting): self
+    public function setReviewSetting(UserReviewSetting $reviewSetting): self
     {
         $this->reviewSetting = $reviewSetting;
 
