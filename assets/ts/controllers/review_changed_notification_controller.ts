@@ -7,7 +7,7 @@ export default class extends Controller<HTMLElement> {
     private readonly declare reviewIdValue: number;
 
     public connect(): void {
-        document.addEventListener('/review/' + String(this.reviewIdValue), this.handleNotification.bind(this));
+        document.addEventListener(`/review/${String(this.reviewIdValue)}`, this.handleNotification.bind(this));
     }
 
     public reload(event: Event): void {

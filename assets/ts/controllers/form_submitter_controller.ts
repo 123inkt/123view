@@ -14,7 +14,7 @@ export default class extends Controller<HTMLElement> {
                 this.element.addEventListener('keyup', this.submitOnEnter.bind(this));
                 break;
             default:
-                throw new Error('Unsupported element for FormSubmitter: ' + this.element.tagName);
+                throw new Error(`Unsupported element for FormSubmitter: ${this.element.tagName}`);
         }
     }
 

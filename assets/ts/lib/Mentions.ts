@@ -74,7 +74,7 @@ export default class Mentions {
     private getSuggestions(searchQuery: string | null, callback: (data: User[]) => void): void {
         const params = new URLSearchParams({search: searchQuery ?? '', preferredUserIds: this.preferredUserIds.join(',')});
         axios
-            .get('/app/user/mentions?' + params.toString())
+            .get(`/app/user/mentions?${params.toString()}`)
             .then(response => callback(response.data as User[]))
             .catch(Function.empty);
     }
@@ -97,7 +97,7 @@ export default class Mentions {
         const textBeforeMention = textBeforeCaret.substring(0, text.lastIndexOf('@'));
 
         // update textarea content
-        this.textarea.value = textBeforeMention + replacement + ' ' + textAfterCaret;
+        this.textarea.value = `${textBeforeMention + replacement  } ${textAfterCaret}`;
         this.textarea.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}));
 
         // set cursor position
