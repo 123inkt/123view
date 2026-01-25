@@ -54,7 +54,7 @@ class UserReviewSettingsProviderTest extends AbstractTestCase
     public function testGetComparisonPolicyWithUser(): void
     {
         $user    = new User();
-        $setting = new UserReviewSetting()->setUser($user)->setDiffComparisonPolicy(DiffComparePolicy::TRIM);
+        $setting = (new UserReviewSetting())->setUser($user)->setDiffComparisonPolicy(DiffComparePolicy::TRIM);
         $user->setReviewSetting($setting);
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
 
@@ -71,7 +71,7 @@ class UserReviewSettingsProviderTest extends AbstractTestCase
     public function testGetReviewDiffModeWithUser(): void
     {
         $user    = new User();
-        $setting = new UserReviewSetting()->setUser($user)->setReviewDiffMode(ReviewDiffModeEnum::UNIFIED);
+        $setting = (new UserReviewSetting())->setUser($user)->setReviewDiffMode(ReviewDiffModeEnum::UNIFIED);
         $user->setReviewSetting($setting);
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
 
@@ -88,7 +88,7 @@ class UserReviewSettingsProviderTest extends AbstractTestCase
     public function testGetCommentVisibilityWithUser(): void
     {
         $user    = new User();
-        $setting = new UserReviewSetting()->setUser($user)->setReviewCommentVisibility(CommentVisibilityEnum::UNRESOLVED);
+        $setting = (new UserReviewSetting())->setUser($user)->setReviewCommentVisibility(CommentVisibilityEnum::UNRESOLVED);
         $user->setReviewSetting($setting);
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
 
