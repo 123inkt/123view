@@ -8,6 +8,7 @@ use DR\Review\Entity\Webhook\Webhook;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EditWebhookFormType extends AbstractType
@@ -25,7 +26,7 @@ class EditWebhookFormType extends AbstractType
         $data = $options['data'];
 
         $builder->setAction($this->urlGenerator->generate(WebhookController::class, ['id' => $data['webhook']?->getId()]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('webhook', WebhookType::class, ['label' => false]);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
     }

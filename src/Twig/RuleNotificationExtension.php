@@ -6,10 +6,9 @@ namespace DR\Review\Twig;
 use Doctrine\ORM\Exception\ORMException;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Service\User\UserEntityProvider;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class RuleNotificationExtension extends AbstractExtension
+class RuleNotificationExtension
 {
     private ?int $notificationCount = null;
 
@@ -20,16 +19,9 @@ class RuleNotificationExtension extends AbstractExtension
     }
 
     /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        return [new TwigFunction('rule_notification_count', [$this, 'getNotificationCount'])];
-    }
-
-    /**
      * @throws ORMException
      */
+    #[AsTwigFunction(name: 'rule_notification_count')]
     public function getNotificationCount(): int
     {
         if ($this->notificationCount !== null) {

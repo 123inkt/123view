@@ -21,17 +21,6 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $this->linkRepository = $this->createMock(ExternalLinkRepository::class);
     }
 
-    public function testGetFilters(): void
-    {
-        $extension = new ExternalLinkExtension($this->linkRepository);
-        $filters   = $extension->getFilters();
-
-        static::assertCount(1, $filters);
-
-        $filter = $filters[0];
-        static::assertSame('external_links', $filter->getName());
-    }
-
     public function testInjectExternalLinks(): void
     {
         $content = 'A commit <message> for JB1234 ticket.';

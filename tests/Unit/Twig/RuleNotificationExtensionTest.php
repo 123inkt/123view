@@ -53,14 +53,4 @@ class RuleNotificationExtensionTest extends AbstractTestCase
         $this->notificationRepository->expects($this->never())->method('getUnreadNotificationCountForUser');
         static::assertSame(0, $this->extension->getNotificationCount());
     }
-
-    public function testGetFunctions(): void
-    {
-        $functions = $this->extension->getFunctions();
-
-        static::assertCount(1, $functions);
-
-        $function = $functions[0];
-        static::assertSame('rule_notification_count', $function->getName());
-    }
 }

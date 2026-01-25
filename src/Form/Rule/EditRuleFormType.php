@@ -8,6 +8,7 @@ use DR\Review\Entity\Notification\Rule;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EditRuleFormType extends AbstractType
@@ -30,7 +31,7 @@ class EditRuleFormType extends AbstractType
         }
 
         $builder->setAction($this->urlGenerator->generate(RuleController::class, ['id' => $ruleId]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('rule', RuleType::class);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
     }
