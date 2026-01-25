@@ -12,7 +12,6 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\TwigFunction;
 
 #[CoversClass(IdeButtonExtension::class)]
 class IdeButtonExtensionTest extends AbstractTestCase

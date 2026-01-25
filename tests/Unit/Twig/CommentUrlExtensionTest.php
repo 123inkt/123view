@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\TwigFunction;
 
 #[CoversClass(CommentUrlExtension::class)]
 class CommentUrlExtensionTest extends AbstractTestCase

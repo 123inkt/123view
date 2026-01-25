@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
