@@ -14,5 +14,4 @@ return static function (AiConfig $config): void {
         ->platform('ai.platform.anthropic')
         ->model(env('AI_AGENT_MODEL'))
         ->prompt()->file('%kernel.project_dir%/resources/ai-prompt/code-review-agent.md');
-
 };
