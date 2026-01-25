@@ -8,7 +8,7 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class RuleNotificationMarkAsReadController extends AbstractController
 {

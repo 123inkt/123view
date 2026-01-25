@@ -10,7 +10,7 @@ use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Markdown\MarkdownConverterService;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommentPreviewController extends AbstractController

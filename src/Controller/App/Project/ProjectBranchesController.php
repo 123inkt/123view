@@ -11,7 +11,7 @@ use DR\Review\ViewModel\App\Project\ProjectBranchesViewModel;
 use DR\Review\ViewModelProvider\ProjectBranchesViewModelProvider;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
