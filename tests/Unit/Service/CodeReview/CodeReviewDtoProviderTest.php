@@ -15,6 +15,7 @@ use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\CodeReview\CodeReviewDtoProvider;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Revision\RevisionVisibilityService;
@@ -26,12 +27,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(CodeReviewDtoProvider::class)]
 class CodeReviewDtoProviderTest extends AbstractTestCase
 {
-    private CodeReviewRevisionService&MockObject $revisionService;
-    private CodeReviewFileService&MockObject     $fileService;
-    private CodeReviewTypeDecider&MockObject     $reviewTypeDecider;
-    private RevisionVisibilityService&MockObject $visibilityService;
-    private CodeReviewRepository&MockObject      $codeReviewRepository;
-    private CodeReviewDtoProvider                $provider;
+    private CodeReviewRevisionService&MockObject    $revisionService;
+    private CodeReviewFileService&MockObject        $fileService;
+    private CodeReviewTypeDecider&MockObject        $reviewTypeDecider;
+    private RevisionVisibilityService&MockObject    $visibilityService;
+    private CodeReviewRepository&MockObject         $codeReviewRepository;
+    private UserReviewSettingsProvider&MockObject   $settingsProvider;
+    private CodeReviewDtoProvider                   $provider;
 
     protected function setUp(): void
     {
@@ -41,12 +43,14 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
         $this->reviewTypeDecider    = $this->createMock(CodeReviewTypeDecider::class);
         $this->visibilityService    = $this->createMock(RevisionVisibilityService::class);
         $this->codeReviewRepository = $this->createMock(CodeReviewRepository::class);
+        $this->settingsProvider     = $this->createMock(UserReviewSettingsProvider::class);
         $this->provider             = new CodeReviewDtoProvider(
             $this->revisionService,
             $this->fileService,
             $this->reviewTypeDecider,
             $this->visibilityService,
-            $this->codeReviewRepository
+            $this->codeReviewRepository,
+            $this->settingsProvider
         );
     }
 
@@ -73,6 +77,9 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
             ->method('decide')
             ->with($review, [$revision1], [$revision2])
             ->willReturn(CodeReviewType::COMMITS);
+        $this->settingsProvider->expects($this->exactly(2))->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->settingsProvider->expects($this->exactly(2))->method('getVisibleLines')->willReturn(6);
+        $this->settingsProvider->expects($this->once())->method('getReviewDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
         $this->fileService->expects($this->once())
             ->method('getFiles')
             ->with(

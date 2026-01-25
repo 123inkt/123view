@@ -28,7 +28,7 @@ readonly class CodeReviewDto
         public DirectoryTreeNode $fileTree,
         public ?DiffFile $selectedFile,
         public ?string $filePath,
-        public string $tab,
+        public ?string $tab,
         public DiffComparePolicy $comparePolicy,
         public ReviewDiffModeEnum $diffMode,
         public ?AbstractReviewAction $action,
