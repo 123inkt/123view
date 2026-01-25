@@ -5,7 +5,7 @@ namespace DR\Review\Controller\Api\User;
 
 use DR\Review\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CurrentUserController extends AbstractController
 {

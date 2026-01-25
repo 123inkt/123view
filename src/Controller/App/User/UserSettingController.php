@@ -11,7 +11,7 @@ use DR\Review\ViewModel\App\User\UserSettingViewModel;
 use DR\Review\ViewModelProvider\UserSettingViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserSettingController extends AbstractController

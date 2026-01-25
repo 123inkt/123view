@@ -8,7 +8,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\UsersViewModel;
 use DR\Review\ViewModelProvider\UserViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UsersController extends AbstractController
