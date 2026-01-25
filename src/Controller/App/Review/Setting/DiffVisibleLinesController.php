@@ -21,10 +21,7 @@ class DiffVisibleLinesController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(DiffVisibleLinesRequest $request): RedirectResponse
     {
-        $visibleLines = $request->getVisibleLines();
-        $user         = $this->getUser();
-
-        $user->getReviewSetting()->setDiffVisibleLines($visibleLines);
+        $this->getUser()->getReviewSetting()->setDiffVisibleLines($request->getVisibleLines());
         $this->entityManager->flush();
 
         return $this->refererRedirect('/');
