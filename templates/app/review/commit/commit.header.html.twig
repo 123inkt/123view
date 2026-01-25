@@ -89,7 +89,11 @@
                     </ul>
                 </div>
 
-                <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
+                <form class="dropdown d-inline-block"
+                      method="post"
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\DiffComparisonPolicyController') }}"
+                        {{ stimulus_controller('component--dropdown-menu review-comparison-policy') }}
+                >
                     <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                             {{ stimulus_target('component--dropdown-menu', 'button') }}
                             {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
@@ -104,42 +108,33 @@
                         {% endif %}
                     </a>
 
-                    <ul class="dropdown-menu"
-                            {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
-                            {{ stimulus_controller('review-comparison-policy') }}
-                    >
+                    <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio"
-                                       name="whitespace"
-                                       data-url="{{ url_query_params({comparisonPolicy: 'all'}) }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
                                 {{ 'do.not.ignore.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio"
-                                       name="whitespace"
-                                       data-url="{{ url_query_params({comparisonPolicy: 'trim'}) }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
                                 {{ 'trim.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
-                                        {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore_empty_lines'}) }}"
-                                        {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces.and.empty.lines'|trans }}
                             </label>
                         </li>
                     </ul>
-                </div>
+                </form>
             {% endif %}
 
             {# comment visibility #}
