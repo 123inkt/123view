@@ -67,27 +67,31 @@
 
             {# whitespace management #}
             {% if file.modified %}
-                <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}
-                        title="{{ 'show.context.lines'|trans }}"
+                <form class="dropdown d-inline-block"
+                      method="post"
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\DiffVisibleLinesController') }}"
+                      title="{{ 'show.context.lines'|trans }}"
+                        {{ stimulus_controller('component--dropdown-menu review-diff-visible-lines') }}
                 >
-                    <button class="btn btn-outline-primary btn-sm dropdown-toggle"
+                    <a class="btn btn-outline-primary btn-sm dropdown-toggle"
+                       href="#"
                             {{ stimulus_target('component--dropdown-menu', 'button') }}
                             {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}
                     >
                         <i class="bi bi-menu-button-fill"></i>
-                    </button>
+                    </a>
 
                     <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
                         {% for i in range(0, 20) %}
                             <li>
-                                <a class="dropdown-item {{ i == visibleContextLines ? 'active' : '' }}"
-                                   href="{{ url_query_params({visibleLines: i}) }}">
-                                     {{ i }} lines
-                                </a>
+                                <label class="dropdown-item">
+                                    <input type="radio" name="visibleLines" value="{{ i }}" {{ i == visibleContextLines ? 'checked' : '' }}>
+                                    {{ i }} lines
+                                </label>
                             </li>
                         {% endfor %}
                     </ul>
-                </div>
+                </form>
 
                 <form class="dropdown d-inline-block"
                       method="post"
@@ -129,7 +133,9 @@
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="comparisonPolicy" value="ignore_empty_lines" {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
+                                <input type="radio"
+                                       name="comparisonPolicy"
+                                       value="ignore_empty_lines" {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces.and.empty.lines'|trans }}
                             </label>
                         </li>
