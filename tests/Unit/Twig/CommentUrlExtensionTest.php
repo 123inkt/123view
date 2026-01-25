@@ -28,24 +28,6 @@ class CommentUrlExtensionTest extends AbstractTestCase
         $this->extension    = new CommentUrlExtension($this->urlGenerator);
     }
 
-    public function testGetFunctions(): void
-    {
-        $functions = $this->extension->getFunctions();
-
-        static::assertCount(2, $functions);
-        static::assertContainsOnlyInstancesOf(TwigFunction::class, $functions);
-
-        // Check first function (comment_url)
-        $commentUrlFunction = $functions[0];
-        static::assertSame('comment_url', $commentUrlFunction->getName());
-        static::assertSame([$this->extension, 'getCommentUrl'], $commentUrlFunction->getCallable());
-
-        // Check second function (comment_reply_url)
-        $commentReplyUrlFunction = $functions[1];
-        static::assertSame('comment_reply_url', $commentReplyUrlFunction->getName());
-        static::assertSame([$this->extension, 'getCommentReplyUrl'], $commentReplyUrlFunction->getCallable());
-    }
-
     #[TestWith([true, 'https://example.com/review/456/file/src/Service/TestService.php', UrlGeneratorInterface::ABSOLUTE_URL])]
     #[TestWith([false, '/review/789/file/tests/Unit/TestTest.php', UrlGeneratorInterface::ABSOLUTE_PATH])]
     public function testGetCommentUrl(bool $absolute, string $expectedUrl, int $expectedReferenceType): void

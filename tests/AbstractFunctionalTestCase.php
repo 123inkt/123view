@@ -33,7 +33,7 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         parent::setUp();
         $this->client        = static::createClient(['environment' => 'test', 'debug' => 'false']);
         $this->databaseTool  = Assert::isInstanceOf(static::getContainer()->get(DatabaseToolCollection::class), DatabaseToolCollection::class)->get();
-        $doctrine            = Assert::isInstanceOf(static::getContainer()->get(Registry::class), ManagerRegistry::class);
+        $doctrine            = Assert::isInstanceOf(static::getContainer()->get('doctrine'), ManagerRegistry::class);
         $this->entityManager = Assert::isInstanceOf($doctrine->getManager(), EntityManagerInterface::class);
 
         Assert::isInstanceOf($doctrine->getConnection(), Connection::class)->beginTransaction();

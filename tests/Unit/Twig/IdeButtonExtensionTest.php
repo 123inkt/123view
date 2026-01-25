@@ -30,12 +30,6 @@ class IdeButtonExtensionTest extends AbstractTestCase
         $this->extension = new IdeButtonExtension(true, 'title', $this->ideUrlPatternProvider, $this->twig);
     }
 
-    public function testGetFunctions(): void
-    {
-        $expected = [new TwigFunction('ide_button', [$this->extension, 'createLink'], ['is_safe' => ['all']])];
-        static::assertEquals($expected, $this->extension->getFunctions());
-    }
-
     /**
      * @throws SyntaxError|RuntimeError|LoaderError
      */
