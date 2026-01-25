@@ -1967,9 +1967,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         }>,
  *         cache?: array<string, array{ // Default: []
  *             platform: string|Param,
- *             service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *             service: string|Param, // The cache service id as defined under the "cache" configuration key
  *             cache_key?: string|Param, // Key used to store platform results, if not set, the current platform name will be used, the "prompt_cache_key" can be set during platform call to override this value
- *             ttl?: int|Param,
  *         }>,
  *         cartesia?: array{
  *             api_key: string|Param,
