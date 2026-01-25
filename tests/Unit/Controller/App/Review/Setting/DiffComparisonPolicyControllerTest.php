@@ -13,7 +13,6 @@ use DR\Review\Request\Review\Setting\DiffComparisonPolicyRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @extends AbstractControllerTestCase<DiffComparisonPolicyController>
@@ -31,8 +30,8 @@ class DiffComparisonPolicyControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $user            = new User;
-        $reviewSetting   = new UserReviewSetting;
+        $user            = new User();
+        $reviewSetting   = new UserReviewSetting();
         $validatedRequest = $this->createMock(DiffComparisonPolicyRequest::class);
 
         $user->setReviewSetting($reviewSetting);

@@ -31,8 +31,8 @@ class CommentVisibilityControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $user            = new User;
-        $reviewSetting   = new UserReviewSetting;
+        $user            = new User();
+        $reviewSetting   = new UserReviewSetting();
         $validatedRequest = $this->createMock(CommentVisibilityRequest::class);
 
         $user->setReviewSetting($reviewSetting);

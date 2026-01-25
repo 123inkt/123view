@@ -13,7 +13,6 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @extends AbstractControllerTestCase<ReviewDiffModeController>
@@ -31,8 +30,8 @@ class ReviewDiffModeControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $user            = new User;
-        $reviewSetting   = new UserReviewSetting;
+        $user            = new User();
+        $reviewSetting   = new UserReviewSetting();
         $validatedRequest = $this->createMock(ReviewDiffModeRequest::class);
 
         $user->setReviewSetting($reviewSetting);
