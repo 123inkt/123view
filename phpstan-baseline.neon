@@ -865,6 +865,30 @@ parameters:
 			path: src/Repository/User/UserRepository.php
 
 		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
 			message: '#^Class DR\\Review\\Repository\\User\\UserSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
