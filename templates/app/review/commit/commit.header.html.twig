@@ -199,7 +199,7 @@
                 <form class="btn-group btn-group-sm"
                       method="post"
                       action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\ReviewDiffModeController') }}"
-                        {{ stimulus_controller('review-comparison-policy') }}
+                        {{ stimulus_controller('review-diff-mode') }}
                 >
                     {% for diffMode in fileDiffViewModel.diffModes %}
                         <input type="radio"
@@ -207,7 +207,9 @@
                                value="{{ diffMode }}"
                                class="btn-check"
                                id="diff-mode-{{ diffMode }}" {{ diffMode == currentDiffMode ? 'checked' : '' }}>
-                        <label class="btn btn-outline-primary" for="diff-mode-{{ diffMode }}">
+                        <label class="btn btn-outline-primary" for="diff-mode-{{ diffMode }}"
+                               {% if diffMode != currentDiffMode %}{{ stimulus_controller('button') }}{% endif %}
+                        >
                             {{ ('diff.' ~ diffMode)|trans }}
                         </label>
                     {% endfor %}
