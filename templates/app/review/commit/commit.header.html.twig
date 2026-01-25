@@ -111,25 +111,25 @@
                     <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="all" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
                                 {{ 'do.not.ignore.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="trim" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
                                 {{ 'trim.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="ignore" {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="comparisonPolicy" value="{{ comparisonPolicy }}" {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="ignore_empty_lines" {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces.and.empty.lines'|trans }}
                             </label>
                         </li>
