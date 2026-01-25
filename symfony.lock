@@ -327,7 +327,7 @@
         ]
     },
     "symfony/ai-anthropic-platform": {
-        "version": "0.3",
+        "version": "0.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
