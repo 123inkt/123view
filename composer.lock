@@ -11475,16 +11475,16 @@
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
-            "version": "v3.0.4",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-file-coverage-inspection.git",
-                "reference": "8164d9f7422c9d067bd5ac5f5d9eaeeb3aec92a7"
+                "reference": "5fed5f04edbd772b9fef3754533a5773da5346d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/8164d9f7422c9d067bd5ac5f5d9eaeeb3aec92a7",
-                "reference": "8164d9f7422c9d067bd5ac5f5d9eaeeb3aec92a7",
+                "url": "https://api.github.com/repos/123inkt/phpunit-file-coverage-inspection/zipball/5fed5f04edbd772b9fef3754533a5773da5346d8",
+                "reference": "5fed5f04edbd772b9fef3754533a5773da5346d8",
                 "shasum": ""
             },
             "require": {
@@ -11498,11 +11498,10 @@
             "require-dev": {
                 "digitalrevolution/accessorpair-constraint": ">= 2.1.7",
                 "mikey179/vfsstream": "^1.6.7",
-                "phpmd/phpmd": "^2.14",
                 "phpstan/extension-installer": "^1.3",
-                "phpstan/phpstan": "^1.10",
-                "phpstan/phpstan-phpunit": "^1.3",
-                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
                 "phpunit/phpunit": "^10.0 || ^11.2 || ^12.0",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^4.0"
@@ -11523,9 +11522,9 @@
             "description": "Configurable phpunit file coverage inspection",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-file-coverage-inspection/issues",
-                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v3.0.4"
+                "source": "https://github.com/123inkt/phpunit-file-coverage-inspection/tree/v3.1.0"
             },
-            "time": "2025-12-03T09:13:49+00:00"
+            "time": "2025-12-29T10:21:22+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
