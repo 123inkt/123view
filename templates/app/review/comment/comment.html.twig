@@ -18,7 +18,7 @@
 >
     {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
     {% if not is_edit_comment %}
-       ` <div class="comment__comment" data-comment-focus="{{ comment.id }}">
+        <div class="comment__comment" data-comment-focus="{{ comment.id }}">
             {# detached comments #}
             {% if detached is defined and detached %}
                 <div class="comment__detached-comment">
