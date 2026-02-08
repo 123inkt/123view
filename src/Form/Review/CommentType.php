@@ -10,9 +10,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CommentType extends AbstractType
 {
+    private const int MAX_LENGTH = 2000;
+
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['label' => false, 'attr' => ['autocomplete' => 'off'], 'constraints' => new Assert\Length(max: 2000)]);
+        $resolver->setDefaults(
+            [
+                'label'       => false,
+                'attr'        => ['autocomplete' => 'off', 'maxlength' => self::MAX_LENGTH],
+                'constraints' => new Assert\Length(max: self::MAX_LENGTH)
+            ]
+        );
     }
 
     public function getParent(): string
