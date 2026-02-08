@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\UpdateFileSeenStatusController;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
@@ -50,6 +51,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
 
@@ -81,6 +83,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
 
         $diffFileA                = new DiffFile();
@@ -111,6 +114,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
 
@@ -122,6 +126,37 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_NOT_MODIFIED, $response->getStatusCode());
+    }
+
+    public function testInvokeMarkAsSeenBranchReview(): void
+    {
+        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request->method('getFilePath')->willReturn('filepath');
+        $request->method('getSeenStatus')->willReturn(true);
+
+        $repository = new Repository();
+        $review     = new CodeReview();
+        $review->setType(CodeReviewType::BRANCH);
+        $review->setRepository($repository);
+        $review->setReferenceId('feature-branch');
+
+        $diffFileA                = new DiffFile();
+        $diffFileA->filePathAfter = 'filepath';
+        $diffFileB                = new DiffFile();
+
+        $user = new User();
+        $this->expectGetUser($user);
+
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->diffService->expects($this->once())
+            ->method('getDiffForBranch')
+            ->with($review, [], 'feature-branch')
+            ->willReturn([$diffFileA, $diffFileB]);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
+        $this->statusService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFileA);
+
+        $response = ($this->controller)($request, $review);
+        static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
