@@ -1,6 +1,9 @@
 {# reply:  CommentReply #}
 {# indented: bool|null #}
 
+{% set is_edit_comment_reply = editReplyCommentForm is defined and editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
+
+{% if not is_edit_comment_reply %}
 <div class="comment__reply {% if indented is defined and not indented %}comment__reply--no-indent{% endif %}" data-reply-id="{{ reply.id }}">
     <div class="comment__author_and_time">
         <span class="comment__author">{{ reply.user.name }}</span>
@@ -57,9 +60,10 @@
         {{ reply.message|mentions|markdown }}
     </div>
 </div>
+{% endif %}
 
 <div class="comment__edit-reply">
-    {% if editReplyCommentForm is defined and editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
+    {% if is_edit_comment_reply %}
         {% include 'app/review/comment/comment.modify.html.twig' with {form: editReplyCommentForm.form, commentId: reply.comment.id, actors: review.actors} %}
     {% endif %}
 </div>

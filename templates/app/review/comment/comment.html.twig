@@ -3,8 +3,7 @@
     detached: 'bool|null',
     visible: 'bool',
     editCommentForm: 'FormView|null',
-    replyCommentForm: 'FormView|null',
-%}
+    replyCommentForm: 'FormView|null', %}
 
 <div class="comment__comment-thread
     {%- if comment.state == 'resolved' %} comment__state_resolved{% endif -%}
@@ -17,95 +16,93 @@
         {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
         {{ stimulus_controller('comment-thread') }}
 >
-    <div class="comment__comment" data-comment-focus="{{ comment.id }}">
-        {# detached comments #}
-        {% if detached is defined and detached %}
-            <div class="comment__detached-comment">
-                <i class="bi bi-link"></i>
-                {{ 'discussion.points.to.modified.code'|trans({line: comment.lineReference.lineAfter}) }}
-            </div>
-        {% endif %}
+    {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
+    {% if not is_edit_comment %}
+        <div class="comment__comment" data-comment-focus="{{ comment.id }}">
+            {# detached comments #}
+            {% if detached is defined and detached %}
+                <div class="comment__detached-comment">
+                    <i class="bi bi-link"></i>
+                    {{ 'discussion.points.to.modified.code'|trans({line: comment.lineReference.lineAfter}) }}
+                </div>
+            {% endif %}
 
-        <div class="comment__author_and_time">
-            <span class="comment__author">{{ comment.user.name }}</span>
-            <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
-                {{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
-            </span>
-            {%- if comment.tag -%}
-                {%- if comment.tag.value == 'suggestion' -%}
-                    <span class="badge rounded-pill text-bg-info">{{ 'tag.suggestion'|trans }}</span>
-                {%- elseif comment.tag.value == 'explanation' -%}
-                    <span class="badge rounded-pill text-bg-primary">{{ 'tag.explanation'|trans }}</span>
-                {%- else -%}
-                    <span class="badge rounded-pill text-bg-success">{{ ('tag.' ~ comment.tag.value)|trans }}</span>
+            <div class="comment__author_and_time">
+                <span class="comment__author">{{ comment.user.name }}</span>
+                <span class="comment__datetime" title="{{ comment.updateTimestamp|format_datetime('full', 'full') }}">
+                    {{ 'on'|trans }} {{ comment.updateTimestamp|format_datetime('short', 'short') }}
+                </span>
+                {%- if comment.tag -%}
+                    {%- if comment.tag.value == 'suggestion' -%}
+                        <span class="badge rounded-pill text-bg-info">{{ 'tag.suggestion'|trans }}</span>
+                    {%- elseif comment.tag.value == 'explanation' -%}
+                        <span class="badge rounded-pill text-bg-primary">{{ 'tag.explanation'|trans }}</span>
+                    {%- else -%}
+                        <span class="badge rounded-pill text-bg-success">{{ ('tag.' ~ comment.tag.value)|trans }}</span>
+                    {%- endif -%}
                 {%- endif -%}
-            {%- endif -%}
 
-            <span>
-                {# copy link to clipboard #}
-                <a href="#"
-                   class="ms-1 text-decoration-none comment__action-button"
-                   data-class-after-copy="ms-1 text-decoration-none comment__action-button active"
-                   data-content="{{ comment_url(comment, true) }}#focus:comment:{{ comment.id }}"
-                   title="{{ 'share.comment.link'|trans }}"
-                        {{ stimulus_controller('component--copy-to-clipboard') }}
-                        {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
-                >
-                    <i class="bi bi-link-45deg"
-                       data-class-after-copy="bi bi-check-lg"
-                       data-role="icon"
-                    ></i>
-                </a>
+                <span>
+                    {# copy link to clipboard #}
+                    <a href="#"
+                       class="ms-1 text-decoration-none comment__action-button"
+                       data-class-after-copy="ms-1 text-decoration-none comment__action-button active"
+                       data-content="{{ comment_url(comment, true) }}#focus:comment:{{ comment.id }}"
+                       title="{{ 'share.comment.link'|trans }}"
+                            {{ stimulus_controller('component--copy-to-clipboard') }}
+                            {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
+                    >
+                        <i class="bi bi-link-45deg" data-class-after-copy="bi bi-check-lg" data-role="icon"></i>
+                    </a>
 
-                {% if comment.user == app.user %}
-                    <span class="comment__edit">
-                        {# edit comment #}
-                        <a href="#" class="text-decoration-none comment__action-button"
-                                {{ stimulus_action('comment-thread', 'editComment', 'click') }}
-                           title="{{ 'edit.comment'|trans }}">
-                            <i class="bi bi-pencil-fill"></i>
-                        </a>
+                    {% if comment.user == app.user %}
+                        <span class="comment__edit">
+                            {# edit comment #}
+                            <a href="#" class="text-decoration-none comment__action-button"
+                                    {{ stimulus_action('comment-thread', 'editComment', 'click') }}
+                               title="{{ 'edit.comment'|trans }}">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
 
-                        {# delete comment #}
-                        <a href="#" class="text-decoration-none comment__action-button"
-                                {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
-                           data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
-                            <i class="bi bi-trash-fill text-danger"></i>
-                        </a>
-                    </span>
-                {% endif %}
-            </span>
+                            {# delete comment #}
+                            <a href="#" class="text-decoration-none comment__action-button"
+                                    {{ stimulus_action('comment-thread', 'deleteComment', 'click') }}
+                               data-confirm-message="{{ 'confirm.delete.comment'|trans }}" title="{{ 'delete.comment'|trans }}">
+                                <i class="bi bi-trash-fill text-danger"></i>
+                            </a>
+                        </span>
+                    {% endif %}
+                </span>
 
-            <span class="comment__state float-end">
-                {% if comment.state == 'open' %}
-                    {% set state = 'resolved' %}
-                    {% set title = 'click.to.resolve'|trans %}
-                    {% set label = 'resolve'|trans %}
-                {% else %}
-                    {% set state = 'open' %}
-                    {% set title = 'click.to.unresolve'|trans %}
-                    {% set label = '✓ ' ~ 'resolved'|trans %}
-                {% endif %}
+                <span class="comment__state float-end">
+                    {% if comment.state == 'open' %}
+                        {% set state = 'resolved' %}
+                        {% set title = 'click.to.resolve'|trans %}
+                        {% set label = 'resolve'|trans %}
+                    {% else %}
+                        {% set state = 'open' %}
+                        {% set title = 'click.to.unresolve'|trans %}
+                        {% set label = '✓ ' ~ 'resolved'|trans %}
+                    {% endif %}
 
-                <a href="#"
-                        {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
-                   data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
-                   data-state="{{ state }}"
-                   title="{{ title }}">{{ label }}</a>
-            </span>
+                    <a href="#"
+                            {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
+                       data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
+                       data-state="{{ state }}"
+                       title="{{ title }}">{{ label }}</a>
+                </span>
+            </div>
+
+            <div class="comment__message comment__markdown">
+                {{ comment.message|mentions|markdown }}
+            </div>
         </div>
-
-        <div class="comment__message comment__markdown">
-            {{ comment.message|mentions|markdown }}
-        </div>
-    </div>
+    {% endif %}
 
     {# edit comment form #}
-    {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
     {% if is_edit_comment %}
         {% include 'app/review/comment/comment.modify.html.twig' with {form: editCommentForm.form, commentId: comment.id, actors: review.actors} %}
     {% endif %}
-
 
     {# comment replies #}
     {% if comment.replies|length > 0 %}

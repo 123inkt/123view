@@ -8,7 +8,7 @@ import CommentService from '../service/CommentService';
 
 export default class extends Controller<HTMLElement> {
     public static debounces = ['commentPreviewListener'];
-    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form'];
+    public static targets   = ['textarea', 'mentionSuggestions', 'markdownPreview', 'form', 'submitButton'];
     public static values    = {actors: String};
 
     private readonly commentService = new CommentService();
@@ -16,6 +16,7 @@ export default class extends Controller<HTMLElement> {
     private readonly declare textareaTarget: HTMLTextAreaElement;
     private readonly declare mentionSuggestionsTarget: HTMLElement;
     private readonly declare markdownPreviewTarget: HTMLElement;
+    private readonly declare submitButtonTarget: HTMLButtonElement;
     private readonly declare actorsValue: string;
     private submitting              = false;
 
@@ -52,6 +53,7 @@ export default class extends Controller<HTMLElement> {
                 .submitCommentForm(this.formTarget)
                 .then(commentId => window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId})))
                 .catch(err => {
+                    this.submitButtonTarget.disabled  = false;
                     this.submitting = false;
                     Errors.catch(err);
                 });
@@ -61,6 +63,7 @@ export default class extends Controller<HTMLElement> {
                 .then(commentUrl => this.commentService.getCommentThread(commentUrl))
                 .then(thread => this.element.replaceWith(thread))
                 .catch(err => {
+                    this.submitButtonTarget.disabled  = false;
                     this.submitting = false;
                     Errors.catch(err);
                 });
