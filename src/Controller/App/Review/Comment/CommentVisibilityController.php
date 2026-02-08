@@ -22,7 +22,6 @@ class CommentVisibilityController extends AbstractController
     public function __invoke(CommentVisibilityRequest $request): JsonResponse
     {
         $reviewSetting = $this->getUser()->getReviewSetting();
-
         $reviewSetting->setReviewCommentVisibility($request->getVisibility());
         $this->repository->save($reviewSetting, true);
 

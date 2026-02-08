@@ -100,9 +100,6 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
         $request = $this->createMock(ReviewRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getTab')->willReturn('tab');
-        $request->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $request->method('getDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
-        $request->method('getVisibleLines')->willReturn(6);
         $request->method('getAction')->willReturn(null);
 
         return $request;
