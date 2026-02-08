@@ -33,6 +33,7 @@ module.exports = (async () => {
                 "@typescript-eslint/no-unnecessary-condition": ["off"],
                 "@typescript-eslint/no-floating-promises": ["off"],
                 "@typescript-eslint/use-unknown-in-catch-callback-variable": ["off"],
+                "@typescript-eslint/strict-void-return": ["off"]
             },
         },
     ];
