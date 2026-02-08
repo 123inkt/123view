@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
@@ -38,15 +39,14 @@ class AiCodeReviewService
      */
     public function startCodeReview(CodeReview $review): int
     {
-        // gather revisions
-        $revisions = $this->revisionService->getRevisions($review);
+        $options = new FileDiffOptions(5, DiffComparePolicy::IGNORE_EMPTY_LINES, includeRaw: true);
 
-        // get diff files for review
-        $files = $this->diffService->getDiffForRevisions(
-            $review->getRepository(),
-            $revisions,
-            new FileDiffOptions(5, DiffComparePolicy::IGNORE_EMPTY_LINES, includeRaw: true)
-        );
+        // gather files for review  revisions
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            $files = $this->diffService->getDiffForBranch($review, [], (string)$review->getReferenceId(), $options);
+        } else {
+            $files = $this->diffService->getDiffForRevisions($review->getRepository(), $this->revisionService->getRevisions($review), $options);
+        }
 
         // filter out large and non-essential files
         $files = array_filter($files, $this->fileFilter);

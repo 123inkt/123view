@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModelProvider\Mail;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
@@ -11,7 +12,6 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\ViewModel\Mail\CommentViewModel;
-use DR\Utils\Assert;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
@@ -35,8 +35,11 @@ class MailCommentViewModelProvider
         ?User $resolvedBy = null
     ): CommentViewModel {
         $lineReference = $comment->getLineReference();
-        $revisions     = $this->revisionService->getRevisions($review);
-        $files         = $this->diffService->getDiffForRevisions(Assert::notNull($review->getRepository()), $revisions);
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            $files = $this->diffService->getDiffForBranch($review, [], (string)$review->getReferenceId());
+        } else {
+            $files = $this->diffService->getDiffForRevisions($review->getRepository(), $this->revisionService->getRevisions($review));
+        }
 
         // find selected file
         $selectedFile = $this->diffFinder->findFileByPath($files, $comment->getFilePath());
