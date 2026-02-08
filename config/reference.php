@@ -1967,17 +1967,26 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         }>,
  *         cache?: array<string, array{ // Default: []
  *             platform: string|Param,
- *             service: string|Param, // The cache service id as defined under the "cache" configuration key
+ *             service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
  *             cache_key?: string|Param, // Key used to store platform results, if not set, the current platform name will be used, the "prompt_cache_key" can be set during platform call to override this value
+ *             ttl?: int|Param,
  *         }>,
  *         cartesia?: array{
  *             api_key: string|Param,
  *             version: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
+ *         cerebras?: array{
+ *             api_key: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *         decart?: array{
  *             api_key: string|Param,
  *             host?: string|Param, // Default: "https://api.decart.ai/v1"
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         dockermodelrunner?: array{
+ *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         elevenlabs?: array{
@@ -2009,27 +2018,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             provider?: string|Param, // Default: "hf-inference"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
- *         vertexai?: array{
- *             location: string|Param,
- *             project_id: string|Param,
- *             api_key?: string|Param, // Default: null
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         openai?: array{
- *             api_key: string|Param,
- *             region?: scalar|Param|null, // The region for OpenAI API (EU, US, or null for default) // Default: null
+ *         lmstudio?: array{
+ *             host_url?: string|Param, // Default: "http://127.0.0.1:1234"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         mistral?: array{
  *             api_key: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         openrouter?: array{
- *             api_key: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         lmstudio?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:1234"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         ollama?: array{
@@ -2037,11 +2031,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *             api_catalog?: bool|Param, // If set, the Ollama API will be used to build the catalog and retrieve models information, using this option leads to additional HTTP calls
  *         },
- *         cerebras?: array{
+ *         openai?: array{
  *             api_key: string|Param,
+ *             region?: scalar|Param|null, // The region for OpenAI API (EU, US, or null for default) // Default: null
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
- *         voyage?: array{
+ *         openrouter?: array{
  *             api_key: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
@@ -2049,15 +2044,21 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             api_key: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
- *         dockermodelrunner?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
  *         scaleway?: array{
  *             api_key: scalar|Param|null,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         transformersphp?: array<mixed>,
+ *         vertexai?: array{
+ *             location: string|Param,
+ *             project_id: string|Param,
+ *             api_key?: string|Param, // Default: null
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         voyage?: array{
+ *             api_key: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *     },
  *     model?: array<string, array<string, array{ // Default: []
  *             class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
@@ -2124,6 +2125,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             metric?: string|Param, // Default: "cosine"
  *             endpoint?: string|Param,
  *         }>,
+ *         elasticsearch?: array<string, array{ // Default: []
+ *             endpoint?: string|Param,
+ *             index_name?: string|Param,
+ *             vectors_field?: string|Param, // Default: "_vectors"
+ *             dimensions?: int|Param, // Default: 1536
+ *             similarity?: string|Param, // Default: "cosine"
+ *             http_client?: string|Param, // Default: "http_client"
+ *         }>,
  *         manticoresearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             table?: string|Param,
@@ -2182,14 +2191,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             dimensions?: int|Param, // Default: 1536
  *             distance?: string|Param, // Default: "cosine"
  *             quantization?: bool|Param,
- *         }>,
- *         elasticsearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             index_name?: string|Param,
- *             vectors_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *             similarity?: string|Param, // Default: "cosine"
- *             http_client?: string|Param, // Default: "http_client"
  *         }>,
  *         opensearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
