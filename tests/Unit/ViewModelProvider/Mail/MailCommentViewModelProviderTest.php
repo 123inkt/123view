@@ -163,15 +163,10 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
      */
     public function testCreateCommentViewModelBranchReview(): void
     {
-        $reference = new LineReference(null, 'reference', 1, 2, 3);
-        $comment   = (new Comment())->setUser((new User())->setName('name'));
-        $comment->setFilePath('reference');
-        $comment->setLineReference($reference);
+        $reference  = new LineReference(null, 'reference', 1, 2, 3);
+        $comment    = (new Comment())->setUser((new User())->setName('name'))->setFilePath('reference')->setLineReference($reference);
         $repository = new Repository();
-        $review     = new CodeReview();
-        $review->setType(CodeReviewType::BRANCH);
-        $review->setRepository($repository);
-        $review->setReferenceId('feature-branch');
+        $review     = (new CodeReview())->setType(CodeReviewType::BRANCH)->setRepository($repository)->setReferenceId('feature-branch');
         $review->getComments()->add($comment);
         $file = new DiffFile();
         $line = new DiffLine(0, []);
