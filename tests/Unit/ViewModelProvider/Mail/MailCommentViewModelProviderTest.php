@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider\Mail;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Repository\Repository;
@@ -53,6 +54,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
         $file = new DiffFile();
@@ -91,6 +93,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
         $file = new DiffFile();
@@ -129,6 +132,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
         $user = (new User())->setName('name');
@@ -152,5 +156,45 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         static::assertSame([$line], $viewModel->linesBefore);
         static::assertSame([], $viewModel->linesAfter);
         static::assertSame($user, $viewModel->resolvedBy);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testCreateCommentViewModelBranchReview(): void
+    {
+        $reference = new LineReference(null, 'reference', 1, 2, 3);
+        $comment   = (new Comment())->setUser((new User())->setName('name'));
+        $comment->setFilePath('reference');
+        $comment->setLineReference($reference);
+        $repository = new Repository();
+        $review     = new CodeReview();
+        $review->setType(CodeReviewType::BRANCH);
+        $review->setRepository($repository);
+        $review->setReferenceId('feature-branch');
+        $review->getComments()->add($comment);
+        $file = new DiffFile();
+        $line = new DiffLine(0, []);
+
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->diffService->expects($this->once())
+            ->method('getDiffForBranch')
+            ->with($review, [], 'feature-branch')
+            ->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
+            ->method('findLinesAround')
+            ->with($file, $reference, 6)
+            ->willReturn(['before' => [$line], 'after' => []]);
+
+        $viewModel = $this->provider->createCommentViewModel($review, $comment);
+        static::assertSame('mail.new.comment.by.user.on', $viewModel->headingTitle);
+        static::assertSame($review, $viewModel->review);
+        static::assertSame($comment, $viewModel->comment);
+        static::assertSame([], $viewModel->replies);
+        static::assertSame($file, $viewModel->file);
+        static::assertSame([$line], $viewModel->linesBefore);
+        static::assertSame([], $viewModel->linesAfter);
+        static::assertNull($viewModel->resolvedBy);
     }
 }
