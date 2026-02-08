@@ -18,12 +18,12 @@
 
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
 
-        <div class="review-split-panel">
-            <div class="review-split-panel-left">
+        <div class="review-split-panel" {{ stimulus_controller('split-panel') }}>
+            <div class="review-split-panel-left" {{ stimulus_target('split-panel', 'left') }}>
                 {%- include 'app/review/review.sidebar.html.twig' -%}
             </div>
-            <div class="review-split-panel-separator"></div>
-            <div class="review-split-panel-right">
+            <div class="review-split-panel-divider" {{ stimulus_target('split-panel', 'divider') }}></div>
+            <div class="review-split-panel-right" {{ stimulus_target('split-panel', 'right') }}>
                 {%- if reviewModel.reviewSummaryViewModel is not same as (null) -%}
                     <div class="review-grid-code" data-role="file-diff-review">
                         {%- include 'app/review/review.summary.html.twig' with {reviewSummaryViewModel: reviewModel.reviewSummaryViewModel} %}

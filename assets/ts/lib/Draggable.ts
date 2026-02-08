@@ -56,11 +56,14 @@ export default class Draggable {
     }
 
     private check(event: Event): void {
+        console.log('drag check');
         const distance = this.mouseStart.distance(Draggable.pointFromEvent(event));
         // dragged distance is below the threshold distance
         if (distance <= this.options.threshold) {
             return;
         }
+
+        console.log('drag check to start drag');
 
         if (this.options.onDragStart !== undefined) {
             this.options.onDragStart(event);
@@ -73,7 +76,7 @@ export default class Draggable {
         document.removeEventListener('touchend', this.cancel);
 
         // add new listeners
-        document.addEventListener('mousemove ', this.dragMove);
+        document.addEventListener('mousemove', this.dragMove);
         document.addEventListener('touchmove', this.dragMove);
         document.addEventListener('mouseup', this.dragStop);
         document.addEventListener('touchend', this.dragStop);
@@ -109,7 +112,7 @@ export default class Draggable {
         document.removeEventListener('touchmove', this.check);
         document.removeEventListener('mouseup', this.cancel);
         document.removeEventListener('touchend', this.cancel);
-        document.removeEventListener('mousemove ', this.dragMove);
+        document.removeEventListener('mousemove', this.dragMove);
         document.removeEventListener('touchmove', this.dragMove);
         document.removeEventListener('mouseup', this.dragStop);
         document.removeEventListener('touchend', this.dragStop);
