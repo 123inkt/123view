@@ -12,8 +12,8 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
-use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
 use DR\Review\ViewModelProvider\FileTreeViewModelProvider;
@@ -27,16 +27,16 @@ use Symfony\Component\HttpFoundation\Request;
 #[CoversClass(ReviewFileTreeController::class)]
 class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 {
-    private FileTreeViewModelProvider&MockObject $viewModelProvider;
-    private CodeReviewFileService&MockObject     $fileService;
-    private ReviewSessionService&MockObject      $sessionService;
-    private CodeReviewRevisionService&MockObject $revisionService;
+    private FileTreeViewModelProvider&MockObject  $viewModelProvider;
+    private CodeReviewFileService&MockObject      $fileService;
+    private UserReviewSettingsProvider&MockObject $settingsProvider;
+    private CodeReviewRevisionService&MockObject  $revisionService;
 
     protected function setUp(): void
     {
         $this->viewModelProvider = $this->createMock(FileTreeViewModelProvider::class);
         $this->fileService       = $this->createMock(CodeReviewFileService::class);
-        $this->sessionService    = $this->createMock(ReviewSessionService::class);
+        $this->settingsProvider  = $this->createMock(UserReviewSettingsProvider::class);
         $this->revisionService   = $this->createMock(CodeReviewRevisionService::class);
         parent::setUp();
     }
@@ -57,7 +57,7 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
             ->method('getFiles')
             ->with($review, [$revision], 'filePath', new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL))
             ->willReturn([$treeNode, $selectedFile]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
         $this->viewModelProvider->expects($this->once())
             ->method('getFileTreeViewModel')
             ->with($review, $treeNode, $selectedFile)
@@ -69,6 +69,6 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new ReviewFileTreeController($this->viewModelProvider, $this->fileService, $this->sessionService, $this->revisionService);
+        return new ReviewFileTreeController($this->viewModelProvider, $this->fileService, $this->settingsProvider, $this->revisionService);
     }
 }

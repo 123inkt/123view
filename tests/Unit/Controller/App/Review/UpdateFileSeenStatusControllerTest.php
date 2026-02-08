@@ -14,8 +14,8 @@ use DR\Review\Entity\User\User;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,15 +29,15 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 {
     private FileSeenStatusService&MockObject      $statusService;
     private ReviewDiffServiceInterface&MockObject $diffService;
-    private ReviewSessionService&MockObject       $sessionService;
+    private UserReviewSettingsProvider&MockObject $settingsProvider;
     private CodeReviewRevisionService&MockObject  $revisionService;
 
     public function setUp(): void
     {
-        $this->statusService   = $this->createMock(FileSeenStatusService::class);
-        $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->sessionService  = $this->createMock(ReviewSessionService::class);
-        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->statusService    = $this->createMock(FileSeenStatusService::class);
+        $this->diffService      = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->settingsProvider = $this->createMock(UserReviewSettingsProvider::class);
+        $this->revisionService  = $this->createMock(CodeReviewRevisionService::class);
         parent::setUp();
     }
 
@@ -65,10 +65,9 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
             ->method('getDiffForRevisions')
             ->with($repository, [$revision])
             ->willReturn([$diffFileA, $diffFileB]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
         $this->statusService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFileA);
 
-        /** @var Response $response */
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
@@ -96,10 +95,9 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
             ->method('getDiffForRevisions')
             ->with($repository, [$revision])
             ->willReturn([$diffFileA, $diffFileB]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
         $this->statusService->expects($this->once())->method('markAsUnseen')->with($review, $user, $diffFileA);
 
-        /** @var Response $response */
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
@@ -120,15 +118,14 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
 
-        /** @var Response $response */
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_NOT_MODIFIED, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
     {
-        return new UpdateFileSeenStatusController($this->statusService, $this->diffService, $this->sessionService, $this->revisionService);
+        return new UpdateFileSeenStatusController($this->statusService, $this->diffService, $this->settingsProvider, $this->revisionService);
     }
 }
