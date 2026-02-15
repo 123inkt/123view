@@ -2,13 +2,18 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Config\SecurityConfig;
 
-return static function (SecurityConfig $securityConfig): void {
-    $securityConfig->passwordHasher(PasswordAuthenticatedUserInterface::class)
-        ->algorithm('auto')
-        ->cost(4)
-        ->timeCost(3)
-        ->memoryCost(10);
-};
+return App::config([
+    'security' => [
+        'password_hashers' => [
+            PasswordAuthenticatedUserInterface::class => [
+                'algorithm'   => 'auto',
+                'cost'        => 4,
+                'time_cost'   => 3,
+                'memory_cost' => 10,
+            ],
+        ],
+    ],
+]);
