@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\GitAccessToken;
@@ -21,7 +22,7 @@ use Throwable;
 class GitlabApiProviderTest extends AbstractTestCase
 {
     private HttpClientInterface&MockObject $httpClient;
-    private SerializerInterface&MockObject $serializer;
+    private SerializerInterface&Stub $serializer;
     private OAuth2Authenticator&MockObject $authenticator;
     private GitlabApiProvider              $provider;
 
@@ -29,7 +30,7 @@ class GitlabApiProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->httpClient    = $this->createMock(HttpClientInterface::class);
-        $this->serializer    = $this->createMock(SerializerInterface::class);
+        $this->serializer    = static::createStub(SerializerInterface::class);
         $this->authenticator = $this->createMock(OAuth2Authenticator::class);
         $this->provider      = new GitlabApiProvider(
             'https://example.com/',
@@ -45,6 +46,8 @@ class GitlabApiProviderTest extends AbstractTestCase
      */
     public function testCreateOnlySupportGitlabRepositories(): void
     {
+        $this->httpClient->expects($this->never())->method('withOptions');
+        $this->authenticator->expects($this->never())->method('getAuthorizationHeader');
         $repository = new Repository();
         $repository->setGitType(RepositoryGitType::GITHUB);
 
@@ -58,6 +61,8 @@ class GitlabApiProviderTest extends AbstractTestCase
      */
     public function testCreateRequireGitAccessToken(): void
     {
+        $this->httpClient->expects($this->never())->method('withOptions');
+        $this->authenticator->expects($this->never())->method('getAuthorizationHeader');
         $repository = new Repository();
         $repository->setGitType(RepositoryGitType::GITLAB);
 

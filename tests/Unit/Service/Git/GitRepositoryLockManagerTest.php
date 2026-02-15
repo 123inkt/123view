@@ -55,6 +55,7 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
 
     public function testStartShouldBubbleExceptions(): void
     {
+        $this->filesystem->expects($this->never())->method('mkdir');
         $repository = new Repository();
         $repository->setId(123);
         $repository->setName('foobar');

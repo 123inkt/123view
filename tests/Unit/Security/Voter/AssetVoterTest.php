@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Security\Voter;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Entity\Asset\Asset;
 use DR\Review\Security\Voter\AssetVoter;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 #[CoversClass(AssetVoter::class)]
 class AssetVoterTest extends AbstractTestCase
 {
-    private TokenInterface&MockObject $token;
+    private TokenInterface&Stub $token;
     private RequestStack              $requestStack;
     private AssetVoter                $voter;
 
@@ -25,7 +25,7 @@ class AssetVoterTest extends AbstractTestCase
     {
         parent::setUp();
         $this->requestStack = new RequestStack();
-        $this->token        = $this->createMock(TokenInterface::class);
+        $this->token        = static::createStub(TokenInterface::class);
         $this->voter        = new AssetVoter($this->requestStack);
     }
 
@@ -70,7 +70,7 @@ class AssetVoterTest extends AbstractTestCase
         $asset = new Asset();
         $asset->setData('test-data');
 
-        $token = $this->createMock(TokenInterface::class);
+        $token = static::createStub(TokenInterface::class);
 
         $result = $this->voter->vote($token, $asset, [AssetVoter::VIEW]);
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
@@ -85,7 +85,7 @@ class AssetVoterTest extends AbstractTestCase
         $request = new Request(['hash' => $correctHash]);
         $this->requestStack->push($request);
 
-        $token = $this->createMock(TokenInterface::class);
+        $token = static::createStub(TokenInterface::class);
 
         $result = $this->voter->vote($token, $asset, [AssetVoter::VIEW]);
         static::assertSame(VoterInterface::ACCESS_GRANTED, $result);
@@ -99,7 +99,7 @@ class AssetVoterTest extends AbstractTestCase
         $request = new Request(['hash' => 'wrong-hash']);
         $this->requestStack->push($request);
 
-        $token = $this->createMock(TokenInterface::class);
+        $token = static::createStub(TokenInterface::class);
 
         $result = $this->voter->vote($token, $asset, [AssetVoter::VIEW]);
         static::assertSame(VoterInterface::ACCESS_DENIED, $result);
@@ -113,7 +113,7 @@ class AssetVoterTest extends AbstractTestCase
         $request = new Request(); // No hash parameter
         $this->requestStack->push($request);
 
-        $token = $this->createMock(TokenInterface::class);
+        $token = static::createStub(TokenInterface::class);
 
         $result = $this->voter->vote($token, $asset, [AssetVoter::VIEW]);
         static::assertSame(VoterInterface::ACCESS_DENIED, $result);
@@ -134,7 +134,7 @@ class AssetVoterTest extends AbstractTestCase
         $request = new Request(['hash' => $wrongHash]);
         $this->requestStack->push($request);
 
-        $token = $this->createMock(TokenInterface::class);
+        $token = static::createStub(TokenInterface::class);
 
         $result = $this->voter->vote($token, $asset, [AssetVoter::VIEW]);
         static::assertSame(VoterInterface::ACCESS_DENIED, $result);

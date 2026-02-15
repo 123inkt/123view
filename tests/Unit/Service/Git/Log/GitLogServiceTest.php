@@ -59,6 +59,11 @@ class GitLogServiceTest extends AbstractTestCase
      */
     public function testGetCommitsShouldIgnoreInactiveRepositories(): void
     {
+        $this->repositoryService->expects($this->never())->method('getRepository');
+        $this->commandBuilderFactory->expects($this->never())->method('createLog');
+        $this->commandFactory->expects($this->never())->method('fromRule');
+        $this->patternFactory->expects($this->never())->method('createPattern');
+        $this->logParser->expects($this->never())->method('parse');
         $repository = (new Repository())->setActive(false);
         $rule       = (new Rule())->addRepository($repository);
         $config     = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
@@ -80,13 +85,15 @@ class GitLogServiceTest extends AbstractTestCase
         $config         = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
         $gitRepository  = $this->createMock(GitRepository::class);
         $commandBuilder = new GitLogCommandBuilder('git');
-        $commits        = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
+        $commits        = [static::createStub(Commit::class), static::createStub(Commit::class)];
 
         // setup mocks
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->commandFactory->expects($this->once())->method('fromRule')->with($config)->willReturn($commandBuilder);
         $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn('output');
         $this->logParser->expects($this->once())->method('parse')->with($repository, 'output')->willReturn($commits);
+        $this->commandBuilderFactory->expects($this->never())->method('createLog');
+        $this->patternFactory->expects($this->never())->method('createPattern');
 
         // execute test
         $actual = $this->logFactory->getCommits($config);
@@ -111,6 +118,9 @@ class GitLogServiceTest extends AbstractTestCase
 
         $gitRepository->expects($this->once())->method('execute')->with($logBuilder)->willReturn(" #line1\nline2\n ");
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $this->commandFactory->expects($this->never())->method('fromRule');
+        $this->patternFactory->expects($this->never())->method('createPattern');
+        $this->logParser->expects($this->never())->method('parse');
 
         static::assertSame(['line1', 'line2'], $this->logFactory->getCommitHashes($repository));
     }
@@ -120,7 +130,7 @@ class GitLogServiceTest extends AbstractTestCase
      */
     public function testGetCommitsFromRange(): void
     {
-        $commits    = [$this->createMock(Commit::class), $this->createMock(Commit::class)];
+        $commits    = [static::createStub(Commit::class), static::createStub(Commit::class)];
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://example.com'));
 
@@ -136,6 +146,7 @@ class GitLogServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($logBuilder)->willReturn('output');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->logParser->expects($this->once())->method('parse')->with($repository, 'output')->willReturn($commits);
+        $this->commandFactory->expects($this->never())->method('fromRule');
 
         static::assertSame($commits, $this->logFactory->getCommitsFromRange($repository, 'foo', 'bar'));
     }

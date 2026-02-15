@@ -36,6 +36,7 @@ class ActivityCommentProviderTest extends AbstractTestCase
         $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME)->setData(['commentId' => '123']);
 
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->replyRepository->expects($this->never())->method('find');
         static::assertSame($comment, $this->provider->getCommentFor($activity));
     }
 
@@ -45,11 +46,14 @@ class ActivityCommentProviderTest extends AbstractTestCase
         $activity = (new CodeReviewActivity())->setEventName(CommentReplyAdded::NAME)->setData(['commentId' => '123']);
 
         $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);
+        $this->commentRepository->expects($this->never())->method('find');
         static::assertSame($reply, $this->provider->getCommentFor($activity));
     }
 
     public function testGetCommentForUnknown(): void
     {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->replyRepository->expects($this->never())->method('find');
         $activity = (new CodeReviewActivity())->setEventName('unknown');
         static::assertNull($this->provider->getCommentFor($activity));
     }

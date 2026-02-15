@@ -27,7 +27,7 @@ class CredentialsControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $viewModel = $this->createMock(CredentialsViewModel::class);
+        $viewModel = static::createStub(CredentialsViewModel::class);
 
         $this->viewModelProvider->expects($this->once())->method('getCredentialsViewModel')->willReturn($viewModel);
 

@@ -39,7 +39,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
+        $viewModel = new UserSettingViewModel(static::createStub(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])
@@ -59,7 +59,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
+        $viewModel = new UserSettingViewModel(static::createStub(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])

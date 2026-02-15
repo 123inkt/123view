@@ -104,7 +104,7 @@ class GitGrepServiceTest extends AbstractTestCase
 
         $this->builderFactory->expects($this->once())->method('createGrep')->willReturn($builder);
 
-        $process = $this->createMock(Process::class);
+        $process = static::createStub(Process::class);
         $process->method('getErrorOutput')->willReturn('');
         $process->method('getOutput')->willReturn('');
         $process->method('isSuccessful')->willReturn(false);
@@ -137,7 +137,7 @@ class GitGrepServiceTest extends AbstractTestCase
 
         $this->builderFactory->expects($this->once())->method('createGrep')->willReturn($builder);
 
-        $process = $this->createMock(Process::class);
+        $process = static::createStub(Process::class);
         $process->method('getErrorOutput')->willReturn('fatal: some error');
         $process->method('getOutput')->willReturn('');
         $process->method('isSuccessful')->willReturn(false);

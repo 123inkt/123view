@@ -52,6 +52,8 @@ class AiReviewRequestedMessageHandlerTest extends AbstractTestCase
         $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->codeReview->expects($this->never())->method('startCodeReview');
         $this->messagePublisher->expects($this->never())->method('publishToReview');
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->translator->expects($this->never())->method('trans');
 
         ($this->handler)($message);
     }

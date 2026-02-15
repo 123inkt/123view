@@ -48,6 +48,8 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         $this->formatter->expects($this->once())->method('format')->with($activity)->willReturn(null);
         $this->publisher->expects($this->never())->method('publishToReview');
         $this->publisher->expects($this->never())->method('publishToUsers');
+        $this->userRepository->expects($this->never())->method('findBy');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $this->service->publish($activity);
     }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Reviewer;
 
+use PHPUnit\Framework\MockObject\Stub;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Controller\AbstractController;
@@ -27,7 +28,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(RemoveReviewerController::class)]
 class RemoveReviewerControllerTest extends AbstractControllerTestCase
 {
-    private ManagerRegistry&MockObject           $registry;
+    private ManagerRegistry&Stub           $registry;
     private ReviewEventService&MockObject        $eventService;
     private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
     private ObjectManager&MockObject             $objectManager;
@@ -35,7 +36,7 @@ class RemoveReviewerControllerTest extends AbstractControllerTestCase
     public function setUp(): void
     {
         $this->objectManager = $this->createMock(ObjectManager::class);
-        $this->registry      = $this->createMock(ManagerRegistry::class);
+        $this->registry      = static::createStub(ManagerRegistry::class);
         $this->registry->method('getManager')->willReturn($this->objectManager);
         $this->reviewerStateResolver = $this->createMock(CodeReviewerStateResolver::class);
         $this->eventService          = $this->createMock(ReviewEventService::class);

@@ -40,8 +40,8 @@ class ReviewViewModelProviderTest extends AbstractTestCase
      */
     public function testGetViewModel(): void
     {
-        $review  = $this->createMock(CodeReview::class);
-        $request = $this->createMock(ReviewRequest::class);
+        $review  = static::createStub(CodeReview::class);
+        $request = static::createStub(ReviewRequest::class);
         $request->method('getTab')->willReturn('tab');
         $dto = $this->createDto();
 

@@ -67,6 +67,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $this->revisionCache->expects($this->once())->method('getItem')->willReturn($cacheItem);
         $this->revisionCache->expects($this->once())->method('get')->willReturn($diffFileA);
         $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+        $this->fileTreeService->expects($this->never())->method('getFileTree');
 
         $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);

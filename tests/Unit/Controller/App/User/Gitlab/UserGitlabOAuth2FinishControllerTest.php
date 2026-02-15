@@ -40,6 +40,9 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
     public function testInvokeAbsentCode(): void
     {
+        $this->session->expects($this->never())->method('get');
+        $this->authProvider->expects($this->never())->method('getAccessToken');
+        $this->tokenRepository->expects($this->never())->method('save');
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Missing `code` query parameter');
         ($this->controller)(new Request());
@@ -49,6 +52,8 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
     {
         $this->session->expects($this->exactly(2))->method('get')->willReturn('foobar', 'pkce');
         $this->session->expects($this->exactly(2))->method('remove');
+        $this->authProvider->expects($this->never())->method('getAccessToken');
+        $this->tokenRepository->expects($this->never())->method('save');
 
         $request = new Request(['code' => 'code', 'state' => 'invalid']);
         $request->setSession($this->session);

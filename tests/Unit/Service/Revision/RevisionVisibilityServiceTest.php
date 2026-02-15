@@ -94,6 +94,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
             ->willReturn([$visibilityA]);
+        $this->userProvider->expects($this->never())->method('getUser');
 
         $result = $this->service->getRevisionVisibilities($review, [$revisionA, $revisionB], $this->user);
         static::assertCount(2, $result);
@@ -115,6 +116,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
 
         $this->visibilityRepository->expects($this->once())->method('findBy')->with(['review' => 123, 'user' => 789])->willReturn([$visibility]);
         $this->visibilityRepository->expects($this->once())->method('saveAll')->with([$visibility], true);
+        $this->userProvider->expects($this->never())->method('getUser');
 
         $this->service->setRevisionVisibility($review, [$revision], $this->user, false);
     }
@@ -126,6 +128,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
 
         $this->visibilityRepository->expects($this->never())->method('findBy');
         $this->visibilityRepository->expects($this->never())->method('saveAll');
+        $this->userProvider->expects($this->never())->method('getUser');
 
         $this->service->setRevisionVisibility($review, [], $this->user, false);
     }

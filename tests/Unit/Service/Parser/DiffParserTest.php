@@ -30,6 +30,7 @@ class DiffParserTest extends AbstractTestCase
      */
     public function testParseDeletionsOnly(): void
     {
+        $this->fileParser->expects($this->never())->method('parse');
         $diffs = $this->parser->parse('test', true);
         static::assertCount(0, $diffs);
     }

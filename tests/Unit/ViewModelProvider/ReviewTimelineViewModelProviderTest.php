@@ -70,6 +70,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->method('format')
             ->with(...consecutive([$activityA, $this->user], [$activityB, $this->user]))
             ->willReturn('message', null);
+        $this->commentProvider->expects($this->never())->method('getCommentFor');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $viewModel = $this->provider->getTimelineViewModel($review, []);
         static::assertCount(1, $viewModel->entries);
@@ -101,6 +103,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->method('format')
             ->with($activity, $this->user)
             ->willReturn('message');
+        $this->commentProvider->expects($this->never())->method('getCommentFor');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $viewModel = $this->provider->getTimelineViewModel($review, []);
         static::assertCount(1, $viewModel->entries);
@@ -130,6 +134,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
             ->method('format')
             ->with($activity, $this->user)
             ->willReturn('message');
+        $this->commentProvider->expects($this->never())->method('getCommentFor');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $viewModel = $this->provider->getTimelineViewModel($review, [456 => $revision]);
         static::assertCount(1, $viewModel->entries);
@@ -147,6 +153,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $this->activityFormatter->expects($this->once())->method('format')->with($activity, $user)->willReturn(null);
         $this->commentProvider->expects($this->never())->method('getCommentFor');
         $this->urlGenerator->expects($this->never())->method('generate');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(0, $viewModel->entries);
@@ -162,6 +169,7 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
         $this->activityFormatter->expects($this->once())->method('format')->with($activity, $user)->willReturn('activityA');
         $this->commentProvider->expects($this->once())->method('getCommentFor')->with($activity)->willReturn($comment);
         $this->urlGenerator->expects($this->once())->method('generate')->with($activity)->willReturn('url');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
 
         $viewModel = $this->provider->getTimelineViewModelForFeed($user, [CommentAdded::NAME]);
         static::assertCount(1, $viewModel->entries);

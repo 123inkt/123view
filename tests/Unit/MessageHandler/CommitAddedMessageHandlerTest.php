@@ -56,6 +56,8 @@ class CommitAddedMessageHandlerTest extends AbstractTestCase
         $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
         $this->showService->expects($this->once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn(null);
         $this->revisionFactory->expects($this->never())->method('createFromCommit');
+        $this->revisionRepository->expects($this->never())->method('saveAll');
+        $this->bus->expects($this->never())->method('dispatch');
 
         ($this->messageHandler)(new CommitAddedMessage(123, 'hash'));
     }

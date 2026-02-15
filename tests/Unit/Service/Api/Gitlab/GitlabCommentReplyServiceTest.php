@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Entity\Review\CodeReview;
@@ -20,7 +21,7 @@ use Throwable;
 #[CoversClass(GitlabCommentReplyService::class)]
 class GitlabCommentReplyServiceTest extends AbstractTestCase
 {
-    private GitlabApi&MockObject              $api;
+    private GitlabApi&Stub              $api;
     private Discussions&MockObject            $discussions;
     private CommentReplyRepository&MockObject $replyRepository;
     private GitlabCommentReplyService         $service;
@@ -39,7 +40,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
         $this->comment->setReview($review);
         $this->reply->setComment($this->comment);
         $this->discussions = $this->createMock(Discussions::class);
-        $this->api         = $this->createMock(GitlabApi::class);
+        $this->api         = static::createStub(GitlabApi::class);
         $this->api->method('discussions')->willReturn($this->discussions);
         $this->replyRepository = $this->createMock(CommentReplyRepository::class);
         $this->service         = new GitlabCommentReplyService($this->replyRepository);
@@ -51,6 +52,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
     public function testCreateSkipMissingReferenceId(): void
     {
         $this->discussions->expects($this->never())->method('createNote');
+        $this->replyRepository->expects($this->never())->method('save');
         $this->service->create($this->api, $this->reply);
     }
 
@@ -76,6 +78,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
     public function testUpdateSkipIfMissingReferenceId(): void
     {
         $this->discussions->expects($this->never())->method('updateNote');
+        $this->replyRepository->expects($this->never())->method('save');
         $this->service->update($this->api, $this->reply);
     }
 
@@ -89,6 +92,7 @@ class GitlabCommentReplyServiceTest extends AbstractTestCase
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '444'));
 
         $this->discussions->expects($this->once())->method('updateNote')->with(444, 111, '222', '333', 'message');
+        $this->replyRepository->expects($this->never())->method('save');
 
         $this->service->update($this->api, $this->reply);
     }

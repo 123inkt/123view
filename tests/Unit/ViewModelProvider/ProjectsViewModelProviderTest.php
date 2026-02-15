@@ -49,7 +49,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setDisplayName('repository');
-        $timeline   = $this->createMock(TimelineViewModel::class);
+        $timeline   = static::createStub(TimelineViewModel::class);
 
         $this->userProvider->expects($this->once())
             ->method('getCurrentUser')

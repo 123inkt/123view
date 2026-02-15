@@ -174,6 +174,7 @@ class DiffFileParserTest extends AbstractTestCase
      */
     public function testParseFileModeChange(): void
     {
+        $this->blockParser->expects($this->never())->method('parse');
         // prepare data
         $contents = "old mode 100644\nnew mode 100755\n";
 
@@ -187,6 +188,7 @@ class DiffFileParserTest extends AbstractTestCase
      */
     public function testParseFileBinaryData(): void
     {
+        $this->blockParser->expects($this->never())->method('parse');
         // prepare data
         $contents = "old mode 100644\nnew mode 100755\nBinary files /dev/null and b/test-change-file.xml differ\n";
 

@@ -42,6 +42,8 @@ class FileTreeViewModelAppenderTest extends AbstractTestCase
         $dto       = $this->createDto();
         $viewModel = $this->createMock(ReviewViewModel::class);
         $viewModel->expects($this->once())->method('getSidebarTabMode')->willReturn(ReviewViewModel::SIDEBAR_TAB_OVERVIEW);
+        $this->formFactory->expects($this->never())->method('create');
+        $this->fileTreeModelProvider->expects($this->never())->method('getFileTreeViewModel');
 
         static::assertTrue($this->appender->accepts($dto, $viewModel));
     }
@@ -51,8 +53,8 @@ class FileTreeViewModelAppenderTest extends AbstractTestCase
         $dto               = $this->createDto();
         $viewModel         = $this->createMock(ReviewViewModel::class);
         $form              = $this->createMock(FormInterface::class);
-        $formView          = $this->createMock(FormView::class);
-        $fileTreeViewModel = $this->createMock(FileTreeViewModel::class);
+        $formView          = static::createStub(FormView::class);
+        $fileTreeViewModel = static::createStub(FileTreeViewModel::class);
 
         $this->formFactory->expects($this->once())
             ->method('create')

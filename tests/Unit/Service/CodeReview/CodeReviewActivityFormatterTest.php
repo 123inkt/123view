@@ -39,7 +39,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->translator         = $this->createMock(TranslatorInterface::class);
         $this->userRepository     = $this->createMock(UserRepository::class);
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
-        $urlGenerator             = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator             = static::createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')->willReturn('url');
         $this->formatter = new CodeReviewActivityFormatter(
             $this->translator,
@@ -172,6 +172,8 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.comment.added', ['username' => 'app', 'file' => '<a href="url#focus:comment:789">filepath</a>'])
             ->willReturnArgument(0);
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         $this->formatter->format($activity, $user);
     }
@@ -190,6 +192,8 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.comment.added', ['username' => 'app', 'file' => 'filepath'])
             ->willReturnArgument(0);
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         $this->formatter->format($activity, $user);
     }
@@ -207,6 +211,8 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
             ->method('trans')
             ->with('timeline.comment.reply.added', ['username' => 'app', 'file' => 'filepath'])
             ->willReturnArgument(0);
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
 
         $this->formatter->format($activity, $user);
     }

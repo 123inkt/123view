@@ -51,6 +51,8 @@ class ReviewApprovalServiceTest extends AbstractTestCase
 
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
         $this->mergeRequestService->expects($this->never())->method('retrieveMergeRequestIID');
+        $this->gitlabApi->expects($this->never())->method('mergeRequests');
+        $this->mergeRequests->expects($this->never())->method('approve');
 
         $this->service->approve($review, $reviewer, true);
     }
@@ -70,6 +72,7 @@ class ReviewApprovalServiceTest extends AbstractTestCase
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($this->gitlabApi);
         $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($this->gitlabApi, $review)->willReturn(null);
         $this->gitlabApi->expects($this->never())->method('mergeRequests');
+        $this->mergeRequests->expects($this->never())->method('approve');
 
         $this->service->approve($review, $reviewer, true);
     }

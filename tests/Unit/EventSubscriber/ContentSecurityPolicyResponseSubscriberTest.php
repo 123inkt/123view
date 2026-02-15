@@ -27,6 +27,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');
         static::assertSame([KernelEvents::RESPONSE => 'onResponse'], ContentSecurityPolicyResponseSubscriber::getSubscribedEvents());
     }
 
@@ -34,7 +35,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
     {
         $response = new Response();
         $response->headers->set('Content-Security-Policy', '');
-        $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
+        $event      = new ResponseEvent(static::createStub(HttpKernelInterface::class), new Request(), 1, $response);
         $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, $this->ideUrlPatternProvider);
 
         $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');
@@ -47,7 +48,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
     public function testOnResponseWithIdeUrl(): void
     {
         $response   = new Response();
-        $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
+        $event      = new ResponseEvent(static::createStub(HttpKernelInterface::class), new Request(), 1, $response);
         $subscriber = new ContentSecurityPolicyResponseSubscriber('host', true, $this->ideUrlPatternProvider,);
 
         $this->ideUrlPatternProvider->expects($this->once())->method('getUrl')->willReturn('http://localhost:8080/file');
@@ -64,7 +65,7 @@ class ContentSecurityPolicyResponseSubscriberTest extends AbstractTestCase
     public function testOnResponseWithoutIdeUrl(): void
     {
         $response   = new Response();
-        $event      = new ResponseEvent($this->createMock(HttpKernelInterface::class), new Request(), 1, $response);
+        $event      = new ResponseEvent(static::createStub(HttpKernelInterface::class), new Request(), 1, $response);
         $subscriber = new ContentSecurityPolicyResponseSubscriber('host', false, $this->ideUrlPatternProvider);
 
         $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');

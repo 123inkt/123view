@@ -50,6 +50,9 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
     public function testInvokeSkipIfDisabled(): void
     {
         $this->reviewRepository->expects($this->never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('delete');
 
         $handler = new CommentDeletedMessageHandler(
             false,
@@ -75,6 +78,7 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
         $this->reviewRepository->expects($this->once())->method('find')->with(111)->willReturn($review);
         $this->userRepository->expects($this->once())->method('find')->with(333)->willReturn($user);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentService->expects($this->never())->method('delete');
 
         ($this->handler)(new CommentRemoved(111, 222, 333, 'file', 'message', 'referenceId'));
     }
@@ -94,7 +98,7 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
         $this->reviewRepository->expects($this->once())->method('find')->with(111)->willReturn($review);
         $this->userRepository->expects($this->once())->method('find')->with(333)->willReturn($user);

@@ -33,7 +33,7 @@ class ProjectBranchesControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $repository = new Repository();
-        $viewModel  = $this->createMock(ProjectBranchesViewModel::class);
+        $viewModel  = static::createStub(ProjectBranchesViewModel::class);
 
         $request = $this->createMock(ProjectBranchRequest::class);
         $request->expects($this->once())->method('getSearchQuery')->willReturn('search');

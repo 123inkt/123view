@@ -57,6 +57,10 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
         $diffFile   = new DiffFile();
 
         $this->diffService->expects($this->once())->method('getDiffFromRevision')->with($revision)->willReturn([$diffFile]);
+        $this->checkoutService->expects($this->never())->method('checkoutRevision');
+        $this->cherryPickService->expects($this->never())->method('cherryPickRevisions');
+        $this->resetManager->expects($this->never())->method('start');
+        $this->cherryPickStrategy->expects($this->never())->method('getDiffFiles');
 
         static::assertSame([$diffFile], $this->strategy->getDiffFiles($repository, [$revision]));
     }
@@ -83,6 +87,7 @@ class HesitantCherryPickStrategyTest extends AbstractTestCase
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
         // phpcs:enable
         $this->cherryPickStrategy->expects($this->once())->method('getDiffFiles')->with($repository, $revisions)->willReturn([$diffFile]);
+        $this->diffService->expects($this->never())->method('getDiffFromRevision');
 
         static::assertSame([$diffFile], $this->strategy->getDiffFiles($repository, $revisions));
     }

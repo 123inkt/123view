@@ -38,8 +38,11 @@ class RegistrationControllerTest extends AbstractControllerTestCase
 
     public function testRegisterShowForm(): void
     {
+        $this->passwordHasher->expects($this->never())->method('hashPassword');
+        $this->userRepository->expects($this->never())->method('getUserCount');
+        $this->security->expects($this->never())->method('login');
         $request = new Request();
-        $view    = $this->createMock(FormView::class);
+        $view    = static::createStub(FormView::class);
 
         $this->expectCreateForm(RegistrationFormType::class, new User())
             ->handleRequest($request)

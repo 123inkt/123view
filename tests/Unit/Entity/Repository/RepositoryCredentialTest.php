@@ -41,7 +41,7 @@ class RepositoryCredentialTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown credential type');
         $repositoryCredential = new RepositoryCredential();
-        $repositoryCredential->setCredentials($this->createMock(CredentialInterface::class));
+        $repositoryCredential->setCredentials(static::createStub(CredentialInterface::class));
     }
 
     public function testGetInvalidCredentials(): void

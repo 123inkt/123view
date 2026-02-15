@@ -51,6 +51,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
 
         $this->httpClient->expects($this->never())->method('request');
         $this->splitter->expects($this->never())->method('split');
+        $this->preprocessor->expects($this->never())->method('process');
 
         static::assertNull($this->service->fromDiffFile($file));
     }
@@ -98,6 +99,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
         $this->preprocessor->expects($this->once())->method('process')->with('xml', 'file-data')->willReturnArgument(1);
         $this->httpClient->expects($this->once())->method('request')->willThrowException(new RuntimeException('error'));
+        $this->splitter->expects($this->never())->method('split');
 
         static::assertNull($this->service->fromDiffFile($file));
     }
@@ -118,6 +120,8 @@ class HighlightedFileServiceTest extends AbstractTestCase
 
         $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
         $this->httpClient->expects($this->once())->method('request')->willReturn($response);
+        $this->splitter->expects($this->never())->method('split');
+        $this->preprocessor->expects($this->never())->method('process');
 
         static::assertNull($this->service->fromDiffFile($file));
     }

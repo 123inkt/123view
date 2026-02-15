@@ -52,6 +52,8 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
             $this->reviewApprovalService
         );
         $this->reviewRepository->expects($this->never())->method('find');
+        $this->reviewApprovalValidatorService->expects($this->never())->method('validate');
+        $this->reviewApprovalService->expects($this->never())->method('approve');
         ($handler)(new ReviewerStateChanged(123, 456, 789, 'foo', 'bar'));
     }
 

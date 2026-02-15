@@ -22,7 +22,7 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitDiffCommandBuilder::class);
-        $factory              = $this->createMock(GitCommandBuilderFactory::class);
+        $factory              = static::createStub(GitCommandBuilderFactory::class);
         $factory->method('createDiff')->willReturn($this->commandBuilder);
         $this->factory = new GitDiffCommandFactory($factory);
     }

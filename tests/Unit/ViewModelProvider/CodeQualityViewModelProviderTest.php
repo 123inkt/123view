@@ -46,6 +46,10 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
 
     public function testGetCodeQualityViewModelEmptyFilePath(): void
     {
+        $this->coverageReportRepository->expects($this->never())->method('findOneByRevisions');
+        $this->reportRepository->expects($this->never())->method('findByRevisions');
+        $this->issueRepository->expects($this->never())->method('findBy');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $review = new CodeReview();
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, '');
@@ -61,6 +65,8 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([]);
+        $this->coverageReportRepository->expects($this->never())->method('findOneByRevisions');
+        $this->issueRepository->expects($this->never())->method('findBy');
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');
         static::assertEquals(new CodeQualityViewModel([], null), $viewModel);

@@ -24,7 +24,7 @@ class CodeInspectionIssueParserProviderTest extends AbstractTestCase
 
     public function testGetParser(): void
     {
-        $parser = $this->createMock(CodeInspectionIssueParserInterface::class);
+        $parser = static::createStub(CodeInspectionIssueParserInterface::class);
 
         $provider = new CodeInspectionIssueParserProvider(new ArrayIterator(['parser' => $parser]));
 

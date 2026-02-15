@@ -13,7 +13,7 @@ class UpdateMessageTest extends AbstractTestCase
 {
     public function testJsonSerialize(): void
     {
-        $uri = $this->createMock(UriInterface::class);
+        $uri = static::createStub(UriInterface::class);
         $uri->method('__toString')->willReturn('https://example.com/review/123');
 
         $message = new UpdateMessage(
@@ -49,7 +49,7 @@ class UpdateMessageTest extends AbstractTestCase
 
     public function testJsonSerializeWithNullReviewId(): void
     {
-        $uri = $this->createMock(UriInterface::class);
+        $uri = static::createStub(UriInterface::class);
         $uri->method('__toString')->willReturn('https://example.com/commits');
 
         $message = new UpdateMessage(

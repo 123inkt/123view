@@ -38,6 +38,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeNoGitlabUrl(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $controller = new GetMergeRequestForReviewController('', $this->gitlabService, $this->revisionService);
         $review     = new CodeReview();
 
@@ -47,6 +49,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNoProjectId(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
@@ -58,6 +62,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNoRemoteRef(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $repository = new Repository();
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1'));
         $review = new CodeReview();

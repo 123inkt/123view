@@ -97,7 +97,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
 
     private function createRequest(): ReviewRequest&MockObject
     {
-        $request = $this->createMock(ReviewRequest::class);
+        $request = static::createStub(ReviewRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getTab')->willReturn('tab');
         $request->method('getAction')->willReturn(null);

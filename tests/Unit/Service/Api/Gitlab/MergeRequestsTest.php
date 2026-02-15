@@ -38,13 +38,14 @@ class MergeRequestsTest extends AbstractTestCase
     {
         $data = ['id' => 1, 'iid' => 2, 'title' => 'foo', 'web_url' => 'bar'];
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('toArray')->willReturn([$data]);
 
         $this->client->expects($this->once())
             ->method('request')
             ->with('GET', 'projects/111/merge_requests', ['query' => ['scope' => 'all', 'per_page' => 1, 'source_branch' => 'foo']])
             ->willReturn($response);
+        $this->serializer->expects($this->never())->method('deserialize');
 
         static::assertSame($data, $this->mergeRequests->findByRemoteRef(111, 'foo'));
     }
@@ -54,13 +55,14 @@ class MergeRequestsTest extends AbstractTestCase
      */
     public function testFindByRemoteRefNotFound(): void
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('toArray')->willReturn([]);
 
         $this->client->expects($this->once())
             ->method('request')
             ->with('GET', 'projects/111/merge_requests', ['query' => ['scope' => 'all', 'per_page' => 1, 'source_branch' => 'foo']])
             ->willReturn($response);
+        $this->serializer->expects($this->never())->method('deserialize');
 
         static::assertNull($this->mergeRequests->findByRemoteRef(111, 'foo'));
     }
@@ -72,7 +74,7 @@ class MergeRequestsTest extends AbstractTestCase
     {
         $version = new Version();
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('getContent')->willReturn('json');
 
         $this->client->expects($this->once())->method('request')
@@ -91,13 +93,14 @@ class MergeRequestsTest extends AbstractTestCase
      */
     public function testApprove(): void
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(Response::HTTP_CREATED);
 
         $this->client->expects($this->once())
             ->method('request')
             ->with('POST', 'projects/111/merge_requests/222/approve')
             ->willReturn($response);
+        $this->serializer->expects($this->never())->method('deserialize');
 
         static::assertTrue($this->mergeRequests->approve(111, 222));
     }
@@ -107,13 +110,14 @@ class MergeRequestsTest extends AbstractTestCase
      */
     public function testUnapprove(): void
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(Response::HTTP_CREATED);
 
         $this->client->expects($this->once())
             ->method('request')
             ->with('POST', 'projects/111/merge_requests/222/unapprove')
             ->willReturn($response);
+        $this->serializer->expects($this->never())->method('deserialize');
 
         static::assertTrue($this->mergeRequests->unapprove(111, 222));
     }

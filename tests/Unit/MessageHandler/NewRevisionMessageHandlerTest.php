@@ -55,7 +55,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
             $this->registry,
             $this->eventService
         );
-        $this->messageHandler->setLogger($this->createMock(LoggerInterface::class));
+        $this->messageHandler->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**
@@ -69,6 +69,11 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(false);
         $this->reviewRevisionMatcher->expects($this->never())->method('match');
+        $this->reviewService->expects($this->never())->method('addRevisions');
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
+        $this->seenStatusService->expects($this->never())->method('markAllAsUnseen');
+        $this->registry->expects($this->never())->method('resetManager');
+        $this->eventService->expects($this->never())->method('revisionAddedToReview');
 
         ($this->messageHandler)($message);
     }
@@ -85,6 +90,11 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRevisionMatcher->expects($this->once())->method('isSupported')->with($revision)->willReturn(true);
         $this->reviewRevisionMatcher->expects($this->once())->method('match')->with($revision)->willReturn(null);
+        $this->reviewService->expects($this->never())->method('addRevisions');
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
+        $this->seenStatusService->expects($this->never())->method('markAllAsUnseen');
+        $this->registry->expects($this->never())->method('resetManager');
+        $this->eventService->expects($this->never())->method('revisionAddedToReview');
 
         ($this->messageHandler)($message);
     }
@@ -108,6 +118,8 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->eventService->expects($this->once())
             ->method('revisionAddedToReview')
             ->with($review, $revision, true, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
+        $this->seenStatusService->expects($this->never())->method('markAllAsUnseen');
+        $this->registry->expects($this->never())->method('resetManager');
 
         ($this->messageHandler)($message);
     }
@@ -149,6 +161,7 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->eventService->expects($this->once())
             ->method('revisionAddedToReview')
             ->with($review, $revision, false, CodeReviewStateType::CLOSED, CodeReviewerStateType::ACCEPTED);
+        $this->registry->expects($this->never())->method('resetManager');
 
         ($this->messageHandler)($message);
 
@@ -170,6 +183,9 @@ class NewRevisionMessageHandlerTest extends AbstractTestCase
         $this->reviewRevisionMatcher->expects($this->once())->method('match')->with($revision)->willReturn($review);
         $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision])->willThrowException(new RuntimeException());
         $this->registry->expects($this->once())->method('resetManager');
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
+        $this->seenStatusService->expects($this->never())->method('markAllAsUnseen');
+        $this->eventService->expects($this->never())->method('revisionAddedToReview');
 
         $this->expectException(RuntimeException::class);
         ($this->messageHandler)($message);

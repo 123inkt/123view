@@ -33,6 +33,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
 
     public function testDiffShouldSkipAdditionOrRemovalOnly(): void
     {
+        $this->jbdiff->expects($this->never())->method('compareToIterator');
         $set = new DiffLineChangeSet([], []);
         static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
@@ -43,7 +44,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $iterator = $this->createMock(LineBlockTextIterator::class);
+        $iterator = static::createStub(LineBlockTextIterator::class);
 
         $this->jbdiff->expects($this->once())
             ->method('compareToIterator')

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
@@ -20,7 +21,7 @@ use Throwable;
 #[CoversClass(ReviewMergeRequestService::class)]
 class ReviewMergeRequestServiceTest extends AbstractTestCase
 {
-    private GitlabApi&MockObject            $api;
+    private GitlabApi&Stub            $api;
     private MergeRequests&MockObject        $mergeRequests;
     private CodeReviewRepository&MockObject $reviewRepository;
     private ReviewMergeRequestService       $service;
@@ -29,7 +30,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
     {
         parent::setUp();
         $this->mergeRequests = $this->createMock(MergeRequests::class);
-        $this->api           = $this->createMock(GitlabApi::class);
+        $this->api           = static::createStub(GitlabApi::class);
         $this->api->method('mergeRequests')->willReturn($this->mergeRequests);
         $this->reviewRepository = $this->createMock(CodeReviewRepository::class);
         $this->service          = new ReviewMergeRequestService($this->reviewRepository);
@@ -41,6 +42,8 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
      */
     public function testRetrieveMergeRequestIIDWithExtReferenceId(): void
     {
+        $this->mergeRequests->expects($this->never())->method('findByRemoteRef');
+        $this->reviewRepository->expects($this->never())->method('save');
         $review = (new CodeReview())->setId(123);
         $review->setExtReferenceId('1234');
 
@@ -60,6 +63,8 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $review->getRevisions()->add($revision);
 
         $this->logger->expects($this->once())->method('info')->with('No branch name found for review {id}');
+        $this->mergeRequests->expects($this->never())->method('findByRemoteRef');
+        $this->reviewRepository->expects($this->never())->method('save');
 
         static::assertNull($this->service->retrieveMergeRequestIID($this->api, $review));
     }
@@ -82,6 +87,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
 
         $this->logger->expects($this->once())->method('info')->with('No merge request found for review {id} - {ref}');
         $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(null);
+        $this->reviewRepository->expects($this->never())->method('save');
 
         static::assertNull($this->service->retrieveMergeRequestIID($this->api, $review));
     }

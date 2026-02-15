@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
 use DR\Review\Entity\Review\CodeReview;
@@ -25,17 +26,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UpdateCommentControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject   $commentRepository;
-    private TranslatorInterface&MockObject $translator;
+    private TranslatorInterface&Stub $translator;
 
     public function setUp(): void
     {
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->translator        = $this->createMock(TranslatorInterface::class);
+        $this->translator        = static::createStub(TranslatorInterface::class);
         parent::setUp();
     }
 
     public function testInvokeCommentMissing(): void
     {
+        $this->commentRepository->expects($this->never())->method('save');
         $response = ($this->controller)(new Request(), null);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
@@ -43,6 +45,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
 
     public function testInvokeIsNotSubmitted(): void
     {
+        $this->commentRepository->expects($this->never())->method('save');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);

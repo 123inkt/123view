@@ -44,11 +44,19 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
     public function testIsSupportedNullIsNot(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         static::assertFalse($this->matcher->isSupported(null));
     }
 
     public function testIsSupportedRepositoryTimestampShouldBeGreaterThanRevisionTimestamp(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setCreateTimestamp(20000);
 
@@ -61,6 +69,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
     public function testIsSupportedShouldBeActive(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setActive(false);
         $revision   = new Revision();
@@ -71,6 +83,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
     public function testIsSupportedAuthorShouldBeExcluded(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setCreateTimestamp(10000);
 
@@ -84,6 +100,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
     public function testIsSupported(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setCreateTimestamp(10000);
 
@@ -105,6 +125,8 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
         $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
         $this->patternMatcher->expects($this->once())->method('match')->with('foobar')->willReturn(null);
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
 
         static::assertNull($this->matcher->match($revision));
     }

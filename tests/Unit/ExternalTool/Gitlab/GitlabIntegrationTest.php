@@ -28,6 +28,7 @@ class GitlabIntegrationTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
         static::assertSame([CommitEvent::class => ['onCommitEvent']], GitlabIntegration::getSubscribedEvents());
     }
 
@@ -39,7 +40,7 @@ class GitlabIntegrationTest extends AbstractTestCase
         // setup mock
         $this->gitlabService->expects(static::never())->method('getMergeRequestUrl');
 
-        $this->integration->onCommitEvent(new CommitEvent($this->createMock(Commit::class)));
+        $this->integration->onCommitEvent(new CommitEvent(static::createStub(Commit::class)));
     }
 
     public function testOnCommitEventShouldSkipOnMissingGitlabProjectId(): void

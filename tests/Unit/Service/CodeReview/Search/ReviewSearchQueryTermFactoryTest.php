@@ -18,7 +18,7 @@ class ReviewSearchQueryTermFactoryTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $parserFactory     = $this->createMock(ReviewSearchQueryParserFactory::class);
+        $parserFactory     = static::createStub(ReviewSearchQueryParserFactory::class);
         $this->termFactory = new ReviewSearchQueryTermFactory($parserFactory);
     }
 

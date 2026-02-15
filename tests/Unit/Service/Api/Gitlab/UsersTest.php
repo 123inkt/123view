@@ -27,7 +27,7 @@ class UsersTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $logger           = $this->createMock(LoggerInterface::class);
+        $logger           = static::createStub(LoggerInterface::class);
         $this->httpClient = $this->createMock(HttpClientInterface::class);
         $this->serializer = $this->createMock(SerializerInterface::class);
         $this->users      = new Users($logger, $this->httpClient, $this->serializer);

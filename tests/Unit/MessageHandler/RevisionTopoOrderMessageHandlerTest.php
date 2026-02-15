@@ -28,7 +28,7 @@ class RevisionTopoOrderMessageHandlerTest extends AbstractTestCase
         $this->revisionRepository = $this->createMock(RevisionRepository::class);
         $this->entityManager      = $this->createMock(EntityManagerInterface::class);
         $this->handler            = new RevisionTopoOrderMessageHandler($this->revisionRepository, $this->entityManager);
-        $this->handler->setLogger($this->createMock(LoggerInterface::class));
+        $this->handler->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**

@@ -32,6 +32,8 @@ class CodeReviewGrepToolTest extends AbstractTestCase
 
     public function testInvokeShouldThrowExceptionForInvalidRegex(): void
     {
+        $this->repository->expects($this->never())->method('find');
+        $this->grepService->expects($this->never())->method('grep');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The provided pattern is not a valid regex pattern: [invalid');
         ($this->tool)(123, '[invalid');
@@ -40,6 +42,7 @@ class CodeReviewGrepToolTest extends AbstractTestCase
     public function testInvokeShouldThrowExceptionWhenReviewNotFound(): void
     {
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->grepService->expects($this->never())->method('grep');
 
         $this->expectException(CodeReviewNotFoundException::class);
         ($this->tool)(123, 'validPattern');
@@ -49,6 +52,7 @@ class CodeReviewGrepToolTest extends AbstractTestCase
     {
         $review = new CodeReview();
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->grepService->expects($this->never())->method('grep');
 
         $this->expectException(CodeReviewNotFoundException::class);
         ($this->tool)(123, 'validPattern');

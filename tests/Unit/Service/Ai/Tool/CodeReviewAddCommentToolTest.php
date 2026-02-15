@@ -49,6 +49,9 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
     public function testInvokeShouldThrowExceptionWhenReviewNotFound(): void
     {
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->userRepository->expects($this->never())->method('find');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->reviewRevisionService->expects($this->never())->method('getRevisions');
 
         $this->expectException(CodeReviewNotFoundException::class);
         ($this->tool)(123, 'src/file.php', 10, 'comment message', null);

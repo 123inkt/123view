@@ -43,19 +43,21 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
 
     public function testGetSearchReviewsViewModel(): void
     {
-        $paginator = $this->createMock(Paginator::class);
+        $paginator = static::createStub(Paginator::class);
 
-        $request = $this->createMock(SearchReviewsRequest::class);
+        $request = static::createStub(SearchReviewsRequest::class);
         $request->method('getPage')->willReturn(5);
         $request->method('getOrderBy')->willReturn(CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP);
         $request->method('getSearchQuery')->willReturn('search');
 
-        $terms = $this->createMock(TermInterface::class);
+        $terms = static::createStub(TermInterface::class);
 
         $this->reviewRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(null, 5, $terms, CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
+        $this->timelineViewModelProvider->expects($this->never())->method('getTimelineViewModelForFeed');
 
         $viewModel = $this->provider->getSearchReviewsViewModel($request, $terms);
         static::assertNotNull($viewModel->paginator);
@@ -67,15 +69,15 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setDisplayName('repository');
-        $paginator = $this->createMock(Paginator::class);
-        $timeline  = $this->createMock(TimelineViewModel::class);
+        $paginator = static::createStub(Paginator::class);
+        $timeline  = static::createStub(TimelineViewModel::class);
 
-        $request = $this->createMock(SearchReviewsRequest::class);
+        $request = static::createStub(SearchReviewsRequest::class);
         $request->method('getPage')->willReturn(5);
         $request->method('getOrderBy')->willReturn(CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP);
         $request->method('getSearchQuery')->willReturn('search');
 
-        $terms = $this->createMock(TermInterface::class);
+        $terms = static::createStub(TermInterface::class);
 
         $this->userProvider->expects($this->once())
             ->method('getCurrentUser')

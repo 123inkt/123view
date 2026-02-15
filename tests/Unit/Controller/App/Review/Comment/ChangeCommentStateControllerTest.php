@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\ChangeCommentStateController;
 use DR\Review\Doctrine\Type\CommentStateType;
@@ -24,18 +25,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 {
     private CommentRepository&MockObject   $commentRepository;
-    private TranslatorInterface&MockObject $translator;
+    private TranslatorInterface&Stub $translator;
 
     protected function setUp(): void
     {
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->translator        = $this->createMock(TranslatorInterface::class);
+        $this->translator        = static::createStub(TranslatorInterface::class);
         parent::setUp();
     }
 
     public function testInvokeCommentMissing(): void
     {
-        $request = $this->createMock(ChangeCommentStateRequest::class);
+        $this->commentRepository->expects($this->never())->method('save');
+        $request = static::createStub(ChangeCommentStateRequest::class);
 
         $response = ($this->controller)($request, null);
         static::assertInstanceOf(JsonResponse::class, $response);

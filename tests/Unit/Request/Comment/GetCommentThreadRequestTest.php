@@ -28,7 +28,7 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
 
     public function testGetAction(): void
     {
-        $action = $this->createMock(AbstractReviewAction::class);
+        $action = static::createStub(AbstractReviewAction::class);
         $this->actionFactory->expects($this->once())->method('createFromRequest')->with($this->request)->willReturn($action);
 
         $this->request->query->set('action', 'my-action');
@@ -40,6 +40,7 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
      */
     public function testGetValidationRules(): void
     {
+        $this->actionFactory->expects($this->never())->method('createFromRequest');
         $expected = new ValidationRules(['query' => ['action' => 'string']]);
         $this->expectGetValidationRules($expected);
 

@@ -41,6 +41,8 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
         $review->getRevisions()->add($revision);
 
         $this->revisionSorter->expects($this->once())->method('sort')->willReturnArgument(0);
+        $this->revListService->expects($this->never())->method('getCommitsAheadOf');
+        $this->revisionRepository->expects($this->never())->method('findBy');
 
         static::assertSame([$revision], $this->service->getRevisions($review));
     }
@@ -84,6 +86,7 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
             ->with($repository, 'branch_name')
             ->willThrowException(new RepositoryException());
         $this->revisionRepository->expects($this->never())->method('findBy');
+        $this->revisionSorter->expects($this->never())->method('sort');
 
         static::assertSame([], $this->service->getRevisions($review));
     }

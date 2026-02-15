@@ -42,7 +42,7 @@ class ReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(ReviewRequest::class);
+        $request = static::createStub(ReviewRequest::class);
 
         $user = new User();
         $this->expectGetUser($user);
@@ -71,6 +71,9 @@ class ReviewControllerTest extends AbstractControllerTestCase
 
     public function testRedirectReviewRoute(): void
     {
+        $this->modelProvider->expects($this->never())->method('getViewModel');
+        $this->breadcrumbFactory->expects($this->never())->method('createForReview');
+        $this->fileSeenService->expects($this->never())->method('markAsSeen');
         $request = new Request(['foo' => 'bar']);
         $review  = new CodeReview();
 

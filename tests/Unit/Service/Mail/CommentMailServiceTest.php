@@ -58,6 +58,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $this->recipientService->expects($this->once())->method('getUserForComment')->with($comment)->willReturn([$user]);
         $this->translator->expects($this->once())->method('trans');
         $this->mailer->expects($this->never())->method('send');
+        $this->viewModelProvider->expects($this->never())->method('createCommentViewModel');
 
         $this->service->sendNewCommentMail($review, $comment);
     }
@@ -129,6 +130,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment, $reply)->willReturn([$user]);
         $this->translator->expects($this->once())->method('trans');
         $this->mailer->expects($this->never())->method('send');
+        $this->viewModelProvider->expects($this->never())->method('createCommentViewModel');
 
         $this->service->sendNewCommentReplyMail($review, $comment, $reply);
     }
@@ -188,6 +190,7 @@ class CommentMailServiceTest extends AbstractTestCase
         $this->recipientService->expects($this->once())->method('getUsersForReply')->with($comment)->willReturn([$user]);
         $this->translator->expects($this->once())->method('trans');
         $this->mailer->expects($this->never())->method('send');
+        $this->viewModelProvider->expects($this->never())->method('createCommentViewModel');
 
         $this->service->sendCommentResolvedMail($review, $comment, (new User())->setId(5));
     }

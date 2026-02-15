@@ -40,6 +40,9 @@ class AddReviewerFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->userRepository->expects($this->never())->method('findUsersWithExclusion');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -100,6 +103,9 @@ class AddReviewerFormTypeTest extends AbstractTestCase
 
     public function testGetBlockPrefix(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->userRepository->expects($this->never())->method('findUsersWithExclusion');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         static::assertSame('', $this->type->getBlockPrefix());
     }
 }

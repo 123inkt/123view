@@ -28,19 +28,21 @@ class ReviewRequestTest extends AbstractRequestTestCase
 
     public function testGetFilePath(): void
     {
+        $this->actionFactory->expects($this->never())->method('createFromRequest');
         $this->request->query->set('filePath', 'foobar');
         static::assertSame('foobar', $this->validatedRequest->getFilePath());
     }
 
     public function testGetTab(): void
     {
+        $this->actionFactory->expects($this->never())->method('createFromRequest');
         $this->request->query->set('tab', 'revisions');
         static::assertSame('revisions', $this->validatedRequest->getTab());
     }
 
     public function testGetAction(): void
     {
-        $action = $this->createMock(AbstractReviewAction::class);
+        $action = static::createStub(AbstractReviewAction::class);
         $this->actionFactory->expects($this->once())->method('createFromRequest')->with($this->request)->willReturn($action);
 
         $this->request->query->set('action', 'my-action');
@@ -52,6 +54,7 @@ class ReviewRequestTest extends AbstractRequestTestCase
      */
     public function testGetValidationRules(): void
     {
+        $this->actionFactory->expects($this->never())->method('createFromRequest');
         $expected = new ValidationRules(
             [
                 'query' => [

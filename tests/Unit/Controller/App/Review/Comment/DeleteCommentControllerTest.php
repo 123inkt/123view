@@ -42,6 +42,9 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
 
     public function testInvokeCommentMissing(): void
     {
+        $this->commentRepository->expects($this->never())->method('remove');
+        $this->messageFactory->expects($this->never())->method('createReplyRemoved');
+        $this->bus->expects($this->never())->method('dispatch');
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)(null);
     }

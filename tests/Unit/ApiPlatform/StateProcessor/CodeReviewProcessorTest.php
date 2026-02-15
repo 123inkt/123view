@@ -37,6 +37,9 @@ class CodeReviewProcessorTest extends AbstractTestCase
 
     public function testProcessShouldSkipNonReview(): void
     {
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->eventService->expects($this->never())->method('reviewStateChanged');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be instance of ' . CodeReview::class);
         $this->reviewProcessor->process('foobar', new Patch()); // @phpstan-ignore-line
@@ -47,6 +50,8 @@ class CodeReviewProcessorTest extends AbstractTestCase
         $review = new CodeReview();
 
         $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->eventService->expects($this->never())->method('reviewStateChanged');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         static::assertSame($review, $this->reviewProcessor->process($review, new Patch()));
     }
 

@@ -32,7 +32,7 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
     {
         $request = new Request();
         $event   = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             new Exception()
@@ -49,7 +49,7 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
         $request   = new Request(server: ['REQUEST_URI' => '/api/test']);
         $response  = new ProblemJsonResponse();
         $event     = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             new Exception()
@@ -63,6 +63,7 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->responseFactory->expects($this->never())->method('createFromThrowable');
         $expected = [KernelEvents::EXCEPTION => ['onKernelException', 2]];
         $result   = ProblemJsonResponseSubscriber::getSubscribedEvents();
         static::assertSame($expected, $result);

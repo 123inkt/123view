@@ -46,7 +46,7 @@ class LoginControllerTest extends AbstractControllerTestCase
         $user = new User();
         $user->setRoles([Roles::ROLE_USER]);
         $request   = new Request();
-        $viewModel = $this->createMock(LoginViewModel::class);
+        $viewModel = static::createStub(LoginViewModel::class);
 
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(null);
 
@@ -68,6 +68,8 @@ class LoginControllerTest extends AbstractControllerTestCase
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('redirect-url');
         $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
         $this->translator->expects($this->never())->method('trans');
+        $this->authenticationUtils->expects($this->never())->method('getLastAuthenticationError');
+        $this->viewModelProvider->expects($this->never())->method('getLoginViewModel');
 
         $result = ($this->controller)($request);
         static::assertInstanceOf(RedirectResponse::class, $result);
@@ -81,6 +83,8 @@ class LoginControllerTest extends AbstractControllerTestCase
         $this->expectRedirectToRoute(UserApprovalPendingController::class)->willReturn('redirect-url');
         $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
         $this->translator->expects($this->never())->method('trans');
+        $this->authenticationUtils->expects($this->never())->method('getLastAuthenticationError');
+        $this->viewModelProvider->expects($this->never())->method('getLoginViewModel');
 
         $result = ($this->controller)($request);
         static::assertInstanceOf(RedirectResponse::class, $result);

@@ -28,7 +28,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitLogCommandBuilder::class);
-        $factory              = $this->createMock(GitCommandBuilderFactory::class);
+        $factory              = static::createStub(GitCommandBuilderFactory::class);
         $factory->method('createLog')->willReturn($this->commandBuilder);
         $this->factory = new GitLogCommandFactory($factory, new FormatPatternFactory());
     }

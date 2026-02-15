@@ -48,6 +48,8 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
     public function testInvokeSkipIfDisabled(): void
     {
         $this->replyRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('create');
 
         $handler = new CommentReplyAddedMessageHandler(
             false,
@@ -78,6 +80,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
 
         $this->replyRepository->expects($this->once())->method('find')->with(222)->willReturn($reply);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentService->expects($this->never())->method('create');
 
         ($this->handler)(new CommentReplyAdded(111, 222, 333, 'message', 'file'));
     }
@@ -100,7 +103,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
         $reply->setComment($comment);
         $reply->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
         $this->replyRepository->expects($this->once())->method('find')->with(222)->willReturn($reply);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
@@ -127,7 +130,7 @@ class CommentReplyAddedMessageHandlerTest extends AbstractTestCase
         $reply->setComment($comment);
         $reply->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
         $this->replyRepository->expects($this->once())->method('find')->with(222)->willReturn($reply);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);

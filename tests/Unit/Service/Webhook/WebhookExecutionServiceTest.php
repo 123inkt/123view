@@ -32,7 +32,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
 
     public function testExecuteSuccessfulWithoutRetry(): void
     {
-        $event = $this->createMock(CodeReviewAwareInterface::class);
+        $event = static::createStub(CodeReviewAwareInterface::class);
         $event->method('getName')->willReturn('name');
         $event->method('getPayload')->willReturn(['payload']);
 
@@ -42,7 +42,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
         $webhook->setHeaders(['headers' => 'headers']);
         $webhook->setVerifySsl(true);
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(200);
         $response->method('getHeaders')->with(false)->willReturn(['response' => 'headers']);
         $response->method('getContent')->with(false)->willReturn('content');
@@ -68,7 +68,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
 
     public function testExecuteFailure(): void
     {
-        $event = $this->createMock(CodeReviewAwareInterface::class);
+        $event = static::createStub(CodeReviewAwareInterface::class);
         $event->method('getName')->willReturn('name');
         $event->method('getPayload')->willReturn(['payload']);
 
@@ -80,7 +80,8 @@ class WebhookExecutionServiceTest extends AbstractTestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->willThrowException($this->createMock(TransportExceptionInterface::class));
+            ->willThrowException(static::createStub(TransportExceptionInterface::class));
+        $this->activityRepository->expects($this->never())->method('save');
 
         $activity = $this->service->execute($webhook, $event);
         static::assertSame(500, $activity->getStatusCode());

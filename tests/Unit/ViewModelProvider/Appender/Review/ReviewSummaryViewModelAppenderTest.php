@@ -32,8 +32,9 @@ class ReviewSummaryViewModelAppenderTest extends AbstractTestCase
 
     public function testAccepts(): void
     {
+        $this->summaryViewModelProvider->expects($this->never())->method('getSummaryViewModel');
         $dto       = $this->createDto();
-        $viewModel = $this->createMock(ReviewViewModel::class);
+        $viewModel = static::createStub(ReviewViewModel::class);
 
         static::assertTrue($this->appender->accepts($dto, $viewModel));
     }
@@ -42,7 +43,7 @@ class ReviewSummaryViewModelAppenderTest extends AbstractTestCase
     {
         $dto              = $this->createDto();
         $viewModel        = $this->createMock(ReviewViewModel::class);
-        $summaryViewModel = $this->createMock(ReviewSummaryViewModel::class);
+        $summaryViewModel = static::createStub(ReviewSummaryViewModel::class);
 
         $this->summaryViewModelProvider->expects($this->once())
             ->method('getSummaryViewModel')

@@ -71,6 +71,7 @@ class RuleProcessorTest extends AbstractTestCase
         $this->commitBundler->expects($this->once())->method('bundle')->with($commits)->willReturn($commits);
         $this->diffService->expects($this->once())->method('getBundledDiff')->with($rule, $commit);
         $this->dispatcher->expects($this->once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
+        $this->commitFilter->expects($this->never())->method('exclude');
 
         static::assertSame($commits, $this->ruleProcessor->processRule($config));
     }
@@ -101,6 +102,7 @@ class RuleProcessorTest extends AbstractTestCase
             ->with($commits, static::callback(static fn($collection) => $collection->contains($includeFilter)))
             ->willReturn($commits);
         $this->dispatcher->expects($this->once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
+        $this->diffEmphasizer->expects($this->never())->method('emphasizeFile');
 
         static::assertSame($commits, $this->ruleProcessor->processRule($config));
     }
@@ -118,6 +120,8 @@ class RuleProcessorTest extends AbstractTestCase
         $this->commitBundler->expects($this->once())->method('bundle')->with([])->willReturn([]);
         $this->diffService->expects(static::never())->method('getBundledDiff');
         $this->dispatcher->expects(static::never())->method('dispatch');
+        $this->diffEmphasizer->expects($this->never())->method('emphasizeFile');
+        $this->commitFilter->expects($this->never())->method('exclude');
 
         static::assertSame([], $this->ruleProcessor->processRule($config));
     }

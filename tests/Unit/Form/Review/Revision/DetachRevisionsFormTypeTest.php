@@ -32,6 +32,7 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -71,6 +72,7 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
 
     public function testGetBlockPrefix(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         static::assertSame('', $this->type->getBlockPrefix());
     }
 }

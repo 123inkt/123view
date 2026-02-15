@@ -37,7 +37,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
         $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
         $this->diffFinder      = $this->createMock(DiffFinder::class);
-        $translator            = $this->createMock(TranslatorInterface::class);
+        $translator            = static::createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnArgument(0);
         $this->provider = new MailCommentViewModelProvider($this->diffService, $this->revisionService, $this->diffFinder, $translator);
     }

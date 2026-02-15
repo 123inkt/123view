@@ -27,7 +27,7 @@ class UserMentionSuggestControllerTest extends AbstractTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(UserMentionSuggestRequest::class);
+        $request = static::createStub(UserMentionSuggestRequest::class);
         $request->method('getPreferredUserIds')->willReturn([1, 2, 3]);
         $request->method('getSearch')->willReturn('search');
 

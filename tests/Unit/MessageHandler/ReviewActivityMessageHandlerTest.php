@@ -51,9 +51,13 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeWithUnsupportedEvent(): void
     {
-        $event = $this->createMock(CodeReviewAwareInterface::class);
+        $event = static::createStub(CodeReviewAwareInterface::class);
 
         $this->activityRepository->expects($this->never())->method('save');
+        $this->activityProvider->expects($this->never())->method('fromEvent');
+        $this->activityPublisher->expects($this->never())->method('publish');
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->userRepository->expects($this->never())->method('getActors');
         ($this->messageHandler)($event);
     }
 

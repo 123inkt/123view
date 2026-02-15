@@ -36,6 +36,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -78,6 +79,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
 
     public function testSetter(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $reference = 'old/path:new/path:1:2:3:commitSha:A';
         $comment   = new Comment();
         $this->type->setter($comment, $reference);

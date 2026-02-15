@@ -32,7 +32,7 @@ class ChangeReviewerStateServiceTest extends AbstractTestCase
     {
         parent::setUp();
         $this->objectManager = $this->createMock(ObjectManager::class);
-        $registry            = $this->createMock(ManagerRegistry::class);
+        $registry            = static::createStub(ManagerRegistry::class);
         $registry->method('getManager')->willReturn($this->objectManager);
         $this->eventService          = $this->createMock(ReviewEventService::class);
         $this->reviewerService       = $this->createMock(CodeReviewerService::class);

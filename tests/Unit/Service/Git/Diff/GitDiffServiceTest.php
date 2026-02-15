@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
+use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
@@ -33,7 +34,7 @@ class GitDiffServiceTest extends AbstractTestCase
     private GitCommandBuilderFactory&MockObject      $commandBuilderFactory;
     private GitDiffCommandFactory&MockObject         $commandFactory;
     private PrunableDiffParser&MockObject            $parser;
-    private DiffNumStatParser&MockObject             $numStatParser;
+    private DiffNumStatParser&Stub             $numStatParser;
     private GitDiffService                           $diffService;
 
     protected function setUp(): void
@@ -43,7 +44,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $this->commandBuilderFactory = $this->createMock(GitCommandBuilderFactory::class);
         $this->commandFactory        = $this->createMock(GitDiffCommandFactory::class);
         $this->parser                = $this->createMock(PrunableDiffParser::class);
-        $this->numStatParser         = $this->createMock(DiffNumStatParser::class);
+        $this->numStatParser         = static::createStub(DiffNumStatParser::class);
         $this->diffService           = new GitDiffService(
             $this->repositoryService,
             $this->commandBuilderFactory,
@@ -74,6 +75,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $this->commandFactory->expects($this->once())->method('diffHashes')->with($rule, 'parentHash', 'hash3')->willReturn($commandBuilder);
         $repository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn('foobar');
         $this->parser->expects($this->once())->method('parse')->with('foobar', null)->willReturn($files);
+        $this->commandBuilderFactory->expects($this->never())->method('createShow');
 
         $commit = $this->diffService->getBundledDiff($rule, $commit);
         static::assertSame($files, $commit->files);
@@ -90,6 +92,9 @@ class GitDiffServiceTest extends AbstractTestCase
 
         // setup mocks
         $this->repositoryService->expects(static::never())->method('getRepository');
+        $this->commandBuilderFactory->expects($this->never())->method('createShow');
+        $this->commandFactory->expects($this->never())->method('diffHashes');
+        $this->parser->expects($this->never())->method('parse');
 
         $this->diffService->getBundledDiff($rule, $commit);
     }
@@ -117,6 +122,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects($this->once())->method('parse')->with('foobar', DiffComparePolicy::TRIM);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
 
         $this->diffService->getDiffFromRevision($revision, new FileDiffOptions(5, DiffComparePolicy::TRIM));
     }
@@ -144,6 +150,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects($this->once())->method('parse')->with('foobar', DiffComparePolicy::IGNORE);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
 
         $this->diffService->getDiffFromRevision($revision, new FileDiffOptions(5, DiffComparePolicy::IGNORE));
     }
@@ -169,6 +176,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects($this->once())->method('parse')->with('foobar', DiffComparePolicy::TRIM);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
 
         $this->diffService->getBundledDiffFromRevisions($repository, new FileDiffOptions(15, DiffComparePolicy::TRIM));
     }
@@ -194,6 +202,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects($this->once())->method('parse')->with('foobar', DiffComparePolicy::IGNORE);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
 
         $this->diffService->getBundledDiffFromRevisions($repository, new FileDiffOptions(15, DiffComparePolicy::IGNORE));
     }
@@ -219,6 +228,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects($this->once())->method('parse')->with('foobar', DiffComparePolicy::TRIM);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
 
         $this->diffService->getBundledDiffFromBranch($repository, 'source', 'target', new FileDiffOptions(15, DiffComparePolicy::TRIM));
     }
@@ -244,6 +254,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->parser->expects($this->once())->method('parse')->with('foobar', DiffComparePolicy::IGNORE);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
 
         $this->diffService->getBundledDiffFromBranch($repository, 'source', 'target', new FileDiffOptions(15, DiffComparePolicy::IGNORE));
     }
@@ -265,6 +276,8 @@ class GitDiffServiceTest extends AbstractTestCase
         $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('foobar');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $this->commandBuilderFactory->expects($this->once())->method('createDiff')->willReturn($builder);
+        $this->commandFactory->expects($this->never())->method('diffHashes');
+        $this->parser->expects($this->never())->method('parse');
 
         $this->diffService->getRevisionFiles($revision);
     }

@@ -33,7 +33,8 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(GetCommentThreadRequest::class);
+        $this->modelProvider->expects($this->never())->method('getEditCommentViewModel');
+        $request = static::createStub(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn(null);
 
         $review = new CodeReview();
@@ -54,7 +55,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
 
         $action = new EditCommentAction($comment);
 
-        $request = $this->createMock(GetCommentThreadRequest::class);
+        $request = static::createStub(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn($action);
 
         $this->modelProvider->expects($this->once())->method('getEditCommentViewModel')->with($action);
@@ -71,7 +72,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
 
         $action = new AddCommentReplyAction($comment);
 
-        $request = $this->createMock(GetCommentThreadRequest::class);
+        $request = static::createStub(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn($action);
 
         $this->modelProvider->expects($this->once())->method('getReplyCommentViewModel')->with($action);
@@ -88,7 +89,7 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
 
         $action = new EditCommentReplyAction(new CommentReply());
 
-        $request = $this->createMock(GetCommentThreadRequest::class);
+        $request = static::createStub(GetCommentThreadRequest::class);
         $request->method('getAction')->willReturn($action);
 
         $this->modelProvider->expects($this->once())->method('getEditCommentReplyViewModel')->with($action);

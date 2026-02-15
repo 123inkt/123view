@@ -37,7 +37,7 @@ class UserViewModelProviderTest extends AbstractTestCase
 
         $this->userRepository->expects($this->once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([$user]);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = static::createStub(FormView::class);
         $form     = $this->createMock(FormInterface::class);
         $form->expects($this->once())->method('createView')->willReturn($formView);
 
@@ -60,9 +60,10 @@ class UserViewModelProviderTest extends AbstractTestCase
         $userC->setId(123);
 
         $this->userRepository->expects($this->once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([$userA, $userB, $userC]);
+        $this->formFactory->expects($this->never())->method('create');
 
-        $form = $this->createMock(FormInterface::class);
-        $form->method('createView')->willReturn($this->createMock(FormView::class));
+        $form = static::createStub(FormInterface::class);
+        $form->method('createView')->willReturn(static::createStub(FormView::class));
         $this->formFactory->method('create')->willReturn($form);
 
         $viewModel = $this->provider->getUsersViewModel();
