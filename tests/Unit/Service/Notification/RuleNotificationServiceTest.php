@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Notification;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Repository\Config\RuleNotificationRepository;
@@ -18,6 +19,8 @@ use Symfony\Bridge\PhpUnit\ClockMock;
 #[CoversClass(RuleNotificationService::class)]
 class RuleNotificationServiceTest extends AbstractTestCase
 {
+    use ClockTestTrait;
+
     private RuleNotificationRepository&MockObject $repository;
     private RuleNotificationService               $service;
 
@@ -42,7 +45,7 @@ class RuleNotificationServiceTest extends AbstractTestCase
         $expected = (new RuleNotification())
             ->setRule($rule)
             ->setNotifyTimestamp(654321)
-            ->setCreateTimestamp(123456789);
+            ->setCreateTimestamp(self::time());
 
         $this->repository->expects($this->once())->method('save')->with($expected, true);
 
