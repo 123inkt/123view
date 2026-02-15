@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\FrameworkConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (FrameworkConfig $framework): void {
-    $framework->secret('%env(APP_SECRET)%');
-    $framework->httpMethodOverride(true);
-    $framework->phpErrors()->log()->throw(true);
-    $framework->handleAllThrowables(true);
-    $framework->annotations()->enabled(false);
-    $framework->propertyInfo()->withConstructorExtractor(true);
-};
+return App::config([
+    'framework' => [
+        'secret'                => '%env(APP_SECRET)%',
+        'http_method_override'  => true,
+        'php_errors'            => ['log' => true],
+        'handle_all_throwables' => true,
+        'annotations'           => ['enabled' => false],
+        'property_info'         => ['with_constructor_extractor' => true],
+    ],
+]);
