@@ -2,32 +2,34 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\ApiPlatformConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (ApiPlatformConfig $config): void {
-    $config->title('%env(APP_NAME)% API')
-        ->version('1.0.0')
-        ->showWebby(true)
-        ->pathSegmentNameGenerator('api_platform.metadata.path_segment_name_generator.dash');
-
-    $config->mapping()->paths(['%kernel.project_dir%/src/Entity']);
-
-    $config->swagger()->versions([3])->apiKeys('Bearer')->name('Authorization')->type('header');
-
-    $config->mercure()->enabled(false);
-    $config->messenger()->enabled(false);
-
-    $config->formats('json')->mimeTypes(['application/json']);
-    $config->formats('html')->mimeTypes(['text/html']);
-
-    $config->patchFormats('json')->mimeTypes(['application/merge-patch+json']);
-
-    $config->defaults()
-        // allow custom pagination parameters client side
-        ->paginationClientEnabled(false)
-        ->paginationClientItemsPerPage(true)
-        // The default number of items per page
-        ->paginationItemsPerPage(30)
-        // The default maximum number of items per page
-        ->paginationMaximumItemsPerPage(100);
-};
+return App::config([
+    'api_platform' => [
+        'title'                       => '%env(APP_NAME)% API',
+        'version'                     => '1.0.0',
+        'show_webby'                  => true,
+        'path_segment_name_generator' => 'api_platform.metadata.path_segment_name_generator.dash',
+        'mapping'                     => ['paths' => ['%kernel.project_dir%/src/Entity']],
+        'swagger'                     => [
+            'versions' => [3],
+            'api_keys' => ['Bearer' => ['name' => 'Authorization', 'type' => 'header']],
+        ],
+        'mercure'                     => ['enabled' => false],
+        'messenger'                   => ['enabled' => false],
+        'formats'                     => [
+            'json' => ['mime_types' => ['application/json']],
+            'html' => ['mime_types' => ['text/html']],
+        ],
+        'patch_formats'               => ['json' => ['mime_types' => ['application/merge-patch+json']]],
+        'defaults'                    => [
+            // allow custom pagination parameters client side
+            'pagination_client_enabled'         => false,
+            'pagination_client_items_per_page'  => true,
+            // The default number of items per page
+            'pagination_items_per_page'         => 30,
+            // The default maximum number of items per page
+            'pagination_maximum_items_per_page' => 100,
+        ],
+    ],
+]);
