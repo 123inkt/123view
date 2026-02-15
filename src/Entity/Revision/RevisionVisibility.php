@@ -14,17 +14,14 @@ class RevisionVisibility
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Revision::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private Revision $revision;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private CodeReview $review;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
     #[ORM\Column(nullable: false)]

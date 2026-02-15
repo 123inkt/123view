@@ -54,7 +54,6 @@ return App::config([
         ],
         'orm'  => [
             'default_entity_manager' => 'default',
-            'controller_resolver'    => ['auto_mapping' => false],
             'entity_managers'        => [
                 'default' => [
                     'auto_mapping'    => true,
