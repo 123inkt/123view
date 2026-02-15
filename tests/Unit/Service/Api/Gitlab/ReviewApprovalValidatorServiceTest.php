@@ -24,17 +24,17 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
 
     public function testValidateShouldReturnFalseWhenReviewIsNull(): void
     {
-        static::assertFalse($this->service->validate(null, new CodeReviewer(), 123));
+        static::assertFalse($this->service->validate(null, new CodeReviewer(), 123)); // @phpstan-ignore-line
     }
 
     public function testValidateShouldReturnFalseWhenReviewerIsNull(): void
     {
-        static::assertFalse($this->service->validate(new CodeReview(), null, 123));
+        static::assertFalse($this->service->validate(new CodeReview(), null, 123)); // @phpstan-ignore-line
     }
 
     public function testValidateShouldReturnFalseWhenProjectIdIsNull(): void
     {
-        static::assertFalse($this->service->validate(new CodeReview(), new CodeReviewer(), null));
+        static::assertFalse($this->service->validate(new CodeReview(), new CodeReviewer(), null)); // @phpstan-ignore-line
     }
 
     public function testValidateShouldReturnFalseWhenGitApprovalSyncIsDisabled(): void
@@ -44,7 +44,7 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setRepository($repository);
 
-        static::assertFalse($this->service->validate($review, new CodeReviewer(), 123));
+        static::assertFalse($this->service->validate($review, new CodeReviewer(), 123)); // @phpstan-ignore-line
     }
 
     public function testValidateShouldReturnFalseWhenRemoteRefIsNull(): void
@@ -54,7 +54,7 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setRepository($repository);
 
-        static::assertFalse($this->service->validate($review, new CodeReviewer(), 123));
+        static::assertFalse($this->service->validate($review, new CodeReviewer(), 123)); // @phpstan-ignore-line
     }
 
     public function testValidateShouldReturnFalseWhenRemoteRefDoesNotMatchPattern(): void
@@ -66,7 +66,7 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
 
-        static::assertFalse($this->service->validate($review, new CodeReviewer(), 123));
+        static::assertFalse($this->service->validate($review, new CodeReviewer(), 123)); // @phpstan-ignore-line
     }
 
     public function testValidateShouldReturnTrueWhenAllConditionsAreMet(): void
@@ -78,6 +78,6 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
 
-        static::assertTrue($this->service->validate($review, new CodeReviewer(), 123));
+        static::assertTrue($this->service->validate($review, new CodeReviewer(), 123)); // @phpstan-ignore-line
     }
 }
