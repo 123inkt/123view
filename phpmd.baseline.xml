@@ -12,6 +12,7 @@
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/MessageHandler/Gitlab/ReviewerStateChangeMessageHandler.php"/>
   <violation rule="PHPMD\Rule\Design\LongParameterList" file="src/Model/Review/CodeReviewDto.php" method="__construct"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/GitlabApiProvider.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewApprovalValidatorService.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewMergeRequestService.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/CodeReview/LineReferenceMatcher.php" method="exactMatch"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Filter/CommitFilter.php"/>
