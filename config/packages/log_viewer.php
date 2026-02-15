@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\FdLogViewerConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (FdLogViewerConfig $config): void {
-    $config->logFiles('monolog')->downloadable(true);
-};
+return App::config(['fd_log_viewer' => ['log_files' => ['monolog' => ['downloadable' => true]]]]);
