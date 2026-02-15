@@ -49,6 +49,15 @@ class ReviewerStateChangeMessageHandler implements LoggerAwareInterface
             return;
         }
 
+        if ($review->getRepository()->isGitApprovalSync() === false) {
+            $this->logger?->info(
+                'ReviewerStateChange: Gitlab reviewer sync skipped as repository has approvals disabled',
+                ['reviewId' => $event->reviewId, 'reviewerId' => $event->reviewerId, 'projectId' => $projectId,]
+            );
+
+            return;
+        }
+
         $remoteRef = $review->getRevisions()->findFirst(static fn($key, Revision $value) => $value->getFirstBranch() !== null)?->getFirstBranch();
         if ($remoteRef === null || preg_match($this->branchPattern, $remoteRef) !== 1) {
             $this->logger?->info(
