@@ -26,6 +26,7 @@ return [
     'ai.review.completed.success'                 => 'The AI code review completed successfully',
     'ai.review.requested'                         => 'AI code review requested, it may take a few seconds to appear in the review',
     'add.comment'                                 => 'Add comment',
+    'git.approval.sync.label.checkbox'            => 'Sync review approvals to merge request',
     'add.credential'                              => 'Create new credential',
     'add.filter'                                  => 'Add filter',
     'add.recipient'                               => 'Add recipient',
