@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Command;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
@@ -15,6 +14,7 @@ use DR\Utils\Assert;
 use Exception;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;

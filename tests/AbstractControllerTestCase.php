@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase as ExtensionsAbstractControllerTestCase;
+use PHPUnit\Framework\MockObject\Stub;
 use Psr\Log\LoggerInterface;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

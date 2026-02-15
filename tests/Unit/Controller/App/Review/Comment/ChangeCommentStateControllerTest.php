@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\ChangeCommentStateController;
 use DR\Review\Doctrine\Type\CommentStateType;
@@ -14,6 +13,7 @@ use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;

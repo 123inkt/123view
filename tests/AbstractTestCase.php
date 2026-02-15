@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use Generator;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use stdClass;

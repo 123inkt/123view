@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Form\Review;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;

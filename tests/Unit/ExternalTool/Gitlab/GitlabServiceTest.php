@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ExternalTool\Gitlab;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\Service\Api\Gitlab\Branches;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
@@ -11,6 +10,7 @@ use DR\Review\Service\Api\Gitlab\MergeRequests;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 

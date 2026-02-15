@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git\Diff;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
@@ -26,6 +25,7 @@ use Exception;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
 #[CoversClass(GitDiffService::class)]
 class GitDiffServiceTest extends AbstractTestCase

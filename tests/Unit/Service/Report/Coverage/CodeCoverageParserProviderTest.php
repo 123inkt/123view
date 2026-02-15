@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Report\Coverage;
 
-use PHPUnit\Framework\MockObject\Stub;
 use ArrayIterator;
 use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CodeCoverageParserInterface;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Stub;
 
 #[CoversClass(CodeCoverageParserProvider::class)]
 class CodeCoverageParserProviderTest extends AbstractTestCase

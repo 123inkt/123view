@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Security\Voter;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Entity\Asset\Asset;
 use DR\Review\Security\Voter\AssetVoter;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

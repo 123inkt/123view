@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Controller\App\Review\Reviewer;
 
-use PHPUnit\Framework\MockObject\Stub;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Controller\AbstractController;
@@ -21,6 +20,7 @@ use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * @extends AbstractControllerTestCase<RemoveReviewerController>

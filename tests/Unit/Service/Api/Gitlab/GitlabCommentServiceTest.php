@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Entity\Review\CodeReview;
@@ -22,6 +21,7 @@ use DR\Review\Service\Api\Gitlab\PositionFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Throwable;
 
 #[CoversClass(GitlabCommentService::class)]
