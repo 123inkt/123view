@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\MonologConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
 /**
  * Setup summary:
@@ -12,76 +12,79 @@ use Symfony\Config\MonologConfig;
  * - Level: DEBUG - stderr - !event, !deprecation, !console
  * - Level: DEBUG - console - !event, !deprecation
  */
-return static function (MonologConfig $monolog) {
-    $monolog->handler('info')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.log')
-        ->level('info')
-        ->maxFiles(10)
-        ->channels()->elements(["!event", "!console", "!deprecation"]);
-
-    $monolog->handler('ai')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.ai.log')
-        ->level('info')
-        ->maxFiles(10)
-        ->channels()->elements(["ai"]);
-
-    $monolog->handler('error_fingers_crossed')
-        ->type('fingers_crossed')
-        ->actionLevel('error')
-        ->handler('error')
-        ->channels()->elements(["!event", "!console", "!deprecation"]);
-    $monolog->handler('error')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.error.log')
-        ->level('debug')
-        ->maxFiles(10);
-
-    $monolog->handler('deprecations')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/deprecations.%kernel.environment%.log')
-        ->level('debug')
-        ->maxFiles(1)
-        ->channels()->elements(["deprecation"]);
-
-    // error mailer
-    $monolog->handler('main')
-        ->type('fingers_crossed')
-        ->level('error')
-        ->handler('deduplicated')
-        ->channels()->elements(['!console']);
-    $monolog->handler('main')->excludedHttpCode(400);
-    $monolog->handler('main')->excludedHttpCode(403);
-    $monolog->handler('main')->excludedHttpCode(404);
-    $monolog->handler('main')->excludedHttpCode(405);
-    $monolog->handler('deduplicated')
-        ->type('deduplication')
-        ->handler('symfony_mailer');
-    $monolog->handler('symfony_mailer')
-        ->type('symfony_mailer')
-        ->fromEmail('%env(MAILER_SENDER)%')
-        ->toEmail(['%env(ERROR_MAIL)%'])
-        ->subject('[123view] %%message%%')
-        ->level('error')
-        ->formatter('monolog.formatter.html')
-        ->contentType('text/html');
-
-    $monolog->handler('docker')
-        ->type('error_log')
-        ->level('debug')
-        ->channels()->elements(["!event", "!deprecation"]);
-
-    $monolog->handler('console')
-        ->type('console')
-        ->level('debug')
-        ->processPsr3Messages(false)
-        ->channels()->elements(["!event", "!deprecation", "!console"]);
-
-    $monolog->handler('main')->processPsr3Messages()->removeUsedContextFields(true);
-    $monolog->handler('info')->processPsr3Messages()->removeUsedContextFields(true);
-    $monolog->handler('error_fingers_crossed')->processPsr3Messages()->removeUsedContextFields(true);
-    $monolog->handler('deprecations')->processPsr3Messages()->removeUsedContextFields(true);
-    $monolog->handler('docker')->processPsr3Messages()->removeUsedContextFields(true);
-    $monolog->handler('console')->processPsr3Messages()->removeUsedContextFields(true);
-};
+return App::config([
+    'monolog' => [
+        'handlers' => [
+            'info'                  => [
+                'type'                   => 'rotating_file',
+                'path'                   => '%kernel.logs_dir%/%kernel.environment%.log',
+                'level'                  => 'info',
+                'max_files'              => 10,
+                'channels'               => ['!event', '!console', '!deprecation'],
+                'process_psr_3_messages' => ['remove_used_context_fields' => true],
+            ],
+            'ai'                    => [
+                'type'      => 'rotating_file',
+                'path'      => '%kernel.logs_dir%/%kernel.environment%.ai.log',
+                'level'     => 'info',
+                'max_files' => 10,
+                'channels'  => ['ai'],
+            ],
+            'error_fingers_crossed' => [
+                'type'                   => 'fingers_crossed',
+                'action_level'           => 'error',
+                'handler'                => 'error',
+                'channels'               => ['!event', '!console', '!deprecation'],
+                'process_psr_3_messages' => ['remove_used_context_fields' => true],
+            ],
+            'error'                 => [
+                'type'      => 'rotating_file',
+                'path'      => '%kernel.logs_dir%/%kernel.environment%.error.log',
+                'level'     => 'debug',
+                'max_files' => 10,
+            ],
+            'deprecations'          => [
+                'type'                   => 'rotating_file',
+                'path'                   => '%kernel.logs_dir%/deprecations.%kernel.environment%.log',
+                'level'                  => 'debug',
+                'max_files'              => 1,
+                'channels'               => ['deprecation'],
+                'process_psr_3_messages' => ['remove_used_context_fields' => true],
+            ],
+            // error mailer
+            'main'                  => [
+                'type'                   => 'fingers_crossed',
+                'level'                  => 'error',
+                'handler'                => 'deduplicated',
+                'channels'               => ['!console'],
+                'excluded_http_codes'    => [400, 403, 404, 405],
+                'process_psr_3_messages' => ['remove_used_context_fields' => true],
+            ],
+            'deduplicated'          => [
+                'type'    => 'deduplication',
+                'handler' => 'symfony_mailer',
+            ],
+            'symfony_mailer'        => [
+                'type'         => 'symfony_mailer',
+                'from_email'   => '%env(MAILER_SENDER)%',
+                'to_email'     => ['%env(ERROR_MAIL)%'],
+                'subject'      => '[123view] %%message%%',
+                'level'        => 'error',
+                'formatter'    => 'monolog.formatter.html',
+                'content_type' => 'text/html',
+            ],
+            'docker'                => [
+                'type'                   => 'error_log',
+                'level'                  => 'debug',
+                'channels'               => ['!event', '!deprecation'],
+                'process_psr_3_messages' => ['remove_used_context_fields' => true,],
+            ],
+            'console'               => [
+                'type'                   => 'console',
+                'level'                  => 'debug',
+                'process_psr_3_messages' => ['remove_used_context_fields' => true,],
+                'channels'               => ['!event', '!deprecation', '!console'],
+            ],
+        ],
+    ],
+]);

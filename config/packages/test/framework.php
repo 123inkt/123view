@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\FrameworkConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (FrameworkConfig $framework): void {
-    $framework->test(true);
-    $framework->session()->storageFactoryId('session.storage.factory.mock_file');
-};
+return App::config([
+    'framework' => [
+        'test'    => true,
+        'session' => ['storage_factory_id' => 'session.storage.factory.mock_file'],
+    ],
+]);

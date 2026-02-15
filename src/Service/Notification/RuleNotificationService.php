@@ -8,9 +8,12 @@ use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Utils\Assert;
+use Symfony\Component\Clock\ClockAwareTrait;
 
 class RuleNotificationService
 {
+    use ClockAwareTrait;
+
     public function __construct(private readonly RuleNotificationRepository $repository)
     {
     }
@@ -20,7 +23,7 @@ class RuleNotificationService
         $notification = new RuleNotification();
         $notification->setRule($rule);
         $notification->setNotifyTimestamp(Assert::notNull($period->end)->getTimestamp());
-        $notification->setCreateTimestamp(time());
+        $notification->setCreateTimestamp($this->now()->getTimestamp());
         $this->repository->save($notification, true);
 
         return $notification;
