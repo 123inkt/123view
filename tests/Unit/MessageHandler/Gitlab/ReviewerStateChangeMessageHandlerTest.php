@@ -66,6 +66,26 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testInvokeShouldSkipIfGitApprovalSyncDisabled(): void
+    {
+        $revision   = (new Revision())->setFirstBranch('PR-12345');
+        $repository = new Repository();
+        $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
+        $repository->setGitApprovalSync(false);
+        $reviewer = (new CodeReviewer())->setId(456);
+        $review   = (new CodeReview())->setId(123);
+        $review->getReviewers()->add($reviewer);
+        $review->setRepository($repository);
+        $review->getRevisions()->add($revision);
+
+        $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
+        $this->reviewApprovalService->expects($this->never())->method('approve');
+        ($this->handler)(new ReviewerStateChanged(123, 456, 789, 'foo', 'bar'));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testInvokeShouldSkipIfRemoteRefDoesNotMatch(): void
     {
         $revision   = (new Revision())->setFirstBranch('PR-FOOBAR');
@@ -90,6 +110,7 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
         $revision   = (new Revision())->setFirstBranch('PR-12345');
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
+        $repository->setGitApprovalSync(true);
         $reviewer = (new CodeReviewer())->setId(456);
         $review   = (new CodeReview())->setId(123);
         $review->getReviewers()->add($reviewer);
@@ -109,6 +130,7 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
         $revision   = (new Revision())->setFirstBranch('PR-12345');
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
+        $repository->setGitApprovalSync(true);
         $reviewer = (new CodeReviewer())->setId(456);
         $review   = (new CodeReview())->setId(123);
         $review->getReviewers()->add($reviewer);
