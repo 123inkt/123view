@@ -8,7 +8,6 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
-use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\MessageHandler\Gitlab\ReviewerStateChangeMessageHandler;
 use DR\Review\Repository\Review\CodeReviewRepository;
@@ -22,10 +21,10 @@ use Throwable;
 #[CoversClass(ReviewerStateChangeMessageHandler::class)]
 class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
 {
-    private CodeReviewRepository&MockObject              $reviewRepository;
-    private ReviewApprovalValidatorService&MockObject    $reviewApprovalValidatorService;
-    private ReviewApprovalService&MockObject             $reviewApprovalService;
-    private ReviewerStateChangeMessageHandler            $handler;
+    private CodeReviewRepository&MockObject           $reviewRepository;
+    private ReviewApprovalValidatorService&MockObject $reviewApprovalValidatorService;
+    private ReviewApprovalService&MockObject          $reviewApprovalService;
+    private ReviewerStateChangeMessageHandler         $handler;
 
     protected function setUp(): void
     {
