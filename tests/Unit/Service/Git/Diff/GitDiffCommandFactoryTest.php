@@ -40,10 +40,10 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
         $this->commandBuilder->expects($this->once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
         $this->commandBuilder->expects($this->once())->method('ignoreCrAtEol')->willReturnSelf();
 
-        $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreSpaceChange')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreAllSpace')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreBlankLines')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreSpaceChange')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreAllSpace')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreBlankLines')->willReturnSelf();
 
         $this->factory->diffHashes($rule, 'startHash', 'endHash');
     }

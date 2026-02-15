@@ -37,8 +37,8 @@ class CommentVisibilityControllerTest extends AbstractControllerTestCase
 
         $user->setReviewSetting($reviewSetting);
 
-        $validatedRequest->expects(static::once())->method('getVisibility')->willReturn(CommentVisibilityEnum::NONE);
-        $this->repository->expects(static::once())->method('save')->with($reviewSetting, true);
+        $validatedRequest->expects($this->once())->method('getVisibility')->willReturn(CommentVisibilityEnum::NONE);
+        $this->repository->expects($this->once())->method('save')->with($reviewSetting, true);
         $this->expectGetUser($user);
 
         /** @var JsonResponse $response */

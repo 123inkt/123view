@@ -91,7 +91,7 @@ class GitDiffServiceTest extends AbstractTestCase
         $commit->commitHashes = ['hash1'];
 
         // setup mocks
-        $this->repositoryService->expects(static::never())->method('getRepository');
+        $this->repositoryService->expects($this->never())->method('getRepository');
         $this->commandBuilderFactory->expects($this->never())->method('createShow');
         $this->commandFactory->expects($this->never())->method('diffHashes');
         $this->parser->expects($this->never())->method('parse');

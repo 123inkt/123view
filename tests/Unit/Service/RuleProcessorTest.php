@@ -118,8 +118,8 @@ class RuleProcessorTest extends AbstractTestCase
 
         $this->gitLogService->expects($this->once())->method('getCommits')->with($config)->willReturn([]);
         $this->commitBundler->expects($this->once())->method('bundle')->with([])->willReturn([]);
-        $this->diffService->expects(static::never())->method('getBundledDiff');
-        $this->dispatcher->expects(static::never())->method('dispatch');
+        $this->diffService->expects($this->never())->method('getBundledDiff');
+        $this->dispatcher->expects($this->never())->method('dispatch');
         $this->diffEmphasizer->expects($this->never())->method('emphasizeFile');
         $this->commitFilter->expects($this->never())->method('exclude');
 

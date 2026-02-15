@@ -36,8 +36,8 @@ class ReviewDiffModeControllerTest extends AbstractControllerTestCase
 
         $user->setReviewSetting($reviewSetting);
 
-        $validatedRequest->expects(static::once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE);
-        $this->repository->expects(static::once())->method('save')->with($reviewSetting, true);
+        $validatedRequest->expects($this->once())->method('getDiffMode')->willReturn(ReviewDiffModeEnum::SIDE_BY_SIDE);
+        $this->repository->expects($this->once())->method('save')->with($reviewSetting, true);
         $this->expectRefererRedirect('/');
         $this->expectGetUser($user);
 

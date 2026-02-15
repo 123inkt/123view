@@ -99,7 +99,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
         $this->filesystem->expects($this->once())->method('mkdir')->with('/repository');
         $this->filesystem->expects($this->once())->method('exists')->willReturn(true);
-        $this->git->expects(static::never())->method('cloneRepository');
+        $this->git->expects($this->never())->method('cloneRepository');
 
         $this->service->getRepository($repository);
     }

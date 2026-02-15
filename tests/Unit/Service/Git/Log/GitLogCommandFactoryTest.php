@@ -57,11 +57,11 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $this->commandBuilder->expects($this->once())->method('since')->with($startDate)->willReturnSelf();
         $this->commandBuilder->expects($this->once())->method('until')->with($endDate)->willReturnSelf();
 
-        $this->commandBuilder->expects(static::never())->method('noMerges')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreSpaceChange')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreAllSpace')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreBlankLines')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('noMerges')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreSpaceChange')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreAllSpace')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreBlankLines')->willReturnSelf();
 
         $this->factory->fromRule($config);
     }

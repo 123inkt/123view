@@ -145,7 +145,7 @@ class MailCommandTest extends AbstractTestCase
         $this->ruleRepository->expects($this->once())->method('getActiveRulesForFrequency')->with(true, 'once-per-hour')->willReturn([$rule]);
         $this->revisionFetchService->expects($this->once())->method('fetchRevisionsForRules')->with([$rule]);
         $this->notificationService->expects($this->never())->method('addRuleNotification');
-        $this->ruleProcessor->expects(static::never())->method('processRule');
+        $this->ruleProcessor->expects($this->never())->method('processRule');
         $this->mailService->expects($this->never())->method('sendCommitsMail');
 
         $commandTester = new CommandTester($this->command);

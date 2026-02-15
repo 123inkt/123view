@@ -38,7 +38,7 @@ class GitlabIntegrationTest extends AbstractTestCase
         $this->integration   = new GitlabIntegration('', $this->gitlabService);
 
         // setup mock
-        $this->gitlabService->expects(static::never())->method('getMergeRequestUrl');
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
 
         $this->integration->onCommitEvent(new CommitEvent(static::createStub(Commit::class)));
     }
@@ -51,7 +51,7 @@ class GitlabIntegrationTest extends AbstractTestCase
         $commit->repository = $repository;
 
         // setup mock
-        $this->gitlabService->expects(static::never())->method('getMergeRequestUrl');
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
 
         $this->integration->onCommitEvent(new CommitEvent($commit));
         static::assertEmpty($commit->integrationLinks);
