@@ -72,6 +72,9 @@ class Repository implements EquatableInterface
     #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, nullable: true)]
     private ?string $gitType = null;
 
+    #[ORM\Column(options: ['default' => '1'])]
+    private bool $gitApprovalSync = true;
+
     #[ORM\Column]
     private bool $favorite = false;
 
@@ -221,6 +224,18 @@ class Repository implements EquatableInterface
     public function setGitType(?string $gitType): self
     {
         $this->gitType = $gitType;
+
+        return $this;
+    }
+
+    public function isGitApprovalSync(): bool
+    {
+        return $this->gitApprovalSync;
+    }
+
+    public function setGitApprovalSync(bool $gitApprovalSync): self
+    {
+        $this->gitApprovalSync = $gitApprovalSync;
 
         return $this;
     }
