@@ -103,7 +103,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->emphasizer->expects($this->once())->method('emphasizeFile')->with($file);
         $this->commentModelProvider->expects($this->never())->method('getReplyCommentViewModel');
         $this->splitter->expects($this->never())->method('splitFile');
-        $this->inspectionModelProvider->expects($this->never())->method('getCodeQualityViewModel');
+        $this->inspectionModelProvider->expects($this->once())->method('getCodeQualityViewModel');
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::UNIFIED, 6);
         static::assertEquals(new HighlightFileViewModel($highlightedFile), $viewModel->getHighlightedFileViewModel());
@@ -128,7 +128,7 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->emphasizer->expects($this->once())->method('emphasizeFile')->with($file);
         $this->splitter->expects($this->once())->method('splitFile')->with($file)->willReturn($leftSideFile);
         $this->commentModelProvider->expects($this->never())->method('getReplyCommentViewModel');
-        $this->inspectionModelProvider->expects($this->never())->method('getCodeQualityViewModel');
+        $this->inspectionModelProvider->expects($this->once())->method('getCodeQualityViewModel');
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::SIDE_BY_SIDE, 6);
         static::assertNotNull($viewModel->leftSideFile);
@@ -147,10 +147,10 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->commentsModelProvider->expects($this->once())->method('getCommentsViewModel')->with($review, null, $file);
         $this->highlightedFileService->expects($this->never())->method('fromDiffFile');
         $this->commentModelProvider->expects($this->never())->method('getReplyCommentViewModel');
-        $this->bundler->expects($this->never())->method('bundleFile');
+        $this->bundler->expects($this->once())->method('bundleFile');
         $this->emphasizer->expects($this->never())->method('emphasizeFile');
         $this->splitter->expects($this->never())->method('splitFile');
-        $this->inspectionModelProvider->expects($this->never())->method('getCodeQualityViewModel');
+        $this->inspectionModelProvider->expects($this->once())->method('getCodeQualityViewModel');
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, null, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE, 6);
         static::assertNull($viewModel->getHighlightedFileViewModel());
@@ -172,10 +172,10 @@ class FileDiffViewModelProviderTest extends AbstractTestCase
         $this->commentsModelProvider->expects($this->once())->method('getCommentsViewModel')->with($review, null, $file);
         $this->highlightedFileService->expects($this->once())->method('fromDiffFile')->with($repository, $file)->willReturn($highlightedFile);
         $this->commentModelProvider->expects($this->once())->method('getReplyCommentViewModel')->with($action);
-        $this->bundler->expects($this->never())->method('bundleFile');
+        $this->bundler->expects($this->once())->method('bundleFile');
         $this->emphasizer->expects($this->never())->method('emphasizeFile');
         $this->splitter->expects($this->never())->method('splitFile');
-        $this->inspectionModelProvider->expects($this->never())->method('getCodeQualityViewModel');
+        $this->inspectionModelProvider->expects($this->once())->method('getCodeQualityViewModel');
 
         $viewModel = $this->provider->getFileDiffViewModel($review, $file, $action, DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE, 6);
         static::assertEquals(new HighlightFileViewModel($highlightedFile), $viewModel->getHighlightedFileViewModel());

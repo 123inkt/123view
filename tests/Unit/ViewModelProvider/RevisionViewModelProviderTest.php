@@ -127,7 +127,7 @@ class RevisionViewModelProviderTest extends AbstractTestCase
             ->with(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
             ->willReturn(static::createStub(FormInterface::class));
         $this->revisionRepository->expects($this->never())->method('getPaginatorForSearchQuery');
-        $this->revisionFileRepository->expects($this->never())->method('getFileChanges');
+        $this->revisionFileRepository->expects($this->once())->method('getFileChanges');
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);

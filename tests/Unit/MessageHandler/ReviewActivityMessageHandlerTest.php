@@ -54,7 +54,7 @@ class ReviewActivityMessageHandlerTest extends AbstractTestCase
         $event = static::createStub(CodeReviewAwareInterface::class);
 
         $this->activityRepository->expects($this->never())->method('save');
-        $this->activityProvider->expects($this->never())->method('fromEvent');
+        $this->activityProvider->expects($this->once())->method('fromEvent');
         $this->activityPublisher->expects($this->never())->method('publish');
         $this->reviewRepository->expects($this->never())->method('save');
         $this->userRepository->expects($this->never())->method('getActors');

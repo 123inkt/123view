@@ -60,11 +60,10 @@ class UserViewModelProviderTest extends AbstractTestCase
         $userC->setId(123);
 
         $this->userRepository->expects($this->once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([$userA, $userB, $userC]);
-        $this->formFactory->expects($this->never())->method('create');
 
         $form = static::createStub(FormInterface::class);
         $form->method('createView')->willReturn(static::createStub(FormView::class));
-        $this->formFactory->method('create')->willReturn($form);
+        $this->formFactory->expects($this->exactly(3))->method('create')->willReturn($form);
 
         $viewModel = $this->provider->getUsersViewModel();
         static::assertSame([$userC, $userB, $userA], $viewModel->users);

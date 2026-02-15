@@ -129,7 +129,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $comment = (new Comment())->setId(123)->setUser(new User());
 
         $this->messageFactory->expects($this->never())->method('createRemoved');
-        $this->userEntityProvider->expects($this->never())->method('getUser');
+        $this->userEntityProvider->expects($this->once())->method('getUser');
         $this->bus->expects($this->never())->method('dispatch');
 
         $this->eventSubscriber->commentRemoved($comment);

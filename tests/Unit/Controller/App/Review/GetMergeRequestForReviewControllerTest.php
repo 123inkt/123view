@@ -63,7 +63,7 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
     public function testInvokeNoRemoteRef(): void
     {
         $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
-        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->revisionService->expects($this->once())->method('getRevisions');
         $repository = new Repository();
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1'));
         $review = new CodeReview();

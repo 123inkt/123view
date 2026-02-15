@@ -19,6 +19,7 @@ use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 #[CoversClass(HighlightedFileService::class)]
 class HighlightedFileServiceTest extends AbstractTestCase
@@ -105,7 +106,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function testGetHighlightedFileBadResponse(): void
     {
@@ -121,7 +122,7 @@ class HighlightedFileServiceTest extends AbstractTestCase
         $this->translator->expects($this->once())->method('translate')->with('/path/to/file.xml')->willReturn('xml');
         $this->httpClient->expects($this->once())->method('request')->willReturn($response);
         $this->splitter->expects($this->never())->method('split');
-        $this->preprocessor->expects($this->never())->method('process');
+        $this->preprocessor->expects($this->once())->method('process');
 
         static::assertNull($this->service->fromDiffFile($file));
     }

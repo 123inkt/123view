@@ -88,7 +88,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewAuthorExpressionWithUser(): void
     {
-        $this->userProvider->expects($this->never())->method('getUser');
+        $this->userProvider->expects($this->once())->method('getUser');
         $collection = new ArrayCollection();
 
         $expression = $this->expressionFactory->createReviewAuthorExpression(new MatchFilter('author', 'sherlock'), $collection);
@@ -127,7 +127,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewReviewerExpression(): void
     {
-        $this->userProvider->expects($this->never())->method('getUser');
+        $this->userProvider->expects($this->once())->method('getUser');
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createReviewReviewerExpression(new MatchFilter('reviewer', 'sherlock'), $collection);
 

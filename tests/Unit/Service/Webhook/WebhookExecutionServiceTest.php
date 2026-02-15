@@ -44,8 +44,8 @@ class WebhookExecutionServiceTest extends AbstractTestCase
 
         $response = static::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(200);
-        $response->method('getHeaders')->with(false)->willReturn(['response' => 'headers']);
-        $response->method('getContent')->with(false)->willReturn('content');
+        $response->method('getHeaders')->willReturn(['response' => 'headers']);
+        $response->method('getContent')->willReturn('content');
 
         $this->activityRepository->expects($this->once())->method('save')->with(self::isInstanceOf(WebhookActivity::class), true);
         $this->httpClient->expects($this->once())
@@ -81,7 +81,7 @@ class WebhookExecutionServiceTest extends AbstractTestCase
         $this->httpClient->expects($this->once())
             ->method('request')
             ->willThrowException(static::createStub(TransportExceptionInterface::class));
-        $this->activityRepository->expects($this->never())->method('save');
+        $this->activityRepository->expects($this->once())->method('save');
 
         $activity = $this->service->execute($webhook, $event);
         static::assertSame(500, $activity->getStatusCode());

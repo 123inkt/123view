@@ -23,17 +23,18 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
 #[CoversClass(CodeReviewDtoProvider::class)]
 class CodeReviewDtoProviderTest extends AbstractTestCase
 {
-    private CodeReviewRevisionService&MockObject    $revisionService;
-    private CodeReviewFileService&MockObject        $fileService;
-    private CodeReviewTypeDecider&MockObject        $reviewTypeDecider;
-    private RevisionVisibilityService&MockObject    $visibilityService;
-    private CodeReviewRepository&MockObject         $codeReviewRepository;
-    private UserReviewSettingsProvider&MockObject   $settingsProvider;
-    private CodeReviewDtoProvider                   $provider;
+    private CodeReviewRevisionService&MockObject  $revisionService;
+    private CodeReviewFileService&MockObject      $fileService;
+    private CodeReviewTypeDecider&MockObject      $reviewTypeDecider;
+    private RevisionVisibilityService&MockObject  $visibilityService;
+    private CodeReviewRepository&MockObject       $codeReviewRepository;
+    private UserReviewSettingsProvider&MockObject $settingsProvider;
+    private CodeReviewDtoProvider                 $provider;
 
     protected function setUp(): void
     {
@@ -95,7 +96,7 @@ class CodeReviewDtoProviderTest extends AbstractTestCase
         static::assertEquals($expected, $actual);
     }
 
-    private function createRequest(): ReviewRequest&MockObject
+    private function createRequest(): ReviewRequest&Stub
     {
         $request = static::createStub(ReviewRequest::class);
         $request->method('getFilePath')->willReturn('filepath');

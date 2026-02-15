@@ -65,7 +65,7 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([]);
-        $this->coverageReportRepository->expects($this->never())->method('findOneByRevisions');
+        $this->coverageReportRepository->expects($this->once())->method('findOneByRevisions');
         $this->issueRepository->expects($this->never())->method('findBy');
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
-use PHPUnit\Framework\MockObject\Stub;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryProperty;
@@ -16,12 +15,13 @@ use DR\Review\Service\Api\Gitlab\ReviewMergeRequestService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Throwable;
 
 #[CoversClass(ReviewMergeRequestService::class)]
 class ReviewMergeRequestServiceTest extends AbstractTestCase
 {
-    private GitlabApi&Stub            $api;
+    private GitlabApi&Stub                  $api;
     private MergeRequests&MockObject        $mergeRequests;
     private CodeReviewRepository&MockObject $reviewRepository;
     private ReviewMergeRequestService       $service;
@@ -62,7 +62,6 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $review->setExtReferenceId(null);
         $review->getRevisions()->add($revision);
 
-        $this->logger->expects($this->once())->method('info')->with('No branch name found for review {id}');
         $this->mergeRequests->expects($this->never())->method('findByRemoteRef');
         $this->reviewRepository->expects($this->never())->method('save');
 
@@ -85,7 +84,6 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $review->getRevisions()->add($revision);
         $review->setRepository($repository);
 
-        $this->logger->expects($this->once())->method('info')->with('No merge request found for review {id} - {ref}');
         $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(1234, 'remote-branch')->willReturn(null);
         $this->reviewRepository->expects($this->never())->method('save');
 

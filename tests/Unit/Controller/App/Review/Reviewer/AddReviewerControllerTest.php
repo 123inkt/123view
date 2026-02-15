@@ -44,7 +44,7 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
     {
         $this->reviewRepository->expects($this->never())->method('save');
         $this->reviewerService->expects($this->never())->method('addReviewer');
-        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState');
         $this->eventService->expects($this->never())->method('reviewerAdded');
         $request = new Request();
         $review  = new CodeReview();
@@ -62,7 +62,7 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
     {
         $this->reviewRepository->expects($this->never())->method('save');
         $this->reviewerService->expects($this->never())->method('addReviewer');
-        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState');
         $this->eventService->expects($this->never())->method('reviewerAdded');
         $request = new Request();
         $review  = new CodeReview();

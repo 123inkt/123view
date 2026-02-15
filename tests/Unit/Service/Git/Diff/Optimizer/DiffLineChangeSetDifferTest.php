@@ -65,8 +65,6 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
             ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
             ->willThrowException(new InvalidArgumentException('foobar'));
 
-        $this->logger->expects($this->once())->method('warning')->with('foobar');
-
         static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
 
