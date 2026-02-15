@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\MakerConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (MakerConfig $maker) {
-    $maker->rootNamespace('DR\Review');
-};
+return App::config(['maker' => ['root_namespace' => 'DR\Review']]);
