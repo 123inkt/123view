@@ -13,6 +13,7 @@ use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\MessageHandler\Gitlab\ReviewerStateChangeMessageHandler;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Api\Gitlab\ReviewApprovalService;
+use DR\Review\Service\Api\Gitlab\ReviewApprovalValidatorService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,19 +22,21 @@ use Throwable;
 #[CoversClass(ReviewerStateChangeMessageHandler::class)]
 class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
 {
-    private CodeReviewRepository&MockObject   $reviewRepository;
-    private ReviewApprovalService&MockObject  $reviewApprovalService;
-    private ReviewerStateChangeMessageHandler $handler;
+    private CodeReviewRepository&MockObject              $reviewRepository;
+    private ReviewApprovalValidatorService&MockObject    $reviewApprovalValidatorService;
+    private ReviewApprovalService&MockObject             $reviewApprovalService;
+    private ReviewerStateChangeMessageHandler            $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->reviewRepository      = $this->createMock(CodeReviewRepository::class);
-        $this->reviewApprovalService = $this->createMock(ReviewApprovalService::class);
-        $this->handler               = new ReviewerStateChangeMessageHandler(
+        $this->reviewRepository               = $this->createMock(CodeReviewRepository::class);
+        $this->reviewApprovalValidatorService = $this->createMock(ReviewApprovalValidatorService::class);
+        $this->reviewApprovalService          = $this->createMock(ReviewApprovalService::class);
+        $this->handler                        = new ReviewerStateChangeMessageHandler(
             true,
-            '/^PR-[0-9]+/',
             $this->reviewRepository,
+            $this->reviewApprovalValidatorService,
             $this->reviewApprovalService
         );
     }
@@ -45,8 +48,8 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     {
         $handler = new ReviewerStateChangeMessageHandler(
             false,
-            '/^PR-[0-9]+/',
             $this->reviewRepository,
+            $this->reviewApprovalValidatorService,
             $this->reviewApprovalService
         );
         $this->reviewRepository->expects($this->never())->method('find');
@@ -59,6 +62,7 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     public function testInvokeShouldSkipReviewIsAbsent(): void
     {
         $this->reviewRepository->expects($this->once())->method('find')->willReturn(null);
+        $this->reviewApprovalValidatorService->expects($this->once())->method('validate')->willReturn(false);
         $this->reviewApprovalService->expects($this->never())->method('approve');
         ($this->handler)(new ReviewerStateChanged(123, 456, 789, 'foo', 'bar'));
     }
@@ -66,38 +70,17 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testInvokeShouldSkipIfGitApprovalSyncDisabled(): void
+    public function testInvokeShouldSkipWhenValidationFails(): void
     {
-        $revision   = (new Revision())->setFirstBranch('PR-12345');
-        $repository = new Repository();
-        $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
-        $repository->setGitApprovalSync(false);
-        $reviewer = (new CodeReviewer())->setId(456);
-        $review   = (new CodeReview())->setId(123);
-        $review->getReviewers()->add($reviewer);
-        $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
-
-        $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
-        $this->reviewApprovalService->expects($this->never())->method('approve');
-        ($this->handler)(new ReviewerStateChanged(123, 456, 789, 'foo', 'bar'));
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function testInvokeShouldSkipIfRemoteRefDoesNotMatch(): void
-    {
-        $revision   = (new Revision())->setFirstBranch('PR-FOOBAR');
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
         $reviewer = (new CodeReviewer())->setId(456);
         $review   = (new CodeReview())->setId(123);
         $review->getReviewers()->add($reviewer);
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
 
         $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
+        $this->reviewApprovalValidatorService->expects($this->once())->method('validate')->willReturn(false);
         $this->reviewApprovalService->expects($this->never())->method('approve');
         ($this->handler)(new ReviewerStateChanged(123, 456, 789, 'foo', 'bar'));
     }
@@ -107,17 +90,15 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeShouldApprove(): void
     {
-        $revision   = (new Revision())->setFirstBranch('PR-12345');
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
-        $repository->setGitApprovalSync(true);
         $reviewer = (new CodeReviewer())->setId(456);
         $review   = (new CodeReview())->setId(123);
         $review->getReviewers()->add($reviewer);
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
 
         $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
+        $this->reviewApprovalValidatorService->expects($this->once())->method('validate')->willReturn(true);
         $this->reviewApprovalService->expects($this->once())->method('approve')->with($review, $reviewer, true);
         ($this->handler)(new ReviewerStateChanged(123, 456, 789, 'foo', CodeReviewerStateType::ACCEPTED));
     }
@@ -127,17 +108,15 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeShouldUnapprove(): void
     {
-        $revision   = (new Revision())->setFirstBranch('PR-12345');
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
-        $repository->setGitApprovalSync(true);
         $reviewer = (new CodeReviewer())->setId(456);
         $review   = (new CodeReview())->setId(123);
         $review->getReviewers()->add($reviewer);
         $review->setRepository($repository);
-        $review->getRevisions()->add($revision);
 
         $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
+        $this->reviewApprovalValidatorService->expects($this->once())->method('validate')->willReturn(true);
         $this->reviewApprovalService->expects($this->once())->method('approve')->with($review, $reviewer, false);
         ($this->handler)(new ReviewerStateChanged(123, 456, 789, CodeReviewerStateType::ACCEPTED, 'bar'));
     }
