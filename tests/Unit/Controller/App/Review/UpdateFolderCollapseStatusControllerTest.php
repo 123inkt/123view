@@ -32,6 +32,7 @@ class UpdateFolderCollapseStatusControllerTest extends AbstractControllerTestCas
 
     public function testInvokeBadRequest(): void
     {
+        $this->folderCollapseRepository->expects($this->never())->method('save');
         $response = ($this->controller)(new Request(), new CodeReview());
         static::assertEquals(new Response(status: Response::HTTP_BAD_REQUEST), $response);
     }

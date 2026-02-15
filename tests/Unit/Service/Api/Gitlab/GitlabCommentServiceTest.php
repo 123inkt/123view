@@ -21,6 +21,7 @@ use DR\Review\Service\Api\Gitlab\PositionFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Throwable;
 
 #[CoversClass(GitlabCommentService::class)]
@@ -29,7 +30,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
     private PositionFactory&MockObject        $positionFactory;
     private CommentRepository&MockObject      $commentRepository;
     private GitlabCommentFormatter&MockObject $commentFormatter;
-    private GitlabApi&MockObject              $api;
+    private GitlabApi&Stub              $api;
     private MergeRequests&MockObject          $mergeRequests;
     private Discussions&MockObject            $discussions;
     private Comment                           $comment;
@@ -45,7 +46,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->repository    = new Repository();
         $this->mergeRequests = $this->createMock(MergeRequests::class);
         $this->discussions   = $this->createMock(Discussions::class);
-        $this->api           = $this->createMock(GitlabApi::class);
+        $this->api           = static::createStub(GitlabApi::class);
         $this->api->method('mergeRequests')->willReturn($this->mergeRequests);
         $this->api->method('discussions')->willReturn($this->discussions);
         $this->positionFactory   = $this->createMock(PositionFactory::class);
@@ -61,6 +62,10 @@ class GitlabCommentServiceTest extends AbstractTestCase
     {
         $this->comment->setExtReferenceId('external-reference-id');
         $this->mergeRequests->expects($this->never())->method('versions');
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->discussions->expects($this->never())->method('createDiscussion');
         $this->service->create($this->api, $this->comment, 456);
     }
 
@@ -75,6 +80,9 @@ class GitlabCommentServiceTest extends AbstractTestCase
 
         $this->mergeRequests->expects($this->once())->method('versions')->with(123, 456)->willReturn([]);
         $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->discussions->expects($this->never())->method('createDiscussion');
 
         $this->service->create($this->api, $this->comment, 456);
     }
@@ -123,6 +131,9 @@ class GitlabCommentServiceTest extends AbstractTestCase
 
         $this->discussions->expects($this->once())->method('getDiscussions')->with(123, 456)->willReturn(static::createGeneratorFrom($threads));
         $this->commentRepository->expects($this->once())->method('save')->with($this->comment, true);
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->updateExtReferenceId($this->api, $this->comment, 456);
     }
@@ -134,6 +145,10 @@ class GitlabCommentServiceTest extends AbstractTestCase
     {
         $this->comment->setExtReferenceId(null);
         $this->discussions->expects($this->never())->method('updateNote');
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->update($this->api, $this->comment);
     }
@@ -151,6 +166,9 @@ class GitlabCommentServiceTest extends AbstractTestCase
 
         $this->commentFormatter->expects($this->once())->method('format')->with($this->comment)->willReturn('formatted');
         $this->discussions->expects($this->once())->method('updateNote')->with(111, 222, '333', '444', 'formatted');
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->update($this->api, $this->comment);
     }
@@ -162,6 +180,10 @@ class GitlabCommentServiceTest extends AbstractTestCase
     {
         $this->comment->setExtReferenceId(null);
         $this->discussions->expects($this->never())->method('resolve');
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->resolve($this->api, $this->comment, true);
     }
@@ -177,6 +199,10 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
         $this->discussions->expects($this->once())->method('resolve')->with(111, 222, '333', true);
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->resolve($this->api, $this->comment, true);
     }
@@ -190,6 +216,10 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '111'));
 
         $this->discussions->expects($this->once())->method('deleteNote')->with(111, 222, '333', '444');
+        $this->positionFactory->expects($this->never())->method('create');
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method('format');
+        $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->delete($this->api, $this->repository, '222:333:444');
     }

@@ -35,7 +35,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(Request::class);
+        $request = static::createStub(Request::class);
         $request->method('getContent')->willReturn('message');
 
         $user    = (new User())->setId(123);

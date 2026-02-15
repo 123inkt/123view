@@ -28,6 +28,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFindFileByPath(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $fileA                 = new DiffFile();
         $fileA->filePathBefore = '/path/to/file/deleted.txt';
 
@@ -115,6 +116,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFindLineInFile(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
         $line->lineNumberAfter = 100;
 
@@ -131,6 +133,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFineLineInBlockForNewFile(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
         $line->lineNumberAfter = 100;
 
@@ -164,6 +167,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFindLineInNewFile(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $lineA                  = new DiffLine(DiffLine::STATE_UNCHANGED, []);
         $lineA->lineNumberAfter = 100;
 

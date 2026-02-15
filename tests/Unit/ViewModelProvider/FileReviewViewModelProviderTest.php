@@ -57,7 +57,7 @@ class FileReviewViewModelProviderTest extends AbstractTestCase
         $review    = new CodeReview();
         $revision  = new Revision();
         $file      = new DiffFile();
-        $viewModel = $this->createMock(FileDiffViewModel::class);
+        $viewModel = static::createStub(FileDiffViewModel::class);
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->visibilityService->expects($this->once())->method('getVisibleRevisions')->with($review, [$revision])->willReturn([$revision]);

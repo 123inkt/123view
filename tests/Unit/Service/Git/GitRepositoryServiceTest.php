@@ -36,7 +36,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->filesystem      = $this->createMock(Filesystem::class);
         $this->locationService = $this->createMock(GitRepositoryLocationService::class);
         $this->service         = new GitRepositoryService(
-            $this->createMock(LoggerInterface::class),
+            static::createStub(LoggerInterface::class),
             $this->git,
             $this->filesystem,
             null,
@@ -52,7 +52,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setUrl(Uri::new('https://my.repository.com'));
-        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository = static::createStub(GitRepository::class);
 
         // setup mocks
         $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
@@ -75,7 +75,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $repository->setCredential($credential);
         $repository->setId(123);
         $repository->setUrl(Uri::new('https://my.repository.com'));
-        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository = static::createStub(GitRepository::class);
 
         // setup mocks
         $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
@@ -99,7 +99,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->locationService->expects($this->once())->method('getLocation')->with($repository)->willReturn('/repository/dir');
         $this->filesystem->expects($this->once())->method('mkdir')->with('/repository');
         $this->filesystem->expects($this->once())->method('exists')->willReturn(true);
-        $this->git->expects(static::never())->method('cloneRepository');
+        $this->git->expects($this->never())->method('cloneRepository');
 
         $this->service->getRepository($repository);
     }

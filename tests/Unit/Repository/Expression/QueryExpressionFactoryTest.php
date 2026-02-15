@@ -21,7 +21,7 @@ class QueryExpressionFactoryTest extends AbstractTestCase
 {
     public function testCreateFromFailOnUnknownTerm(): void
     {
-        $term    = $this->createMock(TermInterface::class);
+        $term    = static::createStub(TermInterface::class);
         $factory = new QueryExpressionFactory([static fn() => null]);
 
         $this->expectException(InvalidArgumentException::class);
@@ -31,8 +31,8 @@ class QueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateFromSingleExpression(): void
     {
-        $expression = $this->createMock(Comparison::class);
-        $term       = $this->createMock(TermInterface::class);
+        $expression = static::createStub(Comparison::class);
+        $term       = static::createStub(TermInterface::class);
 
         $factory = new QueryExpressionFactory([static fn($val) => $val === $term ? $expression : null]);
         [$actualExpression,] = $factory->createFrom($term);
@@ -42,8 +42,8 @@ class QueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateFromNotOperator(): void
     {
-        $expression = $this->createMock(Comparison::class);
-        $term       = $this->createMock(TermInterface::class);
+        $expression = static::createStub(Comparison::class);
+        $term       = static::createStub(TermInterface::class);
         $operator   = new NotOperator($term);
 
         $factory = new QueryExpressionFactory([static fn() => $expression]);
@@ -56,8 +56,8 @@ class QueryExpressionFactoryTest extends AbstractTestCase
     public function testCreateFromAndOperator(): void
     {
         $expression = new Comparison('left', '=', 'right');
-        $termLeft   = $this->createMock(TermInterface::class);
-        $termRight  = $this->createMock(TermInterface::class);
+        $termLeft   = static::createStub(TermInterface::class);
+        $termRight  = static::createStub(TermInterface::class);
         $operator   = new AndOperator($termLeft, $termRight);
 
         $factory = new QueryExpressionFactory([static fn() => $expression]);
@@ -69,8 +69,8 @@ class QueryExpressionFactoryTest extends AbstractTestCase
     public function testCreateFromOrOperator(): void
     {
         $expression = new Comparison('left', '=', 'right');
-        $termLeft   = $this->createMock(TermInterface::class);
-        $termRight  = $this->createMock(TermInterface::class);
+        $termLeft   = static::createStub(TermInterface::class);
+        $termRight  = static::createStub(TermInterface::class);
         $operator   = new OrOperator($termLeft, $termRight);
 
         $factory = new QueryExpressionFactory([static fn() => $expression]);

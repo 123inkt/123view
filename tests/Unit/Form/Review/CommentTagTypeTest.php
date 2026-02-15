@@ -9,7 +9,7 @@ use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,13 +18,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[CoversClass(CommentTagType::class)]
 class CommentTagTypeTest extends AbstractTestCase
 {
-    private TranslatorInterface&MockObject $translator;
+    private TranslatorInterface&Stub $translator;
     private CommentTagType                 $type;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->translator = static::createStub(TranslatorInterface::class);
         $this->type       = new CommentTagType($this->translator);
     }
 

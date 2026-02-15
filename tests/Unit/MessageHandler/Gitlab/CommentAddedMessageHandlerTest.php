@@ -51,6 +51,9 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
     public function testInvokeSkipIfDisabled(): void
     {
         $this->commentRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->mergeRequestService->expects($this->never())->method('retrieveMergeRequestIID');
+        $this->commentService->expects($this->never())->method('create');
 
         $handler = new CommentAddedMessageHandler(
             false,
@@ -79,6 +82,8 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
 
         $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->mergeRequestService->expects($this->never())->method('retrieveMergeRequestIID');
+        $this->commentService->expects($this->never())->method('create');
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
@@ -98,11 +103,12 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
         $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
         $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($api, $review)->willReturn(null);
+        $this->commentService->expects($this->never())->method('create');
 
         ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
     }
@@ -122,7 +128,7 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
         $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
@@ -148,7 +154,7 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
         $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);

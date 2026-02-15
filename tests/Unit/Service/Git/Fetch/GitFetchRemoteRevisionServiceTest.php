@@ -29,7 +29,7 @@ class GitFetchRemoteRevisionServiceTest extends AbstractTestCase
         $this->logService   = $this->createMock(LockableGitLogService::class);
         $this->fetchService = $this->createMock(LockableGitFetchService::class);
         $this->service      = new GitFetchRemoteRevisionService($this->logService, $this->fetchService);
-        $this->service->setLogger($this->createMock(LoggerInterface::class));
+        $this->service->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**

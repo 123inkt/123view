@@ -91,6 +91,7 @@ class GitBranchServiceTest extends AbstractTestCase
         $git = $this->createMock(GitRepository::class);
         $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
+        $this->branchParser->expects($this->never())->method('parse');
 
         $this->service->deleteBranch($repository, $path);
     }
@@ -108,6 +109,7 @@ class GitBranchServiceTest extends AbstractTestCase
         $git = $this->createMock(GitRepository::class);
         $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
+        $this->branchParser->expects($this->never())->method('parse');
 
         static::assertTrue($this->service->tryDeleteBranch($repository, $path));
     }
@@ -119,6 +121,8 @@ class GitBranchServiceTest extends AbstractTestCase
         $path = '/foo/bar/';
 
         $this->builderFactory->expects($this->once())->method('createBranch')->willThrowException(new RepositoryException());
+        $this->repositoryService->expects($this->never())->method('getRepository');
+        $this->branchParser->expects($this->never())->method('parse');
 
         static::assertFalse($this->service->tryDeleteBranch($repository, $path));
     }

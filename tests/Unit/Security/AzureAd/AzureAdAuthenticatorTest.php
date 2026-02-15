@@ -46,12 +46,18 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
 
     public function testSupportsFailure(): void
     {
+        $this->loginService->expects($this->never())->method('handleLogin');
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->badgeFactory->expects($this->never())->method('create');
         $request = new Request(server: ['REQUEST_URI' => 'foobar']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsAccepts(): void
     {
+        $this->loginService->expects($this->never())->method('handleLogin');
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->badgeFactory->expects($this->never())->method('create');
         $request = new Request(server: ['REQUEST_URI' => '/single-sign-on/azure-ad/callback']);
         static::assertTrue($this->authenticator->supports($request));
     }
@@ -60,6 +66,8 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     {
         $request = new Request();
         $this->loginService->expects($this->once())->method('handleLogin')->with($request)->willReturn(new LoginFailure('failed'));
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->badgeFactory->expects($this->never())->method('create');
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('failed');
@@ -73,6 +81,7 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $request = new Request();
         $this->loginService->expects($this->once())->method('handleLogin')->with($request)->willReturn(new LoginSuccess('name', 'email'));
         $this->badgeFactory->expects($this->once())->method('create')->with('email', 'name')->willReturn($badge);
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);
@@ -87,6 +96,8 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     {
         $url = '/my/test/url';
         $this->urlGenerator->expects($this->once())->method('generate')->with(UserApprovalPendingController::class)->willReturn($url);
+        $this->loginService->expects($this->never())->method('handleLogin');
+        $this->badgeFactory->expects($this->never())->method('create');
 
         $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken(), 'main');
         $expect = new RedirectResponse($url);
@@ -101,6 +112,8 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
     {
         $url = '/my/test/url';
         $this->urlGenerator->expects($this->once())->method('generate')->with(ProjectsController::class)->willReturn($url);
+        $this->loginService->expects($this->never())->method('handleLogin');
+        $this->badgeFactory->expects($this->never())->method('create');
 
         $result = $this->authenticator->onAuthenticationSuccess(new Request(), new TestBrowserToken([Roles::ROLE_USER]), 'main');
         $expect = new RedirectResponse($url);
@@ -116,6 +129,8 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
         $request = new Request(['state' => '{"next":"https://foo/bar/"}']);
         $url     = 'https://foo/bar/';
         $this->urlGenerator->expects($this->never())->method('generate');
+        $this->loginService->expects($this->never())->method('handleLogin');
+        $this->badgeFactory->expects($this->never())->method('create');
 
         $result = $this->authenticator->onAuthenticationSuccess($request, new TestBrowserToken([Roles::ROLE_USER]), 'main');
         $expect = new RedirectResponse($url);
@@ -131,6 +146,8 @@ class AzureAdAuthenticatorTest extends AbstractTestCase
             ->method('generate')
             ->with(LoginController::class)
             ->willReturn($url);
+        $this->loginService->expects($this->never())->method('handleLogin');
+        $this->badgeFactory->expects($this->never())->method('create');
 
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));

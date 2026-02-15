@@ -50,7 +50,7 @@ class ReviewFileTreeControllerTest extends AbstractControllerTestCase
         /** @var DirectoryTreeNode<DiffFile> $treeNode */
         $treeNode     = new DirectoryTreeNode('node');
         $selectedFile = new DiffFile();
-        $viewModel    = $this->createMock(FileTreeViewModel::class);
+        $viewModel    = static::createStub(FileTreeViewModel::class);
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->fileService->expects($this->once())

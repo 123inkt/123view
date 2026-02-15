@@ -33,8 +33,9 @@ class FileDiffViewModelAppenderTest extends AbstractTestCase
 
     public function testAccepts(): void
     {
+        $this->fileDiffViewModelProvider->expects($this->never())->method('getFileDiffViewModel');
         $dto       = $this->createDto();
-        $viewModel = $this->createMock(ReviewViewModel::class);
+        $viewModel = static::createStub(ReviewViewModel::class);
 
         static::assertTrue($this->appender->accepts($dto, $viewModel));
     }

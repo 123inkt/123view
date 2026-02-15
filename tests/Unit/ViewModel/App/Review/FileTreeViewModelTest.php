@@ -57,22 +57,29 @@ class FileTreeViewModelTest extends AbstractTestCase
         $fileB->expects($this->once())->method('getNrOfLinesRemoved')->willReturn(4);
 
         $this->directoryNode->expects($this->once())->method('getFileIterator')->willReturn(new ArrayIterator([$fileA, $fileB]));
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
 
         static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
     }
 
     public function testIsFolderCollapsed(): void
     {
-        $node = $this->createMock(DirectoryTreeNode::class);
+        $node = static::createStub(DirectoryTreeNode::class);
         $node->method('getPathname')->willReturn('folder');
 
         $this->folderCollection->expects($this->once())->method('isCollapsed')->with('folder')->willReturn(true);
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
         static::assertTrue($this->viewModel->isFolderCollapsed($node));
     }
 
     #[DataProvider('fileSelectedDataProvider')]
     public function testIsFileSelected(?DiffFile $selectedFile, DiffFile $file, bool $selected): void
     {
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
         $viewModel = new FileTreeViewModel(
             new CodeReview(),
             $this->directoryNode,
@@ -109,6 +116,8 @@ class FileTreeViewModelTest extends AbstractTestCase
     public function testIsFileSeen(): void
     {
         $this->statusCollection->expects($this->once())->method('isSeen')->with('filepath')->willReturn(true);
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
 
         $file                = new DiffFile();
         $file->filePathAfter = 'filepath';
@@ -118,6 +127,9 @@ class FileTreeViewModelTest extends AbstractTestCase
 
     public function testGetCommentsForFile(): void
     {
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
         $commentA = new Comment();
         $commentB = new Comment();
         $commentC = new Comment();

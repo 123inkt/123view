@@ -44,7 +44,7 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
 
     protected function expectGetValidationRules(?ValidationRules $rules): void
     {
-        $constraint    = $this->createMock(RequestConstraint::class);
+        $constraint    = static::createStub(RequestConstraint::class);
         $violationList = new ConstraintViolationList();
 
         $this->constraintFactory

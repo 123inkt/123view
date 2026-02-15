@@ -38,7 +38,7 @@ class CommitsViewModelProviderTest extends AbstractTestCase
         $notification->setId(123);
         $rule = new Rule();
         $rule->setRuleOptions(new RuleOptions());
-        $commit = $this->createMock(Commit::class);
+        $commit = static::createStub(Commit::class);
 
         $this->tokenGenerator->expects($this->once())->method('generate')->with($notification)->willReturn('token');
         $this->urlGenerator->expects($this->once())

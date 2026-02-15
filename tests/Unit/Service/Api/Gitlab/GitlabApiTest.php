@@ -17,8 +17,8 @@ class GitlabApiTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $client     = $this->createMock(HttpClientInterface::class);
-        $serializer = $this->createMock(SerializerInterface::class);
+        $client     = static::createStub(HttpClientInterface::class);
+        $serializer = static::createStub(SerializerInterface::class);
         $this->api  = new GitlabApi($this->logger, $client, $serializer);
     }
 

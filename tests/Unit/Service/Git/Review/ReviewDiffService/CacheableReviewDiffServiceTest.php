@@ -38,6 +38,7 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
     public function testGetDiffFilesWithoutRevisions(): void
     {
         $this->cache->expects($this->never())->method('get');
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
 
         static::assertSame([], $this->service->getDiffForRevisions(new Repository(), []));
     }

@@ -53,7 +53,7 @@ class LockableGitLogServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $commit = $this->createMock(Commit::class);
+        $commit = static::createStub(Commit::class);
 
         $this->lockManager->expects($this->once())
             ->method('start')

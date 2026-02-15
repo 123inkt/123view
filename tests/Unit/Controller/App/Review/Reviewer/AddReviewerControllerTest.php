@@ -42,6 +42,10 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNotSubmitted(): void
     {
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->reviewerService->expects($this->never())->method('addReviewer');
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState');
+        $this->eventService->expects($this->never())->method('reviewerAdded');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
@@ -56,6 +60,10 @@ class AddReviewerControllerTest extends AbstractControllerTestCase
 
     public function testInvokeSubmittedWithoutUser(): void
     {
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->reviewerService->expects($this->never())->method('addReviewer');
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState');
+        $this->eventService->expects($this->never())->method('reviewerAdded');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);

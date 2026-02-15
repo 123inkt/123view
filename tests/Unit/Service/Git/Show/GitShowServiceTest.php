@@ -82,6 +82,8 @@ class GitShowServiceTest extends AbstractTestCase
 
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn(base64_encode('output'));
+        $this->logParser->expects($this->never())->method('parse');
+        $this->patternFactory->expects($this->never())->method('createPattern');
 
         static::assertSame('output', $this->service->getFileContents($revision, 'file', true));
     }
@@ -105,6 +107,8 @@ class GitShowServiceTest extends AbstractTestCase
 
         $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
         $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn('output');
+        $this->logParser->expects($this->never())->method('parse');
+        $this->patternFactory->expects($this->never())->method('createPattern');
 
         static::assertSame('output', $this->service->getFileContents($revision, 'file'));
     }

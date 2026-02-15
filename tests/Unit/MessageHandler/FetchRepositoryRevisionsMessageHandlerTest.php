@@ -39,7 +39,7 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
             $this->lockManager,
             $this->resetService
         );
-        $this->handler->setLogger($this->createMock(LoggerInterface::class));
+        $this->handler->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**
@@ -49,6 +49,9 @@ class FetchRepositoryRevisionsMessageHandlerTest extends AbstractTestCase
     {
         $message = new FetchRepositoryRevisionsMessage(123);
         $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->remoteRevisionService->expects($this->never())->method('fetchRevisions');
+        $this->lockManager->expects($this->never())->method('start');
+        $this->resetService->expects($this->never())->method('resetHard');
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expecting value to be not null');

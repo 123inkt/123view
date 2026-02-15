@@ -30,7 +30,7 @@ class MessagePublisherTest extends AbstractTestCase
 
     public function testPublishToReview(): void
     {
-        $uri = $this->createMock(UriInterface::class);
+        $uri = static::createStub(UriInterface::class);
         $uri->method('__toString')->willReturn('https://example.com/review/123');
 
         $message = new UpdateMessage(
@@ -60,7 +60,7 @@ class MessagePublisherTest extends AbstractTestCase
 
     public function testPublishToUsersSingleUser(): void
     {
-        $uri = $this->createMock(UriInterface::class);
+        $uri = static::createStub(UriInterface::class);
         $uri->method('__toString')->willReturn('https://example.com/user/456');
 
         $message = new UpdateMessage(

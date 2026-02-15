@@ -31,30 +31,35 @@ class BearerAuthenticatorTest extends AbstractTestCase
 
     public function testSupports(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/test', 'HTTP_AUTHORIZATION' => 'Bearer 123view']);
         static::assertTrue($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldSkipDocs(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/docs', 'HTTP_AUTHORIZATION' => 'Bearer 123view']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldSkipNonApiRequests(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/app/test']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldSkipAbsentAuthHeader(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/test']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldOnlyAcceptBearerAuthHeader(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/test', 'HTTP_AUTHORIZATION' => 'JWT 123view']);
         static::assertFalse($this->authenticator->supports($request));
     }
@@ -109,11 +114,13 @@ class BearerAuthenticatorTest extends AbstractTestCase
 
     public function testOnAuthenticationSuccess(): void
     {
-        static::assertNull($this->authenticator->onAuthenticationSuccess(new Request(), $this->createMock(TokenInterface::class), 'main'));
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
+        static::assertNull($this->authenticator->onAuthenticationSuccess(new Request(), static::createStub(TokenInterface::class), 'main'));
     }
 
     public function testOnAuthenticationFailure(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         static::assertNull($this->authenticator->onAuthenticationFailure(new Request(), new AuthenticationException()));
     }
 }

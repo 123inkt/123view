@@ -36,8 +36,8 @@ class DiffComparisonPolicyControllerTest extends AbstractControllerTestCase
 
         $user->setReviewSetting($reviewSetting);
 
-        $validatedRequest->expects(static::once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::TRIM);
-        $this->repository->expects(static::once())->method('save')->with($reviewSetting, true);
+        $validatedRequest->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::TRIM);
+        $this->repository->expects($this->once())->method('save')->with($reviewSetting, true);
         $this->expectRefererRedirect('/');
         $this->expectGetUser($user);
 

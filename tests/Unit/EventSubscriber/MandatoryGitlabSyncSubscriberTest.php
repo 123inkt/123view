@@ -165,6 +165,6 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         $request             = new Request(server: ['REQUEST_URI' => $requestUri]);
         $request->attributes = new ParameterBag(['_controller' => $controller]);
 
-        return new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        return new RequestEvent(static::createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
     }
 }

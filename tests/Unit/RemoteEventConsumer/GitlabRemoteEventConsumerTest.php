@@ -35,6 +35,8 @@ class GitlabRemoteEventConsumerTest extends AbstractTestCase
      */
     public function testConsumeInvalidEvent(): void
     {
+        $this->denormalizer->expects($this->never())->method('denormalize');
+        $this->eventHandler->expects($this->never())->method('handle');
         $event = new RemoteEvent('name', 'id', ['payload']);
 
         $this->expectException(RuntimeException::class);

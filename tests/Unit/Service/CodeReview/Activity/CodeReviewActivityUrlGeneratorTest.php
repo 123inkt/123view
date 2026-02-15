@@ -46,6 +46,7 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review])
             ->willReturn('url');
+        $this->replyRepository->expects($this->never())->method('find');
 
         static::assertSame('url', $this->activityUrlGenerator->generate($activity));
     }
@@ -64,6 +65,7 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review, 'filePath' => 'filePath'])
             ->willReturn('url');
+        $this->replyRepository->expects($this->never())->method('find');
 
         static::assertSame('url#focus:comment:456', $this->activityUrlGenerator->generate($activity));
     }

@@ -39,7 +39,7 @@ class GetFileReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(FileReviewRequest::class);
+        $request = static::createStub(FileReviewRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
 
         $user      = new User();
@@ -62,7 +62,7 @@ class GetFileReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeWithSideBySide(): void
     {
-        $request = $this->createMock(FileReviewRequest::class);
+        $request = static::createStub(FileReviewRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
 
         $user                 = new User();

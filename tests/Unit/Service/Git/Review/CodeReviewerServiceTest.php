@@ -31,6 +31,7 @@ class CodeReviewerServiceTest extends AbstractTestCase
 
     public function testAddReviewer(): void
     {
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
         $review = new CodeReview();
         $user   = new User();
 

@@ -44,6 +44,10 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeBranchIsRequired(): void
     {
+        $this->reviewCreationService->expects($this->never())->method('createFromBranch');
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->reviewRepository->expects($this->never())->method('findOneBy');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $repository = new Repository();
         $request    = new Request();
 
@@ -62,6 +66,9 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
             ->method('findOneBy')
             ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => 'branch'])
             ->willReturn($review);
+        $this->reviewCreationService->expects($this->never())->method('createFromBranch');
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->messageBus->expects($this->never())->method('dispatch');
 
         $this->expectRedirectToRoute(ReviewController::class, ['review' => $review])->willReturn('url');
         ($this->controller)($request, $repository);

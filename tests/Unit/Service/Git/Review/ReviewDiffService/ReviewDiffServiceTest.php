@@ -45,6 +45,8 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $repository->setId(123);
 
         $this->diffService->expects($this->never())->method('getDiffFromRevision');
+        $this->strategyA->expects($this->never())->method('getDiffFiles');
+        $this->strategyB->expects($this->never())->method('getDiffFiles');
         static::assertSame([], $this->service->getDiffForRevisions($repository, []));
     }
 
@@ -60,6 +62,8 @@ class ReviewDiffServiceTest extends AbstractTestCase
         $diffFile = new DiffFile();
 
         $this->diffService->expects($this->once())->method('getDiffFromRevision')->with($revision)->willReturn([$diffFile]);
+        $this->strategyA->expects($this->never())->method('getDiffFiles');
+        $this->strategyB->expects($this->never())->method('getDiffFiles');
         static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision]));
     }
 
@@ -76,6 +80,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
 
         $this->diffService->expects($this->never())->method('getDiffFromRevision');
         $this->strategyA->expects($this->once())->method('getDiffFiles')->with($repository, [$revisionA, $revisionB])->willReturn([$diffFile]);
+        $this->strategyB->expects($this->never())->method('getDiffFiles');
 
         static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revisionA, $revisionB]));
     }
@@ -131,6 +136,8 @@ class ReviewDiffServiceTest extends AbstractTestCase
             ->method('getBundledDiffFromBranch')
             ->with($repository, 'branch', 'origin/master', $options)
             ->willReturn([$diffFile]);
+        $this->strategyA->expects($this->never())->method('getDiffFiles');
+        $this->strategyB->expects($this->never())->method('getDiffFiles');
 
         static::assertSame([$diffFile], $this->service->getDiffForBranch($review, [$revision], 'branch', $options));
     }

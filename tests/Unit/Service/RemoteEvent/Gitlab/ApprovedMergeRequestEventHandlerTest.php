@@ -54,6 +54,9 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->action = 'open';
 
         $this->repositoryRepository->expects($this->never())->method('findByProperty');
+        $this->reviewRepository->expects($this->never())->method('findByBranchName');
+        $this->userService->expects($this->never())->method('getUser');
+        $this->changeReviewerStateService->expects($this->never())->method('changeState');
         $this->handler->handle($event);
     }
 
@@ -70,6 +73,8 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn(null);
         $this->userService->expects($this->never())->method('getUser');
+        $this->reviewRepository->expects($this->never())->method('findByBranchName');
+        $this->changeReviewerStateService->expects($this->never())->method('changeState');
 
         $this->handler->handle($event);
     }
@@ -89,6 +94,8 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->never())->method('getUser');
+        $this->reviewRepository->expects($this->never())->method('findByBranchName');
+        $this->changeReviewerStateService->expects($this->never())->method('changeState');
 
         $this->handler->handle($event);
     }
@@ -112,6 +119,8 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn(null);
+        $this->reviewRepository->expects($this->never())->method('findByBranchName');
+        $this->changeReviewerStateService->expects($this->never())->method('changeState');
 
         $this->handler->handle($event);
     }

@@ -39,6 +39,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $user   = new User();
 
         $this->statusRepository->expects($this->never())->method('save');
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsSeen($review, $user, null);
     }
 
@@ -61,6 +63,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
                     }
                 )
             );
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsSeen($review, $user, $filepath);
     }
 
@@ -70,6 +74,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $user   = new User();
 
         $this->statusRepository->expects($this->never())->method('remove');
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsUnseen($review, $user, null);
     }
 
@@ -81,6 +87,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
 
         $this->statusRepository->expects($this->once())->method('findOneBy')->willReturn(null);
         $this->statusRepository->expects($this->never())->method('remove');
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
@@ -98,6 +106,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->with(['review' => 123, 'user' => 456, 'filePath' => 'filepath'])
             ->willReturn($status);
         $this->statusRepository->expects($this->once())->method('remove')->with($status);
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
@@ -118,6 +128,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
             ->willReturn([$statusA, $statusB]);
         $this->statusRepository->expects($this->exactly(2))->method('remove')->with(...consecutive([$statusA, false], [$statusB, true]));
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
 
         $this->service->markAllAsUnseen($review, $revision);
     }
@@ -133,6 +144,7 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->method('findBy')
             ->with(['review' => 123, 'user' => 456])
             ->willReturn([$status]);
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
 
         $collection = $this->service->getFileSeenStatus($review);
         static::assertCount(1, $collection);

@@ -31,7 +31,7 @@ class CommentUrlExtensionTest extends AbstractTestCase
     #[TestWith([false, '/review/789/file/tests/Unit/TestTest.php', UrlGeneratorInterface::ABSOLUTE_PATH])]
     public function testGetCommentUrl(bool $absolute, string $expectedUrl, int $expectedReferenceType): void
     {
-        $review   = $this->createMock(CodeReview::class);
+        $review   = static::createStub(CodeReview::class);
         $comment  = $this->createMock(Comment::class);
         $filePath = 'src/Service/TestService.php';
 
@@ -56,7 +56,7 @@ class CommentUrlExtensionTest extends AbstractTestCase
     #[TestWith([false, '/review/333/file/assets/ts/controllers/test_controller.ts', UrlGeneratorInterface::ABSOLUTE_PATH])]
     public function testGetCommentReplyUrl(bool $absolute, string $expectedUrl, int $expectedReferenceType): void
     {
-        $review       = $this->createMock(CodeReview::class);
+        $review       = static::createStub(CodeReview::class);
         $comment      = $this->createMock(Comment::class);
         $commentReply = $this->createMock(CommentReply::class);
         $filePath     = 'config/services.yaml';

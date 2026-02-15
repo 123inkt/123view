@@ -33,6 +33,7 @@ class CodeReviewFileToolTest extends AbstractTestCase
     public function testInvokeShouldThrowExceptionWhenReviewNotFound(): void
     {
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->gitShowService->expects($this->never())->method('getFileContents');
 
         $this->expectException(CodeReviewNotFoundException::class);
         ($this->tool)(123, 'path/to/file.php');
@@ -42,6 +43,7 @@ class CodeReviewFileToolTest extends AbstractTestCase
     {
         $review = new CodeReview();
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->gitShowService->expects($this->never())->method('getFileContents');
 
         $this->expectException(CodeReviewFileNotFoundException::class);
         ($this->tool)(123, 'path/to/file.php');

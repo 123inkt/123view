@@ -54,7 +54,7 @@ class IdeButtonExtensionTest extends AbstractTestCase
         $extension = new IdeButtonExtension(false, 'title', $this->ideUrlPatternProvider, $this->twig);
 
         $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');
-        $this->twig->expects(static::never())->method('render');
+        $this->twig->expects($this->never())->method('render');
 
         static::assertSame('', $extension->createLink('file', 123));
     }

@@ -37,6 +37,8 @@ class RepositoryControllerTest extends AbstractControllerTestCase
 
     public function testInvokeRepositoryNotFound(): void
     {
+        $this->repositoryRepository->expects($this->never())->method('save');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request = new Request(attributes: ['id' => 123]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -46,11 +48,13 @@ class RepositoryControllerTest extends AbstractControllerTestCase
 
     public function testInvokeFormNotSubmitted(): void
     {
+        $this->repositoryRepository->expects($this->never())->method('save');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request    = new Request();
         $repository = new Repository();
         $repository->setId(123);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $this->expectCreateForm(EditRepositoryFormType::class, ['repository' => $repository])
             ->handleRequest($request)

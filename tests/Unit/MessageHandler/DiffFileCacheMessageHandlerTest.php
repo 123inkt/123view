@@ -34,7 +34,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $this->diffService      = $this->createMock(ReviewDiffServiceInterface::class);
         $this->loadService      = $this->createMock(SystemLoadService::class);
         $this->messageHandler   = new DiffFileCacheMessageHandler($this->reviewRepository, $this->diffService, $this->loadService);
-        $this->messageHandler->setLogger($this->createMock(LoggerInterface::class));
+        $this->messageHandler->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**
@@ -44,6 +44,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     {
         $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->diffService->expects($this->never())->method('getDiffForRevisions');
+        $this->loadService->expects($this->never())->method('getLoad');
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }

@@ -45,6 +45,7 @@ class CodeReviewFactoryTest extends AbstractTestCase
 
     public function testCreateFromBranch(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
         $repository = new Repository();
 
         $review = $this->factory->createFromBranch($repository, 'origin/branch_name');

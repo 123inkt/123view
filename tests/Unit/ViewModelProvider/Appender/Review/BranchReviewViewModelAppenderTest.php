@@ -36,8 +36,9 @@ class BranchReviewViewModelAppenderTest extends AbstractTestCase
 
     public function testAccepts(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $dto       = $this->createDto();
-        $viewModel = $this->createMock(ReviewViewModel::class);
+        $viewModel = static::createStub(ReviewViewModel::class);
 
         static::assertTrue($this->appender->accepts($dto, $viewModel));
     }
@@ -47,7 +48,7 @@ class BranchReviewViewModelAppenderTest extends AbstractTestCase
         $dto       = $this->createDto();
         $viewModel = $this->createMock(ReviewViewModel::class);
         $form      = $this->createMock(FormInterface::class);
-        $formView  = $this->createMock(FormView::class);
+        $formView  = static::createStub(FormView::class);
 
         $this->formFactory->expects($this->once())->method('create')
             ->with(ChangeReviewTargetBranchFormType::class, $dto->review, ['review' => $dto->review])

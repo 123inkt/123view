@@ -27,6 +27,7 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->reviewRepository->expects($this->never())->method('findOneByCommitHash');
         $expected = [CommitEvent::class => ['onCommitEvent']];
         $result   = AddReviewToCommitSubscriber::getSubscribedEvents();
         static::assertSame($expected, $result);

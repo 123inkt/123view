@@ -32,7 +32,7 @@ class CodeQualityViewModelTest extends AbstractTestCase
 
         $fileCoverage = new CodeCoverageFile();
         $fileCoverage->setPercentage('123.45');
-        $fileCoverage->setCoverage($this->createMock(LineCoverage::class));
+        $fileCoverage->setCoverage(static::createStub(LineCoverage::class));
 
         $viewModel = new CodeQualityViewModel([], $fileCoverage);
         static::assertSame(123.45, $viewModel->getCoveragePercentage());

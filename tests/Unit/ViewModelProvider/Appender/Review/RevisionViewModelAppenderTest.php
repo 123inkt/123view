@@ -36,6 +36,7 @@ class RevisionViewModelAppenderTest extends AbstractTestCase
         $dto       = $this->createDto();
         $viewModel = $this->createMock(ReviewViewModel::class);
         $viewModel->expects($this->once())->method('getSidebarTabMode')->willReturn(ReviewViewModel::SIDEBAR_TAB_REVISIONS);
+        $this->revisionModelProvider->expects($this->never())->method('getRevisionViewModel');
 
         static::assertTrue($this->appender->accepts($dto, $viewModel));
     }
@@ -44,7 +45,7 @@ class RevisionViewModelAppenderTest extends AbstractTestCase
     {
         $dto               = $this->createDto();
         $viewModel         = $this->createMock(ReviewViewModel::class);
-        $revisionViewModel = $this->createMock(ReviewRevisionViewModel::class);
+        $revisionViewModel = static::createStub(ReviewRevisionViewModel::class);
 
         $this->revisionModelProvider->expects($this->once())
             ->method('getRevisionViewModel')

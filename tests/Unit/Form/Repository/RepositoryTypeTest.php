@@ -69,6 +69,8 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testSetGitType(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->credentialRepository->expects($this->never())->method('findBy');
         $repository = new Repository();
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
@@ -81,6 +83,8 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->credentialRepository->expects($this->never())->method('findBy');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 

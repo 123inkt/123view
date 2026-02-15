@@ -31,7 +31,7 @@ class SearchBranchesControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(SearchBranchRequest::class);
+        $request = static::createStub(SearchBranchRequest::class);
         $request->method('getSearchQuery')->willReturn('test-query');
 
         $model = static::createStub(SearchBranchViewModel::class);

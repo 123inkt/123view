@@ -31,6 +31,7 @@ class UserEntityProviderTest extends AbstractTestCase
     {
         $user = new User();
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->tokenStore->expects($this->never())->method('getToken');
 
         static::assertSame($user, $this->provider->getCurrentUser());
     }
@@ -42,6 +43,7 @@ class UserEntityProviderTest extends AbstractTestCase
         $token->expects($this->once())->method('getUser')->willReturn($user);
 
         $this->tokenStore->expects($this->once())->method('getToken')->willReturn($token);
+        $this->security->expects($this->never())->method('getUser');
 
         static::assertSame($user, $this->provider->getUser());
     }
@@ -52,6 +54,7 @@ class UserEntityProviderTest extends AbstractTestCase
         $token->expects($this->once())->method('getUser')->willReturn(null);
 
         $this->tokenStore->expects($this->once())->method('getToken')->willReturn($token);
+        $this->security->expects($this->never())->method('getUser');
 
         static::assertNull($this->provider->getUser());
     }
@@ -59,6 +62,7 @@ class UserEntityProviderTest extends AbstractTestCase
     public function testGetUserNoToken(): void
     {
         $this->tokenStore->expects($this->once())->method('getToken')->willReturn(null);
+        $this->security->expects($this->never())->method('getUser');
 
         static::assertNull($this->provider->getUser());
     }

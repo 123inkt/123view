@@ -44,7 +44,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
     public function testInvokeMarkAsSeen(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(true);
 
@@ -76,7 +76,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
     public function testInvokeMarkAsUnseen(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(false);
 
@@ -107,7 +107,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
     public function testInvokeFilepathDoesntMatchAFile(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(false);
 
@@ -123,6 +123,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
         $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
+        $this->statusService->expects($this->never())->method('markAsSeen');
 
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_NOT_MODIFIED, $response->getStatusCode());
@@ -130,7 +131,7 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
     public function testInvokeMarkAsSeenBranchReview(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(true);
 

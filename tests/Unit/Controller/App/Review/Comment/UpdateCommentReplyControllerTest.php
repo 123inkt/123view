@@ -16,6 +16,7 @@ use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,19 +30,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 {
     private CommentReplyRepository&MockObject $replyRepository;
-    private TranslatorInterface&MockObject    $translator;
+    private TranslatorInterface&Stub    $translator;
     private MessageBusInterface&MockObject    $bus;
 
     public function setUp(): void
     {
         $this->replyRepository = $this->createMock(CommentReplyRepository::class);
-        $this->translator      = $this->createMock(TranslatorInterface::class);
+        $this->translator      = static::createStub(TranslatorInterface::class);
         $this->bus             = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
 
     public function testInvokeCommentMissing(): void
     {
+        $this->replyRepository->expects($this->never())->method('save');
+        $this->bus->expects($this->never())->method('dispatch');
         $response = ($this->controller)(new Request(), null);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
@@ -49,6 +52,8 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 
     public function testInvokeIsNotSubmitted(): void
     {
+        $this->replyRepository->expects($this->never())->method('save');
+        $this->bus->expects($this->never())->method('dispatch');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);

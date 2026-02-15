@@ -37,7 +37,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
 
     public function testInvokeWithTooShortQuery(): void
     {
-        $request = $this->createMock(SearchCodeRequest::class);
+        $request = static::createStub(SearchCodeRequest::class);
         $request->method('getSearchQuery')->willReturn('fail');
         $request->method('getExtensions')->willReturn(null);
         $request->method('isShowAll')->willReturn(false);
@@ -47,6 +47,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
             ->willReturn('translation1', 'translation2');
         $this->expectAddFlash('error', 'translation1');
         $this->fileSearcher->expects($this->never())->method('find');
+        $this->repositoryRepository->expects($this->never())->method('findBy');
 
         $result = ($this->controller)($request);
 
@@ -58,7 +59,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
 
     public function testInvokeWithSearch(): void
     {
-        $request = $this->createMock(SearchCodeRequest::class);
+        $request = static::createStub(SearchCodeRequest::class);
         $request->method('getSearchQuery')->willReturn('success');
         $request->method('getExtensions')->willReturn(['json', 'yaml']);
         $request->method('isShowAll')->willReturn(false);

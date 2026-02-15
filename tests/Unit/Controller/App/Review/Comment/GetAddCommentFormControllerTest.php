@@ -22,13 +22,13 @@ class GetAddCommentFormControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $lineReference = new LineReference('filepath', 'filepath', 1, 2, 3);
-        $request       = $this->createMock(AddCommentRequest::class);
+        $request       = static::createStub(AddCommentRequest::class);
         $request->method('getLineReference')->willReturn($lineReference);
         $review = new CodeReview();
         $review->setActors([1, 2, 3]);
         $review->setId(123);
 
-        $view = $this->createMock(FormView::class);
+        $view = static::createStub(FormView::class);
 
         $this->expectCreateForm(AddCommentFormType::class, null, ['review' => $review, 'lineReference' => $lineReference])
             ->createViewWillReturn($view);

@@ -33,10 +33,12 @@ class UserSettingViewModelProviderTest extends AbstractTestCase
 
     public function testGetUserSettingViewModel(): void
     {
-        $formView = $this->createMock(FormView::class);
+        $formView = static::createStub(FormView::class);
         $form     = $this->createMock(FormInterface::class);
 
         $form->expects($this->once())->method('createView')->willReturn($formView);
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
+        $this->tokenRepository->expects($this->never())->method('findBy');
 
         $model = $this->viewModelProvider->getUserSettingViewModel($form);
         static::assertSame($formView, $model->settingForm);
@@ -44,7 +46,7 @@ class UserSettingViewModelProviderTest extends AbstractTestCase
 
     public function testGetUserAccessTokenViewModel(): void
     {
-        $formView    = $this->createMock(FormView::class);
+        $formView    = static::createStub(FormView::class);
         $form        = $this->createMock(FormInterface::class);
         $accessToken = new UserAccessToken();
 

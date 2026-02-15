@@ -30,7 +30,7 @@ class RuleHistoryControllerTest extends AbstractControllerTestCase
     public function testInvokeWithoutQueryParams(): void
     {
         $request   = new Request();
-        $viewModel = $this->createMock(RuleNotificationViewModel::class);
+        $viewModel = static::createStub(RuleNotificationViewModel::class);
 
         $this->viewModelProvider->expects($this->once())->method('getNotificationsViewModel')->with(null, false)->willReturn($viewModel);
         $this->expectRender('app/notification/rule_history.html.twig', ['notificationViewModel' => $viewModel]);
@@ -43,7 +43,7 @@ class RuleHistoryControllerTest extends AbstractControllerTestCase
     public function testInvokeWithQueryParams(): void
     {
         $request   = new Request(['ruleId' => 123, 'filter' => 'unread']);
-        $viewModel = $this->createMock(RuleNotificationViewModel::class);
+        $viewModel = static::createStub(RuleNotificationViewModel::class);
 
         $this->viewModelProvider->expects($this->once())->method('getNotificationsViewModel')->with(123, true)->willReturn($viewModel);
         $this->expectRender('app/notification/rule_history.html.twig', ['notificationViewModel' => $viewModel]);

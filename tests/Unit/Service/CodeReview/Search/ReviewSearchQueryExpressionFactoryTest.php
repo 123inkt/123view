@@ -32,12 +32,14 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewIdExpressionShouldNotMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         static::assertNull($this->expressionFactory->createReviewIdExpression(new MatchWord('query'), new ArrayCollection()));
         static::assertNull($this->expressionFactory->createReviewIdExpression(new MatchFilter('foo', 'bar'), new ArrayCollection()));
     }
 
     public function testCreateReviewIdExpressionShouldMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         $collection = new ArrayCollection();
 
         $expression = $this->expressionFactory->createReviewIdExpression(new MatchFilter('id', '123'), $collection);
@@ -48,12 +50,14 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewStateExpressionShouldNotMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         static::assertNull($this->expressionFactory->createReviewStateExpression(new MatchWord('query'), new ArrayCollection()));
         static::assertNull($this->expressionFactory->createReviewStateExpression(new MatchFilter('foo', 'bar'), new ArrayCollection()));
     }
 
     public function testCreateReviewStateExpressionShouldMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         $collection = new ArrayCollection();
 
         $expression = $this->expressionFactory->createReviewStateExpression(new MatchFilter('state', 'open'), $collection);
@@ -64,6 +68,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewAuthorExpressionShouldNotMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         static::assertNull($this->expressionFactory->createReviewAuthorExpression(new MatchWord('query'), new ArrayCollection()));
         static::assertNull($this->expressionFactory->createReviewAuthorExpression(new MatchFilter('foo', 'bar'), new ArrayCollection()));
     }
@@ -83,6 +88,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewAuthorExpressionWithUser(): void
     {
+        $this->userProvider->expects($this->once())->method('getUser');
         $collection = new ArrayCollection();
 
         $expression = $this->expressionFactory->createReviewAuthorExpression(new MatchFilter('author', 'sherlock'), $collection);
@@ -101,6 +107,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewReviewerExpressionShouldNotMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         static::assertNull($this->expressionFactory->createReviewReviewerExpression(new MatchWord('query'), new ArrayCollection()));
         static::assertNull($this->expressionFactory->createReviewReviewerExpression(new MatchFilter('foo', 'bar'), new ArrayCollection()));
     }
@@ -120,6 +127,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateReviewReviewerExpression(): void
     {
+        $this->userProvider->expects($this->once())->method('getUser');
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createReviewReviewerExpression(new MatchFilter('reviewer', 'sherlock'), $collection);
 
@@ -137,11 +145,13 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateSearchExpressionShouldNotMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         static::assertNull($this->expressionFactory->createSearchExpression(new MatchFilter('foo', 'bar'), new ArrayCollection()));
     }
 
     public function testCreateSearchExpressionShouldMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createSearchExpression(new MatchWord('search'), $collection);
 
@@ -151,6 +161,7 @@ class ReviewSearchQueryExpressionFactoryTest extends AbstractTestCase
 
     public function testCreateSearchExpressionShouldHandleNumericMatch(): void
     {
+        $this->userProvider->expects($this->never())->method('getUser');
         $collection = new ArrayCollection();
         $expression = $this->expressionFactory->createSearchExpression(new MatchWord('123'), $collection);
 

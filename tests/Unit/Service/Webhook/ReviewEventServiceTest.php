@@ -55,6 +55,7 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review->getReviewers()->add($reviewer);
 
         $this->bus->expects($this->once())->method('dispatch')->with(new ReviewerAdded(123, 456, 5))->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->reviewerAdded($review, $reviewer, 5, false);
         $this->service->reviewerAdded($review, $reviewer, 5, true);
@@ -73,6 +74,7 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review->getReviewers()->add($reviewer);
 
         $this->bus->expects($this->once())->method('dispatch')->with(new ReviewerRemoved(123, 456, 5))->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->reviewerRemoved($review, $reviewer, 5);
     }
@@ -131,6 +133,7 @@ class ReviewEventServiceTest extends AbstractTestCase
             ->method('dispatch')
             ->with(new ReviewerStateChanged(123, 456, 789, CodeReviewerStateType::REJECTED, CodeReviewerStateType::ACCEPTED))
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         // first test without state change
         $this->service->reviewerStateChanged($review, $reviewer, CodeReviewerStateType::ACCEPTED);
@@ -153,6 +156,7 @@ class ReviewEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $review->setState(CodeReviewStateType::OPEN);
         $this->service->reviewStateChanged($review, CodeReviewStateType::OPEN, 5);
@@ -185,6 +189,7 @@ class ReviewEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionsAdded($review, [$revisionA, $revisionB], 5);
     }
@@ -210,6 +215,7 @@ class ReviewEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionsDetached($review, [$revisionA, $revisionB], 5);
     }

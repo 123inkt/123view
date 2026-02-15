@@ -58,6 +58,7 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
             ->method('getRevisionVisibilities')
             ->with($review, [$revision], $user)
             ->willReturn([$visibility]);
+        $this->visibilityRepository->expects($this->never())->method('saveAll');
         $this->expectCreateForm(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)

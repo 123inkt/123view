@@ -44,6 +44,8 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
     {
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->lockManager->expects($this->never())->method('start');
+        $this->revisionFileRepository->expects($this->never())->method('save');
+        $this->gitDiffService->expects($this->never())->method('getRevisionFiles');
 
         ($this->handler)(new NewRevisionMessage(123));
     }

@@ -54,6 +54,7 @@ class ReviewRouterTest extends AbstractTestCase
 
     public function testGenerateReviewControllerRequiresReviewProperty(): void
     {
+        $this->router->expects($this->never())->method('setContext');
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Missing or invalid `review` in route parameters for ReviewController');
         $this->reviewRouter->generate(ReviewController::class);
@@ -61,6 +62,7 @@ class ReviewRouterTest extends AbstractTestCase
 
     public function testGenerateReviewControllerRequiresCodeReview(): void
     {
+        $this->router->expects($this->never())->method('setContext');
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Missing or invalid `review` in route parameters for ReviewController');
         $this->reviewRouter->generate(ReviewController::class, ['review' => new stdClass()]);

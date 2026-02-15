@@ -60,12 +60,16 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $searchQuery = 'search';
         $repository  = new Repository();
         $repository->setId(123);
-        $paginator = $this->createMock(Paginator::class);
+        $paginator = static::createStub(Paginator::class);
 
         $this->revisionRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(123, $page, $searchQuery, false)
             ->willReturn($paginator);
+        $this->visibilityService->expects($this->never())->method('getRevisionVisibilities');
+        $this->revisionFileRepository->expects($this->never())->method('getFileChanges');
+        $this->formFactory->expects($this->never())->method('create');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
 
         $viewModel = $this->provider->getRevisionsViewModel($repository, $page, $searchQuery, false);
         static::assertSame($page, $viewModel->paginator->page);
@@ -95,7 +99,8 @@ class RevisionViewModelProviderTest extends AbstractTestCase
                     [RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123]],
                 )
             )
-            ->willReturn($this->createMock(FormInterface::class));
+            ->willReturn(static::createStub(FormInterface::class));
+        $this->revisionRepository->expects($this->never())->method('getPaginatorForSearchQuery');
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);
@@ -120,7 +125,9 @@ class RevisionViewModelProviderTest extends AbstractTestCase
         $this->formFactory->expects($this->once())
             ->method('create')
             ->with(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
-            ->willReturn($this->createMock(FormInterface::class));
+            ->willReturn(static::createStub(FormInterface::class));
+        $this->revisionRepository->expects($this->never())->method('getPaginatorForSearchQuery');
+        $this->revisionFileRepository->expects($this->once())->method('getFileChanges');
 
         $viewModel = $this->provider->getRevisionViewModel($review, [$revision]);
         static::assertSame([$revision], $viewModel->revisions);
