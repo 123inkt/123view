@@ -52,7 +52,7 @@ docker compose stop
 ##
 # remove cache directory
 #
-rm -rf ${SOURCEDIR}/var/cache
+rm -rf "${SOURCEDIR}/var/cache"
 
 ##
 # Start new container
