@@ -1949,6 +1949,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             base_url: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
+ *         amazeeai?: array{
+ *             base_url: string|Param,
+ *             api_key: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *         anthropic?: array{
  *             api_key: string|Param,
  *             version?: string|Param, // Default: null
@@ -1985,13 +1990,17 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             host?: string|Param, // Default: "https://api.decart.ai/v1"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
+ *         deepseek?: array{
+ *             api_key: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *         dockermodelrunner?: array{
  *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         elevenlabs?: array{
  *             api_key: string|Param,
- *             host?: string|Param, // Default: "https://api.elevenlabs.io/v1"
+ *             endpoint?: string|Param, // Default: "https://api.elevenlabs.io/v1/"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *             api_catalog?: bool|Param, // If set, the ElevenLabs API will be used to build the catalog and retrieve models information, using this option leads to additional HTTP calls
  *         },
@@ -2027,8 +2036,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         ollama?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:11434"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             endpoint?: string|Param, // Endpoint for Ollama (e.g. "http://127.0.0.1:11434" for local, or a cloud endpoint). If null, the http_client is used as-is and must already be configured with a base URI. // Default: null
+ *             api_key?: string|Param, // API key for Ollama Cloud authentication (optional for local usage) // Default: null
+ *             http_client?: string|Param, // Service ID of the HTTP client to use. When "endpoint" is null, this client must be pre-configured (e.g. with a base_uri). // Default: "http_client"
  *             api_catalog?: bool|Param, // If set, the Ollama API will be used to build the catalog and retrieve models information, using this option leads to additional HTTP calls
  *         },
  *         openai?: array{
@@ -2038,6 +2048,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         openrouter?: array{
  *             api_key: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         ovh?: array{
+ *             api_key: scalar|Param|null,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         perplexity?: array{
@@ -2179,6 +2193,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             index_name: string|Param,
  *             vector_field?: string|Param, // Default: "vector"
  *             bulk_write?: bool|Param, // Default: false
+ *             setup_options?: array{
+ *                 fields?: mixed, // Default: []
+ *             },
  *         }>,
  *         neo4j?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
@@ -2329,7 +2346,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         model?: mixed,
  *     }>,
  *     indexer?: array<string, array{ // Default: []
- *         loader: string|Param, // Service name of loader
+ *         loader?: string|Param, // Service name of loader // Default: null
  *         source?: mixed, // Source identifier (file path, URL, etc.) or array of sources // Default: null
  *         transformers?: list<scalar|Param|null>,
  *         filters?: list<scalar|Param|null>,
