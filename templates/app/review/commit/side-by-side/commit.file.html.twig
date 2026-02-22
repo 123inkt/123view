@@ -9,13 +9,17 @@
     {% include 'app/review/commit/commit.file.preview.html.twig' %}
 
     <div class="diff-side-by-side diff-side-by-side--two-column-layout"
+            {{ stimulus_controller('split-panel') }}
             {{ stimulus_controller('component--simultaneous-scroll') }}
             {{ stimulus_target('review', 'revisionFile') }}
          data-old-path="{{ file.filePathBefore }}"
          data-new-path="{{ file.filePathAfter }}"
          data-head-sha="{{ fileDiffViewModel.headSha }}"
     >
-        <div class="diff-side-by-side--column-layout" {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
+        {# left panel #}
+        <div class="diff-side-by-side--column-layout"
+                {{ stimulus_target('split-panel', 'left') }}
+                {{ stimulus_target('component--simultaneous-scroll', 'panelLeft') }}>
 
             {%- if fileDiffViewModel.leftSideFile.blocks -%}
                 {% set isLineBefore = true %}
@@ -31,7 +35,13 @@
             {%- endif -%}
         </div>
 
-        <div class="diff-side-by-side--column-layout" {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
+        {# divider #}
+        <div class="diff-side-by-side--split-panel-divider" {{ stimulus_target('split-panel', 'divider') }}></div>
+
+        {# right panel #}
+        <div class="diff-side-by-side--column-layout"
+                {{ stimulus_target('split-panel', 'right') }}
+                {{ stimulus_target('component--simultaneous-scroll', 'panelRight') }}>
             {% set isLineBefore = false %}
             {%- if file.blocks -%}
                 {%- for detachedComment in commentsViewModel.detachedComments -%}
