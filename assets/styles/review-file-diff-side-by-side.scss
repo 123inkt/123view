@@ -19,7 +19,7 @@
     cursor: e-resize;
     user-select: none;
 
-    &:hover {
+    &:hover, &.dragging {
         background-color: var(--bs-body-color);
         opacity: 0.3;
     }
