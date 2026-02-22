@@ -9,8 +9,7 @@
     {% include 'app/review/commit/commit.file.preview.html.twig' %}
 
     <div class="diff-side-by-side diff-side-by-side--two-column-layout"
-            {{ stimulus_controller('split-panel') }}
-            {{ stimulus_controller('component--simultaneous-scroll') }}
+            {{ stimulus_controller('split-panel component--simultaneous-scroll scroll-positioner') }}
             {{ stimulus_target('review', 'revisionFile') }}
          data-old-path="{{ file.filePathBefore }}"
          data-new-path="{{ file.filePathAfter }}"
