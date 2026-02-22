@@ -27,6 +27,8 @@ export default class extends Controller<HTMLElement> {
     }
 
     private onDragMove(event: {dx: number; dy: number}): void {
+        const dividerWidth = this.dividerTarget.clientWidth;
+
         const newLeftWidth = (this.initialLeftCellWidth ?? 0) + event.dx;
         // Prevent the left cell from being resized to less than 200px
         if (newLeftWidth < 200) {
@@ -34,12 +36,12 @@ export default class extends Controller<HTMLElement> {
         }
 
         const leftWidth                        = this.leftTarget.clientWidth;
-        this.element.style.gridTemplateColumns = `${newLeftWidth}px 10px auto`;
+        this.element.style.gridTemplateColumns = `${newLeftWidth}px ${dividerWidth}px auto`;
 
         const newRightWidth = this.rightTarget.clientWidth;
         // Prevent the right cell from being resized to less than 20px
         if (newRightWidth < 200) {
-            this.element.style.gridTemplateColumns = `${leftWidth}px 10px auto`;
+            this.element.style.gridTemplateColumns = `${leftWidth}px ${dividerWidth}px auto`;
         }
     }
 

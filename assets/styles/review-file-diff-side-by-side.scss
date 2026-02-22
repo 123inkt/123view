@@ -7,12 +7,22 @@
 .diff-side-by-side--two-column-layout {
     border: 1px solid var(--review-diff-border-color);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 5px 1fr;
     overflow-y: auto;
 }
 
 .diff-side-by-side--column-layout {
     overflow: auto;
+}
+
+.diff-side-by-side--split-panel-divider {
+    cursor: e-resize;
+    user-select: none;
+
+    &:hover {
+        background-color: var(--bs-body-color);
+        opacity: 0.3;
+    }
 }
 
 .diff-side-by-side__diff-block {
