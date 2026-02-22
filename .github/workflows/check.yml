@@ -58,6 +58,7 @@ jobs:
               uses: actions/setup-node@v6
               with:
                   node-version: 22.x
+                  cache: 'npm'
             - run: npm ci
             - run: npm run stylelint
             - run: npm run eslint
