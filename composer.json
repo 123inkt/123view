@@ -57,7 +57,7 @@
         "nesbot/carbon": "^3.0",
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.1",
-        "phpdocumentor/reflection-docblock": "^5.3",
+        "phpdocumentor/reflection-docblock": "^5.3 || ^6.0",
         "scienta/doctrine-json-functions": "^6.0",
         "spatie/commonmark-highlighter": "^3.0",
         "symfony/ai-agent": "^0.5",
