@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Entity\Notification;
 
 use DR\Review\Doctrine\Type\NotificationSendType;
-use DR\Review\Entity\Notification\Filter;
 use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

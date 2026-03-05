@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Notification;
 
-use DR\Review\Entity\Notification\Filter;
 use DR\Review\Entity\Notification\Recipient;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
