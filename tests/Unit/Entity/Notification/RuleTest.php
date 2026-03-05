@@ -7,6 +7,7 @@ use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Review\Entity\Notification\Filter;
 use DR\Review\Entity\Notification\Recipient;
 use DR\Review\Entity\Notification\Rule;
+use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -67,5 +68,45 @@ class RuleTest extends AbstractTestCase
 
         $rule->removeFilter($filter);
         static::assertCount(0, $rule->getFilters());
+    }
+
+    public function testClone(): void
+    {
+        $repository = new Repository();
+        $recipient  = new Recipient();
+        $filter     = new Filter();
+        $options    = new RuleOptions();
+
+        $rule = new Rule();
+        $rule->setId(1);
+        $rule->addRepository($repository);
+        $rule->addRecipient($recipient);
+        $rule->addFilter($filter);
+        $rule->setRuleOptions($options);
+
+        $clone = clone $rule;
+
+        // cloned rule is a new object with no id
+        static::assertNotSame($rule, $clone);
+        static::assertFalse($clone->hasId());
+
+        // repositories: new collection but same repository objects (shallow)
+        static::assertNotSame($rule->getRepositories(), $clone->getRepositories());
+        static::assertSame($repository, iterator_to_array($clone->getRepositories())[0]);
+
+        // recipients: new collection with deep-cloned items
+        static::assertNotSame($rule->getRecipients(), $clone->getRecipients());
+        static::assertNotSame($recipient, iterator_to_array($clone->getRecipients())[0]);
+
+        // filters: new collection with deep-cloned items
+        static::assertNotSame($rule->getFilters(), $clone->getFilters());
+        static::assertNotSame($filter, iterator_to_array($clone->getFilters())[0]);
+
+        // ruleOptions: deep-cloned and re-linked to the clone
+        static::assertNotSame($options, $clone->getRuleOptions());
+        static::assertSame($clone, $clone->getRuleOptions()?->getRule());
+
+        // notifications: empty new collection
+        static::assertCount(0, $clone->getRuleNotifications());
     }
 }
