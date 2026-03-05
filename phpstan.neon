@@ -9,8 +9,6 @@ parameters:
     objectManagerLoader: tests/object-manager.php
   symfony:
     containerXmlPath: var/build/dev/DR_Review_KernelDevDebugContainer.xml
-  scanDirectories:
-    - var/build/dev/Symfony/Config
   paths:
     - src
     - tests

@@ -8,7 +8,7 @@ use DR\Review\Repository\User\UserReviewSettingRepository;
 use DR\Review\Request\Review\Setting\DiffVisibleLinesRequest;
 use DR\Review\Security\Role\Roles;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DiffVisibleLinesController extends AbstractController
