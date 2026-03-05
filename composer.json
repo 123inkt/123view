@@ -53,7 +53,7 @@
         "league/commonmark": "^2.4",
         "league/oauth2-client": "^2.9",
         "league/uri": "^7.8",
-        "liip/monitor-bundle": "dev-feature/php85-symfony8",
+        "liip/monitor-bundle": "dev-feature/php85-symfony8#11d7d3eb307d61c683980d7a5c233586a6c277d7",
         "nesbot/carbon": "^3.11",
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.3",
