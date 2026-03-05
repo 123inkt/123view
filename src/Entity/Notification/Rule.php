@@ -234,13 +234,11 @@ class Rule
             $this->addRecipient(clone $recipient);
         }
 
-        $this->notifications = new ArrayCollection();
-
-        if (isset($this->ruleOptions) === false) {
-            return;
+        if (isset($this->ruleOptions)) {
+            $this->ruleOptions = clone $this->ruleOptions;
+            $this->ruleOptions->setRule($this);
         }
 
-        $this->ruleOptions = clone $this->ruleOptions;
-        $this->ruleOptions->setRule($this);
+        $this->notifications = new ArrayCollection();
     }
 }
