@@ -222,15 +222,15 @@ class Rule
         unset($this->id);
         $this->repositories = new ArrayCollection($this->repositories->toArray());
 
-        $filters = $this->filters;
+        $filters       = $this->filters;
         $this->filters = new ArrayCollection();
-        foreach($filters as $filter) {
+        foreach ($filters as $filter) {
             $this->addFilter(clone $filter);
         }
 
-        $recipients = $this->recipients;
+        $recipients       = $this->recipients;
         $this->recipients = new ArrayCollection();
-        foreach($recipients as $recipient) {
+        foreach ($recipients as $recipient) {
             $this->addRecipient(clone $recipient);
         }
 
