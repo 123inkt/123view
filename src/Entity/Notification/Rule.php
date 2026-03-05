@@ -236,7 +236,7 @@ class Rule
 
         $this->notifications = new ArrayCollection();
 
-        if ($this->ruleOptions !== null) {
+        if (isset($this->ruleOptions)) {
             $this->ruleOptions = clone $this->ruleOptions;
             $this->ruleOptions->setRule($this);
         }
