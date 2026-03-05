@@ -19,7 +19,7 @@ class GitRepository
     public function __construct(
         private readonly LoggerInterface $gitLogger,
         private readonly Repository $repository,
-        private readonly ?StopWatch $stopWatch,
+        private readonly ?Stopwatch $stopWatch,
         private readonly string $repositoryPath
     ) {
     }
