@@ -216,4 +216,29 @@ class Rule
 
         return $this;
     }
+
+    public function __clone(): void
+    {
+        unset($this->id);
+        $this->repositories = new ArrayCollection($this->repositories->toArray());
+
+        $filters       = $this->filters;
+        $this->filters = new ArrayCollection();
+        foreach ($filters as $filter) {
+            $this->addFilter(clone $filter);
+        }
+
+        $recipients       = $this->recipients;
+        $this->recipients = new ArrayCollection();
+        foreach ($recipients as $recipient) {
+            $this->addRecipient(clone $recipient);
+        }
+
+        if (isset($this->ruleOptions)) {
+            $this->ruleOptions = clone $this->ruleOptions;
+            $this->ruleOptions->setRule($this);
+        }
+
+        $this->notifications = new ArrayCollection();
+    }
 }

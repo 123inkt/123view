@@ -13,7 +13,7 @@ class RuleOptionsTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull((new RuleOptions())->getId());
+        static::assertNull(new RuleOptions()->getId());
         static::assertAccessorPairs(RuleOptions::class);
     }
 
@@ -30,5 +30,11 @@ class RuleOptionsTest extends AbstractTestCase
         $options->setSendType(NotificationSendType::BROWSER);
         static::assertFalse($options->hasSendType(NotificationSendType::MAIL));
         static::assertTrue($options->hasSendType(NotificationSendType::BROWSER));
+    }
+
+    public function testClone(): void
+    {
+        clone new RuleOptions();
+        static::expectNotToPerformAssertions();
     }
 }

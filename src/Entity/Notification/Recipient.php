@@ -68,4 +68,10 @@ class Recipient
 
         return $this;
     }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        unset($this->rule);
+    }
 }

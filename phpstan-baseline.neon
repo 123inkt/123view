@@ -1387,6 +1387,24 @@ parameters:
 			path: tests/Unit/Controller/AbstractControllerTest.php
 
 		-
+			message: '#^Expression "clone new \\DR\\Review\\Entity\\Notification\\Filter\(\)" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/Unit/Entity/Notification/FilterTest.php
+
+		-
+			message: '#^Expression "clone new \\DR\\Review\\Entity\\Notification\\Recipient\(\)" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/Unit/Entity/Notification/RecipientTest.php
+
+		-
+			message: '#^Expression "clone new \\DR\\Review\\Entity\\Notification\\RuleOptions\(\)" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/Unit/Entity/Notification/RuleOptionsTest.php
+
+		-
 			message: '#^Parameter \#1 \$string1 of function strcmp expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
