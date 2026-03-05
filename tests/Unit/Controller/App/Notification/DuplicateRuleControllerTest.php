@@ -35,7 +35,7 @@ class DuplicateRuleControllerTest extends AbstractControllerTestCase
         $this->ruleRepository->expects($this->once())
             ->method('save')
             ->with(new Rule()->setName('Copy of My Rule')->setActive(false), true)
-            ->willReturnCallback(static function (Rule $copy): void { $copy->setId(2); });
+            ->willReturnCallback(static fn(Rule $copy) => $copy->setId(2));
 
         $this->expectGenerateUrl(RuleController::class, ['id' => 2])->willReturn('/app/rules/rule/2');
 
