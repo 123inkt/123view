@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Entity\Notification;
 
 use DR\Review\Doctrine\Type\NotificationSendType;
+use DR\Review\Entity\Notification\Filter;
 use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,7 +14,7 @@ class RuleOptionsTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull((new RuleOptions())->getId());
+        static::assertNull(new RuleOptions()->getId());
         static::assertAccessorPairs(RuleOptions::class);
     }
 
@@ -30,5 +31,11 @@ class RuleOptionsTest extends AbstractTestCase
         $options->setSendType(NotificationSendType::BROWSER);
         static::assertFalse($options->hasSendType(NotificationSendType::MAIL));
         static::assertTrue($options->hasSendType(NotificationSendType::BROWSER));
+    }
+
+    public function testClone(): void
+    {
+        clone new RuleOptions();
+        static::expectNotToPerformAssertions();
     }
 }
