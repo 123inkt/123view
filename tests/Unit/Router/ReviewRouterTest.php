@@ -11,23 +11,27 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouterInterface;
 
 #[CoversClass(ReviewRouter::class)]
 class ReviewRouterTest extends AbstractTestCase
 {
-    private Router&MockObject $router;
-    private ReviewRouter      $reviewRouter;
+    private RouterInterface&WarmableInterface&RequestMatcherInterface&MockObject $router;
+    private ReviewRouter                                                         $reviewRouter;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->router       = $this->createMock(Router::class);
+        $this->router       = $this->createMockForIntersectionOfInterfaces(
+            [RouterInterface::class, WarmableInterface::class, RequestMatcherInterface::class]
+        );
         $this->reviewRouter = new ReviewRouter($this->router);
     }
 
