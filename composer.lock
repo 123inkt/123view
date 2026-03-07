@@ -15388,16 +15388,16 @@
         },
         {
             "name": "symfony/debug-bundle",
-            "version": "v8.0.0",
+            "version": "v8.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug-bundle.git",
-                "reference": "02665efd40733372a4b4bdd78722426a6f95849b"
+                "reference": "a837fd8ee1c60805479d8ead3474e3d13a10af2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/02665efd40733372a4b4bdd78722426a6f95849b",
-                "reference": "02665efd40733372a4b4bdd78722426a6f95849b",
+                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/a837fd8ee1c60805479d8ead3474e3d13a10af2b",
+                "reference": "a837fd8ee1c60805479d8ead3474e3d13a10af2b",
                 "shasum": ""
             },
             "require": {
@@ -15439,7 +15439,7 @@
             "description": "Provides a tight integration of the Symfony VarDumper component and the ServerLogCommand from MonologBridge into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/debug-bundle/tree/v8.0.0"
+                "source": "https://github.com/symfony/debug-bundle/tree/v8.0.7"
             },
             "funding": [
                 {
@@ -15459,7 +15459,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-24T14:30:40+00:00"
+            "time": "2026-03-03T07:49:33+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -15631,16 +15631,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v8.0.3",
+            "version": "v8.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "3c59b07980df5d4ae4a2620287016209802261ea"
+                "reference": "f95d88d54e34b13ee220a81133261a3c8a6a287a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/3c59b07980df5d4ae4a2620287016209802261ea",
-                "reference": "3c59b07980df5d4ae4a2620287016209802261ea",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/f95d88d54e34b13ee220a81133261a3c8a6a287a",
+                "reference": "f95d88d54e34b13ee220a81133261a3c8a6a287a",
                 "shasum": ""
             },
             "require": {
@@ -15692,7 +15692,7 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.0.3"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.0.7"
             },
             "funding": [
                 {
@@ -15712,20 +15712,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-10T13:10:54+00:00"
+            "time": "2026-03-04T13:55:34+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v8.0.6",
+            "version": "v8.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "e9a49910bacf2c945975b43ac5c0e901a9b6fe4f"
+                "reference": "141336fd018b9ac77ba4910c04c2ca05c35e7ad2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/e9a49910bacf2c945975b43ac5c0e901a9b6fe4f",
-                "reference": "e9a49910bacf2c945975b43ac5c0e901a9b6fe4f",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/141336fd018b9ac77ba4910c04c2ca05c35e7ad2",
+                "reference": "141336fd018b9ac77ba4910c04c2ca05c35e7ad2",
                 "shasum": ""
             },
             "require": {
@@ -15777,7 +15777,7 @@
                 "dev"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v8.0.6"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v8.0.7"
             },
             "funding": [
                 {
@@ -15797,7 +15797,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-13T09:57:13+00:00"
+            "time": "2026-03-04T08:20:53+00:00"
         },
         {
             "name": "theseer/tokenizer",
