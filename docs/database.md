@@ -29,7 +29,7 @@ erDiagram
     CODE_INSPECTION_REPORT ||--o{ CODE_INSPECTION_ISSUE : contains
     CODE_COVERAGE_REPORT ||--o{ CODE_COVERAGE_FILE : contains
 
-    CODE_REVIEW ||--o{ REVISION : includes
+    CODE_REVIEW |o--o{ REVISION : includes
     REVISION ||--o{ REVISION_FILE : changes
     REVISION ||--o{ REVISION_VISIBILITY : visibility
     CODE_REVIEW ||--o{ REVISION_VISIBILITY : visibility
