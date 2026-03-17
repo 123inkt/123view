@@ -55,7 +55,7 @@ erDiagram
     USER ||--o{ GIT_ACCESS_TOKEN : provider_tokens
     USER ||--o{ USER_ACCESS_TOKEN : api_tokens
 
-    WEBHOOK ||--o{ WEBHOOK_ACTIVITY : logs
+    WEBHOOK }o--o| WEBHOOK_ACTIVITY : logs
 ```
 
 ## Asset
