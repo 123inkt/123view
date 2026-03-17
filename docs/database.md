@@ -38,7 +38,7 @@ erDiagram
     CODE_REVIEW ||--o{ CODE_REVIEWER : assigns
     USER ||--o{ CODE_REVIEWER : reviews
     CODE_REVIEW ||--o{ CODE_REVIEW_ACTIVITY : logs
-    USER ||--o{ CODE_REVIEW_ACTIVITY : acts
+    USER o|--o{ CODE_REVIEW_ACTIVITY : acts
 
     CODE_REVIEW ||--o{ COMMENT : contains
     USER ||--o{ COMMENT : authors
