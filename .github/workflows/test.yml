@@ -16,7 +16,7 @@ jobs:
         # Docs: https://docs.github.com/en/actions/using-containerized-services
         services:
             mysql:
-                image: mysql:8.4.8
+                image: mysql:9.6.0
                 env:
                     MYSQL_ALLOW_EMPTY_PASSWORD: false
                     MYSQL_ROOT_PASSWORD: symfony
