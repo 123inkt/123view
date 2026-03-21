@@ -23,11 +23,6 @@ class MentionsExtensionTest extends AbstractTestCase
         $this->extension      = new MentionsExtension($this->mentionService);
     }
 
-    public function testGetFilters(): void
-    {
-        static::assertCount(1, $this->extension->getFilters());
-    }
-
     public function testConvert(): void
     {
         $user = new User();

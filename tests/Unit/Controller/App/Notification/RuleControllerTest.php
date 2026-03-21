@@ -39,6 +39,7 @@ class RuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUserIsNotRuleOwner(): void
     {
+        $this->ruleRepository->expects($this->never())->method('save');
         $userB = new User();
         $rule  = (new Rule())->setUser($userB);
 
@@ -50,6 +51,7 @@ class RuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUnknownRuleId(): void
     {
+        $this->ruleRepository->expects($this->never())->method('save');
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('Rule not found');
         ($this->controller)(new Request([], [], ['id' => -1]), null);
@@ -80,7 +82,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $rule    = (new Rule())->setUser($this->user);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $form = $this->expectCreateForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
@@ -88,7 +90,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->createViewWillReturn($formView);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::never())->method('save');
+        $this->ruleRepository->expects($this->never())->method('save');
 
         $response = ($this->controller)($request, $rule);
         static::assertIsArray($response);

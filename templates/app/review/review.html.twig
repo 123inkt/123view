@@ -18,19 +18,25 @@
 
         {%- include 'app/review/review.header.html.twig' with {reviewModel, review} -%}
 
-        {%- include 'app/review/review.sidebar.html.twig' -%}
-
-        {%- if reviewModel.reviewSummaryViewModel is not same as (null) -%}
-            <div class="review-grid-code" data-role="file-diff-review">
-                {%- include 'app/review/review.summary.html.twig' with {reviewSummaryViewModel: reviewModel.reviewSummaryViewModel} %}
+        <div class="review-split-panel" {{ stimulus_controller('split-panel') }}>
+            <div class="review-split-panel-left" {{ stimulus_target('split-panel', 'left') }}>
+                {%- include 'app/review/review.sidebar.html.twig' -%}
             </div>
-        {%- elseif reviewModel.fileDiffViewModel is not same as (null) -%}
-            {% if reviewModel.fileDiffViewModel.diffMode.value == 'side-by-side' %}
-                {%- include 'app/review/commit/side-by-side/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
-            {% else %}
-                {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
-            {% endif %}
-        {%- endif -%}
+            <div class="review-split-panel-divider" {{ stimulus_target('split-panel', 'divider') }}></div>
+            <div class="review-split-panel-right" {{ stimulus_target('split-panel', 'right') }}>
+                {%- if reviewModel.reviewSummaryViewModel is not same as (null) -%}
+                    <div class="review-grid-code" data-role="file-diff-review">
+                        {%- include 'app/review/review.summary.html.twig' with {reviewSummaryViewModel: reviewModel.reviewSummaryViewModel} %}
+                    </div>
+                {%- elseif reviewModel.fileDiffViewModel is not same as (null) -%}
+                    {% if reviewModel.fileDiffViewModel.diffMode.value == 'side-by-side' %}
+                        {%- include 'app/review/commit/side-by-side/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
+                    {% else %}
+                        {%- include 'app/review/commit/commit.file.html.twig' with {fileDiffViewModel: reviewModel.fileDiffViewModel} %}
+                    {% endif %}
+                {%- endif -%}
+            </div>
+        </div>
     </div>
 
     {%- include 'app/review/notification/review.notifications.html.twig' -%}

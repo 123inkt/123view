@@ -35,9 +35,10 @@ class WebhookNotifierTest extends AbstractTestCase
     public function testNotifyUnknownReview(): void
     {
         $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
-        $this->webhookRepository->expects(self::never())->method('findByRepositoryId');
+        $this->webhookRepository->expects($this->never())->method('findByRepositoryId');
+        $this->executionService->expects($this->never())->method('execute');
 
-        $event = $this->createMock(CodeReviewAwareInterface::class);
+        $event = static::createStub(CodeReviewAwareInterface::class);
         $event->method('getReviewId')->willReturn(123);
 
         $this->notifier->notify($event);
@@ -55,7 +56,7 @@ class WebhookNotifierTest extends AbstractTestCase
         $webhook = new Webhook();
         $webhook->setId(789);
 
-        $event = $this->createMock(CodeReviewAwareInterface::class);
+        $event = static::createStub(CodeReviewAwareInterface::class);
         $event->method('getReviewId')->willReturn(123);
 
         $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);

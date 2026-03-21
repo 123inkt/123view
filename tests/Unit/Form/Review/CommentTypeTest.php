@@ -30,7 +30,7 @@ class CommentTypeTest extends AbstractTestCase
         $this->type->configureOptions($resolver);
 
         static::assertFalse($introspector->getDefault('label'));
-        static::assertSame(['autocomplete' => 'off'], $introspector->getDefault('attr'));
+        static::assertSame(['autocomplete' => 'off', 'maxlength' => 2000], $introspector->getDefault('attr'));
         static::assertEquals(new Assert\Length(max: 2000), $introspector->getDefault('constraints'));
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Security;
 
 use DR\Review\Security\Role\Roles;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,7 +27,7 @@ class UserChecker implements UserCheckerInterface
      * @inheritDoc
      * @codeCoverageIgnore
      */
-    public function checkPostAuth(UserInterface $user): void
+    public function checkPostAuth(UserInterface $user, ?TokenInterface $token = null): void
     {
         // intentionally unused
     }

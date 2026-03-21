@@ -44,10 +44,10 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setDisplayName('repository');
-        $viewModel  = $this->createMock(ReviewsViewModel::class);
+        $viewModel  = static::createStub(ReviewsViewModel::class);
         $breadcrumb = new Breadcrumb('label', 'url');
-        $terms      = $this->createMock(TermInterface::class);
-        $request    = $this->createMock(SearchReviewsRequest::class);
+        $terms      = static::createStub(TermInterface::class);
+        $request    = static::createStub(SearchReviewsRequest::class);
         $request->method('getSearchQuery')->willReturn('searchQuery');
 
         $this->termFactory->expects($this->once())->method('getSearchTerms')->with('searchQuery')->willReturn($terms);
@@ -57,6 +57,7 @@ class ReviewsControllerTest extends AbstractControllerTestCase
             ->with($request, $terms, $repository)
             ->willReturn($viewModel);
         $this->breadcrumbFactory->expects($this->once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
+        $this->failedFormatter->expects($this->never())->method('format');
 
         $result = ($this->controller)($request, $repository);
         static::assertSame('Repository', $result['page_title']);
@@ -69,11 +70,11 @@ class ReviewsControllerTest extends AbstractControllerTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setDisplayName('repository');
-        $viewModel  = $this->createMock(ReviewsViewModel::class);
+        $viewModel  = static::createStub(ReviewsViewModel::class);
         $breadcrumb = new Breadcrumb('label', 'url');
-        $request    = $this->createMock(SearchReviewsRequest::class);
+        $request    = static::createStub(SearchReviewsRequest::class);
         $request->method('getSearchQuery')->willReturn('searchQuery');
-        $failure = $this->createMock(InvalidQueryException::class);
+        $failure = static::createStub(InvalidQueryException::class);
 
         $this->expectAddFlash('error', 'failure');
         $this->termFactory->expects($this->once())->method('getSearchTerms')->with('searchQuery')->willThrowException($failure);

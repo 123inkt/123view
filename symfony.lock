@@ -352,6 +352,30 @@
             "./phpcs.xml.dist"
         ]
     },
+    "symfony/ai-anthropic-platform": {
+        "version": "0.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "169d966953a6b9aeca111cb7f0ac2da72e050159"
+        },
+        "files": [
+            "./config/packages/ai_anthropic_platform.yaml"
+        ]
+    },
+    "symfony/ai-bundle": {
+        "version": "0.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "39bb71a39860be3a261f5b527ed57e952366943d"
+        },
+        "files": [
+            "./config/packages/ai.yaml"
+        ]
+    },
     "symfony/browser-kit": {
         "version": "v6.0.3"
     },
@@ -657,6 +681,15 @@
             "./config/packages/twig.yaml",
             "./templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "7.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
     },
     "symfony/validator": {
         "version": "6.0",

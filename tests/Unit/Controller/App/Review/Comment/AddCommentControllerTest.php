@@ -34,6 +34,7 @@ class AddCommentControllerTest extends AbstractControllerTestCase
 
     public function testInvokeFormNotSubmitted(): void
     {
+        $this->commentRepository->expects($this->never())->method('save');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);

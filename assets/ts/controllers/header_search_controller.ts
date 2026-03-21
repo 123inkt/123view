@@ -16,7 +16,7 @@ export default class extends Controller<HTMLElement> {
         } else if (value === 'code') {
             this.element.setAttribute('action', this.actionCodeValue);
         } else {
-            throw new Error('Unknown mode: ' + value);
+            throw new Error(`Unknown mode: ${value}`);
         }
     }
 }

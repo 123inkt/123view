@@ -37,6 +37,8 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUserIsNotRuleOwner(): void
     {
+        $this->ruleRepository->expects($this->never())->method('remove');
+        $this->translator->expects($this->never())->method('trans');
         $userB = new User();
         $rule  = (new Rule())->setUser($userB);
 

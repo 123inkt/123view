@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\DoctrineMigrationsConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (DoctrineMigrationsConfig $config): void {
-    $config->migrationsPath('DoctrineMigrations', '%kernel.project_dir%/migrations');
-    $config->enableProfiler('%kernel.debug%');
-};
+return App::config([
+    'doctrine_migrations' => [
+        'migrations_paths' => ['DoctrineMigrations' => '%kernel.project_dir%/migrations'],
+        'enable_profiler'  => '%kernel.debug%',
+    ],
+]);

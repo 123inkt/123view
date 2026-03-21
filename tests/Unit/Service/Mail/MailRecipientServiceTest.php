@@ -57,6 +57,8 @@ class MailRecipientServiceTest extends AbstractTestCase
         $comment->getReplies()->add($replyC);
 
         $this->mentionService->expects($this->exactly(2))->method('getMentionedUsers')->willReturnOnConsecutiveCalls([], [$userA]);
+        $this->userService->expects($this->never())->method('getUsersForRevisions');
+        $this->revisionService->expects($this->never())->method('getRevisions');
 
         $users = $this->service->getUsersForReply($comment, $replyB);
         static::assertCount(3, $users);
@@ -74,6 +76,8 @@ class MailRecipientServiceTest extends AbstractTestCase
         $comment->setMessage('message');
 
         $this->mentionService->expects($this->once())->method('getMentionedUsers')->willReturn([$userB, $userC]);
+        $this->userService->expects($this->never())->method('getUsersForRevisions');
+        $this->revisionService->expects($this->never())->method('getRevisions');
 
         $users = $this->service->getUserForComment($comment);
         static::assertSame([$userA, $userB, $userC], $users);
@@ -105,6 +109,7 @@ class MailRecipientServiceTest extends AbstractTestCase
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->userService->expects($this->once())->method('getUsersForRevisions')->with([$revision])->willReturn([$userC]);
+        $this->mentionService->expects($this->never())->method('getMentionedUsers');
 
         $users = $this->service->getUsersForReview($review);
         static::assertSame([$userC, $userA, $userB], $users);

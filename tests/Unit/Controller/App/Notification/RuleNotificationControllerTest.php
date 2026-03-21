@@ -42,6 +42,9 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
 
     public function testInvokeShouldDenyAccess(): void
     {
+        $this->ruleProcessor->expects($this->never())->method('processRule');
+        $this->notificationRepository->expects($this->never())->method('save');
+        $this->viewModelProvider->expects($this->never())->method('getCommitsViewModel');
         $rule         = new Rule();
         $notification = new RuleNotification();
         $notification->setRule($rule);
@@ -62,7 +65,7 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $notification = new RuleNotification();
         $notification->setNotifyTimestamp(123456789);
         $notification->setRule($rule);
-        $commit = $this->createMock(Commit::class);
+        $commit = static::createStub(Commit::class);
 
         $viewModel = new CommitsViewModel([$commit], MailThemeType::DARCULA);
 
@@ -95,6 +98,7 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
         $this->ruleProcessor->expects($this->once())->method('processRule')->willReturn([]);
         $this->notificationRepository->expects($this->once())->method('save')->with($notification);
+        $this->viewModelProvider->expects($this->never())->method('getCommitsViewModel');
 
         static::assertEquals(
             new Response('No (more) revisions found for this notification rule', headers: ['Content-Type' => 'text/plain']),

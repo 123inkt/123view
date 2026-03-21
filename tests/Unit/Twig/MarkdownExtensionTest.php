@@ -23,11 +23,6 @@ class MarkdownExtensionTest extends AbstractTestCase
         $this->extension         = new MarkdownExtension($this->markdownConverter);
     }
 
-    public function testGetFilters(): void
-    {
-        static::assertCount(1, $this->extension->getFilters());
-    }
-
     /**
      * @throws CommonMarkException
      */

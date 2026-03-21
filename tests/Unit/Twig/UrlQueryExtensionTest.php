@@ -12,17 +12,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[CoversClass(UrlQueryExtension::class)]
 class UrlQueryExtensionTest extends AbstractTestCase
 {
-    public function testGetFunctions(): void
-    {
-        $extension = new UrlQueryExtension($this->createRequestStack());
-        $functions = $extension->getFunctions();
-
-        static::assertCount(1, $functions);
-
-        $function = $functions[0];
-        static::assertSame('url_query_params', $function->getName());
-    }
-
     public function testGetUrlQueryWithoutParams(): void
     {
         $request   = new Request(['foo' => 'bar']);
@@ -52,9 +41,6 @@ class UrlQueryExtensionTest extends AbstractTestCase
 
     private function createRequestStack(?Request $request = null): RequestStack
     {
-        $stack = new RequestStack();
-        $stack->push($request ?? new Request());
-
-        return $stack;
+        return new RequestStack([$request ?? new Request()]);
     }
 }

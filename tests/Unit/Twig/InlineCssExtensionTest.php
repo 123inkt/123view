@@ -11,12 +11,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(InlineCssExtension::class)]
 class InlineCssExtensionTest extends AbstractTestCase
 {
-    public function testGetFilters(): void
-    {
-        $extension = new InlineCssExtension(new CssToInlineStyles());
-        static::assertCount(1, $extension->getFilters());
-    }
-
     public function testInlineCss(): void
     {
         $inliner = $this->createMock(CssToInlineStyles::class);

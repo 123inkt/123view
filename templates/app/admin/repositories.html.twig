@@ -1,9 +1,20 @@
 {% extends 'app/app.base.html.twig' %}
 
+{%- macro add_repository() -%}
+    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoryController') }}" class="btn btn-outline-primary mb-3">
+        <i class="bi-plus"></i>
+        {{- 'repository.add'|trans -}}
+    </a>
+{%- endmacro -%}
+
 {% block page_content %}
     <h1 class="mb-4 mt-2">{{ 'repositories'|trans }}</h1>
 
     {% include 'app/flash/flashes.html.twig' %}
+
+    {% if repositoriesViewModel.repositories|length > 20 %}
+        {{ _self.add_repository() }}
+    {% endif %}
 
     <table class="table table-bordered table-hover">
         <thead>
@@ -53,9 +64,6 @@
         <tbody>
     </table>
 
-    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoryController') }}" class="btn btn-outline-primary mb-3">
-        <i class="bi-plus"></i>
-        {{ 'repository.new'|trans }}
-    </a>
+    {{ _self.add_repository() }}
 
 {% endblock %}

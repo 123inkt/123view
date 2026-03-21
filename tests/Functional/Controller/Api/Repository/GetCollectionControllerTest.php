@@ -10,6 +10,7 @@ use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 
 #[CoversNothing]
 class GetCollectionControllerTest extends AbstractFunctionalTestCase
@@ -22,7 +23,7 @@ class GetCollectionControllerTest extends AbstractFunctionalTestCase
         $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
 
         $this->client->loginUser($user);
-        $this->client->request('GET', '/api/repositories');
+        $this->client->request(Request::METHOD_GET, '/api/repositories');
         self::assertResponseIsSuccessful();
 
         $data = $this->getResponseArray();

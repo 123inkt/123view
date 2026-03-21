@@ -5,11 +5,11 @@ namespace DR\Review\Service\CodeReview\Search;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query\Expr;
-use DR\Review\Entity\User\User;
 use DR\Review\QueryParser\Term\Match\MatchFilter;
 use DR\Review\QueryParser\Term\Match\MatchWord;
 use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Expression\QueryExpressionFactory;
+use DR\Review\Service\User\UserEntityProvider;
 
 /**
  * @phpstan-import-type Params from QueryExpressionFactory
@@ -18,7 +18,7 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
 {
     private int $uniqueId = 0;
 
-    public function __construct(private readonly ?User $user)
+    public function __construct(private readonly UserEntityProvider $userProvider)
     {
         parent::__construct(
             [
@@ -74,8 +74,9 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
 
         $key = 'authorEmail' . $this->getNextUniqId();
 
-        if (strcasecmp($term->value, 'me') === 0 && $this->user !== null) {
-            $parameters->set($key, $this->user->getEmail());
+        $user = $this->userProvider->getUser();
+        if (strcasecmp($term->value, 'me') === 0 && $user !== null) {
+            $parameters->set($key, $user->getEmail());
 
             return new Expr\Comparison('rv.authorEmail', '=', ':' . $key);
         }
@@ -101,8 +102,9 @@ class ReviewSearchQueryExpressionFactory extends QueryExpressionFactory
 
         $key = 'reviewerEmail' . $this->getNextUniqId();
 
-        if (strcasecmp($term->value, 'me') === 0 && $this->user !== null) {
-            $parameters->set($key, $this->user->getEmail());
+        $user = $this->userProvider->getUser();
+        if (strcasecmp($term->value, 'me') === 0 && $user !== null) {
+            $parameters->set($key, $user->getEmail());
 
             return new Expr\Comparison('u.email', '=', ':' . $key);
         }

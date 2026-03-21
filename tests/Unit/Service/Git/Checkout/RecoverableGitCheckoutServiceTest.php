@@ -50,7 +50,7 @@ class RecoverableGitCheckoutServiceTest extends AbstractTestCase
         $repository = new Repository();
         $revision   = (new Revision())->setRepository($repository);
 
-        $processException = $this->createMock(ProcessFailedException::class);
+        $processException = static::createStub(ProcessFailedException::class);
 
         $this->checkoutService->expects($this->exactly(2))
             ->method('checkoutRevision')

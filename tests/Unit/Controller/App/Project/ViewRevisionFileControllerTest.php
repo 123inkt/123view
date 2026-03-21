@@ -35,12 +35,13 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $revision = new Revision();
 
         $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'image.jpg', true)->willReturn('contents');
+        $this->converter->expects($this->never())->method('convert');
 
         $response = ($this->controller)($request, $revision);
-        self::assertSame('contents', $response->getContent());
-        self::assertSame(200, $response->getStatusCode());
-        self::assertSame('image/jpeg', $response->headers->get('Content-Type'));
-        self::assertSame('public', $response->headers->get('Cache-Control'));
+        static::assertSame('contents', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('image/jpeg', $response->headers->get('Content-Type'));
+        static::assertSame('public', $response->headers->get('Cache-Control'));
     }
 
     public function testInvokeWithMarkdown(): void
@@ -52,9 +53,9 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $this->converter->expects($this->once())->method('convert')->with('markdown')->willReturn('html');
 
         $response = ($this->controller)($request, $revision);
-        self::assertSame('html', $response->getContent());
-        self::assertSame(200, $response->getStatusCode());
-        self::assertSame('text/html', $response->headers->get('Content-Type'));
+        static::assertSame('html', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
     public function testInvokeInvalidMimetype(): void
@@ -63,11 +64,12 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $revision = new Revision();
 
         $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'readme.cmd', true)->willReturn('text');
+        $this->converter->expects($this->never())->method('convert');
 
         $response = ($this->controller)($request, $revision);
-        self::assertSame('text', $response->getContent());
-        self::assertSame(200, $response->getStatusCode());
-        self::assertSame('text/plain', $response->headers->get('Content-Type'));
+        static::assertSame('text', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
     public function getController(): AbstractController

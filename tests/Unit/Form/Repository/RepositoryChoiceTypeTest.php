@@ -54,6 +54,7 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
 
     public function testGetParent(): void
     {
+        $this->repository->expects($this->never())->method('findBy');
         $type = new RepositoryChoiceType($this->repository);
         static::assertSame(ChoiceType::class, $type->getParent());
     }

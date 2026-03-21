@@ -10,6 +10,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\FileSeenStatusRepository;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\DiffTree\LockableGitDiffTreeService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,17 +21,16 @@ class FileSeenStatusServiceTest extends AbstractTestCase
 {
     private LockableGitDiffTreeService&MockObject $treeService;
     private FileSeenStatusRepository&MockObject   $statusRepository;
-
-    private User                  $user;
-    private FileSeenStatusService $service;
+    private UserEntityProvider&MockObject         $userProvider;
+    private FileSeenStatusService                 $service;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->treeService      = $this->createMock(LockableGitDiffTreeService::class);
         $this->statusRepository = $this->createMock(FileSeenStatusRepository::class);
-        $this->user             = new User();
-        $this->service          = new FileSeenStatusService($this->treeService, $this->statusRepository, $this->user);
+        $this->userProvider     = $this->createMock(UserEntityProvider::class);
+        $this->service          = new FileSeenStatusService($this->treeService, $this->statusRepository, $this->userProvider);
     }
 
     public function testMarkAsSeenWithFileIsNull(): void
@@ -38,7 +38,9 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $user   = new User();
 
-        $this->statusRepository->expects(self::never())->method('save');
+        $this->statusRepository->expects($this->never())->method('save');
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsSeen($review, $user, null);
     }
 
@@ -61,6 +63,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
                     }
                 )
             );
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsSeen($review, $user, $filepath);
     }
 
@@ -69,18 +73,22 @@ class FileSeenStatusServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $user   = new User();
 
-        $this->statusRepository->expects(self::never())->method('remove');
+        $this->statusRepository->expects($this->never())->method('remove');
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsUnseen($review, $user, null);
     }
 
     public function testMarkAsUnseenNonExistingFile(): void
     {
-        $review   = new CodeReview();
+        $review   = (new CodeReview())->setId(123);
         $user     = (new User())->setId(789);
         $filepath = 'filepath';
 
         $this->statusRepository->expects($this->once())->method('findOneBy')->willReturn(null);
-        $this->statusRepository->expects(self::never())->method('remove');
+        $this->statusRepository->expects($this->never())->method('remove');
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
@@ -98,6 +106,8 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->with(['review' => 123, 'user' => 456, 'filePath' => 'filepath'])
             ->willReturn($status);
         $this->statusRepository->expects($this->once())->method('remove')->with($status);
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->service->markAsUnseen($review, $user, $filepath);
     }
 
@@ -118,22 +128,23 @@ class FileSeenStatusServiceTest extends AbstractTestCase
             ->with(['review' => 123, 'filePath' => ['filePathBefore', 'filePathAfter']])
             ->willReturn([$statusA, $statusB]);
         $this->statusRepository->expects($this->exactly(2))->method('remove')->with(...consecutive([$statusA, false], [$statusB, true]));
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
 
         $this->service->markAllAsUnseen($review, $revision);
     }
 
     public function testGetFileSeenStatus(): void
     {
-        $review = new CodeReview();
-        $review->setId(123);
-        $this->user->setId(456);
-
+        $review = (new CodeReview())->setId(123);
+        $user   = (new User())->setId(456);
         $status = new FileSeenStatus();
 
+        $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn($user);
         $this->statusRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 456])
             ->willReturn([$status]);
+        $this->treeService->expects($this->never())->method('getFilesInRevision');
 
         $collection = $this->service->getFileSeenStatus($review);
         static::assertCount(1, $collection);

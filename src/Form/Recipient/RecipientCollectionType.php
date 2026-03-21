@@ -26,12 +26,10 @@ class RecipientCollectionType extends AbstractType
                 'delete_empty' => static fn(?Recipient $recipient) => $recipient?->getEmail() === null,
                 'constraints'  => [
                     new Assert\Count(
-                        [
-                            'min'        => 1,
-                            'max'        => 10,
-                            'minMessage' => 'At least {{ limit }} recipient is required',
-                            'maxMessage' => 'At most {{ limit }} recipients can be set'
-                        ]
+                        min: 1,
+                        max: 10,
+                        minMessage: 'At least {{ limit }} recipient is required',
+                        maxMessage: 'At most {{ limit }} recipients can be set'
                     )
                 ]
             ]

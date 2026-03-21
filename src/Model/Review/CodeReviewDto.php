@@ -14,21 +14,25 @@ readonly class CodeReviewDto
 {
     /**
      * @codeCoverageIgnore Simple DTO
+     *
+     * @param CodeReview[]                $similarReviews
      * @param Revision[]                  $revisions
      * @param Revision[]                  $visibleRevisions
      * @param DirectoryTreeNode<DiffFile> $fileTree
      */
     public function __construct(
         public CodeReview $review,
+        public array $similarReviews,
         public array $revisions,
         public array $visibleRevisions,
         public DirectoryTreeNode $fileTree,
         public ?DiffFile $selectedFile,
         public ?string $filePath,
-        public string $tab,
+        public ?string $tab,
         public DiffComparePolicy $comparePolicy,
         public ReviewDiffModeEnum $diffMode,
-        public ?AbstractReviewAction $action
+        public ?AbstractReviewAction $action,
+        public int $visibleLines,
     ) {
     }
 }

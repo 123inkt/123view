@@ -9,11 +9,11 @@ export default class extends Controller {
     private readonly declare userIdValue: number;
 
     public connect(): void {
-        document.addEventListener('/user/' + String(this.userIdValue), this.handleNotification.bind(this));
+        document.addEventListener(`/user/${String(this.userIdValue)}`, this.handleNotification.bind(this));
     }
 
     private handleNotification(event: Event): void {
         const data = (event as CustomEvent<MercureEvent>).detail;
-        this.notification.publish(data.title, data.message, 'tag-' + String(data.eventId), data.url);
+        this.notification.publish(data.title, data.message, `tag-${String(data.eventId)}`, data.url);
     }
 }

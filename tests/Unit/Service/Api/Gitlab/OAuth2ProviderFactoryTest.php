@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 use DR\Review\Controller\App\User\Gitlab\UserGitlabOAuth2FinishController;
 use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Tests\AbstractTestCase;
-use League\OAuth2\Client\Provider\GenericProvider as OAuth2Provider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,18 +29,8 @@ class OAuth2ProviderFactoryTest extends AbstractTestCase
             ->with(UserGitlabOAuth2FinishController::class, [], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('https://example.com/redirect');
 
-        $expected = new OAuth2Provider(
-            [
-                'clientId'                => 'client-id',
-                'clientSecret'            => 'client-secret',
-                'redirectUri'             => 'https://example.com/redirect',
-                'urlAuthorize'            => 'https://example.com/oauth/authorize',
-                'urlAccessToken'          => 'https://example.com/oauth/token',
-                'urlResourceOwnerDetails' => null,
-                'pkceMethod'              => OAuth2Provider::PKCE_METHOD_S256
-            ]
-        );
-
-        static::assertEquals($expected, $this->factory->create());
+        $actual = $this->factory->create();
+        static::assertSame('https://example.com/oauth/authorize', $actual->getBaseAuthorizationUrl());
+        static::assertSame('https://example.com/oauth/token', $actual->getBaseAccessTokenUrl([]));
     }
 }

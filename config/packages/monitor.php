@@ -1,18 +1,26 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\LiipMonitorConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (LiipMonitorConfig $config): void {
-    $config->enableController(true);
-
-    $group = $config->checks()->groups('default');
-    $group->phpExtensions(['amqp', 'intl', 'iconv', 'pdo_mysql', 'json']);
-    $group->opcacheMemory()->warning(70)->critical(90);
-    $group->diskUsage()->warning(70)->critical(90)->path('%kernel.cache_dir%');
-    $group->apcMemory()->warning(70)->critical(90);
-    $group->apcFragmentation()->warning(70)->critical(90);
-    $group->messengerTransports('async_messages')->warningThreshold(10)->criticalThreshold(50);
-    $group->messengerTransports('async_revisions')->warningThreshold(10)->criticalThreshold(50);
-    $group->messengerTransports('async_delay_mail')->warningThreshold(10)->criticalThreshold(50);
-};
+return App::config([
+    'liip_monitor' => [
+        'enable_controller' => true,
+        'checks'            => [
+            'groups' => [
+                'default' => [
+                    'php_extensions'       => ['amqp', 'intl', 'iconv', 'pdo_mysql', 'json'],
+                    'opcache_memory'       => ['warning' => 70, 'critical' => 90],
+                    'disk_usage'           => ['warning' => 70, 'critical' => 90, 'path' => '%kernel.cache_dir%'],
+                    'apc_memory'           => ['warning' => 70, 'critical' => 90],
+                    'apc_fragmentation'    => ['warning' => 70, 'critical' => 90],
+                    'messenger_transports' => [
+                        'async_messages'   => ['warning_threshold' => 10, 'critical_threshold' => 50],
+                        'async_revisions'  => ['warning_threshold' => 10, 'critical_threshold' => 50],
+                        'async_delay_mail' => ['warning_threshold' => 10, 'critical_threshold' => 50],
+                    ],
+                ],
+            ],
+        ],
+    ],
+]);

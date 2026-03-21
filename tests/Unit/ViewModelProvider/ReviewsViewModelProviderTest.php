@@ -10,6 +10,7 @@ use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Review\CodeReviewQueryBuilder;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class ReviewsViewModelProviderTest extends AbstractTestCase
 {
     private User                                       $user;
+    private UserEntityProvider&MockObject             $userProvider;
     private CodeReviewRepository&MockObject            $reviewRepository;
     private ReviewTimelineViewModelProvider&MockObject $timelineViewModelProvider;
     private ReviewsViewModelProvider                   $provider;
@@ -29,26 +31,33 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->user                      = new User();
+        $this->userProvider              = $this->createMock(UserEntityProvider::class);
         $this->reviewRepository          = $this->createMock(CodeReviewRepository::class);
         $this->timelineViewModelProvider = $this->createMock(ReviewTimelineViewModelProvider::class);
-        $this->provider                  = new ReviewsViewModelProvider($this->user, $this->reviewRepository, $this->timelineViewModelProvider);
+        $this->provider                  = new ReviewsViewModelProvider(
+            $this->userProvider,
+            $this->reviewRepository,
+            $this->timelineViewModelProvider
+        );
     }
 
     public function testGetSearchReviewsViewModel(): void
     {
-        $paginator = $this->createMock(Paginator::class);
+        $paginator = static::createStub(Paginator::class);
 
-        $request = $this->createMock(SearchReviewsRequest::class);
+        $request = static::createStub(SearchReviewsRequest::class);
         $request->method('getPage')->willReturn(5);
         $request->method('getOrderBy')->willReturn(CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP);
         $request->method('getSearchQuery')->willReturn('search');
 
-        $terms = $this->createMock(TermInterface::class);
+        $terms = static::createStub(TermInterface::class);
 
         $this->reviewRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(null, 5, $terms, CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)
             ->willReturn($paginator);
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
+        $this->timelineViewModelProvider->expects($this->never())->method('getTimelineViewModelForFeed');
 
         $viewModel = $this->provider->getSearchReviewsViewModel($request, $terms);
         static::assertNotNull($viewModel->paginator);
@@ -60,16 +69,19 @@ class ReviewsViewModelProviderTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setDisplayName('repository');
-        $paginator = $this->createMock(Paginator::class);
-        $timeline  = $this->createMock(TimelineViewModel::class);
+        $paginator = static::createStub(Paginator::class);
+        $timeline  = static::createStub(TimelineViewModel::class);
 
-        $request = $this->createMock(SearchReviewsRequest::class);
+        $request = static::createStub(SearchReviewsRequest::class);
         $request->method('getPage')->willReturn(5);
         $request->method('getOrderBy')->willReturn(CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP);
         $request->method('getSearchQuery')->willReturn('search');
 
-        $terms = $this->createMock(TermInterface::class);
+        $terms = static::createStub(TermInterface::class);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->reviewRepository->expects($this->once())
             ->method('getPaginatorForSearchQuery')
             ->with(123, 5, $terms, CodeReviewQueryBuilder::ORDER_CREATE_TIMESTAMP)

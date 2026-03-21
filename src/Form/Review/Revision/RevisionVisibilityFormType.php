@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -43,7 +44,7 @@ class RevisionVisibilityFormType extends AbstractType
         $reviewId = $options['reviewId'];
 
         $builder->setAction($this->urlGenerator->generate(UpdateRevisionVisibilityController::class, ['id' => $reviewId]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('hidden', HiddenType::class, ['data' => 'hidden']);
         $builder->add(
             'visibilities',

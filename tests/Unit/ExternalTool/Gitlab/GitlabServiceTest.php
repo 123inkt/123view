@@ -10,13 +10,14 @@ use DR\Review\Service\Api\Gitlab\MergeRequests;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
 #[CoversClass(GitlabService::class)]
 class GitlabServiceTest extends AbstractTestCase
 {
-    private GitlabApi&MockObject      $api;
+    private GitlabApi&Stub      $api;
     private MergeRequests&MockObject  $mergeRequests;
     private Branches&MockObject       $branches;
     private CacheInterface&MockObject $cache;
@@ -27,7 +28,7 @@ class GitlabServiceTest extends AbstractTestCase
         parent::setUp();
         $this->mergeRequests = $this->createMock(MergeRequests::class);
         $this->branches      = $this->createMock(Branches::class);
-        $this->api           = $this->createMock(GitlabApi::class);
+        $this->api           = static::createStub(GitlabApi::class);
         $this->api->method('mergeRequests')->willReturn($this->mergeRequests);
         $this->api->method('branches')->willReturn($this->branches);
         $this->cache   = $this->createMock(CacheInterface::class);
@@ -43,6 +44,7 @@ class GitlabServiceTest extends AbstractTestCase
             ->with('branch-url-111-remote-ref')
             ->willReturnCallback(static fn($key, $callback) => $callback());
         $this->branches->expects($this->once())->method('getBranch')->with(111, 'remote-ref')->willReturn(['web_url' => 'url']);
+        $this->mergeRequests->expects($this->never())->method('findByRemoteRef');
 
         static::assertSame('url', $this->service->getBranchUrl(111, 'remote-ref'));
     }
@@ -56,6 +58,7 @@ class GitlabServiceTest extends AbstractTestCase
             ->with('merge-request-url-111-remote-ref')
             ->willReturnCallback(static fn($key, $callback) => $callback());
         $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['web_url' => 'url']);
+        $this->branches->expects($this->never())->method('getBranch');
 
         static::assertSame('url', $this->service->getMergeRequestUrl(111, 'remote-ref'));
     }
@@ -69,6 +72,7 @@ class GitlabServiceTest extends AbstractTestCase
             ->with('merge-request-url-111-remote-ref')
             ->willReturnCallback(static fn($key, $callback) => $callback());
         $this->mergeRequests->expects($this->once())->method('findByRemoteRef')->with(111, 'remote-ref')->willReturn(['target_branch' => 'branch']);
+        $this->branches->expects($this->never())->method('getBranch');
 
         static::assertSame('branch', $this->service->getMergeRequestTargetBranch(111, 'remote-ref'));
     }

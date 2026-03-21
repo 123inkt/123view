@@ -34,7 +34,7 @@ class DiscussionsTest extends AbstractTestCase
         $discussionA = ['id' => 333, 'notes' => [['id' => 444]]];
         $discussionB = ['id' => 555, 'notes' => [['id' => 666]]];
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('getHeaders')->willReturn(['x-next-page' => ['2']], ['x-next-page' => []]);
         $response->method('toArray')->willReturn([$discussionA], [$discussionB]);
 
@@ -75,7 +75,7 @@ class DiscussionsTest extends AbstractTestCase
         $position->oldPath      = 'old';
         $position->oldLine      = 1;
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('toArray')->willReturn(['id' => 333, 'notes' => [['id' => 444]]]);
 
         $this->client->expects($this->once())
@@ -105,7 +105,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testCreateNote(): void
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('toArray')->willReturn(['id' => 444]);
 
         $this->client->expects($this->once())

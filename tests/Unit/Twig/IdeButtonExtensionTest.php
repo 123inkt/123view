@@ -12,7 +12,6 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\TwigFunction;
 
 #[CoversClass(IdeButtonExtension::class)]
 class IdeButtonExtensionTest extends AbstractTestCase
@@ -28,12 +27,6 @@ class IdeButtonExtensionTest extends AbstractTestCase
         $this->twig                  = $this->createMock(Environment::class);
 
         $this->extension = new IdeButtonExtension(true, 'title', $this->ideUrlPatternProvider, $this->twig);
-    }
-
-    public function testGetFunctions(): void
-    {
-        $expected = [new TwigFunction('ide_button', [$this->extension, 'createLink'], ['is_safe' => ['all']])];
-        static::assertEquals($expected, $this->extension->getFunctions());
     }
 
     /**
@@ -60,8 +53,8 @@ class IdeButtonExtensionTest extends AbstractTestCase
     {
         $extension = new IdeButtonExtension(false, 'title', $this->ideUrlPatternProvider, $this->twig);
 
-        $this->ideUrlPatternProvider->expects(self::never())->method('getUrl');
-        $this->twig->expects(static::never())->method('render');
+        $this->ideUrlPatternProvider->expects($this->never())->method('getUrl');
+        $this->twig->expects($this->never())->method('render');
 
         static::assertSame('', $extension->createLink('file', 123));
     }

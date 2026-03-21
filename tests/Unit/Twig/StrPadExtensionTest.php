@@ -11,12 +11,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(StrPadExtension::class)]
 class StrPadExtensionTest extends AbstractTestCase
 {
-    public function testGetFilters(): void
-    {
-        $extension = new StrPadExtension();
-        static::assertCount(1, $extension->getFilters());
-    }
-
     public function testStrPad(): void
     {
         $extension = new StrPadExtension();

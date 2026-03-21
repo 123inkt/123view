@@ -13,6 +13,7 @@ use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 
 #[CoversNothing]
 class UploadCodeInspectionControllerTest extends AbstractFunctionalTestCase
@@ -32,7 +33,12 @@ class UploadCodeInspectionControllerTest extends AbstractFunctionalTestCase
             [['description' => 'message', 'severity' => 'major', 'location' => ['path' => '/file/path', 'lines' => ['begin' => 20]]]]
         );
 
-        $this->client->request('POST', $url, server: ['HTTP_AUTHORIZATION' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE], content: $content);
+        $this->client->request(
+            Request::METHOD_POST,
+            $url,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE],
+            content: $content
+        );
         self::assertResponseIsSuccessful();
     }
 

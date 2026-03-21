@@ -43,7 +43,7 @@ class RepositoryTypeTest extends AbstractTestCase
 
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects($this->exactly(11))
+        $builder->expects($this->exactly(12))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -58,6 +58,7 @@ class RepositoryTypeTest extends AbstractTestCase
                     ['updateRevisionsInterval', IntegerType::class],
                     ['validateRevisionsInterval', IntegerType::class],
                     ['gitlabProjectId', GitlabProjectIdType::class],
+                    ['gitApprovalSync', CheckboxType::class],
                 )
             )->willReturnSelf();
         $builder->expects($this->once())->method('get')->with('url')->willReturnSelf();
@@ -68,6 +69,8 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testSetGitType(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->credentialRepository->expects($this->never())->method('findBy');
         $repository = new Repository();
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
@@ -80,6 +83,8 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->credentialRepository->expects($this->never())->method('findBy');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 

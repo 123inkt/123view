@@ -40,16 +40,16 @@ class ReviewViewModelProviderTest extends AbstractTestCase
      */
     public function testGetViewModel(): void
     {
-        $review  = $this->createMock(CodeReview::class);
-        $request = $this->createMock(ReviewRequest::class);
+        $review  = static::createStub(CodeReview::class);
+        $request = static::createStub(ReviewRequest::class);
         $request->method('getTab')->willReturn('tab');
         $dto = $this->createDto();
 
-        $this->reviewDtoProvider->expects(self::once())->method('provide')->with($review, $request)->willReturn($dto);
-        $this->viewModelAppender->expects(self::once())->method('accepts')->with($dto)->willReturn(true);
-        $this->viewModelAppender->expects(self::once())->method('append')->with($dto);
+        $this->reviewDtoProvider->expects($this->once())->method('provide')->with($review, $request)->willReturn($dto);
+        $this->viewModelAppender->expects($this->once())->method('accepts')->with($dto)->willReturn(true);
+        $this->viewModelAppender->expects($this->once())->method('append')->with($dto);
 
-        $expected = new ReviewViewModel($review, $dto->revisions, 'tab', 1);
+        $expected = new ReviewViewModel($review, $dto->revisions, $dto->similarReviews, 'tab', 1);
         $actual   = $this->provider->getViewModel($review, $request);
         static::assertEquals($expected, $actual);
     }
@@ -60,6 +60,7 @@ class ReviewViewModelProviderTest extends AbstractTestCase
 
         return new CodeReviewDto(
             new CodeReview(),
+            [new CodeReview()],
             [$revision],
             [$revision],
             new DirectoryTreeNode('name'),
@@ -68,7 +69,8 @@ class ReviewViewModelProviderTest extends AbstractTestCase
             'tab',
             DiffComparePolicy::ALL,
             ReviewDiffModeEnum::INLINE,
-            null
+            null,
+            6
         );
     }
 }

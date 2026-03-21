@@ -12,6 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -39,7 +40,7 @@ class AddCommentFormType extends AbstractType
         $lineReference = $options['lineReference'] ?? new LineReference();
 
         $builder->setAction($this->urlGenerator->generate(AddCommentController::class, ['id' => $review->getId()]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add(
             'lineReference',
             HiddenType::class,

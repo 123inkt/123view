@@ -37,7 +37,7 @@ class LoginViewModelProviderTest extends AbstractTestCase
     public function testGetLoginViewModel(): void
     {
         $request = new Request(['next' => 'next']);
-        $view    = $this->createMock(FormView::class);
+        $view    = static::createStub(FormView::class);
         $form    = $this->createMock(FormInterface::class);
         $form->expects($this->once())->method('createView')->willReturn($view);
 

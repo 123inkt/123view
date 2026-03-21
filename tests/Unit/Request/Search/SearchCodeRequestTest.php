@@ -27,6 +27,12 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
         static::assertSame(['json', 'yaml'], $this->validatedRequest->getExtensions());
     }
 
+    public function testGetIsShowAll(): void
+    {
+        $this->request->query->set('all', 'true');
+        static::assertTrue($this->validatedRequest->isShowAll());
+    }
+
     public function testGetExtensionsWithEmptyQuery(): void
     {
         static::assertNull($this->validatedRequest->getExtensions());
@@ -42,6 +48,7 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
                 'query' => [
                     'search'    => 'required|string',
                     'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
+                    'all'       => 'string',
                 ]
             ]
         );

@@ -32,7 +32,7 @@ class RemoteEventPayloadDenormalizerTest extends AbstractTestCase
      */
     public function testDeserializeUnknownEvent(): void
     {
-        $this->objectDenormalizer->expects(self::never())->method('denormalize');
+        $this->objectDenormalizer->expects($this->never())->method('denormalize');
         static::assertNull($this->denormalizer->denormalize('Unknown Event', []));
     }
 

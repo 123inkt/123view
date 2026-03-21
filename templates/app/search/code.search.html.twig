@@ -33,35 +33,50 @@
         </form>
     </div>
 
-    {% if viewModel.files %}
-    <div class="accordion" {{ stimulus_controller('accordion') }}>
-        {% for resultFile in viewModel.files %}
-            <div class="accordion-item" data-role="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>
+    {% if viewModel.searchResults.results|length > 0 %}
+        <div class="mb-3">
+            {% for results in viewModel.searchResults.iteratePerRepository %}
+                <div>
+                    <div class="mt-2 mb-1">
                         <span class="badge rounded-pill text-bg-primary me-2">
-                            {{ resultFile.repository.displayName }}
+                            {{ results[0].repository.displayName }}
                         </span>
-                        {{ resultFile.file.relativePathname }}
-                    </button>
-                </h2>
-                <div class="accordion-collapse collapse" data-role="accordion-collapse">
-                    <div class="accordion-body">
-                        <pre class="d-block">
-                            {%- for line in resultFile.lines -%}
-                                <div {% if line.type.value == 'match' %}class="bg-success-subtle"{% endif %}>
-                                    {#- show code line -#}
-                                    <span class="text-danger bg-light-gray d-inline-block code-search-line-number">
-                                        {{- line.lineNumber -}}
-                                    </span> {{ line.line -}}
+                    </div>
+                    <div class="accordion" {{ stimulus_controller('accordion') }}>
+                        {% for resultFile in results %}
+                            <div class="accordion-item" data-role="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" {{ stimulus_action('accordion', 'toggle', 'click') }}>
+                                        {{ resultFile.file.relativePathname }}
+                                    </button>
+                                </h2>
+                                <div class="accordion-collapse collapse" data-role="accordion-collapse">
+                                    <div class="accordion-body">
+                                <pre class="d-block">
+                                    {%- for line in resultFile.lines -%}
+                                        <div {% if line.type.value == 'match' %}class="bg-success-subtle"{% endif %}>
+                                            {#- show code line -#}
+                                            <span class="text-danger bg-light-gray d-inline-block code-search-line-number">
+                                                {{- line.lineNumber -}}
+                                            </span> {{ line.line -}}
+                                        </div>
+                                    {%- endfor -%}
+                                </pre>
+                                    </div>
                                 </div>
-                            {%- endfor -%}
-                        </pre>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+            {% if viewModel.searchResults.moreResultsAvailable %}
+                <div class="mt-2">
+                    <a href="?search={{ viewModel.searchQuery|escape('url') }}&extension={{ viewModel.fileExtension|escape('url') }}&all=true"
+                       type="button"
+                       class="btn btn-outline-primary">{{ 'show.all'|trans }}</a>
+                </div>
+            {% endif %}
+        </div>
     {% else %}
         <div class="alert alert-warning">
             {{ 'no.matches.found'|trans }}

@@ -1,12 +1,15 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\FrameworkConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (FrameworkConfig $framework): void {
-    $framework->router()
-        ->enabled(true)
-        ->defaultUri('%env(APP_ABSOLUTE_URL)%')
-        ->strictRequirements(true)
-        ->utf8(true);
-};
+return App::config([
+    'framework' => [
+        'router' => [
+            'enabled'             => true,
+            'default_uri'         => '%env(APP_ABSOLUTE_URL)%',
+            'strict_requirements' => true,
+            'utf8'                => true,
+        ],
+    ],
+]);

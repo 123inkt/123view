@@ -28,7 +28,7 @@ readonly class ReviewViewModelProvider
         $dto = $this->reviewDtoProvider->provide($review, $request);
 
         // create view model
-        $viewModel = new ReviewViewModel($review, $dto->revisions, $request->getTab(), count($dto->visibleRevisions));
+        $viewModel = new ReviewViewModel($review, $dto->revisions, $dto->similarReviews, $request->getTab(), count($dto->visibleRevisions));
 
         // append optional view models
         /** @var ReviewViewModelAppenderInterface $viewModelAppender */

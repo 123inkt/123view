@@ -39,7 +39,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
+        $viewModel = new UserSettingViewModel(static::createStub(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])
@@ -47,7 +47,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(false);
         $this->provider->expects($this->once())->method('getUserSettingViewModel')->willReturn($viewModel);
 
-        $this->userRepository->expects(self::never())->method('save');
+        $this->userRepository->expects($this->never())->method('save');
 
         $result = ($this->controller)($request);
         static::assertEquals(['settingViewModel' => $viewModel], $result);
@@ -59,7 +59,7 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
+        $viewModel = new UserSettingViewModel(static::createStub(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])

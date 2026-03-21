@@ -44,7 +44,7 @@ class CodeReviewFileTreeService
         }
 
         // prune large diff files
-        $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);
+        $files = $this->diffFileUpdater->update($files, $diffOptions->visibleLines ?? 6, HighlightedFileService::MAX_LINE_COUNT);
 
         // generate file tree
         $fileTree = $this->treeGenerator->generate($files)

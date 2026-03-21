@@ -9,6 +9,7 @@ use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\AddReviewerFormType;
 use DR\Review\Repository\User\UserRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,6 +24,7 @@ class AddReviewerFormTypeTest extends AbstractTestCase
 {
     private UrlGeneratorInterface&MockObject $urlGenerator;
     private UserRepository&MockObject        $userRepository;
+    private UserEntityProvider&MockObject    $userProvider;
     private User                             $user;
     private AddReviewerFormType              $type;
 
@@ -31,12 +33,16 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         parent::setUp();
         $this->urlGenerator   = $this->createMock(UrlGeneratorInterface::class);
         $this->userRepository = $this->createMock(UserRepository::class);
+        $this->userProvider   = $this->createMock(UserEntityProvider::class);
         $this->user           = new User();
-        $this->type           = new AddReviewerFormType($this->urlGenerator, $this->userRepository, $this->user);
+        $this->type           = new AddReviewerFormType($this->urlGenerator, $this->userRepository, $this->userProvider);
     }
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->userRepository->expects($this->never())->method('findUsersWithExclusion');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -59,6 +65,9 @@ class AddReviewerFormTypeTest extends AbstractTestCase
         $review->setId(123);
         $review->getReviewers()->add($reviewer);
 
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
         $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(AddReviewerController::class, ['id' => 123])
@@ -94,6 +103,9 @@ class AddReviewerFormTypeTest extends AbstractTestCase
 
     public function testGetBlockPrefix(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->userRepository->expects($this->never())->method('findUsersWithExclusion');
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         static::assertSame('', $this->type->getBlockPrefix());
     }
 }

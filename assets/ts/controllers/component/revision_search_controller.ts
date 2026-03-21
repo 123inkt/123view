@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import Assert from '../../lib/Assert';
 
 export default class extends Controller {
     public static targets = ['toggle'];
@@ -27,7 +28,7 @@ export default class extends Controller {
     }
 
     private getRevisions(): HTMLElement[] {
-        return Array.from(this.element.parentElement!.querySelectorAll<HTMLElement>(`[data-role~="revision"]`));
+        return Array.from(Assert.notNull(this.element.parentElement).querySelectorAll<HTMLElement>(`[data-role~="revision"]`));
     }
 
     private updateToggleCheckboxes(revisions: HTMLElement[], search: string): void {

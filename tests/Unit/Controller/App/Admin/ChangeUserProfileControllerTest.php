@@ -36,7 +36,7 @@ class ChangeUserProfileControllerTest extends AbstractControllerTestCase
         $this->expectCreateForm(UserProfileFormType::class, $user, ['user' => $user])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
-        $this->userRepository->expects(self::never())->method('save');
+        $this->userRepository->expects($this->never())->method('save');
         $this->expectRefererRedirect(UsersController::class);
 
         ($this->controller)($request, $user);

@@ -22,7 +22,7 @@ class DiffParserTest extends AbstractTestCase
     {
         parent::setUp();
         $this->fileParser = $this->createMock(DiffFileParser::class);
-        $this->parser     = new DiffParser($this->logger, $this->fileParser);
+        $this->parser     = new DiffParser($this->fileParser);
     }
 
     /**
@@ -30,7 +30,8 @@ class DiffParserTest extends AbstractTestCase
      */
     public function testParseDeletionsOnly(): void
     {
-        $diffs = $this->parser->parse('test');
+        $this->fileParser->expects($this->never())->method('parse');
+        $diffs = $this->parser->parse('test', true);
         static::assertCount(0, $diffs);
     }
 
@@ -48,7 +49,7 @@ class DiffParserTest extends AbstractTestCase
         // setup mocks
         $this->fileParser->expects($this->once())->method('parse')->with("foobar\n")->willReturn($file);
 
-        $diffs = $this->parser->parse($input);
+        $diffs = $this->parser->parse($input, false);
         static::assertSame([$file], $diffs);
     }
 
@@ -64,7 +65,7 @@ class DiffParserTest extends AbstractTestCase
         // setup mocks
         $this->fileParser->expects($this->once())->method('parse')->with("foobar\n")->willReturnArgument(1);
 
-        $diffs = $this->parser->parse($input);
+        $diffs = $this->parser->parse($input, true);
         static::assertCount(1, $diffs);
         $file = $diffs[0];
         static::assertSame('example with space/exampleA.txt', $file->filePathBefore);
@@ -90,7 +91,7 @@ class DiffParserTest extends AbstractTestCase
             ->with(...consecutive(["foobar A"], ["foobar B\n"]))
             ->willReturn($fileA, $fileB);
 
-        $diffs = $this->parser->parse($input);
+        $diffs = $this->parser->parse($input, false);
         static::assertSame([$fileA, $fileB], $diffs);
     }
 }

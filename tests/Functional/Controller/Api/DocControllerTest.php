@@ -6,13 +6,14 @@ namespace DR\Review\Tests\Functional\Controller\Api;
 use DR\Review\Tests\AbstractFunctionalTestCase;
 use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 
 #[CoversNothing]
 class DocControllerTest extends AbstractFunctionalTestCase
 {
     public function testHtmlDocs(): void
     {
-        $this->client->request('GET', '/api/docs', server: ['HTTP_ACCEPT' => 'text/html']);
+        $this->client->request(Request::METHOD_GET, '/api/docs', server: ['HTTP_ACCEPT' => 'text/html']);
         self::assertResponseIsSuccessful();
 
         $content = $this->getResponseContent();
@@ -25,7 +26,11 @@ class DocControllerTest extends AbstractFunctionalTestCase
      */
     public function testJsonDocs(): void
     {
-        $this->client->request('GET', '/api/docs', server: ['HTTP_ACCEPT' => 'application/vnd.openapi+json']);
+        $this->client->request(
+            Request::METHOD_GET,
+            '/api/docs',
+            server: ['HTTP_ACCEPT' => 'application/vnd.openapi+json']
+        );
         self::assertResponseIsSuccessful();
 
         $data = $this->getResponseArray();

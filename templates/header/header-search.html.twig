@@ -1,0 +1,28 @@
+<li class="nav-item">
+    <form {{ stimulus_controller('header_search', {
+        actionReview: path('DR\\Review\\Controller\\App\\Reviews\\SearchReviewsController'),
+        actionBranch: path('DR\\Review\\Controller\\App\\Search\\SearchBranchesController'),
+        actionCode: path('DR\\Review\\Controller\\App\\Search\\SearchCodeController')
+    } ) }}
+            class="d-flex me-5"
+            method="get"
+            action="{{ path('DR\\Review\\Controller\\App\\Reviews\\SearchReviewsController') }}">
+        <div class="input-group">
+            <input type="search"
+                   name="search"
+                   required
+                   class="form-control border-secondary text-light bg-contrast border-end-1 flex-grow-1"
+                   placeholder="{{ 'search'|trans }}">
+            <select class="form-control border-secondary text-light bg-contrast border-start-1 max-width-fit-content"
+                    {{ stimulus_action('header_search', 'onModeChange', 'change') }}
+            >
+                <option value="review">{{ 'reviews'|trans }}</option>
+                <option value="branch">{{ 'branches'|trans }}</option>
+                <option value="code">{{ 'source.code'|trans }}</option>
+            </select>
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </form>
+</li>

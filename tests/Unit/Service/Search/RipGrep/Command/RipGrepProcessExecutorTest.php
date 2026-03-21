@@ -30,7 +30,7 @@ class RipGrepProcessExecutorTest extends AbstractTestCase
         static::assertNotFalse($handle);
 
         $command = '/usr/bin/rg ' . escapeshellarg("foo") . ' ' . escapeshellarg("bar");
-        $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
+        $commandBuilder = static::createStub(RipGrepCommandBuilder::class);
         $commandBuilder->method('build')->willReturn($command);
 
         $this->processService->expects($this->once())->method('popen')->with($command, 'r')->willReturn($handle);

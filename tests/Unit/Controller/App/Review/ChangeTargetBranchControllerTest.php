@@ -31,6 +31,7 @@ class ChangeTargetBranchControllerTest extends AbstractControllerTestCase
 
     public function testInvokeWithFailure(): void
     {
+        $this->reviewRepository->expects($this->never())->method('save');
         $request = new Request();
         $review  = new CodeReview();
 

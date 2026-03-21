@@ -39,9 +39,10 @@ class FileDiffViewModelProvider
         DiffFile $selectedFile,
         ?AbstractReviewAction $reviewAction,
         DiffComparePolicy $comparePolicy,
-        ReviewDiffModeEnum $diffMode
+        ReviewDiffModeEnum $diffMode,
+        int $visibleLines
     ): FileDiffViewModel {
-        $viewModel = new FileDiffViewModel($selectedFile, $diffMode);
+        $viewModel = new FileDiffViewModel($selectedFile, $diffMode, $visibleLines);
 
         // create highlighted file
         if ($selectedFile->isDeleted() === false) {

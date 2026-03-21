@@ -32,6 +32,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
     public function testGetEditCommentViewModelNullCommentShouldReturnNull(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $action = new EditCommentAction(null);
         static::assertNull($this->provider->getEditCommentViewModel($action));
     }
@@ -52,6 +53,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
     public function testGetReplyCommentViewModelNullCommentShouldReturnNull(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $action = new AddCommentReplyAction(null);
         static::assertNull($this->provider->getReplyCommentViewModel($action));
     }
@@ -72,6 +74,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
     public function testGetEditCommentReplyViewModelNullCommentShouldReturnNull(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $action = new EditCommentReplyAction(null);
         static::assertNull($this->provider->getEditCommentReplyViewModel($action));
     }

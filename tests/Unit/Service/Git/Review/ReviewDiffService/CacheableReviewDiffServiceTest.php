@@ -37,7 +37,8 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
      */
     public function testGetDiffFilesWithoutRevisions(): void
     {
-        $this->cache->expects(self::never())->method('get');
+        $this->cache->expects($this->never())->method('get');
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
 
         static::assertSame([], $this->service->getDiffForRevisions(new Repository(), []));
     }
@@ -52,11 +53,11 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM, visibleLines: 123);
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('diff-files-revision-123-hash-fdo-20-trim-commits')
+            ->with('diff-files-revision-123-hash-fdo-20-trim-commits-123-no-raw')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
 
@@ -74,11 +75,11 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM, visibleLines: 123);
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('0f8fce26dc2afa67e942ac7fc4b10a777a95b2788d07c639242a66230c4bc21d')
+            ->with('038b370a23b87498c815bcc4d4dc0dc1b4baf2018582aa1c3f8379c25931b260')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
         $this->diffService->expects($this->once())->method('getDiffForBranch')
             ->with($review, [$revision], 'branch', $options)

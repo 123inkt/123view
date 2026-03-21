@@ -110,7 +110,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
         static::assertNotNull($review);
         $repository = self::getService(UserRepository::class);
 
-        $result = $repository->getActors((int)$review->getId());
+        $result = $repository->getActors($review->getId());
         static::assertCount(1, $result);
         static::assertSame('sherlock@example.com', $result[0]->getEmail());
     }

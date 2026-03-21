@@ -5,6 +5,7 @@ namespace DR\Review\Service\CodeReview;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Review\CodeReviewDto;
+use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Review\ReviewRequest;
 use DR\Review\Service\Git\Review\CodeReviewTypeDecider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
@@ -18,6 +19,8 @@ readonly class CodeReviewDtoProvider
         private CodeReviewFileService $fileService,
         private CodeReviewTypeDecider $reviewTypeDecider,
         private RevisionVisibilityService $visibilityService,
+        private CodeReviewRepository $codeReviewRepository,
+        private UserReviewSettingsProvider $settingsProvider,
     ) {
     }
 
@@ -28,6 +31,7 @@ readonly class CodeReviewDtoProvider
     {
         $revisions        = $this->revisionService->getRevisions($review);
         $visibleRevisions = $this->visibilityService->getVisibleRevisions($review, $revisions);
+        $similarReviews   = $this->codeReviewRepository->findByTitle($review);
 
         // get diff files for review
         $reviewType = $this->reviewTypeDecider->decide($review, $revisions, $visibleRevisions);
@@ -35,20 +39,27 @@ readonly class CodeReviewDtoProvider
             $review,
             $visibleRevisions,
             $request->getFilePath(),
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $request->getComparisonPolicy(), $reviewType)
+            new FileDiffOptions(
+                FileDiffOptions::DEFAULT_LINE_DIFF,
+                $this->settingsProvider->getComparisonPolicy(),
+                $reviewType,
+                $this->settingsProvider->getVisibleLines()
+            )
         );
 
         return new CodeReviewDto(
             $review,
+            $similarReviews,
             $revisions,
             $visibleRevisions,
             $fileTree,
             $selectedFile,
             $request->getFilePath(),
             $request->getTab(),
-            $request->getComparisonPolicy(),
-            $request->getDiffMode(),
-            $request->getAction()
+            $this->settingsProvider->getComparisonPolicy(),
+            $this->settingsProvider->getReviewDiffMode(),
+            $request->getAction(),
+            $this->settingsProvider->getVisibleLines()
         );
     }
 }

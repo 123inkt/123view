@@ -36,6 +36,8 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createRevList();
         $this->factory->createShow();
         $this->factory->createStatus();
+        $this->factory->createGrep();
+        $this->factory->createLsTree();
         $this->addToAssertionCount(1);
     }
 }

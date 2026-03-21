@@ -25,53 +25,55 @@
 {%- from _self import checkboxFieldRow -%}
 
 {% block page_content %}
-    {% set form = editRepositoryModel.form %}
+    <div class="pb-3">
+        {% set form = editRepositoryModel.form %}
 
-    <h1 class="mb-4 mt-2">
-        {% if editRepositoryModel.repository.id is same as null %}
-            {{ 'add.repository'|trans }}
-        {% else %}
-            {{ 'edit.repository'|trans }} #{{ editRepositoryModel.repository.id }}
-        {% endif %}
-    </h1>
+        <h1 class="mb-4 mt-2">
+            {% if editRepositoryModel.repository.id is same as null %}
+                {{ 'add.repository'|trans }}
+            {% else %}
+                {{ 'edit.repository'|trans }} #{{ editRepositoryModel.repository.id }}
+            {% endif %}
+        </h1>
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-    {{ checkboxFieldRow(form.repository.active) }}
-    {{ checkboxFieldRow(form.repository.favorite) }}
+        {{ checkboxFieldRow(form.repository.active) }}
+        {{ checkboxFieldRow(form.repository.favorite) }}
 
-    {{ inputFieldRow(form.repository.name) }}
-    {{ inputFieldRow(form.repository.displayName) }}
-    {{ inputFieldRow(form.repository.mainBranchName) }}
+        {{ inputFieldRow(form.repository.name) }}
+        {{ inputFieldRow(form.repository.displayName) }}
+        {{ inputFieldRow(form.repository.mainBranchName) }}
 
-    <h4>Git</h4>
-    <hr>
-    {{ inputFieldRow(form.repository.url) }}
-    {{ inputFieldRow(form.repository.credential) }}
-    {{ inputFieldRow(form.repository.gitType) }}
-
-    <h4>{{ 'update.frequency'|trans }}</h4>
-    <hr>
-    {{ inputFieldRow(form.repository.updateRevisionsInterval) }}
-    {{ inputFieldRow(form.repository.validateRevisionsInterval) }}
-
-    {% if form.repository.gitlabProjectId is defined %}
-        <h4>{{ 'integrations'|trans }}</h4>
+        <h4>Git</h4>
         <hr>
-        {{ inputFieldRow(form.repository.gitlabProjectId) }}
-    {% endif %}
+        {{ inputFieldRow(form.repository.url) }}
+        {{ inputFieldRow(form.repository.credential) }}
+        {{ inputFieldRow(form.repository.gitType) }}
 
+        <h4>{{ 'update.frequency'|trans }}</h4>
+        <hr>
+        {{ inputFieldRow(form.repository.updateRevisionsInterval) }}
+        {{ inputFieldRow(form.repository.validateRevisionsInterval) }}
 
-    <div class="pt-3">
-        {{ form_widget(form.save) }}
+        {% if form.repository.gitlabProjectId is defined %}
+            <h4>{{ 'integrations'|trans }}</h4>
+            <hr>
+            {{ inputFieldRow(form.repository.gitlabProjectId) }}
 
-        <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}" class="btn btn-outline-primary">
-            {{ 'cancel'|trans }}
-        </a>
+            {{ checkboxFieldRow(form.repository.gitApprovalSync) }}
+        {% endif %}
+
+        <div class="pt-3">
+            {{ form_widget(form.save) }}
+
+            <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\RepositoriesController') }}" class="btn btn-outline-primary">
+                {{ 'cancel'|trans }}
+            </a>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
     </div>
-
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
-
 {% endblock %}

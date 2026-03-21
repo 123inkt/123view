@@ -16,11 +16,13 @@ export default class extends Controller {
         'comment-resolved',
         'comment-added',
         'comment-removed',
-        'comment-reply-added'
+        'comment-reply-added',
+        'request-ai-review',
+        'ai-review-completed',
     ];
 
     public connect(): void {
-        document.addEventListener('/review/' + String(this.reviewIdValue), this.handleNotification.bind(this));
+        document.addEventListener(`/review/${String(this.reviewIdValue)}`, this.handleNotification.bind(this));
     }
 
     private handleNotification(event: Event): void {

@@ -38,7 +38,7 @@ class UserServiceTest extends AbstractTestCase
 
     public function testGetUsersForRevisionsWithoutEmail(): void
     {
-        $this->userRepository->expects(self::never())->method('findBy');
+        $this->userRepository->expects($this->never())->method('findBy');
 
         static::assertSame([], $this->service->getUsersForRevisions([]));
     }

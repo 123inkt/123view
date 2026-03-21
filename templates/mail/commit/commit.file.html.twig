@@ -15,7 +15,7 @@
 
         {%- if commit.review != null -%}
             <a class="fileName"
-               href="{{ app_absolute_url ~ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: commit.review, filePath: file.pathname}) }}"
+               href="{{ url('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: commit.review, filePath: file.pathname}) }}"
                target="review.{{ commit.review.id }}">{{ file.filename }}</a>
         {% else %}
             <span class="fileName">{{ file.filename }}</span>

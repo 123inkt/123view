@@ -22,10 +22,10 @@ class ReviewsViewModelTest extends AbstractTestCase
     {
         $reviews    = [new CodeReview()];
         $repository = new Repository();
-        $paginator  = $this->createMock(Paginator::class);
+        $paginator  = static::createStub(Paginator::class);
         $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
-        $paginatorVm = $this->createMock(PaginatorViewModel::class);
-        $timeline    = $this->createMock(TimelineViewModel::class);
+        $paginatorVm = static::createStub(PaginatorViewModel::class);
+        $timeline    = static::createStub(TimelineViewModel::class);
         $searchQuery = 'foobar';
 
         $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery, '', $timeline);
@@ -37,10 +37,10 @@ class ReviewsViewModelTest extends AbstractTestCase
     {
         $reviews    = [new CodeReview()];
         $repository = new Repository();
-        $paginator  = $this->createMock(Paginator::class);
+        $paginator  = static::createStub(Paginator::class);
         $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
-        $paginatorVm = $this->createMock(PaginatorViewModel::class);
-        $timeline    = $this->createMock(TimelineViewModel::class);
+        $paginatorVm = static::createStub(PaginatorViewModel::class);
+        $timeline    = static::createStub(TimelineViewModel::class);
         $viewModel   = new ReviewsViewModel($repository, $paginator, $paginatorVm, '', '', $timeline);
 
         $revisionA = new Revision();

@@ -5,18 +5,18 @@ namespace DR\Review\ViewModelProvider;
 
 use Doctrine\DBAL\Exception;
 use DR\Review\Entity\Notification\Rule;
-use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Notification\RuleNotificationViewModel;
 use DR\Utils\Arrays;
 
-class RuleNotificationViewModelProvider
+readonly class RuleNotificationViewModelProvider
 {
     public function __construct(
-        private readonly User $user,
-        private readonly RuleRepository $ruleRepository,
-        private readonly RuleNotificationRepository $notificationRepository
+        private UserEntityProvider $userProvider,
+        private RuleRepository $ruleRepository,
+        private RuleNotificationRepository $notificationRepository
     ) {
     }
 
@@ -25,9 +25,9 @@ class RuleNotificationViewModelProvider
      */
     public function getNotificationsViewModel(?int $ruleId, bool $unread): RuleNotificationViewModel
     {
-        $notificationCount = $this->notificationRepository->getUnreadNotificationPerRuleCount($this->user);
-
-        $rules = $this->ruleRepository->findBy(['user' => $this->user, 'active' => true], ['name' => 'ASC'], 100);
+        $user              = $this->userProvider->getCurrentUser();
+        $notificationCount = $this->notificationRepository->getUnreadNotificationPerRuleCount($user);
+        $rules = $this->ruleRepository->findBy(['user' => $user, 'active' => true], ['name' => 'ASC'], 100);
         $rules = Arrays::reindex($rules, static fn(Rule $rule) => $rule->getId());
 
         $selectedRule  = null;

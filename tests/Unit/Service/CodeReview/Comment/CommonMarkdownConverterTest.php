@@ -18,7 +18,7 @@ class CommonMarkdownConverterTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $this->converter = new CommonMarkdownConverter($eventDispatcher);
     }
 

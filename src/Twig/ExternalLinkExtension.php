@@ -6,8 +6,7 @@ namespace DR\Review\Twig;
 use DR\Review\Entity\Config\ExternalLink;
 use DR\Review\Repository\Config\ExternalLinkRepository;
 use DR\Utils\Assert;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
 /**
  * Extension to inject urls to external parties by pattern.
@@ -16,7 +15,7 @@ use Twig\TwigFilter;
  * Replaces:
  *   JB1234 with <a href="https://mycompany.com/jira/JB1234">JB1234</a>
  */
-class ExternalLinkExtension extends AbstractExtension
+class ExternalLinkExtension
 {
     /** @var ExternalLink[]|null */
     private ?array $externalLinks = null;
@@ -25,16 +24,7 @@ class ExternalLinkExtension extends AbstractExtension
     {
     }
 
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('external_links', [$this, 'injectExternalLinks'], ['is_safe' => ['all']]),
-        ];
-    }
-
+    #[AsTwigFilter(name: 'external_links', isSafe: ['all'])]
     public function injectExternalLinks(string $content): string
     {
         $html = htmlspecialchars($content);

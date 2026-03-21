@@ -4,18 +4,18 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Review\Service\Git\Review\ReviewSessionService;
-use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
@@ -24,7 +24,7 @@ class UpdateFileSeenStatusController extends AbstractController
     public function __construct(
         private readonly FileSeenStatusService $fileSeenStatusService,
         private readonly ReviewDiffServiceInterface $diffService,
-        private readonly ReviewSessionService $sessionService,
+        private readonly UserReviewSettingsProvider $settingsProvider,
         private readonly CodeReviewRevisionService $revisionService,
     ) {
     }
@@ -38,11 +38,13 @@ class UpdateFileSeenStatusController extends AbstractController
     {
         $filePath   = $request->getFilePath();
         $seenStatus = $request->getSeenStatus();
-        $files      = $this->diffService->getDiffForRevisions(
-            Assert::notNull($review->getRepository()),
-            $this->revisionService->getRevisions($review),
-            new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $this->sessionService->getDiffComparePolicyForUser())
-        );
+        $options    = new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $this->settingsProvider->getComparisonPolicy());
+
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            $files = $this->diffService->getDiffForBranch($review, [], (string)$review->getReferenceId(), $options);
+        } else {
+            $files = $this->diffService->getDiffForRevisions($review->getRepository(), $this->revisionService->getRevisions($review), $options);
+        }
 
         // find filepath in files
         foreach ($files as $diffFile) {

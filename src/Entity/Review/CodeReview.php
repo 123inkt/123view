@@ -25,7 +25,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     operations: [
@@ -66,6 +66,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     arguments : ['orderParameterName' => 'order']
 )]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
+#[ORM\Index(name: 'IDX_TITLE', columns: ['title'])]
 #[ORM\Index(name: 'IDX_REPOSITORY_TITLE', columns: ['repository_id', 'title'])]
 #[ORM\Index(name: 'IDX_REPOSITORY_STATE', columns: ['repository_id', 'state'])]
 #[ORM\Index(name: 'IDX_CREATE_TIMESTAMP_REPOSITORY', columns: ['create_timestamp', 'repository_id'])]
@@ -82,7 +83,7 @@ class CodeReview
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['code-review:read'])]
-    private ?int $id = null;
+    private int $id;
 
     /** Unique key per project to have a incremental sequence per repository instead of a global sequence */
     #[ORM\Column]
@@ -100,7 +101,7 @@ class CodeReview
     #[Groups(['code-review:read'])]
     private string $description;
 
-    /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH  */
+    /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH */
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
     #[Groups(['code-review:read'])]
     private string $type = CodeReviewType::COMMITS;
@@ -114,6 +115,9 @@ class CodeReview
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
+
+    #[ORM\Column]
+    private bool $aiReviewRequested = false;
 
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
@@ -157,7 +161,12 @@ class CodeReview
         return $this;
     }
 
-    public function getId(): ?int
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
@@ -263,6 +272,18 @@ class CodeReview
     public function setExtReferenceId(?string $extReferenceId): self
     {
         $this->extReferenceId = $extReferenceId;
+
+        return $this;
+    }
+
+    public function isAiReviewRequested(): bool
+    {
+        return $this->aiReviewRequested;
+    }
+
+    public function setAiReviewRequested(bool $aiReviewRequested): self
+    {
+        $this->aiReviewRequested = $aiReviewRequested;
 
         return $this;
     }

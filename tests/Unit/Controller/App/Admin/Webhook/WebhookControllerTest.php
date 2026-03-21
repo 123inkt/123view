@@ -33,6 +33,7 @@ class WebhookControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNotFound(): void
     {
+        $this->webhookRepository->expects($this->never())->method('save');
         $request = new Request(attributes: ['id' => 5]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -42,10 +43,11 @@ class WebhookControllerTest extends AbstractControllerTestCase
 
     public function testInvokeEditWebhook(): void
     {
+        $this->webhookRepository->expects($this->never())->method('save');
         $request = new Request();
         $webhook = new Webhook();
 
-        $form = $this->createMock(FormView::class);
+        $form = static::createStub(FormView::class);
 
         $this->expectCreateForm(EditWebhookFormType::class, ['webhook' => $webhook])
             ->handleRequest($request)

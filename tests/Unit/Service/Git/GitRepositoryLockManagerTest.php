@@ -48,13 +48,14 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
 
         mkdir($this->cacheDirectory . '/git/', 0777, true);
 
-        $this->filesystem->expects(self::never())->method('mkdir');
+        $this->filesystem->expects($this->never())->method('mkdir');
 
         static::assertSame('result', $this->lockManager->start($repository, static fn() => 'result'));
     }
 
     public function testStartShouldBubbleExceptions(): void
     {
+        $this->filesystem->expects($this->never())->method('mkdir');
         $repository = new Repository();
         $repository->setId(123);
         $repository->setName('foobar');

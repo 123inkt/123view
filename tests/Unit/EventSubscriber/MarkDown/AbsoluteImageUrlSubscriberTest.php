@@ -29,8 +29,8 @@ class AbsoluteImageUrlSubscriberTest extends AbstractTestCase
 
     public function testHandleNonImageNodeShouldBeSkipped(): void
     {
-        $document    = $this->createMock(Document::class);
-        $defaultNode = $this->createMock(Node::class);
+        $document    = static::createStub(Document::class);
+        $defaultNode = static::createStub(Node::class);
         $iterator    = new ArrayIterator([$defaultNode]);
 
         $this->iteratorFactory->expects($this->once())->method('iterate')->with($document)->willReturn($iterator);
@@ -40,7 +40,7 @@ class AbsoluteImageUrlSubscriberTest extends AbstractTestCase
 
     public function testHandleAbsoluteImageNodeShouldBeSkipped(): void
     {
-        $document  = $this->createMock(Document::class);
+        $document  = static::createStub(Document::class);
         $imageNode = $this->createMock(Image::class);
         $iterator  = new ArrayIterator([$imageNode]);
 
@@ -53,7 +53,7 @@ class AbsoluteImageUrlSubscriberTest extends AbstractTestCase
 
     public function testHandleImageUrlShouldBeAbsolute(): void
     {
-        $document  = $this->createMock(Document::class);
+        $document  = static::createStub(Document::class);
         $imageNode = $this->createMock(Image::class);
         $iterator  = new ArrayIterator([$imageNode]);
 

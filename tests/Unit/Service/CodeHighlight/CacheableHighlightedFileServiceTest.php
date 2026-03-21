@@ -57,8 +57,8 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
         )();
 
         $this->cache->expects($this->once())->method('getItem')->with($hash)->willReturn($cacheItem);
-        $this->cache->expects(self::never())->method('get');
-        $this->fileService->expects(self::never())->method('fromDiffFile');
+        $this->cache->expects($this->never())->method('get');
+        $this->fileService->expects($this->never())->method('fromDiffFile');
 
         $actual = $this->service->fromDiffFile($repository, $diffFile);
         static::assertNotNull($actual);
@@ -111,7 +111,7 @@ class CacheableHighlightedFileServiceTest extends AbstractTestCase
 
         $this->cache->expects($this->once())->method('getItem')->with($hash)->willReturn($cacheItem);
         $this->fileService->expects($this->once())->method('fromDiffFile')->with($diffFile)->willReturn(null);
-        $this->cache->expects(self::never())->method('get')->with($hash);
+        $this->cache->expects($this->never())->method('get')->with($hash);
 
         static::assertNull($this->service->fromDiffFile($repository, $diffFile));
     }

@@ -36,6 +36,7 @@ class UriTypeTest extends AbstractTestCase
 
     public function testGetName(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         static::assertSame(UriType::TYPE, $this->type->getName());
     }
 
@@ -44,6 +45,7 @@ class UriTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValueFailure(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value');
         $this->type->convertToDatabaseValue('foobar', $this->platform);
@@ -54,6 +56,7 @@ class UriTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValue(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         static::assertNull($this->type->convertToDatabaseValue(null, $this->platform));
         static::assertSame(
             'https://example.com/',
@@ -66,6 +69,7 @@ class UriTypeTest extends AbstractTestCase
      */
     public function testConvertToPHPValueFailure(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert PHP value');
         $this->type->convertToPHPValue(new stdClass(), $this->platform);
@@ -76,6 +80,7 @@ class UriTypeTest extends AbstractTestCase
      */
     public function testConvertToPHPValue(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         static::assertNull($this->type->convertToPHPValue(null, $this->platform));
         static::assertEquals(Uri::new('https://example.com/'), $this->type->convertToPHPValue('https://example.com/', $this->platform));
     }

@@ -3,23 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Twig;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class HtmlMailExtension extends AbstractExtension
+class HtmlMailExtension
 {
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        return [new TwigFilter('html_mail', [$this, 'convert'], ['is_safe' => ['all']])];
-    }
-
     /**
      * Email-client html presentation is limited and disallows to remove margin from ul and ol. Transform this element to simple plaintext
      * bullet list
      */
+    #[AsTwigFilter(name: 'html_mail', isSafe: ['all'])]
     public function convert(string $string): string
     {
         // remove `ul` and `ol`

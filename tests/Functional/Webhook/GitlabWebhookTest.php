@@ -14,6 +14,7 @@ use Exception;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
@@ -46,7 +47,7 @@ class GitlabWebhookTest extends AbstractFunctionalTestCase
         $server = ['HTTP_X_GITLAB_EVENT' => 'Push Hook', 'HTTP_X_GITLAB_TOKEN' => '123test'];
 
         // execute
-        $this->client->request('POST', '/webhook/gitlab', [], [], $server, Json::encode($body));
+        $this->client->request(Request::METHOD_POST, '/webhook/gitlab', [], [], $server, Json::encode($body));
         self::assertResponseIsSuccessful();
 
         $response = $this->client->getResponse();

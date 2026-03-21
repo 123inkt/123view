@@ -21,12 +21,12 @@ class DocumentNodeIteratorFactoryTest extends AbstractTestCase
 
     public function testIterate(): void
     {
-        $nextNode = $this->createMock(Node::class);
+        $nextNode = static::createStub(Node::class);
 
-        $childNode = $this->createMock(Node::class);
+        $childNode = static::createStub(Node::class);
         $childNode->method('next')->willReturn($nextNode);
 
-        $node = $this->createMock(Node::class);
+        $node = static::createStub(Node::class);
         $node->method('firstChild')->willReturn($childNode);
 
         $nodes = [];

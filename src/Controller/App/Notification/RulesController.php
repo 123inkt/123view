@@ -7,7 +7,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\Rule\RulesViewModel;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RulesController extends AbstractController

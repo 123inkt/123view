@@ -33,8 +33,9 @@ class FileDiffViewModelAppenderTest extends AbstractTestCase
 
     public function testAccepts(): void
     {
+        $this->fileDiffViewModelProvider->expects($this->never())->method('getFileDiffViewModel');
         $dto       = $this->createDto();
-        $viewModel = $this->createMock(ReviewViewModel::class);
+        $viewModel = static::createStub(ReviewViewModel::class);
 
         static::assertTrue($this->appender->accepts($dto, $viewModel));
     }
@@ -62,6 +63,7 @@ class FileDiffViewModelAppenderTest extends AbstractTestCase
 
         return new CodeReviewDto(
             new CodeReview(),
+            [],
             [$revision],
             [$revision],
             new DirectoryTreeNode('name'),
@@ -70,7 +72,8 @@ class FileDiffViewModelAppenderTest extends AbstractTestCase
             'tab',
             DiffComparePolicy::ALL,
             ReviewDiffModeEnum::INLINE,
-            null
+            null,
+            6
         );
     }
 }

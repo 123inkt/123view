@@ -88,9 +88,6 @@
         data-url="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewFileTreeController', {id: fileTreeModel.review.id}) }}"
         {{ stimulus_target('review-navigation', 'reviewFileTree') }}
         data-review-id="{{ fileTreeModel.review.id }}"
-        {% if fileTreeModel.selectedFile is not same as (null) -%}
-            data-selected-file="{{ fileTreeModel.selectedFile|review_file_path }}"
-        {%- endif -%}
 >
     {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}
 </div>

@@ -46,8 +46,8 @@
 
                     <div class="comment__reply-bar">
                     <a class="comment__reply-link"
-                       href="{{ app_absolute_url ~ path('DR\\Review\\Controller\\App\\Review\\ReviewController',
-                           {review, filePath: comment.lineReference.filePath, action: 'add-reply:' ~ comment.id}
+                       href="{{ url('DR\\Review\\Controller\\App\\Review\\ReviewController',
+                           {review, filePath: comment.filePath, action: 'add-reply:' ~ comment.id}
                        )}}">
                         {{- 'reply.to.this.comment'|trans -}}
                     </a>

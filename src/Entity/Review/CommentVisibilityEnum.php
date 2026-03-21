@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
-enum CommentVisibility: string
+enum CommentVisibilityEnum: string
 {
     case ALL = 'all';
     case UNRESOLVED = 'unresolved';

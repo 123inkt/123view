@@ -48,6 +48,7 @@ class BranchReviewCloseCommandTest extends AbstractTestCase
             ->with(['repository' => $repository, 'type' => 'branch', 'state' => 'open'])
             ->willReturn([]);
         $this->branchService->expects($this->never())->method('getRemoteBranches');
+        $this->reviewEventService->expects($this->never())->method('reviewStateChanged');
 
         (new CommandTester($this->command))->execute([]);
     }
@@ -63,6 +64,7 @@ class BranchReviewCloseCommandTest extends AbstractTestCase
             ->willReturn([$review]);
         $this->branchService->expects($this->once())->method('getRemoteBranches')->with($repository)->willReturn(['origin/branch']);
         $this->reviewRepository->expects($this->never())->method('save');
+        $this->reviewEventService->expects($this->never())->method('reviewStateChanged');
 
         (new CommandTester($this->command))->execute([]);
     }

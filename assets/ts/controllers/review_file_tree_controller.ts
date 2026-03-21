@@ -13,7 +13,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
     private readonly fileTreeService     = new ReviewFileTreeService();
     private readonly declare activeFileTarget: HTMLElement;
     private readonly declare hasActiveFileTarget: boolean;
-    private reviewId: number             = 0;
+    private reviewId                     = 0;
 
     public connect(): void {
         this.reviewId = DataSet.int(this.element, 'reviewId');
@@ -21,7 +21,7 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
             this.activeFileTarget.scrollIntoView({block: 'center'});
         }
         this.notificationService.subscribe(
-            '/review/' + String(this.reviewId),
+            `/review/${String(this.reviewId)}`,
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
             this.updateReviewFileTree.bind(this),
             this.reviewId
@@ -29,12 +29,12 @@ export default class ReviewFileTreeController extends Controller<HTMLElement> {
     }
 
     public disconnect(): void {
-        this.notificationService.unsubscribe('/review/' + String(this.reviewId));
+        this.notificationService.unsubscribe(`/review/${String(this.reviewId)}`);
     }
 
     public updateReviewFileTree(): void {
         const url      = DataSet.string(this.element, 'url');
-        const filePath = DataSet.stringOrNull(this.element, 'selectedFile');
+        const filePath = this.element.querySelector<HTMLElement>('[data-role="file-tree-url"][data-selected="1"]')?.dataset.reviewFilePath ?? null;
         this.fileTreeService.getReviewFileTree(url, filePath)
             .then(element => this.element.replaceWith(element))
             .catch(Function.empty);

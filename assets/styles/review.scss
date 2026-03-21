@@ -4,15 +4,34 @@
 
 .review-grid-layout {
     display: grid;
-    grid-gap: 10px var(--review-sidebar-gap);
-    grid-template-columns: var(--review-sidebar-width) auto;
+    gap: 10px var(--review-sidebar-gap);
     grid-template-rows: auto 1fr;
     height: calc(100vh - 56px);
 }
 
-/* Review detail page */
-.review-grid-layout .review-grid-header {
-    grid-column: 1 / 3;
+.review-grid-layout {
+    .review-split-panel {
+        display: grid;
+        grid-template-columns: var(--review-sidebar-width) 10px auto;
+        overflow-y: auto;
+    }
+
+    .review-split-panel-left,
+    .review-split-panel-right {
+        display: grid;
+        overflow-y: auto;
+    }
+
+    .review-split-panel-divider {
+        margin: 0 2px;
+        cursor: e-resize;
+        user-select: none;
+
+        &:hover, &.dragging {
+            background-color: var(--bs-body-color);
+            opacity: 0.3;
+        }
+    }
 }
 
 .review-grid-layout .review-grid-sidebar,
@@ -179,5 +198,8 @@
 
 .review-change-branch-form {
     display: inline-block;
+    padding-top: 3px;
     max-width: 150px;
+    overflow: hidden;
+    height: 37px;
 }

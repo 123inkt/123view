@@ -17,7 +17,7 @@ class ProjectsViewModelTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->viewModel = $this->createMock(TimelineViewModel::class);
+        $this->viewModel = static::createStub(TimelineViewModel::class);
     }
 
     public function testGetRepositories(): void

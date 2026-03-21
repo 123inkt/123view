@@ -94,6 +94,11 @@ class RepositoryType extends AbstractType
 
         if ($this->gitlabApiUrl !== '') {
             $builder->add('gitlabProjectId', GitlabProjectIdType::class);
+            $builder->add(
+                'gitApprovalSync',
+                CheckboxType::class,
+                ['required' => false, 'label' => 'git.approval.sync.label.checkbox']
+            );
         }
 
         $builder->get('url')->addModelTransformer(new RepositoryUrlTransformer());

@@ -57,7 +57,7 @@ class RecoverableReviewDiffServiceTest extends AbstractTestCase
         $options          = new FileDiffOptions(5, DiffComparePolicy::ALL);
         $branchName       = 'branch';
 
-        $exception = $this->createMock(ProcessFailedException::class);
+        $exception = static::createStub(ProcessFailedException::class);
 
         $this->diffService->expects($this->exactly(2))->method('getDiffForBranch')
             ->with($review, $revisions, $branchName, $options)
@@ -80,7 +80,7 @@ class RecoverableReviewDiffServiceTest extends AbstractTestCase
         $options          = new FileDiffOptions(5, DiffComparePolicy::ALL);
         $branchName       = 'branch';
 
-        $exception = $this->createMock(ProcessFailedException::class);
+        $exception = static::createStub(ProcessFailedException::class);
 
         $this->diffService->expects($this->once())->method('getDiffForBranch')
             ->with($review, $revisions, $branchName, $options)

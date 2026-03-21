@@ -76,6 +76,7 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
             ->method('dispatch')
             ->with(new Envelope(new ReviewRevisionAdded(123, 456, null, 'title')))
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionAddedToReview($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
     }
@@ -98,6 +99,7 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::CLOSED);
     }
@@ -115,6 +117,7 @@ class ReviewRevisionEventServiceTest extends AbstractTestCase
             ->method('dispatch')
             ->with(new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title')))
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::OPEN);
     }

@@ -14,7 +14,7 @@ export default class extends Controller<HTMLElement> {
 
     public commentUpdated(event: CustomEvent<string>): void {
         Events.stop(event);
-        if (parseInt(event.detail) !== this.idValue) {
+        if (parseInt(event.detail, 10) !== this.idValue) {
             return;
         }
         this.updateCommentThread();
@@ -22,7 +22,7 @@ export default class extends Controller<HTMLElement> {
 
     public editComment(event: Event): void {
         Events.stop(event);
-        this.updateCommentThread('edit-comment:' + String(this.idValue));
+        this.updateCommentThread(`edit-comment:${String(this.idValue)}`);
     }
 
     public deleteComment(event: Event): void {
@@ -41,7 +41,7 @@ export default class extends Controller<HTMLElement> {
 
     public replyToComment(event: Event): void {
         Events.stop(event);
-        this.updateCommentThread('add-reply:' + String(this.idValue));
+        this.updateCommentThread(`add-reply:${String(this.idValue)}`);
     }
 
     public reactToComment(event: Event): void {
@@ -59,7 +59,7 @@ export default class extends Controller<HTMLElement> {
 
     public editReplyComment(event: Event): void {
         Events.stop(event);
-        this.updateCommentThread('edit-reply:' + String((event.currentTarget as HTMLElement).dataset.replyId));
+        this.updateCommentThread(`edit-reply:${String((event.currentTarget as HTMLElement).dataset.replyId)}`);
     }
 
     public deleteReplyComment(event: Event): void {

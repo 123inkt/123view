@@ -34,6 +34,8 @@ class ChangeReviewTargetBranchFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->branchService->expects($this->never())->method('getRemoteBranches');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -84,6 +86,8 @@ class ChangeReviewTargetBranchFormTypeTest extends AbstractTestCase
 
     public function testGetBlockPrefix(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->branchService->expects($this->never())->method('getRemoteBranches');
         static::assertSame('', $this->type->getBlockPrefix());
     }
 }

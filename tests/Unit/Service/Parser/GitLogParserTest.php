@@ -36,6 +36,8 @@ class GitLogParserTest extends AbstractTestCase
     public function testGetPattern(): void
     {
         $this->patternFactory->expects($this->once())->method('createPattern')->willReturn('foobar');
+        $this->diffParser->expects($this->never())->method('parse');
+        $this->hydrator->expects($this->never())->method('hydrate');
         static::assertSame('foobar', $this->parser->getPattern());
     }
 
@@ -44,6 +46,9 @@ class GitLogParserTest extends AbstractTestCase
      */
     public function testParseIncorrectPatternParts(): void
     {
+        $this->diffParser->expects($this->never())->method('parse');
+        $this->hydrator->expects($this->never())->method('hydrate');
+        $this->patternFactory->expects($this->never())->method('createPattern');
         // commit
         $commitLog  = FormatPatternFactory::COMMIT_DELIMITER;
         $commitLog  .= implode(FormatPatternFactory::PARTS_DELIMITER, ["foo", "bar"]);
@@ -73,6 +78,7 @@ class GitLogParserTest extends AbstractTestCase
             ->method('hydrate')
             ->with($repository, static::callback(static fn($value) => is_array($value)), $files)
             ->willReturn($commit);
+        $this->patternFactory->expects($this->never())->method('createPattern');
 
         // test it
         $commits = $this->parser->parse($repository, $commitLog);
@@ -101,6 +107,7 @@ class GitLogParserTest extends AbstractTestCase
             ->with(...consecutive(['commitA-part10'], ['commitB-part10']))
             ->willReturn([]);
         $this->hydrator->expects($this->exactly(2))->method('hydrate')->willReturn($commitA, $commitB);
+        $this->patternFactory->expects($this->never())->method('createPattern');
 
         // test it
         $commits = $this->parser->parse($repository, $commitLog);
@@ -124,6 +131,7 @@ class GitLogParserTest extends AbstractTestCase
         // prepare mocks
         $this->diffParser->expects($this->once())->method('parse')->with('commitA-part10')->willReturn([]);
         $this->hydrator->expects($this->once())->method('hydrate')->willReturn($commit);
+        $this->patternFactory->expects($this->never())->method('createPattern');
 
         // test it
         $commits = $this->parser->parse(new Repository(), $commitLog, 1);

@@ -29,8 +29,7 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
     {
         parent::setUp();
         $this->request = new Request(content: 'content');
-        $stack         = new RequestStack();
-        $stack->push($this->request);
+        $stack         = new RequestStack([$this->request]);
         $this->validator         = $this->createMock(ValidatorInterface::class);
         $this->constraintFactory = $this->createMock(RequestConstraintFactory::class);
 
@@ -45,7 +44,7 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
 
     protected function expectGetValidationRules(?ValidationRules $rules): void
     {
-        $constraint    = $this->createMock(RequestConstraint::class);
+        $constraint    = static::createStub(RequestConstraint::class);
         $violationList = new ConstraintViolationList();
 
         $this->constraintFactory

@@ -42,7 +42,7 @@ class GitlabCommentFormatterTest extends AbstractTestCase
             ->willReturn('/path/to/review');
 
         static::assertSame(
-            "foo\nbar<br>\n<br>\n*[123view: CR-123](https://example.com/path/to/review#focus:comment:456)*",
+            "foo\nbar\n<br>\n<br>\n[123view: CR-123](https://example.com/path/to/review#focus:comment:456)",
             $this->formatter->format($comment)
         );
     }

@@ -34,6 +34,7 @@ class SpaceSeparatedStringValueTypeTest extends AbstractTestCase
 
     public function testGetName(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         static::assertSame(SpaceSeparatedStringValueType::TYPE, $this->type->getName());
     }
 
@@ -42,6 +43,7 @@ class SpaceSeparatedStringValueTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValue(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         static::assertSame('foo bar', $this->type->convertToDatabaseValue(['foo', 'bar'], $this->platform));
     }
 
@@ -50,6 +52,7 @@ class SpaceSeparatedStringValueTypeTest extends AbstractTestCase
      */
     public function testConvertToPHPValue(): void
     {
+        $this->platform->expects($this->never())->method('getStringTypeDeclarationSQL');
         $result = $this->type->convertToPHPValue(' foo bar', $this->platform);
         static::assertNotNull($result);
         static::assertSame(['foo', 'bar'], array_values($result));

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests;
 
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase as ExtensionsAbstractControllerTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Psr\Log\LoggerInterface;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,13 +18,13 @@ use Symfony\Component\Messenger\Envelope;
  */
 abstract class AbstractControllerTestCase extends ExtensionsAbstractControllerTestCase
 {
-    protected MockObject&LoggerInterface $logger;
+    protected Stub&LoggerInterface $logger;
     protected Envelope $envelope;
 
     protected function setUp(): void
     {
         $this->envelope = new Envelope(new stdClass(), []);
-        $this->logger   = $this->createMock(LoggerInterface::class);
+        $this->logger   = static::createStub(LoggerInterface::class);
         parent::setUp();
     }
 

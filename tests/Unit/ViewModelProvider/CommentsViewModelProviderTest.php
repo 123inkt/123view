@@ -8,12 +8,11 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\CommentVisibility;
+use DR\Review\Entity\Review\CommentVisibilityEnum;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Service\CodeReview\Comment\CommentVisibilityProvider;
-use DR\Review\Service\CodeReview\DiffComparePolicyProvider;
 use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,24 +22,21 @@ use function DR\PHPUnitExtensions\Mock\consecutive;
 #[CoversClass(CommentsViewModelProvider::class)]
 class CommentsViewModelProviderTest extends AbstractTestCase
 {
-    private CommentRepository&MockObject         $commentRepository;
-    private DiffFinder&MockObject                $diffFinder;
-    private DiffComparePolicyProvider&MockObject $comparePolicyProvider;
-    private CommentVisibilityProvider&MockObject $visibilityProvider;
-    private CommentsViewModelProvider            $provider;
+    private CommentRepository&MockObject            $commentRepository;
+    private DiffFinder&MockObject                   $diffFinder;
+    private UserReviewSettingsProvider&MockObject   $settingsProvider;
+    private CommentsViewModelProvider               $provider;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->commentRepository     = $this->createMock(CommentRepository::class);
-        $this->diffFinder            = $this->createMock(DiffFinder::class);
-        $this->comparePolicyProvider = $this->createMock(DiffComparePolicyProvider::class);
-        $this->visibilityProvider    = $this->createMock(CommentVisibilityProvider::class);
-        $this->provider              = new CommentsViewModelProvider(
+        $this->commentRepository  = $this->createMock(CommentRepository::class);
+        $this->diffFinder         = $this->createMock(DiffFinder::class);
+        $this->settingsProvider   = $this->createMock(UserReviewSettingsProvider::class);
+        $this->provider           = new CommentsViewModelProvider(
             $this->commentRepository,
             $this->diffFinder,
-            $this->comparePolicyProvider,
-            $this->visibilityProvider
+            $this->settingsProvider
         );
     }
 
@@ -68,13 +64,13 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->method('findLineInFile')
             ->with(...consecutive([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))
             ->willReturn($line, null);
-        $this->comparePolicyProvider->expects($this->once())->method('getComparePolicy')->willReturn(DiffComparePolicy::IGNORE);
-        $this->visibilityProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibility::NONE);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->settingsProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibilityEnum::NONE);
 
         $viewModel = $this->provider->getCommentsViewModel($review, $fileBefore, $file);
         static::assertSame([$commentA], $viewModel->getComments($line));
         static::assertSame([$commentB], $viewModel->detachedComments);
         static::assertSame(DiffComparePolicy::IGNORE, $viewModel->comparisonPolicy);
-        static::assertSame(CommentVisibility::NONE, $viewModel->commentVisibility);
+        static::assertSame(CommentVisibilityEnum::NONE, $viewModel->commentVisibility);
     }
 }

@@ -140,4 +140,25 @@ class CodeReviewRepository extends ServiceEntityRepository
 
         return $reviews;
     }
+
+    /**
+     * Find all CodeReviews with the same title as the given CodeReview.
+     * The Repository entity is eagerly fetched to minimize database queries.
+     *
+     * @return CodeReview[]
+     */
+    public function findByTitle(CodeReview $codeReview): array
+    {
+        /** @var CodeReview[] $reviews */
+        $reviews = $this->createQueryBuilder('c')
+            ->innerJoin('c.repository', 'r')
+            ->addSelect('r')
+            ->where('c.title = :title')
+            ->setParameter('title', $codeReview->getTitle())
+            ->orderBy('r.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $reviews;
+    }
 }

@@ -19,11 +19,6 @@ class ReviewExtensionTest extends AbstractTestCase
         $this->extension = new ReviewExtension();
     }
 
-    public function testGetFilters(): void
-    {
-        static::assertCount(1, $this->extension->getFilters());
-    }
-
     public function testFilePathWithHash(): void
     {
         $diffFile                = new DiffFile();

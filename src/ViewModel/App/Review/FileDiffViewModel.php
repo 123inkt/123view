@@ -20,8 +20,11 @@ class FileDiffViewModel
     /** @var Revision[] */
     private array $revisions = [];
 
-    public function __construct(public readonly DiffFile $selectedFile, public readonly ReviewDiffModeEnum $diffMode)
-    {
+    public function __construct(
+        public readonly DiffFile $selectedFile,
+        public readonly ReviewDiffModeEnum $diffMode,
+        public readonly int $visibleLines
+    ) {
     }
 
     /**

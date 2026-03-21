@@ -40,7 +40,7 @@ class WebhookType extends AbstractType
                 'label'       => 'retries',
                 'required'    => true,
                 'attr'        => ['min' => 0, 'max' => 10],
-                'constraints' => [new Assert\Range(['min' => 0, 'max' => 10])]
+                'constraints' => [new Assert\Range(min: 0, max: 10)]
             ]
         );
         $builder->add('enabled', CheckboxType::class, ['label' => 'enabled', 'required' => false]);

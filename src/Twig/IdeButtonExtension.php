@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace DR\Review\Twig;
 
 use DR\Review\Service\User\IdeUrlPatternProvider;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 
-class IdeButtonExtension extends AbstractExtension
+class IdeButtonExtension
 {
     public function __construct(
         private readonly bool $enabled,
@@ -22,16 +21,9 @@ class IdeButtonExtension extends AbstractExtension
     }
 
     /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        return [new TwigFunction('ide_button', [$this, 'createLink'], ['is_safe' => ['all']])];
-    }
-
-    /**
      * @throws SyntaxError|RuntimeError|LoaderError
      */
+    #[AsTwigFunction(name: 'ide_button', isSafe: ['all'])]
     public function createLink(string $file, int $line = 1): string
     {
         if ($this->enabled === false) {

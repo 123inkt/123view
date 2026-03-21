@@ -40,9 +40,11 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUnknownRepository(): void
     {
-        $request = $this->createMock(UploadCodeCoverageRequest::class);
+        $request = static::createStub(UploadCodeCoverageRequest::class);
 
         $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(null);
+        $this->reportRepository->expects($this->never())->method('save');
+        $this->reportFactory->expects($this->never())->method('parse');
 
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)($request, 'repository', 'hash');
@@ -50,11 +52,13 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
     public function testInvokeEmptyBody(): void
     {
-        $request = $this->createMock(UploadCodeCoverageRequest::class);
+        $request = static::createStub(UploadCodeCoverageRequest::class);
         $request->method('getData')->willReturn('');
         $repository = new Repository();
 
         $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+        $this->reportRepository->expects($this->never())->method('save');
+        $this->reportFactory->expects($this->never())->method('parse');
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Body cannot be empty.');
@@ -63,7 +67,7 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(UploadCodeCoverageRequest::class);
+        $request = static::createStub(UploadCodeCoverageRequest::class);
         $request->method('getFormat')->willReturn('format');
         $request->method('getBasePath')->willReturn('basePath');
         $request->method('getBranchId')->willReturn('branchId');

@@ -8,7 +8,7 @@ use DR\Review\Controller\App\Project\ProjectsController;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserApprovalPendingController extends AbstractController

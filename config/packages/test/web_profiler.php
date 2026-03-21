@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\FrameworkConfig;
-use Symfony\Config\WebProfilerConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (WebProfilerConfig $profiler, FrameworkConfig $framework): void {
-    $profiler->toolbar(false)->interceptRedirects(false);
-    $framework->profiler()->collect(false);
-};
+return App::config([
+    'web_profiler' => [
+        'toolbar'             => ['enabled' => false],
+        'intercept_redirects' => false,
+    ],
+    'framework'    => ['profiler' => ['collect' => false]],
+]);

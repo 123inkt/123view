@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import Assert from '../../lib/Assert';
 
 export default class extends Controller {
     public static targets = ['toggle'];
@@ -8,7 +9,7 @@ export default class extends Controller {
         const role      = target.dataset.forRole;
         const revisions = this.getRevisions();
 
-        revisions.forEach(el => el.querySelector<HTMLInputElement>(`[data-role~="${role}"]`)!.checked = target.checked);
+        revisions.forEach(el => Assert.notNull(el.querySelector<HTMLInputElement>(`[data-role~="${role}"]`)).checked = target.checked);
     }
 
     private getRevisions(): HTMLElement[] {

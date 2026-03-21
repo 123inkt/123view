@@ -27,7 +27,7 @@ class MercureHub extends AbstractCheck
     #[Override]
     public function check(): ResultInterface
     {
-        $response = $this->httpClient->request('POST', $this->hub->getUrl());
+        $response = $this->httpClient->request('POST', $this->hub->getPublicUrl());
         if (in_array($response->getStatusCode(), [200, 401], true) === false) {
             return new Failure('Mercure hub is not reachable');
         }

@@ -31,7 +31,7 @@ class RepositoryChoiceType extends AbstractType
                 'choice_translation_domain' => false,
                 'multiple'                  => true,
                 'expanded'                  => true,
-                'constraints'               => [new Assert\Count(['min' => 1, 'minMessage' => 'At least {{ limit }} repository is required'])]
+                'constraints'               => [new Assert\Count(min: 1, minMessage: 'At least {{ limit }} repository is required')]
             ]
         );
     }

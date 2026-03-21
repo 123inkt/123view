@@ -33,7 +33,7 @@ class GitShowCommandBuilderTest extends AbstractTestCase
                 '--unified=5',
                 '--no-patch',
                 '--format="format"',
-                'hash:file',
+                escapeshellarg('hash:file'),
                 '--ignore-space-at-eol',
                 '--ignore-cr-at-eol',
                 '--ignore-space-change',
@@ -57,7 +57,7 @@ class GitShowCommandBuilderTest extends AbstractTestCase
     public function testToString(): void
     {
         static::assertSame(
-            'git show foobar --unified=5 --no-patch --format="format" hash:file --ignore-space-at-eol --ignore-cr-at-eol',
+            'git show foobar --unified=5 --no-patch --format="format" ' . escapeshellarg('hash:file') . ' --ignore-space-at-eol --ignore-cr-at-eol',
             (string)$this->builder->startPoint('foobar')
                 ->unified(5)
                 ->noPatch()

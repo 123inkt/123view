@@ -29,11 +29,11 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
         $this->git        = $this->createMock(Git::class);
         $this->filesystem = $this->createMock(Filesystem::class);
         $this->service    = new CacheableGitRepositoryService(
-            $this->createMock(LoggerInterface::class),
+            static::createStub(LoggerInterface::class),
             $this->git,
             $this->filesystem,
             null,
-            $this->createMock(GitRepositoryLocationService::class)
+            static::createStub(GitRepositoryLocationService::class)
         );
     }
 
@@ -45,7 +45,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
         $repository->setUrl(Uri::new('https://my.repository.com'));
-        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository = static::createStub(GitRepository::class);
 
         // setup mocks
         $this->filesystem->expects($this->once())->method('exists')->willReturn(false);

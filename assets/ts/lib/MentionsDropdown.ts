@@ -1,9 +1,9 @@
 import type User from './User';
 
 export default class MentionsDropdown {
-    private visible: boolean = false;
-    private users: User[]    = [];
-    private selected: number = 0;
+    private visible       = false;
+    private users: User[] = [];
+    private selected      = 0;
 
     constructor(private readonly dropdown: HTMLElement) {
     }
@@ -44,7 +44,7 @@ export default class MentionsDropdown {
             return this.users[this.selected];
         }
 
-        const userId = parseInt(element.dataset.userId ?? '0');
+        const userId = parseInt(element.dataset.userId ?? '0', 10);
         for (const user of this.users) {
             if (user.id === userId) {
                 return user;

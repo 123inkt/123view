@@ -4,19 +4,11 @@ declare(strict_types=1);
 namespace DR\Review\Twig;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class ReviewExtension extends AbstractExtension
+class ReviewExtension
 {
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        return [new TwigFilter('review_file_path', [$this, 'filePath'])];
-    }
-
+    #[AsTwigFilter(name: 'review_file_path')]
     public function filePath(DiffFile $file): string
     {
         $filepath = $file->getPathname();

@@ -14,7 +14,7 @@ use DR\Utils\Assert;
 use Exception;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -25,7 +25,7 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 #[CoversNothing]
 class MailCommandTest extends AbstractKernelTestCase
 {
-    private GitRepositoryService&MockObject $repositoryService;
+    private GitRepositoryService&Stub $repositoryService;
     private MessageEventCollector           $messageCollector;
 
     /**
@@ -38,12 +38,12 @@ class MailCommandTest extends AbstractKernelTestCase
         $fixtureLoader  = Assert::isInstanceOf(static::getContainer()->get(DatabaseToolCollection::class), DatabaseToolCollection::class)->get();
         $fixtureLoader->loadFixtures([MailCommandTestFixtures::class]);
 
-        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
+        $this->repositoryService = static::createStub(CacheableGitRepositoryService::class);
         $this->messageCollector  = new MessageEventCollector();
 
         // register mock repository service
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
-        self::getContainer()->set(RevisionFetchService::class, $this->createMock(RevisionFetchService::class));
+        self::getContainer()->set(RevisionFetchService::class, static::createStub(RevisionFetchService::class));
 
         // register MessageEventCollector to subscribe to send e-mails
         /** @var EventDispatcherInterface|null $dispatcher */
@@ -55,7 +55,7 @@ class MailCommandTest extends AbstractKernelTestCase
     public function testMail(): void
     {
         // setup repository mocks
-        $repository = $this->createMock(GitRepository::class);
+        $repository = static::createStub(GitRepository::class);
         $this->repositoryService->method('getRepository')->willReturn($repository);
         $repository->method('execute')->willReturn($this->getFileContents('git-log-commits.txt'));
 

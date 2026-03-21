@@ -9,6 +9,7 @@ use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class RevisionVisibilityServiceTest extends AbstractTestCase
 {
     private RevisionVisibilityRepository&MockObject $visibilityRepository;
+    private UserEntityProvider&MockObject           $userProvider;
     private RevisionVisibilityService               $service;
     private User                                    $user;
 
@@ -26,15 +28,23 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $this->user = new User();
         $this->user->setId(789);
         $this->visibilityRepository = $this->createMock(RevisionVisibilityRepository::class);
-        $this->service              = new RevisionVisibilityService($this->user, $this->visibilityRepository);
+        $this->userProvider         = $this->createMock(UserEntityProvider::class);
+        $this->service              = new RevisionVisibilityService($this->userProvider, $this->visibilityRepository);
     }
 
     public function testGetVisibleRevisionsWithoutVisibility(): void
     {
         $revision = new Revision();
-        $review   = new CodeReview();
+        $review   = (new CodeReview())->setId(123);
 
-        $this->visibilityRepository->expects($this->once())->method('findBy')->willReturn([]);
+        $this->userProvider->expects($this->once())
+            ->method('getUser')
+            ->willReturn($this->user);
+
+        $this->visibilityRepository->expects($this->once())
+            ->method('findBy')
+            ->with(['review' => 123, 'user' => 789])
+            ->willReturn([]);
 
         static::assertSame([$revision], $this->service->getVisibleRevisions($review, [$revision]));
     }
@@ -56,6 +66,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $visibilityB = new RevisionVisibility();
         $visibilityB->setRevision($revisionB)->setVisible(false);
 
+        $this->userProvider->expects($this->once())->method('getUser')->willReturn($this->user);
         $this->visibilityRepository->expects($this->once())
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
@@ -83,6 +94,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
             ->method('findBy')
             ->with(['review' => 123, 'user' => 789])
             ->willReturn([$visibilityA]);
+        $this->userProvider->expects($this->never())->method('getUser');
 
         $result = $this->service->getRevisionVisibilities($review, [$revisionA, $revisionB], $this->user);
         static::assertCount(2, $result);
@@ -104,6 +116,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
 
         $this->visibilityRepository->expects($this->once())->method('findBy')->with(['review' => 123, 'user' => 789])->willReturn([$visibility]);
         $this->visibilityRepository->expects($this->once())->method('saveAll')->with([$visibility], true);
+        $this->userProvider->expects($this->never())->method('getUser');
 
         $this->service->setRevisionVisibility($review, [$revision], $this->user, false);
     }
@@ -113,8 +126,9 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->visibilityRepository->expects(self::never())->method('findBy');
-        $this->visibilityRepository->expects(self::never())->method('saveAll');
+        $this->visibilityRepository->expects($this->never())->method('findBy');
+        $this->visibilityRepository->expects($this->never())->method('saveAll');
+        $this->userProvider->expects($this->never())->method('getUser');
 
         $this->service->setRevisionVisibility($review, [], $this->user, false);
     }

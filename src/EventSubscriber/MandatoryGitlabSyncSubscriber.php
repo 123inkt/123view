@@ -1,0 +1,77 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\EventSubscriber;
+
+use DR\Review\Controller\App\User\Gitlab\UserGitlabOAuth2FinishController;
+use DR\Review\Controller\App\User\Gitlab\UserGitlabOAuth2StartController;
+use DR\Review\Controller\App\User\UserMandatoryGitlabSyncController;
+use DR\Review\Controller\Auth\LogoutController;
+use DR\Review\Doctrine\Type\RepositoryGitType;
+use DR\Review\Entity\User\User;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+#[AsEventListener(KernelEvents::REQUEST)]
+readonly class MandatoryGitlabSyncSubscriber
+{
+    private const array ALLOWED_CONTROLLERS = [
+        UserGitlabOAuth2StartController::class,
+        UserGitlabOAuth2FinishController::class,
+        UserMandatoryGitlabSyncController::class,
+        LogoutController::class
+    ];
+
+    public function __construct(
+        private bool $gitlabCommentSyncEnabled,
+        private bool $gitlabReviewerSyncEnabled,
+        private bool $gitlabSyncMandatory,
+        private Security $security,
+        private UrlGeneratorInterface $urlGenerator
+    ) {
+    }
+
+    public function __invoke(RequestEvent $event): void
+    {
+        $user = $this->security->getUser();
+        // skip if not logged in
+        if ($user instanceof User === false) {
+            return;
+        }
+
+        // skip if the controller is whitelisted
+        $attributes = $event->getRequest()->attributes->all();
+        if (in_array($attributes['_controller'] ?? '', self::ALLOWED_CONTROLLERS, true)) {
+            return;
+        }
+
+        // skip api urls
+        if (str_starts_with($event->getRequest()->getRequestUri(), '/api')) {
+            return;
+        }
+
+        // skip if sync is not configured
+        if ($this->gitlabCommentSyncEnabled === false && $this->gitlabReviewerSyncEnabled === false) {
+            return;
+        }
+
+        // skip if sync is not mandatory
+        if ($this->gitlabSyncMandatory === false) {
+            return;
+        }
+
+        // skip if user already has a gitlab token
+        $token = $user->getGitAccessTokens()->findFirst(static fn($key, $token) => $token->getGitType() === RepositoryGitType::GITLAB);
+        if ($token !== null) {
+            return;
+        }
+
+        // redirect to mandatory sync page
+        $url = $this->urlGenerator->generate(UserMandatoryGitlabSyncController::class);
+        $event->setResponse(new RedirectResponse($url));
+    }
+}

@@ -51,26 +51,52 @@
         {{ ide_button(file.filePathAfter ?? file.filePathBefore) }}
         {# copy path to clipboard #}
         <button class="btn btn-outline-primary btn-sm border-0"
-                data-class-before-copy="btn btn-outline-primary btn-sm border-0"
                 data-class-after-copy="btn btn-success btn-sm border-0"
                 title="{{ 'copy.path.to.clipboard'|trans }}"
                 {{ stimulus_controller('component--copy-to-clipboard') }}
                 {{ stimulus_action('component--copy-to-clipboard', 'onClick', 'click') }}
                 data-content="{{ file.filePathAfter ?? file.filePathBefore }}">
-            <i class="bi bi-clipboard-check-fill"
-               data-class-before-copy="bi bi-clipboard-check-fill"
-               data-class-after-copy="bi bi-check-lg"
-               data-role="icon"></i>
+            <i class="bi bi-clipboard-check-fill" data-class-after-copy="bi bi-check-lg" data-role="icon"></i>
         </button>
 
         <div class="float-end pe-2">
-            {% set commentVisibility = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
-            {% set comparisonPolicy  = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
-            {% set currentDiffMode   = fileDiffViewModel.diffMode.value %}
+            {% set commentVisibility   = fileDiffViewModel.commentsViewModel.commentVisibility.value %}
+            {% set comparisonPolicy    = fileDiffViewModel.commentsViewModel.comparisonPolicy.value %}
+            {% set currentDiffMode     = fileDiffViewModel.diffMode.value %}
+            {% set visibleContextLines = fileDiffViewModel.visibleLines %}
 
             {# whitespace management #}
             {% if file.modified %}
-                <div class="dropdown d-inline-block" {{ stimulus_controller('component--dropdown-menu') }}>
+                <form class="dropdown d-inline-block"
+                      method="post"
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\DiffVisibleLinesController') }}"
+                      title="{{ 'show.context.lines'|trans }}"
+                        {{ stimulus_controller('component--dropdown-menu review-diff-visible-lines') }}
+                >
+                    <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
+                            {{ stimulus_target('component--dropdown-menu', 'button') }}
+                            {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}
+                    >
+                        <i class="bi bi-menu-button-fill"></i>
+                    </a>
+
+                    <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
+                        {% for i in range(0, 20) %}
+                            <li>
+                                <label class="dropdown-item">
+                                    <input type="radio" name="visibleLines" value="{{ i }}" {{ i == visibleContextLines ? 'checked' : '' }}>
+                                    {{ i }} lines
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </form>
+
+                <form class="dropdown d-inline-block"
+                      method="post"
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\DiffComparisonPolicyController') }}"
+                        {{ stimulus_controller('component--dropdown-menu review-comparison-policy') }}
+                >
                     <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#"
                             {{ stimulus_target('component--dropdown-menu', 'button') }}
                             {{ stimulus_action('component--dropdown-menu', 'show', 'click') }}>
@@ -85,42 +111,35 @@
                         {% endif %}
                     </a>
 
-                    <ul class="dropdown-menu"
-                            {{ stimulus_target('component--dropdown-menu', 'dropdown') }}
-                            {{ stimulus_controller('review-comparison-policy') }}
-                    >
+                    <ul class="dropdown-menu" {{ stimulus_target('component--dropdown-menu', 'dropdown') }}>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio"
-                                       name="whitespace"
-                                       data-url="{{ url_query_params({comparisonPolicy: 'all'}) }}" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="all" {{ comparisonPolicy == 'all' ? 'checked' : '' }}>
                                 {{ 'do.not.ignore.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio"
-                                       name="whitespace"
-                                       data-url="{{ url_query_params({comparisonPolicy: 'trim'}) }}" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="trim" {{ comparisonPolicy == 'trim' ? 'checked' : '' }}>
                                 {{ 'trim.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore'}) }}"
-                                        {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
+                                <input type="radio" name="comparisonPolicy" value="ignore" {{ comparisonPolicy == 'ignore' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces'|trans }}
                             </label>
                         </li>
                         <li>
                             <label class="dropdown-item">
-                                <input type="radio" name="whitespace" data-url="{{ url_query_params({comparisonPolicy: 'ignore_empty_lines'}) }}"
-                                        {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
+                                <input type="radio"
+                                       name="comparisonPolicy"
+                                       value="ignore_empty_lines" {{ comparisonPolicy == 'ignore_empty_lines' ? 'checked' : '' }}>
                                 {{ 'ignore.whitespaces.and.empty.lines'|trans }}
                             </label>
                         </li>
                     </ul>
-                </div>
+                </form>
             {% endif %}
 
             {# comment visibility #}
@@ -177,16 +196,24 @@
             </div>
 
             {% if file.modified %}
-                <div class="btn-group btn-group-sm">
+                <form class="btn-group btn-group-sm"
+                      method="post"
+                      action="{{ path('DR\\Review\\Controller\\App\\Review\\Setting\\ReviewDiffModeController') }}"
+                        {{ stimulus_controller('review-diff-mode') }}
+                >
                     {% for diffMode in fileDiffViewModel.diffModes %}
-                        <a href="{{ url_query_params({diff: diffMode}) }}"
-                           class="btn {{ currentDiffMode == diffMode ? 'btn-primary' : 'btn-outline-primary' }}"
-                                {{ stimulus_controller('button') }}
+                        <input type="radio"
+                               name="diffMode"
+                               value="{{ diffMode }}"
+                               class="btn-check"
+                               id="diff-mode-{{ diffMode }}" {{ diffMode == currentDiffMode ? 'checked' : '' }}>
+                        <label class="btn btn-outline-primary" for="diff-mode-{{ diffMode }}"
+                               {% if diffMode != currentDiffMode %}{{ stimulus_controller('button') }}{% endif %}
                         >
                             {{ ('diff.' ~ diffMode)|trans }}
-                        </a>
+                        </label>
                     {% endfor %}
-                </div>
+                </form>
             {% endif %}
         </div>
     </div>

@@ -5,7 +5,7 @@ namespace DR\Review\Tests;
 
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use Generator;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use stdClass;
@@ -16,13 +16,13 @@ abstract class AbstractTestCase extends TestCase
     use AccessorPairAsserter;
     use TestTrait;
 
-    protected MockObject&LoggerInterface $logger;
+    protected Stub&LoggerInterface $logger;
     protected Envelope $envelope;
 
     protected function setUp(): void
     {
         $this->envelope = new Envelope(new stdClass(), []);
-        $this->logger   = $this->createMock(LoggerInterface::class);
+        $this->logger   = static::createStub(LoggerInterface::class);
     }
 
     /**

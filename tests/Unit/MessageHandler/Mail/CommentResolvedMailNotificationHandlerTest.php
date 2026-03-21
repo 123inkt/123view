@@ -37,6 +37,9 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
 
     public function testAccepts(): void
     {
+        $this->mailService->expects($this->never())->method('sendCommentResolvedMail');
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
         static::assertSame(CommentResolved::class, CommentResolvedMailNotificationHandler::accepts());
     }
 
@@ -46,6 +49,8 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->mailService->expects($this->never())->method('sendCommentResolvedMail');
+        $this->userRepository->expects($this->once())->method('find');
         $this->handler->handle(new CommentResolved(4, 123, 5, 'file'));
     }
 
@@ -61,7 +66,7 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
 
         $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
-        $this->mailService->expects(self::never())->method('sendCommentResolvedMail');
+        $this->mailService->expects($this->never())->method('sendCommentResolvedMail');
         $this->handler->handle(new CommentResolved(5, 123, 6, 'file'));
     }
 

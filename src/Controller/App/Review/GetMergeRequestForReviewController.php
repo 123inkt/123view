@@ -10,7 +10,7 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Utils\Arrays;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
 class GetMergeRequestForReviewController extends AbstractController

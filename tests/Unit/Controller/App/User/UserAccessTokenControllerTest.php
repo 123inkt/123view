@@ -34,7 +34,7 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
     public function testInvokeNonSubmitted(): void
     {
         $request   = new Request();
-        $viewModel = $this->createMock(UserAccessTokenViewModel::class);
+        $viewModel = static::createStub(UserAccessTokenViewModel::class);
 
         $this->expectCreateForm(AddAccessTokenFormType::class)
             ->handleRequest($request)
@@ -42,6 +42,7 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(false);
         $this->expectAddFlash('error', 'access.token.creation.failed');
         $this->viewModelProvider->expects($this->once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
+        $this->accessTokenIssuer->expects($this->never())->method('issue');
 
         $result = ($this->controller)($request);
         static::assertSame(['accessTokenModel' => $viewModel], $result);
@@ -51,7 +52,7 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
     {
         $request   = new Request();
         $user      = new User();
-        $viewModel = $this->createMock(UserAccessTokenViewModel::class);
+        $viewModel = static::createStub(UserAccessTokenViewModel::class);
 
         $this->expectGetUser($user);
         $this->expectCreateForm(AddAccessTokenFormType::class)

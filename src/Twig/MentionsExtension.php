@@ -4,23 +4,15 @@ declare(strict_types=1);
 namespace DR\Review\Twig;
 
 use DR\Review\Service\CodeReview\Comment\CommentMentionService;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class MentionsExtension extends AbstractExtension
+class MentionsExtension
 {
     public function __construct(private readonly CommentMentionService $mentionService)
     {
     }
 
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        return [new TwigFilter('mentions', [$this, 'convert'])];
-    }
-
+    #[AsTwigFilter(name: 'mentions')]
     public function convert(string $string): string
     {
         return $this->mentionService->replaceMentionedUsers($string, $this->mentionService->getMentionedUsers($string));

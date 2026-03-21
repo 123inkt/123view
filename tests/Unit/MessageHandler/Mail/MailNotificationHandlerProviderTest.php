@@ -14,7 +14,7 @@ class MailNotificationHandlerProviderTest extends AbstractTestCase
 {
     public function testGetHandler(): void
     {
-        $handler  = $this->createMock(MailNotificationHandlerInterface::class);
+        $handler  = static::createStub(MailNotificationHandlerInterface::class);
         $handlers = new ArrayObject(['handler' => $handler]);
 
         $provider = new MailNotificationHandlerProvider($handlers);

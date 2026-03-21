@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AddCommentReactionController extends AbstractController
@@ -39,7 +39,7 @@ class AddCommentReactionController extends AbstractController
         $this->replyRepository->save($reply, true);
 
         $this->bus->dispatch(
-            new CommentReplyAdded((int)$comment->getReview()->getId(), (int)$reply->getId(), $user->getId(), $message, $comment->getFilePath())
+            new CommentReplyAdded($comment->getReview()->getId(), (int)$reply->getId(), $user->getId(), $message, $comment->getFilePath())
         );
 
         return $this->json(['success' => true]);

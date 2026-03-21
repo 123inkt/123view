@@ -8,8 +8,12 @@
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Review/CodeReview.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/EventSubscriber/MandatoryGitlabSyncSubscriber.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/MessageHandler/Gitlab/ReviewerStateChangeMessageHandler.php"/>
   <violation rule="PHPMD\Rule\Design\LongParameterList" file="src/Model/Review/CodeReviewDto.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="src/Request/Review/FileSeenStatusRequest.php" method="getSeenStatus"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/GitlabApiProvider.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewApprovalValidatorService.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewMergeRequestService.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/CodeReview/LineReferenceMatcher.php" method="exactMatch"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Filter/CommitFilter.php"/>
@@ -19,6 +23,7 @@
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Show/GitShowCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/ExternalTool/Gitlab/GitlabServiceTest.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/Branch/CacheableGitBranchServiceTest.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/LsTree/LockableLsTreeServiceTest.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/Review/Strategy/HesitantCherryPickStrategyTest.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Unit/Service/Git/Review/Strategy/PersistentCherryPickStrategyTest.php"/>
 </phpmd-baseline>

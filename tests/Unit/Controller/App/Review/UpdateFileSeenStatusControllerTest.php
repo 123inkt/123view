@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Review;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\UpdateFileSeenStatusController;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
@@ -14,8 +15,8 @@ use DR\Review\Entity\User\User;
 use DR\Review\Request\Review\FileSeenStatusRequest;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
+use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
-use DR\Review\Service\Git\Review\ReviewSessionService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,27 +30,28 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 {
     private FileSeenStatusService&MockObject      $statusService;
     private ReviewDiffServiceInterface&MockObject $diffService;
-    private ReviewSessionService&MockObject       $sessionService;
+    private UserReviewSettingsProvider&MockObject $settingsProvider;
     private CodeReviewRevisionService&MockObject  $revisionService;
 
     public function setUp(): void
     {
-        $this->statusService   = $this->createMock(FileSeenStatusService::class);
-        $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->sessionService  = $this->createMock(ReviewSessionService::class);
-        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->statusService    = $this->createMock(FileSeenStatusService::class);
+        $this->diffService      = $this->createMock(ReviewDiffServiceInterface::class);
+        $this->settingsProvider = $this->createMock(UserReviewSettingsProvider::class);
+        $this->revisionService  = $this->createMock(CodeReviewRevisionService::class);
         parent::setUp();
     }
 
     public function testInvokeMarkAsSeen(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(true);
 
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
 
@@ -65,23 +67,23 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
             ->method('getDiffForRevisions')
             ->with($repository, [$revision])
             ->willReturn([$diffFileA, $diffFileB]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
         $this->statusService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFileA);
 
-        /** @var Response $response */
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
 
     public function testInvokeMarkAsUnseen(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(false);
 
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
 
         $diffFileA                = new DiffFile();
@@ -96,23 +98,23 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
             ->method('getDiffForRevisions')
             ->with($repository, [$revision])
             ->willReturn([$diffFileA, $diffFileB]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
         $this->statusService->expects($this->once())->method('markAsUnseen')->with($review, $user, $diffFileA);
 
-        /** @var Response $response */
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
 
     public function testInvokeFilepathDoesntMatchAFile(): void
     {
-        $request = $this->createMock(FileSeenStatusRequest::class);
+        $request = static::createStub(FileSeenStatusRequest::class);
         $request->method('getFilePath')->willReturn('filepath');
         $request->method('getSeenStatus')->willReturn(false);
 
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getRevisions()->add($revision);
 
@@ -120,15 +122,46 @@ class UpdateFileSeenStatusControllerTest extends AbstractControllerTestCase
 
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$diffFile]);
-        $this->sessionService->expects($this->once())->method('getDiffComparePolicyForUser')->willReturn(DiffComparePolicy::ALL);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
+        $this->statusService->expects($this->never())->method('markAsSeen');
 
-        /** @var Response $response */
         $response = ($this->controller)($request, $review);
         static::assertSame(Response::HTTP_NOT_MODIFIED, $response->getStatusCode());
     }
 
+    public function testInvokeMarkAsSeenBranchReview(): void
+    {
+        $request = static::createStub(FileSeenStatusRequest::class);
+        $request->method('getFilePath')->willReturn('filepath');
+        $request->method('getSeenStatus')->willReturn(true);
+
+        $repository = new Repository();
+        $review     = new CodeReview();
+        $review->setType(CodeReviewType::BRANCH);
+        $review->setRepository($repository);
+        $review->setReferenceId('feature-branch');
+
+        $diffFileA                = new DiffFile();
+        $diffFileA->filePathAfter = 'filepath';
+        $diffFileB                = new DiffFile();
+
+        $user = new User();
+        $this->expectGetUser($user);
+
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->diffService->expects($this->once())
+            ->method('getDiffForBranch')
+            ->with($review, [], 'feature-branch')
+            ->willReturn([$diffFileA, $diffFileB]);
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::ALL);
+        $this->statusService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFileA);
+
+        $response = ($this->controller)($request, $review);
+        static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
+    }
+
     public function getController(): AbstractController
     {
-        return new UpdateFileSeenStatusController($this->statusService, $this->diffService, $this->sessionService, $this->revisionService);
+        return new UpdateFileSeenStatusController($this->statusService, $this->diffService, $this->settingsProvider, $this->revisionService);
     }
 }

@@ -34,11 +34,15 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
 
     public function testCreateFromRequestAbsentAction(): void
     {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->replyRepository->expects($this->never())->method('find');
         static::assertNull($this->factory->createFromRequest(new Request()));
     }
 
     public function testCreateFromRequestAddCommentAction(): void
     {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->replyRepository->expects($this->never())->method('find');
         $request = new Request(['action' => 'add-comment:5:6:7', 'filePath' => '/foo/bar/text.txt']);
         $action  = $this->factory->createFromRequest($request);
         static::assertInstanceOf(AddCommentAction::class, $action);
@@ -53,6 +57,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
     {
         $comment = new Comment();
         $this->commentRepository->expects($this->once())->method('find')->with(8)->willReturn($comment);
+        $this->replyRepository->expects($this->never())->method('find');
 
         $request = new Request(['action' => 'add-reply:8']);
         $action  = $this->factory->createFromRequest($request);
@@ -64,6 +69,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
     {
         $comment = new Comment();
         $this->commentRepository->expects($this->once())->method('find')->with(8)->willReturn($comment);
+        $this->replyRepository->expects($this->never())->method('find');
 
         $request = new Request(['action' => 'edit-comment:8']);
         $action  = $this->factory->createFromRequest($request);
@@ -75,6 +81,7 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
     {
         $comment = new CommentReply();
         $this->replyRepository->expects($this->once())->method('find')->with(8)->willReturn($comment);
+        $this->commentRepository->expects($this->never())->method('find');
 
         $request = new Request(['action' => 'edit-reply:8']);
         $action  = $this->factory->createFromRequest($request);
@@ -84,6 +91,8 @@ class CodeReviewActionFactoryTest extends AbstractTestCase
 
     public function testCreateFromRequestUnknownAction(): void
     {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->replyRepository->expects($this->never())->method('find');
         $request = new Request(['action' => 'foobar:8']);
         static::assertNull($this->factory->createFromRequest($request));
     }

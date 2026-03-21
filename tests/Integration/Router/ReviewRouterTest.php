@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Integration\Router;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Router\ReviewRouter;
 use DR\Review\Tests\AbstractKernelTestCase;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -26,7 +27,7 @@ class ReviewRouterTest extends AbstractKernelTestCase
         $review->setRepository($repository);
 
         /** @var RouterInterface $router */
-        $router = self::getContainer()->get('router');
+        $router = self::getContainer()->get(ReviewRouter::class);
 
         $actualUrl = $router->generate(ReviewController::class, ['review' => $review]);
         static::assertSame('/app/repository/review/cr-123', $actualUrl);

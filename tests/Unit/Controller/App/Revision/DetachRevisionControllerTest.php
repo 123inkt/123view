@@ -39,6 +39,9 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
 
     public function testInvokeBadFormSubmit(): void
     {
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->revisionRepository->expects($this->never())->method('save');
+        $this->eventService->expects($this->never())->method('revisionsDetached');
         $request = new Request();
 
         $revision = new Revision();

@@ -7,18 +7,6 @@ parameters:
 			path: src/ApiPlatform/OpenApi/OpenApiFactory.php
 
 		-
-			message: '#^Cannot call method getDescription\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
-
-		-
-			message: '#^Generator expects value type array\{ApiPlatform\\OpenApi\\Model\\Operation, ApiPlatform\\OpenApi\\Model\\Parameter\}, array\{ApiPlatform\\OpenApi\\Model\\Operation, mixed\} given\.$#'
-			identifier: generator.valueType
-			count: 1
-			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
-
-		-
 			message: '#^Parameter \#1 \$string of function strtolower expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -35,12 +23,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Doctrine/Type/AbstractEnumType.php
-
-		-
-			message: '#^Property DR\\Review\\Entity\\Asset\\Asset\:\:\$data type mapping mismatch\: database can contain resource but property expects string\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/Entity/Asset/Asset.php
 
 		-
 			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc tag @return does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
@@ -211,8 +193,14 @@ parameters:
 			path: src/QueryParser/InvalidQueryException.php
 
 		-
-			message: '#^PHPDoc tag @var with type Parsica\\Parsica\\Parser\<T\> is not subtype of type Parsica\\Parsica\\Parser\<null\>\.$#'
-			identifier: varTag.type
+			message: '#^Parameter \#2 \$transform of function Parsica\\Parsica\\Expression\\binaryOperator expects pure\-callable\(DR\\Review\\QueryParser\\Term\\Operator\\AndOperator, DR\\Review\\QueryParser\\Term\\Operator\\AndOperator\)\: DR\\Review\\QueryParser\\Term\\Operator\\AndOperator, Closure\(DR\\Review\\QueryParser\\Term\\TermInterface, DR\\Review\\QueryParser\\Term\\TermInterface\)\: DR\\Review\\QueryParser\\Term\\Operator\\AndOperator given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/QueryParser/ParserFactory.php
+
+		-
+			message: '#^Parameter \#2 \$transform of function Parsica\\Parsica\\Expression\\binaryOperator expects pure\-callable\(DR\\Review\\QueryParser\\Term\\Operator\\OrOperator, DR\\Review\\QueryParser\\Term\\Operator\\OrOperator\)\: DR\\Review\\QueryParser\\Term\\Operator\\OrOperator, Closure\(DR\\Review\\QueryParser\\Term\\TermInterface, DR\\Review\\QueryParser\\Term\\TermInterface\)\: DR\\Review\\QueryParser\\Term\\Operator\\OrOperator given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/QueryParser/ParserFactory.php
 
@@ -877,6 +865,30 @@ parameters:
 			path: src/Repository/User/UserRepository.php
 
 		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
+			message: '#^Class DR\\Review\\Repository\\User\\UserReviewSettingRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/User/UserReviewSettingRepository.php
+
+		-
 			message: '#^Class DR\\Review\\Repository\\User\\UserSettingRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -949,8 +961,8 @@ parameters:
 			path: src/Repository/Webhook/WebhookRepository.php
 
 		-
-			message: '#^Parameter \#1 \$data of class DR\\Review\\Response\\ProblemJsonResponse constructor expects array\<string, array\<string\>\|int\|string\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
+			message: '#^Strict comparison using \!\=\= between int\|list\<string\>\|string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Response/ProblemJsonResponseFactory.php
 
@@ -1099,6 +1111,36 @@ parameters:
 			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
 
 		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<int, DR\\Review\\QueryParser\\Term\\TermInterface\>\>\:\:map\(\) expects pure\-callable\(array\{DR\\Review\\QueryParser\\Term\\TermInterface\}\)\: array\{DR\\Review\\QueryParser\\Term\\TermInterface\}, Closure\(mixed\)\: array\{DR\\Review\\QueryParser\\Term\\TermInterface\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<string\>\|string\>\:\:map\(\) expects pure\-callable\(array\<string\>\|string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<string\>\|string\>\:\:map\(\) expects pure\-callable\(array\<string\>\|string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<mixed\>\:\:map\(\) expects pure\-callable\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<string\>\:\:map\(\) expects pure\-callable\(string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter, Closure\(string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchFilter given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
+
+		-
 			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 1
@@ -1121,12 +1163,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: src/Service/Git/Diff/UnifiedDiffEmphasizer.php
-
-		-
-			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: src/Service/Git/Review/Strategy/BasicCherryPickStrategy.php
 
 		-
 			message: '#^Dead catch \- Symfony\\Component\\Process\\Exception\\ProcessFailedException is never thrown in the try block\.$#'
@@ -1351,16 +1387,22 @@ parameters:
 			path: tests/Unit/Controller/AbstractControllerTest.php
 
 		-
-			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToDatabaseValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
+			message: '#^Expression "clone new \\DR\\Review\\Entity\\Notification\\Filter\(\)" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
-			path: tests/Unit/Doctrine/Type/LineCoverageTypeTest.php
+			path: tests/Unit/Entity/Notification/FilterTest.php
 
 		-
-			message: '#^Method DR\\Review\\Tests\\Unit\\Doctrine\\Type\\LineCoverageTypeTest\:\:testConvertToPHPValue\(\) has Doctrine\\DBAL\\Types\\ConversionException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
+			message: '#^Expression "clone new \\DR\\Review\\Entity\\Notification\\Recipient\(\)" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
-			path: tests/Unit/Doctrine/Type/LineCoverageTypeTest.php
+			path: tests/Unit/Entity/Notification/RecipientTest.php
+
+		-
+			message: '#^Expression "clone new \\DR\\Review\\Entity\\Notification\\RuleOptions\(\)" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/Unit/Entity/Notification/RuleOptionsTest.php
 
 		-
 			message: '#^Parameter \#1 \$string1 of function strcmp expects string, mixed given\.$#'
@@ -1433,6 +1475,12 @@ parameters:
 			identifier: callable.nonCallable
 			count: 2
 			path: tests/Unit/MessageHandler/RevisionFilesMessageHandlerTest.php
+
+		-
+			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<string\>\|string\>\:\:map\(\) expects pure\-callable\(array\<string\>\|string\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord, Closure\(mixed\)\: DR\\Review\\QueryParser\\Term\\Match\\MatchWord given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/QueryParser/ParserFactoryTest.php
 
 		-
 			message: '#^Call to method DR\\Review\\Entity\\Review\\FolderCollapseStatus\:\:getId\(\) on a separate line has no effect\.$#'

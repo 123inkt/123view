@@ -12,7 +12,7 @@ use DR\Review\Service\CodeReview\Search\ReviewSearchQueryTermFactory;
 use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SearchReviewsController extends AbstractController

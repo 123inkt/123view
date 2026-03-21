@@ -36,13 +36,14 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(SearchReviewsRequest::class);
+        $request = static::createStub(SearchReviewsRequest::class);
         $request->method('getSearchQuery')->willReturn('search');
-        $terms     = $this->createMock(TermInterface::class);
-        $viewModel = $this->createMock(ReviewsViewModel::class);
+        $terms     = static::createStub(TermInterface::class);
+        $viewModel = static::createStub(ReviewsViewModel::class);
 
         $this->termFactory->expects($this->once())->method('getSearchTerms')->with('search')->willReturn($terms);
         $this->viewModelProvider->expects($this->once())->method('getSearchReviewsViewModel')->with($request, $terms)->willReturn($viewModel);
+        $this->failedFormatter->expects($this->never())->method('format');
 
         $result = ($this->controller)($request);
 
@@ -51,10 +52,10 @@ class SearchReviewsControllerTest extends AbstractControllerTestCase
 
     public function testInvokeBadQuery(): void
     {
-        $request = $this->createMock(SearchReviewsRequest::class);
+        $request = static::createStub(SearchReviewsRequest::class);
         $request->method('getSearchQuery')->willReturn('search');
-        $viewModel = $this->createMock(ReviewsViewModel::class);
-        $failure   = $this->createMock(InvalidQueryException::class);
+        $viewModel = static::createStub(ReviewsViewModel::class);
+        $failure   = static::createStub(InvalidQueryException::class);
 
         $this->expectAddFlash('error', 'failure');
         $this->termFactory->expects($this->once())->method('getSearchTerms')->with('search')->willThrowException($failure);

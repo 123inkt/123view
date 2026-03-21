@@ -49,3 +49,10 @@
         <button type="submit" class="btn btn-outline-secondary btn-sm" {{ stimulus_controller('button') }}>{{ 'reopen.review'|trans }}</button>
     </form>
 {% endif %}
+{% if ai_code_review_enabled and not review.aiReviewRequested %}
+    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\AiCodeReviewController', {id: review.id}) }}"
+       class="btn btn-primary btn-sm border-0 dr-btn-purple"
+       title="Request a one time code review">
+        <i class="bi bi-stars"></i>
+    </a>
+{% endif %}

@@ -48,6 +48,7 @@ class CodeReviewCreationServiceTest extends AbstractTestCase
 
         $this->reviewFactory->expects($this->once())->method('createFromRevision')->with($revision, 'reference')->willReturn($review);
         $this->reviewRepository->expects($this->once())->method('getCreateProjectId')->with(123)->willReturn(789);
+        $this->targetBranchService->expects($this->never())->method('getTargetBranch');
 
         $actualReview = $this->service->createFromRevision($revision, 'reference');
         static::assertSame($review, $actualReview);

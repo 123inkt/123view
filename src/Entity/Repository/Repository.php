@@ -21,7 +21,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Utils\Assert;
 use DR\Utils\EquatableInterface;
 use League\Uri\Contracts\UriInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ApiResource(
@@ -72,6 +72,9 @@ class Repository implements EquatableInterface
     /** @phpstan-var RepositoryGitType::GITLAB|RepositoryGitType::GITHUB|null */
     #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, nullable: true)]
     private ?string $gitType = null;
+
+    #[ORM\Column(options: ['default' => '1'])]
+    private bool $gitApprovalSync = true;
 
     #[ORM\Column]
     #[Groups(['repository:read'])]
@@ -223,6 +226,18 @@ class Repository implements EquatableInterface
     public function setGitType(?string $gitType): self
     {
         $this->gitType = $gitType;
+
+        return $this;
+    }
+
+    public function isGitApprovalSync(): bool
+    {
+        return $this->gitApprovalSync;
+    }
+
+    public function setGitApprovalSync(bool $gitApprovalSync): self
+    {
+        $this->gitApprovalSync = $gitApprovalSync;
 
         return $this;
     }

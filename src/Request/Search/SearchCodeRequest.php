@@ -24,6 +24,11 @@ class SearchCodeRequest extends AbstractValidatedRequest
         return count($extensions) === 0 ? null : $extensions;
     }
 
+    public function isShowAll(): bool
+    {
+        return $this->request->query->getBoolean('all');
+    }
+
     protected function getValidationRules(): ?ValidationRules
     {
         return new ValidationRules(
@@ -31,6 +36,7 @@ class SearchCodeRequest extends AbstractValidatedRequest
                 'query' => [
                     'search'    => 'required|string',
                     'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
+                    'all'       => 'string',
                 ]
             ]
         );

@@ -86,8 +86,8 @@ class CodeReviewServiceTest extends AbstractTestCase
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
         $this->revisionRepository->expects($this->once())->method('save')->with($revision, true);
         $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
-        $this->reviewerRepository->expects(self::never())->method('save');
-        $this->visibilityService->expects(self::never())->method('setRevisionVisibility');
+        $this->reviewerRepository->expects($this->never())->method('save');
+        $this->visibilityService->expects($this->never())->method('setRevisionVisibility');
 
         $this->service->addRevisions($review, [$revision]);
     }

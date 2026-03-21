@@ -71,6 +71,11 @@ class Asset
         return $this;
     }
 
+    public function getHash(): string
+    {
+        return substr(hash('sha256', $this->data), 0, 8);
+    }
+
     public function getCreateTimestamp(): int
     {
         return $this->createTimestamp;

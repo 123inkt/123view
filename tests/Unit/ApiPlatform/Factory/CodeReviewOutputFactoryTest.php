@@ -59,7 +59,7 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         $this->userOutputFactory->expects($this->exactly(2))
             ->method('create')
             ->with(...consecutive([$userA], [$userB]))
-            ->willReturn($this->createMock(UserOutput::class));
+            ->willReturn(static::createStub(UserOutput::class));
         $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL)

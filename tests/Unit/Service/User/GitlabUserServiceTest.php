@@ -27,7 +27,7 @@ class GitlabUserServiceTest extends AbstractTestCase
         parent::setUp();
         $this->userRepository = $this->createMock(UserRepository::class);
         $this->users          = $this->createMock(Users::class);
-        $gitlabApi            = $this->createMock(GitlabApi::class);
+        $gitlabApi            = static::createStub(GitlabApi::class);
         $gitlabApi->method('users')->willReturn($this->users);
         $this->service = new GitlabUserService($this->userRepository, $gitlabApi);
     }
@@ -40,6 +40,7 @@ class GitlabUserServiceTest extends AbstractTestCase
         $user = new User();
 
         $this->userRepository->expects($this->once())->method('findOneBy')->with(['gitlabUserId' => 123])->willReturn($user);
+        $this->users->expects($this->never())->method('getUser');
 
         static::assertSame($user, $this->service->getUser(123, 'username'));
     }
@@ -56,6 +57,7 @@ class GitlabUserServiceTest extends AbstractTestCase
             ->with(...consecutive([['gitlabUserId' => 123]], [['name' => 'username']]))
             ->willReturn(null, $user);
         $this->userRepository->expects($this->once())->method('save')->with($user, true);
+        $this->users->expects($this->never())->method('getUser');
 
         static::assertSame($user, $this->service->getUser(123, 'username'));
     }

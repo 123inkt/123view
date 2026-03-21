@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Search;
 
-use DR\Review\Model\Search\SearchResult;
+use DR\Review\Model\Search\SearchResultCollection;
 
 readonly class SearchCodeViewModel
 {
     /**
      * @codeCoverageIgnore Simple DTO
-     *
-     * @param SearchResult[] $files
      */
-    public function __construct(public array $files, public string $searchQuery, public ?string $fileExtension)
+    public function __construct(public SearchResultCollection $searchResults, public string $searchQuery, public ?string $fileExtension)
     {
     }
 }

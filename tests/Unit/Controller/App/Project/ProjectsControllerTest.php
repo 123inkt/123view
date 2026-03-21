@@ -32,7 +32,7 @@ class ProjectsControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $request   = new Request(['search' => 'search']);
-        $viewModel = $this->createMock(ProjectsViewModel::class);
+        $viewModel = static::createStub(ProjectsViewModel::class);
 
         $this->viewModelProvider->expects($this->once())->method('getProjectsViewModel')->with('search')->willReturn($viewModel);
         $this->translator->expects($this->once())->method('trans')->with('projects')->willReturn('Projects');

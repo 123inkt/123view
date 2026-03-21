@@ -17,11 +17,20 @@ class FileDiffOptions
         public readonly int $unifiedDiffLines,
         public readonly DiffComparePolicy $comparePolicy,
         public readonly ?string $reviewType = null,
+        public readonly ?int $visibleLines = null,
+        public readonly bool $includeRaw = false
     ) {
     }
 
     public function __toString(): string
     {
-        return sprintf('fdo-%s-%s-%s', $this->unifiedDiffLines, $this->comparePolicy->value, $this->reviewType ?? CodeReviewType::COMMITS);
+        return sprintf(
+            'fdo-%s-%s-%s-%d-%s',
+            $this->unifiedDiffLines,
+            $this->comparePolicy->value,
+            $this->reviewType ?? CodeReviewType::COMMITS,
+            $this->visibleLines ?? -1,
+            $this->includeRaw ? 'raw' : 'no-raw'
+        );
     }
 }

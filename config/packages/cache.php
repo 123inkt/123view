@@ -2,19 +2,33 @@
 
 declare(strict_types=1);
 
-use Symfony\Config\FrameworkConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (FrameworkConfig $framework): void {
-    $cache = $framework->cache();
-    $cache->app('cache.app.file');
-    $cache->directory('%kernel.project_dir%/var/cache/pools');
-
-    // application caches
-    $cache->pool('cache.app.file')->adapters(['cache.adapter.filesystem'])->defaultLifetime('%env(CACHE_APP_LIFETIME)%');
-    $cache->pool('gitlab.cache')->defaultLifetime('%env(CACHE_GITLAB_LIFETIME)%');
-    $cache->pool('revision.cache')->defaultLifetime('%env(CACHE_REVISION_LIFETIME)%'); // 1 month
-
-    // doctrine cache
-    $cache->pool('doctrine.result_cache_pool')->adapters(['cache.app']);
-    $cache->pool('doctrine.system_cache_pool')->adapters(['cache.system']);
-};
+return App::config([
+    'framework' => [
+        'cache' => [
+            'app'       => 'cache.app.file',
+            'directory' => '%kernel.project_dir%/var/cache/pools',
+            'pools'     => [
+                // application caches
+                'cache.app.file' => [
+                    'adapters'        => ['cache.adapter.filesystem'],
+                    'default_lifetime' => '%env(CACHE_APP_LIFETIME)%',
+                ],
+                'gitlab.cache' => [
+                    'default_lifetime' => '%env(CACHE_GITLAB_LIFETIME)%',
+                ],
+                'revision.cache' => [
+                    'default_lifetime' => '%env(CACHE_REVISION_LIFETIME)%', // 1 month
+                ],
+                // doctrine cache
+                'doctrine.result_cache_pool' => [
+                    'adapters' => ['cache.app'],
+                ],
+                'doctrine.system_cache_pool' => [
+                    'adapters' => ['cache.system'],
+                ],
+            ],
+        ],
+    ],
+]);

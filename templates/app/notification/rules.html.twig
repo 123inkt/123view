@@ -56,6 +56,16 @@
                         </a>
 
                         <form method="POST" class="d-inline-block"
+                              action="{{ path('DR\\Review\\Controller\\App\\Notification\\DuplicateRuleController', {id: rule.id}) }}"
+                              title="{{ 'rule.duplicate.title'|trans }}"
+                                {{ stimulus_controller('component--confirm-submit') }}
+                              data-confirm-message="{{ 'rule.duplicate.confirmation.message'|trans }}">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="bi-copy"></i>
+                            </button>
+                        </form>
+
+                        <form method="POST" class="d-inline-block"
                               action="{{ path('DR\\Review\\Controller\\App\\Notification\\DeleteRuleController', {id: rule.id}) }}"
                               title="{{ 'rule.delete.title'|trans }}"
                               {{ stimulus_controller('component--confirm-submit') }}

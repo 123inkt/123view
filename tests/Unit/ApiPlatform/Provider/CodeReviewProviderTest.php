@@ -40,6 +40,9 @@ class CodeReviewProviderTest extends AbstractTestCase
 
     public function testProvideShouldOnlySupportGetCollection(): void
     {
+        $this->collectionProvider->expects($this->never())->method('provide');
+        $this->reviewOutputFactory->expects($this->never())->method('create');
+        $this->userService->expects($this->never())->method('getUsersForRevisions');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Only GetCollection operation is supported');
         $this->reviewProvider->provide(new Get());
@@ -55,7 +58,7 @@ class CodeReviewProviderTest extends AbstractTestCase
         $review->getReviewers()->add($reviewer);
         $review->getRevisions()->add($revision);
 
-        $output = $this->createMock(CodeReviewOutput::class);
+        $output = static::createStub(CodeReviewOutput::class);
 
         // setup mocks
         $this->collectionProvider->expects($this->once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$review]));

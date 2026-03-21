@@ -6,6 +6,7 @@ namespace DR\Review\Security\Voter;
 use DR\Review\Entity\User\User;
 use DR\Review\Entity\User\UserAccessToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class UserAccessTokenVoter extends Voter
@@ -26,7 +27,7 @@ class UserAccessTokenVoter extends Voter
     /**
      * @inheritDoc
      */
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
         if ($user === null || $user instanceof User === false) {

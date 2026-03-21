@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
@@ -52,7 +52,7 @@ class CreateBranchReviewController extends AbstractController
         $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         $this->reviewRepository->save($review, true);
 
-        $this->messageBus->dispatch(new ReviewCreated((int)$review->getId(), (int)$revision?->getId(), $this->getUser()->getId()));
+        $this->messageBus->dispatch(new ReviewCreated($review->getId(), (int)$revision?->getId(), $this->getUser()->getId()));
 
         return $this->redirectToRoute(ReviewController::class, ['review' => $review]);
     }

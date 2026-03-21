@@ -87,8 +87,8 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
 
         $this->revisionRepository->expects($this->once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
 
-        $this->reviewService->expects(self::never())->method('addRevisions');
-        $this->eventService->expects(self::never())->method('revisionsAdded');
+        $this->reviewService->expects($this->never())->method('addRevisions');
+        $this->eventService->expects($this->never())->method('revisionsAdded');
 
         // expect flash message
         $this->translator->expects($this->once())->method('trans')->with('revisions.skipped.to.add.to.review')->willReturn('message');

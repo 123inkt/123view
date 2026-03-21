@@ -10,8 +10,8 @@
 
     {# mail title #}
     {{- commentModel.headingTitle ~ ' ' -}}
-    <a class="subjectLine" href="{{ app_absolute_url ~ path('DR\\Review\\Controller\\App\\Review\\ReviewController',
-        {review, filePath: comment.lineReference.filePath}
+    <a class="subjectLine" href="{{ url('DR\\Review\\Controller\\App\\Review\\ReviewController',
+        {review, filePath: comment.filePath}
     )}}"
     >CR-{{ review.projectId }} - {{ review.title }}</a>
     <br><br>
@@ -38,7 +38,7 @@
     <br><br>
     <div class="comment-mail__subscription">
         {{ 'mail.unsubscribe.footer'|trans({app_name: app_name}) }}
-        <a href="{{ app_absolute_url ~ path('DR\\Review\\Controller\\App\\User\\UserSettingController')}}">
+        <a href="{{ url('DR\\Review\\Controller\\App\\User\\UserSettingController')}}">
             {{- 'mail.configure.settings'|trans -}}
         </a>
     </div>

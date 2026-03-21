@@ -35,6 +35,7 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $expected = [KernelEvents::EXCEPTION => ['onKernelException', 2]];
         $result   = AccessDeniedExceptionSubscriber::getSubscribedEvents();
         static::assertSame($expected, $result);
@@ -42,10 +43,10 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 
     public function testOnKernelExceptionOnlyAcceptAccessDeniedException(): void
     {
-        $this->urlGenerator->expects(self::never())->method('generate');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             new Exception('exception')
@@ -55,10 +56,10 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
 
     public function testOnKernelExceptionShouldSkipApiCalls(): void
     {
-        $this->urlGenerator->expects(self::never())->method('generate');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             new Request(server: ['REQUEST_URI' => '/api/test']),
             HttpKernelInterface::MAIN_REQUEST,
             new AccessDeniedException('access-denied')
@@ -78,7 +79,7 @@ class AccessDeniedExceptionSubscriberTest extends AbstractTestCase
         $request->setSession(new Session(new MockArraySessionStorage()));
 
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             new AccessDeniedException('access-denied')

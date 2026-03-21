@@ -5,26 +5,18 @@ namespace DR\Review\Twig;
 
 use DR\Review\Service\Markdown\MarkdownConverterService;
 use League\CommonMark\Exception\CommonMarkException;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class MarkdownExtension extends AbstractExtension
+class MarkdownExtension
 {
     public function __construct(private readonly MarkdownConverterService $converter)
     {
     }
 
     /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        return [new TwigFilter('markdown', [$this, 'convert'], ['is_safe' => ['all']])];
-    }
-
-    /**
      * @throws CommonMarkException
      */
+    #[AsTwigFilter(name: 'markdown', isSafe: ['all'])]
     public function convert(string $string): string
     {
         return $this->converter->convert($string);

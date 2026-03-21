@@ -41,7 +41,7 @@ class RevisionFetchServiceTest extends AbstractTestCase
             $this->revisionFactory,
             $this->bus
         );
-        $this->fetchService->setLogger($this->createMock(LoggerInterface::class));
+        $this->fetchService->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**
@@ -61,6 +61,9 @@ class RevisionFetchServiceTest extends AbstractTestCase
             ->method('fetchRevisionFromRemote')
             ->with(...consecutive([(new Repository())->setId(123)], [(new Repository())->setId(456)]))
             ->willReturn([]);
+        $this->revisionRepository->expects($this->never())->method('saveAll');
+        $this->revisionFactory->expects($this->never())->method('createFromCommit');
+        $this->bus->expects($this->never())->method('dispatch');
 
         $this->fetchService->fetchRevisionsForRules([$ruleA, $ruleB]);
     }
@@ -77,6 +80,9 @@ class RevisionFetchServiceTest extends AbstractTestCase
             ->method('fetchRevisionFromRemote')
             ->with((new Repository())->setId(123))
             ->willReturn([]);
+        $this->revisionRepository->expects($this->never())->method('saveAll');
+        $this->revisionFactory->expects($this->never())->method('createFromCommit');
+        $this->bus->expects($this->never())->method('dispatch');
 
         $this->fetchService->fetchRevisionsForRules([$rule]);
     }

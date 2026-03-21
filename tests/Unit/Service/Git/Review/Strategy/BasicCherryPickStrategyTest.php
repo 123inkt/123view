@@ -84,6 +84,7 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
             ->with([$revision])
             ->willReturn(new CherryPickResult(false));
         $this->cherryPickService->expects($this->once())->method('cherryPickAbort')->with($repository);
+        $this->diffService->expects($this->never())->method('getBundledDiffFromRevisions');
 
         $this->expectException(RepositoryException::class);
         $this->strategy->getDiffFiles($repository, [$revision]);
@@ -108,6 +109,7 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
             ->with([$revision])
             ->willThrowException(new RepositoryException());
         $this->cherryPickService->expects($this->once())->method('cherryPickAbort')->with($repository);
+        $this->diffService->expects($this->never())->method('getBundledDiffFromRevisions');
 
         $this->expectException(RepositoryException::class);
         $this->strategy->getDiffFiles($repository, [$revision]);

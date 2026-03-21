@@ -55,7 +55,7 @@ class FetchRevisionsControllerTest extends AbstractTestCase
     public function testInvokeUnknownRepository(): void
     {
         $this->repositoryRepository->expects($this->once())->method('find')->with('123')->willReturn(null);
-        $this->bus->expects(self::never())->method('dispatch');
+        $this->bus->expects($this->never())->method('dispatch');
 
         $response = ($this->controller)('123');
         static::assertEquals(new Response('Rejected', Response::HTTP_BAD_REQUEST), $response);

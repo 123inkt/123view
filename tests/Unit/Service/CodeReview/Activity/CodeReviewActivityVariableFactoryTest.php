@@ -49,6 +49,7 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
 
     public function testCreateParams(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $variableA = new ActivityVariable('escape', 'foo & bar');
         $variableB = new ActivityVariable('not-escape', 'foo &amp; bar', true);
 

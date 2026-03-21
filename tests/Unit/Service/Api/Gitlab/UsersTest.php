@@ -27,7 +27,7 @@ class UsersTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $logger           = $this->createMock(LoggerInterface::class);
+        $logger           = static::createStub(LoggerInterface::class);
         $this->httpClient = $this->createMock(HttpClientInterface::class);
         $this->serializer = $this->createMock(SerializerInterface::class);
         $this->users      = new Users($logger, $this->httpClient, $this->serializer);
@@ -62,7 +62,7 @@ class UsersTest extends AbstractTestCase
         $response->expects($this->once())->method('getStatusCode')->willReturn(Response::HTTP_BAD_REQUEST);
 
         $this->httpClient->expects($this->once())->method('request')->with('GET', 'users/123')->willReturn($response);
-        $this->serializer->expects(self::never())->method('deserialize');
+        $this->serializer->expects($this->never())->method('deserialize');
 
         static::assertNull($this->users->getUser(123));
     }

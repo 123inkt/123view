@@ -41,6 +41,9 @@ class CredentialControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNotFound(): void
     {
+        $this->credentialRepository->expects($this->never())->method('save');
+        $this->repositoryRepository->expects($this->never())->method('findBy');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request = new Request(attributes: ['id' => 5]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -50,10 +53,13 @@ class CredentialControllerTest extends AbstractControllerTestCase
 
     public function testInvokeEditCredential(): void
     {
+        $this->credentialRepository->expects($this->never())->method('save');
+        $this->repositoryRepository->expects($this->never())->method('findBy');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request    = new Request();
         $credential = new RepositoryCredential();
 
-        $form = $this->createMock(FormView::class);
+        $form = static::createStub(FormView::class);
 
         $this->expectCreateForm(EditCredentialFormType::class, ['credential' => $credential])
             ->handleRequest($request)

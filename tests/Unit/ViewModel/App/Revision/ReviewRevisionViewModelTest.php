@@ -17,8 +17,8 @@ class ReviewRevisionViewModelTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(123);
 
-        $formA     = $this->createMock(FormView::class);
-        $formB     = $this->createMock(FormView::class);
+        $formA     = static::createStub(FormView::class);
+        $formB     = static::createStub(FormView::class);
         $viewModel = new ReviewRevisionViewModel([$revision], [], $formA, $formB);
 
         static::assertNull($viewModel->getRevision('1'));

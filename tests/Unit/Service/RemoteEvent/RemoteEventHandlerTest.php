@@ -40,7 +40,7 @@ class RemoteEventHandlerTest extends AbstractTestCase
 
     public function testHandleUnknownObject(): void
     {
-        $this->handler->expects(self::never())->method('handle');
+        $this->handler->expects($this->never())->method('handle');
         $this->eventHandler->handle($this);
     }
 }
