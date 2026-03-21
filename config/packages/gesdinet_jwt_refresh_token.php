@@ -3,13 +3,15 @@
 declare(strict_types=1);
 
 use DR\Review\Entity\User\JwtRefreshToken;
-use Symfony\Config\GesdinetJwtRefreshTokenConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (GesdinetJwtRefreshTokenConfig $config): void {
-    $config->refreshTokenClass(JwtRefreshToken::class)
-        ->ttlUpdate(true)
-        ->tokenParameterName('refreshToken')
-        ->returnExpiration(true)
-        ->returnExpirationParameterName('refreshTokenExpiresAt')
-        ->singleUse(false);
-};
+return App::config([
+    'gesdinet_jwt_refresh_token' => [
+        'refresh_token_class'              => JwtRefreshToken::class,
+        'ttl_update'                       => true,
+        'token_parameter_name'             => 'refreshToken',
+        'return_expiration'                => true,
+        'return_expiration_parameter_name' => 'refreshTokenExpiresAt',
+        'single_use'                       => false,
+    ]
+]);

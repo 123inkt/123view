@@ -1,17 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
-use Symfony\Config\NelmioCorsConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (NelmioCorsConfig $config): void {
-    $config->defaults()
-        ->allowOrigin(['%env(APP_ABSOLUTE_URL)%'])
-        ->allowCredentials(true)
-        ->allowHeaders(['Content-Type', 'Authorization'])
-        ->allowMethods(['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE'])
-        ->exposeHeaders(['Link'])
-        ->maxAge(3600);
-    $config
-        ->paths('^/')
-        ->originRegex(false);
-};
+return App::config([
+    'nelmio_cors' => [
+        'paths'    => ['^/' => ['origin_regex' => false]],
+        'defaults' => [
+            'allow_origin'      => ['%env(APP_ABSOLUTE_URL)%'],
+            'allow_credentials' => true,
+            'allow_methods'     => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            'allow_headers'     => ['Content-Type', 'Authorization'],
+            'expose_headers'    => ['Link'],
+            'max_age'           => 3600,
+        ]
+    ]
+]);
