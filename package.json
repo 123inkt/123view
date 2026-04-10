@@ -17,7 +17,7 @@
         "@hotwired/stimulus": "^3.2.2",
         "@symfony/stimulus-bridge": "^4.0.1",
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
-        "@symfony/webpack-encore": "^5.0.0",
+        "@symfony/webpack-encore": "^6.0.0",
         "core-js": "^3.48.0",
         "eslint-config-love": "^152.0.0",
         "regenerator-runtime": "^0.14.1",
@@ -28,9 +28,9 @@
         "stylelint-scss": "^7.0.0",
         "ts-loader": "^9.5.4",
         "ts-node": "^10.9.2",
-        "typescript": "^5.9.2",
+        "typescript": "^6.0.0",
         "webpack": "^5.104.1",
-        "webpack-cli": "^6.0.1",
+        "webpack-cli": "^7.0.0",
         "webpack-notifier": "^1.15.0"
     },
     "scripts": {
