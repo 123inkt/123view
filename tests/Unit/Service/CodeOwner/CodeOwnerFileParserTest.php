@@ -13,7 +13,7 @@ class CodeOwnerFileParserTest extends AbstractTestCase
 {
     public function testParse(): void
     {
-        $content = <<<'EOT'
+        $content = <<<EOT
 # CODEOWNERS file
 
 # single owner, leading/trailing whitespace
@@ -35,6 +35,6 @@ EOT;
             new OwnerPattern('src/api/', ['@backend-team']),
         ];
 
-        static::assertEquals($expected, array_values(new CodeOwnerFileParser()->parse($content)));
+        static::assertEquals($expected, new CodeOwnerFileParser()->parse($content));
     }
 }

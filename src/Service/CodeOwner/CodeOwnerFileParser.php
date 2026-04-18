@@ -23,7 +23,7 @@ readonly class CodeOwnerFileParser
     {
         $lines = Arrays::explode($this->eolCharacter, $content);
 
-        return Arrays::removeNull(array_map($this->parseLine(...), $lines));
+        return array_values(Arrays::removeNull(array_map($this->parseLine(...), $lines)));
     }
 
     private function parseLine(string $line): ?OwnerPattern
