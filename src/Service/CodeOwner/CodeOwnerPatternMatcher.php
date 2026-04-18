@@ -33,9 +33,9 @@ readonly class CodeOwnerPatternMatcher
         // construct regular expression
         $parts = Assert::isArray(preg_split('/(\/?\*\*\/?)|(\*)|\?|(\[.+?])/i', $pattern->pattern, flags: PREG_SPLIT_DELIM_CAPTURE));
         $regex = implode(array_map(
-            static fn(string $part): string => self::REPLACEMENTS[$part] ?? (
-                str_starts_with($part, '[') ? $part : preg_quote($part, self::DELIMITER)
-            ),
+            static fn(string $part): string => self::REPLACEMENTS[$part] ?? (str_starts_with($part, '[')
+                ? $part
+                : preg_quote($part, self::DELIMITER)),
             $parts
         ));
 
