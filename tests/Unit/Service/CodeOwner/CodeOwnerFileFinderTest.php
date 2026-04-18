@@ -10,7 +10,6 @@ use DR\Review\Tests\AbstractTestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\Stub;
 
 #[CoversClass(CodeOwnerFileFinder::class)]
 class CodeOwnerFileFinderTest extends AbstractTestCase
