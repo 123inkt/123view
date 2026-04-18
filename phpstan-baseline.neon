@@ -25,6 +25,12 @@ parameters:
 			path: src/Doctrine/Type/AbstractEnumType.php
 
 		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/Type/SpaceSeparatedStringValueType.php
+
+		-
 			message: '#^Generic type DatePeriod\<DateTimeImmutable, DateTimeImmutable\> in PHPDoc tag @return does not specify all template types of class DatePeriod\: TDate, TEnd, TRecurrences$#'
 			identifier: generics.lessTypes
 			count: 1
@@ -191,6 +197,12 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/QueryParser/InvalidQueryException.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, list\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/QueryParser/ParserFactory.php
 
 		-
 			message: '#^Parameter \#2 \$transform of function Parsica\\Parsica\\Expression\\binaryOperator expects pure\-callable\(DR\\Review\\QueryParser\\Term\\Operator\\AndOperator, DR\\Review\\QueryParser\\Term\\Operator\\AndOperator\)\: DR\\Review\\QueryParser\\Term\\Operator\\AndOperator, Closure\(DR\\Review\\QueryParser\\Term\\TermInterface, DR\\Review\\QueryParser\\Term\\TermInterface\)\: DR\\Review\\QueryParser\\Term\\Operator\\AndOperator given\.$#'
@@ -1009,6 +1021,12 @@ parameters:
 			path: src/Security/AzureAd/LoginService.php
 
 		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Security/AzureAd/LoginService.php
+
+		-
 			message: '#^Parameter \#2 \$context of method Psr\\Log\\LoggerInterface\:\:notice\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1103,12 +1121,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Service/CodeReview/FolderCollapseStatusService.php
-
-		-
-			message: '#^PHPDoc tag @var with type Parsica\\Parsica\\Parser\<DR\\Review\\QueryParser\\Term\\TermInterface\> is not subtype of type Parsica\\Parsica\\Parser\<array\{DR\\Review\\QueryParser\\Term\\TermInterface\}\|DR\\Review\\QueryParser\\Term\\TermInterface\>\.$#'
-			identifier: varTag.type
-			count: 1
-			path: src/Service/CodeReview/Search/ReviewSearchQueryParserFactory.php
 
 		-
 			message: '#^Parameter \#1 \$transform of method Parsica\\Parsica\\Parser\<array\<int, DR\\Review\\QueryParser\\Term\\TermInterface\>\>\:\:map\(\) expects pure\-callable\(array\{DR\\Review\\QueryParser\\Term\\TermInterface\}\)\: array\{DR\\Review\\QueryParser\\Term\\TermInterface\}, Closure\(mixed\)\: array\{DR\\Review\\QueryParser\\Term\\TermInterface\} given\.$#'

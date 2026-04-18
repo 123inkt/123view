@@ -45,6 +45,6 @@ class CircuitBreakerTest extends AbstractTestCase
         } catch (Throwable) {
             // ignored, expecting exception
         }
-        static::assertSame(2, $attempt); // @phpstan-ignore-line
+        static::assertSame(2, $attempt);
     }
 }
