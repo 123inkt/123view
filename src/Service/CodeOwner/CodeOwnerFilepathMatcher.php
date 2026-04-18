@@ -5,7 +5,7 @@ namespace DR\Review\Service\CodeOwner;
 
 use DR\Review\Model\CodeOwner\OwnerPattern;
 
-readonly class CodeOwnerFilePatternMatcher
+readonly class CodeOwnerFilepathMatcher
 {
     public function __construct(private CodeOwnerPatternMatcher $matcher)
     {
