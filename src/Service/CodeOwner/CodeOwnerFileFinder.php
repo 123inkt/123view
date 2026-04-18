@@ -14,7 +14,7 @@ class CodeOwnerFileFinder
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function find(Repository $repository, string $filepath): array
     {
@@ -30,8 +30,13 @@ class CodeOwnerFileFinder
 
             $codeowners = $directory . '/' . $filepath . '/CODEOWNERS';
             if (file_exists($codeowners)) {
-                $results = [$codeowners];
+                $results[] = $codeowners;
             }
+        }
+
+        $rootCodeowners = $directory . '/CODEOWNERS';
+        if (file_exists($rootCodeowners)) {
+            $results[] = $rootCodeowners;
         }
 
         return $results;
