@@ -50,6 +50,9 @@ class CodeOwnerPatternMatcherTest extends AbstractTestCase
     #[TestWith(['/docs/**/index.md', 'docs/index.md', true])]         // zero levels (no middle dir)
     #[TestWith(['/docs/**/index.md', 'docs/api/index.md', true])]
     #[TestWith(['/docs/**/index.md', 'docs/api/graphql/index.md', true])]
+    // Bare trailing *: pattern ends with * (not **), anchors the match at that depth
+    #[TestWith(['src/*', 'src/foo.js', true])]
+    #[TestWith(['src/*', 'src/sub/foo.js', false])]
     // Wildcard path: * matches files in the directory but not in subdirectories
     #[TestWith(['/docs/*.md', 'docs/README.md', true])]
     #[TestWith(['/docs/*.md', 'docs/api/README.md', false])]
