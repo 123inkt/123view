@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeOwner;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Utils\Assert;
 
 readonly class CodeOwnerFinder
 {
@@ -23,7 +22,7 @@ readonly class CodeOwnerFinder
         $files = $this->fileFinder->find($repository, $filepath);
 
         foreach ($files as $file) {
-            $patterns = $this->parser->parse(Assert::notFalse(file_get_contents($file)));
+            $patterns = $this->parser->parse((string)file_get_contents($file));
             $match    = $this->matcher->match($filepath, $patterns);
             if ($match !== null) {
                 return $match->owners;
