@@ -7,7 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitRepositoryLocationService;
 use Symfony\Component\Filesystem\Path;
 
-class CodeOwnerFileFinder
+readonly class CodeOwnerFileFinder
 {
     public function __construct(private GitRepositoryLocationService $locationService)
     {
