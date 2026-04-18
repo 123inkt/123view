@@ -22,7 +22,7 @@ readonly class CodeOwnerFinder
         $files = $this->fileFinder->find($repository, $filepath);
 
         foreach ($files as $file) {
-            $patterns = $this->parser->parse((string)file_get_contents($file));
+            $patterns = array_reverse($this->parser->parse((string)file_get_contents($file)));
             $match    = $this->matcher->match($filepath, $patterns);
             if ($match !== null) {
                 return $match->owners;
