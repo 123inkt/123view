@@ -51,9 +51,9 @@ readonly class CodeOwnerPatternMatcher
             $regex = substr($regex, 0, -1) . '\/.+$';
             // or whether the pattern ends with `*`, but not with `**`
         } elseif (preg_match('/[^*]+\*$/s', $pattern->pattern) === 1) {
-            $regex = $regex . '$';
+            $regex .= '$';
         } else {
-            $regex = $regex . '(/.+)?$';
+            $regex .= '(/.+)?$';
         }
 
         return preg_match(self::DELIMITER . $regex . self::DELIMITER . 's', $filename) === 1;
