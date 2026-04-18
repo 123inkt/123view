@@ -11,6 +11,9 @@ readonly class CodeOwnerFilepathMatcher
     {
     }
 
+    /**
+     * @param array<OwnerPattern> $patterns
+     */
     public function match(string $filename, array $patterns): ?OwnerPattern
     {
         return array_find($patterns, fn(OwnerPattern $pattern): bool => $this->matcher->match($filename, $pattern));
