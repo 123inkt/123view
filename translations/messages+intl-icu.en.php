@@ -382,4 +382,5 @@ return [
     'webhooks'                                    => 'Webhooks',
     'yes'                                         => 'Yes',
     'you'                                         => 'You',
+    'code.owner.of.file'                          => 'Code owner of this file',
 ];

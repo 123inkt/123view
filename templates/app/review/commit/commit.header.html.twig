@@ -4,7 +4,9 @@
     <div class="clearfix">
         {%- if fileDiffViewModel.codeOwners -%}
             <div class="float-start me-2">
-                <span class="badge rounded-pill text-bg-success" title="Code owners: {{ fileDiffViewModel.codeOwners|join(', ') }}">CODEOWNER</span>
+                <span class="badge rounded-pill text-bg-success"
+                      title="{{ 'code.owner.of.file'|trans ~ ': ' ~ fileDiffViewModel.codeOwners|join(', ') }}"
+                >CODEOWNER</span>
             </div>
         {%- endif -%}
 
