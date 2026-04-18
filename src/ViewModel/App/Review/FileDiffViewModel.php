@@ -19,6 +19,8 @@ class FileDiffViewModel
     private ?CodeQualityViewModel   $codeQualityViewModel = null;
     /** @var Revision[] */
     private array $revisions = [];
+    /** @var list<string> */
+    private array $codeOwners = [];
 
     public function __construct(
         public readonly DiffFile $selectedFile,
@@ -94,6 +96,24 @@ class FileDiffViewModel
     public function setRevisions(array $revisions): self
     {
         $this->revisions = $revisions;
+
+        return $this;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getCodeOwners(): array
+    {
+        return $this->codeOwners;
+    }
+
+    /**
+     * @param list<string> $codeOwners
+     */
+    public function setCodeOwners(array $codeOwners): self
+    {
+        $this->codeOwners = $codeOwners;
 
         return $this;
     }
