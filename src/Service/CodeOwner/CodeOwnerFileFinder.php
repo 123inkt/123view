@@ -28,15 +28,15 @@ class CodeOwnerFileFinder
                 break;
             }
 
-            $codeowners = $directory . '/' . $filepath . '/CODEOWNERS';
-            if (file_exists($codeowners)) {
-                $results[] = $codeowners;
+            $codeOwners = $directory . '/' . $filepath . '/CODEOWNERS';
+            if (file_exists($codeOwners)) {
+                $results[] = $codeOwners;
             }
         }
 
-        $rootCodeowners = $directory . '/CODEOWNERS';
-        if (file_exists($rootCodeowners)) {
-            $results[] = $rootCodeowners;
+        $rootCodeOwners = $directory . '/CODEOWNERS';
+        if (file_exists($rootCodeOwners)) {
+            $results[] = $rootCodeOwners;
         }
 
         return $results;
