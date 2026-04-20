@@ -5,9 +5,13 @@ namespace DR\Review\Service\CodeOwner;
 
 use DR\Review\Model\CodeOwner\OwnerPattern;
 use DR\Utils\Assert;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-readonly class CodeOwnerPatternMatcher
+class CodeOwnerPatternMatcher implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private const string DELIMITER    = '#';
     private const array  REPLACEMENTS = [
         '*'    => '[^\/]*',
@@ -56,6 +60,16 @@ readonly class CodeOwnerPatternMatcher
             $regex .= '(/.+)?$';
         }
 
-        return preg_match(self::DELIMITER . $regex . self::DELIMITER . 's', $filename) === 1;
+        $result = @preg_match(self::DELIMITER . $regex . self::DELIMITER . 's', $filename);
+        // @codeCoverageIgnoreStart
+        if ($result === false) {
+            $this->logger?->warning(
+                'Invalid regex pattern in code owner pattern: {pattern}. Regex: {regex}. Filename: {filename}',
+                ['pattern' => $pattern->pattern, 'regex' => self::DELIMITER . $regex . self::DELIMITER . 's', 'filename' => $filename]
+            );
+            return false;
+        }
+        // @codeCoverageIgnoreEnd
+        return $result === 1;
     }
 }
