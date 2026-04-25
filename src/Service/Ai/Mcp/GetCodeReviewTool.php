@@ -13,7 +13,8 @@ use Mcp\Capability\Attribute\Schema;
 
 #[McpTool(
     name       : 'get-code-review',
-    description: 'Find the first code review matching the given filters. All provided filters are applied as AND conditions. Returns null when no match is found.'
+    description: 'Find the first code review matching the given filters. All provided filters are applied as AND conditions. ' .
+    'Returns null when no match is found.'
 )]
 class GetCodeReviewTool
 {
@@ -21,9 +22,6 @@ class GetCodeReviewTool
     {
     }
 
-    /**
-     * @return CodeReviewResult|null
-     */
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]
         ?string $title = null,
@@ -42,12 +40,12 @@ class GetCodeReviewTool
         }
 
         return new CodeReviewResult(
-            id:            $review->getProjectId(),
-            title:         $review->getTitle(),
-            state:         $review->getState(),
+            id           : $review->getProjectId(),
+            title        : $review->getTitle(),
+            state        : $review->getState(),
             reviewerState: $review->getReviewersState(),
-            repository:    $review->getRepository()->getDisplayName(),
-            url:           sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
+            repository   : $review->getRepository()->getDisplayName(),
+            url          : sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
         );
     }
 }

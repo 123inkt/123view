@@ -109,6 +109,9 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertContains('get-code-reviews', $toolNames);
     }
 
+    /**
+     * @return class-string[]
+     */
     protected function getFixtures(): array
     {
         return [UserAccessTokenFixtures::class];
@@ -129,4 +132,3 @@ class McpServerTest extends AbstractFunctionalTestCase
         return $session->getId()->toRfc4122();
     }
 }
-
