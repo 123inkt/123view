@@ -23,6 +23,7 @@ return App::config([
             'dev'      => ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'security' => false],
             'api_docs' => ['pattern' => '^/api/docs', 'stateless' => true, 'security' => false],
             'api'      => ['pattern' => '^/api', 'stateless' => true, 'custom_authenticators' => [BearerAuthenticator::class]],
+            'mcp'      => ['pattern' => '^/_mcp', 'stateless' => true, 'custom_authenticators' => [BearerAuthenticator::class]],
             'main'     => [
                 'lazy'                  => true,
                 'provider'              => 'app_user_provider',

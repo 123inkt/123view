@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Functional\Mcp;
 
 use DR\Review\Tests\AbstractFunctionalTestCase;
+use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use Mcp\Server\Session\SessionFactory;
 use Mcp\Server\Session\SessionStoreInterface;
 use Nette\Utils\Json;
@@ -18,9 +19,37 @@ class McpServerTest extends AbstractFunctionalTestCase
 {
     private const PROTOCOL_VERSION = '2024-11-05';
     private const SERVER_HEADERS   = [
-        'CONTENT_TYPE' => 'application/json',
-        'HTTP_ACCEPT'  => 'application/json, text/event-stream',
+        'CONTENT_TYPE'      => 'application/json',
+        'HTTP_ACCEPT'       => 'application/json, text/event-stream',
+        'HTTP_AUTHORIZATION' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE,
     ];
+
+    /**
+     * @throws Throwable
+     */
+    public function testUnauthenticated(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            '/_mcp',
+            server : [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT'  => 'application/json, text/event-stream',
+            ],
+            content: Json::encode([
+                'jsonrpc' => '2.0',
+                'id'      => 1,
+                'method'  => 'initialize',
+                'params'  => [
+                    'protocolVersion' => self::PROTOCOL_VERSION,
+                    'capabilities'    => (object)[],
+                    'clientInfo'      => ['name' => 'test-client', 'version' => '1.0'],
+                ],
+            ]),
+        );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+    }
 
     /**
      * @throws Throwable
@@ -82,7 +111,7 @@ class McpServerTest extends AbstractFunctionalTestCase
 
     protected function getFixtures(): array
     {
-        return [];
+        return [UserAccessTokenFixtures::class];
     }
 
     /**
@@ -100,3 +129,4 @@ class McpServerTest extends AbstractFunctionalTestCase
         return $session->getId()->toRfc4122();
     }
 }
+
