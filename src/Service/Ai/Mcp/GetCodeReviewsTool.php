@@ -9,6 +9,10 @@ use DR\Review\Repository\Mcp\CodeReviewRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
 
+#[McpTool(
+    name: 'get-code-reviews',
+    description: 'Search for code reviews using optional filters. All provided filters are applied as AND conditions. Returns up to 50 results ordered by most recently updated.'
+)]
 class GetCodeReviewsTool
 {
     public function __construct(private readonly CodeReviewRepository $reviewRepository)
@@ -18,10 +22,6 @@ class GetCodeReviewsTool
     /**
      * @return list<array<string, int|string|null>>
      */
-    #[McpTool(
-        name: 'get-code-reviews',
-        description: 'Search for code reviews using optional filters. All provided filters are applied as AND conditions. Returns up to 50 results ordered by most recently updated.'
-    )]
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]
         ?string $title = null,
