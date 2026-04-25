@@ -43,6 +43,7 @@ return App::config([
         'access_control'   => [
             ['path' => '^/app/assets/', 'roles' => AuthenticatedVoter::PUBLIC_ACCESS],
             ['path' => '^/app', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
+            ['path' => '^/_mcp', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
             ['path' => '^/log-viewer', 'roles' => [Roles::ROLE_ADMIN]],
         ],
     ],
