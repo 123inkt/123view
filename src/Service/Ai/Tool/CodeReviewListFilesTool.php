@@ -10,7 +10,7 @@ use DR\Review\Service\Git\LsTree\LockableLsTreeService;
 use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
-use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Throwable;
 
 #[AsTool('list_files', 'List the files in the given directory path for the specified code review.')]
@@ -30,7 +30,7 @@ class CodeReviewListFilesTool
      * @return string[] List of file paths
      * @throws Throwable
      */
-    public function __invoke(#[With(minimum: 1)] int $codeReviewId, string $filepath): array
+    public function __invoke(#[Schema(minimum: 1)] int $codeReviewId, string $filepath): array
     {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {

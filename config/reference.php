@@ -2273,6 +2273,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             connection?: string|Param,
  *             table_name?: string|Param,
  *             strategy?: string|Param,
+ *             vec?: bool|Param, // Default: false
+ *             distance?: "cosine"|"L2"|Param, // Default: "cosine"
+ *             vector_dimension?: int|Param, // Default: 1536
  *         }>,
  *         supabase?: array<string, array{ // Default: []
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"

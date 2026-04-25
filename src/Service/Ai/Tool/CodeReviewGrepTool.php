@@ -10,7 +10,7 @@ use DR\Utils\Arrays;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
-use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Throwable;
 
 #[AsTool(
@@ -35,7 +35,7 @@ class CodeReviewGrepTool
      * @return string The as-is output of the git grep command
      * @throws Throwable
      */
-    public function __invoke(int $codeReviewId, string $pattern, #[With(minimum: 0, maximum: 5)] int $context = 0): string
+    public function __invoke(int $codeReviewId, string $pattern, #[Schema(minimum: 0, maximum: 5)] int $context = 0): string
     {
         if (@preg_match('/' . $pattern . '/', '') === false) {
             throw new InvalidArgumentException('The provided pattern is not a valid regex pattern: ' . $pattern);

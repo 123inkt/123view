@@ -16,7 +16,7 @@ use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
-use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
@@ -46,9 +46,9 @@ class CodeReviewAddCommentTool
      * @throws Throwable
      */
     public function __invoke(
-        #[With(minimum: 1)] int $codeReviewId,
+        #[Schema(minimum: 1)] int $codeReviewId,
         string $filepath,
-        #[With(minimum: 1)] int $lineNumber,
+        #[Schema(minimum: 1)] int $lineNumber,
         string $message,
         ?string $codeSuggestion
     ): string {

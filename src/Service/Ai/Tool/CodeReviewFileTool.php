@@ -11,7 +11,7 @@ use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
-use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 
 #[AsTool(
     'read_file',
@@ -33,7 +33,7 @@ class CodeReviewFileTool
      *
      * @throws RepositoryException
      */
-    public function __invoke(#[With(minimum: 1)] int $codeReviewId, string $filepath): string
+    public function __invoke(#[Schema(minimum: 1)] int $codeReviewId, string $filepath): string
     {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {
