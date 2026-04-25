@@ -9,6 +9,7 @@
 1) Tools: `*`
 
 ### Manual configuration
+
 Edit `~/.copilot/mcp-config.json`
 ```json
 {
