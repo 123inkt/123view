@@ -376,6 +376,7 @@ return [
     'view.file'                                   => 'View file',
     'view.markdown'                               => 'View markdown',
     'visit.the.api.at'                            => 'Visit the API documentation at',
+    'configure.mcp.server'                        => 'Visit how to configure the mcp server at',
     'webhook.new'                                 => 'Add webhook',
     'webhook.successful.removed'                  => 'Webhook successfully removed.',
     'webhook.successful.saved'                    => 'Webhook successfully saved.',
