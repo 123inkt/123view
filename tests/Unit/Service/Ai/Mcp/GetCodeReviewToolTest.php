@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
+use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
+use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Service\Ai\Mcp\GetCodeReviewTool;
 use DR\Review\Tests\AbstractTestCase;
@@ -26,29 +28,27 @@ class GetCodeReviewToolTest extends AbstractTestCase
         $this->tool             = new GetCodeReviewTool($this->reviewRepository);
     }
 
-    public function testInvokeReturnsEmptyArrayWhenNoReviewsFound(): void
+    public function testInvokeReturnsNullWhenNoReviewFound(): void
     {
         $this->reviewRepository->expects($this->once())
             ->method('findByFilters')
             ->with(new CodeReviewQuery(), 1)
             ->willReturn([]);
 
-        $result = ($this->tool)();
-
-        static::assertNull($result);
+        static::assertNull(($this->tool)());
     }
 
     public function testInvokePassesFiltersToRepository(): void
     {
         $this->reviewRepository->expects($this->once())
             ->method('findByFilters')
-            ->with(new CodeReviewQuery('login', 'feature/x', 'author@example.com', 'https://gitlab.com'), 1)
+            ->with(new CodeReviewQuery('login', 'feature/x', 'author@example.com', 'https://gitlab.com', CodeReviewStateType::OPEN), 1)
             ->willReturn([]);
 
-        ($this->tool)('login', 'feature/x', 'author@example.com', 'https://gitlab.com');
+        ($this->tool)('login', 'feature/x', 'author@example.com', 'https://gitlab.com', CodeReviewStateType::OPEN);
     }
 
-    public function testInvokeReturnsMappedReviews(): void
+    public function testInvokeReturnsMappedReview(): void
     {
         $repository = new Repository();
         $repository->setName('my-repo');
@@ -58,7 +58,7 @@ class GetCodeReviewToolTest extends AbstractTestCase
         $review->setProjectId(42);
         $review->setTitle('Fix login bug');
         $review->setDescription('');
-        $review->setState('open');
+        $review->setState(CodeReviewStateType::OPEN);
         $review->setCreateTimestamp(1000);
         $review->setUpdateTimestamp(2000);
         $review->setRepository($repository);
@@ -70,13 +70,14 @@ class GetCodeReviewToolTest extends AbstractTestCase
 
         $result = ($this->tool)(title: 'login');
 
-        static::assertSame([
-            'id'            => 42,
-            'title'         => 'Fix login bug',
-            'state'         => 'open',
-            'reviewerState' => 'open',
-            'repository'    => 'My Repo',
-            'url'           => 'my-repo/app/reviews/42',
-        ], $result);
+        $expected = new CodeReviewResult(
+            id:            42,
+            title:         'Fix login bug',
+            state:         CodeReviewStateType::OPEN,
+            reviewerState: 'open',
+            repository:    'My Repo',
+            url:           'my-repo/app/reviews/42',
+        );
+        static::assertEquals($expected, $result);
     }
 }

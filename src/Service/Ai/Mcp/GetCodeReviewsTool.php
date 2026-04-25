@@ -12,8 +12,9 @@ use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
 
 #[McpTool(
-    name: 'get-code-reviews',
-    description: 'Search for code reviews using optional filters. All provided filters are applied as AND conditions. Returns up to 50 results ordered by most recently updated.'
+    'get-code-reviews',
+    'Search for code reviews using optional filters. All provided filters are applied as AND conditions. ' .
+    'Returns up to 50 results ordered by most recently updated.'
 )]
 class GetCodeReviewsTool
 {
@@ -22,7 +23,7 @@ class GetCodeReviewsTool
     }
 
     /**
-     * @return list<CodeReviewResult>
+     * @return CodeReviewResult[]
      */
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]

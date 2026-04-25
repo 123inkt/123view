@@ -12,7 +12,7 @@ use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
 
 #[McpTool(
-    name: 'get-code-review',
+    name       : 'get-code-review',
     description: 'Find the first code review matching the given filters. All provided filters are applied as AND conditions. Returns null when no match is found.'
 )]
 class GetCodeReviewTool
