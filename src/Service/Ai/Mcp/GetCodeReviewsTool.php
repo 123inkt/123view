@@ -6,6 +6,7 @@ namespace DR\Review\Service\Ai\Mcp;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
+use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
@@ -21,7 +22,7 @@ class GetCodeReviewsTool
     }
 
     /**
-     * @return list<array<string, int|string|null>>
+     * @return list<CodeReviewResult>
      */
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]
@@ -38,14 +39,14 @@ class GetCodeReviewsTool
         $reviews = $this->reviewRepository->findByFilters(new CodeReviewQuery($title, $branchName, $author, $repositoryUrl, $state), 50);
 
         return array_values(array_map(
-            static fn($review) => [
-                'id'            => $review->getProjectId(),
-                'title'         => $review->getTitle(),
-                'state'         => $review->getState(),
-                'reviewerState' => $review->getReviewersState(),
-                'repository'    => $review->getRepository()->getDisplayName(),
-                'url'           => sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
-            ],
+            static fn($review) => new CodeReviewResult(
+                id:            $review->getProjectId(),
+                title:         $review->getTitle(),
+                state:         $review->getState(),
+                reviewerState: $review->getReviewersState(),
+                repository:    $review->getRepository()->getDisplayName(),
+                url:           sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
+            ),
             $reviews
         ));
     }

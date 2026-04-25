@@ -6,6 +6,7 @@ namespace DR\Review\Service\Ai\Mcp;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
+use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
@@ -21,7 +22,7 @@ class GetCodeReviewTool
     }
 
     /**
-     * @return array<string, int|string|null>|null
+     * @return CodeReviewResult|null
      */
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]
@@ -30,23 +31,23 @@ class GetCodeReviewTool
         ?string $branchName = null,
         #[Schema(type: 'string', description: 'Filter by exact author email address of the revision.', format: 'email')]
         ?string $author = null,
-        #[Schema(type: 'string', description: 'Filter by exact repository URL (http/https).', format: 'uri')]
+        #[Schema(type: 'string', description: 'Filter by exact repository URL', format: 'uri')]
         ?string $repositoryUrl = null,
         #[Schema(type: 'string', description: 'Filter by review state.', enum: [CodeReviewStateType::OPEN, CodeReviewStateType::CLOSED])]
         ?string $state = null,
-    ): ?array {
+    ): ?CodeReviewResult {
         $review = $this->reviewRepository->findByFilters(new CodeReviewQuery($title, $branchName, $author, $repositoryUrl, $state), 1)[0] ?? null;
         if ($review === null) {
             return null;
         }
 
-        return [
-            'id'            => $review->getProjectId(),
-            'title'         => $review->getTitle(),
-            'state'         => $review->getState(),
-            'reviewerState' => $review->getReviewersState(),
-            'repository'    => $review->getRepository()->getDisplayName(),
-            'url'           => sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
-        ];
+        return new CodeReviewResult(
+            id:            $review->getProjectId(),
+            title:         $review->getTitle(),
+            state:         $review->getState(),
+            reviewerState: $review->getReviewersState(),
+            repository:    $review->getRepository()->getDisplayName(),
+            url:           sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
+        );
     }
 }
