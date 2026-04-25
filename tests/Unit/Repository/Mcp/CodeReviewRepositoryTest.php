@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Repository\Mcp;
 
+use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
@@ -56,6 +57,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
             branchName:    'first-branch',
             authorEmail:   'sherlock@example.com',
             repositoryUrl: 'url',
+            state:         CodeReviewStateType::CLOSED,
         );
 
         $results = $this->repository->findByFilters($query, 50);

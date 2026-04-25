@@ -47,6 +47,11 @@ class CodeReviewRepository extends ServiceEntityRepository
                 ->setParameter('repositoryUrl', $query->repositoryUrl);
         }
 
+        if ($query->state !== null) {
+            $qb->andWhere('c.state = :state')
+                ->setParameter('state', $query->state);
+        }
+
         if ($query->branchName !== null || $query->authorEmail !== null) {
             $qb->innerJoin('c.revisions', 'rv')->distinct();
 

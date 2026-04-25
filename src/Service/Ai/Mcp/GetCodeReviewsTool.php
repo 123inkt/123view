@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Mcp;
 
+use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use Mcp\Capability\Attribute\McpTool;
@@ -31,8 +32,10 @@ class GetCodeReviewsTool
         ?string $author = null,
         #[Schema(type: 'string', description: 'Filter by exact repository URL (http/https).', format: 'uri')]
         ?string $repositoryUrl = null,
+        #[Schema(type: 'string', description: 'Filter by review state.', enum: [CodeReviewStateType::OPEN, CodeReviewStateType::CLOSED])]
+        ?string $state = null,
     ): array {
-        $reviews = $this->reviewRepository->findByFilters(new CodeReviewQuery($title, $branchName, $author, $repositoryUrl), 50);
+        $reviews = $this->reviewRepository->findByFilters(new CodeReviewQuery($title, $branchName, $author, $repositoryUrl, $state), 50);
 
         return array_values(array_map(
             static fn($review) => [

@@ -14,6 +14,7 @@ readonly class CodeReviewQuery
         public ?string $branchName = null,
         public ?string $authorEmail = null,
         public ?string $repositoryUrl = null,
+        public ?string $state = null,
     ) {
     }
 }
