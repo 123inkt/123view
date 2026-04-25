@@ -110,7 +110,7 @@ class McpServerTest extends AbstractFunctionalTestCase
     }
 
     /**
-     * @return class-string[]
+     * @return list<class-string>
      */
     protected function getFixtures(): array
     {
