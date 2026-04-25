@@ -107,6 +107,7 @@ class McpServerTest extends AbstractFunctionalTestCase
         $toolNames = array_column($data['result']['tools'], 'name');
         static::assertContains('get-code-review', $toolNames);
         static::assertContains('get-code-reviews', $toolNames);
+        static::assertContains('get-current-user', $toolNames);
     }
 
     /**

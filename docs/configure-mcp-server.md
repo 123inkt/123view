@@ -24,3 +24,8 @@ Edit `~/.copilot/mcp-config.json`
     }
 }
 ```
+
+## Available tools
+- `get-current-user`: Returns the id, name and email of the currently authenticated user.
+- `get-code-review`: Find the first code review matching the given filters. All provided filters are applied as AND conditions. Returns null when no match is found.
+- `get-code-reviews`: Search for code reviews using optional filters. All provided filters are applied as AND conditions. Returns up to 50 results ordered by most recently updated.
