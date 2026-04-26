@@ -44,6 +44,9 @@ readonly class GetCodeReviewsTool
         ?string $state = null,
     ): array {
         $reviews = $this->reviewRepository->findByFilters(new CodeReviewQuery($title, $branchName, $author, $repositoryUrl, $state), 50);
+        if ($reviews === []) {
+            return [];
+        }
         // load entities for reviewers
         $this->reviewerRepository->findBy(['review' => $reviews]);
 
