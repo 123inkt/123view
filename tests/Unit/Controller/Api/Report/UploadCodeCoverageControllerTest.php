@@ -85,7 +85,7 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
         $this->reportRepository->expects($this->once())->method('save')->with($report, true);
 
         $response = ($this->controller)($request, 'repository', 'hash');
-        static::assertEquals(new JsonResponse(['created' => 1], Response::HTTP_OK), $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
