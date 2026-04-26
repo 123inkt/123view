@@ -42,7 +42,7 @@ class GetCodeReviewsToolTest extends AbstractTestCase
             ->with(new CodeReviewQuery(), 50)
             ->willReturn([]);
 
-        $this->reviewerRepository->expects($this->once())->method('findBy')->with(['review' => []]);
+        $this->reviewerRepository->expects($this->never())->method('findBy');
         $this->router->expects($this->never())->method('generate');
 
         static::assertSame([], ($this->tool)());
@@ -55,7 +55,7 @@ class GetCodeReviewsToolTest extends AbstractTestCase
             ->with(new CodeReviewQuery('login', 'feature/x', 'author@example.com', 'https://gitlab.com', CodeReviewStateType::OPEN), 50)
             ->willReturn([]);
 
-        $this->reviewerRepository->expects($this->once())->method('findBy')->with(['review' => []]);
+        $this->reviewerRepository->expects($this->never())->method('findBy');
         $this->router->expects($this->never())->method('generate');
 
         ($this->tool)('login', 'feature/x', 'author@example.com', 'https://gitlab.com', CodeReviewStateType::OPEN);
