@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
+use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
@@ -14,18 +15,21 @@ use DR\Review\Service\Ai\Mcp\GetCodeReviewTool;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Routing\RouterInterface;
 
 #[CoversClass(GetCodeReviewTool::class)]
 class GetCodeReviewToolTest extends AbstractTestCase
 {
     private CodeReviewRepository&MockObject $reviewRepository;
+    private RouterInterface&MockObject      $router;
     private GetCodeReviewTool               $tool;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->reviewRepository = $this->createMock(CodeReviewRepository::class);
-        $this->tool             = new GetCodeReviewTool($this->reviewRepository);
+        $this->router           = $this->createMock(RouterInterface::class);
+        $this->tool             = new GetCodeReviewTool($this->reviewRepository, $this->router);
     }
 
     public function testInvokeReturnsNullWhenNoReviewFound(): void
@@ -34,6 +38,8 @@ class GetCodeReviewToolTest extends AbstractTestCase
             ->method('findByFilters')
             ->with(new CodeReviewQuery(), 1)
             ->willReturn([]);
+
+        $this->router->expects($this->never())->method('generate');
 
         static::assertNull(($this->tool)());
     }
@@ -44,6 +50,8 @@ class GetCodeReviewToolTest extends AbstractTestCase
             ->method('findByFilters')
             ->with(new CodeReviewQuery('login', 'feature/x', 'author@example.com', 'https://gitlab.com', CodeReviewStateType::OPEN), 1)
             ->willReturn([]);
+
+        $this->router->expects($this->never())->method('generate');
 
         ($this->tool)('login', 'feature/x', 'author@example.com', 'https://gitlab.com', CodeReviewStateType::OPEN);
     }
@@ -68,6 +76,11 @@ class GetCodeReviewToolTest extends AbstractTestCase
             ->with(new CodeReviewQuery(title: 'login'), 1)
             ->willReturn([$review]);
 
+        $this->router->expects($this->once())
+            ->method('generate')
+            ->with(ReviewController::class, ['review' => $review], RouterInterface::ABSOLUTE_URL)
+            ->willReturn('https://example.com/app/reviews/42');
+
         $result = ($this->tool)(title: 'login');
 
         $expected = new CodeReviewResult(
@@ -76,7 +89,7 @@ class GetCodeReviewToolTest extends AbstractTestCase
             state:         CodeReviewStateType::OPEN,
             reviewerState: 'open',
             repository:    'My Repo',
-            url:           'my-repo/app/reviews/42',
+            url:           'https://example.com/app/reviews/42',
         );
         static::assertEquals($expected, $result);
     }
