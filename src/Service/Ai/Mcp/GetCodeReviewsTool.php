@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Mcp;
 
+use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
+use DR\Review\Repository\Review\CodeReviewerRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
+use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
     'get-code-reviews',
     'Search for code reviews using optional filters. All provided filters are applied as AND conditions. ' .
     'Returns up to 50 results ordered by most recently updated.'
 )]
-class GetCodeReviewsTool
+readonly class GetCodeReviewsTool
 {
-    public function __construct(private readonly CodeReviewRepository $reviewRepository)
-    {
+    public function __construct(
+        private CodeReviewRepository $reviewRepository,
+        private CodeReviewerRepository $reviewerRepository,
+        private RouterInterface $router,
+    ) {
     }
 
     /**
@@ -38,17 +44,21 @@ class GetCodeReviewsTool
         ?string $state = null,
     ): array {
         $reviews = $this->reviewRepository->findByFilters(new CodeReviewQuery($title, $branchName, $author, $repositoryUrl, $state), 50);
+        // load entities for reviewers
+        $this->reviewerRepository->findBy(['review' => $reviews]);
 
-        return array_values(array_map(
-            static fn($review) => new CodeReviewResult(
-                id:            $review->getProjectId(),
-                title:         $review->getTitle(),
-                state:         $review->getState(),
-                reviewerState: $review->getReviewersState(),
-                repository:    $review->getRepository()->getDisplayName(),
-                url:           sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
-            ),
-            $reviews
-        ));
+        return array_values(
+            array_map(
+                fn($review) => new CodeReviewResult(
+                    $review->getProjectId(),
+                    $review->getTitle(),
+                    $review->getState(),
+                    $review->getReviewersState(),
+                    $review->getRepository()->getDisplayName(),
+                    $this->router->generate(ReviewController::class, ['review' => $review], RouterInterface::ABSOLUTE_URL)
+                ),
+                $reviews
+            )
+        );
     }
 }

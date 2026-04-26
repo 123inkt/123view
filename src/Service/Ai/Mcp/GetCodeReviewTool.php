@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Mcp;
 
+use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
+use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
     name       : 'get-code-review',
     description: 'Find the first code review matching the given filters. All provided filters are applied as AND conditions. ' .
     'Returns null when no match is found.'
 )]
-class GetCodeReviewTool
+readonly class GetCodeReviewTool
 {
-    public function __construct(private readonly CodeReviewRepository $reviewRepository)
+    public function __construct(private CodeReviewRepository $reviewRepository, private RouterInterface $router)
     {
     }
 
@@ -40,12 +42,12 @@ class GetCodeReviewTool
         }
 
         return new CodeReviewResult(
-            id           : $review->getProjectId(),
-            title        : $review->getTitle(),
-            state        : $review->getState(),
-            reviewerState: $review->getReviewersState(),
-            repository   : $review->getRepository()->getDisplayName(),
-            url          : sprintf('%s/app/reviews/%s', $review->getRepository()->getName(), $review->getProjectId()),
+            $review->getProjectId(),
+            $review->getTitle(),
+            $review->getState(),
+            $review->getReviewersState(),
+            $review->getRepository()->getDisplayName(),
+            $this->router->generate(ReviewController::class, ['review' => $review], RouterInterface::ABSOLUTE_URL)
         );
     }
 }
