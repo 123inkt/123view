@@ -22,12 +22,13 @@ readonly class GetCommentsTool
      *     commentId: int,
      *     message: string,
      *     state: string,
-     *     file: string,
+     *     file: string|null,
      *     line: int,
+     *     createdAt: string,
      *     author: array{
      *         userId: int,
      *         name: string,
-     *         email: string
+     *         email: non-empty-string
      *     },
      * }>
      */
@@ -43,7 +44,7 @@ readonly class GetCommentsTool
             $lineReference = $comment->getLineReference();
 
             return [
-                'commentId' => $comment->getId(),
+                'commentId' => (int)$comment->getId(),
                 'message'   => $comment->getMessage(),
                 'state'     => $comment->getState(),
                 'file'      => $lineReference->newPath ?? $lineReference->oldPath,
