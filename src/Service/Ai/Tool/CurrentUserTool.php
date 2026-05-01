@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\Service\Ai\Mcp;
+namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Service\User\UserEntityProvider;
 use Mcp\Capability\Attribute\McpTool;

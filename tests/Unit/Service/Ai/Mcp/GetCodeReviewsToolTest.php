@@ -12,7 +12,7 @@ use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Review\CodeReviewerRepository;
-use DR\Review\Service\Ai\Mcp\GetCodeReviewsTool;
+use DR\Review\Service\Ai\Tool\GetCodeReviewsTool;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;

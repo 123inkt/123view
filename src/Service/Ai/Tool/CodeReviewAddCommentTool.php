@@ -14,6 +14,7 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
+use Mcp\Capability\Attribute\McpTool;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
@@ -21,6 +22,7 @@ use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
 
+#[McpTool('add_comment', 'Add a comment to a code review at a specific file and line number. Optionally include a code suggestion.')]
 #[AsTool('add_comment', 'Add a comment to a code review at a specific file and line number. Optionally include a code suggestion.')]
 class CodeReviewAddCommentTool
 {
@@ -46,11 +48,11 @@ class CodeReviewAddCommentTool
      * @throws Throwable
      */
     public function __invoke(
-        #[Schema(minimum: 1)] int $codeReviewId,
-        string $filepath,
-        #[Schema(minimum: 1)] int $lineNumber,
-        string $message,
-        ?string $codeSuggestion
+        #[Schema(description: 'The review id of the code review', minimum: 1)] int $codeReviewId,
+        #[Schema(description: 'The filepath of the file to comment on relative to the git repository root')] string $filepath,
+        #[Schema(description: 'The line number in the file to comment on', minimum: 1)] int $lineNumber,
+        #[Schema(description: 'The comment text to add, must be valid markdown')] string $message,
+        #[Schema(description: 'The code suggestion to include in the comment, must be valid markdown')] ?string $codeSuggestion
     ): string {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\Service\Ai\Mcp;
+namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
