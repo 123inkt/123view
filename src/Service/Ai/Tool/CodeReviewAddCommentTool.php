@@ -25,7 +25,7 @@ readonly class CodeReviewAddCommentTool
      * @throws Throwable
      */
     public function __invoke(
-        #[Schema(description: 'The review id of the code review', minimum: 1)] int $codeReviewId,
+        #[Schema(description: 'The CODE_REVIEW_ID of the code review', minimum: 1)] int $codeReviewId,
         #[Schema(description: 'The filepath of the file to comment on relative to the git repository root')] string $filepath,
         #[Schema(description: 'The line number in the file to comment on', minimum: 1)] int $lineNumber,
         #[Schema(description: 'The comment text to add, must be valid markdown')] string $message,
