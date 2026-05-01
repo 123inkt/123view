@@ -9,10 +9,16 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Utils\Arrays;
+use Mcp\Capability\Attribute\McpResource;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 
+#[McpResource(
+    'read_file',
+    'Reads the contents of a file for the given path and review. Returns the file contents as a string. Only searches in the git ' .
+    'repository of the specified code review and will not find any dependencies.'
+)]
 #[AsTool(
     'read_file',
     'Reads the contents of a file for the given path and review. Returns the file contents as a string. Only searches in the git ' .
@@ -28,13 +34,12 @@ class CodeReviewFileTool
     }
 
     /**
-     * @param int    $codeReviewId The CODE_REVIEW_ID of the review
-     * @param string $filepath     The path to the file to read
-     *
      * @throws RepositoryException
      */
-    public function __invoke(#[Schema(minimum: 1)] int $codeReviewId, string $filepath): string
-    {
+    public function __invoke(
+        #[Schema(description: 'The CODE_REVIEW_ID of the review', minimum: 1)] int $codeReviewId,
+        #[Schema(description: 'The path to the file to read relative to the root of the git repository')] string $filepath
+    ): string {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {
             throw new CodeReviewNotFoundException($codeReviewId);
