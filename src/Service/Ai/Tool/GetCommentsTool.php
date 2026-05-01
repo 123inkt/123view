@@ -53,7 +53,7 @@ readonly class GetCommentsTool
                     'name'   => $comment->getUser()->getName(),
                     'email'  => $comment->getUser()->getEmail(),
                 ],
-                'createdAt' => $comment->getCreateTimestamp()->format('c'),
+                'createdAt' => date('c', $comment->getCreateTimestamp()),
             ];
         }, $review->getComments());
     }
