@@ -9,12 +9,12 @@ use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Utils\Arrays;
-use Mcp\Capability\Attribute\McpResource;
+use Mcp\Capability\Attribute\McpTool;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 
-#[McpResource(
+#[McpTool(
     'read_file',
     'Reads the contents of a file for the given path and review. Returns the file contents as a string. Only searches in the git ' .
     'repository of the specified code review and will not find any dependencies.'
