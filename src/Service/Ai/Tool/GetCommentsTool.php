@@ -57,7 +57,7 @@ readonly class GetCommentsTool
                     'createdAt' => date('c', $comment->getCreateTimestamp()),
                 ];
             },
-            $review->getComments()
+            $review->getComments()->toArray()
         );
     }
 }
