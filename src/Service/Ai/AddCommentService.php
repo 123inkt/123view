@@ -43,7 +43,7 @@ class AddCommentService
         $message = str_replace(':**', '**', $message);
 
         $this->aiLogger?->info(
-            'CodeReviewAddCommentTool: Adding comment to file "{filepath}" at line {line} in review {id}',
+            'AddCommentService: Adding comment to file "{filepath}" at line {line} in review {id}',
             ['id' => $review->getId(), 'filepath' => $filepath, 'line' => $lineNumber]
         );
 
