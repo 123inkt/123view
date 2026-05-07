@@ -114,7 +114,6 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertContains('add_comment', $toolNames);
         static::assertContains('read_file', $toolNames);
         static::assertContains('list_files', $toolNames);
-
     }
 
     /**
