@@ -42,7 +42,7 @@ class GetCodeReviewToolTest extends AbstractFunctionalTestCase
                 'id'      => 2,
                 'method'  => 'tools/call',
                 'params'  => [
-                    'name'      => 'get-code-review',
+                    'name'      => 'get_code_review',
                     'arguments' => ['title' => 'title'],
                 ],
             ]),
