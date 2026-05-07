@@ -7,7 +7,7 @@ namespace DR\Review\Service\Ai\Tool;
 use DR\Review\Service\User\UserEntityProvider;
 use Mcp\Capability\Attribute\McpTool;
 
-#[McpTool('get-current-user', 'Returns the id, name and email of the currently authenticated user.')]
+#[McpTool('get_current_user', 'Returns the id, name and email of the currently authenticated user.')]
 class CurrentUserTool
 {
     public function __construct(private readonly UserEntityProvider $userEntityProvider)

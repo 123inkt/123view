@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
 
-#[McpTool('get_comments_for_reviews', 'Get all comments on the given review')]
+#[McpTool('get_code_review_comments', 'Get all comments on the given review')]
 readonly class GetCommentsTool
 {
     public function __construct(private CodeReviewRepository $reviewRepository)
