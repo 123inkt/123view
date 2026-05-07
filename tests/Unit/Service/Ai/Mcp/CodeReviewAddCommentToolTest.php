@@ -10,6 +10,7 @@ use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\SecurityBundle\Security;
+use Throwable;
 
 #[CoversClass(CodeReviewAddCommentTool::class)]
 class CodeReviewAddCommentToolTest extends AbstractTestCase
@@ -26,6 +27,9 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
         $this->tool           = new CodeReviewAddCommentTool($this->security, $this->commentService);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function testInvokeShouldAddCommentSuccessfully(): void
     {
         $user = new User();
@@ -38,6 +42,9 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
         static::assertSame('Comment added successfully.', $result);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function testInvokeShouldAddCommentWithoutSuggestion(): void
     {
         $user = new User();

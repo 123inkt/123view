@@ -54,9 +54,9 @@ class AddCommentServiceTest extends AbstractTestCase
     public function testAddCommentShouldAddCommentWithoutSuggestion(): void
     {
         $repositoryEntity = new Repository();
-        $revision         = (new Revision())->setRepository($repositoryEntity)->setCommitHash('abc123');
-        $review           = (new CodeReview())->setId(456);
-        $user             = (new User())->setId(1);
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
+        $review           = new CodeReview()->setId(456);
+        $user             = new User()->setId(1);
 
         $this->repository->expects($this->once())->method('find')->with(456)->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
@@ -84,8 +84,8 @@ class AddCommentServiceTest extends AbstractTestCase
     public function testAddCommentShouldAppendCodeSuggestion(): void
     {
         $repositoryEntity = new Repository();
-        $revision         = (new Revision())->setRepository($repositoryEntity)->setCommitHash('def456');
-        $review           = (new CodeReview())->setId(1);
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('def456');
+        $review           = new CodeReview()->setId(1);
 
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
@@ -101,8 +101,8 @@ class AddCommentServiceTest extends AbstractTestCase
     public function testAddCommentShouldSkipEmptyCodeSuggestion(): void
     {
         $repositoryEntity = new Repository();
-        $revision         = (new Revision())->setRepository($repositoryEntity)->setCommitHash('abc123');
-        $review           = (new CodeReview())->setId(1);
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
+        $review           = new CodeReview()->setId(1);
 
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
@@ -118,8 +118,8 @@ class AddCommentServiceTest extends AbstractTestCase
     public function testAddCommentShouldReplaceKissEmoticonInMessage(): void
     {
         $repositoryEntity = new Repository();
-        $revision         = (new Revision())->setRepository($repositoryEntity)->setCommitHash('abc123');
-        $review           = (new CodeReview())->setId(1);
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
+        $review           = new CodeReview()->setId(1);
 
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
@@ -135,8 +135,8 @@ class AddCommentServiceTest extends AbstractTestCase
     public function testAddCommentShouldSetTimestamps(): void
     {
         $repositoryEntity = new Repository();
-        $revision         = (new Revision())->setRepository($repositoryEntity)->setCommitHash('abc123');
-        $review           = (new CodeReview())->setId(1);
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
+        $review           = new CodeReview()->setId(1);
 
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
@@ -153,7 +153,7 @@ class AddCommentServiceTest extends AbstractTestCase
     public function testAddCommentShouldWorkWithNullLogger(): void
     {
         $repositoryEntity = new Repository();
-        $revision         = (new Revision())->setRepository($repositoryEntity)->setCommitHash('abc123');
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
         $review           = new CodeReview();
 
         $service = new AddCommentService(null, $this->repository, $this->commentRepository, $this->reviewRevisionService);
