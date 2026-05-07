@@ -12,7 +12,7 @@ use Mcp\Capability\Attribute\McpTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Throwable;
 
-#[McpTool('get-code-review-diff', 'Get the diff for all the changes done in the review')]
+#[McpTool('get_code_review_diff', 'Get the diff for all the changes done in the review')]
 readonly class GetCodeReviewDiffTool
 {
     public function __construct(private CodeReviewRepository $reviewRepository, private CodeReviewDiffService $diffService)
