@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\Service\Ai\Mcp;
+namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
@@ -14,7 +14,7 @@ use Mcp\Capability\Attribute\Schema;
 use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
-    name       : 'get-code-review',
+    name       : 'get_code_review',
     description: 'Find the first code review matching the given filters. All provided filters are applied as AND conditions. ' .
     'Returns null when no match is found.'
 )]

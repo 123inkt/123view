@@ -3,13 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai;
 
-use DR\Review\Doctrine\Type\CodeReviewType;
-use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\Git\Review\FileDiffOptions;
-use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Service\CodeReview\CodeReviewDiffService;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
@@ -27,8 +23,7 @@ class AiCodeReviewService
 
     public function __construct(
         private ?LoggerInterface $aiLogger,
-        private readonly ReviewDiffServiceInterface $diffService,
-        private readonly CodeReviewRevisionService $revisionService,
+        private readonly CodeReviewDiffService $diffService,
         private readonly AgentInterface $agent,
         private readonly AiCodeReviewFileFilter $fileFilter,
     ) {
@@ -39,14 +34,7 @@ class AiCodeReviewService
      */
     public function startCodeReview(CodeReview $review): int
     {
-        $options = new FileDiffOptions(5, DiffComparePolicy::IGNORE_EMPTY_LINES, includeRaw: true);
-
-        // gather files for review  revisions
-        if ($review->getType() === CodeReviewType::BRANCH) {
-            $files = $this->diffService->getDiffForBranch($review, [], (string)$review->getReferenceId(), $options);
-        } else {
-            $files = $this->diffService->getDiffForRevisions($review->getRepository(), $this->revisionService->getRevisions($review), $options);
-        }
+        $files = $this->diffService->getDiff($review);
 
         // filter out large and non-essential files
         $files = array_filter($files, $this->fileFilter);

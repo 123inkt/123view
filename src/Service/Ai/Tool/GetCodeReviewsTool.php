@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\Service\Ai\Mcp;
+namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
@@ -15,7 +15,7 @@ use Mcp\Capability\Attribute\Schema;
 use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
-    'get-code-reviews',
+    'get_code_reviews',
     'Search for code reviews using optional filters. All provided filters are applied as AND conditions. ' .
     'Returns up to 50 results ordered by most recently updated.'
 )]

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
 use DR\Review\Entity\User\User;
-use DR\Review\Service\Ai\Mcp\CurrentUserTool;
+use DR\Review\Service\Ai\Tool\CurrentUserTool;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

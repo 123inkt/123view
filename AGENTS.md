@@ -87,3 +87,7 @@ Use the specific test suites when working on particular areas to speed up feedba
 - `composer.json` - PHP dependencies and scripts
 - `phpstan.neon` - Static analysis configuration
 - `phpunit.xml.dist` - Test configuration
+
+## Code Navigation and Refactoring
+
+IMPORTANT: When applicable, prefer using phpstorm-index MCP tools for code navigation and refactoring.

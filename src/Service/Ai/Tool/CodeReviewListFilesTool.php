@@ -8,11 +8,13 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\LsTree\LockableLsTreeService;
 use DR\Utils\Arrays;
+use Mcp\Capability\Attribute\McpTool;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Throwable;
 
+#[McpTool('list_files', 'List the files in the given directory path for the specified code review.')]
 #[AsTool('list_files', 'List the files in the given directory path for the specified code review.')]
 class CodeReviewListFilesTool
 {

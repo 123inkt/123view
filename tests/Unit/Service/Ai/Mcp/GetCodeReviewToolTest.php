@@ -11,7 +11,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
-use DR\Review\Service\Ai\Mcp\GetCodeReviewTool;
+use DR\Review\Service\Ai\Tool\GetCodeReviewTool;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
