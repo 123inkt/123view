@@ -73,7 +73,6 @@ class AddCommentServiceTest extends AbstractTestCase
         static::assertSame($review, $comment->getReview());
 
         $ref = $comment->getLineReference();
-        static::assertNotNull($ref);
         static::assertSame('src/Service/Test.php', $ref->oldPath);
         static::assertSame('src/Service/Test.php', $ref->newPath);
         static::assertSame(25, $ref->line);

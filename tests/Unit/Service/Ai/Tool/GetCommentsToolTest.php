@@ -11,7 +11,6 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Service\Ai\Tool\GetCommentsTool;
 use DR\Review\Tests\AbstractTestCase;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -66,19 +65,22 @@ class GetCommentsToolTest extends AbstractTestCase
         $result = ($this->tool)(456);
 
         static::assertCount(1, $result);
-        static::assertSame([
-            'commentId' => 42,
-            'message'   => 'Needs refactoring',
-            'state'     => 'open',
-            'file'      => 'src/new.php',
-            'line'      => 25,
-            'author'    => [
-                'userId' => 7,
-                'name'   => 'Jane Doe',
-                'email'  => 'jane@example.com',
+        static::assertSame(
+            [
+                'commentId' => 42,
+                'message'   => 'Needs refactoring',
+                'state'     => 'open',
+                'file'      => 'src/new.php',
+                'line'      => 25,
+                'author'    => [
+                    'userId' => 7,
+                    'name'   => 'Jane Doe',
+                    'email'  => 'jane@example.com',
+                ],
+                'createdAt' => date('c', 1700000000),
             ],
-            'createdAt' => date('c', 1700000000),
-        ], $result[0]);
+            $result[0]
+        );
     }
 
     public function testInvokeShouldFallBackToOldPathWhenNewPathIsNull(): void

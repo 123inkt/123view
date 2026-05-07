@@ -7,7 +7,6 @@ namespace DR\Review\Service\Ai\Tool;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
-use InvalidArgumentException;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
 
@@ -25,12 +24,12 @@ readonly class GetCommentsTool
      *     state: string,
      *     file: string|null,
      *     line: int,
-     *     createdAt: string,
      *     author: array{
      *         userId: int,
      *         name: string,
      *         email: non-empty-string
      *     },
+     *     createdAt: string
      * }>
      */
     public function __invoke(#[Schema(description: 'The CODE_REVIEW_ID of the code review')] int $codeReviewId): array
