@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
+use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Service\Ai\Tool\GetCommentsTool;
 use DR\Review\Tests\AbstractTestCase;
@@ -31,7 +32,7 @@ class GetCommentsToolTest extends AbstractTestCase
     {
         $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CodeReviewNotFoundException::class);
         $this->expectExceptionMessage('Code review not found');
         ($this->tool)(123);
     }

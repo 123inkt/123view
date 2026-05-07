@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use InvalidArgumentException;
 use Mcp\Capability\Attribute\McpTool;
@@ -36,7 +37,7 @@ readonly class GetCommentsTool
     {
         $review = $this->reviewRepository->find($codeReviewId);
         if ($review === null) {
-            throw new InvalidArgumentException('Code review not found');
+            throw new CodeReviewNotFoundException($codeReviewId);
         }
 
         return array_map(
