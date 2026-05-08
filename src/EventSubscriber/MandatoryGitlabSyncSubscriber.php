@@ -9,6 +9,7 @@ use DR\Review\Controller\App\User\UserMandatoryGitlabSyncController;
 use DR\Review\Controller\Auth\LogoutController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\User;
+use DR\Review\Security\Role\Roles;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,7 +40,7 @@ readonly class MandatoryGitlabSyncSubscriber
     {
         $user = $this->security->getUser();
         // skip if not logged in
-        if ($user instanceof User === false) {
+        if ($user instanceof User === false || $this->security->isGranted(Roles::ROLE_USER) === false) {
             return;
         }
 
