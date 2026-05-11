@@ -105,7 +105,8 @@ class RevisionRepository extends ServiceEntityRepository
         }
 
         /** @var Paginator<Revision> $paginator */
-        $paginator = new Paginator($query->getQuery(), true);
+        $paginator = new Paginator($query->getQuery(), false);
+        $paginator->setUseOutputWalkers(false);
 
         return $paginator;
     }

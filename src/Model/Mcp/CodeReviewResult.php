@@ -14,8 +14,7 @@ readonly class CodeReviewResult
         public string $title,
         public ?string $state,
         public string $reviewerState,
-        public string $repository,
-        public string $url,
+        public string $repository
     ) {
     }
 }

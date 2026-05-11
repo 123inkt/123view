@@ -20,7 +20,7 @@ use Symfony\Component\Routing\RouterInterface;
 )]
 readonly class GetCodeReviewTool
 {
-    public function __construct(private CodeReviewRepository $reviewRepository, private RouterInterface $router)
+    public function __construct(private CodeReviewRepository $reviewRepository)
     {
     }
 
@@ -42,12 +42,11 @@ readonly class GetCodeReviewTool
         }
 
         return new CodeReviewResult(
-            $review->getProjectId(),
+            $review->getId(),
             $review->getTitle(),
             $review->getState(),
             $review->getReviewersState(),
-            $review->getRepository()->getDisplayName(),
-            $this->router->generate(ReviewController::class, ['review' => $review], RouterInterface::ABSOLUTE_URL)
+            $review->getRepository()->getDisplayName()
         );
     }
 }
