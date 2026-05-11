@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Review\CodeReviewerRepository;
+use DR\Utils\Arrays;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
 
@@ -26,7 +28,7 @@ readonly class GetCodeReviewsTool
     }
 
     /**
-     * @return CodeReviewResult[]
+     * @return array<int, CodeReviewResult>
      */
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]
@@ -47,17 +49,18 @@ readonly class GetCodeReviewsTool
         // load entities for reviewers
         $this->reviewerRepository->findBy(['review' => $reviews]);
 
-        return array_values(
-            array_map(
-                fn($review) => new CodeReviewResult(
+        return Arrays::mapAssoc(
+            $reviews,
+            fn(CodeReview $review) => [
+                $review->getId(),
+                new CodeReviewResult(
                     $review->getId(),
                     $review->getTitle(),
                     $review->getState(),
                     $review->getReviewersState(),
                     $review->getRepository()->getDisplayName()
-                ),
-                $reviews
-            )
+                )
+            ],
         );
     }
 }
