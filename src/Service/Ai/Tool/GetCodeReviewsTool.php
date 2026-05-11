@@ -21,10 +21,8 @@ use Mcp\Capability\Attribute\Schema;
 )]
 readonly class GetCodeReviewsTool
 {
-    public function __construct(
-        private CodeReviewRepository $reviewRepository,
-        private CodeReviewerRepository $reviewerRepository
-    ) {
+    public function __construct(private CodeReviewRepository $reviewRepository, private CodeReviewerRepository $reviewerRepository)
+    {
     }
 
     /**
@@ -51,7 +49,7 @@ readonly class GetCodeReviewsTool
 
         return Arrays::mapAssoc(
             $reviews,
-            fn(CodeReview $review) => [
+            static fn(CodeReview $review) => [
                 $review->getId(),
                 new CodeReviewResult(
                     $review->getId(),

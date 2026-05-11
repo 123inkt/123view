@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Tool;
 
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
-use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
     name       : 'get_code_review',
