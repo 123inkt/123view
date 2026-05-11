@@ -6,6 +6,7 @@ namespace DR\Review\Service\Ai\Tool;
 use DR\Review\Exception\Ai\CodeReviewFileNotFoundException;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\LsTree\LockableLsTreeService;
 use DR\Utils\Arrays;
 use Mcp\Capability\Attribute\McpTool;
@@ -21,6 +22,7 @@ class CodeReviewListFilesTool
     public function __construct(
         private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly LockableLsTreeService $lsTreeService
     ) {
     }
@@ -39,7 +41,7 @@ class CodeReviewListFilesTool
             throw new CodeReviewNotFoundException($codeReviewId);
         }
 
-        $revision = Arrays::lastOrNull($review->getRevisions());
+        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         if ($revision === null) {
             throw new CodeReviewFileNotFoundException($filepath, $codeReviewId);
         }

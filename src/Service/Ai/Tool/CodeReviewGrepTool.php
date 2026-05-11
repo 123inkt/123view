@@ -5,6 +5,7 @@ namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Grep\LockableGitGrepService;
 use DR\Utils\Arrays;
 use InvalidArgumentException;
@@ -23,6 +24,7 @@ class CodeReviewGrepTool
     public function __construct(
         private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly LockableGitGrepService $grepService
     ) {
     }
@@ -46,7 +48,7 @@ class CodeReviewGrepTool
             throw new CodeReviewNotFoundException($codeReviewId);
         }
 
-        $revision = Arrays::lastOrNull($review->getRevisions());
+        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         if ($revision === null) {
             throw new CodeReviewNotFoundException($codeReviewId);
         }

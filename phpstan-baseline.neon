@@ -1339,6 +1339,12 @@ parameters:
 			path: src/ViewModelProvider/UserSettingViewModelProvider.php
 
 		-
+			message: '#^PHPDoc tag @var with type Doctrine\\ORM\\Mapping\\ClassMetadata\<DR\\Review\\Entity\\Review\\CodeReview\> is not subtype of type Doctrine\\Persistence\\Mapping\\ClassMetadata\<DR\\Review\\Entity\\Review\\CodeReview\>\.$#'
+			identifier: varTag.type
+			count: 1
+			path: tests/DataFixtures/CodeReviewFixtures.php
+
+		-
 			message: '#^PHPDoc tag @var with type Symfony\\Component\\EventDispatcher\\EventDispatcherInterface\|null is not subtype of type Symfony\\Component\\HttpKernel\\Debug\\TraceableEventDispatcher\.$#'
 			identifier: varTag.type
 			count: 1

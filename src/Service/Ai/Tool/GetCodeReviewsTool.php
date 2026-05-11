@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Tool;
 
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Review\CodeReviewerRepository;
+use DR\Utils\Arrays;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
-use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
     'get_code_reviews',
@@ -21,15 +21,12 @@ use Symfony\Component\Routing\RouterInterface;
 )]
 readonly class GetCodeReviewsTool
 {
-    public function __construct(
-        private CodeReviewRepository $reviewRepository,
-        private CodeReviewerRepository $reviewerRepository,
-        private RouterInterface $router,
-    ) {
+    public function __construct(private CodeReviewRepository $reviewRepository, private CodeReviewerRepository $reviewerRepository)
+    {
     }
 
     /**
-     * @return CodeReviewResult[]
+     * @return array<int, CodeReviewResult>
      */
     public function __invoke(
         #[Schema(type: 'string', description: 'Filter by (partial) review title.')]
@@ -50,18 +47,18 @@ readonly class GetCodeReviewsTool
         // load entities for reviewers
         $this->reviewerRepository->findBy(['review' => $reviews]);
 
-        return array_values(
-            array_map(
-                fn($review) => new CodeReviewResult(
-                    $review->getProjectId(),
+        return Arrays::mapAssoc(
+            $reviews,
+            static fn(CodeReview $review) => [
+                $review->getId(),
+                new CodeReviewResult(
+                    $review->getId(),
                     $review->getTitle(),
                     $review->getState(),
                     $review->getReviewersState(),
-                    $review->getRepository()->getDisplayName(),
-                    $this->router->generate(ReviewController::class, ['review' => $review], RouterInterface::ABSOLUTE_URL)
-                ),
-                $reviews
-            )
+                    $review->getRepository()->getDisplayName()
+                )
+            ],
         );
     }
 }
