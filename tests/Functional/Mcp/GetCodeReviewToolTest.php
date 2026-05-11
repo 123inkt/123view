@@ -55,7 +55,7 @@ class GetCodeReviewToolTest extends AbstractFunctionalTestCase
 
         $text = Json::decode(Assert::string(Arrays::fetchByPath($data, ['result', 'content', 0, 'text'])), true);
         static::assertIsArray($text);
-        static::assertSame(CodeReviewFixtures::PROJECT_ID, $text['id']);
+        static::assertSame(CodeReviewFixtures::REVIEW_ID, $text['id']);
         static::assertSame('title', $text['title']);
     }
 
