@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Tool;
 
-use DR\Review\Exception\Ai\CodeReviewFileNotFoundException;
-use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Utils\Arrays;
 use Mcp\Capability\Attribute\McpTool;
+use Mcp\Exception\ToolCallException;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
@@ -29,6 +29,7 @@ class CodeReviewFileTool
     public function __construct(
         private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly LockableGitShowService $gitShowService,
     ) {
     }
@@ -42,12 +43,12 @@ class CodeReviewFileTool
     ): string {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {
-            throw new CodeReviewNotFoundException($codeReviewId);
+            throw new ToolCallException('Review not found: ' . $codeReviewId);
         }
 
-        $revision = Arrays::lastOrNull($review->getRevisions());
+        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         if ($revision === null) {
-            throw new CodeReviewFileNotFoundException($filepath, $codeReviewId);
+            throw new ToolCallException('No revisions for review: ' . $codeReviewId);
         }
 
         $this->aiLogger?->info('CodeReviewFileTool: Reading file "{filepath}" in review {id}', ['id' => $codeReviewId, 'filepath' => $filepath]);
