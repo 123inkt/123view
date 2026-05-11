@@ -3,39 +3,42 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Tool;
 
-use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Exception\Ai\CodeReviewFileNotFoundException;
-use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Ai\Tool\CodeReviewFileTool;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Show\LockableGitShowService;
 use DR\Review\Tests\AbstractTestCase;
+use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversClass(CodeReviewFileTool::class)]
 class CodeReviewFileToolTest extends AbstractTestCase
 {
-    private CodeReviewRepository&MockObject    $repository;
-    private LockableGitShowService&MockObject  $gitShowService;
-    private CodeReviewFileTool                 $tool;
+    private CodeReviewRepository&MockObject       $repository;
+    private CodeReviewRevisionService&MockObject  $revisionService;
+    private LockableGitShowService&MockObject     $gitShowService;
+    private CodeReviewFileTool                    $tool;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->repository     = $this->createMock(CodeReviewRepository::class);
-        $this->gitShowService = $this->createMock(LockableGitShowService::class);
-        $this->tool           = new CodeReviewFileTool($this->logger, $this->repository, $this->gitShowService);
+        $this->repository      = $this->createMock(CodeReviewRepository::class);
+        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->gitShowService  = $this->createMock(LockableGitShowService::class);
+        $this->tool            = new CodeReviewFileTool($this->logger, $this->repository, $this->revisionService, $this->gitShowService);
     }
 
     public function testInvokeShouldThrowExceptionWhenReviewNotFound(): void
     {
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $this->gitShowService->expects($this->never())->method('getFileContents');
 
-        $this->expectException(CodeReviewNotFoundException::class);
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessage('Review not found: 123');
         ($this->tool)(123, 'path/to/file.php');
     }
 
@@ -43,22 +46,21 @@ class CodeReviewFileToolTest extends AbstractTestCase
     {
         $review = new CodeReview();
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
         $this->gitShowService->expects($this->never())->method('getFileContents');
 
-        $this->expectException(CodeReviewFileNotFoundException::class);
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessage('No revisions for review: 123');
         ($this->tool)(123, 'path/to/file.php');
     }
 
     public function testInvokeShouldReturnFileContents(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->gitShowService->expects($this->once())
             ->method('getFileContents')
             ->with($revision, 'path/to/file.php')
@@ -70,19 +72,12 @@ class CodeReviewFileToolTest extends AbstractTestCase
 
     public function testInvokeShouldUseLastRevision(): void
     {
-        $repositoryEntity = new Repository();
-
         $revision1 = new Revision();
-        $revision1->setRepository($repositoryEntity);
-
         $revision2 = new Revision();
-        $revision2->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision1);
-        $review->getRevisions()->add($revision2);
+        $review    = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(456)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision1, $revision2]);
         $this->gitShowService->expects($this->once())
             ->method('getFileContents')
             ->with($revision2, 'src/test.ts')
