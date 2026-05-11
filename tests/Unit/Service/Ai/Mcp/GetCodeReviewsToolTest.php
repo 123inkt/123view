@@ -78,7 +78,6 @@ class GetCodeReviewsToolTest extends AbstractTestCase
 
         $this->reviewerRepository->expects($this->once())->method('findBy')->with(['review' => [$review]]);
 
-
         $result = ($this->tool)(title: 'login');
 
         $expected = new CodeReviewResult(
@@ -88,6 +87,6 @@ class GetCodeReviewsToolTest extends AbstractTestCase
             reviewerState: 'open',
             repository:    'My Repo',
         );
-        static::assertEquals([$expected], $result);
+        static::assertEquals([123 => $expected], $result);
     }
 }
