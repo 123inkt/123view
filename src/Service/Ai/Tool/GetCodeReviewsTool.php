@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Tool;
 
-use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
@@ -12,7 +11,6 @@ use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Review\CodeReviewerRepository;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Capability\Attribute\Schema;
-use Symfony\Component\Routing\RouterInterface;
 
 #[McpTool(
     'get_code_reviews',
@@ -23,8 +21,7 @@ readonly class GetCodeReviewsTool
 {
     public function __construct(
         private CodeReviewRepository $reviewRepository,
-        private CodeReviewerRepository $reviewerRepository,
-        private RouterInterface $router,
+        private CodeReviewerRepository $reviewerRepository
     ) {
     }
 
@@ -53,12 +50,11 @@ readonly class GetCodeReviewsTool
         return array_values(
             array_map(
                 fn($review) => new CodeReviewResult(
-                    $review->getProjectId(),
+                    $review->getId(),
                     $review->getTitle(),
                     $review->getState(),
                     $review->getReviewersState(),
-                    $review->getRepository()->getDisplayName(),
-                    $this->router->generate(ReviewController::class, ['review' => $review], RouterInterface::ABSOLUTE_URL)
+                    $review->getRepository()->getDisplayName()
                 ),
                 $reviews
             )
