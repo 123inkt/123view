@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Tool;
 
-use DR\Review\Exception\RepositoryException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Show\LockableGitShowService;
@@ -13,6 +12,7 @@ use Mcp\Exception\ToolCallException;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
+use Throwable;
 
 #[McpTool(
     'read_file',
@@ -35,7 +35,7 @@ class CodeReviewFileTool
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Throwable
      */
     public function __invoke(
         #[Schema(description: 'The CODE_REVIEW_ID of the review', minimum: 1)] int $codeReviewId,
