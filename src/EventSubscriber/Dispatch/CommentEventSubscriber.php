@@ -73,9 +73,7 @@ class CommentEventSubscriber implements ResetInterface
         }
 
         // when draft is published, dispatch CommentDraftAdded
-        if (array_key_exists('type', $changeSet)
-            && $changeSet['type'][0] === CommentTypeEnum::Draft
-            && $comment->getType() === CommentTypeEnum::Final) {
+        if (array_key_exists('type', $changeSet) && $changeSet['type'] === [CommentTypeEnum::Draft->value, CommentTypeEnum::Final->value]) {
             $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
 
             return;

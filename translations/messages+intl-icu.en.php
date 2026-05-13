@@ -324,7 +324,6 @@ return [
     'tag.suggestion'                              => 'Suggestion',
     'theme'                                       => 'Theme',
     'timeline.comment.added'                      => '<span class="text-primary">{username}</span> added a comment to <code>{file}</code>.',
-    'timeline.comment.draft.added'                => '<span class="text-primary">{username}</span> published a draft comment on <code>{file}</code>.',
     'timeline.comment.removed'                    => '<span class="text-primary">{username}</span> removed a comment on <code>{file}</code>.',
     'timeline.comment.reply.added'                => 'On <code>{file}</code>',
     'timeline.comment.resolved'                   => '<span class="text-primary">{username}</span> resolved a comment on <code>{file}</code>.',

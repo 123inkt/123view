@@ -7,7 +7,6 @@ use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
-use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
@@ -48,7 +47,6 @@ class CodeReviewActivityFormatter
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
         AiReviewRequested::NAME                  => 'timeline.review.ai_requested',
         CommentAdded::NAME                       => 'timeline.comment.added',
-        CommentDraftAdded::NAME                  => 'timeline.comment.draft.added',
         CommentReplyAdded::NAME                  => 'timeline.comment.reply.added',
         CommentRemoved::NAME                     => 'timeline.comment.removed',
         CommentResolved::NAME                    => 'timeline.comment.resolved',
