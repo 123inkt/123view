@@ -8,8 +8,10 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
@@ -32,7 +34,7 @@ use Symfony\Contracts\Service\ResetInterface;
 #[AsEventListener(event: ConsoleEvents::TERMINATE, method: 'finish')]
 class CommentEventSubscriber implements ResetInterface
 {
-    /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
+    /** @var array<CommentAdded|CommentDraftAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
     private array $events = [];
     /** @var array<int, mixed[]> */
     private array $updated = [];
@@ -46,6 +48,10 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentAdded(Comment $comment): void
     {
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            return;
+        }
+
         $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
     }
 
@@ -61,6 +67,20 @@ class CommentEventSubscriber implements ResetInterface
         $user      = $this->getUser($comment);
         $changeSet = $this->updated[$comment->getId()] ?? null;
         if ($changeSet === null) {
+            return;
+        }
+
+        // when draft is published, dispatch CommentDraftAdded
+        if (array_key_exists('type', $changeSet)
+            && $changeSet['type'][0] === CommentTypeEnum::Draft
+            && $comment->getType() === CommentTypeEnum::Final) {
+            $this->events[] = $this->messageFactory->createDraftAdded($comment, $user);
+
+            return;
+        }
+
+        // suppress all events for draft comments
+        if ($comment->getType() === CommentTypeEnum::Draft) {
             return;
         }
 
@@ -81,6 +101,10 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentRemoved(Comment $comment): void
     {
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            return;
+        }
+
         $user = $this->getUser($comment);
         if ($user->hasId() === false) {
             return;

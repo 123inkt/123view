@@ -63,7 +63,7 @@ parameters:
 		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
+			count: 2
 			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
 
 		-

@@ -15,11 +15,11 @@ export default class HttpClient {
         return this.wrap(config, () => axios.delete(url, config));
     }
 
-    public form<T = unknown, R = AxiosResponse<T>>(form: HTMLFormElement): Promise<R> {
+    public form<T = unknown, R = AxiosResponse<T>>(form: HTMLFormElement, params?: unknown): Promise<R> {
         if (form.method.toLowerCase() !== 'post') {
             throw new Error('Only POST forms are supported');
         }
-        return this.post<T, R>(form.action, new FormData(form), {headers: {'Content-Type': form.encoding}});
+        return this.post<T, R>(form.action, new FormData(form), {headers: {'Content-Type': form.encoding}, params});
     }
 
     private wrap<T = unknown, R = AxiosResponse<T>, D = unknown>(config: AxiosRequestConfig<D>, callback: () => Promise<R>): Promise<R> {

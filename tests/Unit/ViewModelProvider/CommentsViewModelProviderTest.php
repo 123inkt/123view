@@ -17,6 +17,7 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bundle\SecurityBundle\Security;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(CommentsViewModelProvider::class)]
@@ -25,6 +26,7 @@ class CommentsViewModelProviderTest extends AbstractTestCase
     private CommentRepository&MockObject            $commentRepository;
     private DiffFinder&MockObject                   $diffFinder;
     private UserReviewSettingsProvider&MockObject   $settingsProvider;
+    private Security&MockObject                     $security;
     private CommentsViewModelProvider               $provider;
 
     public function setUp(): void
@@ -33,10 +35,12 @@ class CommentsViewModelProviderTest extends AbstractTestCase
         $this->commentRepository  = $this->createMock(CommentRepository::class);
         $this->diffFinder         = $this->createMock(DiffFinder::class);
         $this->settingsProvider   = $this->createMock(UserReviewSettingsProvider::class);
+        $this->security           = $this->createMock(Security::class);
         $this->provider           = new CommentsViewModelProvider(
             $this->commentRepository,
             $this->diffFinder,
-            $this->settingsProvider
+            $this->settingsProvider,
+            $this->security,
         );
     }
 
@@ -60,6 +64,7 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->method('findByReview')
             ->with($review, ['/path/to/fileAfter', '/path/to/fileBefore'])
             ->willReturn($comments);
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
         $this->diffFinder->expects($this->exactly(2))
             ->method('findLineInFile')
             ->with(...consecutive([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))

@@ -37,5 +37,6 @@ class EditCommentFormType extends AbstractType
         $builder->add('message', CommentType::class);
         $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
+        $builder->add('publish', SubmitType::class, ['label' => 'publish']);
     }
 }

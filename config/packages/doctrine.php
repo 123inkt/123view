@@ -9,6 +9,7 @@ use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Doctrine\Type\ColorThemeType;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
+use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Doctrine\Type\DiffAlgorithmType;
 use DR\Review\Doctrine\Type\FilterType;
 use DR\Review\Doctrine\Type\FrequencyType;
@@ -40,6 +41,7 @@ return App::config([
                 ColorThemeType::TYPE                => ['class' => ColorThemeType::class],
                 CommentStateType::TYPE              => ['class' => CommentStateType::class],
                 CommentTagType::TYPE                => ['class' => CommentTagType::class],
+                CommentTypeType::TYPE               => ['class' => CommentTypeType::class],
                 DiffAlgorithmType::TYPE             => ['class' => DiffAlgorithmType::class],
                 FilterType::TYPE                    => ['class' => FilterType::class],
                 FrequencyType::TYPE                 => ['class' => FrequencyType::class],

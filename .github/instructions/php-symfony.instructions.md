@@ -1,6 +1,6 @@
 ---
 description: "Symfony development standards aligned with official Symfony Best Practices"
-applyTo: "**/*.php, **/*.yaml, **/*.yml, **/*.xml, **/*.twig"
+applyTo: "**/*.php, **/*.twig"
 ---
 
 # Symfony Development Instructions
@@ -35,7 +35,7 @@ Instructions for developing Symfony applications following the official Symfony 
 - Never commit secrets to the repository
 
 ### Application Configuration
-- Use parameters in `config/services.yaml` for application behavior configuration
+- Use parameters in `config/services.php` for application behavior configuration
 - Override parameters per environment only when needed
 - Prefix parameters with `app.` to avoid collisions
 - Use short, descriptive parameter names
