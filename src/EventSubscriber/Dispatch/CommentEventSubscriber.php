@@ -49,6 +49,7 @@ class CommentEventSubscriber implements ResetInterface
     public function commentAdded(Comment $comment): void
     {
         if ($comment->getType() === CommentTypeEnum::Draft) {
+            $this->events[] = $this->messageFactory->createDraftAdded($comment, $comment->getUser());
             return;
         }
 
@@ -57,7 +58,7 @@ class CommentEventSubscriber implements ResetInterface
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
-        /** @var mixed[] $changeSet */
+        /** @var array<string, array{mixed, mixed} $changeSet */
         $changeSet                                         = $event->getEntityChangeSet();
         $this->updated[Assert::integer($comment->getId())] = $changeSet;
     }
@@ -65,6 +66,7 @@ class CommentEventSubscriber implements ResetInterface
     public function commentUpdated(Comment $comment): void
     {
         $user      = $this->getUser($comment);
+        /** @var array<string, array{mixed, mixed} $changeSet */
         $changeSet = $this->updated[$comment->getId()] ?? null;
         if ($changeSet === null) {
             return;
@@ -74,7 +76,7 @@ class CommentEventSubscriber implements ResetInterface
         if (array_key_exists('type', $changeSet)
             && $changeSet['type'][0] === CommentTypeEnum::Draft
             && $comment->getType() === CommentTypeEnum::Final) {
-            $this->events[] = $this->messageFactory->createDraftAdded($comment, $user);
+            $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
 
             return;
         }
