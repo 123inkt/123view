@@ -27,18 +27,19 @@
             {{- form_widget(
                 form.save,
                 {attr: {title: 'comment.save.quick.key', 'data-controller': 'button', 'data-comment-form-target': 'submitButton', 'data-mode': 'save'}}) -}}
+
+            {%- if form.saveDraft is defined -%}
+                {{- form_widget(form.saveDraft, {attr: {class: 'ms-2 btn btn-info', 'data-controller': 'button', 'data-mode': 'draft'}}) -}}
+            {%- endif -%}
+
+            {%- if form.publish is defined -%}
+                {{- form_widget(form.publish, {attr: {class: 'ms-2 btn btn-success', 'data-controller': 'button', 'data-mode': 'final'}}) -}}
+            {%- endif -%}
+
             <button type="button" class="ms-2 btn btn-outline-secondary"
                     {{ stimulus_controller('button') }}
                     {{ stimulus_action('comment-form', 'cancelComment', 'click') }}
             >{{ 'cancel'|trans }}</button>
-
-            {%- if form.saveDraft is defined -%}
-                {{- form_widget(form.saveDraft, {attr: {class: 'ms-2 btn btn-outline-info', 'data-controller': 'button', 'data-mode': 'draft'}}) -}}
-            {%- endif -%}
-
-            {%- if form.publish is defined -%}
-                {{- form_widget(form.publish, {attr: {class: 'ms-2 btn btn-outline-success', 'data-controller': 'button', 'data-mode': 'final'}}) -}}
-            {%- endif -%}
 
             {{- form_widget(form.tag, {attr: {class: 'd-inline-block w-auto ms-5'}}) }}
         </div>
