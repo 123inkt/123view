@@ -50,16 +50,16 @@ class RevisionFetchServiceTest extends AbstractTestCase
     public function testFetchRevisionsForRules(): void
     {
         $ruleA = new Rule();
-        $ruleA->getRepositories()->add((new Repository())->setId(123));
-        $ruleA->getRepositories()->add((new Repository())->setId(456));
+        $ruleA->getRepositories()->add(new Repository()->setId(123));
+        $ruleA->getRepositories()->add(new Repository()->setId(456));
 
         $ruleB = new Rule();
-        $ruleB->getRepositories()->add((new Repository())->setId(123));
-        $ruleB->getRepositories()->add((new Repository())->setId(456));
+        $ruleB->getRepositories()->add(new Repository()->setId(123));
+        $ruleB->getRepositories()->add(new Repository()->setId(456));
 
         $this->remoteRevisionService->expects($this->exactly(2))
             ->method('fetchRevisionFromRemote')
-            ->with(...consecutive([(new Repository())->setId(123)], [(new Repository())->setId(456)]))
+            ->with(...consecutive([new Repository()->setId(123)], [new Repository()->setId(456)]))
             ->willReturn([]);
         $this->revisionRepository->expects($this->never())->method('saveAll');
         $this->revisionFactory->expects($this->never())->method('createFromCommit');
@@ -74,11 +74,11 @@ class RevisionFetchServiceTest extends AbstractTestCase
     public function testFetchRevisionsForRulesWithSingleRepositoryAndRule(): void
     {
         $rule = new Rule();
-        $rule->getRepositories()->add((new Repository())->setId(123));
+        $rule->getRepositories()->add(new Repository()->setId(123));
 
         $this->remoteRevisionService->expects($this->once())
             ->method('fetchRevisionFromRemote')
-            ->with((new Repository())->setId(123))
+            ->with(new Repository()->setId(123))
             ->willReturn([]);
         $this->revisionRepository->expects($this->never())->method('saveAll');
         $this->revisionFactory->expects($this->never())->method('createFromCommit');
@@ -94,8 +94,8 @@ class RevisionFetchServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(456);
-        $revisionA = (new Revision())->setCommitHash('commit1');
-        $revisionB = (new Revision())->setCommitHash('commit1');
+        $revisionA = new Revision()->setId(123)->setCommitHash('commit1');
+        $revisionB = new Revision()->setId(789)->setCommitHash('commit1');
         $commit    = $this->createCommit();
 
         $this->remoteRevisionService->expects($this->once())

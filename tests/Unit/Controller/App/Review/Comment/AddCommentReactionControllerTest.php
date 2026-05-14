@@ -49,6 +49,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
             ->with(
                 self::callback(
                     static function (CommentReply $reply) use ($user, $comment): bool {
+                        $reply->setId(123);
                         static::assertSame($user, $reply->getUser());
                         static::assertSame($comment, $reply->getComment());
                         static::assertSame('message', $reply->getMessage());

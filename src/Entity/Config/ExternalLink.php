@@ -30,6 +30,13 @@ class ExternalLink
         return isset($this->id);
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getPattern(): ?string
     {
         return $this->pattern;

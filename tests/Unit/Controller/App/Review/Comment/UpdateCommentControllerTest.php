@@ -71,6 +71,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $review  = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
+        $comment->setId(456);
         $comment->setMessage('message');
         $comment->setReview($review);
 

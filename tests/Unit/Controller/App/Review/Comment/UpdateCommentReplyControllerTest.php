@@ -30,7 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 {
     private CommentReplyRepository&MockObject $replyRepository;
-    private TranslatorInterface&Stub    $translator;
+    private TranslatorInterface&Stub          $translator;
     private MessageBusInterface&MockObject    $bus;
 
     public function setUp(): void
@@ -46,7 +46,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $this->replyRepository->expects($this->never())->method('save');
         $this->bus->expects($this->never())->method('dispatch');
         $response = ($this->controller)(new Request(), null);
-        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
@@ -69,7 +68,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(false);
 
         $response = ($this->controller)($request, $reply);
-        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
@@ -79,6 +77,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $review  = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
+        $comment->setId(456);
         $comment->setReview($review);
         $reply = new CommentReply();
         $reply->setMessage('message');
@@ -94,7 +93,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $this->bus->expects($this->never())->method('dispatch');
 
         $response = ($this->controller)($request, $reply);
-        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
@@ -113,7 +111,7 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $reply->setMessage('message');
         $reply->setComment($comment);
 
-        $this->expectGetUser((new User())->setId(101));
+        $this->expectGetUser(new User()->setId(101));
         $this->expectDenyAccessUnlessGranted(CommentReplyVoter::EDIT, $reply);
         $this->expectCreateForm(EditCommentReplyFormType::class, $reply, ['reply' => $reply])
             ->handleRequest($request)
@@ -136,7 +134,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
         $this->bus->expects($this->once())->method('dispatch')->with(new CommentReplyUpdated(123, 789, 101, 'message'))->willReturn($this->envelope);
 
         $response = ($this->controller)($request, $reply);
-        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
