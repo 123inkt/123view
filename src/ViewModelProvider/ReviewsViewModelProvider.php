@@ -57,7 +57,7 @@ class ReviewsViewModelProvider
 
     public function getReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms, Repository $repository): ReviewsViewModel
     {
-        $paginator          = null;
+        $reviews            = null;
         $paginatorViewModel = null;
 
         if ($terms !== null) {
@@ -69,11 +69,12 @@ class ReviewsViewModelProvider
             );
             /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
             $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
+            $reviews            = iterator_to_array($paginator);
         }
 
         return new ReviewsViewModel(
             $repository,
-            $paginator,
+            $reviews,
             $paginatorViewModel,
             $request->getSearchQuery(),
             $request->getOrderBy(),
