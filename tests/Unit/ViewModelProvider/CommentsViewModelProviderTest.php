@@ -8,8 +8,10 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\Review\CommentVisibilityEnum;
 use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
@@ -42,6 +44,33 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             $this->settingsProvider,
             $this->security,
         );
+    }
+
+    public function testGetCommentsViewModelFiltersDraftFromOtherUser(): void
+    {
+        $owner   = (new User())->setId(1);
+        $owner->setEmail('owner@example.com');
+        $current = (new User())->setId(2);
+        $current->setEmail('current@example.com');
+
+        $draftComment = new Comment();
+        $draftComment->setLineReference(new LineReference(null, 'file', 1, 0, 1));
+        $draftComment->setType(CommentTypeEnum::Draft);
+        $draftComment->setUser($owner);
+
+        $review = new CodeReview();
+        $file   = new DiffFile();
+        $file->filePathAfter  = '/path/to/file';
+        $file->filePathBefore = null;
+
+        $this->commentRepository->expects($this->once())->method('findByReview')->willReturn([$draftComment]);
+        $this->security->expects($this->once())->method('getUser')->willReturn($current);
+        $this->diffFinder->expects($this->never())->method('findLineInFile');
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->settingsProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibilityEnum::NONE);
+
+        $viewModel = $this->provider->getCommentsViewModel($review, null, $file);
+        static::assertCount(0, $viewModel->detachedComments);
     }
 
     public function testGetCommentsViewModel(): void

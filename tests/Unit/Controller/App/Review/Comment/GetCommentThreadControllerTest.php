@@ -8,6 +8,8 @@ use DR\Review\Controller\App\Review\Comment\GetCommentThreadController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentTypeEnum;
+use DR\Review\Entity\User\User;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
@@ -16,6 +18,7 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModelProvider\CommentViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @extends AbstractControllerTestCase<GetCommentThreadController>
@@ -96,6 +99,27 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
 
         $result = ($this->controller)($request, $comment);
         static::assertSame($comment, $result['comment']);
+    }
+
+    public function testInvokeDraftCommentByOtherUserThrowsAccessDeniedException(): void
+    {
+        $this->modelProvider->expects($this->never())->method('getEditCommentViewModel');
+
+        $owner   = (new User())->setId(1);
+        $current = (new User())->setId(2);
+
+        $comment = new Comment();
+        $comment->setId(123);
+        $comment->setUser($owner);
+        $comment->setType(CommentTypeEnum::Draft);
+        $comment->setReview(new CodeReview());
+
+        $this->expectGetUser($current);
+
+        $request = static::createStub(GetCommentThreadRequest::class);
+
+        $this->expectException(AccessDeniedException::class);
+        ($this->controller)($request, $comment);
     }
 
     public function getController(): AbstractController
