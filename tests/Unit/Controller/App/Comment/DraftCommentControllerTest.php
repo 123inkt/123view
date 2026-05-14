@@ -30,7 +30,7 @@ class DraftCommentControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $user      = new User();
-        $viewModel = $this->createStub(DraftCommentsViewModel::class);
+        $viewModel = static::createStub(DraftCommentsViewModel::class);
         $request   = new Request(['page' => '3']);
 
         $this->expectGetUser($user);
@@ -49,7 +49,7 @@ class DraftCommentControllerTest extends AbstractControllerTestCase
     public function testInvokeDefaultPage(): void
     {
         $user      = new User();
-        $viewModel = $this->createStub(DraftCommentsViewModel::class);
+        $viewModel = static::createStub(DraftCommentsViewModel::class);
         $request   = new Request();
 
         $this->expectGetUser($user);
