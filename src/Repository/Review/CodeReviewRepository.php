@@ -73,7 +73,7 @@ class CodeReviewRepository extends ServiceEntityRepository
         TermInterface $searchQuery,
         string $searchOrderBy = CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP
     ): Paginator {
-        $queryBuilder = (new CodeReviewQueryBuilder('r', $this->getEntityManager(), $this->expressionFactory))
+        $queryBuilder = new CodeReviewQueryBuilder('r', $this->getEntityManager(), $this->expressionFactory)
             ->prepare($repositoryId)
             ->paginate($page, 50)
             ->orderBy($searchOrderBy)
