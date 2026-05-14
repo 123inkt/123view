@@ -34,12 +34,13 @@ class DraftCommentController extends AbstractController
         $user = $this->getUser();
         $page = max(1, $request->query->getInt('page', 1));
 
-        $comments        = $this->commentRepository->getDraftsByUser($user, $page, self::PAGE_SIZE);
-        $commentsGrouped = Arrays::groupBy($comments, static fn(Comment $comment) => (int)$comment->getReview()->getId());
-        $reviews         = Arrays::mapAssoc($comments, static fn(Comment $comment) => [$comment->getReview()->getId(), $comment->getReview()]);
+        $commentPaginator = $this->commentRepository->getDraftsByUser($user, $page, self::PAGE_SIZE);
+        $comments         = Arrays::reindex($commentPaginator, static fn(Comment $comment) => (int)$comment->getId());
+        $commentsGrouped  = Arrays::groupBy($comments, static fn(Comment $comment) => $comment->getReview()->getId());
+        $reviews          = Arrays::mapAssoc($comments, static fn(Comment $comment) => [$comment->getReview()->getId(), $comment->getReview()]);
 
         /** @var PaginatorViewModel<Comment> $paginatorViewModel */
-        $paginatorViewModel = new PaginatorViewModel($comments, $page);
+        $paginatorViewModel = new PaginatorViewModel($commentPaginator, $page);
         $viewModel          = new DraftCommentsViewModel($commentsGrouped, $reviews, $paginatorViewModel);
 
         return ['page_title' => 'draft.comments.overview', 'viewModel' => $viewModel];

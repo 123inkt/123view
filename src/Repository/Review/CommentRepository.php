@@ -68,7 +68,7 @@ class CommentRepository extends ServiceEntityRepository
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage);
 
-        /** @phpstan-var Paginator<Comment> $paginator */
+        /** @phpstan-var Paginator<Comment> */
         return new Paginator($qb->getQuery(), false);
     }
 
