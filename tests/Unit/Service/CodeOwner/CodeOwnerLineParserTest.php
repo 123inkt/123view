@@ -20,12 +20,12 @@ class CodeOwnerLineParserTest extends AbstractTestCase
         $this->parser = new CodeOwnerLineParser();
     }
 
-    #[TestWith(['*.js @frontend-team', [], new OwnerPattern('*.js', ['@frontend-team'])])]
-    #[TestWith(['*.ts @frontend-team @lead-dev', [], new OwnerPattern('*.ts', ['@frontend-team', '@lead-dev'])])]
-    #[TestWith(['src/api/ @backend-team # only backend', [], new OwnerPattern('src/api/', ['@backend-team'])])]
-    public function testParseWithExplicitOwners(string $line, array $defaultOwners, OwnerPattern $expected): void
+    #[TestWith(['*.js @frontend-team', new OwnerPattern('*.js', ['@frontend-team'])])]
+    #[TestWith(['*.ts @frontend-team @lead-dev', new OwnerPattern('*.ts', ['@frontend-team', '@lead-dev'])])]
+    #[TestWith(['src/api/ @backend-team # only backend', new OwnerPattern('src/api/', ['@backend-team'])])]
+    public function testParseWithExplicitOwners(string $line, OwnerPattern $expected): void
     {
-        static::assertEquals($expected, $this->parser->parse($line, $defaultOwners));
+        static::assertEquals($expected, $this->parser->parse($line));
     }
 
     public function testParseWithoutOwnersAndNoDefaultsReturnsNull(): void
