@@ -1,0 +1,4 @@
+[Block] @role/default @role/secondary # default owners
+src/single.php @role/foo
+src/multi.php @role/bar @role/baz # inline comment
+src/inherited.php
