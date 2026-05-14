@@ -12,8 +12,8 @@ readonly class CodeOwnerFileParser
      * @param non-empty-string $eolCharacter
      */
     public function __construct(
-        private CodeOwnerLineParser $lineParser = new CodeOwnerLineParser(),
-        private CodeOwnerSectionHeaderParser $sectionHeaderParser = new CodeOwnerSectionHeaderParser(),
+        private CodeOwnerLineParser $lineParser,
+        private CodeOwnerSectionHeaderParser $sectionHeaderParser,
         private string $eolCharacter = "\n"
     ) {
     }
