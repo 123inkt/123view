@@ -26,6 +26,13 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
+/**
+ * @phpstan-type CommentChangeSet array{
+ *     type?: array{0: string, 1: string},
+ *     message?: array{0: string, 1: string},
+ *     state?: array{0: string, 1: string}
+ * }
+ */
 #[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
@@ -36,7 +43,7 @@ class CommentEventSubscriber implements ResetInterface
 {
     /** @var array<CommentAdded|CommentDraftAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
     private array $events = [];
-    /** @var array<int, mixed[]> */
+    /** @var array<int, CommentChangeSet> */
     private array $updated = [];
 
     public function __construct(
@@ -58,7 +65,7 @@ class CommentEventSubscriber implements ResetInterface
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
-        /** @var array<string, array{mixed, mixed} $changeSet */
+        /** @var CommentChangeSet $changeSet */
         $changeSet                                         = $event->getEntityChangeSet();
         $this->updated[Assert::integer($comment->getId())] = $changeSet;
     }
@@ -66,7 +73,7 @@ class CommentEventSubscriber implements ResetInterface
     public function commentUpdated(Comment $comment): void
     {
         $user      = $this->getUser($comment);
-        /** @var array<string, array{mixed, mixed} $changeSet */
+        /** @var CommentChangeSet $changeSet */
         $changeSet = $this->updated[$comment->getId()] ?? null;
         if ($changeSet === null) {
             return;

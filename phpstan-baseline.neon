@@ -61,18 +61,6 @@ parameters:
 			path: src/Entity/User/User.php
 
 		-
-			message: '#^Cannot access offset 0 on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
-
-		-
-			message: '#^PHPDoc tag @var has invalid value \(array\<string, array\{mixed, mixed\} \$changeSet\)\: Unexpected token "\$changeSet", expected ''\>'' at offset 43 on line 1$#'
-			identifier: phpDoc.parseError
-			count: 2
-			path: src/EventSubscriber/Dispatch/CommentEventSubscriber.php
-
-		-
 			message: '#^Class DR\\Review\\Form\\Review\\AddCommentFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1

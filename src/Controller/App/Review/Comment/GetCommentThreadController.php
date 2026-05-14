@@ -31,7 +31,7 @@ class GetCommentThreadController extends AbstractController
     #[Template('app/review/comment/comment.html.twig')]
     public function __invoke(GetCommentThreadRequest $request, #[MapEntity] Comment $comment): array
     {
-        if ($comment->getType() === CommentTypeEnum::Draft && $comment->getUser() !== $this->getUser()) {
+        if ($comment->getType() === CommentTypeEnum::Draft && $comment->getUser()->getId() !== $this->getUser()->getId()) {
             throw $this->createAccessDeniedException();
         }
 
