@@ -38,7 +38,7 @@ class ReviewsViewModelProvider
 
     public function getSearchReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms): ReviewsViewModel
     {
-        $paginator          = null;
+        $reviews            = null;
         $paginatorViewModel = null;
 
         if ($terms !== null) {
@@ -50,9 +50,10 @@ class ReviewsViewModelProvider
             );
             /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
             $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
+            $reviews            = iterator_to_array($paginator);
         }
 
-        return new ReviewsViewModel(null, $paginator, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy(), null);
+        return new ReviewsViewModel(null, $reviews, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy(), null);
     }
 
     public function getReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms, Repository $repository): ReviewsViewModel
