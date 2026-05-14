@@ -8,8 +8,10 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\Review\CommentVisibilityEnum;
 use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\DiffFinder;
 use DR\Review\Service\CodeReview\UserReviewSettingsProvider;
@@ -17,6 +19,7 @@ use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\CommentsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bundle\SecurityBundle\Security;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(CommentsViewModelProvider::class)]
@@ -25,6 +28,7 @@ class CommentsViewModelProviderTest extends AbstractTestCase
     private CommentRepository&MockObject            $commentRepository;
     private DiffFinder&MockObject                   $diffFinder;
     private UserReviewSettingsProvider&MockObject   $settingsProvider;
+    private Security&MockObject                     $security;
     private CommentsViewModelProvider               $provider;
 
     public function setUp(): void
@@ -33,11 +37,40 @@ class CommentsViewModelProviderTest extends AbstractTestCase
         $this->commentRepository  = $this->createMock(CommentRepository::class);
         $this->diffFinder         = $this->createMock(DiffFinder::class);
         $this->settingsProvider   = $this->createMock(UserReviewSettingsProvider::class);
+        $this->security           = $this->createMock(Security::class);
         $this->provider           = new CommentsViewModelProvider(
             $this->commentRepository,
             $this->diffFinder,
-            $this->settingsProvider
+            $this->settingsProvider,
+            $this->security,
         );
+    }
+
+    public function testGetCommentsViewModelFiltersDraftFromOtherUser(): void
+    {
+        $owner   = (new User())->setId(1);
+        $owner->setEmail('owner@example.com');
+        $current = (new User())->setId(2);
+        $current->setEmail('current@example.com');
+
+        $draftComment = new Comment();
+        $draftComment->setLineReference(new LineReference(null, 'file', 1, 0, 1));
+        $draftComment->setType(CommentTypeEnum::Draft);
+        $draftComment->setUser($owner);
+
+        $review = new CodeReview();
+        $file   = new DiffFile();
+        $file->filePathAfter  = '/path/to/file';
+        $file->filePathBefore = null;
+
+        $this->commentRepository->expects($this->once())->method('findByReview')->willReturn([$draftComment]);
+        $this->security->expects($this->once())->method('getUser')->willReturn($current);
+        $this->diffFinder->expects($this->never())->method('findLineInFile');
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->settingsProvider->expects($this->once())->method('getCommentVisibility')->willReturn(CommentVisibilityEnum::NONE);
+
+        $viewModel = $this->provider->getCommentsViewModel($review, null, $file);
+        static::assertCount(0, $viewModel->detachedComments);
     }
 
     public function testGetCommentsViewModel(): void
@@ -60,6 +93,7 @@ class CommentsViewModelProviderTest extends AbstractTestCase
             ->method('findByReview')
             ->with($review, ['/path/to/fileAfter', '/path/to/fileBefore'])
             ->willReturn($comments);
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
         $this->diffFinder->expects($this->exactly(2))
             ->method('findLineInFile')
             ->with(...consecutive([$file, $commentA->getLineReference()], [$fileBefore, $commentB->getLineReference()]))

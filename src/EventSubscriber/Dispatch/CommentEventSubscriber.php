@@ -8,8 +8,10 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
@@ -24,6 +26,13 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
+/**
+ * @phpstan-type CommentChangeSet array{
+ *     type?: array{0: string, 1: string},
+ *     message?: array{0: string, 1: string},
+ *     state?: array{0: string, 1: string}
+ * }
+ */
 #[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
@@ -32,9 +41,9 @@ use Symfony\Contracts\Service\ResetInterface;
 #[AsEventListener(event: ConsoleEvents::TERMINATE, method: 'finish')]
 class CommentEventSubscriber implements ResetInterface
 {
-    /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
+    /** @var array<CommentAdded|CommentDraftAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
     private array $events = [];
-    /** @var array<int, mixed[]> */
+    /** @var array<int, CommentChangeSet> */
     private array $updated = [];
 
     public function __construct(
@@ -46,12 +55,17 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentAdded(Comment $comment): void
     {
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            $this->events[] = $this->messageFactory->createDraftAdded($comment, $comment->getUser());
+            return;
+        }
+
         $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
     }
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
-        /** @var mixed[] $changeSet */
+        /** @var CommentChangeSet $changeSet */
         $changeSet                                         = $event->getEntityChangeSet();
         $this->updated[Assert::integer($comment->getId())] = $changeSet;
     }
@@ -59,8 +73,21 @@ class CommentEventSubscriber implements ResetInterface
     public function commentUpdated(Comment $comment): void
     {
         $user      = $this->getUser($comment);
+        /** @var CommentChangeSet $changeSet */
         $changeSet = $this->updated[$comment->getId()] ?? null;
         if ($changeSet === null) {
+            return;
+        }
+
+        // when draft is published, dispatch CommentDraftAdded
+        if (array_key_exists('type', $changeSet) && $changeSet['type'] === [CommentTypeEnum::Draft->value, CommentTypeEnum::Final->value]) {
+            $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
+
+            return;
+        }
+
+        // suppress all events for draft comments
+        if ($comment->getType() === CommentTypeEnum::Draft) {
             return;
         }
 
@@ -81,6 +108,10 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentRemoved(Comment $comment): void
     {
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            return;
+        }
+
         $user = $this->getUser($comment);
         if ($user->hasId() === false) {
             return;

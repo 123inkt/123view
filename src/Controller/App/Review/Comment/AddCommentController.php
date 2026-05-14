@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Review\Comment;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Form\Review\AddCommentFormType;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
@@ -30,6 +31,7 @@ class AddCommentController extends AbstractController
         $comment = new Comment();
         $comment->setUser($user);
         $comment->setMessage('');
+        $comment->setType(CommentTypeEnum::tryFrom($request->query->getString('mode')) ?? CommentTypeEnum::Final);
         $comment->setTag(null);
         $comment->setReview($review);
         $comment->setCreateTimestamp(time());

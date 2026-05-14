@@ -8,6 +8,7 @@ use DR\Review\Controller\App\Review\Comment\AddCommentReplyController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\AddCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyAdded;
@@ -103,6 +104,19 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testInvokeWithDraftComment(): void
+    {
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $comment = new Comment();
+        $comment->setType(CommentTypeEnum::Draft);
+
+        $response = ($this->controller)(new Request(), $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     public function getController(): AbstractController

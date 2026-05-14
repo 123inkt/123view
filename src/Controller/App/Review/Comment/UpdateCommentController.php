@@ -5,6 +5,7 @@ namespace DR\Review\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Form\Review\EditCommentFormType;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
@@ -37,6 +38,10 @@ class UpdateCommentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
             return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (CommentTypeEnum::tryFrom($request->query->getString('mode')) === CommentTypeEnum::Final) {
+            $comment->setType(CommentTypeEnum::Final);
         }
 
         $comment->setUpdateTimestamp(time());

@@ -6,9 +6,11 @@ namespace DR\Review\Tests\Unit\EventSubscriber\Dispatch;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\Dispatch\CommentEventSubscriber;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
@@ -37,6 +39,49 @@ class CommentEventSubscriberTest extends AbstractTestCase
     /**
      * @throws ExceptionInterface
      */
+    public function testCommentAddedDraft(): void
+    {
+        $user    = (new User())->setId(345);
+        $comment = (new Comment())->setId(123)->setUser($user)->setType(CommentTypeEnum::Draft);
+        $event   = static::createStub(CommentDraftAdded::class);
+
+        $this->userEntityProvider->expects($this->never())->method('getUser');
+        $this->messageFactory->expects($this->once())->method('createDraftAdded')->with($comment, $user)->willReturn($event);
+        $this->bus->expects($this->once())->method('dispatch')->with($event)->willReturn($this->envelope);
+
+        $this->eventSubscriber->commentAdded($comment);
+        $this->eventSubscriber->finish();
+    }
+
+    public function testCommentUpdatedDraftToFinal(): void
+    {
+        $user    = (new User())->setId(345);
+        $comment = (new Comment())->setId(123)->setUser($user)->setType(CommentTypeEnum::Final);
+        $event   = static::createStub(PreUpdateEventArgs::class);
+        $event->method('getEntityChangeSet')->willReturn(['type' => [CommentTypeEnum::Draft->value, CommentTypeEnum::Final->value]]);
+
+        $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(null);
+        $this->messageFactory->expects($this->once())->method('createAdded')->with($comment, $user);
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $this->eventSubscriber->preCommentUpdated($comment, $event);
+        $this->eventSubscriber->commentUpdated($comment);
+    }
+
+    public function testCommentUpdatedDraftSuppressed(): void
+    {
+        $comment = (new Comment())->setId(123)->setType(CommentTypeEnum::Draft);
+        $event   = static::createStub(PreUpdateEventArgs::class);
+        $event->method('getEntityChangeSet')->willReturn(['message' => ['old', 'new']]);
+
+        $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(new User());
+        $this->messageFactory->expects($this->never())->method('createUpdated');
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $this->eventSubscriber->preCommentUpdated($comment, $event);
+        $this->eventSubscriber->commentUpdated($comment);
+    }
+
     public function testCommentAdded(): void
     {
         $user    = (new User())->setId(345);
@@ -130,6 +175,17 @@ class CommentEventSubscriberTest extends AbstractTestCase
 
         $this->messageFactory->expects($this->never())->method('createRemoved');
         $this->userEntityProvider->expects($this->once())->method('getUser');
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $this->eventSubscriber->commentRemoved($comment);
+    }
+
+    public function testCommentRemovedDraftSuppressed(): void
+    {
+        $comment = (new Comment())->setId(123)->setType(CommentTypeEnum::Draft);
+
+        $this->userEntityProvider->expects($this->never())->method('getUser');
+        $this->messageFactory->expects($this->never())->method('createRemoved');
         $this->bus->expects($this->never())->method('dispatch');
 
         $this->eventSubscriber->commentRemoved($comment);
