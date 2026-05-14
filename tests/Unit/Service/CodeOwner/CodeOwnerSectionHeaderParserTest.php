@@ -21,28 +21,28 @@ class CodeOwnerSectionHeaderParserTest extends AbstractTestCase
 
     public function testParseInvalidHeader(): void
     {
-        static::assertSame([true, []], $this->parser->parse('[Invalid'));
+        static::assertSame([], $this->parser->parse('[Invalid'));
     }
 
     public function testParseHeaderWithNoOwnersSkipsSection(): void
     {
-        static::assertSame([true, []], $this->parser->parse('[Block 1]'));
+        static::assertSame([], $this->parser->parse('[Block 1]'));
     }
 
     public function testParseHeaderWithSingleOwner(): void
     {
-        static::assertSame([false, ['@role/bar']], $this->parser->parse('[Block 2] @role/bar'));
+        static::assertSame(['@role/bar'], $this->parser->parse('[Block 2] @role/bar'));
     }
 
     public function testParseHeaderWithMultipleOwners(): void
     {
-        static::assertSame([false, ['@role/foo', '@role/bar']], $this->parser->parse('[Block 3] @role/foo @role/bar'));
+        static::assertSame(['@role/foo', '@role/bar'], $this->parser->parse('[Block 3] @role/foo @role/bar'));
     }
 
     #[TestWith(['[Block 1] # comment'])]
     #[TestWith(['[Block 1]# comment'])]
     public function testParseHeaderInlineCommentIsIgnored(string $line): void
     {
-        static::assertSame([true, []], $this->parser->parse($line));
+        static::assertSame([], $this->parser->parse($line));
     }
 }

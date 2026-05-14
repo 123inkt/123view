@@ -25,6 +25,7 @@ class CodeOwnerFileParserTest extends AbstractTestCase
     {
         $content = $this->getFileContents('block-with-header-owners.txt');
         $expected = [
+            new OwnerPattern('phpunit.xml', ['@role/test']),
             new OwnerPattern('src/single.php', ['@role/foo']),
             new OwnerPattern('src/multi.php', ['@role/bar', '@role/baz']),
             new OwnerPattern('src/inherited.php', ['@role/default', '@role/secondary']),

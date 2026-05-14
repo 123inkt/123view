@@ -58,7 +58,7 @@ class CodeOwnerFileParserTest extends AbstractTestCase
 
         $this->sectionHeaderParser->expects(static::once())->method('parse')
             ->with('[Block 2] @role/bar')
-            ->willReturn([false, ['@role/bar']]);
+            ->willReturn(['@role/bar']);
 
         $this->lineParser->expects(static::once())->method('parse')
             ->with('readme.md @role/foo', ['@role/bar'])
@@ -67,14 +67,18 @@ class CodeOwnerFileParserTest extends AbstractTestCase
         static::assertEquals([$pattern], $this->parser->parse("[Block 2] @role/bar\nreadme.md @role/foo"));
     }
 
-    public function testParseSkipsLinesInSectionWithNoDefaultOwners(): void
+    public function testParseLineInSectionWithEmptyDefaultOwners(): void
     {
+        $pattern = new OwnerPattern('.gitattributes', ['@role/foo']);
+
         $this->sectionHeaderParser->expects(static::once())->method('parse')
             ->with('[Block 1]')
-            ->willReturn([true, []]);
+            ->willReturn([]);
 
-        $this->lineParser->expects(static::never())->method('parse');
+        $this->lineParser->expects(static::once())->method('parse')
+            ->with('.gitattributes @role/foo', [])
+            ->willReturn($pattern);
 
-        static::assertSame([], $this->parser->parse("[Block 1]\n.gitattributes @role/foo"));
+        static::assertEquals([$pattern], $this->parser->parse("[Block 1]\n.gitattributes @role/foo"));
     }
 }

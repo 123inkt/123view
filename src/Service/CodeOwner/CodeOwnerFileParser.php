@@ -25,7 +25,6 @@ readonly class CodeOwnerFileParser
     {
         $lines            = Arrays::explode($this->eolCharacter, $content);
         $patterns         = [];
-        $skipSection      = false;
         $sectionDefOwners = [];
 
         foreach ($lines as $line) {
@@ -35,11 +34,7 @@ readonly class CodeOwnerFileParser
             }
 
             if (str_starts_with($line, '[')) {
-                [$skipSection, $sectionDefOwners] = $this->sectionHeaderParser->parse($line);
-                continue;
-            }
-
-            if ($skipSection) {
+                $sectionDefOwners = $this->sectionHeaderParser->parse($line);
                 continue;
             }
 
