@@ -9,6 +9,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
+use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Revision\RevisionVisibilityService;
@@ -16,16 +17,18 @@ use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
 use DR\Review\ViewModel\App\Revision\RevisionsViewModel;
+use DR\Utils\Arrays;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class RevisionViewModelProvider
+readonly class RevisionViewModelProvider
 {
     public function __construct(
-        private readonly RevisionRepository $revisionRepository,
-        private readonly RevisionVisibilityService $visibilityService,
-        private readonly RevisionFileRepository $revisionFileRepository,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly UserEntityProvider $userProvider,
+        private RevisionRepository $revisionRepository,
+        private CodeReviewRepository $reviewRepository,
+        private RevisionVisibilityService $visibilityService,
+        private RevisionFileRepository $revisionFileRepository,
+        private FormFactoryInterface $formFactory,
+        private UserEntityProvider $userProvider,
     ) {
     }
 
@@ -33,10 +36,14 @@ class RevisionViewModelProvider
     {
         $paginator = $this->revisionRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery, $attached);
 
+        $revisions = iterator_to_array($paginator);
+        $reviewIds = array_map(static fn(Revision $revision): ?int => $revision->getReview()?->getId(), $revisions);
+        $reviews   = $this->reviewRepository->findBy(['id' => Arrays::removeNull($reviewIds)]);
+
         /** @var PaginatorViewModel<Revision> $paginatorViewModel */
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
-        return new RevisionsViewModel($repository, $paginator, $paginatorViewModel, $searchQuery);
+        return new RevisionsViewModel($repository, $revisions, $reviews, $paginatorViewModel, $searchQuery);
     }
 
     /**
