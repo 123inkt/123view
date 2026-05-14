@@ -35,17 +35,17 @@
                                 {%- include 'header/header-admin.html.twig' -%}
                             {%- endif -%}
                             {# draft comments #}
+                            {%- set draft_count = draft_comment_count() -%}
+                            {%- if draft_count > 0 -%}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\Comment\\DraftCommentController') }}">
                                     {{- 'draft.comments'|trans -}}
-                                    {%- set draft_count = draft_comment_count() -%}
-                                    {%- if draft_count > 0 -%}
-                                        <span class="ms-1 badge rounded-pill bg-warning text-dark">
-                                            {{ draft_count > 99 ? '99+' : draft_count }}
-                                        </span>
-                                    {%- endif -%}
+                                    <span class="ms-1 badge rounded-pill bg-warning text-dark">
+                                        {{ draft_count > 99 ? '99+' : draft_count }}
+                                    </span>
                                 </a>
                             </li>
+                            {%- endif -%}
                             {# user menu #}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('DR\\Review\\Controller\\App\\User\\UserSettingController') }}">
