@@ -10,11 +10,11 @@ use DR\Review\ViewModel\App\Comment\DraftCommentsViewModel;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Utils\Arrays;
 
-class DraftCommentViewModelProvider
+readonly class DraftCommentViewModelProvider
 {
     private const PAGE_SIZE = 30;
 
-    public function __construct(private readonly CommentRepository $commentRepository)
+    public function __construct(private CommentRepository $commentRepository)
     {
     }
 
