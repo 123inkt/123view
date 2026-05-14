@@ -81,9 +81,9 @@ class RuleProcessorTest extends AbstractTestCase
      */
     public function testProcessRuleWithExclusionAndInclusions(): void
     {
-        $excludeFilter = (new Filter())->setInclusion(false);
-        $includeFilter = (new Filter())->setInclusion(true);
-        $rule          = (new Rule())->setName('foobar')->addFilter($excludeFilter)->addFilter($includeFilter);
+        $excludeFilter = new Filter()->setInclusion(false);
+        $includeFilter = new Filter()->setInclusion(true);
+        $rule          = new Rule()->setName('foobar')->addFilter($excludeFilter)->addFilter($includeFilter);
         $config        = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
         $commit        = $this->createCommit();
         $commits       = [$commit];

@@ -20,9 +20,9 @@ class RevisionSorterTest extends AbstractTestCase
 
     public function testSortByTimestamp(): void
     {
-        $revisionA = (new Revision())->setCreateTimestamp(300);
-        $revisionB = (new Revision())->setCreateTimestamp(100);
-        $revisionC = (new Revision())->setCreateTimestamp(200);
+        $revisionA = new Revision()->setCreateTimestamp(300);
+        $revisionB = new Revision()->setCreateTimestamp(100);
+        $revisionC = new Revision()->setCreateTimestamp(200);
 
         $sorter = new RevisionSorter();
         $result = $sorter->sort([$revisionA, $revisionB, $revisionC]);
@@ -32,9 +32,9 @@ class RevisionSorterTest extends AbstractTestCase
 
     public function testSortByUuid(): void
     {
-        $revisionA = (new Revision())->setSort('cccccccc-0000-0000-0000-000000000000');
-        $revisionB = (new Revision())->setSort('aaaaaaaa-0000-0000-0000-000000000000');
-        $revisionC = (new Revision())->setSort('bbbbbbbb-0000-0000-0000-000000000000');
+        $revisionA = new Revision()->setSort('cccccccc-0000-0000-0000-000000000000');
+        $revisionB = new Revision()->setSort('aaaaaaaa-0000-0000-0000-000000000000');
+        $revisionC = new Revision()->setSort('bbbbbbbb-0000-0000-0000-000000000000');
 
         $sorter = new RevisionSorter();
         $result = $sorter->sort([$revisionA, $revisionB, $revisionC]);

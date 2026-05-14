@@ -42,7 +42,7 @@ class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
         $this->reviewCreationService->expects($this->never())->method('createFromRevision');
         $this->reviewService->expects($this->never())->method('addRevisions');
         $this->eventService->expects($this->never())->method('revisionAddedToReview');
-        $review   = (new CodeReview())->setId(123);
+        $review   = new CodeReview()->setId(123);
         $revision = new Revision();
         $revision->setReview($review);
 

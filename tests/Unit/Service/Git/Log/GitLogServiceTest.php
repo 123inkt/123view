@@ -64,8 +64,8 @@ class GitLogServiceTest extends AbstractTestCase
         $this->commandFactory->expects($this->never())->method('fromRule');
         $this->patternFactory->expects($this->never())->method('createPattern');
         $this->logParser->expects($this->never())->method('parse');
-        $repository = (new Repository())->setActive(false);
-        $rule       = (new Rule())->addRepository($repository);
+        $repository = new Repository()->setActive(false);
+        $rule       = new Rule()->addRepository($repository);
         $config     = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
 
         static::assertSame([], $this->logFactory->getCommits($config));

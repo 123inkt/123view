@@ -49,7 +49,7 @@ class CommentMailService implements LoggerAwareInterface
         );
 
         // create ViewModel and TemplateMail
-        $email = (new TemplatedEmail())
+        $email = new TemplatedEmail()
             ->subject($subject)
             ->htmlTemplate('mail/mail.comment.html.twig')
             ->text('')
@@ -92,7 +92,7 @@ class CommentMailService implements LoggerAwareInterface
         );
 
         // create ViewModel and TemplateMail
-        $email = (new TemplatedEmail())
+        $email = new TemplatedEmail()
             ->subject($subject)
             ->htmlTemplate('mail/mail.comment.html.twig')
             ->text('')
@@ -131,7 +131,7 @@ class CommentMailService implements LoggerAwareInterface
         );
 
         // create ViewModel and TemplateMail
-        $email = (new TemplatedEmail())
+        $email = new TemplatedEmail()
             ->subject($subject)
             ->htmlTemplate('mail/mail.comment.html.twig')
             ->text('')

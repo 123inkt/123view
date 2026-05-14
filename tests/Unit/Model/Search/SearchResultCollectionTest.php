@@ -22,7 +22,7 @@ class SearchResultCollectionTest extends AbstractTestCase
 
     public function testIteratePerRepository(): void
     {
-        $repository = (new Repository())->setId(123);
+        $repository = new Repository()->setId(123);
         $result     = new SearchResult($repository, new SplFileInfo('file', '', ''));
 
         $collection = new SearchResultCollection([$result], false);

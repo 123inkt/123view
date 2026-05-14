@@ -34,7 +34,7 @@ class NotificationStatusType extends Type
     /**
      * @inheritDoc
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?NotificationStatus
     {
         if ($value === null) {
             return null;

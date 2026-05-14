@@ -20,7 +20,7 @@ class AssetTest extends AbstractTestCase
 
     public function testGetHash(): void
     {
-        $asset = (new Asset())->setData('foobar');
+        $asset = new Asset()->setData('foobar');
         static::assertSame('c3ab8ff1', $asset->getHash());
     }
 }

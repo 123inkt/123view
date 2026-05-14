@@ -90,7 +90,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->project = $project;
         $event->action  = 'approved';
 
-        $repository = (new Repository())->setActive(false);
+        $repository = new Repository()->setActive(false);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->never())->method('getUser');
@@ -115,7 +115,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->user    = $user;
         $event->action  = 'approved';
 
-        $repository = (new Repository())->setActive(true);
+        $repository = new Repository()->setActive(true);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn(null);
@@ -142,8 +142,8 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->action       = 'approved';
 
         $user       = new User();
-        $review     = (new CodeReview())->setState(CodeReviewStateType::CLOSED);
-        $repository = (new Repository())->setId(456)->setActive(true);
+        $review     = new CodeReview()->setState(CodeReviewStateType::CLOSED);
+        $repository = new Repository()->setId(456)->setActive(true);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);
@@ -171,7 +171,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $user       = new User();
         $review     = new CodeReview();
-        $repository = (new Repository())->setId(456)->setActive(true);
+        $repository = new Repository()->setId(456)->setActive(true);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);

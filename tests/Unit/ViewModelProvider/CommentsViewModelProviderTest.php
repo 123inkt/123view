@@ -48,9 +48,9 @@ class CommentsViewModelProviderTest extends AbstractTestCase
 
     public function testGetCommentsViewModelFiltersDraftFromOtherUser(): void
     {
-        $owner   = (new User())->setId(1);
+        $owner   = new User()->setId(1);
         $owner->setEmail('owner@example.com');
-        $current = (new User())->setId(2);
+        $current = new User()->setId(2);
         $current->setEmail('current@example.com');
 
         $draftComment = new Comment();

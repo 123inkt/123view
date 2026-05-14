@@ -31,7 +31,7 @@ class CodeReviewProcessorTest extends AbstractTestCase
         $this->reviewRepository = $this->createMock(CodeReviewRepository::class);
         $this->eventService     = $this->createMock(ReviewEventService::class);
         $this->userProvider     = $this->createMock(UserEntityProvider::class);
-        $this->user             = (new User())->setId(123);
+        $this->user             = new User()->setId(123);
         $this->reviewProcessor  = new CodeReviewProcessor($this->reviewRepository, $this->eventService, $this->userProvider);
     }
 

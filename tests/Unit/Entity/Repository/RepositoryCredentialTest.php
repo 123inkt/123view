@@ -17,7 +17,7 @@ class RepositoryCredentialTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getCredentials', 'setCredentials']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getCredentials', 'setCredentials']);
         static::assertAccessorPairs(RepositoryCredential::class, $config);
     }
 

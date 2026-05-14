@@ -32,7 +32,7 @@ class CommentMentionService
         $userMentions = [];
         /** @var User $user */
         foreach ($mentions as $user) {
-            $userMentions[] = (new UserMention())->setUserId($user->getId())->setComment($comment);
+            $userMentions[] = new UserMention()->setUserId($user->getId())->setComment($comment);
         }
         $this->mentionRepository->saveAll($comment, $userMentions);
     }

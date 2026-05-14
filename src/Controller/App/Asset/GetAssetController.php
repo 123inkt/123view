@@ -19,6 +19,6 @@ class GetAssetController
     )]
     public function __invoke(#[MapEntity] Asset $asset): Response
     {
-        return (new Response($asset->getData(), 200, ['Content-Type' => $asset->getMimeType()]))->setPublic();
+        return new Response($asset->getData(), 200, ['Content-Type' => $asset->getMimeType()])->setPublic();
     }
 }

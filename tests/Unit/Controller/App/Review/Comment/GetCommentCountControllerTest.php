@@ -26,8 +26,8 @@ class GetCommentCountControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $commentA = (new Comment())->setState(CommentStateType::OPEN);
-        $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
+        $commentA = new Comment()->setState(CommentStateType::OPEN);
+        $commentB = new Comment()->setState(CommentStateType::RESOLVED);
         $review   = new CodeReview();
         $review->getComments()->add($commentA);
         $review->getComments()->add($commentB);

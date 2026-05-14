@@ -24,8 +24,8 @@ class CommentsViewModelTest extends AbstractTestCase
 
     public function testIsCommentVisibleAll(): void
     {
-        $commentA = (new Comment())->setState(CommentStateType::OPEN);
-        $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
+        $commentA = new Comment()->setState(CommentStateType::OPEN);
+        $commentB = new Comment()->setState(CommentStateType::RESOLVED);
 
         $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibilityEnum::ALL);
         static::assertTrue($viewModel->isCommentVisible($commentA));
@@ -34,8 +34,8 @@ class CommentsViewModelTest extends AbstractTestCase
 
     public function testIsCommentVisibleUnresolvedOnly(): void
     {
-        $commentA = (new Comment())->setState(CommentStateType::OPEN);
-        $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
+        $commentA = new Comment()->setState(CommentStateType::OPEN);
+        $commentB = new Comment()->setState(CommentStateType::RESOLVED);
 
         $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibilityEnum::UNRESOLVED);
         static::assertTrue($viewModel->isCommentVisible($commentA));
@@ -44,8 +44,8 @@ class CommentsViewModelTest extends AbstractTestCase
 
     public function testIsCommentVisibleNone(): void
     {
-        $commentA = (new Comment())->setState(CommentStateType::OPEN);
-        $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
+        $commentA = new Comment()->setState(CommentStateType::OPEN);
+        $commentB = new Comment()->setState(CommentStateType::RESOLVED);
 
         $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibilityEnum::NONE);
         static::assertFalse($viewModel->isCommentVisible($commentA));

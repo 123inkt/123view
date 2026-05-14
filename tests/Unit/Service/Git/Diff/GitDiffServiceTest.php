@@ -265,7 +265,7 @@ class GitDiffServiceTest extends AbstractTestCase
     public function testGetRevisionFiles(): void
     {
         $repository = new Repository();
-        $revision   = (new Revision())->setCommitHash('target');
+        $revision   = new Revision()->setCommitHash('target');
         $revision->setRepository($repository);
 
         $builder = $this->createMock(GitDiffCommandBuilder::class);

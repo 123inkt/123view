@@ -45,7 +45,7 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         $choiceLabel = $introspector->getDefault('choice_label');
         static::assertIsCallable($choiceLabel);
         static::assertSame('', $choiceLabel(null));
-        static::assertSame('name', $choiceLabel((new Repository())->setName('name')));
+        static::assertSame('name', $choiceLabel(new Repository()->setName('name')));
 
         $constraints = $introspector->getDefault('constraints');
         static::assertIsArray($constraints);

@@ -6,11 +6,11 @@ namespace DR\Review\MessageHandler\Mail;
 use Traversable;
 
 /**
- * @uses \DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler
- * @uses \DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler
- * @uses \DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler
- * @uses \DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler
- * @uses \DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler
+ * @uses CommentAddedMailNotificationHandler
+ * @uses CommentReplyAddedMailNotificationHandler
+ * @uses CommentUpdatedMailNotificationHandler
+ * @uses CommentReplyUpdatedMailNotificationHandler
+ * @uses CommentResolvedMailNotificationHandler
  */
 class MailNotificationHandlerProvider
 {

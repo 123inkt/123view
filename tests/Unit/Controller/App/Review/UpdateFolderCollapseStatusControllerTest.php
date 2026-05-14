@@ -42,7 +42,7 @@ class UpdateFolderCollapseStatusControllerTest extends AbstractControllerTestCas
         $user    = new User();
         $request = new Request(request: ['state' => 'collapsed', 'path' => 'test']);
         $review  = new CodeReview();
-        $status = (new FolderCollapseStatus())->setReview($review)->setUser($user)->setPath('test');
+        $status = new FolderCollapseStatus()->setReview($review)->setUser($user)->setPath('test');
 
         $this->expectGetUser($user);
         $this->folderCollapseRepository->expects($this->once())->method('save')->with($status);

@@ -38,8 +38,8 @@ class SearchBranchViewModelProviderTest extends AbstractTestCase
      */
     public function testGetSearchBranchViewModel(): void
     {
-        $repository = (new Repository())->setId(123);
-        $review     = (new CodeReview())->setRepository($repository)->setReferenceId('branch');
+        $repository = new Repository()->setId(123);
+        $review     = new CodeReview()->setRepository($repository)->setReferenceId('branch');
 
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->branchService->expects($this->once())->method('getRemoteBranches')->with($repository)->willReturn(['branch']);

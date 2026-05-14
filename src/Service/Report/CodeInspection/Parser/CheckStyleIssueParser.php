@@ -30,7 +30,7 @@ class CheckStyleIssueParser implements CodeInspectionIssueParserInterface
 
         // create document and search for file nodes
         $document     = $this->documentFactory->createFromString($data);
-        $fileElements = Assert::notFalse((new DOMXpath($document))->query("/checkstyle/file"));
+        $fileElements = Assert::notFalse(new DOMXpath($document)->query("/checkstyle/file"));
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {

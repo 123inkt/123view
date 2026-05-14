@@ -13,7 +13,7 @@ class UserSettingTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getBrowserNotificationEvents']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getBrowserNotificationEvents']);
         static::assertAccessorPairs(UserSetting::class, $config);
     }
 

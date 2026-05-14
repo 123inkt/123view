@@ -14,9 +14,9 @@ class RevisionTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getSort', 'setSort']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getSort', 'setSort']);
 
-        static::assertFalse((new Revision())->hasId());
+        static::assertFalse(new Revision()->hasId());
         static::assertAccessorPairs(Revision::class, $config);
     }
 

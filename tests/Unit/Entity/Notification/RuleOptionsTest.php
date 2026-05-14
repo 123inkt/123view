@@ -22,7 +22,7 @@ class RuleOptionsTest extends AbstractTestCase
         $options = new RuleOptions();
         static::assertFalse($options->hasId());
 
-        (new ReflectionProperty(RuleOptions::class, 'id'))->setValue($options, 123);
+        new ReflectionProperty(RuleOptions::class, 'id')->setValue($options, 123);
         static::assertTrue($options->hasId());
         static::assertSame(123, $options->getId());
     }

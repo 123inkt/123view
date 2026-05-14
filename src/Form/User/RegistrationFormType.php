@@ -37,7 +37,7 @@ class RegistrationFormType extends AbstractType
                 'label'       => 'password',
                 'constraints' => [
                     new NotBlank(message: 'password.is.required'),
-                    new Length(min: 10, minMessage: 'password.minimum.length', max: 4096),
+                    new Length(min: 10, max: 4096, minMessage: 'password.minimum.length'),
                 ],
             ])
             ->add('register', SubmitType::class, ['label' => 'register']);

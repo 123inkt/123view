@@ -31,7 +31,7 @@ class EditRuleFormTypeTest extends AbstractTestCase
     public function testBuildForm(): void
     {
         $url  = 'https://123view/add/rule';
-        $rule = (new Rule())->setId(123);
+        $rule = new Rule()->setId(123);
 
         $this->urlGenerator->expects($this->once())
             ->method('generate')

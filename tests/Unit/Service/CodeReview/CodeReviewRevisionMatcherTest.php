@@ -138,7 +138,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     {
         $revision = new Revision();
         $revision->setTitle('F#123 US#456 T#890 Task');
-        $revision->setRepository((new Repository())->setId(5));
+        $revision->setRepository(new Repository()->setId(5));
 
         $review = new CodeReview();
 
@@ -160,7 +160,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     {
         $revision = new Revision();
         $revision->setTitle('F#123 US#456 T#890 Task');
-        $revision->setRepository((new Repository())->setId(5));
+        $revision->setRepository(new Repository()->setId(5));
 
         $review = new CodeReview();
 

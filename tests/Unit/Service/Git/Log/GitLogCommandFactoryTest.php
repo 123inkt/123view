@@ -37,7 +37,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setFrequency(Frequency::ONCE_PER_DAY)
                 ->setIgnoreSpaceAtEol(false)
                 ->setExcludeMergeCommits(false)
@@ -70,7 +70,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setFrequency(Frequency::ONCE_PER_DAY)
                 ->setIgnoreAllSpace(true)
                 ->setIgnoreSpaceChange(true)

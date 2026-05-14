@@ -21,7 +21,7 @@ class FilterTest extends AbstractTestCase
         $filter = new Filter();
         static::assertFalse($filter->hasId());
 
-        (new ReflectionProperty(Filter::class, 'id'))->setValue($filter, 123);
+        new ReflectionProperty(Filter::class, 'id')->setValue($filter, 123);
         static::assertTrue($filter->hasId());
         static::assertSame(123, $filter->getId());
     }

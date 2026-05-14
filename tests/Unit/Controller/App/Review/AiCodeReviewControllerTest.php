@@ -34,14 +34,14 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeHappyFlow(): void
     {
-        $aiUser      = (new User())->setId(100);
-        $regularUser = (new User())->setId(200);
-        $currentUser = (new User())->setId(300);
+        $aiUser      = new User()->setId(100);
+        $regularUser = new User()->setId(200);
+        $currentUser = new User()->setId(300);
 
-        $aiComment      = (new Comment())->setUser($aiUser);
-        $regularComment = (new Comment())->setUser($regularUser);
+        $aiComment      = new Comment()->setUser($aiUser);
+        $regularComment = new Comment()->setUser($regularUser);
 
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
         $review->getComments()->add($aiComment);
         $review->getComments()->add($regularComment);
 
@@ -64,8 +64,8 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeDebugModeDoesNotSetFlag(): void
     {
-        $currentUser = (new User())->setId(300);
-        $review      = (new CodeReview())->setId(123);
+        $currentUser = new User()->setId(300);
+        $review      = new CodeReview()->setId(123);
 
         $this->doctrine->expects($this->once())->method('persist')->with($review);
         $this->doctrine->expects($this->once())->method('flush');
@@ -83,7 +83,7 @@ class AiCodeReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeReviewAlreadyRequestedReturnsWarning(): void
     {
-        $review = (new CodeReview())->setId(123)->setAiReviewRequested(true);
+        $review = new CodeReview()->setId(123)->setAiReviewRequested(true);
 
         $this->messageBus->expects($this->never())->method('dispatch');
         $this->doctrine->expects($this->never())->method('persist');

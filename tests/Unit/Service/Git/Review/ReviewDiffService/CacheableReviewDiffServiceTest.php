@@ -71,7 +71,7 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
-        $review   = (new CodeReview())->setRepository($repository);
+        $review   = new CodeReview()->setRepository($repository);
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
