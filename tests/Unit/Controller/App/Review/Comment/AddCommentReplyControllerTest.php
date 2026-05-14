@@ -54,7 +54,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     {
         $this->commentRepository->expects($this->never())->method('save');
         $this->bus->expects($this->never())->method('dispatch');
-        $user    = (new User())->setId(789);
+        $user    = new User()->setId(789);
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
@@ -75,9 +75,9 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     public function testInvokeFormSubmitted(): void
     {
         $request = new Request();
-        $review  = (new CodeReview())->setId(123);
-        $comment = (new Comment())->setId(456)->setFilePath('file')->setReview($review);
-        $user    = (new User())->setId(789);
+        $review  = new CodeReview()->setId(123);
+        $comment = new Comment()->setId(456)->setFilePath('file')->setReview($review);
+        $user    = new User()->setId(789);
         $this->expectGetUser($user);
 
         $this->expectCreateForm(AddCommentReplyFormType::class, static::isInstanceOf(CommentReply::class), ['comment' => $comment])

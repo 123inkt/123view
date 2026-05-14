@@ -31,7 +31,7 @@ class EditCredentialFormTypeTest extends AbstractTestCase
     public function testBuildForm(): void
     {
         $url        = 'https://123view/add/credential';
-        $credential = (new RepositoryCredential())->setId(123);
+        $credential = new RepositoryCredential()->setId(123);
 
         $this->urlGenerator->expects($this->once())
             ->method('generate')

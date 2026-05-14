@@ -42,7 +42,7 @@ class CredentialController extends AbstractController
             throw new NotFoundHttpException('Credential not found');
         }
 
-        $credential ??= (new RepositoryCredential())->setAuthType(AuthenticationType::BASIC_AUTH);
+        $credential ??= new RepositoryCredential()->setAuthType(AuthenticationType::BASIC_AUTH);
 
         $form = $this->createForm(EditCredentialFormType::class, ['credential' => $credential]);
         $form->handleRequest($request);

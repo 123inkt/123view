@@ -48,7 +48,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     public function testCreateCommentViewModelCommentCreated(): void
     {
         $reference = new LineReference(null, 'reference', 1, 2, 3);
-        $comment   = (new Comment())->setUser((new User())->setName('name'));
+        $comment   = new Comment()->setUser(new User()->setName('name'));
         $comment->setFilePath('reference');
         $comment->setLineReference($reference);
         $revision   = new Revision();
@@ -84,7 +84,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
      */
     public function testCreateCommentViewModelCommentReplied(): void
     {
-        $reply     = (new CommentReply())->setUser((new User())->setName('name'));
+        $reply     = new CommentReply()->setUser(new User()->setName('name'));
         $reference = new LineReference(null, 'reference', 1, 2, 3);
         $comment   = new Comment();
         $comment->setFilePath('reference');
@@ -135,7 +135,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
-        $user = (new User())->setName('name');
+        $user = new User()->setName('name');
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
@@ -164,9 +164,9 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     public function testCreateCommentViewModelBranchReview(): void
     {
         $reference  = new LineReference(null, 'reference', 1, 2, 3);
-        $comment    = (new Comment())->setUser((new User())->setName('name'))->setFilePath('reference')->setLineReference($reference);
+        $comment    = new Comment()->setUser(new User()->setName('name'))->setFilePath('reference')->setLineReference($reference);
         $repository = new Repository();
-        $review     = (new CodeReview())->setType(CodeReviewType::BRANCH)->setRepository($repository)->setReferenceId('feature-branch');
+        $review     = new CodeReview()->setType(CodeReviewType::BRANCH)->setRepository($repository)->setReferenceId('feature-branch');
         $review->getComments()->add($comment);
         $file = new DiffFile();
         $line = new DiffLine(0, []);

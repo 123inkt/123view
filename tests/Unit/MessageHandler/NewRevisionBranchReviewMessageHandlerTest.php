@@ -72,7 +72,7 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
     public function testInvokeUnknownReview(): void
     {
         $repository = new Repository();
-        $revision   = (new Revision())->setRepository($repository)->setFirstBranch('first-branch');
+        $revision   = new Revision()->setRepository($repository)->setFirstBranch('first-branch');
 
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRepository->expects($this->once())->method('findOneBy')
@@ -99,8 +99,8 @@ class NewRevisionBranchReviewMessageHandlerTest extends AbstractTestCase
     public function testInvoke(): void
     {
         $repository = new Repository();
-        $revision   = (new Revision())->setRepository($repository)->setFirstBranch('first-branch');
-        $review     = (new CodeReview())->setState(CodeReviewStateType::OPEN);
+        $revision   = new Revision()->setRepository($repository)->setFirstBranch('first-branch');
+        $review     = new CodeReview()->setState(CodeReviewStateType::OPEN);
 
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);
         $this->reviewRepository->expects($this->once())->method('findOneBy')->willReturn($review);

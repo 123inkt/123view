@@ -80,9 +80,9 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $report       = new CodeInspectionReport();
-        $issue        = (new CodeInspectionIssue())->setLineNumber(123);
+        $issue        = new CodeInspectionIssue()->setLineNumber(123);
         $lineCoverage = new LineCoverage();
-        $coverage     = (new CodeCoverageFile())->setCoverage($lineCoverage);
+        $coverage     = new CodeCoverageFile()->setCoverage($lineCoverage);
 
         $this->coverageReportRepository->expects($this->once())->method('findOneByRevisions')
             ->with($repository, [$revision], 'filepath')

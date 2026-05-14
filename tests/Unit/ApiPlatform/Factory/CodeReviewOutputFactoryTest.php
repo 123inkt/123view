@@ -40,10 +40,10 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
     public function testCreate(): void
     {
         // setup dependencies
-        $userA      = (new User())->setId(123)->setName('name A')->setEmail('email A');
-        $userB      = (new User())->setId(234)->setName('name B')->setEmail('email B');
-        $reviewer   = (new CodeReviewer())->setUser($userA);
-        $repository = (new Repository())->setId(789);
+        $userA      = new User()->setId(123)->setName('name A')->setEmail('email A');
+        $userB      = new User()->setId(234)->setName('name B')->setEmail('email B');
+        $reviewer   = new CodeReviewer()->setUser($userA);
+        $repository = new Repository()->setId(789);
 
         // setup review
         $review = new CodeReview();

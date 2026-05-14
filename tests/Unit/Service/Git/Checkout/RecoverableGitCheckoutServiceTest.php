@@ -48,7 +48,7 @@ class RecoverableGitCheckoutServiceTest extends AbstractTestCase
     public function testCheckoutRevisionWithProcessFailure(): void
     {
         $repository = new Repository();
-        $revision   = (new Revision())->setRepository($repository);
+        $revision   = new Revision()->setRepository($repository);
 
         $processException = static::createStub(ProcessFailedException::class);
 

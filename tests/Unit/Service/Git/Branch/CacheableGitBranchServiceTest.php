@@ -33,7 +33,7 @@ class CacheableGitBranchServiceTest extends AbstractTestCase
      */
     public function testGetRemoteBranchesWithAllBranches(): void
     {
-        $repository = (new Repository())->setId(123);
+        $repository = new Repository()->setId(123);
         $item       = $this->createMock(CacheItemInterface::class);
         $item->expects($this->once())->method('expiresAfter')->with(60);
 
@@ -51,7 +51,7 @@ class CacheableGitBranchServiceTest extends AbstractTestCase
      */
     public function testGetRemoteBranchesWithMergedOnlyBranches(): void
     {
-        $repository = (new Repository())->setId(123);
+        $repository = new Repository()->setId(123);
         $item       = $this->createMock(CacheItemInterface::class);
         $item->expects($this->once())->method('expiresAfter')->with(60);
 

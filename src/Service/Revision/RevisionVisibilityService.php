@@ -65,7 +65,7 @@ readonly class RevisionVisibilityService
                 }
             }
 
-            $result[] = (new RevisionVisibility())
+            $result[] = new RevisionVisibility()
                 ->setReview($review)
                 ->setUser($user)
                 ->setRevision($revision)

@@ -16,7 +16,7 @@ class CommentTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['setReplies', 'setLineReference', 'setMentions']);
+        $config = new ConstraintConfig()->setExcludedMethods(['setReplies', 'setLineReference', 'setMentions']);
         static::assertAccessorPairs(Comment::class, $config);
     }
 

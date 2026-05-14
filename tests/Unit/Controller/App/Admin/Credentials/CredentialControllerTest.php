@@ -75,7 +75,7 @@ class CredentialControllerTest extends AbstractControllerTestCase
         $request    = new Request();
         $credential = new RepositoryCredential();
         $credential->setId(123);
-        $repository = (new Repository())->setId(456);
+        $repository = new Repository()->setId(456);
 
         $this->expectCreateForm(EditCredentialFormType::class, ['credential' => $credential])
             ->handleRequest($request)

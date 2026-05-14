@@ -44,7 +44,7 @@ class RuleController extends AbstractController
         $form = $this->createForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['editRuleModel' => (new EditRuleViewModel())->setForm($form->createView())];
+            return ['editRuleModel' => new EditRuleViewModel()->setForm($form->createView())];
         }
 
         $this->ruleRepository->save($rule, true);

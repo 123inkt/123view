@@ -53,8 +53,8 @@ class ReviewViewModelTest extends AbstractTestCase
 
     public function testIsReviewer(): void
     {
-        $userA = (new User())->setId(5);
-        $userB = (new User())->setId(6);
+        $userA = new User()->setId(5);
+        $userB = new User()->setId(6);
 
         $reviewer = new CodeReviewer();
         $reviewer->setUser($userA);

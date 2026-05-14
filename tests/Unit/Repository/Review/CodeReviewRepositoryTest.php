@@ -45,7 +45,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         self::getContainer()->set(User::class, $this->user);
 
         $this->repository = static::getService(CodeReviewRepository::class);
-        $this->parser     = (new ReviewSearchQueryParserFactory())->createParser();
+        $this->parser     = new ReviewSearchQueryParserFactory()->createParser();
     }
 
     /**

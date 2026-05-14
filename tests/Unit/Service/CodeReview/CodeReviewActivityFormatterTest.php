@@ -95,7 +95,7 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $activity = new CodeReviewActivity();
         $activity->setEventName(ReviewerStateChanged::NAME);
         $activity->setData(['newState' => "accepted"]);
-        $activity->setUser((new User())->setName('user'));
+        $activity->setUser(new User()->setName('user'));
 
         $this->translator->expects($this->once())
             ->method('trans')

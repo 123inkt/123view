@@ -41,7 +41,7 @@ class FormAssertion
                         throw new RuntimeException('Missing key in data: ' . $key);
                     }
 
-                    $mock = (new MockBuilder($this->testCase, FormInterface::class))->getMock();
+                    $mock = new MockBuilder($this->testCase, FormInterface::class)->getMock();
                     $mock->method('getData')->willReturn($keyValueData[$key]);
 
                     return $mock;

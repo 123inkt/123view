@@ -44,7 +44,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
     {
         $this->mergeRequests->expects($this->never())->method('findByRemoteRef');
         $this->reviewRepository->expects($this->never())->method('save');
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
         $review->setExtReferenceId('1234');
 
         static::assertSame(1234, $this->service->retrieveMergeRequestIID($this->api, $review));
@@ -58,7 +58,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setFirstBranch(null);
 
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
         $review->setExtReferenceId(null);
         $review->getRevisions()->add($revision);
 
@@ -79,7 +79,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1234'));
 
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
         $review->setExtReferenceId(null);
         $review->getRevisions()->add($revision);
         $review->setRepository($repository);
@@ -101,7 +101,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1234'));
 
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
         $review->setExtReferenceId(null);
         $review->setType(CodeReviewType::COMMITS);
         $review->getRevisions()->add($revision);
@@ -121,7 +121,7 @@ class ReviewMergeRequestServiceTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1234'));
 
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
         $review->setType(CodeReviewType::BRANCH);
         $review->setReferenceId('origin/remote-branch');
         $review->setExtReferenceId(null);

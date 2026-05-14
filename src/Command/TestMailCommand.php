@@ -38,7 +38,7 @@ class TestMailCommand extends Command
     {
         $address = Assert::string($input->getArgument('address'));
 
-        $email = (new Email())
+        $email = new Email()
             ->addTo(new Address($address))
             ->subject('[Commit Notification] test mail')
             ->text('Git log test mail');

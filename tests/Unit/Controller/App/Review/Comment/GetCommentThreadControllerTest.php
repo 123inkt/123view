@@ -105,8 +105,8 @@ class GetCommentThreadControllerTest extends AbstractControllerTestCase
     {
         $this->modelProvider->expects($this->never())->method('getEditCommentViewModel');
 
-        $owner   = (new User())->setId(1);
-        $current = (new User())->setId(2);
+        $owner   = new User()->setId(1);
+        $current = new User()->setId(2);
 
         $comment = new Comment();
         $comment->setId(123);

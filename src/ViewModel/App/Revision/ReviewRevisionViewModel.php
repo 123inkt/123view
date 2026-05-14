@@ -23,12 +23,6 @@ readonly class ReviewRevisionViewModel
 
     public function getRevision(string $revisionId): ?Revision
     {
-        foreach ($this->revisions as $revision) {
-            if ($revision->getId() === (int)$revisionId) {
-                return $revision;
-            }
-        }
-
-        return null;
+        return array_find($this->revisions, static fn(Revision $revision) => $revision->getId() === (int)$revisionId);
     }
 }

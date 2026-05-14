@@ -75,8 +75,8 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
-        $reviewer = (new CodeReviewer())->setId(456);
-        $review   = (new CodeReview())->setId(123);
+        $reviewer = new CodeReviewer()->setId(456);
+        $review   = new CodeReview()->setId(123);
         $review->getReviewers()->add($reviewer);
         $review->setRepository($repository);
 
@@ -93,8 +93,8 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
-        $reviewer = (new CodeReviewer())->setId(456);
-        $review   = (new CodeReview())->setId(123);
+        $reviewer = new CodeReviewer()->setId(456);
+        $review   = new CodeReview()->setId(123);
         $review->getReviewers()->add($reviewer);
         $review->setRepository($repository);
 
@@ -111,8 +111,8 @@ class ReviewerStateChangeMessageHandlerTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', new RepositoryProperty('gitlab-project-id', '666'));
-        $reviewer = (new CodeReviewer())->setId(456);
-        $review   = (new CodeReview())->setId(123);
+        $reviewer = new CodeReviewer()->setId(456);
+        $review   = new CodeReview()->setId(123);
         $review->getReviewers()->add($reviewer);
         $review->setRepository($repository);
 

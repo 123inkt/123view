@@ -59,11 +59,11 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
      */
     public function testPublish(): void
     {
-        $user  = (new User())->setId(123);
-        $actor = (new User())->setId(987);
+        $user  = new User()->setId(123);
+        $actor = new User()->setId(987);
         $actor->getSetting()->setBrowserNotificationEvents(['event']);
-        $repository = (new Repository())->setId(789)->setDisplayName('RP');
-        $review     = (new CodeReview())->setId(456)->setProjectId(321)->setActors([567])->setTitle('title')->setRepository($repository);
+        $repository = new Repository()->setId(789)->setDisplayName('RP');
+        $review     = new CodeReview()->setId(456)->setProjectId(321)->setActors([567])->setTitle('title')->setRepository($repository);
         $activity   = new CodeReviewActivity();
         $activity->setId(135);
         $activity->setEventName('event');

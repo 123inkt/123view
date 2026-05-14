@@ -56,7 +56,7 @@ class PushEventHandlerTest extends AbstractTestCase
     {
         $event            = new PushEvent();
         $event->projectId = 1;
-        $repository       = (new Repository())->setActive(false);
+        $repository       = new Repository()->setActive(false);
 
         $this->repository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '1')->willReturn($repository);
         $this->bus->expects($this->never())->method('dispatch');
@@ -68,7 +68,7 @@ class PushEventHandlerTest extends AbstractTestCase
     {
         $event            = new PushEvent();
         $event->projectId = 1;
-        $repository       = (new Repository())->setId(123)->setActive(true);
+        $repository       = new Repository()->setId(123)->setActive(true);
 
         $message = new FetchRepositoryRevisionsMessage(123);
 

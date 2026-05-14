@@ -21,7 +21,7 @@ class RepositoryTest extends AbstractTestCase
         $config = new ConstraintConfig();
         $config->setExcludedMethods(['addRepositoryProperty', 'getRepositoryProperties', 'getReviews', 'getRevisions', 'setGitType', 'getGitType']);
 
-        static::assertFalse((new Repository())->hasId());
+        static::assertFalse(new Repository()->hasId());
         static::assertAccessorPairs(Repository::class, $config);
     }
 
@@ -37,7 +37,7 @@ class RepositoryTest extends AbstractTestCase
     public function testGetRepositoryProperty(): void
     {
         $repository = new Repository();
-        $repository->setRepositoryProperty((new RepositoryProperty('foo', 'bar'))->setName('property')->setValue('value'));
+        $repository->setRepositoryProperty(new RepositoryProperty('foo', 'bar')->setName('property')->setValue('value'));
 
         static::assertNull($repository->getRepositoryProperty('foobar'));
         static::assertSame('value', $repository->getRepositoryProperty('property'));
@@ -93,8 +93,8 @@ class RepositoryTest extends AbstractTestCase
 
     public function testEqualsTo(): void
     {
-        $repositoryA = (new Repository())->setId(123);
-        $repositoryB = (new Repository())->setId(456);
+        $repositoryA = new Repository()->setId(123);
+        $repositoryB = new Repository()->setId(456);
 
         static::assertTrue($repositoryA->equalsTo($repositoryA));
         static::assertFalse($repositoryA->equalsTo($repositoryB));

@@ -36,7 +36,7 @@ class RevisionTopoOrderMessageHandler implements LoggerAwareInterface
         }
 
         // set revision uuid
-        $revision->setSort(UuidV7::generate((new DateTimeImmutable())->setTimestamp($revision->getCreateTimestamp())));
+        $revision->setSort(UuidV7::generate(new DateTimeImmutable()->setTimestamp($revision->getCreateTimestamp())));
         $this->revisionRepository->save($revision);
 
         // find parent revisions and update topological order
@@ -66,14 +66,14 @@ class RevisionTopoOrderMessageHandler implements LoggerAwareInterface
         }
 
         if ($parentRev->getSort() === null) {
-            $parentRev->setSort(UuidV7::generate((new DateTimeImmutable())->setTimestamp($parentRev->getCreateTimestamp())));
+            $parentRev->setSort(UuidV7::generate(new DateTimeImmutable()->setTimestamp($parentRev->getCreateTimestamp())));
             $this->revisionRepository->save($parentRev);
         }
         if ($childRev->getSort() !== null) {
             return;
         }
 
-        $childRev->setSort(UuidV7::generate((new DateTimeImmutable())->setTimestamp($childTimestamp)));
+        $childRev->setSort(UuidV7::generate(new DateTimeImmutable()->setTimestamp($childTimestamp)));
         $this->revisionRepository->save($childRev);
     }
 }

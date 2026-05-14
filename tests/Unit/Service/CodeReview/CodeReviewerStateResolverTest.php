@@ -29,7 +29,7 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
 
         $reviewer = new CodeReviewer();
-        $reviewer->setUser((new User())->setEmail('email'));
+        $reviewer->setUser(new User()->setEmail('email'));
         $review->getReviewers()->add($reviewer);
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
 
@@ -40,11 +40,11 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
     public function testIsAcceptedSelfAccepted(): void
     {
         $review   = new CodeReview();
-        $revision = (new Revision())->setAuthorEmail('author1');
+        $revision = new Revision()->setAuthorEmail('author1');
         $review->getRevisions()->add($revision);
 
         $reviewer = new CodeReviewer();
-        $reviewer->setUser((new User())->setEmail('author1'));
+        $reviewer->setUser(new User()->setEmail('author1'));
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $review->getReviewers()->add($reviewer);
 
@@ -54,18 +54,18 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
     public function testIsAcceptedSelfAcceptedMultiReviewers(): void
     {
         $review   = new CodeReview();
-        $revisionA = (new Revision())->setAuthorEmail('author1');
-        $revisionB = (new Revision())->setAuthorEmail('author2');
+        $revisionA = new Revision()->setAuthorEmail('author1');
+        $revisionB = new Revision()->setAuthorEmail('author2');
         $review->getRevisions()->add($revisionA);
         $review->getRevisions()->add($revisionB);
 
         $reviewerA = new CodeReviewer();
-        $reviewerA->setUser((new User())->setEmail('author1'));
+        $reviewerA->setUser(new User()->setEmail('author1'));
         $reviewerA->setState(CodeReviewerStateType::ACCEPTED);
         $review->getReviewers()->add($reviewerA);
 
         $reviewerB = new CodeReviewer();
-        $reviewerB->setUser((new User())->setEmail('author2'));
+        $reviewerB->setUser(new User()->setEmail('author2'));
         $reviewerB->setState(CodeReviewerStateType::ACCEPTED);
         $review->getReviewers()->add($reviewerB);
 
@@ -75,16 +75,16 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
     public function testIsAcceptedButNotSelfAccepted(): void
     {
         $review   = new CodeReview();
-        $revision = (new Revision())->setAuthorEmail('author1');
+        $revision = new Revision()->setAuthorEmail('author1');
         $review->getRevisions()->add($revision);
 
         $reviewer = new CodeReviewer();
-        $reviewer->setUser((new User())->setEmail('author1'));
+        $reviewer->setUser(new User()->setEmail('author1'));
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $review->getReviewers()->add($reviewer);
 
         $reviewer = new CodeReviewer();
-        $reviewer->setUser((new User())->setEmail('author2'));
+        $reviewer->setUser(new User()->setEmail('author2'));
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $review->getReviewers()->add($reviewer);
 
@@ -97,7 +97,7 @@ class CodeReviewerStateResolverTest extends AbstractTestCase
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
 
         $reviewer = new CodeReviewer();
-        $reviewer->setUser((new User())->setEmail('email'));
+        $reviewer->setUser(new User()->setEmail('email'));
         $review->getReviewers()->add($reviewer);
         static::assertSame(CodeReviewerStateType::OPEN, $this->resolver->getReviewersState($review));
 

@@ -23,14 +23,14 @@ class CodeReviewTypeDeciderTest extends AbstractTestCase
 
     public function testDecideCommits(): void
     {
-        $review = (new CodeReview())->setType(CodeReviewType::COMMITS);
+        $review = new CodeReview()->setType(CodeReviewType::COMMITS);
 
         static::assertSame(CodeReviewType::COMMITS, $this->decider->decide($review, [], []));
     }
 
     public function testDecideBranchWithNotAllRevisionsVisible(): void
     {
-        $review           = (new CodeReview())->setType(CodeReviewType::BRANCH);
+        $review           = new CodeReview()->setType(CodeReviewType::BRANCH);
         $revisions        = [new Revision(), new Revision()];
         $visibleRevisions = [new Revision()];
 
@@ -39,7 +39,7 @@ class CodeReviewTypeDeciderTest extends AbstractTestCase
 
     public function testDecideBranchWithAllRevisionsVisible(): void
     {
-        $review           = (new CodeReview())->setType(CodeReviewType::BRANCH);
+        $review           = new CodeReview()->setType(CodeReviewType::BRANCH);
         $revisions        = [new Revision(), new Revision()];
         $visibleRevisions = [new Revision(), new Revision()];
 

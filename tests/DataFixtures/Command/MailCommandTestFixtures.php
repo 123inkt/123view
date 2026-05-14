@@ -31,7 +31,7 @@ class MailCommandTestFixtures extends Fixture
 
     private function createUser(): User
     {
-        return (new User())
+        return new User()
             ->setId(123)
             ->setName('Sherlock Holmes')
             ->setEmail('sherlock@example.com')
@@ -40,7 +40,7 @@ class MailCommandTestFixtures extends Fixture
 
     private function createRepository(): Repository
     {
-        return (new Repository())
+        return new Repository()
             ->setName('sherlock')
             ->setDisplayName('sherlock')
             ->setUrl(Uri::new('https://example.com/detectives/sherlock.git'));
@@ -48,24 +48,24 @@ class MailCommandTestFixtures extends Fixture
 
     private function createExternalLink(): ExternalLink
     {
-        return (new ExternalLink())
+        return new ExternalLink()
             ->setPattern('B#{}')
             ->setUrl('https://example.com/detectives/issue/{}');
     }
 
     private function createRule(User $user, Repository $repository): Rule
     {
-        return (new Rule())
+        return new Rule()
             ->setUser($user)
             ->setName('Detectives')
             ->setActive(true)
             ->setRuleOptions(
-                (new RuleOptions())
+                new RuleOptions()
                     ->setSubject('My commits')
                     ->setTheme(MailThemeType::DARCULA)
             )
             ->addRecipient(
-                (new Recipient())
+                new Recipient()
                     ->setEmail('sherlock@example.com')
                     ->setName('Sherlock Holmes')
             )

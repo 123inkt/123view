@@ -31,7 +31,7 @@ class EditRepositoryFormTypeTest extends AbstractTestCase
     public function testBuildForm(): void
     {
         $url        = 'https://123view/add/repository';
-        $repository = (new Repository())->setId(123);
+        $repository = new Repository()->setId(123);
 
         $this->urlGenerator->expects($this->once())
             ->method('generate')

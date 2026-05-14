@@ -21,7 +21,7 @@ class RecipientTest extends AbstractTestCase
         $recipient = new Recipient();
         static::assertFalse($recipient->hasId());
 
-        (new ReflectionProperty(Recipient::class, 'id'))->setValue($recipient, 123);
+        new ReflectionProperty(Recipient::class, 'id')->setValue($recipient, 123);
         static::assertTrue($recipient->hasId());
         static::assertSame(123, $recipient->getId());
     }

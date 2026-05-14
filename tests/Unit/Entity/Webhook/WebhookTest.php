@@ -15,7 +15,7 @@ class WebhookTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getActivities', 'getRepositories']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getActivities', 'getRepositories']);
         static::assertAccessorPairs(Webhook::class, $config);
     }
 

@@ -15,6 +15,6 @@ class LogoutControllerTest extends AbstractTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Logout security route is not configured');
-        (new LogoutController())();
+        new LogoutController()();
     }
 }
