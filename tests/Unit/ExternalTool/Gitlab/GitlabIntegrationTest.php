@@ -34,8 +34,7 @@ class GitlabIntegrationTest extends AbstractTestCase
 
     public function testOnCommitEventShouldSkipOnMissingGitlabApiUrl(): void
     {
-        $this->gitlabService = $this->createMock(GitlabService::class);
-        $this->integration   = new GitlabIntegration('', $this->gitlabService);
+        $this->integration = new GitlabIntegration('', $this->gitlabService);
 
         // setup mock
         $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');

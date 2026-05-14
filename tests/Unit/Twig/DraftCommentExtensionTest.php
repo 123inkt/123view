@@ -15,7 +15,7 @@ class DraftCommentExtensionTest extends AbstractTestCase
 {
     public function testGetDraftCountReturnsZeroWhenNotLoggedIn(): void
     {
-        $userProvider = $this->createMock(UserEntityProvider::class);
+        $userProvider = static::createStub(UserEntityProvider::class);
         $userProvider->method('getUser')->willReturn(null);
 
         $repository = $this->createMock(CommentRepository::class);
@@ -28,9 +28,9 @@ class DraftCommentExtensionTest extends AbstractTestCase
 
     public function testGetDraftCountReturnsCountForLoggedInUser(): void
     {
-        $user = $this->createMock(User::class);
+        $user = static::createStub(User::class);
 
-        $userProvider = $this->createMock(UserEntityProvider::class);
+        $userProvider = static::createStub(UserEntityProvider::class);
         $userProvider->method('getUser')->willReturn($user);
 
         $repository = $this->createMock(CommentRepository::class);
@@ -43,9 +43,9 @@ class DraftCommentExtensionTest extends AbstractTestCase
 
     public function testGetDraftCountIsCached(): void
     {
-        $user = $this->createMock(User::class);
+        $user = static::createStub(User::class);
 
-        $userProvider = $this->createMock(UserEntityProvider::class);
+        $userProvider = static::createStub(UserEntityProvider::class);
         $userProvider->method('getUser')->willReturn($user);
 
         $repository = $this->createMock(CommentRepository::class);
