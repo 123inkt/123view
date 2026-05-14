@@ -23,6 +23,24 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $this->factory = new CommentEventMessageFactory();
     }
 
+    public function testCreateDraftAdded(): void
+    {
+        $user = new User();
+        $user->setId(123);
+        $comment = new Comment();
+        $comment->setId(456);
+        $comment->setFilePath('filepath');
+        $comment->setMessage('message');
+        $comment->setReview((new CodeReview())->setId(789));
+
+        $event = $this->factory->createDraftAdded($comment, $user);
+        static::assertSame(456, $event->getCommentId());
+        static::assertSame(123, $event->getUserId());
+        static::assertSame('filepath', $event->file);
+        static::assertSame('message', $event->message);
+        static::assertSame('comment-draft-added', $event->getName());
+    }
+
     public function testCreateAdded(): void
     {
         $user = new User();

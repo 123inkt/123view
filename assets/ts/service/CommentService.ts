@@ -18,12 +18,12 @@ export default class CommentService {
             .then(html => Elements.create(html));
     }
 
-    public submitAddCommentForm(form: HTMLFormElement): Promise<string> {
-        return this.client.form(form).then(response => (response.data as {commentUrl: string}).commentUrl);
+    public submitAddCommentForm(form: HTMLFormElement, mode: string): Promise<string> {
+        return this.client.form(form, {mode}).then(response => (response.data as {commentUrl: string}).commentUrl);
     }
 
-    public submitCommentForm(form: HTMLFormElement): Promise<number> {
-        return this.client.form(form).then(response => (response.data as {commentId: number}).commentId);
+    public submitCommentForm(form: HTMLFormElement, mode: string): Promise<number> {
+        return this.client.form(form, {mode}).then(response => (response.data as {commentId: number}).commentId);
     }
 
     public getCommentThread(url: string, action?: string): Promise<HTMLElement> {

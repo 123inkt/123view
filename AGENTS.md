@@ -46,6 +46,13 @@ composer test:integration # Integration tests only
 composer test:functional  # Functional tests only
 ```
 
+> **Important:** The full test suite takes a very long time. Always run tests scoped to the files you changed.
+> Use PHPUnit's `--filter` flag with a class or method name pattern, for example:
+> ```bash
+> vendor/bin/phpunit --testsuite unit --filter "CommentEventSubscriber|AddCommentController"
+> ```
+> Only fall back to `composer test:unit` (full suite) when you need broad regression coverage.
+
 **Docker Environment:**
 ```bash
 ./bin/start.sh      # Start development environment

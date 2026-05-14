@@ -7,6 +7,7 @@
 
 <div class="comment__comment-thread
     {%- if comment.state == 'resolved' %} comment__state_resolved{% endif -%}
+    {%- if comment.type.value == 'draft' %} comment__draft{% endif -%}
     {%- if visible is same as(false) %} d-none{% endif -%}"
      data-comment-id="{{ comment.id }}"
      data-comment-unresolved="{{ comment.state == 'open' ? 1 : 0 }}"
@@ -40,6 +41,9 @@
                     {%- else -%}
                         <span class="badge rounded-pill text-bg-success">{{ ('tag.' ~ comment.tag.value)|trans }}</span>
                     {%- endif -%}
+                {%- endif -%}
+                {%- if comment.type.value == 'draft' -%}
+                    <span class="badge rounded-pill text-bg-info">{{ 'comment.draft.label'|trans }}</span>
                 {%- endif -%}
 
                 <span>
@@ -75,21 +79,23 @@
                 </span>
 
                 <span class="comment__state float-end">
-                    {% if comment.state == 'open' %}
-                        {% set state = 'resolved' %}
-                        {% set title = 'click.to.resolve'|trans %}
-                        {% set label = 'resolve'|trans %}
-                    {% else %}
-                        {% set state = 'open' %}
-                        {% set title = 'click.to.unresolve'|trans %}
-                        {% set label = '✓ ' ~ 'resolved'|trans %}
-                    {% endif %}
+                    {% if comment.type.value != 'draft' %}
+                        {% if comment.state == 'open' %}
+                            {% set state = 'resolved' %}
+                            {% set title = 'click.to.resolve'|trans %}
+                            {% set label = 'resolve'|trans %}
+                        {% else %}
+                            {% set state = 'open' %}
+                            {% set title = 'click.to.unresolve'|trans %}
+                            {% set label = '✓ ' ~ 'resolved'|trans %}
+                        {% endif %}
 
-                    <a href="#"
-                            {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
-                       data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
-                       data-state="{{ state }}"
-                       title="{{ title }}">{{ label }}</a>
+                        <a href="#"
+                                {{ stimulus_action('comment-thread', 'resolveComment', 'click') }}
+                           data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\ChangeCommentStateController', {id: comment.id}) }}"
+                           data-state="{{ state }}"
+                           title="{{ title }}">{{ label }}</a>
+                    {% endif %}
                 </span>
             </div>
 
@@ -116,30 +122,32 @@
     {# comment action buttons #}
     <div class="comment__toolbar">
         {% if not is_reply_on_comment and not is_edit_comment %}
-            <a href="#" class="comment__action-button"
-                    {{ stimulus_action('comment-thread', 'replyToComment', 'click') }}
-               title="{{ 'reply'|trans }}">
-                <i class="bi bi-reply-fill"></i>
-            </a>
+            {% if comment.type.value != 'draft' %}
+                <a href="#" class="comment__action-button"
+                        {{ stimulus_action('comment-thread', 'replyToComment', 'click') }}
+                   title="{{ 'reply'|trans }}">
+                    <i class="bi bi-reply-fill"></i>
+                </a>
 
-            {% set emoijs = {
-                "(y)": "👍",
-                "(n)": "👎",
-                "(partying_face)": "🥳",
-                ":p": "😛",
-                ":o": "😮",
-                "(astonished)": "😲"
-            } %}
+                {% set emoijs = {
+                    "(y)": "👍",
+                    "(n)": "👎",
+                    "(partying_face)": "🥳",
+                    ":p": "😛",
+                    ":o": "😮",
+                    "(astonished)": "😲"
+                } %}
 
-            <div class="comment__quick-reactions float-end me-3">
-                {% for text, emoji in emoijs %}
-                    <a href="#"
-                       class="comment__action-button comment__reaction-button"
-                            {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
-                       data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\AddCommentReactionController', {id: comment.id}) }}"
-                       data-text="{{ text }}">{{ emoji }}</a>
-                {% endfor %}
-            </div>
+                <div class="comment__quick-reactions float-end me-3">
+                    {% for text, emoji in emoijs %}
+                        <a href="#"
+                           class="comment__action-button comment__reaction-button"
+                                {{ stimulus_action('comment-thread', 'reactToComment', 'click') }}
+                           data-url="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\AddCommentReactionController', {id: comment.id}) }}"
+                           data-text="{{ text }}">{{ emoji }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 

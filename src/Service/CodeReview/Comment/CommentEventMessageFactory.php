@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyRemoved;
 use DR\Review\Message\Comment\CommentResolved;
@@ -18,6 +19,17 @@ class CommentEventMessageFactory
     public function createAdded(Comment $comment, User $user): CommentAdded
     {
         return new CommentAdded(
+            $comment->getReview()->getId(),
+            (int)$comment->getId(),
+            $user->getId(),
+            $comment->getFilePath(),
+            $comment->getMessage()
+        );
+    }
+
+    public function createDraftAdded(Comment $comment, User $user): CommentDraftAdded
+    {
+        return new CommentDraftAdded(
             $comment->getReview()->getId(),
             (int)$comment->getId(),
             $user->getId(),

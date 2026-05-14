@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
+use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 
@@ -39,6 +40,9 @@ class Comment
 
     #[ORM\Column(type: CommentTagType::TYPE, nullable: true, enumType: CommentTagEnum::class)]
     private ?CommentTagEnum $tag;
+
+    #[ORM\Column(type: CommentTypeType::TYPE, enumType: CommentTypeEnum::class, options: ['default' => 'final'])]
+    private CommentTypeEnum $type = CommentTypeEnum::Final;
 
     #[ORM\Column]
     private int $createTimestamp;
@@ -151,6 +155,18 @@ class Comment
     public function setTag(?CommentTagEnum $tag): self
     {
         $this->tag = $tag;
+
+        return $this;
+    }
+
+    public function getType(): CommentTypeEnum
+    {
+        return $this->type;
+    }
+
+    public function setType(CommentTypeEnum $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

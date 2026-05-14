@@ -5,6 +5,7 @@ namespace DR\Review\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Model\Review\Action\EditCommentAction;
 use DR\Review\Model\Review\Action\EditCommentReplyAction;
@@ -30,6 +31,10 @@ class GetCommentThreadController extends AbstractController
     #[Template('app/review/comment/comment.html.twig')]
     public function __invoke(GetCommentThreadRequest $request, #[MapEntity] Comment $comment): array
     {
+        if ($comment->getType() === CommentTypeEnum::Draft && $comment->getUser()->getId() !== $this->getUser()->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $data = ['comment' => $comment, 'visible' => true, 'review' => $comment->getReview()];
 
         $action = $request->getAction();

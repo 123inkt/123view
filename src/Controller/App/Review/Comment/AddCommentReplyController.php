@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Review\Comment;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Form\Review\AddCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -34,6 +35,10 @@ class AddCommentReplyController extends AbstractController
     {
         if ($comment === null) {
             return $this->json(['success' => false, 'error' => $this->translator->trans('comment.was.deleted.meanwhile')], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            return $this->json(['success' => false, 'error' => $this->translator->trans('comment.is.draft')], Response::HTTP_BAD_REQUEST);
         }
 
         $user = $this->getUser();

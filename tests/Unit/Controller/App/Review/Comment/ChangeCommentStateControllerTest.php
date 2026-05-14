@@ -8,6 +8,7 @@ use DR\Review\Controller\App\Review\Comment\ChangeCommentStateController;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
@@ -80,6 +81,19 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testInvokeWithDraftComment(): void
+    {
+        $this->commentRepository->expects($this->never())->method('save');
+        $request = static::createStub(ChangeCommentStateRequest::class);
+
+        $comment = new Comment();
+        $comment->setType(CommentTypeEnum::Draft);
+
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
