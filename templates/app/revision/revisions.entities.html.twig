@@ -1,4 +1,4 @@
-{#- revisions: Revision[] -#}
+{%- types {revisions: 'DR\Review\Entity\Revision\Revision[]'} -%}
 
 <table class="table table-bordered table-hover rule-table">
     <thead>
@@ -24,7 +24,8 @@
                         CR-{{ revision.review.projectId }}
                     </a>
                 {% else %}
-                    <form method="post" action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateReviewFromRevisionController', {id: revision.id}) }}">
+                    <form method="post"
+                          action="{{ path('DR\\Review\\Controller\\App\\Review\\CreateReviewFromRevisionController', {id: revision.id}) }}">
                         <button type="submit" class="btn btn-outline-success btn-sm" title="{{ 'create.review.from.revision'|trans }}">
                             <i class="bi bi-plus"></i>
                         </button>
