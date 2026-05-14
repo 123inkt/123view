@@ -44,7 +44,7 @@ readonly class GetCommentsTool
                 $lineReference = $comment->getLineReference();
 
                 return [
-                    'commentId' => (int)$comment->getId(),
+                    'commentId' => $comment->getId(),
                     'message'   => $comment->getMessage(),
                     'state'     => $comment->getState(),
                     'file'      => $lineReference->newPath ?? $lineReference->oldPath,

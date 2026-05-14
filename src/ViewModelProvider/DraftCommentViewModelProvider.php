@@ -24,7 +24,7 @@ readonly class DraftCommentViewModelProvider
     public function getDraftCommentsViewModel(User $user, int $page): DraftCommentsViewModel
     {
         $commentPaginator = $this->commentRepository->getDraftsByUser($user, $page, self::PAGE_SIZE);
-        $comments         = Arrays::reindex($commentPaginator, static fn(Comment $comment) => (int)$comment->getId());
+        $comments         = Arrays::reindex($commentPaginator, static fn(Comment $comment) => $comment->getId());
         $commentsGrouped  = Arrays::groupBy($comments, static fn(Comment $comment) => $comment->getReview()->getId());
         $reviews          = Arrays::mapAssoc($comments, static fn(Comment $comment) => [$comment->getReview()->getId(), $comment->getReview()]);
 

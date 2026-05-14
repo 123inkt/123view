@@ -61,7 +61,7 @@ class AddCommentReplyController extends AbstractController
         $this->bus->dispatch(
             new CommentReplyAdded(
                 $comment->getReview()->getId(),
-                (int)$reply->getId(),
+                $reply->getId(),
                 $user->getId(),
                 $reply->getMessage(),
                 $comment->getFilePath()

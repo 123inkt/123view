@@ -7,14 +7,24 @@ use DR\Review\Doctrine\Type\NotificationSendType;
 use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use ReflectionProperty;
 
 #[CoversClass(RuleOptions::class)]
 class RuleOptionsTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull(new RuleOptions()->getId());
         static::assertAccessorPairs(RuleOptions::class);
+    }
+
+    public function testId(): void
+    {
+        $options = new RuleOptions();
+        static::assertFalse($options->hasId());
+
+        (new ReflectionProperty(RuleOptions::class, 'id'))->setValue($options, 123);
+        static::assertTrue($options->hasId());
+        static::assertSame(123, $options->getId());
     }
 
     public function testSendType(): void

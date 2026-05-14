@@ -47,7 +47,7 @@ class ReviewEventService
 
         $event = new ReviewerStateChanged(
             $review->getId(),
-            (int)$reviewer->getId(),
+            $reviewer->getId(),
             $reviewer->getUser()->getId(),
             $previousState,
             $reviewer->getState()
@@ -89,7 +89,7 @@ class ReviewEventService
     public function revisionsAdded(CodeReview $review, array $revisions, ?int $byUserId): void
     {
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionAdded($review->getId(), (int)$revision->getId(), $byUserId, $revision->getTitle()));
+            $this->bus->dispatch(new ReviewRevisionAdded($review->getId(), $revision->getId(), $byUserId, $revision->getTitle()));
         }
     }
 
@@ -99,7 +99,7 @@ class ReviewEventService
     public function revisionsDetached(CodeReview $review, array $detachedRevisions, ?int $byUserId): void
     {
         foreach ($detachedRevisions as $revision) {
-            $this->bus->dispatch(new ReviewRevisionRemoved($review->getId(), (int)$revision->getId(), $byUserId, $revision->getTitle()));
+            $this->bus->dispatch(new ReviewRevisionRemoved($review->getId(), $revision->getId(), $byUserId, $revision->getTitle()));
         }
     }
 }

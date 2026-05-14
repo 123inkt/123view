@@ -5,7 +5,6 @@ namespace DR\Review\Command\Revision;
 
 use DR\Review\Message\Revision\ValidateRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
-use DR\Utils\Assert;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -32,7 +31,7 @@ class ValidateRevisionsCommand extends Command implements LoggerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->repositoryRepository->findByValidateRevisions() as $repository) {
-            $this->bus->dispatch(new ValidateRevisionsMessage(Assert::notNull($repository->getId())));
+            $this->bus->dispatch(new ValidateRevisionsMessage($repository->getId()));
         }
 
         return self::SUCCESS;

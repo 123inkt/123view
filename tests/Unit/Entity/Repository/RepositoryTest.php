@@ -21,7 +21,7 @@ class RepositoryTest extends AbstractTestCase
         $config = new ConstraintConfig();
         $config->setExcludedMethods(['addRepositoryProperty', 'getRepositoryProperties', 'getReviews', 'getRevisions', 'setGitType', 'getGitType']);
 
-        static::assertNull((new Repository())->getId());
+        static::assertFalse((new Repository())->hasId());
         static::assertAccessorPairs(Repository::class, $config);
     }
 

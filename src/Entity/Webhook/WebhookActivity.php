@@ -13,7 +13,7 @@ class WebhookActivity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'text', length: 65535)]
     private string $request;
@@ -45,7 +45,7 @@ class WebhookActivity
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

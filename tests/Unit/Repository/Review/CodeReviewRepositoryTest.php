@@ -56,7 +56,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
         $review     = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
 
-        $projectId = $this->repository->getCreateProjectId((int)$repository->getId());
+        $projectId = $this->repository->getCreateProjectId($repository->getId());
         static::assertSame((int)$review->getProjectId() + 1, $projectId);
     }
 
@@ -67,7 +67,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     {
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
 
-        static::assertNotNull($this->repository->findOneByReferenceId((int)$repository->getId(), 'reference', CodeReviewType::COMMITS));
+        static::assertNotNull($this->repository->findOneByReferenceId($repository->getId(), 'reference', CodeReviewType::COMMITS));
     }
 
     /**
@@ -84,7 +84,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revision->setReview($review);
         $revisionRepository->save($revision, true);
 
-        static::assertNotNull($this->repository->findOneByCommitHash((int)$repository->getId(), RevisionFixtures::COMMIT_HASH_A));
+        static::assertNotNull($this->repository->findOneByCommitHash($repository->getId(), RevisionFixtures::COMMIT_HASH_A));
     }
 
     /**
@@ -101,7 +101,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revision->setReview($review);
         $revisionRepository->save($revision, true);
 
-        static::assertSame([$review], $this->repository->findByBranchName((int)$repository->getId(), 'first-branch'));
+        static::assertSame([$review], $this->repository->findByBranchName($repository->getId(), 'first-branch'));
     }
 
     /**
@@ -122,7 +122,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     public function testGetPaginatorForSearchQuery(): void
     {
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $repositoryId = (int)$repository->getId();
+        $repositoryId = $repository->getId();
 
         $revisionRepository = static::getService(RevisionRepository::class);
         $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
@@ -164,7 +164,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     public function testGetPaginatorForSearchQueryOneReviewTwoRevisions(): void
     {
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $repositoryId = (int)$repository->getId();
+        $repositoryId = $repository->getId();
 
         $revisionRepository = static::getService(RevisionRepository::class);
         $revisionA          = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));

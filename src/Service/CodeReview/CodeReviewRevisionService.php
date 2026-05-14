@@ -57,7 +57,7 @@ class CodeReviewRevisionService implements LoggerAwareInterface
         $revisions = $this->revisionRepository->findBy(['repository' => $repository, 'commitHash' => $hashes], ['createTimestamp' => 'ASC']);
 
         // reindex array by revision id
-        $revisions = Arrays::reindex($revisions, static fn(Revision $revision) => (int)$revision->getId());
+        $revisions = Arrays::reindex($revisions, static fn(Revision $revision) => $revision->getId());
 
         // sort revisions by either sort uuid or create_timestamp
         $revisions = $this->revisionSorter->sort($revisions);

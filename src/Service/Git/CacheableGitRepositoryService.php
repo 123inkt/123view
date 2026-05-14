@@ -6,7 +6,6 @@ namespace DR\Review\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Utils\Assert;
 
 class CacheableGitRepositoryService extends GitRepositoryService
 {
@@ -18,7 +17,7 @@ class CacheableGitRepositoryService extends GitRepositoryService
      */
     public function getRepository(Repository $repository): GitRepository
     {
-        $repositoryId = Assert::notNull($repository->getId());
+        $repositoryId = $repository->getId();
 
         if (isset($this->repositories[$repositoryId]) === false) {
             $this->repositories[$repositoryId] = parent::getRepository($repository);

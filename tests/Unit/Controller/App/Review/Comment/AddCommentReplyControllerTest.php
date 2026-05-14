@@ -89,6 +89,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
             ->method('save')
             ->with(
                 self::callback(static function (CommentReply $reply) use ($user, $comment) {
+                    $reply->setId(123);
                     static::assertSame($user, $reply->getUser());
                     static::assertSame($comment, $reply->getComment());
                     static::assertGreaterThan(0, $reply->getCreateTimestamp());

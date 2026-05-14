@@ -40,7 +40,7 @@ class Repository implements EquatableInterface
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[Groups(['repository:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     #[Groups(['repository:read'])]
@@ -128,9 +128,14 @@ class Repository implements EquatableInterface
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function isActive(): bool

@@ -53,7 +53,7 @@ class RevisionRepository extends ServiceEntityRepository
         /** @var Revision[] $revisions */
         $revisions = $em->wrapInTransaction(function () use ($repository, $revisions): array {
             foreach ($revisions as $index => $revision) {
-                $entityExists = $this->findOneBy(['repository' => (int)$repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
+                $entityExists = $this->findOneBy(['repository' => $repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
                 if ($entityExists) {
                     unset($revisions[$index]);
                     continue;

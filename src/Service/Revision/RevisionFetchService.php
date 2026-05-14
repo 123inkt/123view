@@ -76,7 +76,7 @@ class RevisionFetchService
     private function dispatchRevisions(array $revisions): void
     {
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new NewRevisionMessage((int)$revision->getId()));
+            $this->bus->dispatch(new NewRevisionMessage($revision->getId()));
         }
     }
 }

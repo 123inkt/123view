@@ -46,7 +46,7 @@ class RepositoryController extends AbstractController
         }
 
         $this->repositoryRepository->save($repository, true);
-        $this->bus->dispatch(new RepositoryUpdatedMessage((int)$repository->getId()));
+        $this->bus->dispatch(new RepositoryUpdatedMessage($repository->getId()));
 
         $this->addFlash('success', 'repository.successful.saved');
 
