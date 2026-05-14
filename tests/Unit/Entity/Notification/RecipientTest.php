@@ -12,7 +12,7 @@ class RecipientTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertFalse((new Recipient())->hasId());
+        static::assertFalse(new Recipient()->hasId());
         static::assertAccessorPairs(Recipient::class);
     }
 

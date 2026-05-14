@@ -12,6 +12,7 @@ class FileSeenStatusTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
+        static::assertFalse(new FileSeenStatus()->hasId());
         static::assertAccessorPairs(FileSeenStatus::class);
     }
 }
