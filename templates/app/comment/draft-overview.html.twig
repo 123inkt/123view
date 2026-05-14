@@ -1,0 +1,33 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+<div class="container-fluid mt-3">
+    <h1>{{ 'draft.comments.overview'|trans }}</h1>
+
+    {% if viewModel.reviews is empty %}
+        <p class="text-muted">{{ 'draft.comments.empty'|trans }}</p>
+    {% else %}
+        {% for review in viewModel.reviews %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    {{ 'review'|trans }}:
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                        CR-{{ review.projectId }} — {{ review.title }}
+                    </a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for comment in viewModel.comments[review.id] ?? [] %}
+                        <li class="list-group-item">
+                            <a href="{{ comment_url(comment) }}#focus:comment:{{ comment.id }}">{{ comment.filePath }}</a>
+
+                            <div class="comment__markdown mt-1">{{ comment.message|mentions|markdown }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+
+        {% include 'app/paginator/paginator.html.twig' with {paginatorModel: viewModel.paginator} %}
+    {% endif %}
+</div>
+{% endblock %}
