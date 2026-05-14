@@ -20,7 +20,7 @@
                         <li class="list-group-item">
                             <a href="{{ comment_url(comment) }}#focus:comment:{{ comment.id }}">{{ comment.filePath }}</a>
 
-                            <div class="comment__markdown mt-1">{{ comment.message|mentions|markdown }}</div>
+                            {% include 'app/review/comment/comment.html.twig' with {comment: comment, detached: false, editCommentForm: null, replyCommentForm: null, visible: true} %}
                         </li>
                     {% endfor %}
                 </ul>
