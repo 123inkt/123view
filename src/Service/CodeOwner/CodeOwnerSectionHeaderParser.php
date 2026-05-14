@@ -9,26 +9,21 @@ readonly class CodeOwnerSectionHeaderParser
 {
     /**
      * Parse a section header line like `[Block Name]` or `[Block Name] @owner1 @owner2`.
-     * Returns a tuple of [skipSection, defaultOwners]:
-     * - skipSection=true when the header has no default owners (block should be ignored)
-     * - skipSection=false with the owners list when the header defines default owners
      *
-     * @return array{bool, list<string>}
+     * @return list<string>
      */
     public function parse(string $line): array
     {
         if (preg_match('/^\[[^]]+](?:\s+(?P<owners>[^#]+))?/si', $line, $matches) !== 1) {
-            return [true, []];
+            return [];
         }
 
         $ownersStr = trim($matches['owners'] ?? '');
         if ($ownersStr === '') {
-            return [true, []];
+            return [];
         }
 
-        /** @var list<string> $owners */
-        $owners = Assert::isArray(preg_split('/\s+/', $ownersStr));
-
-        return [false, $owners];
+        /** @phpstan-var list<string> */
+        return Assert::isArray(preg_split('/\s+/', $ownersStr));
     }
 }
