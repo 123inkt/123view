@@ -70,7 +70,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Index(name: 'IDX_REPOSITORY_TITLE', columns: ['repository_id', 'title'])]
 #[ORM\Index(name: 'IDX_REPOSITORY_STATE', columns: ['repository_id', 'state'])]
 #[ORM\Index(name: 'IDX_CREATE_TIMESTAMP_REPOSITORY', columns: ['create_timestamp', 'repository_id'])]
-#[ORM\Index(name: 'IDX_UPDATE_TIMESTAMP_REPOSITORY', columns: ['update_timestamp', 'repository_id'])]
+#[ORM\Index(name: 'IDX_UPDATE_TIMESTAMP_REPOSITORY', columns: ['repository_id', 'update_timestamp'])]
 #[ORM\UniqueConstraint('IDX_REFERENCE_ID_REPOSITORY_ID', ['reference_id', 'repository_id'])]
 #[ORM\UniqueConstraint('IDX_REPOSITORY_ID_PROJECT_ID', ['project_id', 'repository_id'])]
 class CodeReview
