@@ -13,7 +13,7 @@ class UserSetting
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: ColorThemeType::TYPE, options: ['default' => ColorThemeType::THEME_AUTO])]
     private string $colorTheme = ColorThemeType::THEME_AUTO;
@@ -43,7 +43,7 @@ class UserSetting
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

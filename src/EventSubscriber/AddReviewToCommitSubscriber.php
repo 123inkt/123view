@@ -19,14 +19,13 @@ class AddReviewToCommitSubscriber implements EventSubscriberInterface
      */
     public function onCommitEvent(CommitEvent $event): void
     {
-        $commit       = $event->commit;
-        $repositoryId = $commit->repository->getId();
-        $commitHash   = $commit->commitHashes[0] ?? null;
-        if ($repositoryId === null || $commitHash === null || $commit->review !== null) {
+        $commit     = $event->commit;
+        $commitHash = $commit->commitHashes[0] ?? null;
+        if ($commit->repository->hasId() === false || $commitHash === null || $commit->review !== null) {
             return;
         }
 
-        $commit->review = $this->reviewRepository->findOneByCommitHash($repositoryId, $commitHash);
+        $commit->review = $this->reviewRepository->findOneByCommitHash($commit->repository->getId(), $commitHash);
     }
 
     /**

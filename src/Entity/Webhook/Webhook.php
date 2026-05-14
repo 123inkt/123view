@@ -15,7 +15,7 @@ class Webhook
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $enabled = true;
@@ -54,7 +54,7 @@ class Webhook
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

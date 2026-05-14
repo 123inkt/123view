@@ -34,7 +34,7 @@ readonly class RevisionViewModelProvider
 
     public function getRevisionsViewModel(Repository $repository, int $page, string $searchQuery, ?bool $attached = null): RevisionsViewModel
     {
-        $paginator = $this->revisionRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery, $attached);
+        $paginator = $this->revisionRepository->getPaginatorForSearchQuery($repository->getId(), $page, $searchQuery, $attached);
 
         $revisions = iterator_to_array($paginator);
         $reviewIds = array_map(static fn(Revision $revision): ?int => $revision->getReview()?->getId(), $revisions);

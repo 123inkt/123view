@@ -67,7 +67,7 @@ class CommentEventSubscriber implements ResetInterface
     {
         /** @var CommentChangeSet $changeSet */
         $changeSet                                         = $event->getEntityChangeSet();
-        $this->updated[Assert::integer($comment->getId())] = $changeSet;
+        $this->updated[$comment->getId()] = $changeSet;
     }
 
     public function commentUpdated(Comment $comment): void

@@ -52,7 +52,7 @@ class CredentialController extends AbstractController
 
         $this->credentialRepository->save($credential, true);
         foreach ($this->repositoryRepository->findBy(['credential' => $credential]) as $repository) {
-            $this->bus->dispatch(new RepositoryUpdatedMessage((int)$repository->getId()));
+            $this->bus->dispatch(new RepositoryUpdatedMessage($repository->getId()));
         }
 
         $this->addFlash('success', 'credential.successful.saved');

@@ -30,7 +30,7 @@ class FetchRevisionsController
             return new Response('Rejected', Response::HTTP_BAD_REQUEST);
         }
 
-        $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
+        $this->bus->dispatch(new FetchRepositoryRevisionsMessage($repository->getId()));
 
         return new Response('Accepted');
     }

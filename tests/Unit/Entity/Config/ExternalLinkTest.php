@@ -12,7 +12,7 @@ class ExternalLinkTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull((new ExternalLink())->getId());
+        static::assertFalse((new ExternalLink())->hasId());
         static::assertAccessorPairs(ExternalLink::class);
     }
 }

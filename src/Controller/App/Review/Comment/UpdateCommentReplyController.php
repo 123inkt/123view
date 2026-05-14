@@ -52,7 +52,7 @@ class UpdateCommentReplyController extends AbstractController
             $this->bus->dispatch(
                 new CommentReplyUpdated(
                     $reply->getComment()->getReview()->getId(),
-                    (int)$reply->getId(),
+                    $reply->getId(),
                     $this->getUser()->getId(),
                     $originalComment
                 )

@@ -14,7 +14,7 @@ class CodeInspectionIssue
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 50)]
     private string $severity;
@@ -35,12 +35,12 @@ class CodeInspectionIssue
     #[ORM\JoinColumn(nullable: false)]
     private CodeInspectionReport $report;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): CodeInspectionIssue
+    public function setId(int $id): CodeInspectionIssue
     {
         $this->id = $id;
 

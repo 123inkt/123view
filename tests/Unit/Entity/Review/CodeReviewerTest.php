@@ -12,7 +12,7 @@ class CodeReviewerTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull((new CodeReviewer())->getId());
+        static::assertFalse((new CodeReviewer())->hasId());
         static::assertAccessorPairs(CodeReviewer::class);
     }
 }

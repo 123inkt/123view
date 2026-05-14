@@ -36,7 +36,7 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
 
         $key = hash(
             'sha256',
-            sprintf('highlight:fromDiffFile:%d-%s-%s', Assert::notNull($repository->getId()), $filePath, $hashes)
+            sprintf('highlight:fromDiffFile:%d-%s-%s', $repository->getId(), $filePath, $hashes)
         );
 
         // cache hit

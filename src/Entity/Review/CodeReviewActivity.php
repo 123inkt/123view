@@ -56,7 +56,7 @@ class CodeReviewActivity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: true)]
@@ -76,7 +76,7 @@ class CodeReviewActivity
     #[ORM\Column]
     private int $createTimestamp;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

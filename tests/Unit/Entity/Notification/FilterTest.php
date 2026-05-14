@@ -12,7 +12,7 @@ class FilterTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull(new Filter()->getId());
+        static::assertFalse((new Filter())->hasId());
         static::assertAccessorPairs(Filter::class);
     }
 

@@ -17,7 +17,7 @@ class RepositoryCredential
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 3, max: 255)]
@@ -37,7 +37,7 @@ class RepositoryCredential
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

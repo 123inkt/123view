@@ -28,7 +28,7 @@ class SearchBranchViewModelProvider
     public function getSearchBranchViewModel(string $searchQuery): SearchBranchViewModel
     {
         $repositories = $this->repositoryRepository->findBy(['active' => true]);
-        $repositories = Arrays::reindex($repositories, static fn(Repository $repository) => (int)$repository->getId());
+        $repositories = Arrays::reindex($repositories, static fn(Repository $repository) => $repository->getId());
 
         $branches = $this->getBranchesFor($repositories, $searchQuery);
         $reviews  = $this->getReviewsFor(array_merge(...$branches));
@@ -53,7 +53,7 @@ class SearchBranchViewModelProvider
                 static fn($branchName) => $searchQuery === '' || stripos($branchName, $searchQuery) !== false
             );
             if (count($branchNames) > 0) {
-                $branches[(int)$repository->getId()] = $branchNames;
+                $branches[$repository->getId()] = $branchNames;
             }
         }
 

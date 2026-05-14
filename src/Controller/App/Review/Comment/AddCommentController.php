@@ -45,7 +45,7 @@ class AddCommentController extends AbstractController
 
         $this->commentRepository->save($comment, true);
 
-        $url = $this->generateUrl(GetCommentThreadController::class, ['id' => (int)$comment->getId()]);
+        $url = $this->generateUrl(GetCommentThreadController::class, ['id' => $comment->getId()]);
 
         return $this->json(['success' => true, 'commentUrl' => $url]);
     }

@@ -63,7 +63,7 @@ class ReviewsViewModelProvider
 
         if ($terms !== null) {
             $paginator = $this->reviewRepository->getPaginatorForSearchQuery(
-                (int)$repository->getId(),
+                $repository->getId(),
                 $request->getPage(),
                 $terms,
                 $request->getOrderBy()

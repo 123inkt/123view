@@ -46,7 +46,7 @@ class CodeReviewActivityRepository extends ServiceEntityRepository
         }
 
         if ($repository !== null) {
-            $qb->andWhere('r.repository = :repositoryId')->setParameter('repositoryId', (int)$repository->getId());
+            $qb->andWhere('r.repository = :repositoryId')->setParameter('repositoryId', $repository->getId());
         }
 
         /** @var CodeReviewActivity[] $result */

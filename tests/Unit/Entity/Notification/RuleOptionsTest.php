@@ -13,7 +13,7 @@ class RuleOptionsTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertNull(new RuleOptions()->getId());
+        static::assertFalse((new RuleOptions())->hasId());
         static::assertAccessorPairs(RuleOptions::class);
     }
 
