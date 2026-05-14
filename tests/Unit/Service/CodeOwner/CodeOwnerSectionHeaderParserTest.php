@@ -19,6 +19,11 @@ class CodeOwnerSectionHeaderParserTest extends AbstractTestCase
         $this->parser = new CodeOwnerSectionHeaderParser();
     }
 
+    public function testParseInvalidHeader(): void
+    {
+        static::assertSame([true, []], $this->parser->parse('[Invalid'));
+    }
+
     public function testParseHeaderWithNoOwnersSkipsSection(): void
     {
         static::assertSame([true, []], $this->parser->parse('[Block 1]'));
