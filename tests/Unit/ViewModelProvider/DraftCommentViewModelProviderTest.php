@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider;
 
+use ArrayIterator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -49,7 +50,7 @@ class DraftCommentViewModelProviderTest extends AbstractTestCase
 
         /** @var Paginator<Comment>&MockObject $paginator */
         $paginator = $this->createMock(Paginator::class);
-        $paginator->expects($this->once())->method('getIterator')->willReturn(new \ArrayIterator([$commentA, $commentB, $commentC]));
+        $paginator->expects($this->once())->method('getIterator')->willReturn(new ArrayIterator([$commentA, $commentB, $commentC]));
 
         $this->commentRepository
             ->expects($this->once())
@@ -70,7 +71,7 @@ class DraftCommentViewModelProviderTest extends AbstractTestCase
 
         /** @var Paginator<Comment>&MockObject $paginator */
         $paginator = $this->createMock(Paginator::class);
-        $paginator->expects($this->once())->method('getIterator')->willReturn(new \ArrayIterator([]));
+        $paginator->expects($this->once())->method('getIterator')->willReturn(new ArrayIterator([]));
 
         $this->commentRepository
             ->expects($this->once())
