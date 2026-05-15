@@ -21,6 +21,14 @@ class RepositoryCredentialTest extends AbstractTestCase
         static::assertAccessorPairs(RepositoryCredential::class, $config);
     }
 
+    public function testId(): void
+    {
+        $credential = new RepositoryCredential();
+        static::assertFalse($credential->hasId());
+        $credential->setId(123);
+        static::assertTrue($credential->hasId());
+    }
+
     public function testGetSetCredentials(): void
     {
         $credentials          = new BasicAuthCredential('sherlock', 'holmes');
