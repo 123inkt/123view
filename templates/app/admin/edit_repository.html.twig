@@ -29,7 +29,7 @@
         {% set form = editRepositoryModel.form %}
 
         <h1 class="mb-4 mt-2">
-            {% if editRepositoryModel.repository.hasId %}
+            {% if editRepositoryModel.repository.hasId() %}
                 {{ 'edit.repository'|trans }} #{{ editRepositoryModel.repository.id }}
             {% else %}
                 {{ 'add.repository'|trans }}
