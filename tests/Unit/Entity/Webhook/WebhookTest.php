@@ -19,6 +19,14 @@ class WebhookTest extends AbstractTestCase
         static::assertAccessorPairs(Webhook::class, $config);
     }
 
+    public function testId(): void
+    {
+        $webhook = new Webhook();
+        static::assertFalse($webhook->hasId());
+        $webhook->setId(123);
+        static::assertTrue($webhook->hasId());
+    }
+
     public function testSetHeader(): void
     {
         $webhook = new Webhook();

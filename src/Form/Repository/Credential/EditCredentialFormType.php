@@ -28,7 +28,9 @@ class EditCredentialFormType extends AbstractType
         /** @var array{credential: RepositoryCredential|null} $data */
         $data = $options['data'];
 
-        $builder->setAction($this->urlGenerator->generate(CredentialController::class, ['id' => $data['credential']?->getId()]));
+        $id  = $data['credential']?->hasId() ? $data['credential']->getId() : null;
+
+        $builder->setAction($this->urlGenerator->generate(CredentialController::class, ['id' => $id]));
         $builder->setMethod(Request::METHOD_POST);
         $builder->add('credential', RepositoryCredentialType::class, ['label' => false]);
         $builder->add('save', SubmitType::class, ['label' => 'save']);

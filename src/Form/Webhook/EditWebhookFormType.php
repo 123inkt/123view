@@ -25,7 +25,9 @@ class EditWebhookFormType extends AbstractType
         /** @var array{webhook: Webhook|null} $data */
         $data = $options['data'];
 
-        $builder->setAction($this->urlGenerator->generate(WebhookController::class, ['id' => $data['webhook']?->getId()]));
+        $id  = $data['webhook']?->hasId() ? $data['webhook']->getId() : null;
+
+        $builder->setAction($this->urlGenerator->generate(WebhookController::class, ['id' => $id]));
         $builder->setMethod(Request::METHOD_POST);
         $builder->add('webhook', WebhookType::class, ['label' => false]);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
