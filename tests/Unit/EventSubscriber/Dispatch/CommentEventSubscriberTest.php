@@ -166,6 +166,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $this->messageFactory->expects($this->once())->method('createRemoved')->with($comment, $user);
         $this->bus->expects($this->never())->method('dispatch');
 
+        $this->eventSubscriber->preCommentRemoved($comment);
         $this->eventSubscriber->commentRemoved($comment);
     }
 
@@ -177,6 +178,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $this->userEntityProvider->expects($this->once())->method('getUser');
         $this->bus->expects($this->never())->method('dispatch');
 
+        $this->eventSubscriber->preCommentRemoved($comment);
         $this->eventSubscriber->commentRemoved($comment);
     }
 
@@ -188,6 +190,7 @@ class CommentEventSubscriberTest extends AbstractTestCase
         $this->messageFactory->expects($this->never())->method('createRemoved');
         $this->bus->expects($this->never())->method('dispatch');
 
+        $this->eventSubscriber->preCommentRemoved($comment);
         $this->eventSubscriber->commentRemoved($comment);
     }
 }

@@ -36,6 +36,7 @@ use Symfony\Contracts\Service\ResetInterface;
 #[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
+#[AsEntityListener(event: Events::preRemove, method: 'preCommentRemoved', entity: Comment::class)]
 #[AsEntityListener(event: Events::postRemove, method: 'commentRemoved', entity: Comment::class)]
 #[AsEventListener(event: KernelEvents::TERMINATE, method: 'finish')]
 #[AsEventListener(event: ConsoleEvents::TERMINATE, method: 'finish')]
@@ -45,6 +46,8 @@ class CommentEventSubscriber implements ResetInterface
     private array $events = [];
     /** @var array<int, CommentChangeSet> */
     private array $updated = [];
+    /** @var array<int, CommentRemoved> */
+    private array $removed = [];
 
     public function __construct(
         private readonly UserEntityProvider $userEntityProvider,
@@ -106,7 +109,7 @@ class CommentEventSubscriber implements ResetInterface
         }
     }
 
-    public function commentRemoved(Comment $comment): void
+    public function preCommentRemoved(Comment $comment): void
     {
         if ($comment->getType() === CommentTypeEnum::Draft) {
             return;
@@ -117,7 +120,16 @@ class CommentEventSubscriber implements ResetInterface
             return;
         }
 
-        $this->events[] = $this->messageFactory->createRemoved($comment, $user);
+        $this->removed[spl_object_id($comment)] = $this->messageFactory->createRemoved($comment, $user);
+    }
+
+    public function commentRemoved(Comment $comment): void
+    {
+        $event = $this->removed[spl_object_id($comment)] ?? null;
+        unset($this->removed[spl_object_id($comment)]);
+        if ($event !== null) {
+            $this->events[] = $event;
+        }
     }
 
     /**
