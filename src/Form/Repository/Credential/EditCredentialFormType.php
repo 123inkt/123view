@@ -28,7 +28,7 @@ class EditCredentialFormType extends AbstractType
         /** @var array{credential: RepositoryCredential|null} $data */
         $data = $options['data'];
 
-        $id  = $data['credential']?->hasId() ? $data['credential']->getId() : null;
+        $id = $data['credential']?->hasId() === true ? $data['credential']->getId() : null;
 
         $builder->setAction($this->urlGenerator->generate(CredentialController::class, ['id' => $id]));
         $builder->setMethod(Request::METHOD_POST);
