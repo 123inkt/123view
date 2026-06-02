@@ -13,7 +13,7 @@ class UserSetting
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: ColorThemeType::TYPE, options: ['default' => ColorThemeType::THEME_AUTO])]
     private string $colorTheme = ColorThemeType::THEME_AUTO;
@@ -36,14 +36,14 @@ class UserSetting
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'setting')]
     private ?User $user = null;
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
