@@ -7,7 +7,6 @@ namespace DR\Review\Tests\Functional\Mcp;
 use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use Mcp\Server\Session\Session;
-use Mcp\Server\Session\SessionFactory;
 use Mcp\Server\Session\SessionStoreInterface;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
