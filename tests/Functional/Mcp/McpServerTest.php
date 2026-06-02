@@ -6,12 +6,13 @@ namespace DR\Review\Tests\Functional\Mcp;
 
 use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
-use Mcp\Server\Session\SessionFactory;
+use Mcp\Server\Session\Session;
 use Mcp\Server\Session\SessionStoreInterface;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 use Throwable;
 
 #[CoversNothing]
@@ -130,7 +131,9 @@ class McpServerTest extends AbstractFunctionalTestCase
      */
     private function createMcpSession(): string
     {
-        $session = new SessionFactory()->create(static::getService(SessionStoreInterface::class, 'mcp.session.store'));
+        $store   = static::getService(SessionStoreInterface::class, 'mcp.session.store');
+
+        $session = new Session($store, Uuid::v4());
         $session->set('initialized', true);
         $session->set('client_info', ['name' => 'test-client', 'version' => '1.0']);
         $session->set('client_capabilities', []);
