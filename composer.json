@@ -135,7 +135,6 @@
         "symfony/polyfill-intl-grapheme": "*",
         "symfony/polyfill-intl-messageformatter": "*",
         "symfony/polyfill-intl-normalizer": "*",
-        "symfony/polyfill-intl-idn": "*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php72": "*",
