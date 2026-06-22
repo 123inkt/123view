@@ -1,7 +1,4 @@
 import Encore from '@symfony/webpack-encore';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const coreJsVersion = require('core-js/package.json').version;
 
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
@@ -20,9 +17,6 @@ Encore
         .cleanupOutputBeforeBuild()
         .enableSourceMaps(!Encore.isProduction())
         .enableVersioning(Encore.isProduction())
-        .configureBabel((babelConfig) => {
-            babelConfig.plugins.push(['polyfill-corejs3', { method: 'usage-global', version: coreJsVersion }]);
-        })
         .enableSassLoader()
         .enableTypeScriptLoader()
 ;
