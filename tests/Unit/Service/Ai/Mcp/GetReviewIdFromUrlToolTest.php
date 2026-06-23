@@ -69,7 +69,7 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
         static::assertEquals($expected, $result);
     }
 
-    public function testInvokeParsesBarePathWithoutSchemeOrHost(): void
+    public function testInvokeParsesBarePathUrl(): void
     {
         $repository = new Repository();
         $repository->setName('my-repo');
