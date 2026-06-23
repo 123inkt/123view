@@ -30,7 +30,7 @@ class LineReferenceFactoryTest extends AbstractTestCase
         $this->factory     = new LineReferenceFactory($this->diffService, $this->diffFinder);
     }
 
-    public function testCreateFromReviewFallsBackWhenFileNotInDiff(): void
+    public function testCreateFromReviewFileNotInDiff(): void
     {
         $review    = new CodeReview();
         $diffFiles = [];
@@ -48,7 +48,7 @@ class LineReferenceFactoryTest extends AbstractTestCase
         static::assertSame('abc123', $ref->headSha);
     }
 
-    public function testCreateFromReviewDelegatesWhenFileFound(): void
+    public function testCreateFromReviewFileFound(): void
     {
         $review   = new CodeReview();
         $diffFile = $this->createDiffFile('src/Foo.php', 'src/Foo.php', [
@@ -129,7 +129,7 @@ class LineReferenceFactoryTest extends AbstractTestCase
         static::assertSame(LineReferenceStateEnum::Modified, $ref->state);
     }
 
-    public function testCreateFromDiffFileUnchangedLineShiftedByPriorInsertions(): void
+    public function testCreateFromDiffFileShiftedLine(): void
     {
         // Two lines added at the top shift old line 3 to new line 5
         $diffFile = $this->createDiffFile('old/Foo.php', 'new/Foo.php', [
@@ -150,7 +150,7 @@ class LineReferenceFactoryTest extends AbstractTestCase
         static::assertSame(LineReferenceStateEnum::Unmodified, $ref->state);
     }
 
-    public function testCreateFromDiffFileFallsBackWhenLineNotFound(): void
+    public function testCreateFromDiffFileLineNotFound(): void
     {
         $diffFile = $this->createDiffFile('old/Foo.php', 'new/Foo.php', [
             $this->createLine(DiffLine::STATE_UNCHANGED, 1, 1),

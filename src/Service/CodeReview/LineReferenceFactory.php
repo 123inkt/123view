@@ -55,7 +55,9 @@ readonly class LineReferenceFactory
                         DiffLine::STATE_ADDED                            => LineReferenceStateEnum::Added,
                         DiffLine::STATE_CHANGED, DiffLine::STATE_INLINED => LineReferenceStateEnum::Modified,
                         DiffLine::STATE_UNCHANGED                        => LineReferenceStateEnum::Unmodified,
+                        // @codeCoverageIgnoreStart
                         default                                          => LineReferenceStateEnum::Unknown,
+                        // @codeCoverageIgnoreEnd
                     };
                     break 2;
                 }
