@@ -37,7 +37,6 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->commentRepository     = $this->createMock(CommentRepository::class);
         $this->reviewRevisionService = $this->createMock(CodeReviewRevisionService::class);
         $this->lineReferenceFactory  = $this->createMock(LineReferenceFactory::class);
-        $this->lineReferenceFactory->method('createFromReview')->willReturn(new LineReference());
         $this->service               = new AddCommentService(
             $this->logger,
             $this->repository,
@@ -92,6 +91,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('def456');
         $review           = new CodeReview()->setId(1);
 
+        $this->lineReferenceFactory->expects($this->never())->method(static::anything());
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
@@ -109,6 +109,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
         $review           = new CodeReview()->setId(1);
 
+        $this->lineReferenceFactory->expects($this->never())->method(static::anything());
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
@@ -126,6 +127,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
         $review           = new CodeReview()->setId(1);
 
+        $this->lineReferenceFactory->expects($this->never())->method(static::anything());
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
@@ -143,6 +145,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
         $review           = new CodeReview()->setId(1);
 
+        $this->lineReferenceFactory->expects($this->never())->method(static::anything());
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
@@ -164,6 +167,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $service = new AddCommentService(null, $this->repository, $this->commentRepository, $this->reviewRevisionService, $this->lineReferenceFactory);
         $service->setClock(new MockClock('2024-01-01T12:00:00+00:00'));
 
+        $this->lineReferenceFactory->expects($this->never())->method(static::anything());
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');

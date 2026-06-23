@@ -14,13 +14,14 @@ use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
 #[CoversClass(LineReferenceFactory::class)]
 class LineReferenceFactoryTest extends AbstractTestCase
 {
-    private CodeReviewDiffService&MockObject $diffService;
-    private DiffFinder&MockObject            $diffFinder;
-    private LineReferenceFactory             $factory;
+    private MockObject&CodeReviewDiffService $diffService;
+    private MockObject&DiffFinder            $diffFinder;
+    private LineReferenceFactory       $factory;
 
     public function setUp(): void
     {
@@ -32,8 +33,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
 
     public function testCreateFromReviewFallsBackWhenFileNotInDiff(): void
     {
-        $review   = new CodeReview();
-        $diffFiles = [];
+        $review      = new CodeReview();
+        $diffFiles   = [];
 
         $this->diffService->expects($this->once())->method('getDiff')->with($review)->willReturn($diffFiles);
         $this->diffFinder->expects($this->once())->method('findFileByPath')->with($diffFiles, 'src/Foo.php')->willReturn(null);
@@ -50,8 +51,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
 
     public function testCreateFromReviewDelegatesWhenFileFound(): void
     {
-        $review   = new CodeReview();
-        $diffFile = $this->createDiffFile('src/Foo.php', 'src/Foo.php', [
+        $review      = new CodeReview();
+        $diffFile    = $this->createDiffFile('src/Foo.php', 'src/Foo.php', [
             $this->createLine(DiffLine::STATE_UNCHANGED, 5, 5),
             $this->createLine(DiffLine::STATE_UNCHANGED, 6, 6),
         ]);
@@ -75,6 +76,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
             $this->createLine(DiffLine::STATE_UNCHANGED, 5, 5),
         ]);
 
+        $this->diffService->expects($this->never())->method(static::anything());
+        $this->diffFinder->expects($this->never())->method(static::anything());
         $ref = $this->factory->createFromDiffFile($diffFile, 4, 'abc');
 
         static::assertSame('old/Foo.php', $ref->oldPath);
@@ -96,6 +99,9 @@ class LineReferenceFactoryTest extends AbstractTestCase
             $this->createLine(DiffLine::STATE_UNCHANGED, 3, 5),
         ]);
 
+        $this->diffService->expects($this->never())->method(static::anything());
+        $this->diffFinder->expects($this->never())->method(static::anything());
+
         // Target: second added line (lineAfter=4); anchor is lineNumberBefore=2, offset=2
         $ref = $this->factory->createFromDiffFile($diffFile, 4, 'sha1');
 
@@ -114,6 +120,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
             $this->createLine(DiffLine::STATE_CHANGED, 10, 10),
         ]);
 
+        $this->diffService->expects($this->never())->method(static::anything());
+        $this->diffFinder->expects($this->never())->method(static::anything());
         $ref = $this->factory->createFromDiffFile($diffFile, 10, 'sha2');
 
         static::assertSame(10, $ref->line);
@@ -133,6 +141,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
             $this->createLine(DiffLine::STATE_UNCHANGED, 3, 5),
         ]);
 
+        $this->diffService->expects($this->never())->method(static::anything());
+        $this->diffFinder->expects($this->never())->method(static::anything());
         $ref = $this->factory->createFromDiffFile($diffFile, 5, 'sha3');
 
         static::assertSame(3, $ref->line);
@@ -146,6 +156,9 @@ class LineReferenceFactoryTest extends AbstractTestCase
         $diffFile = $this->createDiffFile('old/Foo.php', 'new/Foo.php', [
             $this->createLine(DiffLine::STATE_UNCHANGED, 1, 1),
         ]);
+
+        $this->diffService->expects($this->never())->method(static::anything());
+        $this->diffFinder->expects($this->never())->method(static::anything());
 
         // Request line 99 which is not in the diff
         $ref = $this->factory->createFromDiffFile($diffFile, 99, 'sha4');

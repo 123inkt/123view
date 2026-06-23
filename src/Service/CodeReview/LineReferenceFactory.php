@@ -33,21 +33,25 @@ readonly class LineReferenceFactory
 
     public function createFromDiffFile(DiffFile $diffFile, int $lineNumber, string $headSha): LineReference
     {
-        $anchorLine = $lineNumber;
-        $offset     = 0;
-        $state      = LineReferenceStateEnum::Unknown;
+        $anchorLine    = $lineNumber;
+        $offset        = 0;
+        $state         = LineReferenceStateEnum::Unknown;
+        $currentAnchor = $lineNumber;
+        $currentOffset = 0;
 
         foreach ($diffFile->getBlocks() as $block) {
             foreach ($block->lines as $diffLine) {
                 if ($diffLine->lineNumberBefore !== null) {
-                    $anchorLine = $diffLine->lineNumberBefore;
-                    $offset     = 0;
+                    $currentAnchor = $diffLine->lineNumberBefore;
+                    $currentOffset = 0;
                 } else {
-                    $offset++;
+                    $currentOffset++;
                 }
 
                 if ($diffLine->lineNumberAfter === $lineNumber) {
-                    $state = match ($diffLine->state) {
+                    $anchorLine = $currentAnchor;
+                    $offset     = $currentOffset;
+                    $state      = match ($diffLine->state) {
                         DiffLine::STATE_ADDED                            => LineReferenceStateEnum::Added,
                         DiffLine::STATE_CHANGED, DiffLine::STATE_INLINED => LineReferenceStateEnum::Modified,
                         DiffLine::STATE_UNCHANGED                        => LineReferenceStateEnum::Unmodified,
