@@ -8,6 +8,9 @@ use Symfony\AI\Agent\Toolbox\Exception\ToolExecutionExceptionInterface;
 
 class InvalidReviewUrlException extends RuntimeException implements ToolExecutionExceptionInterface
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(private readonly string $url)
     {
         parent::__construct('Invalid review URL: ' . $this->url);

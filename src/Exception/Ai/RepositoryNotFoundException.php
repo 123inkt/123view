@@ -8,6 +8,9 @@ use Symfony\AI\Agent\Toolbox\Exception\ToolExecutionExceptionInterface;
 
 class RepositoryNotFoundException extends RuntimeException implements ToolExecutionExceptionInterface
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(private readonly string $repositoryName)
     {
         parent::__construct('Repository not found: ' . $this->repositoryName);

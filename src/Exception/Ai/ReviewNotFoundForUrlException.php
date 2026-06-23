@@ -8,6 +8,9 @@ use Symfony\AI\Agent\Toolbox\Exception\ToolExecutionExceptionInterface;
 
 class ReviewNotFoundForUrlException extends RuntimeException implements ToolExecutionExceptionInterface
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(private readonly string $repositoryName, private readonly int $projectId)
     {
         parent::__construct(sprintf('Review cr-%d not found in repository: %s', $this->projectId, $this->repositoryName));
