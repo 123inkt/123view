@@ -90,9 +90,6 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
         static::assertSame(7, $result->id);
     }
 
-    /**
-     * @param string $url
-     */
     #[DataProvider('malformedUrlProvider')]
     public function testInvokeThrowsOnMalformedUrl(string $url): void
     {
