@@ -6,6 +6,8 @@ namespace DR\Review\Tests\Unit\Service\Ai;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\Review\LineReferenceStateEnum;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
@@ -13,6 +15,7 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Ai\AddCommentService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,6 +27,7 @@ class AddCommentServiceTest extends AbstractTestCase
     private CodeReviewRepository&MockObject      $repository;
     private CommentRepository&MockObject         $commentRepository;
     private CodeReviewRevisionService&MockObject $reviewRevisionService;
+    private LineReferenceFactory&MockObject      $lineReferenceFactory;
     private AddCommentService                    $service;
 
     public function setUp(): void
@@ -32,11 +36,14 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->repository            = $this->createMock(CodeReviewRepository::class);
         $this->commentRepository     = $this->createMock(CommentRepository::class);
         $this->reviewRevisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->lineReferenceFactory  = $this->createMock(LineReferenceFactory::class);
+        $this->lineReferenceFactory->method('createFromReview')->willReturn(new LineReference());
         $this->service               = new AddCommentService(
             $this->logger,
             $this->repository,
             $this->commentRepository,
-            $this->reviewRevisionService
+            $this->reviewRevisionService,
+            $this->lineReferenceFactory
         );
         $this->service->setClock(new MockClock('2024-01-01T12:00:00+00:00'));
     }
@@ -57,9 +64,14 @@ class AddCommentServiceTest extends AbstractTestCase
         $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
         $review           = new CodeReview()->setId(456);
         $user             = new User()->setId(1);
+        $lineReference    = new LineReference('src/Service/Test.php', 'src/Service/Test.php', 23, 2, 25, 'abc123', LineReferenceStateEnum::Added);
 
         $this->repository->expects($this->once())->method('find')->with(456)->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->lineReferenceFactory->expects($this->once())
+            ->method('createFromReview')
+            ->with($review, 'src/Service/Test.php', 25, 'abc123')
+            ->willReturn($lineReference);
         $this->commentRepository->expects($this->once())->method('save')->with(self::isInstanceOf(Comment::class), true);
 
         $this->service->addComment($user, 456, 'src/Service/Test.php', 25, 'Needs refactoring', null);
@@ -71,13 +83,7 @@ class AddCommentServiceTest extends AbstractTestCase
         static::assertSame('Needs refactoring', $comment->getMessage());
         static::assertSame($user, $comment->getUser());
         static::assertSame($review, $comment->getReview());
-
-        $ref = $comment->getLineReference();
-        static::assertSame('src/Service/Test.php', $ref->oldPath);
-        static::assertSame('src/Service/Test.php', $ref->newPath);
-        static::assertSame(25, $ref->line);
-        static::assertSame(25, $ref->lineAfter);
-        static::assertSame('abc123', $ref->headSha);
+        static::assertSame($lineReference, $comment->getLineReference());
     }
 
     public function testAddCommentShouldAppendCodeSuggestion(): void
@@ -155,7 +161,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
         $review           = new CodeReview();
 
-        $service = new AddCommentService(null, $this->repository, $this->commentRepository, $this->reviewRevisionService);
+        $service = new AddCommentService(null, $this->repository, $this->commentRepository, $this->reviewRevisionService, $this->lineReferenceFactory);
         $service->setClock(new MockClock('2024-01-01T12:00:00+00:00'));
 
         $this->repository->expects($this->once())->method('find')->willReturn($review);
