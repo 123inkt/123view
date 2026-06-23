@@ -14,14 +14,13 @@ use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
 
 #[CoversClass(LineReferenceFactory::class)]
 class LineReferenceFactoryTest extends AbstractTestCase
 {
     private MockObject&CodeReviewDiffService $diffService;
     private MockObject&DiffFinder            $diffFinder;
-    private LineReferenceFactory       $factory;
+    private LineReferenceFactory             $factory;
 
     public function setUp(): void
     {
@@ -33,8 +32,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
 
     public function testCreateFromReviewFallsBackWhenFileNotInDiff(): void
     {
-        $review      = new CodeReview();
-        $diffFiles   = [];
+        $review    = new CodeReview();
+        $diffFiles = [];
 
         $this->diffService->expects($this->once())->method('getDiff')->with($review)->willReturn($diffFiles);
         $this->diffFinder->expects($this->once())->method('findFileByPath')->with($diffFiles, 'src/Foo.php')->willReturn(null);
@@ -51,8 +50,8 @@ class LineReferenceFactoryTest extends AbstractTestCase
 
     public function testCreateFromReviewDelegatesWhenFileFound(): void
     {
-        $review      = new CodeReview();
-        $diffFile    = $this->createDiffFile('src/Foo.php', 'src/Foo.php', [
+        $review   = new CodeReview();
+        $diffFile = $this->createDiffFile('src/Foo.php', 'src/Foo.php', [
             $this->createLine(DiffLine::STATE_UNCHANGED, 5, 5),
             $this->createLine(DiffLine::STATE_UNCHANGED, 6, 6),
         ]);
@@ -169,11 +168,14 @@ class LineReferenceFactoryTest extends AbstractTestCase
         static::assertSame(LineReferenceStateEnum::Unknown, $ref->state);
     }
 
+    /**
+     * @param array<int, DiffLine> $lines
+     */
     private function createDiffFile(string $oldPath, string $newPath, array $lines): DiffFile
     {
-        $block              = new DiffBlock();
-        $block->lines       = $lines;
-        $file               = new DiffFile();
+        $block                = new DiffBlock();
+        $block->lines         = $lines;
+        $file                 = new DiffFile();
         $file->filePathBefore = $oldPath;
         $file->filePathAfter  = $newPath;
         $file->addBlock($block);
@@ -183,9 +185,9 @@ class LineReferenceFactoryTest extends AbstractTestCase
 
     private function createLine(int $state, ?int $lineNumberBefore, ?int $lineNumberAfter): DiffLine
     {
-        $line                    = new DiffLine($state, []);
-        $line->lineNumberBefore  = $lineNumberBefore;
-        $line->lineNumberAfter   = $lineNumberAfter;
+        $line                   = new DiffLine($state, []);
+        $line->lineNumberBefore = $lineNumberBefore;
+        $line->lineNumberAfter  = $lineNumberAfter;
 
         return $line;
     }
