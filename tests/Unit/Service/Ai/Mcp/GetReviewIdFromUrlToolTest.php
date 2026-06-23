@@ -91,7 +91,7 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
     }
 
     /**
-     * @param non-empty-string $url
+     * @param string $url
      */
     #[DataProvider('malformedUrlProvider')]
     public function testInvokeThrowsOnMalformedUrl(string $url): void
