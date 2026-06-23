@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\Ai;
 
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
@@ -12,6 +11,7 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Clock\ClockAwareTrait;
@@ -24,7 +24,8 @@ class AddCommentService
         private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly CommentRepository $commentRepository,
-        private readonly CodeReviewRevisionService $reviewRevisionService
+        private readonly CodeReviewRevisionService $reviewRevisionService,
+        private readonly LineReferenceFactory $lineReferenceFactory
     ) {
     }
 
@@ -53,7 +54,7 @@ class AddCommentService
         $comment = new Comment();
         $comment->setFilePath($filepath);
         $comment->setTag(null);
-        $comment->setLineReference(new LineReference($filepath, $filepath, $lineNumber, lineAfter: $lineNumber, headSha: $revision->getCommitHash()));
+        $comment->setLineReference($this->lineReferenceFactory->createFromReview($review, $filepath, $lineNumber, $revision->getCommitHash()));
         $comment->setReview($review);
         $comment->setMessage($message);
         $comment->setUser($user);

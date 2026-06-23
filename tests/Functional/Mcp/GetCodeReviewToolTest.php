@@ -9,18 +9,19 @@ use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
-use Mcp\Server\Session\SessionFactory;
+use Mcp\Server\Session\Session;
 use Mcp\Server\Session\SessionStoreInterface;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 use Throwable;
 
 #[CoversNothing]
 class GetCodeReviewToolTest extends AbstractFunctionalTestCase
 {
-    private const SERVER_HEADERS   = [
+    private const SERVER_HEADERS = [
         'CONTENT_TYPE'       => 'application/json',
         'HTTP_ACCEPT'        => 'application/json, text/event-stream',
         'HTTP_AUTHORIZATION' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE,
@@ -105,7 +106,9 @@ class GetCodeReviewToolTest extends AbstractFunctionalTestCase
      */
     private function createMcpSession(): string
     {
-        $session = new SessionFactory()->create(static::getService(SessionStoreInterface::class, 'mcp.session.store'));
+        $store   = static::getService(SessionStoreInterface::class, 'mcp.session.store');
+
+        $session = new Session($store, Uuid::v4());
         $session->set('initialized', true);
         $session->set('client_info', ['name' => 'test-client', 'version' => '1.0']);
         $session->set('client_capabilities', []);
