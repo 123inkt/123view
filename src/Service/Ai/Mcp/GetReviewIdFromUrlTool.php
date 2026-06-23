@@ -20,7 +20,7 @@ use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 )]
 readonly class GetReviewIdFromUrlTool
 {
-    private const string URL_PATTERN = '#/app/([a-z][a-z0-9-]*[a-z0-9])/review/cr-(\d+)#';
+    private const string URL_PATTERN = '#^(?:https?://[^/]+)?/app/([a-z][a-z0-9-]*[a-z0-9])/review/cr-(\d+)#';
 
     public function __construct(private RepositoryRepository $repositoryRepository, private CodeReviewRepository $reviewRepository)
     {
