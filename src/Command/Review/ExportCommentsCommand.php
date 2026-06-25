@@ -31,7 +31,8 @@ class ExportCommentsCommand extends Command
     {
         $this
             ->addArgument('output-dir', InputArgument::REQUIRED, 'Directory to write markdown files to')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing files (default: skip)');
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing files (default: skip)')
+            ->addOption('limit', 'l', InputOption::VALUE_REQUIRED, 'Maximum number of comments to export');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,6 +40,8 @@ class ExportCommentsCommand extends Command
         $io        = new SymfonyStyle($input, $output);
         $outputDir = rtrim((string)$input->getArgument('output-dir'), '/\\');
         $force     = (bool)$input->getOption('force');
+        $limitOpt  = $input->getOption('limit');
+        $limit     = $limitOpt !== null ? (int)$limitOpt : null;
 
         if (!is_dir($outputDir) && !mkdir($outputDir, 0755, true) && !is_dir($outputDir)) {
             $io->error(sprintf('Cannot create output directory: %s', $outputDir));
@@ -46,8 +49,8 @@ class ExportCommentsCommand extends Command
             return self::FAILURE;
         }
 
-        $total = $this->commentRepository->count([]);
-        $io->title(sprintf('Exporting %d comment threads to %s', $total, $outputDir));
+        $total = $limit ?? $this->commentRepository->count([]);
+        $io->title(sprintf('Exporting %s comment threads to %s', $limit !== null ? "up to $limit" : $total, $outputDir));
         $io->progressStart($total);
 
         $offset   = 0;
@@ -55,7 +58,8 @@ class ExportCommentsCommand extends Command
         $skipped  = 0;
 
         while (true) {
-            $comments = $this->commentRepository->findBatch($offset, self::BATCH_SIZE);
+            $batchSize = $limit !== null ? min(self::BATCH_SIZE, $limit - $exported - $skipped) : self::BATCH_SIZE;
+            $comments  = $this->commentRepository->findBatch($offset, $batchSize);
             if ($comments === []) {
                 break;
             }
@@ -73,12 +77,16 @@ class ExportCommentsCommand extends Command
                 file_put_contents($filePath, $markdown);
                 ++$exported;
                 $io->progressAdvance();
+
+                if ($limit !== null && ($exported + $skipped) >= $limit) {
+                    break;
+                }
             }
 
             $this->entityManager->clear();
-            $offset += self::BATCH_SIZE;
+            $offset += $batchSize;
 
-            if (count($comments) < self::BATCH_SIZE) {
+            if (count($comments) < $batchSize || ($limit !== null && ($exported + $skipped) >= $limit)) {
                 break;
             }
         }
