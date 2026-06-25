@@ -47,6 +47,17 @@ class GitShowService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
+    public function getFileContentsByHash(Repository $repository, string $hash, string $file): string
+    {
+        $commandBuilder = $this->builderFactory->createShow()->file($hash, $file);
+        $output         = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
+
+        return $output;
+    }
+
+    /**
+     * @throws RepositoryException
+     */
     public function getFileContents(Revision $revision, string $file, bool $binary = false): string
     {
         $commandBuilder = $this->builderFactory->createShow()->file($revision->getCommitHash(), $file);

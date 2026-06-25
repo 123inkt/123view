@@ -73,6 +73,44 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
+     * Fetch a batch of comments ordered by id with user, review and repository pre-joined to avoid N+1 queries.
+     * Replies and their users are loaded via a second IN query on the resolved ids.
+     *
+     * @return Comment[]
+     */
+    public function findBatch(int $offset, int $batchSize): array
+    {
+        $idRows = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->orderBy('c.id', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($batchSize)
+            ->getQuery()
+            ->getArrayResult();
+
+        $ids = array_column($idRows, 'id');
+        if ($ids === []) {
+            return [];
+        }
+
+        /** @var Comment[] $result */
+        $result = $this->createQueryBuilder('c')
+            ->addSelect('u', 'r', 'repo', 'rpl', 'ru')
+            ->innerJoin('c.user', 'u')
+            ->innerJoin('c.review', 'r')
+            ->innerJoin('r.repository', 'repo')
+            ->leftJoin('c.replies', 'rpl')
+            ->leftJoin('rpl.user', 'ru')
+            ->where('c.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    /**
      * Count all draft comments for the given user.
      */
     public function countDraftsByUser(User $user): int
