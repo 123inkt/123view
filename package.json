@@ -4,7 +4,7 @@
         "bootstrap": "^5.3.8",
         "bootstrap-icons": "^1.13.1",
         "highlight.js": "^11.11.1",
-        "stimulus-use": "^0.52.3"
+        "stimulus-use": "^0.52.3 || ^0.53.0"
     },
     "devDependencies": {
         "@babel/core": "^8.0.1",
