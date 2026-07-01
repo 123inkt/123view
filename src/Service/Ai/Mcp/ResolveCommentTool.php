@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\Ai\Mcp;
 
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
-use DR\Review\Exception\Ai\CommentNotFoundException;
-use DR\Review\Exception\Ai\CommentNotInReviewException;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Service\CodeReview\Comment\ResolveCommentService;
 use Mcp\Capability\Attribute\McpTool;
@@ -15,10 +13,8 @@ use Throwable;
 #[McpTool('resolve_comment', 'Resolve a comment in a code review. The reviewId must match the review the comment belongs to.')]
 readonly class ResolveCommentTool
 {
-    public function __construct(
-        private CodeReviewRepository $reviewRepository,
-        private ResolveCommentService $resolveCommentService
-    ) {
+    public function __construct(private CodeReviewRepository $reviewRepository, private ResolveCommentService $resolveCommentService)
+    {
     }
 
     /**
