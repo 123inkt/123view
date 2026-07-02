@@ -48,7 +48,7 @@ class ResolveCommentServiceTest extends AbstractTestCase
         $this->service->resolve(456, 123);
     }
 
-    public function testResolveReturnsAlreadyResolvedWhenStateIsResolved(): void
+    public function testResolveAlreadyResolved(): void
     {
         $review  = new CodeReview()->setId(123);
         $comment = new Comment()->setId(456)->setReview($review)->setState(CommentStateType::RESOLVED);
