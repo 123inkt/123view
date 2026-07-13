@@ -37,6 +37,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
+        "ext-sodium": "*",
         "ext-zlib": "*",
         "api-platform/core": "^4.2",
         "czproject/git-php": "^4.5",

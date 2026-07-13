@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Repository;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
@@ -26,8 +27,8 @@ class RepositoryCredential
     #[ORM\Column(type: AuthenticationType::TYPE, options: ["default" => AuthenticationType::BASIC_AUTH])]
     private string $authType = AuthenticationType::BASIC_AUTH;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 0, max: 255)]
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 0, max: 10000)]
     private string $value;
 
     public function setId(int $id): self
