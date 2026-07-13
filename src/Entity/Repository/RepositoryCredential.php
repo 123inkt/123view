@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
 use DR\Review\Entity\Repository\Credential\CredentialInterface;
+use DR\Review\Entity\Repository\Credential\SshKeyCredential;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -88,6 +89,7 @@ class RepositoryCredential
     {
         return match ($this->authType) {
             AuthenticationType::BASIC_AUTH => BasicAuthCredential::fromString($this->value),
+            AuthenticationType::SSH_KEY    => SshKeyCredential::fromString($this->value),
             default                        => throw new InvalidArgumentException('Unknown auth type: ' . $this->authType),
         };
     }
@@ -96,6 +98,7 @@ class RepositoryCredential
     {
         $this->authType = match (true) {
             $credential instanceof BasicAuthCredential => AuthenticationType::BASIC_AUTH,
+            $credential instanceof SshKeyCredential    => AuthenticationType::SSH_KEY,
             default                                    => throw new InvalidArgumentException('Unknown credential type: ' . get_class($credential)),
         };
         $this->value    = (string)$credential;

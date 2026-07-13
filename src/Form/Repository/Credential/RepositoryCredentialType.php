@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -16,6 +17,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RepositoryCredentialType extends AbstractType
 {
+    public function __construct(private readonly CredentialTypeListener $listener)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -25,9 +30,16 @@ class RepositoryCredentialType extends AbstractType
         $builder->add(
             'authType',
             ChoiceType::class,
-            ['label' => 'authentication.type', 'choices' => ['BasicAuth' => AuthenticationType::BASIC_AUTH]]
+            [
+                'label'   => 'authentication.type',
+                'choices' => [
+                    'auth.type.basic-auth' => AuthenticationType::BASIC_AUTH,
+                    'auth.type.ssh-key'    => AuthenticationType::SSH_KEY,
+                ],
+            ]
         );
-        $builder->add('credentials', BasicAuthCredentialType::class, ['label' => false]);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, $this->listener);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $this->listener);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
