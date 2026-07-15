@@ -66,7 +66,7 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         $this->lockManager->start($repository, static fn() => throw new RuntimeException());
     }
 
-    public function testLockAcquiredReturnsTrueWhileInsideStart(): void
+    public function testLockAcquiredWhileInsideStart(): void
     {
         $repository = new Repository();
         $repository->setId(456);
@@ -77,11 +77,7 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         // filesystem->mkdir should not be called since the directory already exists
         $this->filesystem->expects($this->never())->method('mkdir');
 
-        $acquiredInsideLock = false;
-
-        $this->lockManager->start($repository, function () use ($repository, &$acquiredInsideLock): void {
-            $acquiredInsideLock = $this->lockManager->lockAcquired($repository);
-        });
+        $acquiredInsideLock = $this->lockManager->start($repository, fn(): bool => $this->lockManager->lockAcquired($repository));
 
         static::assertTrue($acquiredInsideLock);
         // After start() returns, lock should no longer be active

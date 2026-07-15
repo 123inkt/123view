@@ -146,21 +146,7 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
                 : $this->fileRef;
         }
 
-        if ($this->ignoreSpaceAtEol) {
-            $values[] = '--ignore-space-at-eol';
-        }
-
-        if ($this->ignoreCrAtEol) {
-            $values[] = '--ignore-cr-at-eol';
-        }
-
-        if ($this->ignoreSpaceChange) {
-            $values[] = '--ignore-space-change';
-        }
-
-        if ($this->ignoreAllSpace) {
-            $values[] = '--ignore-all-space';
-        }
+        array_push($values, ...$this->buildWhitespaceOptions());
 
         if ($this->useBase64) {
             $values[] = '| base64';
@@ -172,5 +158,27 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
     public function __toString(): string
     {
         return implode(" ", $this->build());
+    }
+
+    /**
+     * @return string[]
+     */
+    private function buildWhitespaceOptions(): array
+    {
+        $options = [];
+        if ($this->ignoreSpaceAtEol) {
+            $options[] = '--ignore-space-at-eol';
+        }
+        if ($this->ignoreCrAtEol) {
+            $options[] = '--ignore-cr-at-eol';
+        }
+        if ($this->ignoreSpaceChange) {
+            $options[] = '--ignore-space-change';
+        }
+        if ($this->ignoreAllSpace) {
+            $options[] = '--ignore-all-space';
+        }
+
+        return $options;
     }
 }

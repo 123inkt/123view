@@ -18,7 +18,7 @@ class MessageSanitizerTest extends AbstractTestCase
         $this->sanitizer = new MessageSanitizer();
     }
 
-    public function testSanitizeWithNoReplacementsReturnsValueUnchanged(): void
+    public function testSanitizeWithNoReplacements(): void
     {
         static::assertSame('some log output', $this->sanitizer->sanitize('some log output', []));
     }
@@ -33,7 +33,7 @@ class MessageSanitizerTest extends AbstractTestCase
         );
     }
 
-    public function testSanitizeReplacesMultipleOccurrencesOfSameToken(): void
+    public function testSanitizeMultipleOccurrences(): void
     {
         static::assertSame(
             'a=***, b=***',

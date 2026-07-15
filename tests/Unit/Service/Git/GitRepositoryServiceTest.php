@@ -122,7 +122,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
      *
      * @throws RepositoryException
      */
-    public function testGetRepositoryWithoutCacheRaceCondition(): void
+    public function testGetRepositoryRaceCondition(): void
     {
         $repository    = new Repository();
         $repository->setId(123);
@@ -149,7 +149,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
      *
      * @throws RepositoryException
      */
-    public function testGetRepositoryWithoutCacheAndWithoutLockThrows(): void
+    public function testGetRepositoryNoLockThrows(): void
     {
         $repository = new Repository();
         $repository->setId(123);
@@ -172,7 +172,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
      *
      * @throws RepositoryException
      */
-    public function testGetRepositoryCloneFailureRetriesAndThrows(): void
+    public function testGetRepositoryCloneFailureThrows(): void
     {
         $repository = new Repository();
         $repository->setId(123);

@@ -40,7 +40,8 @@ class GitRepositoryLocationService
 
         $directory = basename($directory, '.git');
 
-        if (($pos = strrpos($directory, ':')) !== false) {
+        $pos = strrpos($directory, ':');
+        if ($pos !== false) {
             $directory = substr($directory, $pos + 1);
         }
 

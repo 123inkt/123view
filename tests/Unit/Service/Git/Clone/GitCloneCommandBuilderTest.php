@@ -51,7 +51,7 @@ class GitCloneCommandBuilderTest extends AbstractTestCase
         $this->builder->repository('https://example.com/repo.git')->build();
     }
 
-    public function testGetSensitiveReplacementsWithCredentials(): void
+    public function testSensitiveReplacementsWithCredentials(): void
     {
         $this->builder->repository('https://user:pass@example.com/repo.git');
         static::assertSame(
@@ -60,7 +60,7 @@ class GitCloneCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    public function testGetSensitiveReplacementsWithoutCredentials(): void
+    public function testSensitiveReplacementsNoCredentials(): void
     {
         $this->builder->repository('https://example.com/repo.git');
         static::assertSame([], $this->builder->getSensitiveReplacements());

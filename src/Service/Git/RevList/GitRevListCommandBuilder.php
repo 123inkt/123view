@@ -3,17 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\RevList;
 
-use DR\Review\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\AbstractGitCommandBuilder;
 
-class GitRevListCommandBuilder implements GitCommandBuilderInterface
+class GitRevListCommandBuilder extends AbstractGitCommandBuilder
 {
-    /** @var array<string, string> */
-    private array $arguments = [];
-
-    public function __construct(private readonly string $git)
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'rev-list';
+        parent::__construct($git, 'rev-list');
     }
 
     public function commitRange(string $start, string $end): self
@@ -56,28 +52,5 @@ class GitRevListCommandBuilder implements GitCommandBuilderInterface
         $this->arguments['no-merges'] = '--no-merges';
 
         return $this;
-    }
-
-    public function command(): string
-    {
-        return 'rev-list';
-    }
-
-    public function requiresShell(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function build(): array
-    {
-        return array_values($this->arguments);
-    }
-
-    public function __toString(): string
-    {
-        return implode(" ", $this->arguments);
     }
 }

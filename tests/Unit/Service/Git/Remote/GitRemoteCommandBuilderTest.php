@@ -39,7 +39,7 @@ class GitRemoteCommandBuilderTest extends AbstractTestCase
         static::assertFalse($this->builder->requiresShell());
     }
 
-    public function testGetSensitiveReplacementsWithCredentials(): void
+    public function testSensitiveReplacementsWithCredentials(): void
     {
         $this->builder->setUrl('origin', 'https://user:pass@example.com/repo.git');
         $replacements = $this->builder->getSensitiveReplacements();
@@ -49,13 +49,13 @@ class GitRemoteCommandBuilderTest extends AbstractTestCase
         );
     }
 
-    public function testGetSensitiveReplacementsWithoutCredentials(): void
+    public function testSensitiveReplacementsNoCredentials(): void
     {
         $this->builder->setUrl('origin', 'https://example.com/repo.git');
         static::assertSame([], $this->builder->getSensitiveReplacements());
     }
 
-    public function testGetSensitiveReplacementsWithoutSetUrl(): void
+    public function testSensitiveReplacementsWithoutSetUrl(): void
     {
         // getSensitiveReplacements() before setUrl() must return empty array
         static::assertSame([], $this->builder->getSensitiveReplacements());
