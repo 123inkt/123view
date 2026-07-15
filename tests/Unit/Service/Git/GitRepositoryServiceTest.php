@@ -41,7 +41,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->repositoryFactory     = $this->createMock(GitRepositoryFactory::class);
         $this->lockManager           = $this->createMock(GitRepositoryLockManager::class);
         $this->locationService       = $this->createMock(GitRepositoryLocationService::class);
-        $this->messageSanitizer      = $this->createStub(MessageSanitizer::class);
+        $this->messageSanitizer      = static::createStub(MessageSanitizer::class);
         $this->service               = new GitRepositoryService(
             static::createStub(LoggerInterface::class),
             $this->filesystem,
@@ -177,8 +177,8 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $messageSanitizer = $this->createMock(MessageSanitizer::class);
         $messageSanitizer->expects($this->exactly(5))
             ->method('sanitize')
-            ->with('fatal: repo not found', $this->anything())
-            ->willReturn('fatal: repo not found');
+            ->with('git: clone failed (exit 128): fatal: repo not found', static::anything())
+            ->willReturnArgument(0);
 
         $service = new GitRepositoryService(
             static::createStub(LoggerInterface::class),
@@ -192,7 +192,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         );
 
         $this->expectException(RepositoryException::class);
-        $this->expectExceptionMessage('git: clone failed');
+        $this->expectExceptionMessage('fatal: repo not found');
         $service->getRepository($repository);
     }
 }

@@ -13,19 +13,14 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[CoversClass(GitRepositoryFactory::class)]
 class GitRepositoryFactoryTest extends AbstractTestCase
 {
-    public function testCreateWithoutStopwatch(): void
-    {
-        $repository = new Repository();
-        $factory    = new GitRepositoryFactory($this->logger, null);
-
-        static::assertInstanceOf(GitRepository::class, $factory->create($repository, '/repo/path/'));
-    }
-
     public function testCreateWithStopwatch(): void
     {
+        $stopwatch  = new Stopwatch();
         $repository = new Repository();
-        $factory    = new GitRepositoryFactory($this->logger, new Stopwatch());
+        $factory    = new GitRepositoryFactory($this->logger, $stopwatch);
 
-        static::assertInstanceOf(GitRepository::class, $factory->create($repository, '/repo/path/'));
+        $gitRepository = $factory->create($repository, '/repo/path/');
+        $expected      = new GitRepository($this->logger, $repository, $stopwatch, '/repo/path/');
+        static::assertEquals($expected, $gitRepository);
     }
 }
