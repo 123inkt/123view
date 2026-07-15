@@ -54,4 +54,10 @@ class GitRemoteCommandBuilderTest extends AbstractTestCase
         $this->builder->setUrl('origin', 'https://example.com/repo.git');
         static::assertSame([], $this->builder->getSensitiveReplacements());
     }
+
+    public function testGetSensitiveReplacementsWithoutSetUrl(): void
+    {
+        // getSensitiveReplacements() before setUrl() must return empty array
+        static::assertSame([], $this->builder->getSensitiveReplacements());
+    }
 }

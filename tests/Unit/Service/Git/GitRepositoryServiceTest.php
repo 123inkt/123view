@@ -118,6 +118,33 @@ class GitRepositoryServiceTest extends AbstractTestCase
     }
 
     /**
+     * No cache + lock held + another process cloned between the two exists() checks: returns repo without cloning.
+     *
+     * @throws RepositoryException
+     */
+    public function testGetRepositoryWithoutCacheRaceCondition(): void
+    {
+        $repository    = new Repository();
+        $repository->setId(123);
+        $repository->setUrl(Uri::new('https://my.repository.com'));
+        $gitRepository = static::createStub(GitRepository::class);
+
+        $this->locationService->expects(static::once())->method('getLocation')->willReturn('/repository/dir/');
+        $this->filesystem->expects(static::once())->method('mkdir')->with('/repository');
+        // First exists() = no .git; second exists() = .git appeared while we held the lock
+        $this->filesystem->expects(static::exactly(2))->method('exists')->willReturn(false, true);
+        $this->lockManager->expects(static::once())->method('lockAcquired')->willReturn(true);
+        $this->repositoryFactory->expects(static::once())
+            ->method('create')
+            ->with($repository, '/repository/dir/')
+            ->willReturn($gitRepository);
+        $this->commandBuilderFactory->expects(static::never())->method('createClone');
+
+        $result = $this->service->getRepository($repository);
+        static::assertSame($gitRepository, $result);
+    }
+
+    /**
      * No cache, no lock: circuit breaker retries 5× then throws.
      *
      * @throws RepositoryException

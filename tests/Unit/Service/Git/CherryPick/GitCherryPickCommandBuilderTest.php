@@ -26,6 +26,13 @@ class GitCherryPickCommandBuilderTest extends AbstractTestCase
         );
     }
 
+    public function testHashesReplacesExistingHashes(): void
+    {
+        // First call sets hash-0 = 'aaa'; second call must unset it and set hash-0 = 'bbb'
+        $this->builder->hashes(['aaa']);
+        static::assertSame(['git', 'cherry-pick', 'bbb'], $this->builder->hashes(['bbb'])->build());
+    }
+
     public function testRequiresShell(): void
     {
         static::assertFalse($this->builder->requiresShell());
