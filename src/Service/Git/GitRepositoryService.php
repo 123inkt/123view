@@ -7,7 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Git\GitRepositoryFactory;
+use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Utility\CircuitBreaker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -63,7 +63,7 @@ class GitRepositoryService
         $this->filesystem->mkdir($parentDir);
 
         if ($this->filesystem->exists($repositoryDir . '.git')) {
-            return $this->repositoryFactory->create($this->gitLogger, $repository, $this->stopwatch, $repositoryDir);
+            return $this->repositoryFactory->create($repository, $repositoryDir);
         }
 
         // Initial clone: require caller to hold the repository lock to prevent concurrent clones
@@ -76,7 +76,7 @@ class GitRepositoryService
         // Re-check after acquiring the in-process lock guard (another process may have cloned while we waited).
         // @phpstan-ignore if.alwaysFalse (filesystem::exists() is impure — result can change between calls)
         if ($this->filesystem->exists($repositoryDir . '.git')) {
-            return $this->repositoryFactory->create($this->gitLogger, $repository, $this->stopwatch, $repositoryDir);
+            return $this->repositoryFactory->create($repository, $repositoryDir);
         }
 
         $tempDir = $canonicalDir . '.tmp';
@@ -95,9 +95,7 @@ class GitRepositoryService
 
         // Use the parent directory as working directory for the bootstrap executor
         $bootstrapRepo = $this->repositoryFactory->create(
-            $this->gitLogger,
             $repository,
-            $this->stopwatch,
             $parentDir . '/'
         );
 
@@ -125,6 +123,6 @@ class GitRepositoryService
         // Atomically place the completed clone at the final location
         $this->filesystem->rename($tempDir, $canonicalDir);
 
-        return $this->repositoryFactory->create($this->gitLogger, $repository, $this->stopwatch, $repositoryDir);
+        return $this->repositoryFactory->create($repository, $repositoryDir);
     }
 }

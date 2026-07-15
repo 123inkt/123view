@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Git\GitRepositoryFactory;
+use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\Clone\GitCloneCommandBuilder;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -67,7 +67,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->filesystem->expects($this->once())->method('exists')->with('/repository/dir/.git')->willReturn(true);
         $this->repositoryFactory->expects($this->once())
             ->method('create')
-            ->with($this->anything(), $repository, null, '/repository/dir/')
+            ->with($repository, '/repository/dir/')
             ->willReturn($gitRepository);
         $this->lockManager->expects($this->never())->method('lockAcquired');
         $this->commandBuilderFactory->expects($this->never())->method('createClone');
