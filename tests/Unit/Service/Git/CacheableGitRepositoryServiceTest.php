@@ -6,11 +6,12 @@ namespace DR\Review\Tests\Unit\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\GitRepositoryLocationService;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Util\MessageSanitizer;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -38,6 +39,7 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
             static::createStub(GitCommandBuilderFactory::class),
             $this->repositoryFactory,
             static::createStub(GitRepositoryLockManager::class),
+            static::createStub(MessageSanitizer::class),
         );
     }
 

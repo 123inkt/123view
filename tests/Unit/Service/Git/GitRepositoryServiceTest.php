@@ -6,12 +6,13 @@ namespace DR\Review\Tests\Unit\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\Clone\GitCloneCommandBuilder;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\GitRepositoryLocationService;
+use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Service\Util\MessageSanitizer;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -29,6 +30,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
     private GitRepositoryFactory&MockObject         $repositoryFactory;
     private GitRepositoryLockManager&MockObject     $lockManager;
     private GitRepositoryLocationService&MockObject $locationService;
+    private MessageSanitizer                        $messageSanitizer;
     private GitRepositoryService                    $service;
 
     protected function setUp(): void
@@ -39,6 +41,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
         $this->repositoryFactory     = $this->createMock(GitRepositoryFactory::class);
         $this->lockManager           = $this->createMock(GitRepositoryLockManager::class);
         $this->locationService       = $this->createMock(GitRepositoryLocationService::class);
+        $this->messageSanitizer      = $this->createStub(MessageSanitizer::class);
         $this->service               = new GitRepositoryService(
             static::createStub(LoggerInterface::class),
             $this->filesystem,
@@ -47,6 +50,7 @@ class GitRepositoryServiceTest extends AbstractTestCase
             $this->commandBuilderFactory,
             $this->repositoryFactory,
             $this->lockManager,
+            $this->messageSanitizer,
         );
     }
 
@@ -160,7 +164,6 @@ class GitRepositoryServiceTest extends AbstractTestCase
 
         $cloneBuilder->expects($this->exactly(5))->method('repository')->willReturnSelf();
         $cloneBuilder->expects($this->exactly(5))->method('directory')->willReturnSelf();
-        $cloneBuilder->expects($this->exactly(5))->method('getSensitiveReplacements')->willReturn([]);
         $this->commandBuilderFactory->expects($this->exactly(5))->method('createClone')->willReturn($cloneBuilder);
         $this->repositoryFactory->expects($this->exactly(5))->method('create')->willReturn($bootstrapRepo);
 
@@ -171,8 +174,25 @@ class GitRepositoryServiceTest extends AbstractTestCase
 
         $bootstrapRepo->expects($this->exactly(5))->method('execute')->willThrowException($exception);
 
+        $messageSanitizer = $this->createMock(MessageSanitizer::class);
+        $messageSanitizer->expects($this->exactly(5))
+            ->method('sanitize')
+            ->with('fatal: repo not found', $this->anything())
+            ->willReturn('fatal: repo not found');
+
+        $service = new GitRepositoryService(
+            static::createStub(LoggerInterface::class),
+            $this->filesystem,
+            null,
+            $this->locationService,
+            $this->commandBuilderFactory,
+            $this->repositoryFactory,
+            $this->lockManager,
+            $messageSanitizer,
+        );
+
         $this->expectException(RepositoryException::class);
         $this->expectExceptionMessage('git: clone failed');
-        $this->service->getRepository($repository);
+        $service->getRepository($repository);
     }
 }

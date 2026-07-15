@@ -7,6 +7,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
+use DR\Review\Service\Util\MessageSanitizer;
 use DR\Review\Utility\CircuitBreaker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,6 +30,7 @@ class GitRepositoryService
         private readonly GitCommandBuilderFactory $commandBuilderFactory,
         private readonly GitRepositoryFactory $repositoryFactory,
         private readonly GitRepositoryLockManager $lockManager,
+        private readonly MessageSanitizer $messageSanitizer,
     ) {
         $this->circuitBreaker = new CircuitBreaker(5, 5000);
     }
@@ -95,16 +97,9 @@ class GitRepositoryService
             $this->stopwatch?->stop('repository.clone');
             $this->filesystem->remove($tempDir);
 
-            $stderr      = trim($exception->getProcess()->getErrorOutput());
             $exitCode    = $exception->getProcess()->getExitCode() ?? 1;
-            $safeMessage = 'git: clone failed (exit ' . $exitCode . ')';
-            if ($stderr !== '') {
-                // Apply redactions before including stderr in the exception message
-                foreach ($cloneBuilder->getSensitiveReplacements() as $search => $replace) {
-                    $stderr = str_replace($search, $replace, $stderr);
-                }
-                $safeMessage .= ': ' . $stderr;
-            }
+            $message     = 'git: clone failed (exit ' . $exitCode . '): ' . trim($exception->getProcess()->getErrorOutput());
+            $safeMessage = $this->messageSanitizer->sanitize($message, $cloneBuilder->getSensitiveReplacements());
 
             throw new RepositoryException($safeMessage, $exitCode);
         }
