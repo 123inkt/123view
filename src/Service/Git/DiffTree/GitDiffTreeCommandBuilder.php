@@ -49,6 +49,11 @@ class GitDiffTreeCommandBuilder implements GitCommandBuilderInterface
         return 'diff-tree';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */

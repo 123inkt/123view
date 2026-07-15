@@ -19,6 +19,11 @@ abstract class AbstractGitCommandBuilder implements GitCommandBuilderInterface
         return $this->command;
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */

@@ -7,81 +7,94 @@ use DR\Review\Service\Git\GitCommandBuilderInterface;
 
 class GitShowCommandBuilder implements GitCommandBuilderInterface
 {
-    /** @var array<string, string> */
-    private array $arguments = [];
+    private readonly string $git;
 
-    public function __construct(private readonly string $git)
+    private ?string $startPoint      = null;
+    private ?int    $unified         = null;
+    private bool    $noPatch         = false;
+    private ?string $format          = null;
+    private ?string $fileRef         = null;
+    private bool    $ignoreSpaceAtEol  = false;
+    private bool    $ignoreCrAtEol     = false;
+    private bool    $ignoreSpaceChange = false;
+    private bool    $ignoreAllSpace    = false;
+    private bool    $useBase64         = false;
+
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'show';
+        $this->git = $git;
     }
 
     public function startPoint(string $hash): self
     {
-        $this->arguments['start-point'] = $hash;
+        $this->startPoint = $hash;
 
         return $this;
     }
 
     public function noPatch(): self
     {
-        $this->arguments['no-patch'] = '--no-patch';
+        $this->noPatch = true;
 
         return $this;
     }
 
     public function format(string $format): self
     {
-        $this->arguments['format'] = sprintf('--format="%s"', $format);
+        $this->format = $format;
 
         return $this;
     }
 
     public function unified(int $numberOfLines): self
     {
-        $this->arguments['unified'] = '--unified=' . $numberOfLines;
+        $this->unified = $numberOfLines;
 
         return $this;
     }
 
     public function ignoreCrAtEol(): self
     {
-        $this->arguments['ignore-cr-at-eol'] = '--ignore-cr-at-eol';
+        $this->ignoreCrAtEol = true;
 
         return $this;
     }
 
     public function ignoreSpaceAtEol(): self
     {
-        $this->arguments['ignore-space-at-eol'] = '--ignore-space-at-eol';
+        $this->ignoreSpaceAtEol = true;
 
         return $this;
     }
 
     public function ignoreSpaceChange(): self
     {
-        $this->arguments['ignore-space-change'] = '--ignore-space-change';
+        $this->ignoreSpaceChange = true;
 
         return $this;
     }
 
     public function ignoreAllSpace(): self
     {
-        $this->arguments['ignore-all-space'] = '--ignore-all-space';
+        $this->ignoreAllSpace = true;
 
         return $this;
     }
 
     public function file(string $hash, string $filePath): self
     {
-        $this->arguments['file'] = escapeshellarg(sprintf('%s:%s', $hash, $filePath));
+        $this->fileRef = sprintf('%s:%s', $hash, $filePath);
 
         return $this;
     }
 
+    /**
+     * Request base64-encoded output via a shell pipe.
+     * Enabling this causes requiresShell() to return true.
+     */
     public function base64encode(): self
     {
-        $this->arguments['base64'] = '| base64';
+        $this->useBase64 = true;
 
         return $this;
     }
@@ -92,15 +105,72 @@ class GitShowCommandBuilder implements GitCommandBuilderInterface
     }
 
     /**
+     * Returns true when base64encode() was called: the resulting build() array contains
+     * a shell pipe token and must be executed via fromShellCommandline().
+     */
+    public function requiresShell(): bool
+    {
+        return $this->useBase64;
+    }
+
+    /**
      * @return string[]
      */
     public function build(): array
     {
-        return array_values($this->arguments);
+        $values = [$this->git, 'show'];
+
+        if ($this->startPoint !== null) {
+            $values[] = $this->startPoint;
+        }
+
+        if ($this->unified !== null) {
+            $values[] = '--unified=' . $this->unified;
+        }
+
+        if ($this->noPatch) {
+            $values[] = '--no-patch';
+        }
+
+        if ($this->format !== null) {
+            // In shell mode the outer quotes are needed so the shell passes the value intact.
+            $values[] = $this->useBase64
+                ? sprintf('--format="%s"', $this->format)
+                : '--format=' . $this->format;
+        }
+
+        if ($this->fileRef !== null) {
+            // In shell mode escapeshellarg is required; in argv mode the value is passed verbatim.
+            $values[] = $this->useBase64
+                ? escapeshellarg($this->fileRef)
+                : $this->fileRef;
+        }
+
+        if ($this->ignoreSpaceAtEol) {
+            $values[] = '--ignore-space-at-eol';
+        }
+
+        if ($this->ignoreCrAtEol) {
+            $values[] = '--ignore-cr-at-eol';
+        }
+
+        if ($this->ignoreSpaceChange) {
+            $values[] = '--ignore-space-change';
+        }
+
+        if ($this->ignoreAllSpace) {
+            $values[] = '--ignore-all-space';
+        }
+
+        if ($this->useBase64) {
+            $values[] = '| base64';
+        }
+
+        return $values;
     }
 
     public function __toString(): string
     {
-        return implode(" ", $this->arguments);
+        return implode(" ", $this->build());
     }
 }

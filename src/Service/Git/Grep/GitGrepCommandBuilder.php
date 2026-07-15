@@ -42,7 +42,8 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
 
     public function context(int $context): self
     {
-        $this->arguments['context'] = '--context ' . $context;
+        $this->arguments['context-flag']  = '--context';
+        $this->arguments['context-value'] = (string)$context;
 
         return $this;
     }
@@ -69,6 +70,11 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
         return 'grep';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */
@@ -76,7 +82,7 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
     {
         $values = array_values($this->arguments);
         if ($this->pattern !== null) {
-            $values[] = escapeshellarg($this->pattern);
+            $values[] = $this->pattern;
         }
         if ($this->hash !== null) {
             $values[] = $this->hash;

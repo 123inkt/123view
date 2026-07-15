@@ -63,6 +63,11 @@ class GitRevListCommandBuilder implements GitCommandBuilderInterface
         return 'rev-list';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */

@@ -12,5 +12,11 @@ interface GitCommandBuilderInterface
      */
     public function build(): array;
 
+    /**
+     * Returns true when the builder produces a shell expression that must be executed via a shell
+     * (e.g. when a pipe is present).  Argv-safe builders return false.
+     */
+    public function requiresShell(): bool;
+
     public function __toString(): string;
 }

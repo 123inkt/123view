@@ -5,6 +5,7 @@ namespace DR\Review\Git;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\SensitiveGitCommandBuilderInterface;
 use Monolog\Level;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -25,55 +26,80 @@ class GitRepository
     }
 
     /**
-     * Execute git command via cli
-     * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
+     * Execute a git command via CLI.
+     *
+     * When the builder declares requiresShell() === true the command string is passed to a shell
+     * (fromShellCommandline), preserving pipe tokens.  All other commands are executed via argv
+     * (new Process(array)) to avoid shell-injection and quoting issues.
+     *
+     * @param int|null $timeout Process timeout in seconds; null means no timeout.
      * @throws ProcessFailedException
      */
-    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
+    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false, ?int $timeout = 300): string
     {
-        $this->gitLogger->info('Executing `{command}` for `{name}`', ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]);
+        $this->gitLogger->info(
+            'Executing `{command}` for `{name}`',
+            ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]
+        );
 
         $action = $commandBuilder->command();
 
         $this->stopWatch?->start('git.' . $action, 'git');
+
+        $redactions = $commandBuilder instanceof SensitiveGitCommandBuilderInterface
+            ? $commandBuilder->getSensitiveReplacements()
+            : [];
+
         try {
-            $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
-            $process->setTimeout(300);
-            $process->setWorkingDirectory($this->repositoryPath);
+            if ($commandBuilder->requiresShell()) {
+                $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
+                $process->setTimeout($timeout);
+                $process->setWorkingDirectory($this->repositoryPath);
+            } else {
+                $process = new Process($commandBuilder->build(), $this->repositoryPath);
+                $process->setTimeout($timeout);
+            }
+
             $process->run();
         } finally {
             $this->stopWatch?->stop('git.' . $action);
         }
 
-        // executes after the command finishes
         if ($process->isSuccessful() === false) {
-            $this->logProcessOutput($process, false);
+            $this->logProcessOutput($process, false, $redactions);
             throw new ProcessFailedException($process);
         }
 
-        $this->logProcessOutput($process, true);
+        $this->logProcessOutput($process, true, $redactions);
 
         $output = $process->getOutput();
         if ($errorOutputAsOutput === true) {
             $output .= $process->getErrorOutput();
         }
 
-        // remove any \r in the output
-        return str_replace("\r", "", $output);
+        return str_replace("\r", '', $output);
     }
 
-    private function logProcessOutput(Process $process, bool $success): void
+    /**
+     * @param array<string, string> $redactions
+     */
+    private function logProcessOutput(Process $process, bool $success, array $redactions = []): void
     {
         $status = $success ? 'succeeded' : 'failed';
         $level  = $success ? Level::Info : Level::Notice;
-        $output = trim(str_replace("\r", "", $process->getOutput()));
-        $error  = trim(str_replace("\r", "", $process->getErrorOutput()));
+        $output = trim(str_replace("\r", '', $process->getOutput()));
+        $error  = trim(str_replace("\r", '', $process->getErrorOutput()));
 
         // limit size
         $output = substr($output, 0, 1000);
         $error  = substr($error, 0, 1000);
 
-        // format
+        // apply redactions
+        foreach ($redactions as $search => $replace) {
+            $output = str_replace($search, $replace, $output);
+            $error  = str_replace($search, $replace, $error);
+        }
+
         $message = <<<MSG
 Process status: {status}
 Output: {output}

@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git;
 
-use CzProject\GitPhp\Git;
-use CzProject\GitPhp\GitRepository;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
+use DR\Review\Git\GitRepository;
+use DR\Review\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitRepositoryLockManager;
 use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
@@ -20,20 +22,22 @@ use Symfony\Component\Filesystem\Filesystem;
 class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {
     private Filesystem&MockObject         $filesystem;
-    private Git&MockObject                $git;
+    private GitRepositoryFactory&MockObject $repositoryFactory;
     private CacheableGitRepositoryService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->git        = $this->createMock(Git::class);
-        $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new CacheableGitRepositoryService(
+        $this->filesystem        = $this->createMock(Filesystem::class);
+        $this->repositoryFactory = $this->createMock(GitRepositoryFactory::class);
+        $this->service           = new CacheableGitRepositoryService(
             static::createStub(LoggerInterface::class),
-            $this->git,
             $this->filesystem,
             null,
-            static::createStub(GitRepositoryLocationService::class)
+            static::createStub(GitRepositoryLocationService::class),
+            static::createStub(GitCommandBuilderFactory::class),
+            $this->repositoryFactory,
+            static::createStub(GitRepositoryLockManager::class),
         );
     }
 
@@ -42,14 +46,14 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithoutCache(): void
     {
-        $repository = new Repository();
+        $repository    = new Repository();
         $repository->setId(123);
         $repository->setUrl(Uri::new('https://my.repository.com'));
         $gitRepository = static::createStub(GitRepository::class);
 
         // setup mocks
-        $this->filesystem->expects($this->once())->method('exists')->willReturn(false);
-        $this->git->expects($this->once())->method('cloneRepository')->willReturn($gitRepository);
+        $this->filesystem->expects($this->once())->method('exists')->willReturn(true);
+        $this->repositoryFactory->expects($this->once())->method('create')->willReturn($gitRepository);
 
         // first call should invoke parent method
         $firstRepository = $this->service->getRepository($repository);

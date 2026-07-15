@@ -21,7 +21,8 @@ class GitCommitCommandBuilder extends AbstractGitCommandBuilder
 
     public function message(string $message): self
     {
-        $this->arguments['message'] = '-m ' . escapeshellarg($message);
+        $this->arguments['message-flag']  = '-m';
+        $this->arguments['message-value'] = $message;
 
         return $this;
     }

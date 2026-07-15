@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
-use CzProject\GitPhp\Git;
-use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
@@ -35,6 +33,7 @@ use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
+use DR\Review\Git\GitRepositoryFactory;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -177,6 +176,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+
+    // Register Git
+    $services->set(GitRepositoryFactory::class);
     $services->set(ParserHasFailedFormatter::class);
     $services->set(RuleNotificationTokenGenerator::class)->arg('$appSecret', '%env(APP_SECRET)%');
     $services->set(UserSettingType::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
@@ -192,10 +194,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(RevisionPatternMatcher::class)
         ->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%')
         ->arg('$matchingGroups', '%env(CODE_REVIEW_MATCHING_GROUPS)%');
-
-    // Register Git
-    $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
-    $services->set(Git::class)->arg('$runner', service(CliRunner::class));
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);

@@ -21,8 +21,13 @@ class GitCherryPickCommandBuilderTest extends AbstractTestCase
     public function testBuildWithOptions(): void
     {
         static::assertSame(
-            ['git', 'cherry-pick', '--strategy=strategy', '--abort', '--continue', '--no-commit', 'hashes', '-X theirs'],
+            ['git', 'cherry-pick', '--strategy=strategy', '--abort', '--continue', '--no-commit', 'hashes', '-X', 'theirs'],
             $this->builder->strategy('strategy')->abort()->continue()->noCommit()->hashes(['hashes'])->conflictResolution('theirs')->build()
         );
+    }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
     }
 }

@@ -28,6 +28,11 @@ class GitAddCommandBuilder implements GitCommandBuilderInterface
         return 'add';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */
