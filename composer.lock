@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "api-platform/core",
-            "version": "v4.3.7",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "25f80814e1f9c849bae2bc17ed2e07f2461c72d8"
+                "reference": "920a5d15f05423cc2c4a503b4b775c0259706673"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/25f80814e1f9c849bae2bc17ed2e07f2461c72d8",
-                "reference": "25f80814e1f9c849bae2bc17ed2e07f2461c72d8",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/920a5d15f05423cc2c4a503b4b775c0259706673",
+                "reference": "920a5d15f05423cc2c4a503b4b775c0259706673",
                 "shasum": ""
             },
             "require": {
@@ -75,16 +75,11 @@
                 "api-platform/validator": "self.version"
             },
             "require-dev": {
-                "behat/behat": "^3.11",
-                "behat/mink": "^1.9",
                 "doctrine/common": "^3.2.2",
                 "doctrine/dbal": "^4.0",
                 "doctrine/doctrine-bundle": "^2.11 || ^3.1",
                 "doctrine/orm": "^2.17 || ^3.0",
                 "elasticsearch/elasticsearch": "^7.17 || ^8.4 || ^9.0",
-                "friends-of-behat/mink-browserkit-driver": "^1.3.1",
-                "friends-of-behat/mink-extension": "^2.2",
-                "friends-of-behat/symfony-extension": "^2.1",
                 "friendsofphp/php-cs-fixer": "^3.93",
                 "guzzlehttp/guzzle": "^6.0 || ^7.0",
                 "illuminate/config": "^11.0 || ^12.0 || ^13.0",
@@ -110,7 +105,6 @@
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^4.7",
                 "ramsey/uuid-doctrine": "^2.0",
-                "soyuka/contexts": "^3.3.10",
                 "soyuka/pmu": "^0.2.0",
                 "soyuka/stubs-mongodb": "^1.0",
                 "symfony/asset": "^6.4 || ^7.0 || ^8.0",
@@ -226,9 +220,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.3.7"
+                "source": "https://github.com/api-platform/core/tree/v4.3.8"
             },
-            "time": "2026-05-29T07:17:00+00:00"
+            "time": "2026-06-04T12:05:57+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
