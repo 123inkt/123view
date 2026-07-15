@@ -7,7 +7,6 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
-use DR\Review\Service\Git\GitRepositoryFactory;
 use DR\Review\Utility\CircuitBreaker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -68,9 +67,7 @@ class GitRepositoryService
 
         // Initial clone: require caller to hold the repository lock to prevent concurrent clones
         if ($this->lockManager->lockAcquired($repository) === false) {
-            throw new RepositoryException(
-                sprintf('git: clone of `%s` must be performed inside a repository lock.', $repository->getName())
-            );
+            throw new RepositoryException(sprintf('git: clone of `%s` must be performed inside a repository lock.', $repository->getName()));
         }
 
         // Re-check after acquiring the in-process lock guard (another process may have cloned while we waited).
@@ -83,21 +80,13 @@ class GitRepositoryService
         $this->filesystem->remove($tempDir);
 
         $this->stopwatch?->start('repository.clone', 'git');
-        $this->gitLogger->info(
-            'git: clone repository `{url}`.',
-            ['url' => (string)$repository->getUrl()->withUserInfo(null)]
-        );
+        $this->gitLogger->info('git: clone repository `{url}`.', ['url' => (string)$repository->getUrl()->withUserInfo(null)]);
 
         $cloneUrl     = (string)RepositoryUtil::getUriWithCredentials($repository);
-        $cloneBuilder = $this->commandBuilderFactory->createClone()
-            ->repository($cloneUrl)
-            ->directory($tempDir);
+        $cloneBuilder = $this->commandBuilderFactory->createClone()->repository($cloneUrl)->directory($tempDir);
 
         // Use the parent directory as working directory for the bootstrap executor
-        $bootstrapRepo = $this->repositoryFactory->create(
-            $repository,
-            $parentDir . '/'
-        );
+        $bootstrapRepo = $this->repositoryFactory->create($repository, $parentDir . '/');
 
         try {
             $bootstrapRepo->execute($cloneBuilder, false, null);
@@ -106,9 +95,9 @@ class GitRepositoryService
             $this->stopwatch?->stop('repository.clone');
             $this->filesystem->remove($tempDir);
 
-            $stderr       = trim($exception->getProcess()->getErrorOutput());
-            $exitCode     = $exception->getProcess()->getExitCode() ?? 1;
-            $safeMessage  = 'git: clone failed (exit ' . $exitCode . ')';
+            $stderr      = trim($exception->getProcess()->getErrorOutput());
+            $exitCode    = $exception->getProcess()->getExitCode() ?? 1;
+            $safeMessage = 'git: clone failed (exit ' . $exitCode . ')';
             if ($stderr !== '') {
                 // Apply redactions before including stderr in the exception message
                 foreach ($cloneBuilder->getSensitiveReplacements() as $search => $replace) {
