@@ -9,6 +9,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryLocationService;
+use DR\Review\Service\Git\Ssh\GitSshSetupService;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -33,7 +34,8 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
             $this->git,
             $this->filesystem,
             null,
-            static::createStub(GitRepositoryLocationService::class)
+            static::createStub(GitRepositoryLocationService::class),
+            static::createStub(GitSshSetupService::class),
         );
     }
 

@@ -5,10 +5,12 @@ namespace DR\Review\Service\Git;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
+use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Git\GitRepository;
+use DR\Review\Service\Git\Ssh\GitSshSetupService;
 use DR\Review\Utility\CircuitBreaker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,7 +29,8 @@ class GitRepositoryService
         private readonly Git $git,
         private readonly Filesystem $filesystem,
         private readonly ?Stopwatch $stopwatch,
-        private readonly GitRepositoryLocationService $locationService
+        private readonly GitRepositoryLocationService $locationService,
+        private readonly GitSshSetupService $sshSetupService,
     ) {
         $this->circuitBreaker = new CircuitBreaker(5, 5000);
     }
@@ -56,16 +59,29 @@ class GitRepositoryService
      */
     private function tryGetRepository(Repository $repository): GitRepository
     {
-        $repositoryDir  = $this->locationService->getLocation($repository);
+        $repositoryDir = $this->locationService->getLocation($repository);
 
         // create cache directory
         $this->filesystem->mkdir(dirname($repositoryDir));
 
         if ($this->filesystem->exists($repositoryDir . '.git') === false) {
-            // is new repository
             $this->stopwatch?->start('repository.clone', 'git');
             $this->gitLogger->info(sprintf('git: clone repository `%s`.', $repository->getUrl()->withUserInfo(null)));
-            $this->git->cloneRepository((string)RepositoryUtil::getUriWithCredentials($repository), $repositoryDir);
+
+            $credential = $repository->getCredential();
+            if ($credential !== null && $credential->getAuthType() === AuthenticationType::SSH_KEY) {
+                $this->sshSetupService->withSshAuth($credential, function (array $env) use ($repository, $repositoryDir): void {
+                    putenv('GIT_SSH_COMMAND=' . $env['GIT_SSH_COMMAND']);
+                    try {
+                        $this->git->cloneRepository((string)$repository->getUrl(), $repositoryDir);
+                    } finally {
+                        putenv('GIT_SSH_COMMAND'); // unset after clone
+                    }
+                });
+            } else {
+                $this->git->cloneRepository((string)RepositoryUtil::getUriWithCredentials($repository), $repositoryDir);
+            }
+
             $this->stopwatch?->stop('repository.clone');
         }
 

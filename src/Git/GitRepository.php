@@ -11,9 +11,6 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-/**
- * @codeCoverageIgnore
- */
 class GitRepository
 {
     public function __construct(
@@ -27,9 +24,11 @@ class GitRepository
     /**
      * Execute git command via cli
      * Note: Using Symfony's Process to avoid shell-escape argument issues with GitRepository::execute method.
+     * @param array<string, string> $env Additional environment variables to pass to the git process.
+     *                                   Used for SSH operations (GIT_SSH_COMMAND). Empty means inherit parent env.
      * @throws ProcessFailedException
      */
-    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false): string
+    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false, array $env = []): string
     {
         $this->gitLogger->info('Executing `{command}` for `{name}`', ['command' => (string)$commandBuilder, 'name' => $this->repository->getName()]);
 
@@ -40,6 +39,9 @@ class GitRepository
             $process = Process::fromShellCommandline(implode(' ', $commandBuilder->build()));
             $process->setTimeout(300);
             $process->setWorkingDirectory($this->repositoryPath);
+            if ($env !== []) {
+                $process->setEnv($env);
+            }
             $process->run();
         } finally {
             $this->stopWatch?->stop('git.' . $action);
