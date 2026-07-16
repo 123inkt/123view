@@ -7,33 +7,13 @@ use FD\CommonMarkEmoji\EmojiDataProvider;
 use FD\CommonMarkEmoji\EmojiExtension;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
+use Tempest\Highlight\CommonMark\HighlightExtension;
 
 class CommonMarkdownConverter extends MarkdownConverter
 {
-    private const LANGUAGES = [
-        "css",
-        "ini",
-        "javascript",
-        "json",
-        "apache",
-        "less",
-        "markdown",
-        "php",
-        "python",
-        "scss",
-        "bash",
-        "sql",
-        "typescript",
-        "twig",
-        "xml",
-        "yaml",
-    ];
-
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $environment = new Environment(
@@ -51,7 +31,7 @@ class CommonMarkdownConverter extends MarkdownConverter
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
         $environment->addExtension(new EmojiExtension(EmojiDataProvider::full()));
-        $environment->addRenderer(FencedCode::class, new FencedCodeRenderer(self::LANGUAGES));
+        $environment->addExtension(new HighlightExtension());
 
         parent::__construct($environment);
     }
