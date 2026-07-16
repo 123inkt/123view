@@ -42,11 +42,9 @@ class GitRepositoryService
     {
         try {
             return $this->circuitBreaker->execute(fn() => $this->tryGetRepository($repository));
+        } catch (RepositoryException $exception) {
+            throw $exception;
         } catch (Throwable $exception) {
-            if ($exception instanceof RepositoryException) {
-                throw $exception;
-            }
-
             throw new RepositoryException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
