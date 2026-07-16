@@ -84,11 +84,11 @@ class GitLogCommandBuilderTest extends AbstractTestCase
                     '--remotes',
                     '--topo-order',
                     '--patch',
-                    '--diff-algorithm="foobar"',
-                    '--decorate="tree"',
-                    '--format="format"',
-                    '--since="2021-10-18T21:05:00+02:00"',
-                    '--until="2021-10-18T22:05:00+02:00"',
+                    '--diff-algorithm=foobar',
+                    '--decorate=tree',
+                    '--format=format',
+                    '--since=2021-10-18T21:05:00+02:00',
+                    '--until=2021-10-18T22:05:00+02:00',
                     '--no-merges',
                     '--reverse',
                     '--date-order',
@@ -103,6 +103,11 @@ class GitLogCommandBuilderTest extends AbstractTestCase
     public function testCommand(): void
     {
         static::assertSame('log', $this->builder->command());
+    }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
     }
 
     public function testToString(): void

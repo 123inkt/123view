@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Add;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\Add\GitAddCommandBuilder;
 use DR\Review\Service\Git\Add\GitAddService;
 use DR\Review\Service\Git\CacheableGitRepositoryService;

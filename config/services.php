@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
-use CzProject\GitPhp\Git;
-use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
@@ -76,7 +74,6 @@ use DR\Review\ViewModelProvider\Appender\Review\FileTreeViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\ReviewSummaryViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\RevisionViewModelAppender;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
-use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -174,9 +171,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(JBDiff::class);
     $services->set(CssToInlineStyles::class);
     $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_TITLE)%']);
-    $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+
+    // Register Git
     $services->set(ParserHasFailedFormatter::class);
     $services->set(RuleNotificationTokenGenerator::class)->arg('$appSecret', '%env(APP_SECRET)%');
     $services->set(UserSettingType::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
@@ -192,10 +190,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(RevisionPatternMatcher::class)
         ->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%')
         ->arg('$matchingGroups', '%env(CODE_REVIEW_MATCHING_GROUPS)%');
-
-    // Register Git
-    $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
-    $services->set(Git::class)->arg('$runner', service(CliRunner::class));
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);

@@ -5,20 +5,16 @@ namespace DR\Review\Service\Parser;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Exception\ParseException;
-use DR\Review\Git\LineReader;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Utils\Assert;
 use Throwable;
 
-class DiffFileParser
+readonly class DiffFileParser
 {
-    private const PATTERN = '/^@@ -(\d+)(?:,\d+)? \\+(\d+)(?:,\d+)? @@.*$/m';
+    private const string PATTERN = '/^@@ -(\d+)(?:,\d+)? \\+(\d+)(?:,\d+)? @@.*$/m';
 
-    private UnifiedBlockParser $blockParser;
-
-    public function __construct(UnifiedBlockParser $blockParser)
+    public function __construct(private UnifiedBlockParser $blockParser)
     {
-        $this->blockParser = $blockParser;
     }
 
     /**

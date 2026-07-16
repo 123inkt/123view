@@ -39,4 +39,9 @@ class GitAddCommandBuilderTest extends AbstractTestCase
     {
         static::assertSame('git add .', (string)$this->builder->setPath('.'));
     }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
 }

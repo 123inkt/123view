@@ -49,6 +49,11 @@ class GitFetchCommandBuilder implements GitCommandBuilderInterface
         return 'fetch';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */

@@ -45,4 +45,9 @@ class GitCleanCommandBuilderTest extends AbstractTestCase
             (string)$this->builder->force()->skipIgnoreRules()->recurseDirectories()
         );
     }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
 }
