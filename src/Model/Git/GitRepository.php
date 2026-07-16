@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Git;
+namespace DR\Review\Model\Git;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderInterface;
@@ -15,13 +15,13 @@ use Symfony\Component\Stopwatch\Stopwatch;
 /**
  * @codeCoverageIgnore
  */
-class GitRepository
+readonly class GitRepository
 {
     public function __construct(
-        private readonly LoggerInterface $gitLogger,
-        private readonly Repository $repository,
-        private readonly ?Stopwatch $stopWatch,
-        private readonly string $repositoryPath
+        private LoggerInterface $gitLogger,
+        private Repository $repository,
+        private ?Stopwatch $stopWatch,
+        private string $repositoryPath
     ) {
     }
 

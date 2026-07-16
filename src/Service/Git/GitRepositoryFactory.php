@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git;
 
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 

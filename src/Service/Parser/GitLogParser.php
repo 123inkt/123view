@@ -5,22 +5,15 @@ namespace DR\Review\Service\Parser;
 
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 use DR\Review\Service\CommitHydrator;
 use DR\Review\Service\Git\Log\FormatPatternFactory;
 use Exception;
 
-class GitLogParser
+readonly class GitLogParser
 {
-    private CommitHydrator       $hydrator;
-    private FormatPatternFactory $patternFactory;
-    private DiffParser           $diffParser;
-
-    public function __construct(FormatPatternFactory $patternFactory, CommitHydrator $hydrator, DiffParser $diffParser)
+    public function __construct(private FormatPatternFactory $patternFactory, private CommitHydrator $hydrator, private DiffParser $diffParser)
     {
-        $this->hydrator       = $hydrator;
-        $this->patternFactory = $patternFactory;
-        $this->diffParser     = $diffParser;
     }
 
     public function getPattern(): string

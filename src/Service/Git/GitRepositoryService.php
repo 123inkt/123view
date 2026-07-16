@@ -6,7 +6,7 @@ namespace DR\Review\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Repository\RepositoryUtil;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Util\MessageSanitizer;
 use DR\Review\Utility\CircuitBreaker;
 use Psr\Log\LoggerInterface;

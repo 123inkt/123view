@@ -5,7 +5,7 @@ namespace DR\Review\Service\Git;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 
 class CacheableGitRepositoryService extends GitRepositoryService
 {

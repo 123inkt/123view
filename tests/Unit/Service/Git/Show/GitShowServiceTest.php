@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Show;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Log\FormatPatternFactory;

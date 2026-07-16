@@ -1,20 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Git;
+namespace DR\Review\Service\Parser;
 
 class LineReader
 {
     private int $cursor = 0;
-    /** @var string[] */
-    private array $lines;
 
     /**
      * @param string[] $lines
      */
-    public function __construct(array $lines)
+    public function __construct(private readonly array $lines)
     {
-        $this->lines = $lines;
     }
 
     public static function fromString(string $string): LineReader
