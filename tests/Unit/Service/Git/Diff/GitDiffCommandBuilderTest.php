@@ -72,7 +72,7 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
                     'hash',
                     '--unified=5',
                     '--numstat',
-                    '--diff-algorithm="foobar"'
+                    '--diff-algorithm=foobar'
                 ]
             ),
             $actual
@@ -82,6 +82,11 @@ class GitDiffCommandBuilderTest extends AbstractTestCase
     public function testCommand(): void
     {
         static::assertSame('diff', $this->builder->command());
+    }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
     }
 
     public function testToString(): void

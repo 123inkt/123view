@@ -6,7 +6,7 @@ namespace DR\Review\Service\Git\Log;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;

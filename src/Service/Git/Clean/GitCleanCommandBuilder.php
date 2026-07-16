@@ -42,6 +42,11 @@ class GitCleanCommandBuilder implements GitCommandBuilderInterface
         return 'clean';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */

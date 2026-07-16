@@ -39,7 +39,6 @@
         "ext-mbstring": "*",
         "ext-zlib": "*",
         "api-platform/core": "^4.2",
-        "czproject/git-php": "^4.5",
         "digitalrevolution/jbdiff": "^1.2",
         "digitalrevolution/symfony-console-validation": "^2.0",
         "digitalrevolution/symfony-request-validation": "^3.0",

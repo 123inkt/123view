@@ -25,6 +25,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createCheckout();
         $this->factory->createCherryPick();
         $this->factory->createClean();
+        $this->factory->createClone();
         $this->factory->createCommit();
         $this->factory->createDiff();
         $this->factory->createDiffTree();

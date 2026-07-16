@@ -8,15 +8,20 @@ abstract class AbstractGitCommandBuilder implements GitCommandBuilderInterface
     /** @var array<string, string> */
     protected array $arguments = [];
 
-    public function __construct(private readonly string $git, private readonly string $command)
+    public function __construct(string $git, private readonly string $command)
     {
-        $this->arguments['app']     = $this->git;
+        $this->arguments['app']     = $git;
         $this->arguments['command'] = $this->command;
     }
 
     public function command(): string
     {
         return $this->command;
+    }
+
+    public function requiresShell(): bool
+    {
+        return false;
     }
 
     /**

@@ -59,4 +59,9 @@ class GitDiffTreeCommandBuilderTest extends AbstractTestCase
     {
         static::assertSame('git diff-tree', (string)$this->builder);
     }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
 }

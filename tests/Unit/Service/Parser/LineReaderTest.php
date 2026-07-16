@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\Git;
+namespace DR\Review\Tests\Unit\Service\Parser;
 
-use DR\Review\Git\LineReader;
+use DR\Review\Service\Parser\LineReader;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 

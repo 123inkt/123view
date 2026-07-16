@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Branch;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Branch\GitRemoteBranchParser;
