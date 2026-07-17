@@ -97,7 +97,9 @@ class PersistentCherryPickStrategy implements ReviewDiffStrategyInterface
 
             // add conflicts to the repository
             $modifiedFiles = $this->statusService->getModifiedFiles($repository);
-            $this->addService->add($repository, ...$modifiedFiles);
+            if (count($modifiedFiles) > 0) {
+                $this->addService->add($repository, ...$modifiedFiles);
+            }
 
             // commit changes
             $this->commitService->commit($repository);
