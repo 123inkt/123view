@@ -5,13 +5,12 @@ namespace DR\Review\Tests\Unit\Service\Git\Add;
 
 use DR\Review\Service\Git\Add\GitAddCommandBuilder;
 use DR\Review\Tests\AbstractTestCase;
+use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(GitAddCommandBuilder::class)]
 class GitAddCommandBuilderTest extends AbstractTestCase
 {
-    private const DEFAULTS = ['git', 'add'];
-
     private GitAddCommandBuilder $builder;
 
     protected function setUp(): void
@@ -20,14 +19,20 @@ class GitAddCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitAddCommandBuilder('git');
     }
 
-    public function testBuildDefaults(): void
+    public function testBuildWithoutPathsShouldThrowException(): void
     {
-        static::assertSame(self::DEFAULTS, $this->builder->build());
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('At least one path is required for git add.');
+
+        $this->builder->build();
     }
 
-    public function testSetPath(): void
+    public function testPaths(): void
     {
-        static::assertSame(['git', 'add', '.'], $this->builder->setPath('.')->build());
+        static::assertSame(
+            ['git', 'add', '--', 'first path', '-second-path'],
+            $this->builder->paths('first path', '-second-path')->build()
+        );
     }
 
     public function testCommand(): void
@@ -37,7 +42,7 @@ class GitAddCommandBuilderTest extends AbstractTestCase
 
     public function testToString(): void
     {
-        static::assertSame('git add .', (string)$this->builder->setPath('.'));
+        static::assertSame('git add -- first second', (string)$this->builder->paths('first', 'second'));
     }
 
     public function testRequiresShell(): void
