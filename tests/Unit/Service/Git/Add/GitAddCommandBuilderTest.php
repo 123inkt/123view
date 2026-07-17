@@ -19,7 +19,7 @@ class GitAddCommandBuilderTest extends AbstractTestCase
         $this->builder = new GitAddCommandBuilder('git');
     }
 
-    public function testBuildWithoutPathsShouldThrowException(): void
+    public function testBuildWithoutPathsShouldThrow(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('At least one path is required for git add.');
