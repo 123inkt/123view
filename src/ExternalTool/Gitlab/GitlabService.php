@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace DR\Review\ExternalTool\Gitlab;
 
 use DR\Review\Service\Api\Gitlab\GitlabApi;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
 class GitlabService
 {
-    public function __construct(private readonly GitlabApi $gitlabApi, private readonly CacheInterface $gitlabCache)
+    public function __construct(private readonly GitlabApi $gitlabApi, #[Target('gitlabCache')] private readonly CacheInterface $gitlabCache)
     {
     }
 

@@ -56,7 +56,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
         ];
 
         if ($exception instanceof PartialDenormalizationException) {
-            $context['errors'] = array_map(static fn($error) => $error->getMessage(), $exception->getErrors());
+            $context['errors'] = array_map(static fn($error) => $error->getMessage(), $exception->getNotNormalizableValueErrors());
         }
 
         $this->logger?->error('Failed to denormalize {eventType}', $context);
