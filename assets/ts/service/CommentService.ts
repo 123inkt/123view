@@ -39,23 +39,24 @@ export default class CommentService {
     }
 
     public deleteComment(url: string): Promise<void> {
-        return this.client.delete(url);
+        return this.client.delete(url).then(() => undefined);
     }
 
     public changeCommentState(url: string, state: string): Promise<void> {
-        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(() => undefined);
     }
 
     public addCommentReaction(url: string, message: string): Promise<void> {
-        return this.client.post(url, message, {headers: {'Content-Type': 'application/text'}});
+        return this.client.post(url, message, {headers: {'Content-Type': 'application/text'}}).then(() => undefined);
     }
 
     public deleteCommentReply(url: string): Promise<void> {
-        return this.client.delete(url);
+        return this.client.delete(url).then(() => undefined);
     }
 
     public setCommentVisibility(visibility: string): Promise<void> {
-        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+            .then(() => undefined);
     }
 
     public getCommentCount(reviewId: number): Promise<CommentCount> {
