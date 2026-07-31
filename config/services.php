@@ -12,6 +12,11 @@ use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\Form\User\UserSettingType;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentReplyUpdated;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -214,12 +219,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CodeCoverageParserProvider::class)->arg('$parsers', tagged_iterator('code_coverage_parser', 'key'));
 
     // Mail Notification Message handlers
-    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
+    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentAdded::class]);
+    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentUpdated::class]);
+    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentReplyAdded::class]);
+    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentReplyUpdated::class]);
+    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentResolved::class]);
+    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', 'key')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
 
     // Webhook handlers
