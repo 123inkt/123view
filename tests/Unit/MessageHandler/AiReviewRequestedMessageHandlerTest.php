@@ -40,7 +40,8 @@ class AiReviewRequestedMessageHandlerTest extends AbstractTestCase
             $this->codeReview,
             $this->messagePublisher,
             $this->urlGenerator,
-            $this->translator
+            $this->translator,
+            'claude-sonnet-4-5-20250929'
         );
         $this->handler->setLogger($this->logger);
     }
@@ -113,6 +114,28 @@ class AiReviewRequestedMessageHandlerTest extends AbstractTestCase
         $this->translator->expects($this->once())->method('trans')
             ->with('ai.review.completed.no.files')
             ->willReturn('No files to review');
+        $this->urlGenerator->expects($this->once())
+            ->method('generate')
+            ->with(ReviewController::class, ['review' => $review], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('https://example.com/review/123');
+        $this->messagePublisher->expects($this->once())
+            ->method('publishToReview')
+            ->with(self::isInstanceOf(UpdateMessage::class), $review);
+
+        ($this->handler)($message);
+    }
+
+    public function testInvokeReviewFoundWithPartialResult(): void
+    {
+        $message = new AiReviewRequested(123);
+        $review  = new CodeReview();
+        $review->setId(123);
+
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->codeReview->expects($this->once())->method('startCodeReview')->with($review)->willReturn(AiCodeReviewService::RESULT_PARTIAL);
+        $this->translator->expects($this->once())->method('trans')
+            ->with('ai.review.completed.partial')
+            ->willReturn('The AI code review completed for some files only');
         $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review], UrlGeneratorInterface::ABSOLUTE_URL)

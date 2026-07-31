@@ -27,6 +27,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
         private readonly MessagePublisher $messagePublisher,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TranslatorInterface $translator,
+        private readonly string $aiModelName,
     ) {
     }
 
@@ -47,6 +48,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
         $resultMessage = match ($success) {
             AiCodeReviewService::RESULT_FAILURE  => $this->translator->trans('ai.review.completed.failure'),
             AiCodeReviewService::RESULT_NO_FILES => $this->translator->trans('ai.review.completed.no.files'),
+            AiCodeReviewService::RESULT_PARTIAL  => $this->translator->trans('ai.review.completed.partial'),
             default                              => $this->translator->trans('ai.review.completed.success'),
         };
 
@@ -57,7 +59,7 @@ class AiReviewRequestedMessageHandler implements LoggerAwareInterface
             0,
             (int)$review->getId(),
             'ai-review-completed',
-            'Claude Sonnet 4.5',
+            $this->aiModelName,
             $resultMessage,
             Http::new($url)
         );

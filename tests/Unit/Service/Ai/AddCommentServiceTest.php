@@ -15,6 +15,7 @@ use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Ai\AddCommentService;
+use DR\Review\Service\Ai\Comment\AiCommentDeduplicationChecker;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Tests\AbstractTestCase;
@@ -26,11 +27,12 @@ class AddCommentServiceTest extends AbstractTestCase
 {
     use ClockTestTrait;
 
-    private CodeReviewRepository&MockObject      $repository;
-    private CommentRepository&MockObject         $commentRepository;
-    private CodeReviewRevisionService&MockObject $reviewRevisionService;
-    private LineReferenceFactory&MockObject      $lineReferenceFactory;
-    private AddCommentService                    $service;
+    private CodeReviewRepository&MockObject          $repository;
+    private CommentRepository&MockObject             $commentRepository;
+    private CodeReviewRevisionService&MockObject      $reviewRevisionService;
+    private LineReferenceFactory&MockObject          $lineReferenceFactory;
+    private AiCommentDeduplicationChecker&MockObject $deduplicationChecker;
+    private AddCommentService                        $service;
 
     public function setUp(): void
     {
@@ -39,12 +41,14 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->commentRepository     = $this->createMock(CommentRepository::class);
         $this->reviewRevisionService = $this->createMock(CodeReviewRevisionService::class);
         $this->lineReferenceFactory  = $this->createMock(LineReferenceFactory::class);
+        $this->deduplicationChecker  = $this->createMock(AiCommentDeduplicationChecker::class);
         $this->service               = new AddCommentService(
             $this->logger,
             $this->repository,
             $this->commentRepository,
             $this->reviewRevisionService,
-            $this->lineReferenceFactory
+            $this->lineReferenceFactory,
+            $this->deduplicationChecker
         );
     }
 
@@ -54,6 +58,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->commentRepository->expects($this->never())->method('save');
         $this->reviewRevisionService->expects($this->never())->method('getRevisions');
+        $this->deduplicationChecker->expects($this->never())->method('isDuplicate');
 
         $this->expectException(CodeReviewNotFoundException::class);
         $this->service->addComment(new User(), 123, 'src/file.php', 10, 'comment', null);
@@ -74,10 +79,13 @@ class AddCommentServiceTest extends AbstractTestCase
             ->with($review, 'src/Service/Test.php', 25, 'abc123')
             ->willReturn($lineReference);
         $this->commentRepository->expects($this->once())->method('save')->with(self::isInstanceOf(Comment::class), true);
+        $this->deduplicationChecker->expects($this->once())->method('isDuplicate')->willReturn(false);
 
         $this->service->addComment($user, 456, 'src/Service/Test.php', 25, 'Needs refactoring', null);
-
-        static::assertCount(1, $review->getComments());
+        static::assertCount(
+            1,
+            $review->getComments()
+        );
         $comment = $review->getComments()->first();
         static::assertInstanceOf(Comment::class, $comment);
         static::assertSame('src/Service/Test.php', $comment->getFilePath());
@@ -97,6 +105,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
+        $this->deduplicationChecker->expects($this->once())->method('isDuplicate')->willReturn(false);
 
         $this->service->addComment(new User(), 1, 'file.php', 5, 'Use this instead', 'return $value;');
 
@@ -115,6 +124,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
+        $this->deduplicationChecker->expects($this->once())->method('isDuplicate')->willReturn(false);
 
         $this->service->addComment(new User(), 1, 'file.php', 5, 'Just a comment', '');
 
@@ -133,6 +143,7 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
+        $this->deduplicationChecker->expects($this->once())->method('isDuplicate')->willReturn(false);
 
         $this->service->addComment(new User(), 1, 'file.php', 5, '**Note:**bold text', null);
 
@@ -151,12 +162,35 @@ class AddCommentServiceTest extends AbstractTestCase
         $this->repository->expects($this->once())->method('find')->willReturn($review);
         $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
         $this->commentRepository->expects($this->once())->method('save');
+        $this->deduplicationChecker->expects($this->once())->method('isDuplicate')->willReturn(false);
 
-        $this->service->addComment(new User(), 1, 'file.php', 5, 'comment', null);
+        $result = $this->service->addComment(new User(), 1, 'file.php', 5, 'comment', null);
 
+        static::assertTrue($result);
         $comment = $review->getComments()->first();
         static::assertInstanceOf(Comment::class, $comment);
         static::assertSame(self::now()->getTimestamp(), $comment->getCreateTimestamp());
         static::assertSame(self::now()->getTimestamp(), $comment->getUpdateTimestamp());
+    }
+
+    public function testAddCommentShouldSkipDuplicateComment(): void
+    {
+        $repositoryEntity = new Repository();
+        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
+        $review           = new CodeReview()->setId(1);
+        $lineReference    = new LineReference();
+
+        $this->lineReferenceFactory->expects($this->once())->method('createFromReview')->willReturn($lineReference);
+        $this->repository->expects($this->once())->method('find')->willReturn($review);
+        $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
+        $this->deduplicationChecker->expects($this->once())->method('isDuplicate')->with($review, 'file.php', $lineReference, 'comment')->willReturn(
+            true
+        );
+        $this->commentRepository->expects($this->never())->method('save');
+
+        $result = $this->service->addComment(new User(), 1, 'file.php', 5, 'comment', null);
+
+        static::assertFalse($result);
+        static::assertCount(0, $review->getComments());
     }
 }

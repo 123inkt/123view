@@ -1,0 +1,108 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set form = editAiReviewReferenceModel.form %}
+    {% set reference = editAiReviewReferenceModel.reference %}
+
+    <h1 class="mb-4 mt-2">
+        {% if reference.hasId() %}
+            {{ 'edit.ai.review.reference'|trans }} #{{ reference.id }}
+        {% else %}
+            {{ 'add.ai.review.reference'|trans }}
+        {% endif %}
+    </h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.reference.name) }}
+    {{ form_row(form.reference.description) }}
+    {{ form_row(form.reference.enabled) }}
+    {{ form_row(form.reference.priority) }}
+    {{ form_end(form) }}
+
+    {% if reference.hasId() %}
+        <hr class="my-4">
+
+        <h2 class="h5">{{ 'ai.review.reference.sections'|trans }}</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'heading'|trans }}</th>
+                <th scope="col">{{ 'sort.order'|trans }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {%- for section in reference.sections -%}
+                <tr>
+                    <td>{{ section.heading }}</td>
+                    <td>{{ section.sortOrder }}</td>
+                    <td>
+                        <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferenceSectionController', {referenceId: reference.id, id: section.id}) }}"
+                           class="btn btn-success btn-sm">
+                            <i class="bi-pencil-square"></i>
+                        </a>
+                        <form method="POST" class="d-inline-block"
+                              action="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\DeleteAiReviewReferenceSectionController', {referenceId: reference.id, id: section.id}) }}"
+                                {{ stimulus_controller('component--confirm-submit') }}
+                              data-confirm-message="{{ 'are.you.sure.you.want.to.delete.this'|trans }}">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {%- endfor -%}
+            <tbody>
+        </table>
+        <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferenceSectionController', {referenceId: reference.id}) }}"
+           class="btn btn-outline-primary btn-sm">
+            <i class="bi-plus"></i>
+            {{ 'ai.review.reference.section.new'|trans }}
+        </a>
+
+        <h2 class="h5 mt-4">{{ 'ai.review.reference.matchers'|trans }}</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'file.pattern'|trans }}</th>
+                <th scope="col">{{ 'code.marker'|trans }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {%- for matcher in reference.matchers -%}
+                <tr>
+                    <td>{{ matcher.filePattern }}</td>
+                    <td>{{ matcher.codeMarker }}</td>
+                    <td>
+                        <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferenceMatcherController', {referenceId: reference.id, id: matcher.id}) }}"
+                           class="btn btn-success btn-sm">
+                            <i class="bi-pencil-square"></i>
+                        </a>
+                        <form method="POST" class="d-inline-block"
+                              action="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\DeleteAiReviewReferenceMatcherController', {referenceId: reference.id, id: matcher.id}) }}"
+                                {{ stimulus_controller('component--confirm-submit') }}
+                              data-confirm-message="{{ 'are.you.sure.you.want.to.delete.this'|trans }}">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {%- endfor -%}
+            <tbody>
+        </table>
+        <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferenceMatcherController', {referenceId: reference.id}) }}"
+           class="btn btn-outline-primary btn-sm">
+            <i class="bi-plus"></i>
+            {{ 'ai.review.reference.matcher.new'|trans }}
+        </a>
+    {% endif %}
+
+    <br><br>
+{% endblock %}

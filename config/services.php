@@ -106,6 +106,7 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
         ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
+        ->bind('$aiModelName', '%env(AI_AGENT_MODEL)%')
         ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
 
     // Register controllers

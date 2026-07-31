@@ -33,6 +33,18 @@
             </a>
         </li>
         <li>
+            <a class="dropdown-item"
+               href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewConfigurationController') }}">
+                {{- 'ai.review.instructions'|trans -}}
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item"
+               href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferencesController') }}">
+                {{- 'ai.review.references'|trans -}}
+            </a>
+        </li>
+        <li>
             <a class="dropdown-item" href="/log-viewer/">
                 {{- 'logs'|trans -}}
             </a>

@@ -36,7 +36,8 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
 
         $this->userRepository->expects($this->once())->method('find')->with(1)->willReturn($user);
         $this->commentService->expects($this->once())->method('addComment')
-            ->with($user, 456, 'src/Service/Test.php', 25, 'This needs refactoring', 'return $value;');
+            ->with($user, 456, 'src/Service/Test.php', 25, 'This needs refactoring', 'return $value;')
+            ->willReturn(true);
 
         $result = ($this->tool)(456, 'src/Service/Test.php', 25, 'This needs refactoring', 'return $value;');
         static::assertSame('Comment added successfully.', $result);
@@ -51,9 +52,24 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
 
         $this->userRepository->expects($this->once())->method('find')->with(1)->willReturn($user);
         $this->commentService->expects($this->once())->method('addComment')
-            ->with($user, 123, 'src/file.php', 10, 'comment message', null);
+            ->with($user, 123, 'src/file.php', 10, 'comment message', null)
+            ->willReturn(true);
 
         $result = ($this->tool)(123, 'src/file.php', 10, 'comment message', null);
         static::assertSame('Comment added successfully.', $result);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testInvokeShouldReturnSkippedMessageForDuplicateComment(): void
+    {
+        $user = new User()->setId(1);
+
+        $this->userRepository->expects($this->once())->method('find')->with(1)->willReturn($user);
+        $this->commentService->expects($this->once())->method('addComment')->willReturn(false);
+
+        $result = ($this->tool)(123, 'src/file.php', 10, 'comment message', null);
+        static::assertSame('Skipped: an equivalent comment already exists on this file and line.', $result);
     }
 }

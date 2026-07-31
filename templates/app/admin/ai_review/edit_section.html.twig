@@ -1,0 +1,24 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set form = editAiReviewReferenceSectionModel.form %}
+    {% set reference = editAiReviewReferenceSectionModel.reference %}
+    {% set section = editAiReviewReferenceSectionModel.section %}
+
+    <h1 class="mb-4 mt-2">
+        {% if section.hasId() %}
+            {{ 'edit.ai.review.reference'|trans }}: {{ reference.name }} / {{ section.heading }}
+        {% else %}
+            {{ 'ai.review.reference.section.new'|trans }}: {{ reference.name }}
+        {% endif %}
+    </h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.section.heading) }}
+    {{ form_row(form.section.content) }}
+    {{ form_row(form.section.sortOrder) }}
+    {{ form_end(form) }}
+{% endblock %}

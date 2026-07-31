@@ -11,6 +11,7 @@ use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
+use DR\Review\Message\Review\AiReviewCoverageIncomplete;
 use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
@@ -46,6 +47,7 @@ class CodeReviewActivityFormatter
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
         AiReviewRequested::NAME                  => 'timeline.review.ai_requested',
+        AiReviewCoverageIncomplete::NAME         => 'timeline.review.ai_coverage_incomplete',
         CommentAdded::NAME                       => 'timeline.comment.added',
         CommentReplyAdded::NAME                  => 'timeline.comment.reply.added',
         CommentRemoved::NAME                     => 'timeline.comment.removed',
@@ -112,6 +114,13 @@ class CodeReviewActivityFormatter
         // add message
         if ($activity->getEventName() === CommentReplyAdded::NAME) {
             $params[] = new Variable('file', basename((string)$activity->getDataValue('file')));
+        }
+
+        // add coverage counts for incomplete AI review coverage
+        if ($activity->getEventName() === AiReviewCoverageIncomplete::NAME) {
+            $params[] = new Variable('reviewedCount', (string)$activity->getDataValue('reviewedCount'));
+            $params[] = new Variable('skippedCount', (string)$activity->getDataValue('skippedCount'));
+            $params[] = new Variable('failedCount', (string)$activity->getDataValue('failedCount'));
         }
 
         return $params;

@@ -1,0 +1,19 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set form = editAiReviewConfigurationModel.form %}
+
+    <h1 class="mb-4 mt-2">{{ 'ai.review.instructions'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <p class="text-muted">
+        These instructions supplement the built-in AI code review prompt; they cannot override its safety or workflow rules. Leave empty to use
+        the default prompt only.
+    </p>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.configuration.instructions) }}
+    {{ form_end(form) }}
+{% endblock %}

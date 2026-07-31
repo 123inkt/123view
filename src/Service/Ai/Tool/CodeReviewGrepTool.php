@@ -17,10 +17,12 @@ use Throwable;
 #[AsTool(
     'search',
     'Searches for a pattern in the codebase of the project and returns a snippet of the matching lines. Only searches in the git repository of the ' .
-    'specified code review and will not find any dependencies.'
+    'specified code review and will not find any dependencies. Output is capped at 20000 characters to protect the context window.'
 )]
 class CodeReviewGrepTool
 {
+    public const int MAX_CHARACTERS = 20_000;
+
     public function __construct(
         private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
@@ -66,6 +68,11 @@ class CodeReviewGrepTool
             );
             return 'No results found';
         }
+
+        if (strlen($result) > self::MAX_CHARACTERS) {
+            return substr($result, 0, self::MAX_CHARACTERS) . "\n\n[...truncated: narrow your pattern or context for more specific results...]";
+        }
+
         return $result;
     }
 }

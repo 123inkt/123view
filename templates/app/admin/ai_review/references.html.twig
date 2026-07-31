@@ -1,0 +1,58 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h1 class="mb-4 mt-2">{{ 'ai.review.references'|trans }}</h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'id'|trans }}</th>
+            <th scope="col">{{ 'enabled'|trans }}</th>
+            <th scope="col">{{ 'name'|trans }}</th>
+            <th scope="col">{{ 'priority'|trans }}</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {%- for reference in aiReviewReferencesViewModel.references -%}
+            <tr>
+                <td>{{ reference.id }}</td>
+                <td>
+                    {% if reference.enabled %}
+                        <i class="bi bi-check-circle-fill text-success" title="{{ 'active'|trans }}"></i>
+                    {% else %}
+                        <i class="bi bi-check-circle-fill text-secondary" title="{{ 'active'|trans }}"></i>
+                    {% endif %}
+                </td>
+                <td>{{ reference.name }}</td>
+                <td>{{ reference.priority }}</td>
+                <td>
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferenceController', {id: reference.id}) }}"
+                       class="btn btn-success btn-sm">
+                        <i class="bi-pencil-square"></i>
+                    </a>
+
+                    <form method="POST" class="d-inline-block"
+                          action="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\DeleteAiReviewReferenceController', {id: reference.id}) }}"
+                            {{ stimulus_controller('component--confirm-submit') }}
+                          data-confirm-message="{{ 'are.you.sure.you.want.to.delete.this'|trans }}">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {%- endfor -%}
+        <tbody>
+    </table>
+
+    <a href="{{ path('DR\\Review\\Controller\\App\\Admin\\Ai\\AiReviewReferenceController') }}" class="btn btn-outline-primary">
+        <i class="bi-plus"></i>
+        {{ 'add.ai.review.reference'|trans }}
+    </a>
+
+    <br><br>
+{% endblock %}

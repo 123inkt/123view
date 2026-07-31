@@ -1,0 +1,23 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    {% set form = editAiReviewReferenceMatcherModel.form %}
+    {% set reference = editAiReviewReferenceMatcherModel.reference %}
+    {% set matcher = editAiReviewReferenceMatcherModel.matcher %}
+
+    <h1 class="mb-4 mt-2">
+        {% if matcher.hasId() %}
+            {{ 'edit.ai.review.reference'|trans }}: {{ reference.name }} / {{ matcher.filePattern }}
+        {% else %}
+            {{ 'ai.review.reference.matcher.new'|trans }}: {{ reference.name }}
+        {% endif %}
+    </h1>
+
+    {% include 'app/flash/flashes.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.matcher.filePattern) }}
+    {{ form_row(form.matcher.codeMarker) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -33,7 +33,7 @@ readonly class CodeReviewAddCommentTool
     ): string {
         $user = Assert::notNull($this->userRepository->find(Assert::notNull($this->userId)));
 
-        $this->commentService->addComment(
+        $added = $this->commentService->addComment(
             $user,
             $codeReviewId,
             $filepath,
@@ -42,6 +42,6 @@ readonly class CodeReviewAddCommentTool
             $codeSuggestion
         );
 
-        return 'Comment added successfully.';
+        return $added ? 'Comment added successfully.' : 'Skipped: an equivalent comment already exists on this file and line.';
     }
 }
