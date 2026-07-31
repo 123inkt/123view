@@ -82,8 +82,8 @@ class PersistentCherryPickStrategyTest extends AbstractTestCase
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
         $this->cherryPickService->expects($this->once())->method('cherryPickRevisions')->with([$revision])->willReturn($cherryPickResultA);
         $this->cherryPickService->expects($this->once())->method('cherryPickContinue')->with($repository)->willReturn($cherryPickResultB);
-        $this->statusService->expects($this->once())->method('getModifiedFiles')->with()->willReturn(['modified-file']);
-        $this->addService->expects($this->once())->method('add')->with($repository, 'modified-file');
+        $this->statusService->expects($this->once())->method('getModifiedFiles')->with()->willReturn(['modified-file', 'path with spaces']);
+        $this->addService->expects($this->once())->method('add')->with($repository, 'modified-file', 'path with spaces');
         $this->commitService->expects($this->once())->method('commit')->with($repository);
         $this->resetService->expects($this->once())->method('resetSoft')->with($repository, 'hash~');
         $this->diffService->expects($this->once())->method('getBundledDiffFromRevisions')->with($repository, $options)->willReturn([$file]);

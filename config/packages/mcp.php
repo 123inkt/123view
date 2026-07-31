@@ -11,6 +11,7 @@ return App::config([
         'description'       => 'A code review and commit notification application',
         'client_transports' => ['http' => true],
         'discovery'         => ['scan_dirs' => ['src/Service/Ai/Mcp', 'src/Service/Ai/Tool']],
-        'instructions'      => 'This server provides access to code reviews'
+        'instructions'      => 'This server provides access to code reviews',
+        'http'              => ['allowed_hosts' => false]
     ],
 ]);

@@ -19,9 +19,9 @@ class GitAddService
     /**
      * @throws RepositoryException
      */
-    public function add(Repository $repository, string $path): void
+    public function add(Repository $repository, string ...$paths): void
     {
-        $commandBuilder = $this->commandFactory->createAdd()->setPath($path);
+        $commandBuilder = $this->commandFactory->createAdd()->paths(...$paths);
 
         // create branch
         $this->repositoryService->getRepository($repository)->execute($commandBuilder);
