@@ -12,6 +12,7 @@ use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -21,7 +22,7 @@ class CacheableHighlightedFileService implements LoggerAwareInterface
 
     private readonly AdapterInterface&CacheInterface $revisionCache;
 
-    public function __construct(CacheInterface $revisionCache, private readonly HighlightedFileService $fileService)
+    public function __construct(#[Target('revisionCache')] CacheInterface $revisionCache, private readonly HighlightedFileService $fileService)
     {
         $this->revisionCache = Assert::isInstanceOf($revisionCache, AdapterInterface::class);
     }

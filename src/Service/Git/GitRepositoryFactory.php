@@ -6,11 +6,12 @@ namespace DR\Review\Service\Git;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Model\Git\GitRepository;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 readonly class GitRepositoryFactory
 {
-    public function __construct(private LoggerInterface $gitLogger, private ?Stopwatch $stopwatch)
+    public function __construct(#[Target('gitLogger')] private LoggerInterface $gitLogger, private ?Stopwatch $stopwatch)
     {
     }
 

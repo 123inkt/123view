@@ -10,6 +10,7 @@ use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Util\MessageSanitizer;
 use DR\Review\Utility\CircuitBreaker;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -23,7 +24,7 @@ class GitRepositoryService
     private readonly CircuitBreaker $circuitBreaker;
 
     public function __construct(
-        private readonly LoggerInterface $gitLogger,
+        #[Target('gitLogger')] private readonly LoggerInterface $gitLogger,
         private readonly Filesystem $filesystem,
         private readonly ?Stopwatch $stopwatch,
         private readonly GitRepositoryLocationService $locationService,
