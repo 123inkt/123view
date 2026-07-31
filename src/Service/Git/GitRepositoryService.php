@@ -80,9 +80,7 @@ readonly class GitRepositoryService
         if ($credential !== null && $credential->getAuthType() === AuthenticationType::SSH_KEY) {
             $this->sshSetupService->withSshAuth(
                 $credential,
-                function (array $env) use ($repository, $repositoryDir, $tempDir): void {
-                    $this->cloneService->clone($repository, $repository->getUrl(), $tempDir, $env);
-                }
+                fn(array $env): null => $this->cloneService->clone($repository, $repository->getUrl(), $tempDir, $env)
             );
         } else {
             $this->cloneService->clone($repository, RepositoryUtil::getUriWithCredentials($repository), $tempDir);
