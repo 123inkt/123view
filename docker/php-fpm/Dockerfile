@@ -32,7 +32,7 @@ RUN pie install apcu/apcu && \
     docker-php-ext-enable apcu && \
     docker-php-ext-enable amqp && \
     docker-php-source delete && \
-    docker-php-ext-install opcache pdo_mysql intl
+    docker-php-ext-install opcache pdo_mysql intl sodium
 
 ## Copy php default configuration
 COPY ./docker/php-fpm/conf/default.ini /usr/local/etc/php/conf.d/default.ini

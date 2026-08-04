@@ -6,7 +6,8 @@ namespace DR\Review\Doctrine\Type;
 class AuthenticationType extends AbstractEnumType
 {
     public const BASIC_AUTH = 'basic-auth';
+    public const SSH_KEY    = 'ssh-key';
 
     public const string TYPE   = 'enum_authentication_type';
-    public const array VALUES = [self::BASIC_AUTH];
+    public const array VALUES = [self::BASIC_AUTH, self::SSH_KEY];
 }
