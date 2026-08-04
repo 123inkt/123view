@@ -15,6 +15,7 @@ RUN apt-get update \
     git \
     libcurl4 \
     libicu-dev \
+    libtool \
     librabbitmq-dev \
     netcat-openbsd \
     openssl \
@@ -24,9 +25,10 @@ RUN apt-get update \
     zip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pecl channel-update pecl.php.net && \
-    pecl install apcu && \
-    pecl install amqp && \
+COPY --from=ghcr.io/php/pie:bin /pie /usr/bin/pie
+
+RUN pie install apcu/apcu && \
+    pie install php-amqp/php-amqp && \
     docker-php-ext-enable apcu && \
     docker-php-ext-enable amqp && \
     docker-php-source delete && \
@@ -71,8 +73,8 @@ FROM base AS dev
 ENV APP_ENV=dev
 WORKDIR /app
 
-RUN pecl install pcov && \
-    pecl install xdebug && \
+RUN pie install pecl/pcov && \
+    pie install xdebug/xdebug && \
     docker-php-ext-enable pcov && \
     docker-php-ext-enable xdebug
 

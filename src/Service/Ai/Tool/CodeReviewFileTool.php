@@ -12,6 +12,7 @@ use Mcp\Exception\ToolCallException;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 #[McpTool(
@@ -27,7 +28,7 @@ use Throwable;
 class CodeReviewFileTool
 {
     public function __construct(
-        private ?LoggerInterface $aiLogger,
+        #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly CodeReviewRevisionService $revisionService,
         private readonly LockableGitShowService $gitShowService,

@@ -11,6 +11,7 @@ use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\Component\Clock\ClockAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 class AiCodeReviewService
@@ -22,7 +23,7 @@ class AiCodeReviewService
     public const int RESULT_FAILURE  = 3;
 
     public function __construct(
-        private ?LoggerInterface $aiLogger,
+        #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
         private readonly CodeReviewDiffService $diffService,
         private readonly AgentInterface $agent,
         private readonly AiCodeReviewFileFilter $fileFilter,

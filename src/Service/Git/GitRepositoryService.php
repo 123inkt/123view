@@ -11,6 +11,8 @@ use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\Clone\GitCloneService;
 use DR\Review\Service\Git\Ssh\GitSshSetupService;
 use DR\Review\Utility\CircuitBreaker;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
@@ -22,7 +24,7 @@ readonly class GitRepositoryService
     private CircuitBreaker $circuitBreaker;
 
     public function __construct(
-        private Filesystem $filesystem,
+        #[Target('gitLogger')] private Filesystem $filesystem,
         private GitRepositoryLocationService $locationService,
         private GitRepositoryFactory $repositoryFactory,
         private GitRepositoryLockManager $lockManager,

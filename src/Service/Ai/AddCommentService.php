@@ -15,13 +15,14 @@ use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Clock\ClockAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 class AddCommentService
 {
     use ClockAwareTrait;
 
     public function __construct(
-        private ?LoggerInterface $aiLogger,
+        #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
         private readonly CommentRepository $commentRepository,
         private readonly CodeReviewRevisionService $reviewRevisionService,
