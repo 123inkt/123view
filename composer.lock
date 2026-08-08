@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "api-platform/core",
-            "version": "v4.3.8",
+            "version": "v4.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "920a5d15f05423cc2c4a503b4b775c0259706673"
+                "reference": "1510da462dfdabdef87b53827b7dd629483518c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/920a5d15f05423cc2c4a503b4b775c0259706673",
-                "reference": "920a5d15f05423cc2c4a503b4b775c0259706673",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/1510da462dfdabdef87b53827b7dd629483518c4",
+                "reference": "1510da462dfdabdef87b53827b7dd629483518c4",
                 "shasum": ""
             },
             "require": {
@@ -220,9 +220,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.3.8"
+                "source": "https://github.com/api-platform/core/tree/v4.3.12"
             },
-            "time": "2026-06-04T12:05:57+00:00"
+            "time": "2026-06-13T05:15:21+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
