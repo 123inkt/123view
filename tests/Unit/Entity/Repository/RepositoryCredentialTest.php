@@ -7,6 +7,7 @@ use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Entity\Repository\Credential\BasicAuthCredential;
 use DR\Review\Entity\Repository\Credential\CredentialInterface;
+use DR\Review\Entity\Repository\Credential\SshKeyCredential;
 use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
@@ -59,5 +60,20 @@ class RepositoryCredentialTest extends AbstractTestCase
         $repositoryCredential = new RepositoryCredential();
         $repositoryCredential->setAuthType('foobar');
         $repositoryCredential->getCredentials();
+    }
+
+    public function testGetSetSshKeyCredentials(): void
+    {
+        $key                  = "-----BEGIN OPENSSH PRIVATE KEY-----\ndata\n-----END OPENSSH PRIVATE KEY-----";
+        $credentials          = new SshKeyCredential($key);
+        $repositoryCredential = new RepositoryCredential();
+        $repositoryCredential->setCredentials($credentials);
+
+        static::assertSame(AuthenticationType::SSH_KEY, $repositoryCredential->getAuthType());
+        static::assertSame($key, $repositoryCredential->getValue());
+
+        $newCredentials = $repositoryCredential->getCredentials();
+        static::assertInstanceOf(SshKeyCredential::class, $newCredentials);
+        static::assertSame($key, $newCredentials->getPrivateKey());
     }
 }

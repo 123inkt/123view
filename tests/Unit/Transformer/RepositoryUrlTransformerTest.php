@@ -38,6 +38,12 @@ class RepositoryUrlTransformerTest extends AbstractTestCase
         static::assertSame('https://example.com/foobar?query#anchor', $result);
     }
 
+    public function testTransformSshKeepsUserInfo(): void
+    {
+        $result = $this->transformer->transform(Uri::new('ssh://git@github.com/path/repo.git'));
+        static::assertSame('ssh://git@github.com/path/repo.git', $result);
+    }
+
     public function testReverseTransformNull(): void
     {
         static::assertNull($this->transformer->reverseTransform(null));
@@ -48,6 +54,18 @@ class RepositoryUrlTransformerTest extends AbstractTestCase
         $data = 'https://sherlock:holmes@example.com/foobar?query#anchor';
         $uri  = $this->transformer->reverseTransform($data);
         static::assertSame('https://example.com/foobar?query#anchor', (string)$uri);
+    }
+
+    public function testReverseTransformSshUrl(): void
+    {
+        $uri = $this->transformer->reverseTransform('ssh://git@github.com/path/repo.git');
+        static::assertSame('ssh://git@github.com/path/repo.git', (string)$uri);
+    }
+
+    public function testReverseTransformScpNormalizesToSsh(): void
+    {
+        $uri = $this->transformer->reverseTransform('git@github.com:path/to/repo.git');
+        static::assertSame('ssh://git@github.com/path/to/repo.git', (string)$uri);
     }
 
     public function testReverseTransformFailure(): void
