@@ -6,7 +6,6 @@ namespace DR\Review\Service\Git\Show;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use Exception;
 use Throwable;
