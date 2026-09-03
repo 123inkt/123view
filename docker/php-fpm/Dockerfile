@@ -15,6 +15,7 @@ RUN apt-get update \
     git \
     libcurl4 \
     libicu-dev \
+    libsodium-dev \
     libtool \
     librabbitmq-dev \
     netcat-openbsd \
