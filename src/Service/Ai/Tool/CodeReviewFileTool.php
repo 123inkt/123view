@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Symfony\Component\DependencyInjection\Attribute\Target;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Throwable;
 
 #[McpTool(
@@ -54,6 +55,13 @@ class CodeReviewFileTool
 
         $this->aiLogger?->info('CodeReviewFileTool: Reading file "{filepath}" in review {id}', ['id' => $codeReviewId, 'filepath' => $filepath]);
 
-        return $this->gitShowService->getFileContents($revision, $filepath);
+        try {
+            return $this->gitShowService->getFileContents($revision, $filepath);
+        } catch (ProcessFailedException $exception) {
+            if (str_contains($exception->getMessage(), ' does not exist in ')) {
+                throw new ToolCallException('Path not found: ' . $filepath);
+            }
+            throw $exception;
+        }
     }
 }
