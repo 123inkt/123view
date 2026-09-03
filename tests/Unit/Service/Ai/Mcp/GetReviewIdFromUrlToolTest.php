@@ -82,8 +82,8 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
         $review->setState(CodeReviewStateType::OPEN);
         $review->setRepository($repository);
 
-        $this->repositoryRepository->method('findOneBy')->with(['name' => 'my-repo'])->willReturn($repository);
-        $this->reviewRepository->method('findOneBy')->with(['repository' => $repository, 'projectId' => 99])->willReturn($review);
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'my-repo'])->willReturn($repository);
+        $this->reviewRepository->expects($this->once())->method('findOneBy')->with(['repository' => $repository, 'projectId' => 99])->willReturn($review);
 
         $result = ($this->tool)('/app/my-repo/review/cr-99');
 
