@@ -12,6 +12,6 @@ return App::config([
                     'store' => 'memory',
                 ],
             ],
-        ]
+        ],
     ],
 ]);
