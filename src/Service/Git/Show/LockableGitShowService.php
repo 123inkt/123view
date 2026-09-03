@@ -9,6 +9,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\GitRepositoryLockManager;
 use Exception;
+use Throwable;
 
 class LockableGitShowService
 {
@@ -25,7 +26,7 @@ class LockableGitShowService
     }
 
     /**
-     * @throws RepositoryException
+     * @throws Throwable
      */
     public function getFileContents(Revision $revision, string $file, bool $binary = false): string
     {
