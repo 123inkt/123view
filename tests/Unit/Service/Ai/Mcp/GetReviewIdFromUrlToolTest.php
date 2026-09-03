@@ -83,7 +83,9 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'my-repo'])->willReturn($repository);
-        $this->reviewRepository->expects($this->once())->method('findOneBy')->with(['repository' => $repository, 'projectId' => 99])->willReturn($review);
+        $this->reviewRepository->expects($this->once())->method('findOneBy')
+            ->with(['repository' => $repository, 'projectId' => 99])
+            ->willReturn($review);
 
         $result = ($this->tool)('/app/my-repo/review/cr-99');
 

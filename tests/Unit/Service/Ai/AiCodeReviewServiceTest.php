@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Agent\Execution\Execution;
 use Symfony\AI\Platform\Message\MessageBag;
 use Throwable;
 
@@ -45,7 +46,9 @@ class AiCodeReviewServiceTest extends AbstractTestCase
 
         $this->diffService->expects($this->once())->method('getDiff')->with($review)->willReturn([$diffFile]);
         $this->fileFilter->expects($this->once())->method('__invoke')->with($diffFile)->willReturn(true);
-        $this->agent->expects($this->once())->method('call')->with(self::isInstanceOf(MessageBag::class));
+        $this->agent->expects($this->once())->method('call')
+            ->with(self::isInstanceOf(MessageBag::class))
+            ->willReturn(new Execution(static function() {}));
 
         $result = $this->service->startCodeReview($review);
 
