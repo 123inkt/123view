@@ -72,7 +72,7 @@ class CodeReviewFileToolTest extends AbstractTestCase
         static::assertSame('file contents', $result);
     }
 
-    public function testInvokeShouldThrowExceptionWhenPathNotFound(): void
+    public function testInvokeShouldThrowException(): void
     {
         $revision = new Revision();
         $review   = new CodeReview();
@@ -96,7 +96,7 @@ class CodeReviewFileToolTest extends AbstractTestCase
         ($this->tool)(123, $filepath);
     }
 
-    public function testInvokeShouldRethrowProcessFailedExceptionForOtherErrors(): void
+    public function testInvokeShouldRethrowException(): void
     {
         $revision = new Revision();
         $review   = new CodeReview();
