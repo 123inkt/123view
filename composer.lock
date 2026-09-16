@@ -12182,20 +12182,20 @@
         },
         {
             "name": "digitalrevolution/phpunit-extensions",
-            "version": "v1.13.3",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/123inkt/phpunit-extensions.git",
-                "reference": "d7daefe4e91e311416d06a23bfa21e7b68021878"
+                "reference": "1f8925874b25ff0c0857d9de4324aebdd66b4f7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/d7daefe4e91e311416d06a23bfa21e7b68021878",
-                "reference": "d7daefe4e91e311416d06a23bfa21e7b68021878",
+                "url": "https://api.github.com/repos/123inkt/phpunit-extensions/zipball/1f8925874b25ff0c0857d9de4324aebdd66b4f7a",
+                "reference": "1f8925874b25ff0c0857d9de4324aebdd66b4f7a",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1",
+                "php": "^8.3",
                 "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0 || ^13.0"
             },
             "conflict": {
@@ -12220,6 +12220,7 @@
                 "symfony/security-core": "^6.0||^7.0||^8.0",
                 "symfony/twig-bundle": "^6.0||^7.0||^8.0",
                 "symfony/validator": "^6.0||^7.0||^8.0",
+                "tecnickcom/tc-lib-pdf": "^8.73.6",
                 "tecnickcom/tcpdf": "^6.0"
             },
             "suggest": {
@@ -12229,7 +12230,8 @@
                 "symfony/framework-bundle": "Symfony framework bundle is required for the AbstractControllerTestCase",
                 "symfony/security-core": "Symfony security component is required for testing authentication/authorization related methods",
                 "symfony/twig-bundle": "Symfony twig bundle is required to test rendering templates/forms",
-                "tecnickcom/tcpdf": "TCPDF is required for PdfTestTrait"
+                "tecnickcom/tc-lib-pdf": "tc-lib-pdf is required for PdfTestTrait when using the modern PDF engine",
+                "tecnickcom/tcpdf": "TCPDF is required for PdfTestTrait when using the legacy PDF engine"
             },
             "type": "library",
             "extra": {
@@ -12254,9 +12256,9 @@
             "description": "A library for phpunit utility and support classes",
             "support": {
                 "issues": "https://github.com/123inkt/phpunit-extensions/issues",
-                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.13.3"
+                "source": "https://github.com/123inkt/phpunit-extensions/tree/v1.14.0"
             },
-            "time": "2026-03-06T15:30:27+00:00"
+            "time": "2026-09-15T15:23:27+00:00"
         },
         {
             "name": "digitalrevolution/phpunit-file-coverage-inspection",
