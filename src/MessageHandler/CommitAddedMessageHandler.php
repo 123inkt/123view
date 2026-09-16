@@ -49,7 +49,9 @@ class CommitAddedMessageHandler implements LoggerAwareInterface
         $revisions = $this->revisionRepository->saveAll($repository, $revisions);
 
         foreach ($revisions as $revision) {
-            $this->bus->dispatch(new NewRevisionMessage($revision->getId()));
+            if ($revision->hasId()) {
+                $this->bus->dispatch(new NewRevisionMessage($revision->getId()));
+            }
         }
     }
 }
