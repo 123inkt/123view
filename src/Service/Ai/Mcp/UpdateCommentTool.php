@@ -9,6 +9,7 @@ use DR\Review\Security\Voter\CommentVoter;
 use Mcp\Capability\Attribute\McpTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
@@ -18,6 +19,8 @@ use Throwable;
     'Authorization: only allowed to updated own comments')]
 readonly class UpdateCommentTool
 {
+    use ClockAwareTrait;
+
     public function __construct(private CommentRepository $commentRepository, private Security $security)
     {
     }
@@ -38,6 +41,7 @@ readonly class UpdateCommentTool
         }
 
         $comment->setMessage($message);
+        $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
 
         return 'Comment updated';
