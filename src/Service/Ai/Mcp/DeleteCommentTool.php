@@ -25,10 +25,8 @@ readonly class DeleteCommentTool
     /**
      * @throws Throwable
      */
-    public function __invoke(
-        #[Schema(description: 'The id of the comment to update', minimum: 1)] int $commentId,
-        #[Schema(description: 'The comment text to set, must be valid markdown')] string $message,
-    ): string {
+    public function __invoke(#[Schema(description: 'The id of the comment to update', minimum: 1)] int $commentId): string
+    {
         $comment = $this->commentRepository->find($commentId);
         if ($comment === null) {
             throw new CommentNotFoundException($commentId);

@@ -19,7 +19,7 @@ class DeleteCommentToolTest extends AbstractTestCase
 {
     private CommentRepository&MockObject $commentRepository;
     private Security&MockObject          $security;
-    private DeleteCommentTool             $tool;
+    private DeleteCommentTool            $tool;
 
     protected function setUp(): void
     {
@@ -35,7 +35,7 @@ class DeleteCommentToolTest extends AbstractTestCase
         $this->security->expects($this->never())->method('isGranted');
 
         $this->expectException(CommentNotFoundException::class);
-        ($this->tool)(123, 'unused message');
+        ($this->tool)(123);
     }
 
     public function testInvokeThrowsWhenUserCannotDeleteComment(): void
@@ -46,7 +46,7 @@ class DeleteCommentToolTest extends AbstractTestCase
         $this->commentRepository->expects($this->never())->method('remove');
 
         $this->expectException(AccessDeniedHttpException::class);
-        ($this->tool)(123, 'unused message');
+        ($this->tool)(123);
     }
 
     public function testInvokeDeletesComment(): void
@@ -56,6 +56,6 @@ class DeleteCommentToolTest extends AbstractTestCase
         $this->security->expects($this->once())->method('isGranted')->with(CommentVoter::DELETE, $comment)->willReturn(true);
         $this->commentRepository->expects($this->once())->method('remove')->with($comment, true);
 
-        static::assertSame('Comment deleted successfully', ($this->tool)(123, 'unused message'));
+        static::assertSame('Comment deleted successfully', ($this->tool)(123));
     }
 }

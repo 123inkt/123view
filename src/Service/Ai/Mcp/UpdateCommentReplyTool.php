@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Mcp;
 
-use DR\Review\Exception\Ai\CommentNotFoundException;
+use DR\Review\Exception\Ai\CommentReplyNotFoundException;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Voter\CommentReplyVoter;
 use Mcp\Capability\Attribute\McpTool;
@@ -28,7 +28,7 @@ readonly class UpdateCommentReplyTool
     ): string {
         $reply = $this->commentReplyRepository->find($replyId);
         if ($reply === null) {
-            throw new CommentNotFoundException($replyId);
+            throw new CommentReplyNotFoundException($replyId);
         }
         if ($this->security->isGranted(CommentReplyVoter::EDIT, $reply) === false) {
             throw new AccessDeniedHttpException();

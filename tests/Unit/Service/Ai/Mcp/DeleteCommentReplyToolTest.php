@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
 use DR\Review\Entity\Review\CommentReply;
-use DR\Review\Exception\Ai\CommentNotFoundException;
+use DR\Review\Exception\Ai\CommentReplyNotFoundException;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Service\Ai\Mcp\DeleteCommentReplyTool;
@@ -34,7 +34,8 @@ class DeleteCommentReplyToolTest extends AbstractTestCase
         $this->commentReplyRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->security->expects($this->never())->method('isGranted');
 
-        $this->expectException(CommentNotFoundException::class);
+        $this->expectException(CommentReplyNotFoundException::class);
+        $this->expectExceptionMessage('Comment reply not found: 123');
         ($this->tool)(123);
     }
 
