@@ -18,6 +18,13 @@ readonly class GetCommentRepliesTool
     }
 
     /**
+     * @return array<int, array{
+     *     replyId: int,
+     *     commentId: int,
+     *     message: string,
+     *     author: array{userId: int, name: string, email: string},
+     *     createdAt: string
+     * }>
      * @throws Throwable
      */
     public function __invoke(#[Schema(description: 'The id of the comment to list replies for', minimum: 1)] int $commentId): array
@@ -28,20 +35,17 @@ readonly class GetCommentRepliesTool
         }
 
         return array_map(
-            static function (CommentReply $reply) {
-                return [
-                    'replyId'   => $reply->getId(),
-                    'commentId' => $reply->getComment()->getId(),
-                    'message'   => $reply->getMessage(),
-                    'state'     => $reply->getState(),
-                    'author'    => [
-                        'userId' => $reply->getUser()->getId(),
-                        'name'   => $reply->getUser()->getName(),
-                        'email'  => $reply->getUser()->getEmail(),
-                    ],
-                    'createdAt' => date('c', $reply->getCreateTimestamp()),
-                ];
-            },
+            static fn(CommentReply $reply): array => [
+                'replyId'   => $reply->getId(),
+                'commentId' => $reply->getComment()->getId(),
+                'message'   => $reply->getMessage(),
+                'author'    => [
+                    'userId' => $reply->getUser()->getId(),
+                    'name'   => $reply->getUser()->getName(),
+                    'email'  => $reply->getUser()->getEmail(),
+                ],
+                'createdAt' => date('c', $reply->getCreateTimestamp()),
+            ],
             $comment->getReplies()->toArray()
         );
     }
