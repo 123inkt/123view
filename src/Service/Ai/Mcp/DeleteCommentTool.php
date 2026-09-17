@@ -13,10 +13,10 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 #[McpTool(
-    'update_comment',
-    'Update the contents of a comment. Review id must match the id of the review of the comment id. ' .
-    'Authorization: only allowed to updated own comments')]
-readonly class UpdateCommentTool
+    'delete_comment',
+    'Delete a comment. Review id must match the id of the review of the comment id. ' .
+    'Authorization: only allowed to deleted own comments')]
+readonly class DeleteCommentTool
 {
     public function __construct(private CommentRepository $commentRepository, private Security $security)
     {
@@ -33,13 +33,12 @@ readonly class UpdateCommentTool
         if ($comment === null) {
             throw new CommentNotFoundException($commentId);
         }
-        if ($this->security->isGranted(CommentVoter::EDIT, $comment) === false) {
+        if ($this->security->isGranted(CommentVoter::DELETE, $comment) === false) {
             throw new AccessDeniedHttpException();
         }
 
-        $comment->setMessage($message);
-        $this->commentRepository->save($comment, true);
+        $this->commentRepository->remove($comment, true);
 
-        return 'Comment updated';
+        return 'Comment deleted successfully';
     }
 }
