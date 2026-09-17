@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Mcp;
 
+use DR\Review\Entity\User\User;
 use DR\Review\Exception\Ai\CommentReplyNotFoundException;
+use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Voter\CommentReplyVoter;
+use DR\Utils\Assert;
 use Mcp\Capability\Attribute\McpTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 #[McpTool('update_comment_reply', 'Update the contents of a comment reply. Authorization: only allowed to updated own replies')]
@@ -18,8 +22,11 @@ readonly class UpdateCommentReplyTool
 {
     use ClockAwareTrait;
 
-    public function __construct(private CommentReplyRepository $commentReplyRepository, private Security $security)
-    {
+    public function __construct(
+        private CommentReplyRepository $commentReplyRepository,
+        private MessageBusInterface $bus,
+        private Security $security
+    ) {
     }
 
     /**
@@ -37,9 +44,19 @@ readonly class UpdateCommentReplyTool
             throw new AccessDeniedHttpException();
         }
 
+        $originalMessage = $reply->getMessage();
         $reply->setMessage($message);
         $reply->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentReplyRepository->save($reply, true);
+
+        $this->bus->dispatch(
+            new CommentReplyUpdated(
+                $reply->getComment()->getReview()->getId(),
+                $reply->getId(),
+                Assert::isInstanceOf($this->security->getUser(), User::class)->getId(),
+                $originalMessage
+            )
+        );
 
         return 'Comment reply updated';
     }
