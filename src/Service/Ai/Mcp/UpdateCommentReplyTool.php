@@ -22,11 +22,8 @@ readonly class UpdateCommentReplyTool
 {
     use ClockAwareTrait;
 
-    public function __construct(
-        private CommentReplyRepository $commentReplyRepository,
-        private MessageBusInterface $bus,
-        private Security $security
-    ) {
+    public function __construct(private CommentReplyRepository $commentReplyRepository, private MessageBusInterface $bus, private Security $security)
+    {
     }
 
     /**

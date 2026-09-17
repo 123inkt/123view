@@ -16,7 +16,8 @@ use Throwable;
 #[McpTool(
     'update_comment',
     'Update the contents of a comment. Review id must match the id of the review of the comment id. ' .
-    'Authorization: only allowed to updated own comments')]
+    'Authorization: only allowed to updated own comments'
+)]
 readonly class UpdateCommentTool
 {
     use ClockAwareTrait;

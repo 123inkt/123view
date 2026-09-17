@@ -19,7 +19,8 @@ use Throwable;
 #[McpTool(
     'delete_comment',
     'Delete a comment. Review id must match the id of the review of the comment id. ' .
-    'Authorization: only allowed to deleted own comments')]
+    'Authorization: only allowed to deleted own comments'
+)]
 readonly class DeleteCommentTool
 {
     public function __construct(
