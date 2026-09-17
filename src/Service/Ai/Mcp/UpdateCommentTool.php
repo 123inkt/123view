@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Ai\Mcp;
 
-use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Exception\Ai\CommentNotFoundException;
-use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Voter\CommentVoter;
 use Mcp\Capability\Attribute\McpTool;
@@ -14,28 +12,23 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
-#[McpTool('update_comment', 'Update the contents of a comment. Review id must match the id of the review of the comment id.')]
+#[McpTool(
+    'update_comment',
+    'Update the contents of a comment. Review id must match the id of the review of the comment id. ' .
+    'Authorization: only allowed to updated own replies')]
 readonly class UpdateCommentTool
 {
-    public function __construct(
-        private CodeReviewRepository $reviewRepository,
-        private CommentRepository $commentRepository,
-        private Security $security,
-    ) {
+    public function __construct(private CommentRepository $commentRepository, private Security $security)
+    {
     }
 
     /**
      * @throws Throwable
      */
     public function __invoke(
-        #[Schema(description: 'The id of the code review the comment belongs to', minimum: 1)] int $codeReviewId,
         #[Schema(description: 'The id of the comment to update', minimum: 1)] int $commentId,
         #[Schema(description: 'The comment text to set, must be valid markdown')] string $message,
     ): string {
-        $review = $this->reviewRepository->find($codeReviewId);
-        if ($review === null) {
-            throw new CodeReviewNotFoundException($codeReviewId);
-        }
         $comment = $this->commentRepository->find($commentId);
         if ($comment === null) {
             throw new CommentNotFoundException($commentId);
