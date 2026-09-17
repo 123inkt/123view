@@ -49,7 +49,7 @@ class DeleteCommentReplyToolTest extends AbstractTestCase
         ($this->tool)(123);
     }
 
-    public function testInvokeThrowsWhenUserCannotDeleteReply(): void
+    public function testInvokeDeleteDenied(): void
     {
         $reply = new CommentReply()->setId(123);
         $this->commentReplyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);

@@ -50,7 +50,7 @@ class DeleteCommentToolTest extends AbstractTestCase
         ($this->tool)(123);
     }
 
-    public function testInvokeThrowsWhenUserCannotDeleteComment(): void
+    public function testInvokeCommentDeleteDenied(): void
     {
         $comment = new Comment()->setId(123);
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
@@ -76,7 +76,7 @@ class DeleteCommentToolTest extends AbstractTestCase
         static::assertSame('Comment deleted successfully', ($this->tool)(123));
     }
 
-    public function testInvokeDeletesCommentAndDispatchesReplyRemovalEvents(): void
+    public function testInvokeDeletesWithReplyEvents(): void
     {
         $comment = new Comment()->setId(123);
         $replyOne = new CommentReply()->setId(1);

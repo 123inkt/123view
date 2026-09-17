@@ -38,7 +38,7 @@ class UpdateCommentToolTest extends AbstractTestCase
         ($this->tool)(123, 'Updated message');
     }
 
-    public function testInvokeThrowsWhenUserCannotEditComment(): void
+    public function testInvokeEditDenied(): void
     {
         $comment = new Comment()->setId(123)->setMessage('Original message');
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);

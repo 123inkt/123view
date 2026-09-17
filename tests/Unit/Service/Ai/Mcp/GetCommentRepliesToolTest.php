@@ -35,7 +35,7 @@ class GetCommentRepliesToolTest extends AbstractTestCase
         ($this->tool)(123);
     }
 
-    public function testInvokeReturnsEmptyArrayWhenCommentHasNoReplies(): void
+    public function testInvokeReturnsNoReplies(): void
     {
         $comment = new Comment()->setId(123);
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
