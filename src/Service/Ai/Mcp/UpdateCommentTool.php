@@ -29,7 +29,7 @@ readonly class UpdateCommentTool
      */
     public function __invoke(
         #[Schema(description: 'The id of the code review the comment belongs to', minimum: 1)] int $codeReviewId,
-        #[Schema(description: 'The id of the comment to resolve', minimum: 1)] int $commentId,
+        #[Schema(description: 'The id of the comment to update', minimum: 1)] int $commentId,
         #[Schema(description: 'The comment text to set, must be valid markdown')] string $message,
     ): string {
         $review = $this->reviewRepository->find($codeReviewId);
