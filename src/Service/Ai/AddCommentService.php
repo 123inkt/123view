@@ -30,7 +30,7 @@ class AddCommentService
     ) {
     }
 
-    public function addComment(User $user, int $codeReviewId, string $filepath, int $lineNumber, string $message, ?string $codeSuggestion): void
+    public function addComment(User $user, int $codeReviewId, string $filepath, int $lineNumber, string $message, ?string $codeSuggestion): Comment
     {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {
@@ -65,5 +65,7 @@ class AddCommentService
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);
+
+        return $comment;
     }
 }

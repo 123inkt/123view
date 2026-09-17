@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\Ai\AddCommentService;
 use DR\Review\Service\Ai\Mcp\CodeReviewAddCommentTool;
@@ -36,10 +37,11 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
         $this->commentService->expects($this->once())->method('addComment')
-            ->with($user, 456, 'src/Service/Test.php', 25, 'Needs refactoring', 'return $value;');
+            ->with($user, 456, 'src/Service/Test.php', 25, 'Needs refactoring', 'return $value;')
+            ->willReturn(new Comment()->setId(789));
 
         $result = ($this->tool)(456, 'src/Service/Test.php', 25, 'Needs refactoring', 'return $value;');
-        static::assertSame('Comment added successfully.', $result);
+        static::assertSame(789, $result);
     }
 
     /**
@@ -51,9 +53,10 @@ class CodeReviewAddCommentToolTest extends AbstractTestCase
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
         $this->commentService->expects($this->once())->method('addComment')
-            ->with($user, 123, 'src/file.php', 10, 'comment message', null);
+            ->with($user, 123, 'src/file.php', 10, 'comment message', null)
+            ->willReturn(new Comment()->setId(321));
 
         $result = ($this->tool)(123, 'src/file.php', 10, 'comment message', null);
-        static::assertSame('Comment added successfully.', $result);
+        static::assertSame(321, $result);
     }
 }
