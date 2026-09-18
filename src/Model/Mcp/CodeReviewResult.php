@@ -9,7 +9,16 @@ readonly class CodeReviewResult
     /**
      * @codeCoverageIgnore Simple DTO
      */
-    public function __construct(public int $id, public string $title, public ?string $state, public string $reviewerState, public string $repository)
+    public function __construct(
+        public int $id,
+        public string $title,
+        public ?string $state,
+        public string $reviewerState,
+        public string $repository,
+        public ?string $hashStart = null,
+        public ?string $hashEnd = null,
+        public ?string $reviewType = null,
+    )
     {
     }
 }

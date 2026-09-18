@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
@@ -63,6 +65,8 @@ class GetCodeReviewToolTest extends AbstractTestCase
         $review->setCreateTimestamp(1000);
         $review->setUpdateTimestamp(2000);
         $review->setRepository($repository);
+        $review->addRevision((new Revision())->setCommitHash('first-hash'));
+        $review->addRevision((new Revision())->setCommitHash('last-hash'));
 
         $this->reviewRepository->expects($this->once())
             ->method('findByFilters')
@@ -76,8 +80,34 @@ class GetCodeReviewToolTest extends AbstractTestCase
             title        : 'Fix login bug',
             state        : CodeReviewStateType::OPEN,
             reviewerState: 'open',
-            repository   : 'My Repo'
+            repository   : 'My Repo',
+            hashStart    : 'first-hash',
+            hashEnd      : 'last-hash',
+            reviewType   : 'commit',
         );
         static::assertEquals($expected, $result);
+    }
+
+    public function testInvokeReturnsBranchReviewType(): void
+    {
+        $repository = new Repository();
+        $repository->setDisplayName('My Repo');
+
+        $review = new CodeReview();
+        $review->setId(123);
+        $review->setProjectId(42);
+        $review->setTitle('Fix login bug');
+        $review->setDescription('');
+        $review->setState(CodeReviewStateType::OPEN);
+        $review->setType(CodeReviewType::BRANCH);
+        $review->setCreateTimestamp(1000);
+        $review->setUpdateTimestamp(2000);
+        $review->setRepository($repository);
+
+        $this->reviewRepository->expects($this->once())
+            ->method('findByFilters')
+            ->willReturn([$review]);
+
+        static::assertSame('branch', ($this->tool)()->reviewType);
     }
 }

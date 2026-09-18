@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
@@ -39,12 +40,19 @@ readonly class GetCodeReviewTool
             return null;
         }
 
+        $revisions    = $review->getRevisions();
+        $firstRevision = $revisions->first();
+        $lastRevision  = $revisions->last();
+
         return new CodeReviewResult(
             $review->getId(),
             $review->getTitle(),
             $review->getState(),
             $review->getReviewersState(),
-            $review->getRepository()->getDisplayName()
+            $review->getRepository()->getDisplayName(),
+            $firstRevision === false ? null : $firstRevision->getCommitHash(),
+            $lastRevision === false ? null : $lastRevision->getCommitHash(),
+            $review->getType() === CodeReviewType::BRANCH ? 'branch' : 'commit',
         );
     }
 }

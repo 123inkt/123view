@@ -58,6 +58,9 @@ class GetCodeReviewToolTest extends AbstractFunctionalTestCase
         static::assertIsArray($text);
         static::assertSame(CodeReviewFixtures::REVIEW_ID, $text['id']);
         static::assertSame('title', $text['title']);
+        static::assertArrayHasKey('hashStart', $text);
+        static::assertArrayHasKey('hashEnd', $text);
+        static::assertSame('commit', $text['reviewType']);
     }
 
     /**
