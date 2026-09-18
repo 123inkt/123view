@@ -11,6 +11,7 @@ use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use Mcp\Capability\Attribute\McpTool;
 use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
 
@@ -23,8 +24,11 @@ readonly class GetReviewIdFromUrlTool
 {
     private const string URL_PATTERN = '#^(?:https?://[^/]+)?/app/([a-z][a-z0-9-]*[a-z0-9])/review/cr-(\d+)#';
 
-    public function __construct(private RepositoryRepository $repositoryRepository, private CodeReviewRepository $reviewRepository)
-    {
+    public function __construct(
+        private RepositoryRepository $repositoryRepository,
+        private CodeReviewRepository $reviewRepository,
+        private CodeReviewRevisionService $revisionService,
+    ) {
     }
 
     public function __invoke(
@@ -48,10 +52,13 @@ readonly class GetReviewIdFromUrlTool
             throw new ReviewNotFoundForUrlException($repositoryName, $projectId);
         }
 
-        $firstRevision = $review->getRevisions()->first();
-        $lastRevision  = $review->getRevisions()->last();
-        if ($firstRevision === false || $lastRevision === false) {
-            throw new \LogicException('A code review must have at least one revision.');
+        if ($review->getType() === CodeReviewType::BRANCH) {
+            $revisions = $this->revisionService->getRevisions($review);
+            $firstHash = $revisions[0]?->getCommitHash() ?? '';
+            $lastHash  = $revisions[array_key_last($revisions)]?->getCommitHash() ?? '';
+        } else {
+            $firstHash = $review->getRevisions()->first()?->getCommitHash() ?? '';
+            $lastHash  = $review->getRevisions()->last()?->getCommitHash() ?? '';
         }
 
         return new CodeReviewResult(
@@ -60,8 +67,8 @@ readonly class GetReviewIdFromUrlTool
             $review->getState(),
             $review->getReviewersState(),
             $review->getRepository()->getDisplayName(),
-            $firstRevision->getCommitHash(),
-            $lastRevision->getCommitHash(),
+            $firstHash,
+            $lastHash,
             $review->getType() === CodeReviewType::BRANCH ? 'branch' : 'commit',
         );
     }
