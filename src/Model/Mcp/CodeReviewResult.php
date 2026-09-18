@@ -15,9 +15,9 @@ readonly class CodeReviewResult
         public ?string $state,
         public string $reviewerState,
         public string $repository,
-        public ?string $hashStart = null,
-        public ?string $hashEnd = null,
-        public ?string $reviewType = null,
+        public string $hashStart,
+        public string $hashEnd,
+        public string $reviewType,
     )
     {
     }

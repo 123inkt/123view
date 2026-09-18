@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
@@ -49,16 +50,27 @@ readonly class GetCodeReviewsTool
 
         return Arrays::mapAssoc(
             $reviews,
-            static fn(CodeReview $review) => [
-                $review->getId(),
-                new CodeReviewResult(
+            static function (CodeReview $review): array {
+                $firstRevision = $review->getRevisions()->first();
+                $lastRevision  = $review->getRevisions()->last();
+                if ($firstRevision === false || $lastRevision === false) {
+                    throw new \LogicException('A code review must have at least one revision.');
+                }
+
+                return [
                     $review->getId(),
-                    $review->getTitle(),
-                    $review->getState(),
-                    $review->getReviewersState(),
-                    $review->getRepository()->getDisplayName()
-                )
-            ],
+                    new CodeReviewResult(
+                        $review->getId(),
+                        $review->getTitle(),
+                        $review->getState(),
+                        $review->getReviewersState(),
+                        $review->getRepository()->getDisplayName(),
+                        $firstRevision->getCommitHash(),
+                        $lastRevision->getCommitHash(),
+                        $review->getType() === CodeReviewType::BRANCH ? 'branch' : 'commit',
+                    ),
+                ];
+            },
         );
     }
 }

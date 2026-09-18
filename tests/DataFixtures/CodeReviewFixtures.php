@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Utils\Assert;
 
@@ -35,6 +36,17 @@ class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
         $review->setCreateTimestamp(12346789);
         $review->setUpdateTimestamp(12346789);
         $review->setRepository($repository);
+        $revision = new Revision();
+        $revision->setRepository($repository);
+        $revision->setReview($review);
+        $revision->setTitle('title');
+        $revision->setDescription('description');
+        $revision->setAuthorName('Sherlock Holmes');
+        $revision->setAuthorEmail('sherlock@example.com');
+        $revision->setCommitHash('review-commit-hash');
+        $revision->setCreateTimestamp(12346789);
+        $review->addRevision($revision);
+        $manager->persist($revision);
         $manager->persist($review);
         $manager->flush();
     }

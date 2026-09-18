@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Exception\Ai\InvalidReviewUrlException;
 use DR\Review\Exception\Ai\RepositoryNotFoundException;
@@ -46,6 +47,7 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
         $review->setTitle('Fix login bug');
         $review->setState(CodeReviewStateType::OPEN);
         $review->setRepository($repository);
+        $review->addRevision((new Revision())->setCommitHash('commit-hash'));
 
         $this->repositoryRepository->expects($this->once())
             ->method('findOneBy')
@@ -64,7 +66,10 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
             title        : 'Fix login bug',
             state        : CodeReviewStateType::OPEN,
             reviewerState: $review->getReviewersState(),
-            repository   : 'My Repo'
+            repository   : 'My Repo',
+            hashStart    : 'commit-hash',
+            hashEnd      : 'commit-hash',
+            reviewType   : 'commit',
         );
         static::assertEquals($expected, $result);
     }
@@ -81,6 +86,7 @@ class GetReviewIdFromUrlToolTest extends AbstractTestCase
         $review->setTitle('Bare path');
         $review->setState(CodeReviewStateType::OPEN);
         $review->setRepository($repository);
+        $review->addRevision((new Revision())->setCommitHash('commit-hash'));
 
         $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'my-repo'])->willReturn($repository);
         $this->reviewRepository->expects($this->once())->method('findOneBy')

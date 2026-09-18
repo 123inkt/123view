@@ -7,6 +7,7 @@ namespace DR\Review\Service\Ai\Mcp;
 use DR\Review\Exception\Ai\InvalidReviewUrlException;
 use DR\Review\Exception\Ai\RepositoryNotFoundException;
 use DR\Review\Exception\Ai\ReviewNotFoundForUrlException;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Model\Mcp\CodeReviewResult;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Mcp\CodeReviewRepository;
@@ -47,12 +48,21 @@ readonly class GetReviewIdFromUrlTool
             throw new ReviewNotFoundForUrlException($repositoryName, $projectId);
         }
 
+        $firstRevision = $review->getRevisions()->first();
+        $lastRevision  = $review->getRevisions()->last();
+        if ($firstRevision === false || $lastRevision === false) {
+            throw new \LogicException('A code review must have at least one revision.');
+        }
+
         return new CodeReviewResult(
             $review->getId(),
             $review->getTitle(),
             $review->getState(),
             $review->getReviewersState(),
-            $review->getRepository()->getDisplayName()
+            $review->getRepository()->getDisplayName(),
+            $firstRevision->getCommitHash(),
+            $lastRevision->getCommitHash(),
+            $review->getType() === CodeReviewType::BRANCH ? 'branch' : 'commit',
         );
     }
 }

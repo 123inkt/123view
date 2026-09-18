@@ -40,9 +40,12 @@ readonly class GetCodeReviewTool
             return null;
         }
 
-        $revisions    = $review->getRevisions();
+        $revisions     = $review->getRevisions();
         $firstRevision = $revisions->first();
-        $lastRevision  = $revisions->last();
+        $lastRevision = $revisions->last();
+        if ($firstRevision === false || $lastRevision === false) {
+            throw new \LogicException('A code review must have at least one revision.');
+        }
 
         return new CodeReviewResult(
             $review->getId(),
@@ -50,8 +53,8 @@ readonly class GetCodeReviewTool
             $review->getState(),
             $review->getReviewersState(),
             $review->getRepository()->getDisplayName(),
-            $firstRevision === false ? null : $firstRevision->getCommitHash(),
-            $lastRevision === false ? null : $lastRevision->getCommitHash(),
+            $firstRevision->getCommitHash(),
+            $lastRevision->getCommitHash(),
             $review->getType() === CodeReviewType::BRANCH ? 'branch' : 'commit',
         );
     }

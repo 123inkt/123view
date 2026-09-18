@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Mcp\CodeReviewQuery;
 use DR\Review\Model\Mcp\CodeReviewResult;
@@ -70,6 +71,7 @@ class GetCodeReviewsToolTest extends AbstractTestCase
         $review->setCreateTimestamp(1000);
         $review->setUpdateTimestamp(2000);
         $review->setRepository($repository);
+        $review->addRevision((new Revision())->setCommitHash('commit-hash'));
 
         $this->reviewRepository->expects($this->once())
             ->method('findByFilters')
@@ -86,6 +88,9 @@ class GetCodeReviewsToolTest extends AbstractTestCase
             state:         CodeReviewStateType::OPEN,
             reviewerState: 'open',
             repository:    'My Repo',
+            hashStart:     'commit-hash',
+            hashEnd:       'commit-hash',
+            reviewType:    'commit',
         );
         static::assertEquals([123 => $expected], $result);
     }
