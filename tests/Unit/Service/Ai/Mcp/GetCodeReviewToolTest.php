@@ -108,6 +108,9 @@ class GetCodeReviewToolTest extends AbstractTestCase
             ->method('findByFilters')
             ->willReturn([$review]);
 
-        static::assertSame('branch', ($this->tool)()->reviewType);
+        $result = ($this->tool)();
+
+        static::assertInstanceOf(CodeReviewResult::class, $result);
+        static::assertSame('branch', $result->reviewType);
     }
 }
