@@ -35,7 +35,7 @@ readonly class GitRepository
      * @param int|null $timeout Process timeout in seconds; null means no timeout.
      * @throws ProcessFailedException
      */
-    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false, ?int $timeout = 300): string
+    public function execute(GitCommandBuilderInterface $commandBuilder, bool $errorOutputAsOutput = false, array $env = [], ?int $timeout = 300): string
     {
         $this->gitLogger->info(
             'Executing `{command}` for `{name}`',
@@ -59,7 +59,9 @@ readonly class GitRepository
                 $process = new Process($commandBuilder->build(), $this->repositoryPath);
                 $process->setTimeout($timeout);
             }
-
+            if (count($env) !== 0) {
+                $process->setEnv($env);
+            }
             $process->run();
         } finally {
             $this->stopWatch?->stop('git.' . $action);

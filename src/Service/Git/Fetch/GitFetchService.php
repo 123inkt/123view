@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Fetch;
 
+use DR\Review\Doctrine\Type\AuthenticationType;
 use DR\Review\Entity\Git\Fetch\BranchCreation;
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
+use DR\Review\Service\Git\Ssh\GitSshSetupService;
 use DR\Review\Service\Parser\Fetch\GitFetchParser;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -21,6 +23,7 @@ class GitFetchService implements LoggerAwareInterface
         private readonly GitCommandBuilderFactory $commandFactory,
         private readonly GitFetchParser $parser,
         private readonly GitRepositoryService $gitRepositoryService,
+        private readonly GitSshSetupService $sshSetupService,
     ) {
     }
 
@@ -35,7 +38,15 @@ class GitFetchService implements LoggerAwareInterface
         // fetch new revisions from remote
         $fetchCommand = $this->commandFactory->createFetch()->prune()->verbose()->noTags()->all();
 
-        $output = $gitRepository->execute($fetchCommand, true);
+        $credential = $repository->getCredential();
+        if ($credential !== null && $credential->getAuthType() === AuthenticationType::SSH_KEY) {
+            $output = $this->sshSetupService->withSshAuth(
+                $credential,
+                static fn(array $env): string => $gitRepository->execute($fetchCommand, true, $env)
+            );
+        } else {
+            $output = $gitRepository->execute($fetchCommand, true);
+        }
 
         // parse branch updates
         $changes = $this->parser->parse($output);

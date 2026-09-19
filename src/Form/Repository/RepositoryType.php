@@ -10,16 +10,16 @@ use DR\Review\Entity\Repository\RepositoryCredential;
 use DR\Review\Form\Repository\Property\GitlabProjectIdType;
 use DR\Review\Repository\Config\RepositoryCredentialRepository;
 use DR\Review\Transformer\RepositoryUrlTransformer;
+use DR\Review\Validator\Repository\CredentialCompatibilityConstraint;
+use DR\Review\Validator\Repository\RepositoryUrlConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @extends AbstractType<Repository>
@@ -49,8 +49,8 @@ class RepositoryType extends AbstractType
         $builder->add('mainBranchName', TextType::class, ['label' => 'main.branch', 'required' => true, 'attr' => ['maxlength' => 255]]);
         $builder->add(
             'url',
-            UrlType::class,
-            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new Assert\Url(requireTld: true)]
+            TextType::class,
+            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new RepositoryUrlConstraint()]
         );
         $builder->add(
             'credential',
@@ -113,6 +113,9 @@ class RepositoryType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Repository::class]);
+        $resolver->setDefaults([
+            'data_class'  => Repository::class,
+            'constraints' => [new CredentialCompatibilityConstraint()],
+        ]);
     }
 }
