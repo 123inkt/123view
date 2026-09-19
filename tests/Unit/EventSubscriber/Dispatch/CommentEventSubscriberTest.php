@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\EventSubscriber\Dispatch;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\Dispatch\CommentEventSubscriber;
@@ -128,9 +128,12 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentUpdatedMessageAndState(): void
     {
         $user    = new User()->setId(345);
-        $comment = new Comment()->setId(123)->setState(CommentStateType::RESOLVED);
+        $comment = new Comment()->setId(123)->setState(CommentStateEnum::Resolved);
         $event   = static::createStub(PreUpdateEventArgs::class);
-        $event->method('getEntityChangeSet')->willReturn(['message' => ['old', 'new'], 'state' => ['before', 'after']]);
+        $event->method('getEntityChangeSet')->willReturn([
+            'message' => ['old', 'new'],
+            'state'   => ['open', CommentStateEnum::Resolved]
+        ]);
 
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn($user);
         $this->messageFactory->expects($this->once())->method('createUpdated')->with($comment, $user, 'old');
@@ -144,9 +147,9 @@ class CommentEventSubscriberTest extends AbstractTestCase
     public function testCommentUnresolved(): void
     {
         $user    = new User()->setId(345);
-        $comment = new Comment()->setId(123)->setState(CommentStateType::OPEN);
+        $comment = new Comment()->setId(123)->setState(CommentStateEnum::Open);
         $event   = static::createStub(PreUpdateEventArgs::class);
-        $event->method('getEntityChangeSet')->willReturn(['state' => ['before', 'after']]);
+        $event->method('getEntityChangeSet')->willReturn(['state' => ['resolved', CommentStateEnum::Open]]);
 
         $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn($user);
         $this->messageFactory->expects($this->never())->method('createUpdated');

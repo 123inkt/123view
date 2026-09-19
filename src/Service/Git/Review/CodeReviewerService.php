@@ -5,9 +5,9 @@ namespace DR\Review\Service\Git\Review;
 
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 
@@ -35,7 +35,7 @@ class CodeReviewerService
         if ($this->reviewerStateResolver->getReviewersState($review) === CodeReviewerStateType::ACCEPTED) {
             // resolve all comments
             foreach ($review->getComments() as $comment) {
-                $comment->setState(CommentStateType::RESOLVED);
+                $comment->setState(CommentStateEnum::Resolved);
             }
             $review->setState(CodeReviewStateType::CLOSED);
         } else {

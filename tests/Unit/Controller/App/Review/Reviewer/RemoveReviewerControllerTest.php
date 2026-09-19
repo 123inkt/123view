@@ -10,10 +10,10 @@ use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Controller\App\Review\Reviewer\RemoveReviewerController;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\Webhook\ReviewEventService;
@@ -73,7 +73,7 @@ class RemoveReviewerControllerTest extends AbstractControllerTestCase
 
         ($this->controller)($review, $reviewerB);
 
-        static::assertSame(CommentStateType::RESOLVED, $comment->getState());
+        static::assertSame(CommentStateEnum::Resolved, $comment->getState());
         static::assertSame(CodeReviewStateType::CLOSED, $review->getState());
     }
 

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Exception\Ai\CommentNotFoundException;
 use DR\Review\Exception\Ai\CommentNotInReviewException;
 use DR\Review\Repository\Review\CommentRepository;
@@ -51,7 +51,7 @@ class ResolveCommentServiceTest extends AbstractTestCase
     public function testResolveAlreadyResolved(): void
     {
         $review  = new CodeReview()->setId(123);
-        $comment = new Comment()->setId(456)->setReview($review)->setState(CommentStateType::RESOLVED);
+        $comment = new Comment()->setId(456)->setReview($review)->setState(CommentStateEnum::Resolved);
 
         $this->commentRepository->expects($this->once())->method('find')->with(456)->willReturn($comment);
         $this->commentRepository->expects($this->never())->method('save');
@@ -63,13 +63,13 @@ class ResolveCommentServiceTest extends AbstractTestCase
     public function testResolveSetsStateAndFlushes(): void
     {
         $review  = new CodeReview()->setId(123);
-        $comment = new Comment()->setId(456)->setReview($review)->setState(CommentStateType::OPEN);
+        $comment = new Comment()->setId(456)->setReview($review)->setState(CommentStateEnum::Open);
 
         $this->commentRepository->expects($this->once())->method('find')->with(456)->willReturn($comment);
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $result = $this->service->resolve(456, 123);
         static::assertSame('Comment 456 resolved.', $result);
-        static::assertSame(CommentStateType::RESOLVED, $comment->getState());
+        static::assertSame(CommentStateEnum::Resolved, $comment->getState());
     }
 }

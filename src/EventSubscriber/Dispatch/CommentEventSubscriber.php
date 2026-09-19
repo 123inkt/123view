@@ -6,8 +6,8 @@ namespace DR\Review\EventSubscriber\Dispatch;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
@@ -30,7 +30,7 @@ use Symfony\Contracts\Service\ResetInterface;
  * @phpstan-type CommentChangeSet array{
  *     type?: array{0: string, 1: string},
  *     message?: array{0: string, 1: string},
- *     state?: array{0: string, 1: string}
+ *     state?: array{0: string, 1: CommentStateEnum}
  * }
  */
 #[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
@@ -103,7 +103,7 @@ class CommentEventSubscriber implements ResetInterface
             return;
         }
 
-        if ($comment->getState() === CommentStateType::RESOLVED) {
+        if ($comment->getState() === CommentStateEnum::Resolved) {
             $this->events[] = $this->messageFactory->createResolved($comment, $user);
         } else {
             $this->events[] = $this->messageFactory->createUnresolved($comment, $user);

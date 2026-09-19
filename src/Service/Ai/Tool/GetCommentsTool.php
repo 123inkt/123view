@@ -46,7 +46,7 @@ readonly class GetCommentsTool
                 return [
                     'commentId' => $comment->getId(),
                     'message'   => $comment->getMessage(),
-                    'state'     => $comment->getState(),
+                    'state'     => $comment->getState()->value,
                     'file'      => $lineReference->newPath ?? $lineReference->oldPath,
                     'line'      => $lineReference->lineAfter,
                     'author'    => [
