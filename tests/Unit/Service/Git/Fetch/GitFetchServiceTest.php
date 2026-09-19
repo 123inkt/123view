@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Fetch;
 
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;

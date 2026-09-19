@@ -30,13 +30,6 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
         $this->handler           = new CommentAddedMailNotificationHandler($this->mailService, $this->commentRepository);
     }
 
-    public function testAccepts(): void
-    {
-        $this->mailService->expects($this->never())->method('sendNewCommentMail');
-        $this->commentRepository->expects($this->never())->method('find');
-        static::assertSame(CommentAdded::class, CommentAddedMailNotificationHandler::accepts());
-    }
-
     /**
      * @throws Throwable
      */

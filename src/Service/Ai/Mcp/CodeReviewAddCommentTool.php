@@ -27,8 +27,8 @@ readonly class CodeReviewAddCommentTool
         #[Schema(description: 'The line number in the file to comment on', minimum: 1)] int $lineNumber,
         #[Schema(description: 'The comment text to add, must be valid markdown')] string $message,
         #[Schema(description: 'The code suggestion to include in the comment, must be valid markdown')] ?string $codeSuggestion
-    ): string {
-        $this->commentService->addComment(
+    ): int {
+        $comment = $this->commentService->addComment(
             Assert::isInstanceOf($this->security->getUser(), User::class),
             $codeReviewId,
             $filepath,
@@ -37,6 +37,6 @@ readonly class CodeReviewAddCommentTool
             $codeSuggestion
         );
 
-        return 'Comment added successfully.';
+        return $comment->getId();
     }
 }

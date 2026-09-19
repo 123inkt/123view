@@ -5,11 +5,11 @@ namespace DR\Review\Tests\Integration\Service\Parser\Unified;
 
 use DR\JBDiff\JBDiff;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
-use DR\Review\Git\LineReader;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetBundler;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineChangeSetDiffer;
 use DR\Review\Service\Git\Diff\Optimizer\DiffLineStateDeterminator;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
+use DR\Review\Service\Parser\LineReader;
 use DR\Review\Service\Parser\Unified\UnifiedBlockParser;
 use DR\Review\Service\Parser\Unified\UnifiedLineParser;
 use DR\Review\Tests\AbstractTestCase;

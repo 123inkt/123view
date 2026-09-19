@@ -106,7 +106,7 @@ class GetCodeReviewToolTest extends AbstractFunctionalTestCase
      */
     private function createMcpSession(): string
     {
-        $store   = static::getService(SessionStoreInterface::class, 'mcp.session.store');
+        $store   = static::getService(SessionStoreInterface::class, 'mcp.server.default.session.store');
 
         $session = new Session($store, Uuid::v4());
         $session->set('initialized', true);

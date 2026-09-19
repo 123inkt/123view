@@ -32,4 +32,9 @@ class GitGarbageCollectCommandBuilderTest extends AbstractTestCase
     {
         static::assertSame('git gc --aggressive --prune=now --quiet', (string)$this->builder->aggressive()->prune('now')->quiet());
     }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
 }

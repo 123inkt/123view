@@ -14,11 +14,11 @@ use Traversable;
  */
 class MailNotificationHandlerProvider
 {
-    /** @var MailNotificationHandlerInterface[] */
+    /** @var array<string, MailNotificationHandlerInterface> */
     private array $handlers;
 
     /**
-     * @param Traversable<MailNotificationHandlerInterface> $handlers
+     * @param Traversable<string, MailNotificationHandlerInterface> $handlers
      */
     public function __construct(Traversable $handlers)
     {

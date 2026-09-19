@@ -5,6 +5,7 @@ namespace DR\Review\Service\Api\Gitlab;
 
 use DR\Review\Model\Api\Gitlab\User;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -16,7 +17,7 @@ class Users
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly HttpClientInterface $gitlabClient,
+        #[Target('gitlabClient')] private readonly HttpClientInterface $gitlabClient,
         private readonly SerializerInterface $serializer
     ) {
     }

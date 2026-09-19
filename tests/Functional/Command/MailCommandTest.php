@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Command;
 
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Revision\RevisionFetchService;

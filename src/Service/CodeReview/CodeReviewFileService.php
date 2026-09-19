@@ -10,13 +10,14 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use RuntimeException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
 class CodeReviewFileService
 {
     public function __construct(
-        private readonly CacheInterface&AdapterInterface $revisionCache,
+        #[Target('revisionCache')] private readonly CacheInterface&AdapterInterface $revisionCache,
         private readonly DiffFinder $diffFinder,
         private readonly CodeReviewFileTreeService $fileTreeService
     ) {

@@ -68,21 +68,21 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
 
     public function since(DateTimeInterface $since): self
     {
-        $this->arguments['since'] = sprintf('--since="%s"', $since->format('c'));
+        $this->arguments['since'] = '--since=' . $since->format('c');
 
         return $this;
     }
 
     public function until(DateTimeInterface $until): self
     {
-        $this->arguments['until'] = sprintf('--until="%s"', $until->format('c'));
+        $this->arguments['until'] = '--until=' . $until->format('c');
 
         return $this;
     }
 
     public function decorate(string $decorate = 'full'): self
     {
-        $this->arguments['decorate'] = sprintf('--decorate="%s"', $decorate);
+        $this->arguments['decorate'] = '--decorate=' . $decorate;
 
         return $this;
     }
@@ -96,7 +96,7 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
 
     public function format(string $format): self
     {
-        $this->arguments['format'] = sprintf('--format="%s"', $format);
+        $this->arguments['format'] = '--format=' . $format;
 
         return $this;
     }
@@ -138,7 +138,7 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
 
     public function diffAlgorithm(string $algorithm = 'histogram'): self
     {
-        $this->arguments['diff-algorithm'] = sprintf('--diff-algorithm="%s"', $algorithm);
+        $this->arguments['diff-algorithm'] = '--diff-algorithm=' . $algorithm;
 
         return $this;
     }
@@ -146,6 +146,11 @@ class GitLogCommandBuilder implements GitCommandBuilderInterface
     public function command(): string
     {
         return 'log';
+    }
+
+    public function requiresShell(): bool
+    {
+        return false;
     }
 
     /**

@@ -24,7 +24,8 @@ class GitCherryPickCommandBuilder extends AbstractGitCommandBuilder
      */
     public function conflictResolution(string $resolution): self
     {
-        $this->arguments['conflict-resolution'] = '-X ' . $resolution;
+        $this->arguments['conflict-resolution-flag']  = '-X';
+        $this->arguments['conflict-resolution-value'] = $resolution;
 
         return $this;
     }
@@ -41,7 +42,16 @@ class GitCherryPickCommandBuilder extends AbstractGitCommandBuilder
      */
     public function hashes(array $hashes): self
     {
-        $this->arguments['hashes'] = implode(' ', $hashes);
+        // remove any previously set hash entries
+        foreach (array_keys($this->arguments) as $key) {
+            if (str_starts_with($key, 'hash-')) {
+                unset($this->arguments[$key]);
+            }
+        }
+
+        foreach ($hashes as $index => $hash) {
+            $this->arguments['hash-' . $index] = $hash;
+        }
 
         return $this;
     }

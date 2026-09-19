@@ -55,9 +55,4 @@ class CommentUpdatedMailNotificationHandler implements MailNotificationHandlerIn
 
         $this->mailService->sendNewCommentMail(Assert::notNull($comment->getReview()), $comment, $newMentions);
     }
-
-    public static function accepts(): string
-    {
-        return CommentUpdated::class;
-    }
 }

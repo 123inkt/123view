@@ -61,8 +61,8 @@ class GitLsTreeCommandBuilderTest extends AbstractTestCase
                 'ls-tree',
                 'HEAD',
                 '--',
-                escapeshellarg('path/to/file.txt'),
-                escapeshellarg('another/file.php'),
+                'path/to/file.txt',
+                'another/file.php',
             ],
             $actual
         );
@@ -81,8 +81,8 @@ class GitLsTreeCommandBuilderTest extends AbstractTestCase
                 'ls-tree',
                 'HEAD',
                 '--',
-                escapeshellarg('path/to/file.txt'),
-                escapeshellarg('valid.php'),
+                'path/to/file.txt',
+                'valid.php',
             ],
             $actual
         );
@@ -91,6 +91,11 @@ class GitLsTreeCommandBuilderTest extends AbstractTestCase
     public function testCommand(): void
     {
         static::assertSame('ls-tree', $this->builder->command());
+    }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
     }
 
     public function testToString(): void

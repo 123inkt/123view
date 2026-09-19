@@ -42,6 +42,11 @@ class GitGarbageCollectCommandBuilder implements GitCommandBuilderInterface
         return 'gc';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */

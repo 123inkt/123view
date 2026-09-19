@@ -106,15 +106,23 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertIsArray($data['result']['tools']);
 
         $toolNames = array_column($data['result']['tools'], 'name');
-        static::assertCount(8, $toolNames);
+        static::assertCount(16, $toolNames);
         static::assertContains('get_code_review', $toolNames);
         static::assertContains('get_code_reviews', $toolNames);
         static::assertContains('get_code_review_diff', $toolNames);
         static::assertContains('get_code_review_comments', $toolNames);
+        static::assertContains('get_comment_replies', $toolNames);
         static::assertContains('get_current_user', $toolNames);
         static::assertContains('add_comment', $toolNames);
+        static::assertContains('update_comment', $toolNames);
+        static::assertContains('update_comment_reply', $toolNames);
+        static::assertContains('delete_comment', $toolNames);
+        static::assertContains('delete_comment_reply', $toolNames);
         static::assertContains('read_file', $toolNames);
         static::assertContains('list_files', $toolNames);
+        static::assertContains('get_review_id_from_url', $toolNames);
+        static::assertContains('reject_review', $toolNames);
+        static::assertContains('resolve_comment', $toolNames);
     }
 
     /**
@@ -131,7 +139,7 @@ class McpServerTest extends AbstractFunctionalTestCase
      */
     private function createMcpSession(): string
     {
-        $store   = static::getService(SessionStoreInterface::class, 'mcp.session.store');
+        $store   = static::getService(SessionStoreInterface::class, 'mcp.server.default.session.store');
 
         $session = new Session($store, Uuid::v4());
         $session->set('initialized', true);

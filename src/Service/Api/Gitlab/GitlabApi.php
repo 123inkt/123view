@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Api\Gitlab;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -16,7 +17,7 @@ class GitlabApi
 
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly HttpClientInterface $gitlabClient,
+        #[Target('gitlabClient')] private readonly HttpClientInterface $gitlabClient,
         private readonly SerializerInterface $serializer
     ) {
     }

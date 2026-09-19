@@ -6,10 +6,12 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
 return App::config([
     'mcp' => [
-        'http' => [
-            'session' => [
-                'store' => 'memory'
-            ]
-        ]
+        'servers' => [
+            'default' => [
+                'session' => [
+                    'store' => 'memory',
+                ],
+            ],
+        ],
     ],
 ]);

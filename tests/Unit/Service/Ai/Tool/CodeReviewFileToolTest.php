@@ -13,6 +13,8 @@ use DR\Review\Tests\AbstractTestCase;
 use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 #[CoversClass(CodeReviewFileTool::class)]
 class CodeReviewFileToolTest extends AbstractTestCase
@@ -68,6 +70,56 @@ class CodeReviewFileToolTest extends AbstractTestCase
 
         $result = ($this->tool)(123, 'path/to/file.php');
         static::assertSame('file contents', $result);
+    }
+
+    public function testInvokeShouldThrowException(): void
+    {
+        $revision = new Revision();
+        $review   = new CodeReview();
+        $filepath = 'path/to/missing.php';
+
+        $process = static::createStub(Process::class);
+        $process->method('getErrorOutput')->willReturn("fatal: path '{$filepath}' does not exist in 'HEAD'");
+        $process->method('getOutput')->willReturn('');
+        $process->method('isSuccessful')->willReturn(false);
+        $exception = new ProcessFailedException($process);
+
+        $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->gitShowService->expects($this->once())
+            ->method('getFileContents')
+            ->with($revision, $filepath)
+            ->willThrowException($exception);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessage('Path not found: ' . $filepath);
+        ($this->tool)(123, $filepath);
+    }
+
+    public function testInvokeShouldRethrowException(): void
+    {
+        $revision = new Revision();
+        $review   = new CodeReview();
+
+        $process = static::createStub(Process::class);
+        $process->method('getErrorOutput')->willReturn("fatal: ambiguous argument 'HEAD': unknown revision");
+        $process->method('getOutput')->willReturn('');
+        $process->method('isSuccessful')->willReturn(false);
+        $exception = new ProcessFailedException($process);
+
+        $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->gitShowService->expects($this->once())
+            ->method('getFileContents')
+            ->with($revision, 'path/to/file.php')
+            ->willThrowException($exception);
+
+        try {
+            ($this->tool)(123, 'path/to/file.php');
+            static::fail('Expected ProcessFailedException to be rethrown.');
+        } catch (ProcessFailedException $actual) {
+            static::assertSame($exception, $actual);
+        }
     }
 
     public function testInvokeShouldUseLastRevision(): void

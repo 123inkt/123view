@@ -14,8 +14,6 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,15 +57,10 @@ class AddCommentControllerTest extends AbstractControllerTestCase
         $user = new User();
         $this->expectGetUser($user);
 
-        /** @var SubmitButton&Stub $saveDraftButton */
-        $saveDraftButton = static::createStub(SubmitButton::class);
-        $saveDraftButton->method('isClicked')->willReturn(false);
-
-        $formAssertion = $this->expectCreateForm(AddCommentFormType::class, static::isInstanceOf(Comment::class), ['review' => $review])
+        $this->expectCreateForm(AddCommentFormType::class, static::isInstanceOf(Comment::class), ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $formAssertion->form->method('get')->with('saveDraft')->willReturn($saveDraftButton);
 
         $this->commentRepository->expects($this->once())
             ->method('save')

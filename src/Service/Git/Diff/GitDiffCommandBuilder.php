@@ -75,7 +75,7 @@ class GitDiffCommandBuilder implements GitCommandBuilderInterface
 
     public function diffAlgorithm(string $algorithm = 'histogram'): self
     {
-        $this->arguments['diff-algorithm'] = sprintf('--diff-algorithm="%s"', $algorithm);
+        $this->arguments['diff-algorithm'] = '--diff-algorithm=' . $algorithm;
 
         return $this;
     }
@@ -90,6 +90,11 @@ class GitDiffCommandBuilder implements GitCommandBuilderInterface
     public function command(): string
     {
         return 'diff';
+    }
+
+    public function requiresShell(): bool
+    {
+        return false;
     }
 
     /**

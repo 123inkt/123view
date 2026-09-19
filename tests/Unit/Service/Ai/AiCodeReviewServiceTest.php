@@ -9,10 +9,13 @@ use DR\Review\Service\Ai\AiCodeReviewFileFilter;
 use DR\Review\Service\Ai\AiCodeReviewService;
 use DR\Review\Service\CodeReview\CodeReviewDiffService;
 use DR\Review\Tests\AbstractTestCase;
+use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Agent\Execution\Execution;
+use Symfony\AI\Agent\Execution\Update\Progress;
 use Symfony\AI\Platform\Message\MessageBag;
 use Throwable;
 
@@ -43,9 +46,15 @@ class AiCodeReviewServiceTest extends AbstractTestCase
         $diffFile      = new DiffFile();
         $diffFile->raw = 'diff content';
 
+        $execution = new Execution(static function (): Generator {
+            yield new Progress('model_request', 'Invoking model.');
+        });
+
         $this->diffService->expects($this->once())->method('getDiff')->with($review)->willReturn([$diffFile]);
         $this->fileFilter->expects($this->once())->method('__invoke')->with($diffFile)->willReturn(true);
-        $this->agent->expects($this->once())->method('call')->with(self::isInstanceOf(MessageBag::class));
+        $this->agent->expects($this->once())->method('call')
+            ->with(self::isInstanceOf(MessageBag::class))
+            ->willReturn($execution);
 
         $result = $this->service->startCodeReview($review);
 

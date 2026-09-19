@@ -8,7 +8,8 @@ use DR\Review\Tests\AbstractTestCase;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
+use Tempest\Highlight\CommonMark\CodeBlockRenderer;
+use Tempest\Highlight\CommonMark\HighlightExtension;
 
 #[CoversClass(CommonMarkdownConverter::class)]
 class CommonMarkdownConverterTest extends AbstractTestCase
@@ -26,11 +27,12 @@ class CommonMarkdownConverterTest extends AbstractTestCase
     {
         $environment = $this->converter->getEnvironment();
 
-        $extension = $environment->getExtensions();
-        static::assertCount(3, $extension);
+        $extensions = [...$environment->getExtensions()];
+        static::assertCount(4, $extensions);
+        static::assertInstanceOf(HighlightExtension::class, $extensions[3]);
 
         $renderers = [...$environment->getRenderersForClass(FencedCode::class)];
         static::assertCount(2, $renderers);
-        static::assertInstanceOf(FencedCodeRenderer::class, $renderers[0]);
+        static::assertInstanceOf(CodeBlockRenderer::class, $renderers[0]);
     }
 }

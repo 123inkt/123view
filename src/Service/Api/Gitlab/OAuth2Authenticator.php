@@ -12,14 +12,17 @@ use League\OAuth2\Client\Token\AccessToken;
 use Nette\Utils\Json;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 class OAuth2Authenticator implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly OAuth2Provider $gitlabOAuth2Provider, private readonly GitAccessTokenRepository $tokenRepository)
-    {
+    public function __construct(
+        #[Target('gitlabOAuth2Provider')] private readonly OAuth2Provider $gitlabOAuth2Provider,
+        private readonly GitAccessTokenRepository $tokenRepository
+    ) {
     }
 
     /**

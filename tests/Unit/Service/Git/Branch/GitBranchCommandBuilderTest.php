@@ -27,12 +27,20 @@ class GitBranchCommandBuilderTest extends AbstractTestCase
 
     public function testBuildMethods(): void
     {
-        static::assertSame(['git', 'branch', '-D branchName', '--merged', '-r'], $this->builder->delete('branchName')->merged()->remote()->build());
+        static::assertSame(
+            ['git', 'branch', '-D', 'branchName', '--merged', '-r'],
+            $this->builder->delete('branchName')->merged()->remote()->build()
+        );
     }
 
     public function testCommand(): void
     {
         static::assertSame('branch', $this->builder->command());
+    }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
     }
 
     public function testToString(): void

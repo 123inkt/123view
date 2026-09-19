@@ -28,4 +28,23 @@ class GitRepositoryLocationServiceTest extends AbstractTestCase
         $result = $this->service->getLocation($repository);
         static::assertSame('/cache/123view-5a9cd4cb427f55e41193e601feacfcdfdcfdb3fe/', $result);
     }
+
+    public function testGetLocationWithDotGitDirectorySuffix(): void
+    {
+        $repository = new Repository();
+        $repository->setUrl(Uri::new('https://github.com/123inkt/123view/.git'));
+
+        $result = $this->service->getLocation($repository);
+        static::assertStringStartsWith('/cache/123view-', $result);
+    }
+
+    public function testGetLocationWithColonInPathSegment(): void
+    {
+        // Tests the strrpos(':') branch: basename produces 'org:project', colon is stripped to 'project'
+        $repository = new Repository();
+        $repository->setUrl(Uri::new('https://host/org:project.git'));
+
+        $result = $this->service->getLocation($repository);
+        static::assertStringStartsWith('/cache/project-', $result);
+    }
 }
