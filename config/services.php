@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
+use DR\Review\ApiPlatform\Doctrine\Orm\Extension\CommentVisibilityExtension;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
@@ -117,6 +118,7 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\ApiPlatform\Factory\\', __DIR__ . '/../src/ApiPlatform/Factory');
     $services->load('DR\Review\ApiPlatform\Provider\\', __DIR__ . '/../src/ApiPlatform/Provider');
     $services->load('DR\Review\ApiPlatform\StateProcessor\\', __DIR__ . '/../src/ApiPlatform/StateProcessor');
+    $services->set(CommentVisibilityExtension::class);
     $services->load('DR\Review\Command\\', __DIR__ . '/../src/Command');
     $services->load('DR\Review\EventSubscriber\\', __DIR__ . '/../src/EventSubscriber');
     $services->load('DR\Review\Form\\', __DIR__ . '/../src/Form');

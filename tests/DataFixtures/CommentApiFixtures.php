@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\Review\LineReference;
@@ -27,7 +28,20 @@ class CommentApiFixtures extends Fixture implements DependentFixtureInterface
     public const FOREIGN_DRAFT = 'api foreign draft';
     public const LEGACY        = 'api legacy final';
 
+    /** @SuppressWarnings(ExcessiveMethodLength) */
     public function load(ObjectManager $manager): void
+    {
+        [$author, $viewer, $review, $connection] = $this->getFixtureContext($manager);
+
+        $this->insertBaseComments($connection, $author, $viewer, $review);
+        $this->insertEqualTimestampComments($connection, $author, $viewer, $review);
+        $this->insertPaginationComments($connection, $author, $review);
+    }
+
+    /**
+     * @return array{User, User, CodeReview, Connection}
+     */
+    private function getFixtureContext(ObjectManager $manager): array
     {
         $author = Assert::notNull($manager->getRepository(User::class)->findOneBy(['email' => 'sherlock@example.com']));
         $viewer = new User()
@@ -38,11 +52,14 @@ class CommentApiFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($viewer);
         $manager->flush();
 
-        $review = Assert::notNull($manager->getRepository(CodeReview::class)->findOneBy(['title' => 'title']));
-
+        $review     = Assert::notNull($manager->getRepository(CodeReview::class)->findOneBy(['title' => 'title']));
         $entityManager = Assert::isInstanceOf($manager, EntityManagerInterface::class);
-        $connection    = $entityManager->getConnection();
 
+        return [$author, $viewer, $review, $entityManager->getConnection()];
+    }
+
+    private function insertBaseComments(Connection $connection, User $author, User $viewer, CodeReview $review): void
+    {
         $this->insertComment(
             $connection,
             self::OWN_FINAL,
@@ -100,6 +117,55 @@ class CommentApiFixtures extends Fixture implements DependentFixtureInterface
         );
     }
 
+    private function insertEqualTimestampComments(Connection $connection, User $author, User $viewer, CodeReview $review): void
+    {
+        $this->insertComment(
+            $connection,
+            'api equal timestamp first',
+            $author,
+            $review,
+            new LineReference(null, 'src/EqualFirst.php', 50, 0, 50, 'equalfirst'),
+            CommentTypeEnum::Final,
+            null,
+            1500,
+            2500,
+        );
+        $this->insertComment(
+            $connection,
+            'api equal timestamp second',
+            $viewer,
+            $review,
+            new LineReference(null, 'src/EqualSecond.php', 51, 0, 51, 'equalsecond'),
+            CommentTypeEnum::Final,
+            null,
+            1500,
+            2501,
+        );
+    }
+
+    private function insertPaginationComments(Connection $connection, User $author, CodeReview $review): void
+    {
+        for ($index = 0; $index < 30; ++$index) {
+            $this->insertComment(
+                $connection,
+                'api pagination final ' . $index,
+                $author,
+                $review,
+                new LineReference(null, 'src/Pagination/' . $index . '.php', 100 + $index, 0, 100 + $index, 'pagination' . $index),
+                CommentTypeEnum::Final,
+                null,
+                2000 + $index,
+                3000 + $index,
+            );
+        }
+
+        $connection->update(
+            'comment',
+            ['state' => CommentStateEnum::Resolved->value],
+            ['message' => 'api pagination final 0'],
+        );
+    }
+
     /**
      * @return list<class-string>
      */
@@ -122,7 +188,7 @@ class CommentApiFixtures extends Fixture implements DependentFixtureInterface
         $connection->insert('comment', [
             'file_path'          => $lineReference->newPath ?? '',
             'line_reference'     => (string)$lineReference,
-            'state'              => 'open',
+            'state'              => CommentStateEnum::Open->value,
             'ext_reference_id'   => null,
             'message'            => $message,
             'tag'                => $tag?->value,
