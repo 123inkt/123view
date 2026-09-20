@@ -9,6 +9,7 @@
 /.eslintcache
 /.claude/settings.local.json
 /*_PLAN.md
+/docs/plan/
 
 ###> symfony/framework-bundle ###
 /.env.local
