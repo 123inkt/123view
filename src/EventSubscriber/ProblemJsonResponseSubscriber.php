@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\EventSubscriber;
 
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Response\ProblemJsonResponseFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -22,6 +23,11 @@ class ProblemJsonResponseSubscriber implements EventSubscriberInterface, LoggerA
     {
         $request = $event->getRequest();
         if (str_starts_with($request->getPathInfo(), '/api/') === false) {
+            return;
+        }
+
+        // Let the comment resource apply its operation-specific error mappings and serialization.
+        if ($request->attributes->get('_api_resource_class') === Comment::class) {
             return;
         }
 

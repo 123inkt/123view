@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\EventSubscriber;
 
+use DR\Review\Entity\Review\Comment;
 use DR\Review\EventSubscriber\ProblemJsonResponseSubscriber;
 use DR\Review\Response\ProblemJsonResponse;
 use DR\Review\Response\ProblemJsonResponseFactory;
@@ -59,6 +60,23 @@ class ProblemJsonResponseSubscriberTest extends AbstractTestCase
 
         $this->subscriber->onKernelException($event);
         static::assertSame($response, $event->getResponse());
+    }
+
+    public function testOnKernelExceptionSkipsComments(): void
+    {
+        $request = new Request(server: ['REQUEST_URI' => '/api/comments/123']);
+        $request->attributes->set('_api_resource_class', Comment::class);
+        $event = new ExceptionEvent(
+            static::createStub(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST,
+            new Exception(),
+        );
+
+        $this->responseFactory->expects($this->never())->method('createFromThrowable');
+
+        $this->subscriber->onKernelException($event);
+        static::assertNull($event->getResponse());
     }
 
     public function testGetSubscribedEvents(): void
