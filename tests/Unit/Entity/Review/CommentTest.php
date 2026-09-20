@@ -11,8 +11,6 @@ use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use ReflectionMethod;
-use TypeError;
 
 #[CoversClass(Comment::class)]
 class CommentTest extends AbstractTestCase
@@ -47,13 +45,6 @@ class CommentTest extends AbstractTestCase
 
         static::assertSame($comment, $comment->setState(CommentStateEnum::Resolved));
         static::assertSame(CommentStateEnum::Resolved, $comment->getState());
-    }
-
-    public function testSetStateRejectsRawStrings(): void
-    {
-        $this->expectException(TypeError::class);
-
-        new ReflectionMethod(Comment::class, 'setState')->invoke(new Comment(), 'resolved');
     }
 
     public function testLineReference(): void

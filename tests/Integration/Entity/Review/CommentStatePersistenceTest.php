@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Integration\Entity\Review;
 
-use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\CommentFixtures;
 use DR\Utils\Assert;
 use Exception;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversClass(Comment::class)]
-#[CoversClass(CommentStateEnum::class)]
+#[CoversNothing]
 class CommentStatePersistenceTest extends AbstractRepositoryTestCase
 {
     /**

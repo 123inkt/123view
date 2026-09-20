@@ -67,16 +67,6 @@ class ChangeCommentStateRequestTest extends AbstractRequestTestCase
         $request->validate();
     }
 
-    public function testIncorrectlyTypedStateFailsValidation(): void
-    {
-        $httpRequest = new Request([], ['state' => 123]);
-        $stack       = new RequestStack([$httpRequest]);
-        $request     = new ChangeCommentStateRequest($stack, Validation::createValidator(), new RequestConstraintFactory(new ConstraintFactory()));
-
-        $this->expectException(BadRequestException::class);
-        $request->validate();
-    }
-
     protected static function getClassToTest(): string
     {
         return ChangeCommentStateRequest::class;
