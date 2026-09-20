@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Ai\Tool;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
@@ -52,7 +53,7 @@ class GetCommentsToolTest extends AbstractTestCase
         $comment = new Comment()
             ->setId(42)
             ->setMessage('Needs refactoring')
-            ->setState('open')
+            ->setState(CommentStateEnum::Open)
             ->setLineReference(new LineReference(oldPath: 'src/old.php', newPath: 'src/new.php', lineAfter: 25))
             ->setUser($user)
             ->setCreateTimestamp(1700000000);
@@ -90,7 +91,7 @@ class GetCommentsToolTest extends AbstractTestCase
         $comment = new Comment()
             ->setId(1)
             ->setMessage('comment')
-            ->setState('open')
+            ->setState(CommentStateEnum::Open)
             ->setLineReference(new LineReference(oldPath: 'src/old.php', newPath: null, lineAfter: 10))
             ->setUser($user)
             ->setCreateTimestamp(1700000000);
@@ -109,12 +110,12 @@ class GetCommentsToolTest extends AbstractTestCase
         $user = new User()->setId(1)->setName('John')->setEmail('john@example.com');
 
         $comment1 = new Comment()
-            ->setId(1)->setMessage('first')->setState('open')
+            ->setId(1)->setMessage('first')->setState(CommentStateEnum::Open)
             ->setLineReference(new LineReference(newPath: 'a.php', lineAfter: 1))
             ->setUser($user)->setCreateTimestamp(1000);
 
         $comment2 = new Comment()
-            ->setId(2)->setMessage('second')->setState('resolved')
+            ->setId(2)->setMessage('second')->setState(CommentStateEnum::Resolved)
             ->setLineReference(new LineReference(newPath: 'b.php', lineAfter: 5))
             ->setUser($user)->setCreateTimestamp(2000);
 

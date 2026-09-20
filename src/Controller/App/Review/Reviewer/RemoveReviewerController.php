@@ -8,9 +8,9 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\ReviewController;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Security\Role\Roles;
 use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\Webhook\ReviewEventService;
@@ -41,7 +41,7 @@ class RemoveReviewerController extends AbstractController
         if ($reviewerState === CodeReviewerStateType::ACCEPTED) {
             // resolve all comments
             foreach ($review->getComments() as $comment) {
-                $comment->setState(CommentStateType::RESOLVED);
+                $comment->setState(CommentStateEnum::Resolved);
             }
             $review->setState(CodeReviewStateType::CLOSED);
         }

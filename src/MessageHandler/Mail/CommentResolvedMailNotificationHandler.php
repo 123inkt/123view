@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler\Mail;
 
-use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\MailNotificationInterface;
@@ -36,7 +36,7 @@ class CommentResolvedMailNotificationHandler implements MailNotificationHandlerI
 
         $comment = $this->commentRepository->find($message->commentId);
         $user    = $this->userRepository->find($message->resolveByUserId);
-        if ($comment === null || $user === null || $comment->getState() !== CommentStateType::RESOLVED) {
+        if ($comment === null || $user === null || $comment->getState() !== CommentStateEnum::Resolved) {
             return;
         }
 

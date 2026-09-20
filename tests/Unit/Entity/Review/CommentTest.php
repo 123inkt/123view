@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Entity\Review;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
@@ -31,6 +32,19 @@ class CommentTest extends AbstractTestCase
         $statusC = new NotificationStatus();
         $comment->setNotificationStatus($statusC);
         static::assertSame($statusC, $comment->getNotificationStatus());
+    }
+
+    public function testStateDefaultsToOpen(): void
+    {
+        static::assertSame(CommentStateEnum::Open, new Comment()->getState());
+    }
+
+    public function testSetState(): void
+    {
+        $comment = new Comment();
+
+        static::assertSame($comment, $comment->setState(CommentStateEnum::Resolved));
+        static::assertSame(CommentStateEnum::Resolved, $comment->getState());
     }
 
     public function testLineReference(): void

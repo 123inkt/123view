@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\MessageHandler\Mail;
 
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentResolved;
@@ -53,7 +53,7 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
     {
         $comment = new Comment();
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_RESOLVED);
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
         $user = new User();
 
         $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
@@ -70,7 +70,7 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
         $review  = new CodeReview();
         $comment = new Comment();
         $comment->setReview($review);
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
 
         $user = new User();
 

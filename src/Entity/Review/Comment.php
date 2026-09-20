@@ -28,9 +28,8 @@ class Comment
     #[ORM\Column(type: 'string', length: 2000)]
     private string $lineReference;
 
-    // todo change to CommentStateType.
-    #[ORM\Column(type: 'string', length: 20, options: ['default' => CommentStateType::OPEN])]
-    private string $state = CommentStateType::OPEN;
+    #[ORM\Column(type: CommentStateType::TYPE, enumType: CommentStateEnum::class, options: ['default' => CommentStateEnum::Open->value])]
+    private CommentStateEnum $state = CommentStateEnum::Open;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
@@ -111,12 +110,12 @@ class Comment
         return $this;
     }
 
-    public function getState(): string
+    public function getState(): CommentStateEnum
     {
         return $this->state;
     }
 
-    public function setState(string $state): self
+    public function setState(CommentStateEnum $state): self
     {
         $this->state = $state;
 

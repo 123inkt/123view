@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview\Comment;
 
-use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Exception\Ai\CommentNotFoundException;
 use DR\Review\Exception\Ai\CommentNotInReviewException;
 use DR\Review\Repository\Review\CommentRepository;
@@ -29,11 +29,11 @@ class ResolveCommentService
             throw new CommentNotInReviewException($commentId, $reviewId);
         }
 
-        if ($comment->getState() === CommentStateType::RESOLVED) {
+        if ($comment->getState() === CommentStateEnum::Resolved) {
             return sprintf('Comment %d is already resolved.', $commentId);
         }
 
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
         $this->commentRepository->save($comment, true);
 
         return sprintf('Comment %d resolved.', $commentId);

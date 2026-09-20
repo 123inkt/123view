@@ -5,9 +5,9 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\ChangeCommentStateController;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
@@ -48,13 +48,13 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects($this->once())->method('getState')->willReturn(CommentStateType::RESOLVED);
+        $request->expects($this->once())->method('getState')->willReturn(CommentStateEnum::Resolved);
 
         $review = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setState(CommentStateType::OPEN);
+        $comment->setState(CommentStateEnum::Open);
         $comment->setReview($review);
 
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
@@ -67,13 +67,13 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     public function testInvokeWithUnresolvedComment(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects($this->once())->method('getState')->willReturn(CommentStateType::OPEN);
+        $request->expects($this->once())->method('getState')->willReturn(CommentStateEnum::Open);
 
         $review = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
         $comment->setReview($review);
 
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
