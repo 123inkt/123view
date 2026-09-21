@@ -22,8 +22,8 @@ class CommentOutput
         public readonly ?string $sha,
         public readonly string $state,
         public readonly ?string $tag,
-        public readonly DateTimeImmutable $createTimestamp,
-        public readonly DateTimeImmutable $updateTimestamp,
+        public readonly DateTimeImmutable $createdAt,
+        public readonly DateTimeImmutable $updatedAt,
     ) {
     }
 }
