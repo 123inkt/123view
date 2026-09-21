@@ -17,7 +17,6 @@ use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[ApiResource(
     operations: [
@@ -25,8 +24,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
             uriTemplate: '/comments/{id}',
             requirements: ['id' => '\d+'],
             security: 'is_granted("' . Roles::ROLE_USER . '")',
-            exceptionToStatus: [AccessDeniedException::class => 401],
-            normalizationContext: ['skip_null_values' => false],
             output: CommentOutput::class,
             provider: CommentProvider::class,
         ),
