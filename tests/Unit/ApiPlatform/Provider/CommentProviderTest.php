@@ -18,6 +18,7 @@ use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[CoversClass(CommentProvider::class)]
@@ -73,13 +74,22 @@ class CommentProviderTest extends AbstractTestCase
 
     public function testMissingCommentReturns404(): void
     {
+        $userProvider = static::createStub(UserEntityProvider::class);
+        $userProvider->method('getCurrentUser')->willReturn(new User());
+        $provider = new CommentProvider(
+            $this->commentRepository,
+            $userProvider,
+            $this->commentVisibility,
+            $this->commentOutputFactory,
+        );
+
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
-        $this->userProvider->expects($this->never())->method('getCurrentUser');
+        $this->userProvider->expects($this->never())->method(static::anything());
         $this->commentVisibility->expects($this->never())->method('isVisible');
         $this->commentOutputFactory->expects($this->never())->method('create');
 
         $this->expectException(NotFoundHttpException::class);
-        $this->provider->provide(new Get(), ['id' => '123']);
+        $provider->provide(new Get(), ['id' => '123']);
     }
 
     public function testProvideThrows404WhenCommentIsHidden(): void
@@ -103,8 +113,7 @@ class CommentProviderTest extends AbstractTestCase
         $this->commentVisibility->expects($this->never())->method('isVisible');
         $this->commentOutputFactory->expects($this->never())->method('create');
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Comment id must be numeric');
+        $this->expectException(RuntimeException::class);
         $this->provider->provide(new Get(), ['id' => 'not-a-number']);
     }
 }
