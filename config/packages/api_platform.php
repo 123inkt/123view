@@ -8,7 +8,7 @@ return App::config([
     'api_platform' => [
         'title'                       => '%env(APP_NAME)% API',
         'version'                     => '1.0.0',
-        'show_webby'                  => true,
+        'show_webby'                  => false,
         'path_segment_name_generator' => 'api_platform.metadata.path_segment_name_generator.dash',
         'mapping'                     => ['paths' => ['%kernel.project_dir%/src/Entity']],
         'swagger'                     => [
@@ -23,6 +23,8 @@ return App::config([
         ],
         'patch_formats'               => ['json' => ['mime_types' => ['application/merge-patch+json']]],
         'defaults'                    => [
+            'normalization_context'             => ['skip_null_values' => false],
+            'denormalization_context'           => ['skip_null_values' => false],
             // allow custom pagination parameters client side
             'pagination_client_enabled'         => false,
             'pagination_client_items_per_page'  => true,

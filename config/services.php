@@ -27,7 +27,6 @@ use DR\Review\MessageHandler\MailNotificationMessageHandler;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
-use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
 use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
@@ -144,7 +143,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ContentSecurityPolicyResponseSubscriber::class)
         ->arg('$hostname', '%env(APP_HOSTNAME)%')
         ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%');
-    $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
 
     // Configure Api
     $services->set(OperationParameterDocumentor::class);

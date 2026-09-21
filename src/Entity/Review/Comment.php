@@ -3,16 +3,32 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Output\CommentOutput;
+use DR\Review\ApiPlatform\Provider\CommentProvider;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Security\Role\Roles;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/comments/{id}',
+            requirements: ['id' => '\d+'],
+            security: 'is_granted("' . Roles::ROLE_USER . '")',
+            output: CommentOutput::class,
+            provider: CommentProvider::class,
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
 class Comment
@@ -61,11 +77,11 @@ class Comment
     private User $user;
 
     /** @phpstan-var Collection<int, CommentReply> */
-    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'comment', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'comment', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $replies;
 
     /** @phpstan-var Collection<int, UserMention> */
-    #[ORM\OneToMany(targetEntity: UserMention::class, mappedBy: 'comment', cascade: ['persist', 'remove'], fetch: 'LAZY', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: UserMention::class, mappedBy: 'comment', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $mentions;
 
     public function __construct()

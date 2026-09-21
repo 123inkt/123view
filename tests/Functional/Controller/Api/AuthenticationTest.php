@@ -41,7 +41,7 @@ class AuthenticationTest extends AbstractFunctionalTestCase
             '/api/users/me',
             server: ['HTTP_AUTHORIZATION' => 'Bearer foobar']
         );
-        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
     /**
