@@ -77,11 +77,11 @@ class Comment
     private User $user;
 
     /** @phpstan-var Collection<int, CommentReply> */
-    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'comment', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'comment', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $replies;
 
     /** @phpstan-var Collection<int, UserMention> */
-    #[ORM\OneToMany(targetEntity: UserMention::class, mappedBy: 'comment', cascade: ['persist', 'remove'], fetch: 'LAZY', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: UserMention::class, mappedBy: 'comment', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $mentions;
 
     public function __construct()
