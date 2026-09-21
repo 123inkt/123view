@@ -10,6 +10,9 @@ use DR\Review\Entity\User\User;
 
 class CommentVisibility
 {
+    /**
+     * Only show draft comment to comment owner
+     */
     public function isVisible(Comment $comment, User $user): bool
     {
         return $comment->getType() === CommentTypeEnum::Final || $comment->getUser()->getId() === $user->getId();
