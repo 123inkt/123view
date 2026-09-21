@@ -23,7 +23,7 @@ use DR\Review\Security\Role\Roles;
         new Get(
             uriTemplate: '/comments/{id}',
             requirements: ['id' => '\d+'],
-            security: 'is_granted("' . Roles::ROLE_BANNED . '")',
+            security: 'is_granted("' . Roles::ROLE_USER . '")',
             output: CommentOutput::class,
             provider: CommentProvider::class,
         ),
