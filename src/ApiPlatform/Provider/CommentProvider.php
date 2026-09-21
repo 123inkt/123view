@@ -44,12 +44,8 @@ readonly class CommentProvider implements ProviderInterface
         $id = (int)Assert::numeric($uriVariables['id']);
 
         $comment = $this->commentRepository->find($id);
-        if ($comment === null) {
-            throw new NotFoundHttpException();
-        }
-
-        $user = $this->userProvider->getCurrentUser();
-        if ($this->commentVisibility->isVisible($comment, $user) === false) {
+        $user    = $this->userProvider->getCurrentUser();
+        if ($comment === null || $this->commentVisibility->isVisible($comment, $user) === false) {
             throw new NotFoundHttpException();
         }
 
