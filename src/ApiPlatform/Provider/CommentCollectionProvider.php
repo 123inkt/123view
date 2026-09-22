@@ -37,20 +37,21 @@ readonly class CommentCollectionProvider implements ProviderInterface
         Assert::isInstanceOf($operation, GetCollection::class, 'Only GetCollection operation is supported');
 
         $comments = $this->collectionProvider->provide($operation, $uriVariables, $context);
+        if (is_iterable($comments) === false) {
+            throw new InvalidArgumentException('Collection provider must return an iterable.');
+        }
+
+        $mappedComments = $this->mapComments($comments);
         if ($comments instanceof PaginatorInterface) {
             return new TraversablePaginator(
-                $this->mapComments($comments),
+                $mappedComments,
                 $comments->getCurrentPage(),
                 $comments->getItemsPerPage(),
                 $comments->getTotalItems(),
             );
         }
 
-        if (is_iterable($comments)) {
-            return $this->mapComments($comments);
-        }
-
-        throw new InvalidArgumentException('Collection provider must return an iterable.');
+        return $mappedComments;
     }
 
     /**

@@ -88,11 +88,12 @@ class CommentCollectionProviderTest extends AbstractTestCase
         static::assertSame([$output], iterator_to_array($result));
     }
 
-    public function testRejectsNonIterableCollectionProviderResult(): void
+    public function testRejectsSingleCommentCollectionProviderResult(): void
     {
         $operation = new GetCollection();
+        $comment  = new Comment();
 
-        $this->collectionProvider->expects($this->once())->method('provide')->with($operation, [], [])->willReturn(null);
+        $this->collectionProvider->expects($this->once())->method('provide')->with($operation, [], [])->willReturn($comment);
         $this->outputFactory->expects($this->never())->method('create');
 
         $this->expectException(InvalidArgumentException::class);
