@@ -9,8 +9,6 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -19,36 +17,31 @@ use DR\Review\ApiPlatform\Filter\CommentFilepathFilter;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
-use DR\Review\ApiPlatform\Output\CommentOutput;
-use DR\Review\ApiPlatform\Provider\CommentProvider;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use DR\Review\Security\Role\Roles;
 
 #[ApiResource(
     operations: [
         new Get(
-            uriTemplate: '/comments/{id}',
+            uriTemplate : '/comments/{id}',
             requirements: ['id' => '\d+'],
-            security: 'is_granted("' . Roles::ROLE_USER . '")',
-            output: CommentOutput::class,
-            provider: CommentProvider::class,
+            security    : 'is_granted("' . Roles::ROLE_USER . '")',
+            output      : CommentOutput::class,
+            provider    : CommentProvider::class,
         ),
         new GetCollection(
-            uriTemplate: '/comments',
-            security: 'is_granted("' . Roles::ROLE_USER . '")',
-            normalizationContext: ['skip_null_values' => false],
-            output: CommentOutput::class,
-            provider: CommentCollectionProvider::class,
-            order: ['createTimestamp' => 'ASC', 'id' => 'ASC'],
-            paginationEnabled: true,
-            paginationClientEnabled: false,
+            uriTemplate                 : '/comments',
+            paginationEnabled           : true,
+            paginationClientEnabled     : false,
             paginationClientItemsPerPage: true,
+            order                       : ['createTimestamp' => 'ASC', 'id' => 'ASC'],
+            security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+            output                      : CommentOutput::class,
+            provider                    : CommentCollectionProvider::class,
         ),
     ],
 )]
@@ -57,7 +50,7 @@ use DR\Review\Security\Role\Roles;
 #[ApiFilter(
     OrderFilter::class,
     properties: ['id', 'user.id', 'review.id', 'state', 'createTimestamp', 'updateTimestamp'],
-    arguments: ['orderParameterName' => 'order'],
+    arguments : ['orderParameterName' => 'order'],
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
