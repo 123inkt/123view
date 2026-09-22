@@ -13,37 +13,32 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibility;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Assert;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @implements ProviderInterface<CommentOutput>
  */
+readonly class CommentProvider implements ProviderInterface
 {
     public function __construct(
-    ) {
-    }
-
-    /**
-     * @param array<string, mixed> $context
-     */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): CommentOutput
-    {
-        if ($operation instanceof Get === false) {
-            throw new InvalidArgumentException('Only Get operation is supported');
-        }
-
-
-readonly class CommentProvider implements ProviderInterface
         private CommentRepository $commentRepository,
         private UserEntityProvider $userProvider,
         private CommentVisibility $commentVisibility,
         private CommentOutputFactory $commentOutputFactory,
+    ) {
+    }
+
+    /**
      * @inheritDoc
      *
      * @param array{id: numeric-string} $uriVariables
      * @param array<string, mixed>      $context
+     */
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): CommentOutput
+    {
+        Assert::isInstanceOf($operation, Get::class, 'Only Get operation is supported');
         $id = (int)Assert::numeric($uriVariables['id']);
+
         $comment = $this->commentRepository->find($id);
         $user    = $this->userProvider->getCurrentUser();
         if ($comment === null || $this->commentVisibility->isVisible($comment, $user) === false) {

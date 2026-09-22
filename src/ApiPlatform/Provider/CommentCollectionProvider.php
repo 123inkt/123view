@@ -12,18 +12,19 @@ use ApiPlatform\State\ProviderInterface;
 use DR\Review\ApiPlatform\Factory\CommentOutputFactory;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\Entity\Review\Comment;
+use DR\Utils\Assert;
 use Generator;
 use InvalidArgumentException;
 
 /**
  * @implements ProviderInterface<CommentOutput>
  */
-class CommentCollectionProvider implements ProviderInterface
+readonly class CommentCollectionProvider implements ProviderInterface
 {
     /**
      * @param ProviderInterface<Comment> $collectionProvider
      */
-    public function __construct(private readonly ProviderInterface $collectionProvider, private readonly CommentOutputFactory $commentOutputFactory)
+    public function __construct(private ProviderInterface $collectionProvider, private CommentOutputFactory $commentOutputFactory)
     {
     }
 
@@ -33,9 +34,7 @@ class CommentCollectionProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        if ($operation instanceof GetCollection === false) {
-            throw new InvalidArgumentException('Only GetCollection operation is supported');
-        }
+        Assert::isInstanceOf($operation, GetCollection::class, 'Only GetCollection operation is supported');
 
         $comments = $this->collectionProvider->provide($operation, $uriVariables, $context);
         if ($comments instanceof PaginatorInterface) {
@@ -55,16 +54,12 @@ class CommentCollectionProvider implements ProviderInterface
     }
 
     /**
-     * @param iterable<mixed> $comments
+     * @param iterable<Comment> $comments
      * @return Generator<int, CommentOutput>
      */
     private function mapComments(iterable $comments): Generator
     {
         foreach ($comments as $comment) {
-            if ($comment instanceof Comment === false) {
-                throw new InvalidArgumentException('Collection provider returned an invalid comment.');
-            }
-
             yield $this->commentOutputFactory->create($comment);
         }
     }
