@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\Tests\Unit\ApiPlatform\Doctrine\Orm\Extension;
+namespace ApiPlatform\Extension;
 
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use DR\Review\ApiPlatform\Doctrine\Orm\Extension\CommentVisibilityExtension;
+use DR\Review\ApiPlatform\Extension\CommentVisibilityExtension;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;

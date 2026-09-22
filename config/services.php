@@ -6,7 +6,7 @@ use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
-use DR\Review\ApiPlatform\Doctrine\Orm\Extension\CommentVisibilityExtension;
+use DR\Review\ApiPlatform\Extension\CommentVisibilityExtension;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;

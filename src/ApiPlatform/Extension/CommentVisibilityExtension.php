@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DR\Review\ApiPlatform\Doctrine\Orm\Extension;
+namespace DR\Review\ApiPlatform\Extension;
 
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
