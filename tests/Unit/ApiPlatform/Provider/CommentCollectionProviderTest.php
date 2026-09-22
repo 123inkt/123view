@@ -63,6 +63,7 @@ class CommentCollectionProviderTest extends AbstractTestCase
 
         $result = $this->provider->provide($operation, $uriVariables, $context);
 
+        static::assertIsIterable($result);
         static::assertSame([$output], iterator_to_array($result));
     }
 

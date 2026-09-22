@@ -31,7 +31,7 @@ class CommentVisibilityExtensionTest extends AbstractTestCase
 
     public function testNonCommentResourcesAreUnchanged(): void
     {
-        $queryBuilder = $this->createQueryBuilder(Comment::class);
+        $queryBuilder = $this->createQueryBuilder();
 
         $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->extension->applyToCollection($queryBuilder, new QueryNameGenerator(), User::class);
@@ -42,7 +42,7 @@ class CommentVisibilityExtensionTest extends AbstractTestCase
 
     public function testAppliesVisibilityPredicate(): void
     {
-        $queryBuilder = $this->createQueryBuilder(Comment::class)
+        $queryBuilder = $this->createQueryBuilder()
             ->andWhere('c.id = :existing')
             ->setParameter('existing', 123);
         $user = new User()->setId(10);
@@ -53,14 +53,14 @@ class CommentVisibilityExtensionTest extends AbstractTestCase
             'SELECT c FROM DR\\Review\\Entity\\Review\\Comment c WHERE c.id = :existing AND (c.type = :comment_type_p1 OR c.user = :comment_user_p2)',
             $queryBuilder->getDQL(),
         );
-        static::assertSame(123, $queryBuilder->getParameter('existing')->getValue());
-        static::assertSame(CommentTypeEnum::Final, $queryBuilder->getParameter('comment_type_p1')->getValue());
-        static::assertSame($user, $queryBuilder->getParameter('comment_user_p2')->getValue());
+        static::assertSame(123, $queryBuilder->getParameter('existing')?->getValue());
+        static::assertSame(CommentTypeEnum::Final, $queryBuilder->getParameter('comment_type_p1')?->getValue());
+        static::assertSame($user, $queryBuilder->getParameter('comment_user_p2')?->getValue());
     }
 
     public function testGeneratedNamesAvoidCollisions(): void
     {
-        $queryBuilder = $this->createQueryBuilder(Comment::class);
+        $queryBuilder = $this->createQueryBuilder();
         $queryNameGenerator = new QueryNameGenerator();
         $existingParameter = $queryNameGenerator->generateParameterName('comment_type');
         $queryBuilder->setParameter($existingParameter, 'existing');
@@ -69,15 +69,15 @@ class CommentVisibilityExtensionTest extends AbstractTestCase
         $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn($user);
         $this->extension->applyToCollection($queryBuilder, $queryNameGenerator, Comment::class);
 
-        static::assertSame('existing', $queryBuilder->getParameter('comment_type_p1')->getValue());
-        static::assertSame(CommentTypeEnum::Final, $queryBuilder->getParameter('comment_type_p2')->getValue());
-        static::assertSame($user, $queryBuilder->getParameter('comment_user_p3')->getValue());
+        static::assertSame('existing', $queryBuilder->getParameter('comment_type_p1')?->getValue());
+        static::assertSame(CommentTypeEnum::Final, $queryBuilder->getParameter('comment_type_p2')?->getValue());
+        static::assertSame($user, $queryBuilder->getParameter('comment_user_p3')?->getValue());
     }
 
-    private function createQueryBuilder(string $resourceClass): QueryBuilder
+    private function createQueryBuilder(): QueryBuilder
     {
-        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager = static::createStub(EntityManagerInterface::class);
 
-        return new QueryBuilder($entityManager)->select('c')->from($resourceClass, 'c');
+        return new QueryBuilder($entityManager)->select('c')->from(Comment::class, 'c');
     }
 }

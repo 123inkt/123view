@@ -39,6 +39,7 @@ class GetCollectionControllerTest extends AbstractFunctionalTestCase
         self::assertResponseIsSuccessful();
         $data = $this->getResponseArray();
         static::assertCount(1, $data);
+        static::assertIsArray($data[0]);
         static::assertSame(CommentApiFixtures::OWN_FINAL, $data[0]['message']);
     }
 

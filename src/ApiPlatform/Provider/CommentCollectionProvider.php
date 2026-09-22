@@ -55,6 +55,7 @@ readonly class CommentCollectionProvider implements ProviderInterface
 
     /**
      * @param iterable<Comment> $comments
+     *
      * @return Generator<int, CommentOutput>
      */
     private function mapComments(iterable $comments): Generator
