@@ -12,17 +12,17 @@ class CreateCommentInput
     #[Assert\NotBlank(normalizer: 'trim')]
     #[Assert\Type('string')]
     #[Assert\Length(max: 2000)]
-    public ?string $message = null;
+    public string $message;
 
     #[Assert\NotBlank(normalizer: 'trim')]
     #[Assert\Type('string')]
     #[Assert\Length(max: 500)]
-    public ?string $filepath = null;
+    public string $filepath;
 
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    public ?int $line = null;
+    public int $line;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: [
