@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DR\Review\ApiPlatform\Filter\CommentFilepathFilter;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
@@ -24,33 +22,33 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
 
-#[ApiResource(
-    operations: [
-        new Get(
-            uriTemplate : '/comments/{id}',
-            requirements: ['id' => '\d+'],
-            security    : 'is_granted("' . Roles::ROLE_USER . '")',
-            output      : CommentOutput::class,
-            provider    : CommentProvider::class,
-        ),
-        new GetCollection(
-            uriTemplate                 : '/comments',
-            paginationEnabled           : true,
-            paginationClientEnabled     : false,
-            paginationClientItemsPerPage: true,
-            order                       : ['createTimestamp' => 'ASC', 'id' => 'ASC'],
-            security                    : 'is_granted("' . Roles::ROLE_USER . '")',
-            output                      : CommentOutput::class,
-            provider                    : CommentCollectionProvider::class,
-        ),
-    ],
+#[Get(
+    uriTemplate : '/comments/{id}',
+    requirements: ['id' => '\d+'],
+    security    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output      : CommentOutput::class,
+    provider    : CommentProvider::class,
 )]
-#[ApiFilter(SearchFilter::class, properties: ['user.id' => 'exact', 'review.id' => 'exact'])]
-#[ApiFilter(CommentFilepathFilter::class)]
-#[ApiFilter(
-    OrderFilter::class,
-    properties: ['id', 'user.id', 'review.id', 'state', 'createTimestamp', 'updateTimestamp'],
-    arguments : ['orderParameterName' => 'order'],
+#[GetCollection(
+    paginationEnabled           : true,
+    paginationClientEnabled     : false,
+    paginationClientItemsPerPage: true,
+    order                       : ['createTimestamp' => 'ASC', 'id' => 'ASC'],
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output                      : CommentOutput::class,
+    provider                    : CommentCollectionProvider::class,
+    parameters                  : [
+        'user.id'                => new QueryParameter(filter: new ExactFilter(), property: 'user.id'),
+        'review.id'              => new QueryParameter(filter: new ExactFilter(), property: 'review.id'),
+        'exact[filepath]'        => new QueryParameter(filter: new ExactFilter(), property: 'filePath'),
+        'order[id]'              => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[user.id]'         => new QueryParameter(filter: new SortFilter(), property: 'user.id'),
+        'order[review.id]'       => new QueryParameter(filter: new SortFilter(), property: 'review.id'),
+        'order[filepath]'        => new QueryParameter(filter: new SortFilter(), property: 'filePath'),
+        'order[state]'           => new QueryParameter(filter: new SortFilter(), property: 'state'),
+        'order[createTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
+        'order[updateTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
+    ],
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
