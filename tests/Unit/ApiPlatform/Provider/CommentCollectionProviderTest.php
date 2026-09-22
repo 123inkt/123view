@@ -88,7 +88,7 @@ class CommentCollectionProviderTest extends AbstractTestCase
         static::assertSame([$output], iterator_to_array($result));
     }
 
-    public function testRejectsSingleCommentCollectionProviderResult(): void
+    public function testRejectsSingleResult(): void
     {
         $operation = new GetCollection();
         $comment  = new Comment();
