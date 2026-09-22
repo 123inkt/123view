@@ -12,15 +12,16 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Service\User\UserEntityProvider;
 
-class CommentVisibilityExtension implements QueryCollectionExtensionInterface
+readonly class CommentVisibilityExtension implements QueryCollectionExtensionInterface
 {
-    public function __construct(private readonly UserEntityProvider $userProvider)
+    public function __construct(private UserEntityProvider $userProvider)
     {
     }
 
     /**
-     * @SuppressWarnings(UnusedFormalParameter)
-     * @param class-string $resourceClass
+     * @inheritDoc
+     *
+     * @param class-string         $resourceClass
      * @param array<string, mixed> $context
      */
     public function applyToCollection(
@@ -39,13 +40,7 @@ class CommentVisibilityExtension implements QueryCollectionExtensionInterface
         $userParameterName = $queryNameGenerator->generateParameterName('comment_user');
         // Passing the OR expression as a string makes Doctrine wrap it before
         // combining it with later filter predicates.
-        $visibleComments = sprintf(
-            '%s.type = :%s OR %s.user = :%s',
-            $alias,
-            $typeParameterName,
-            $alias,
-            $userParameterName,
-        );
+        $visibleComments = sprintf('%s.type = :%s OR %s.user = :%s', $alias, $typeParameterName, $alias, $userParameterName);
 
         $queryBuilder
             ->andWhere($visibleComments)
