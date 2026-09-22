@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DR\Review\ApiPlatform\Output;
 
+use DateTimeImmutable;
+
 class CommentOutput
 {
     /**
@@ -20,8 +22,8 @@ class CommentOutput
         public readonly ?string $sha,
         public readonly string $state,
         public readonly ?string $tag,
-        public readonly int $createTimestamp,
-        public readonly int $updateTimestamp,
+        public readonly DateTimeImmutable $createdAt,
+        public readonly DateTimeImmutable $updatedAt,
     ) {
     }
 }

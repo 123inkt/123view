@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\ApiPlatform\Factory;
 
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\Entity\Review\Comment;
 
@@ -23,8 +24,8 @@ class CommentOutputFactory
             $lineReference->headSha,
             $comment->getState()->value,
             $comment->getTag()?->value,
-            $comment->getCreateTimestamp(),
-            $comment->getUpdateTimestamp(),
+            new DateTimeImmutable()->setTimestamp($comment->getCreateTimestamp()),
+            new DateTimeImmutable()->setTimestamp($comment->getUpdateTimestamp()),
         );
     }
 }

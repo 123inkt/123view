@@ -52,8 +52,8 @@ class CommentOutputFactoryTest extends AbstractTestCase
         static::assertSame('abc123', $output->sha);
         static::assertSame('resolved', $output->state);
         static::assertSame('suggestion', $output->tag);
-        static::assertSame(1234567890, $output->createTimestamp);
-        static::assertSame(1234567891, $output->updateTimestamp);
+        static::assertSame(1234567890, $output->createdAt->getTimestamp());
+        static::assertSame(1234567891, $output->updatedAt->getTimestamp());
     }
 
     public function testCreateMapsNullableFields(): void

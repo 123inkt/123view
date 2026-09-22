@@ -10,6 +10,7 @@
 /.claude/settings.local.json
 /*_PLAN.md
 /docs/plan/
+/.opencode/
 
 ###> symfony/framework-bundle ###
 /.env.local

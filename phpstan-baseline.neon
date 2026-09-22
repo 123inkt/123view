@@ -13,6 +13,18 @@ parameters:
 			path: src/ApiPlatform/OpenApi/OpenApiParameterIterator.php
 
 		-
+			message: '#^Default value of the parameter \#2 \$uriVariables \(array\{\}\) of method DR\\Review\\ApiPlatform\\Provider\\CommentProvider\:\:provide\(\) is incompatible with type array\{id\: numeric\-string\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: src/ApiPlatform/Provider/CommentProvider.php
+
+		-
+			message: '#^Parameter \#2 \$uriVariables \(array\{id\: numeric\-string\}\) of method DR\\Review\\ApiPlatform\\Provider\\CommentProvider\:\:provide\(\) should be contravariant with parameter \$uriVariables \(array\<string, mixed\>\) of method ApiPlatform\\State\\ProviderInterface\<DR\\Review\\ApiPlatform\\Output\\CommentOutput\>\:\:provide\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/ApiPlatform/Provider/CommentProvider.php
+
+		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(string\)\: non\-falsy\-string given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1355,6 +1367,12 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: tests/Integration/Service/Parser/Unified/UnifiedBlockParserTest.php
+
+		-
+			message: '#^Parameter \#2 \$uriVariables of method DR\\Review\\ApiPlatform\\Provider\\CommentProvider\:\:provide\(\) expects array\{id\: numeric\-string\}, array\{id\: ''not\-a\-number''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/ApiPlatform/Provider/CommentProviderTest.php
 
 		-
 			message: '#^Type DR\\Review\\Controller\\AbstractController in generic type DR\\Review\\Tests\\AbstractControllerTestCase\<DR\\Review\\Controller\\AbstractController\> in PHPDoc tag @extends is not subtype of template type T of callable&Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController of class DR\\Review\\Tests\\AbstractControllerTestCase\.$#'
