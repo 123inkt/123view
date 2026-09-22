@@ -31,7 +31,8 @@ class GetCollectionControllerTest extends AbstractFunctionalTestCase
      */
     public function testAuthenticatedAccessReturnsComments(): void
     {
-        $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));;
+        $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));
+
         $this->client->loginUser($user);
 
         $this->client->request(Request::METHOD_GET, '/api/comments');
