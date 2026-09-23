@@ -75,15 +75,15 @@ class CreateCommentProcessor implements ProcessorInterface
         $tag      = $data->tag === null ? null : CommentTagEnum::from($data->tag);
 
         // validate location is valid
-        $this->locationResolver->validate($review, $filepath, $line);
+        $this->locationResolver->validate($review, $filepath, $data->line);
 
         $comment = new Comment();
         $comment->setReview($review);
         $comment->setUser($user);
         $comment->setMessage($message);
         $comment->setFilePath($filepath);
-        $comment->setLineReference($this->lineReferenceFactory->createFromReview($review, $filepath, $line, $revision->getCommitHash()));
-        $comment->setTag($tag);
+        $comment->setLineReference($this->lineReferenceFactory->createFromReview($review, $filepath, $data->line, $revision->getCommitHash()));
+        $comment->setTag($data->tag);
         $comment->setType(CommentTypeEnum::Final);
         $comment->setState(CommentStateEnum::Open);
         $comment->setCreateTimestamp($this->now()->getTimestamp());

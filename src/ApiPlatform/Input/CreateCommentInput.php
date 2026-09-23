@@ -11,27 +11,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateCommentInput
 {
     #[Assert\NotBlank(normalizer: 'trim')]
-    #[Assert\Type('string')]
     #[Assert\Length(max: Comment::MAX_COMMENT_LENGTH)]
     public string $message;
 
     #[Assert\NotBlank(normalizer: 'trim')]
-    #[Assert\Type('string')]
     #[Assert\Length(max: 500)]
     public string $filepath;
 
     /** @var positive-int */
-    #[Assert\NotNull]
-    #[Assert\Type('integer')]
     #[Assert\Positive]
     public int $line;
 
-    #[Assert\Type('string')]
-    #[Assert\Choice(choices: [
-        CommentTagEnum::Suggestion->value,
-        CommentTagEnum::NiceToHave->value,
-        CommentTagEnum::ChangeRequest->value,
-        CommentTagEnum::Explanation->value,
-    ])]
-    public ?string $tag = null;
+    public ?CommentTagEnum $tag = null;
 }
