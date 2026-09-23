@@ -7,20 +7,26 @@ use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Input\CreateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
+use DR\Review\ApiPlatform\StateProcessor\CreateCommentProcessor;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
+use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 #[Get(
     uriTemplate : '/comments/{id}',
@@ -49,6 +55,20 @@ use DR\Review\Security\Role\Roles;
         'order[createTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
         'order[updateTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
     ],
+)]
+#[Post(
+    uriTemplate                 : '/code-reviews/{reviewId}/comments',
+    uriVariables                : ['reviewId' => new Link(fromClass: CodeReview::class, identifiers: ['id'])],
+    requirements                : ['reviewId' => '\\d+'],
+    status                      : 201,
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : CreateCommentInput::class,
+    output                      : CommentOutput::class,
+    read                        : false,
+    processor                   : CreateCommentProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
