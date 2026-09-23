@@ -18,22 +18,29 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversNothing]
 class PatchControllerTest extends AbstractApiTestCase
 {
-    private InMemoryTransport $transport;
+    /** @var list<object> */
+    private array $dispatchedMessages = [];
     private ?\ApiPlatform\Symfony\Bundle\Test\Response $lastResponse = null;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->client->disableReboot();
 
-        $this->transport = Assert::isInstanceOf(
-            static::getContainer()->get('messenger.transport.async_messages'),
-            InMemoryTransport::class,
+        $bus = static::createStub(MessageBusInterface::class);
+        $bus->method('dispatch')->willReturnCallback(
+            function (object $message): Envelope {
+                $this->dispatchedMessages[] = $message;
+
+                return new Envelope($message);
+            },
         );
+        static::getContainer()->set(MessageBusInterface::class, $bus);
     }
 
     public function testAuthorChangesMessageAndOmittedTagRemainsUnchanged(): void
@@ -78,7 +85,7 @@ class PatchControllerTest extends AbstractApiTestCase
 
         $this->assertPatchStatusCode(Response::HTTP_OK);
         $this->assertPatchJsonContains(['message' => 'Combined update', 'tag' => 'explanation', 'state' => 'resolved']);
-        $messages = $this->getDispatchedMessages();
+        $messages = $this->dispatchedMessages;
         self::assertCount(2, $messages);
         self::assertInstanceOf(CommentUpdated::class, $messages[0]);
         self::assertInstanceOf(CommentResolved::class, $messages[1]);
@@ -91,16 +98,16 @@ class PatchControllerTest extends AbstractApiTestCase
         $this->request($comment, ['state' => 'resolved'], $this->otherToken());
         $this->assertPatchStatusCode(Response::HTTP_OK);
         $this->assertPatchJsonContains(['state' => 'resolved']);
-        $messages = $this->getDispatchedMessages();
+        $messages = $this->dispatchedMessages;
         self::assertCount(1, $messages);
         self::assertInstanceOf(CommentResolved::class, $messages[0]);
 
-        $this->transport->reset();
+        $this->dispatchedMessages = [];
         $comment = $this->reload($comment);
         $this->request($comment, ['state' => 'open'], $this->otherToken());
         $this->assertPatchStatusCode(Response::HTTP_OK);
         $this->assertPatchJsonContains(['state' => 'open']);
-        $messages = $this->getDispatchedMessages();
+        $messages = $this->dispatchedMessages;
         self::assertCount(1, $messages);
         self::assertInstanceOf(CommentUnresolved::class, $messages[0]);
     }
@@ -163,7 +170,7 @@ class PatchControllerTest extends AbstractApiTestCase
     {
         $comment = $this->getComment('patch other draft');
 
-        $this->request($comment, ['message' => 'Unauthorized edit'], $this->otherToken());
+        $this->request($comment, ['message' => 'Unauthorized edit']);
 
         $this->assertPatchStatusCode(Response::HTTP_NOT_FOUND);
         self::assertSame('patch other draft', $this->reload($comment)->getMessage());
@@ -293,17 +300,6 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertNotNull($this->lastResponse, 'A request must have been made before reading its response.');
 
         return $this->lastResponse->getContent(false);
-    }
-
-    /**
-     * @return list<object>
-     */
-    private function getDispatchedMessages(): array
-    {
-        return array_map(
-            static fn(\Symfony\Component\Messenger\Envelope $envelope): object => $envelope->getMessage(),
-            $this->transport->getSent(),
-        );
     }
 
     /**

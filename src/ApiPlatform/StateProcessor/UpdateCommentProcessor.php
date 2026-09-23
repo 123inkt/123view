@@ -77,7 +77,7 @@ class UpdateCommentProcessor implements ProcessorInterface
             $comment->setTag($data->getTag());
         }
         if ($data->hasState()) {
-            $comment->setState($data->getState());
+            $comment->setState($data->state);
         }
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);

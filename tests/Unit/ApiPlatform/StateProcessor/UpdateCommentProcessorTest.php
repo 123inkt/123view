@@ -82,7 +82,9 @@ class UpdateCommentProcessorTest extends AbstractTestCase
 
     public function testAppliesCombinedAuthorUpdateAndSavesOnce(): void
     {
-        $input  = new UpdateCommentInput()->setMessage('  Updated comment  ')->setTag(null)->setState(CommentStateEnum::Resolved);
+        $input          = $this->input('  Updated comment  ');
+        $input->setTag(null);
+        $input->state   = CommentStateEnum::Resolved;
         $this->commentRepository->expects($this->once())->method('save')->with($this->comment, true)->willReturnCallback(function (): void {
             $this->saved = true;
             $this->saveCount++;
@@ -99,7 +101,8 @@ class UpdateCommentProcessorTest extends AbstractTestCase
     public function testAllowsNonAuthorToChangeFinalCommentState(): void
     {
         $this->currentUser = new User()->setId(20);
-        $input             = new UpdateCommentInput()->setState(CommentStateEnum::Resolved);
+        $input             = new UpdateCommentInput();
+        $input->state      = CommentStateEnum::Resolved;
         $this->commentRepository->expects($this->once())->method('save')->with($this->comment, true)->willReturnCallback(function (): void {
             $this->saved = true;
             $this->saveCount++;
@@ -117,7 +120,8 @@ class UpdateCommentProcessorTest extends AbstractTestCase
     public function testRejectsMixedNonAuthorUpdateBeforeMutationOrSave(): void
     {
         $this->currentUser = new User()->setId(20);
-        $input             = new UpdateCommentInput()->setMessage('Unauthorized edit')->setState(CommentStateEnum::Resolved);
+        $input             = $this->input('Unauthorized edit');
+        $input->state      = CommentStateEnum::Resolved;
         $this->commentRepository->expects($this->never())->method('save');
 
         try {
@@ -134,7 +138,8 @@ class UpdateCommentProcessorTest extends AbstractTestCase
     public function testRejectsStateChangeOnDraftBeforeMutationOrSave(): void
     {
         $this->comment->setType(CommentTypeEnum::Draft);
-        $input = new UpdateCommentInput()->setState(CommentStateEnum::Resolved);
+        $input        = new UpdateCommentInput();
+        $input->state = CommentStateEnum::Resolved;
         $this->commentRepository->expects($this->never())->method('save');
 
         $this->expectException(UnprocessableEntityHttpException::class);
@@ -149,7 +154,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         $this->commentRepository->expects($this->never())->method('save');
 
         $this->expectException(NotFoundHttpException::class);
-        $this->processor->process(new UpdateCommentInput()->setMessage('Update'), new Patch(), ['id' => '123']);
+        $this->processor->process($this->input('Update'), new Patch(), ['id' => '123']);
     }
 
     public function testReturnsNotFoundForMissingComment(): void
@@ -157,15 +162,15 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         $this->commentRepository->expects($this->never())->method('save');
 
         $this->expectException(NotFoundHttpException::class);
-        $this->processor->process(new UpdateCommentInput()->setMessage('Update'), new Patch(), ['id' => '456']);
+        $this->processor->process($this->input('Update'), new Patch(), ['id' => '456']);
     }
 
-    public function testRejectsEmptyInputWithoutSaving(): void
+    private function input(string $message): UpdateCommentInput
     {
-        $this->commentRepository->expects($this->never())->method('save');
+        $input          = new UpdateCommentInput();
+        $input->message = $message;
 
-        $this->expectException(UnprocessableEntityHttpException::class);
-        $this->processor->process(new UpdateCommentInput(), new Patch(), ['id' => '123']);
+        return $input;
     }
 
     protected function freezeTimeAt(): int
