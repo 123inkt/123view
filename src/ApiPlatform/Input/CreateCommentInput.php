@@ -19,6 +19,7 @@ class CreateCommentInput
     #[Assert\Length(max: 500)]
     public string $filepath;
 
+    /** @var positive-int */
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Assert\Positive]

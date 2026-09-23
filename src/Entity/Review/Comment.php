@@ -57,18 +57,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     ],
 )]
 #[Post(
-    uriTemplate            : '/code-reviews/{reviewId}/comments',
-    uriVariables           : ['reviewId' => new Link(fromClass: CodeReview::class, identifiers: ['id'])],
-    requirements           : ['reviewId' => '\\d+'],
-    security               : 'is_granted("' . Roles::ROLE_USER . '")',
-    input                  : CreateCommentInput::class,
-    output                 : CommentOutput::class,
-    processor              : CreateCommentProcessor::class,
-    denormalizationContext : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    uriTemplate                 : '/code-reviews/{reviewId}/comments',
+    uriVariables                : ['reviewId' => new Link(fromClass: CodeReview::class, identifiers: ['id'])],
+    requirements                : ['reviewId' => '\\d+'],
+    status                      : 201,
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
     collectDenormalizationErrors: true,
-    exceptionToStatus      : [SerializerExceptionInterface::class => 422],
-    status                 : 201,
-    read                   : false,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : CreateCommentInput::class,
+    output                      : CommentOutput::class,
+    read                        : false,
+    processor                   : CreateCommentProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]

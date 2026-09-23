@@ -7,6 +7,7 @@ namespace DR\Review\Service\CodeReview\Comment;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\CodeReview\CodeReviewDiffService;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Throwable;
 
 readonly class CommentLocationResolver
 {
@@ -15,7 +16,7 @@ readonly class CommentLocationResolver
     }
 
     /**
-     * @throws UnprocessableEntityHttpException
+     * @throws UnprocessableEntityHttpException|Throwable
      */
     public function resolve(CodeReview $review, string $filepath, int $line): void
     {

@@ -31,9 +31,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-/**
- * @SuppressWarnings(CouplingBetweenObjects)
- */
 #[CoversClass(CreateCommentProcessor::class)]
 class CreateCommentProcessorTest extends AbstractTestCase
 {

@@ -15,7 +15,6 @@ use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\Review\NotificationStatus;
-use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
@@ -27,10 +26,10 @@ use DR\Utils\Assert;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Throwable;
 
 /**
  * @implements ProcessorInterface<CreateCommentInput, CommentOutput>
- * @SuppressWarnings(CouplingBetweenObjects)
  */
 class CreateCommentProcessor implements ProcessorInterface
 {
@@ -48,37 +47,35 @@ class CreateCommentProcessor implements ProcessorInterface
     }
 
     /**
-     * @param array<string, mixed> $uriVariables
-     * @param array<string, mixed> $context
+     * @inheritDoc
      *
-     * @SuppressWarnings(UnusedFormalParameter)
+     * @param array{reviewId: numeric-string} $uriVariables
+     * @param array<string, mixed>            $context
+     *
+     * @throws Throwable
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): CommentOutput
     {
-        unset($context);
         Assert::isInstanceOf($data, CreateCommentInput::class);
         Assert::isInstanceOf($operation, Post::class, 'Only Post operation is supported.');
 
-        $reviewId = $this->getReviewId($uriVariables['reviewId'] ?? null);
-        $review   = $this->reviewRepository->find($reviewId);
+        $review = $this->reviewRepository->find((int)Assert::numeric($uriVariables['reviewId']));
         if ($review === null) {
             throw new NotFoundHttpException('Code review not found.');
         }
 
-        $user = $this->userProvider->getCurrentUser();
-        $revisions = $this->reviewRevisionService->getRevisions($review);
-        /** @var Revision|null $revision */
-        $revision = Arrays::lastOrNull($revisions);
+        $revision = Arrays::lastOrNull($this->reviewRevisionService->getRevisions($review));
         if ($revision === null) {
             throw new UnprocessableEntityHttpException('The review has no resolvable revision.');
         }
 
-        $message  = trim(Assert::string($data->message));
-        $filepath = trim(Assert::string($data->filepath));
-        $line     = Assert::positiveInt(Assert::integer($data->line));
+        $user     = $this->userProvider->getCurrentUser();
+        $message  = trim($data->message);
+        $filepath = trim($data->filepath);
+        $line     = $data->line;
         $this->locationResolver->resolve($review, $filepath, $line);
 
-        $tag = $this->getTag($data->tag);
+        $tag       = $data->tag === null ? null : CommentTagEnum::from($data->tag);
         $timestamp = $this->now()->getTimestamp();
 
         $comment = new Comment();
@@ -98,28 +95,5 @@ class CreateCommentProcessor implements ProcessorInterface
         $this->commentRepository->save($comment, true);
 
         return $this->commentOutputFactory->create($comment);
-    }
-
-    private function getReviewId(mixed $value): int
-    {
-        if ((is_int($value) === false && is_string($value) === false) || ctype_digit((string)$value) === false || (int)$value < 1) {
-            throw new UnprocessableEntityHttpException('The review ID must be a positive integer.');
-        }
-
-        return (int)$value;
-    }
-
-    private function getTag(?string $value): ?CommentTagEnum
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        $tag = CommentTagEnum::tryFrom($value);
-        if ($tag === null) {
-            throw new UnprocessableEntityHttpException('The comment tag is invalid.');
-        }
-
-        return $tag;
     }
 }
