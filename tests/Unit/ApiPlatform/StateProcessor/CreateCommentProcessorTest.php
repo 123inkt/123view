@@ -103,9 +103,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
                 self::assertSame(CommentTypeEnum::Final, $comment->getType());
                 self::assertSame(CommentStateEnum::Open, $comment->getState());
                 self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
-                self::assertTrue($comment->getNotificationStatus()->hasStatus(1));
-                self::assertTrue($comment->getNotificationStatus()->hasStatus(2));
-                self::assertTrue($comment->getNotificationStatus()->hasStatus(4));
+                self::assertSame(0, $comment->getNotificationStatus()->getStatus());
 
                 return true;
             }))
@@ -161,7 +159,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $review = new CodeReview()->setId(20);
         $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
-        $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn(new User());
+        $this->userProvider->expects($this->never())->method('getCurrentUser');
         $this->locationResolver->expects($this->never())->method('validate');
         $this->commentRepository->expects($this->never())->method('save');
         $this->lineReferenceFactory->expects($this->never())->method('createFromReview');

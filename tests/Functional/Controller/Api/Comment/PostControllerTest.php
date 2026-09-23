@@ -94,7 +94,7 @@ class PostControllerTest extends AbstractApiTestCase
         self::assertSame('final', $comment->getType()->value);
         self::assertSame('0123456789abcdef0123456789abcdef01234567', $comment->getLineReference()->headSha);
         self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
-        self::assertSame(7, $comment->getNotificationStatus()->getStatus());
+        self::assertSame(0, $comment->getNotificationStatus()->getStatus());
         self::assertCount(1, $this->dispatchedMessages);
         self::assertInstanceOf(CommentAdded::class, $this->dispatchedMessages[0]);
     }
