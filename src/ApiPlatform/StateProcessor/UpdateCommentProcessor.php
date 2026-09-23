@@ -37,7 +37,11 @@ class UpdateCommentProcessor implements ProcessorInterface
 
     /**
      * @inheritDoc
-     *
+     * Conditions:
+     * - Comment must exist
+     * - Only author may change message and tag
+     * - Only author may modify draft messages
+     * - If comment is draft, state may not change
      * @param array{id: numeric-string} $uriVariables
      * @param array<string, mixed>      $context
      */
@@ -57,10 +61,6 @@ class UpdateCommentProcessor implements ProcessorInterface
             throw new NotFoundHttpException('Comment not found.');
         }
 
-        if ($data->hasChanges() === false) {
-            throw new UnprocessableEntityHttpException('At least one of message, tag, or state must be provided.');
-        }
-
         $isAuthor = $comment->getUser()->getId() === $user->getId();
         if (($data->hasMessage() || $data->hasTag()) && $isAuthor === false) {
             throw new AccessDeniedHttpException('Only the comment author may update its message or tag.');
@@ -70,27 +70,15 @@ class UpdateCommentProcessor implements ProcessorInterface
             throw new UnprocessableEntityHttpException('Draft comment state cannot be changed.');
         }
 
-        $message = null;
         if ($data->hasMessage()) {
-            $message = trim($data->getMessage());
-            if ($message === '' || mb_strlen($message) > 2000) {
-                throw new UnprocessableEntityHttpException('Message must contain between 1 and 2000 characters.');
-            }
-        }
-
-        $tag   = $data->hasTag() ? $data->getTag() : null;
-        $state = $data->hasState() ? $data->getState() : null;
-
-        if ($data->hasMessage()) {
-            $comment->setMessage(Assert::string($message));
+            $comment->setMessage(trim($data->message));
         }
         if ($data->hasTag()) {
-            $comment->setTag($tag);
+            $comment->setTag($data->getTag());
         }
         if ($data->hasState()) {
-            $comment->setState(Assert::notNull($state));
+            $comment->setState($data->getState());
         }
-
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
 

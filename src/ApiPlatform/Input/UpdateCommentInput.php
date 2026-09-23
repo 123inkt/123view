@@ -37,6 +37,16 @@ class UpdateCommentInput
         return $this->tag;
     }
 
+    public function hasTag(): bool
+    {
+        return $this->tagProvided;
+    }
+
+    public function hasState(): bool
+    {
+        return isset($this->state);
+    }
+
     public function hasChanges(): bool
     {
         return isset($this->message, $this->state) || $this->tagProvided;
