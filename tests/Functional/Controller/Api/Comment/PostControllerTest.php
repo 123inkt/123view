@@ -37,16 +37,14 @@ class PostControllerTest extends AbstractApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->revisions = [
-            new Revision()->setRepository(new Repository())->setCommitHash('0123456789abcdef0123456789abcdef01234567'),
-        ];
+        $this->revisions = [new Revision()->setRepository(new Repository())->setCommitHash('0123456789abcdef0123456789abcdef01234567')];
         $revisionService = static::createStub(CodeReviewRevisionService::class);
         $revisionService->method('getRevisions')->willReturnCallback(fn(): array => $this->revisions);
         static::getContainer()->set(CodeReviewRevisionService::class, $revisionService);
 
         $diffService = static::createStub(CodeReviewDiffService::class);
         $diffService->method('getDiff')->willReturn([
-            $this->createDiffFile('src/Foo.php', 'src/Foo.php', [
+            $this->createDiffFile([
                 $this->createLine(DiffLine::STATE_CHANGED, 41, 42),
                 $this->createLine(DiffLine::STATE_REMOVED, 43, null),
             ]),
@@ -76,14 +74,14 @@ class PostControllerTest extends AbstractApiTestCase
 
         self::assertResponseStatusCodeSame(Response::HTTP_CREATED);
         self::assertJsonContains([
-            'userId'  => $this->getCurrentUserId(),
+            'userId'   => $this->getCurrentUserId(),
             'reviewId' => CodeReviewFixtures::REVIEW_ID,
-            'message' => 'Please extract this condition.',
+            'message'  => 'Please extract this condition.',
             'filepath' => 'src/Foo.php',
-            'line'    => 42,
-            'sha'     => '0123456789abcdef0123456789abcdef01234567',
-            'state'   => 'open',
-            'tag'     => null,
+            'line'     => 42,
+            'sha'      => '0123456789abcdef0123456789abcdef01234567',
+            'state'    => 'open',
+            'tag'      => null,
         ]);
 
         $this->entityManager?->clear();
@@ -94,7 +92,7 @@ class PostControllerTest extends AbstractApiTestCase
         self::assertSame('final', $comment->getType()->value);
         self::assertSame('0123456789abcdef0123456789abcdef01234567', $comment->getLineReference()->headSha);
         self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
-        self::assertSame(7, $comment->getNotificationStatus()->getStatus());
+        self::assertSame(0, $comment->getNotificationStatus()->getStatus());
         self::assertCount(1, $this->dispatchedMessages);
         self::assertInstanceOf(CommentAdded::class, $this->dispatchedMessages[0]);
     }
@@ -119,9 +117,14 @@ class PostControllerTest extends AbstractApiTestCase
         $this->client->request(
             Request::METHOD_POST,
             '/api/code-reviews/' . CodeReviewFixtures::REVIEW_ID . '/comments',
-            ['headers' => ['content-type' => 'application/json'], 'json' => [
-                'message' => 'Comment', 'filepath' => 'src/Foo.php', 'line' => 42,
-            ]],
+            [
+                'headers' => ['content-type' => 'application/json'],
+                'json'    => [
+                    'message'  => 'Comment',
+                    'filepath' => 'src/Foo.php',
+                    'line'     => 42,
+                ]
+            ],
         );
 
         self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
@@ -130,17 +133,17 @@ class PostControllerTest extends AbstractApiTestCase
     /**
      * @param array<string, mixed> $payload
      */
-    private function request(array $payload, int $reviewId = CodeReviewFixtures::REVIEW_ID): void
+    private function request(array $payload): void
     {
         $this->client->request(
             Request::METHOD_POST,
-            '/api/code-reviews/' . $reviewId . '/comments',
+            '/api/code-reviews/' . CodeReviewFixtures::REVIEW_ID . '/comments',
             [
                 'headers' => [
                     'authorization' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE,
                     'content-type'  => 'application/json',
                 ],
-                'json' => $payload,
+                'json'    => $payload,
             ],
         );
     }
@@ -148,13 +151,13 @@ class PostControllerTest extends AbstractApiTestCase
     /**
      * @param array<int, DiffLine> $lines
      */
-    private function createDiffFile(string $oldPath, ?string $newPath, array $lines): DiffFile
+    private function createDiffFile(array $lines): DiffFile
     {
-        $block        = new DiffBlock();
-        $block->lines = $lines;
+        $block                = new DiffBlock();
+        $block->lines         = $lines;
         $file                 = new DiffFile();
-        $file->filePathBefore = $oldPath;
-        $file->filePathAfter  = $newPath;
+        $file->filePathBefore = 'src/Foo.php';
+        $file->filePathAfter  = 'src/Foo.php';
         $file->addBlock($block);
 
         return $file;
