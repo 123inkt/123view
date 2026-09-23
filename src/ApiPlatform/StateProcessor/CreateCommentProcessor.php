@@ -14,7 +14,6 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
-use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
@@ -73,10 +72,10 @@ class CreateCommentProcessor implements ProcessorInterface
         $message  = trim($data->message);
         $filepath = trim($data->filepath);
         $line     = $data->line;
-        $this->locationResolver->resolve($review, $filepath, $line);
+        $tag      = $data->tag === null ? null : CommentTagEnum::from($data->tag);
 
-        $tag       = $data->tag === null ? null : CommentTagEnum::from($data->tag);
-        $timestamp = $this->now()->getTimestamp();
+        // validate location is valid
+        $this->locationResolver->resolve($review, $filepath, $line);
 
         $comment = new Comment();
         $comment->setReview($review);
@@ -87,9 +86,8 @@ class CreateCommentProcessor implements ProcessorInterface
         $comment->setTag($tag);
         $comment->setType(CommentTypeEnum::Final);
         $comment->setState(CommentStateEnum::Open);
-        $comment->setNotificationStatus(NotificationStatus::all());
-        $comment->setCreateTimestamp($timestamp);
-        $comment->setUpdateTimestamp($timestamp);
+        $comment->setCreateTimestamp($this->now()->getTimestamp());
+        $comment->setUpdateTimestamp($this->now()->getTimestamp());
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);

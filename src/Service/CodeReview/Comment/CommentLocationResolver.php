@@ -21,16 +21,28 @@ readonly class CommentLocationResolver
     public function resolve(CodeReview $review, string $filepath, int $line): void
     {
         foreach ($this->diffService->getDiff($review) as $diffFile) {
-            if ($diffFile->filePathAfter !== $filepath) {
-                continue;
-            }
-
-            foreach ($diffFile->getBlocks() as $block) {
-                foreach ($block->lines as $diffLine) {
-                    if ($diffLine->lineNumberAfter === $line) {
-                        return;
+            // check filename against the "recent" file name and line numbers
+            if ($diffFile->filePathAfter === $filepath) {
+                foreach ($diffFile->getBlocks() as $block) {
+                    foreach ($block->lines as $diffLine) {
+                        if ($diffLine->lineNumberAfter === $line) {
+                            return;
+                        }
                     }
                 }
+                throw new UnprocessableEntityHttpException('The line must exist on the current diff side.');
+            }
+
+            if ($diffFile->isDeleted() && $diffFile->filePathBefore === $filepath) {
+                // check filename against the original filename before deletion
+                foreach ($diffFile->getBlocks() as $block) {
+                    foreach ($block->lines as $diffLine) {
+                        if ($diffLine->lineNumberBefore === $line) {
+                            return;
+                        }
+                    }
+                }
+                throw new UnprocessableEntityHttpException('The line must exist on the deleted diff side.');
             }
         }
 
