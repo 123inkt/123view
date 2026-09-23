@@ -59,6 +59,16 @@ class CommentLocationValidatorTest extends AbstractTestCase
         $this->resolver->validate(new CodeReview(), 'src/Foo.php', 1);
     }
 
+    public function testRejectsLineNotPresentOnDeletedFile(): void
+    {
+        $this->expectException(UnprocessableEntityHttpException::class);
+        $this->diffService->expects($this->once())->method('getDiff')->willReturn([
+            $this->createDiffFile('src/Foo.php', null, [$this->createLine(DiffLine::STATE_REMOVED, 1, null)]),
+        ]);
+
+        $this->resolver->validate(new CodeReview(), 'src/Foo.php', 2);
+    }
+
     public function testRejectsRemovedOnlyLine(): void
     {
         $this->expectException(UnprocessableEntityHttpException::class);
