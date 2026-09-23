@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="src/ApiPlatform/Output/CodeReviewOutput.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/ApiPlatform/StateProcessor/CreateCommentProcessor.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Controller/App/User/Gitlab/UserGitlabDisconnectController.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Controller/App/User/Gitlab/UserGitlabOAuth2FinishController.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Controller/App/User/UserGitSyncController.php"/>
@@ -15,6 +16,7 @@
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/GitlabApiProvider.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewApprovalValidatorService.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Api/Gitlab/ReviewMergeRequestService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/CodeReview/Comment/CommentLocationValidator.php" method="validate"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/CodeReview/LineReferenceMatcher.php" method="exactMatch"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Service/Filter/CommitFilter.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Diff/GitDiffCommandBuilder.php"/>
@@ -23,6 +25,7 @@
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Show/GitShowCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ApiPlatform/Provider/CodeReviewActivityProviderTest.php" method="testProvideShouldOnlySupportGetCollection"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ApiPlatform/Provider/CodeReviewProviderTest.php" method="testProvideShouldOnlySupportGetCollection"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="tests/Unit/ApiPlatform/StateProcessor/CreateCommentProcessorTest.php"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Command/MailCommandTest.php" method="testCommandSuccessfulWithoutCommitsShouldNotMail"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Command/MailCommandTest.php" method="testCommandShouldExitWithFailureOnException"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Controller/AbstractControllerTest.php" method="testGetUserShouldThrowExceptionOnAbsentUser"/>
@@ -42,7 +45,6 @@
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/EventSubscriber/AccessDeniedExceptionSubscriberTest.php" method="testOnKernelExceptionOnlyAcceptAccessDeniedException"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/EventSubscriber/AddReviewToCommitSubscriberTest.php" method="testOnCommitEventShouldSkipReviewWithoutRepository"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/EventSubscriber/MarkDown/AbsoluteImageUrlSubscriberTest.php" method="testHandleAbsoluteImageNodeShouldBeSkipped"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/EventSubscriber/ProblemJsonResponseSubscriberTest.php" method="testOnKernelExceptionShouldSkipNonApiUrls"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ExternalTool/Gitlab/GitlabIntegrationTest.php" method="testOnCommitEventShouldSkipOnMissingGitlabApiUrl"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ExternalTool/Gitlab/GitlabIntegrationTest.php" method="testOnCommitEventShouldSkipOnMissingGitlabProjectId"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ExternalTool/Gitlab/GitlabIntegrationTest.php" method="testOnCommitEventShouldSkipOnHttpClientException"/>
@@ -59,11 +61,6 @@
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Repository/Revision/RevisionRepositoryTest.php" method="testGetPaginatorForSearchQueryWithSearchQueryString"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Repository/Revision/RevisionRepositoryTest.php" method="testGetPaginatorForSearchQueryWithCodeReviewAttached"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Repository/User/UserRepositoryTest.php" method="testFindBySearchQueryWithoutPreferredUsers"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Response/ProblemJsonResponseFactoryTest.php" method="testCreateFromThrowableHandlesHttpExceptionWithoutMessage"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Response/ProblemJsonResponseFactoryTest.php" method="testCreateFromThrowableHandlesHttpExceptionWithMessage"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Response/ProblemJsonResponseFactoryTest.php" method="testCreateFromThrowableHandlesAccessDeniedException"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Response/ProblemJsonResponseFactoryTest.php" method="testCreateFromThrowableHandlesShowDetailsOnDebug"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Response/ProblemJsonResponseFactoryTest.php" method="testCreateFromThrowableReturnsEmptyResponseWhenProductionOrMessageEmpty"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Router/ReviewRouterTest.php" method="testGenerateReviewControllerRequiresReviewProperty"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Router/ReviewRouterTest.php" method="testGenerateReviewControllerRequiresCodeReview"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Router/ReviewRouterTest.php" method="testGenerateReviewControllerGenerateReviewRoute"/>

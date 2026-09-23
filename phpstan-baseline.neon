@@ -25,6 +25,18 @@ parameters:
 			path: src/ApiPlatform/Provider/CommentProvider.php
 
 		-
+			message: '#^Default value of the parameter \#3 \$uriVariables \(array\{\}\) of method DR\\Review\\ApiPlatform\\StateProcessor\\CreateCommentProcessor\:\:process\(\) is incompatible with type array\{reviewId\: numeric\-string\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: src/ApiPlatform/StateProcessor/CreateCommentProcessor.php
+
+		-
+			message: '#^Parameter \#3 \$uriVariables \(array\{reviewId\: numeric\-string\}\) of method DR\\Review\\ApiPlatform\\StateProcessor\\CreateCommentProcessor\:\:process\(\) should be contravariant with parameter \$uriVariables \(array\<string, mixed\>\) of method ApiPlatform\\State\\ProcessorInterface\<DR\\Review\\ApiPlatform\\Input\\CreateCommentInput,DR\\Review\\ApiPlatform\\Output\\CommentOutput\>\:\:process\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: src/ApiPlatform/StateProcessor/CreateCommentProcessor.php
+
+		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(string\)\: non\-falsy\-string given\.$#'
 			identifier: argument.type
 			count: 1

@@ -8,6 +8,7 @@ use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CommentRepository;
@@ -69,6 +70,7 @@ class PostControllerTest extends AbstractApiTestCase
                 'message'  => '  Please extract this condition.  ',
                 'filepath' => 'src/Foo.php',
                 'line'     => 42,
+                'tag'      => CommentTagEnum::Suggestion->value,
             ],
         );
 
@@ -81,7 +83,7 @@ class PostControllerTest extends AbstractApiTestCase
             'line'     => 42,
             'sha'      => '0123456789abcdef0123456789abcdef01234567',
             'state'    => 'open',
-            'tag'      => null,
+            'tag'      => CommentTagEnum::Suggestion->value,
         ]);
 
         $this->entityManager?->clear();
@@ -92,6 +94,7 @@ class PostControllerTest extends AbstractApiTestCase
         self::assertSame('final', $comment->getType()->value);
         self::assertSame('0123456789abcdef0123456789abcdef01234567', $comment->getLineReference()->headSha);
         self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
+        self::assertSame(CommentTagEnum::Suggestion, $comment->getTag());
         self::assertSame(0, $comment->getNotificationStatus()->getStatus());
         self::assertCount(1, $this->dispatchedMessages);
         self::assertInstanceOf(CommentAdded::class, $this->dispatchedMessages[0]);

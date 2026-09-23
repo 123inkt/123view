@@ -12,7 +12,6 @@ use DR\Review\ApiPlatform\Input\CreateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentStateEnum;
-use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
@@ -71,19 +70,17 @@ class CreateCommentProcessor implements ProcessorInterface
         $user     = $this->userProvider->getCurrentUser();
         $message  = trim($data->message);
         $filepath = trim($data->filepath);
-        $line     = $data->line;
-        $tag      = $data->tag === null ? null : CommentTagEnum::from($data->tag);
 
         // validate location is valid
-        $this->locationResolver->validate($review, $filepath, $line);
+        $this->locationResolver->validate($review, $filepath, $data->line);
 
         $comment = new Comment();
         $comment->setReview($review);
         $comment->setUser($user);
         $comment->setMessage($message);
         $comment->setFilePath($filepath);
-        $comment->setLineReference($this->lineReferenceFactory->createFromReview($review, $filepath, $line, $revision->getCommitHash()));
-        $comment->setTag($tag);
+        $comment->setLineReference($this->lineReferenceFactory->createFromReview($review, $filepath, $data->line, $revision->getCommitHash()));
+        $comment->setTag($data->tag);
         $comment->setType(CommentTypeEnum::Final);
         $comment->setState(CommentStateEnum::Open);
         $comment->setCreateTimestamp($this->now()->getTimestamp());

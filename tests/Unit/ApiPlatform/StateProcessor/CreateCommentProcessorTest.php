@@ -75,7 +75,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $latest     = new Revision()->setRepository($repository)->setCommitHash('latest');
         $reference  = new LineReference(null, 'src/Foo.php', 42, 0, 42, 'latest');
         $output     = static::createStub(CommentOutput::class);
-        $input      = $this->input('  Please extract this condition.  ', ' src/Foo.php ', 42, CommentTagEnum::Suggestion->value);
+        $input      = $this->input('  Please extract this condition.  ', ' src/Foo.php ', 42, CommentTagEnum::Suggestion);
 
         $this->reviewRepository->expects($this->once())->method('find')->with(20)->willReturn($review);
         $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn($user);
@@ -205,7 +205,10 @@ class CreateCommentProcessorTest extends AbstractTestCase
         self::assertNull($comment->getTag());
     }
 
-    private function input(string $message, string $filepath, ?int $line, ?string $tag): CreateCommentInput
+    /**
+     * @param positive-int $line
+     */
+    private function input(string $message, string $filepath, int $line, ?CommentTagEnum $tag): CreateCommentInput
     {
         $input           = new CreateCommentInput();
         $input->message  = $message;
